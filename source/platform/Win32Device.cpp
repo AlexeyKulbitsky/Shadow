@@ -91,7 +91,7 @@ Win32Device::Win32Device(const CreationParameters &parameters)
 		wcex.hIconSm = 0;
 
 		// if there is an icon, load it
-		wcex.hIcon = (HICON)LoadImage(hInstance, __TEXT("irrlicht.ico"), IMAGE_ICON, 0, 0, LR_LOADFROMFILE);
+		wcex.hIcon = (HICON)LoadImage(hInstance, __TEXT("shadow.ico"), IMAGE_ICON, 0, 0, LR_LOADFROMFILE);
 
 		RegisterClassEx(&wcex);
 
@@ -122,7 +122,7 @@ Win32Device::Win32Device(const CreationParameters &parameters)
 
 
 		// create window
-		m_hwnd = CreateWindow(ClassName, __TEXT(""), style, windowLeft, windowTop,
+		m_hwnd = CreateWindow(ClassName, __TEXT("Shadow engine"), style, windowLeft, windowTop,
 			realWidth, realHeight, NULL, NULL, hInstance, NULL);
 		
 

@@ -19,6 +19,14 @@ namespace sh
 		parameters.driverType = driverType;
 		parameters.WinId = nullptr;
 		
+		return CreateDevice(parameters);
+	}
+
+
+	SHADOW_API Device* SH_CALLCONV CreateDevice(const CreationParameters& parameters)
+	{
+		Device *device = nullptr;
+
 #if defined SHADOW_WINDOWS
 		device = new Win32Device(parameters);
 #endif

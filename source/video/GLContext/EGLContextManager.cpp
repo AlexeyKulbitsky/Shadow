@@ -15,13 +15,29 @@ EGLContextManager::~EGLContextManager()
 
 bool EGLContextManager::InitContext(const CreationParameters &parameters)
 {
+	u32 glesApiVersion = 0U;
+	u32 glesContextVersion = 0U;
+	switch (parameters.driverType)
+	{
+	case DriverType::OPENGL_ES_2_0:
+		glesApiVersion = 2;
+		glesContextVersion = EGL_OPENGL_ES2_BIT;
+		break;
+	case DriverType::OPENGL_ES_3_0:
+		glesApiVersion = 3;
+		glesContextVersion = EGL_OPENGL_ES3_BIT_KHR;
+		break;
+	default:
+		break;
+	}
+
 	m_eglNativeWindow = static_cast<EGLNativeWindowType>(parameters.WinId);
 
 #ifndef SHADOW_APPLE
 	EGLConfig config;
 	EGLint majorVersion;
 	EGLint minorVersion;
-	EGLint contextAttribs[] = { EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE };
+	EGLint contextAttribs[] = { EGL_CONTEXT_CLIENT_VERSION, glesApiVersion, EGL_NONE };
 
 #ifdef SHADOW_ANDROID
 	// For Android, get the width/height from the window rather than what the
@@ -46,6 +62,15 @@ bool EGLContextManager::InitContext(const CreationParameters &parameters)
 		return GL_FALSE;
 	}
 
+
+	u32 supportedContext = GetContextRenderableType(m_eglDisplay);
+
+	if (glesContextVersion == EGL_OPENGL_ES3_BIT_KHR && supportedContext != glesContextVersion)
+	{
+		// Error: this context (OpenGL ES 3.0) is not supported
+		exit(0);
+	}
+
 	{
 		EGLint numConfigs = 0;
 		EGLint attribList[] =
@@ -59,7 +84,7 @@ bool EGLContextManager::InitContext(const CreationParameters &parameters)
 			EGL_SAMPLE_BUFFERS, 0,
 			// if EGL_KHR_create_context extension is supported, then we will use
 			// EGL_OPENGL_ES3_BIT_KHR instead of EGL_OPENGL_ES2_BIT in the attribute list
-			EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
+			EGL_RENDERABLE_TYPE, glesContextVersion,
 			EGL_NONE
 		};
 
@@ -114,4 +139,20 @@ bool EGLContextManager::InitContext(const CreationParameters &parameters)
 bool EGLContextManager::SwapBuffers()
 {
 	return (eglSwapBuffers(m_eglDisplay, m_eglSurface) == EGL_TRUE);
+}
+
+EGLint EGLContextManager::GetContextRenderableType(EGLDisplay eglDisplay)
+{
+#ifdef EGL_KHR_create_context
+	const char *extensions = eglQueryString(eglDisplay, EGL_EXTENSIONS);
+
+	// check whether EGL_KHR_create_context is in the extension string
+	if (extensions != NULL && strstr(extensions, "EGL_KHR_create_context"))
+	{
+		// extension is supported
+		return EGL_OPENGL_ES3_BIT_KHR;
+	}
+#endif
+	// extension is not supported
+	return EGL_OPENGL_ES2_BIT;
 }

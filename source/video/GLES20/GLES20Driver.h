@@ -19,6 +19,7 @@ namespace sh
 			virtual bool Init() override;
 			virtual void BeginRendering() override;
 			virtual void EndRendering() override;
+			virtual void DrawHardwareBuffer(const HardwareBuffer *buffer) override;
 
 		private:
 			EGLContextManager* m_contextManager = nullptr;

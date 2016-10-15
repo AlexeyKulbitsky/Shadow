@@ -32,11 +32,13 @@ namespace sh
 			virtual bool SwapBuffers() override;
 
 		private:
+			EGLint GetContextRenderableType(EGLDisplay eglDisplay);
+
+		private:
 			GLint       m_width;
 			GLint       m_height;
 
-#ifndef SHADOW_APPLE
-
+#if !defined SHADOW_APPLE
 			EGLNativeDisplayType	m_eglNativeDisplay;
 			EGLNativeWindowType		m_eglNativeWindow;
 			EGLDisplay				m_eglDisplay;
