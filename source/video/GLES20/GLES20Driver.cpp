@@ -1,6 +1,7 @@
 #include "GLES20Driver.h"
 #include "GLES20HardwareBuffer.h"
 #include "../GLContext/EGLContextManager.h"
+#include "../../scene/Mesh.h"
 
 using namespace sh;
 using namespace video;
@@ -59,4 +60,24 @@ void GLES20Driver::DrawHardwareBuffer(const HardwareBuffer *buffer)
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+////////////////////////////////////////////////////////////////////////
+
+HardwareBuffer* GLES20Driver::CreateHardwareBuffer(const scene::Mesh* mesh)
+{
+	const void* verticesPointer = mesh->GetVerticesPointer();
+	const u32 verticesCount = mesh->GetVerticesCount();
+
+	GLES20HardwareBuffer *buffer = new GLES20HardwareBuffer();
+
+	// Create vertex buffer
+	glGenBuffers(1, &buffer->vbo_verticesID);
+	glBindBuffer(GL_ARRAY_BUFFER, buffer->vbo_verticesID);
+	glBufferData(GL_ARRAY_BUFFER, verticesCount * sizeof(float), verticesPointer, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+
+	
+	return buffer;
 }

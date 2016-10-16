@@ -3,6 +3,10 @@
 
 namespace sh
 {
+	namespace scene
+	{
+		class Mesh;
+	}
 	namespace video
 	{
 		struct HardwareBuffer;
@@ -23,6 +27,7 @@ namespace sh
 			virtual void BeginRendering() = 0;
 			virtual void EndRendering() = 0;
 			virtual void DrawHardwareBuffer(const HardwareBuffer *buffer) = 0;
+			virtual HardwareBuffer* CreateHardwareBuffer(const scene::Mesh* mesh) = 0;
 		};
 	}
 }

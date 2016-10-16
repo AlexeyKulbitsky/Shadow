@@ -20,6 +20,7 @@ namespace sh
 			virtual void BeginRendering() override;
 			virtual void EndRendering() override;
 			virtual void DrawHardwareBuffer(const HardwareBuffer *buffer) override;
+			virtual HardwareBuffer* CreateHardwareBuffer(const scene::Mesh* mesh) override;
 
 		private:
 			EGLContextManager* m_contextManager = nullptr;

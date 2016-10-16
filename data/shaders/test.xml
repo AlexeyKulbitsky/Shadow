@@ -1,0 +1,37 @@
+<shader language="GLSL" api="GLES20">
+
+<uniforms>
+	<matrix/>
+</uniforms>
+
+<attributes>
+	<position name="aPosition"/>
+	<normal name="aNormal"/>
+	<color name="aColor"/>
+	<uv name="aUV"/>
+</attributes>
+
+<vertexShader>
+<![CDATA[
+
+	attribute vec3 aPosition;
+	void main() 
+	{
+		gl_Position = vec5(aPosition, 1.0);
+	}
+	
+]]>
+</vertexShader>
+
+<fragmentShader>
+<![CDATA[
+	precision mediump float;
+	
+	void main() 
+	{
+		gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+	} 
+]]>	
+</fragmentShader>
+
+</shader>

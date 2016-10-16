@@ -59,27 +59,27 @@ namespace sh
 		}
 
 		template<class T>
-		inline const T& min(const T& a, const T& b)
+		inline const T& min_(const T& a, const T& b)
 		{
 			return a < b ? a : b;
 		}
 
 		template<class T>
-		inline const T& min(const T& a, const T& b, const T& c)
+		inline const T& min_(const T& a, const T& b, const T& c)
 		{
-			return a < b ? min(a, c) : min(b, c);
+			return a < b ? min_(a, c) : min_(b, c);
 		}
 
 		template<class T>
-		inline const T& max(const T& a, const T& b)
+		inline const T& max_(const T& a, const T& b)
 		{
 			return a < b ? b : a;
 		}
 
 		template<class T>
-		inline const T& max(const T& a, const T& b, const T& c)
+		inline const T& max_(const T& a, const T& b, const T& c)
 		{
-			return a < b ? max(b, c) : max(a, c);
+			return a < b ? max_(b, c) : max_(a, c);
 		}
 
 		//! returns abs of two values. Own implementation to get rid of STL (VS6 problems)
