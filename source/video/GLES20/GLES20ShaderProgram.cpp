@@ -1,6 +1,7 @@
 #include "GLES20ShaderProgram.h"
 #include <pugixml.hpp>
 #include "../Vertex.h"
+#include "../ShAssert.h"
 
 using namespace sh;
 using namespace video;
@@ -150,7 +151,6 @@ GLuint GLES20ShaderProgram::CompileShader(GLenum shaderType, const c8* source)
 	GLuint shader;
 	GLint compiled;
 
-
 	shader = glCreateShader(shaderType);
 
 	if (shader == 0)
@@ -179,7 +179,7 @@ GLuint GLES20ShaderProgram::CompileShader(GLenum shaderType, const c8* source)
 			glGetShaderInfoLog(shader, infoLen, NULL, infoLog);
 
 			delete[] infoLog;
-		}
+		}	
 
 		glDeleteShader(shader);
 		return 0;
