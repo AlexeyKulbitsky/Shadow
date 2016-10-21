@@ -112,8 +112,8 @@ Win32Device::Win32Device(const CreationParameters &parameters)
 		const s32 realWidth = clientSize.right - clientSize.left;
 		const s32 realHeight = clientSize.bottom - clientSize.top;
 
-		s32 windowLeft = 0;
-		s32 windowTop = 0;
+		s32 windowLeft = 100;
+		s32 windowTop = 100;
 
 		if (windowLeft < 0)
 			windowLeft = 0;

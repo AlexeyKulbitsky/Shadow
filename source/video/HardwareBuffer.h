@@ -2,6 +2,7 @@
 #define SHADOW_HARDWARE_BUFFER_INCLUDE
 
 #include "../Types.h"
+#include "../video/Vertex.h"
 #include <vector>
 
 namespace sh
@@ -10,26 +11,6 @@ namespace sh
 	{
 		struct HardwareBuffer
 		{
-			enum class AttributeSemantic
-			{
-				POSITION = 0,
-				COLOR,
-				UV,
-				NORMAL,
-				BINORMAL,
-				TANGENT,
-				NONE = 0
-			};
-
-			enum class AttributeType
-			{
-				FLOAT1 = sizeof(f32),
-				FLOAT2 = sizeof(f32) * 2,
-				FLOAT3 = sizeof(f32) * 3,
-				FLOAT4 = sizeof(f32) * 4,
-				NONE = 0
-			};
-
 			enum class UsageType
 			{
 				NONE = 0,
@@ -56,41 +37,18 @@ namespace sh
 				TRIANGLE_FAN
 			};
 
-			struct Attribute
+			struct CreateInfo
 			{
-				Attribute(AttributeType _type, AttributeSemantic _semantic)
-					: type(_type)
-					, semantic(_semantic)
-				{}
-				AttributeType type;
-				AttributeSemantic semantic;
-				u32 offset;
+				BufferType bufferType;
+				UsageType verticesUsageType;
+				UsageType indicesUsageType;			
+				Topology topology;
 			};
+			
+			void SetVertexDeclaration(const VertexDecalaration& declaration) { m_vertexDeclaration = declaration; }
 
-			void AddAttribute(Attribute& attribute)
-			{
-				attribute.offset = CalculateAttributeOffset(attribute);
-				attributes.push_back(attribute);
-				stride += static_cast<u32>(attribute.type);
-			}
-
-			u32 CalculateAttributeOffset(const Attribute& attribute)
-			{
-				u32 offset = 0U;
-				for (auto attr : attributes)
-				{
-					offset += static_cast<u32>(attr.type);
-				}
-				return offset;
-			}
-
-			UsageType verticesUsageType = UsageType::NONE;
-			UsageType indicesUsageType = UsageType::NONE;	
-			BufferType type = BufferType::NONE;
-			Topology topology;
-
-			std::vector<Attribute> attributes;
-			u32 stride = 0U;
+			CreateInfo info;
+			VertexDecalaration m_vertexDeclaration;
 		};
 	}
 }

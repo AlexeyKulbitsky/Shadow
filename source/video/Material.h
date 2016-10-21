@@ -7,26 +7,17 @@ namespace sh
 {
 	namespace video
 	{
+		class ShaderProgram;
+
 		class Material
 		{
 		public:
-			Material()
-				: ambientColor(255U, 255U, 255U, 255U)
-				, diffuseColor(255U, 255U, 255U, 255U)
-				, emissiveColor(255U, 255U, 255U, 255U)
-				, specularColor(255U, 255U, 255U, 255U)
-			{}
+			Material() {}
+			void SetShaderProgram(ShaderProgram* program) { m_shaderProgram = program; }
 
-			Material(const Material& other)
-				: ambientColor(other.ambientColor)
-				, diffuseColor(other.diffuseColor)
-				, emissiveColor(other.emissiveColor)
-				, specularColor(other.specularColor)
-			{}
-			Color ambientColor;
-			Color diffuseColor;
-			Color emissiveColor;
-			Color specularColor;		
+			ShaderProgram* GetShaderProgram() { return m_shaderProgram; }
+		private:
+			ShaderProgram* m_shaderProgram = nullptr;
 		};
 	}
 }

@@ -15,8 +15,8 @@ EGLContextManager::~EGLContextManager()
 
 bool EGLContextManager::InitContext(const CreationParameters &parameters)
 {
-	u32 glesApiVersion = 0U;
-	u32 glesContextVersion = 0U;
+	s32 glesApiVersion = 0U;
+	s32 glesContextVersion = 0U;
 	switch (parameters.driverType)
 	{
 	case DriverType::OPENGL_ES_2_0:
@@ -32,7 +32,7 @@ bool EGLContextManager::InitContext(const CreationParameters &parameters)
 	}
 
 	m_eglNativeWindow = static_cast<EGLNativeWindowType>(parameters.WinId);
-
+	
 #ifndef SHADOW_APPLE
 	EGLConfig config;
 	EGLint majorVersion;

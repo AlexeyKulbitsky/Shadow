@@ -3,6 +3,7 @@
 
 #include "../ShaderProgram.h"
 #include "../GLContext/EGLContextManager.h"
+#include "GLES20VertexInput.h"
 #include <pugixml.hpp>
 
 namespace sh
@@ -18,6 +19,8 @@ namespace sh
 			virtual void BindProgram() override;
 			virtual void UnbindProgram() override;
 
+			GLES20VertexDeclaration* GetVertexDeclaration() { return &m_vertexDeclaration; }
+
 		private:
 			void LoadUniforms(const pugi::xml_node &node);
 			void LoadAttributes(const pugi::xml_node &node);
@@ -29,6 +32,9 @@ namespace sh
 			GLuint m_programID;
 			GLuint m_vertexShaderID;
 			GLuint m_fragmentShaderID;
+
+			GLES20VertexDeclaration m_vertexDeclaration;
+
 		};
 	}
 }

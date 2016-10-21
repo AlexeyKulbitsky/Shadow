@@ -25,6 +25,8 @@ namespace assertLib
 	void SetAssertHandler(AssertHandler);
 }
 
+assertLib::AssertType ShadowDefaultHandler(const char* condition, const char* msg, const char* file, const int line);
+
 #ifdef _WIN32
 #define SHBREAK() __debugbreak()
 #define SHBREAKIF(x) if (x) { SHBREAK(); }
@@ -83,8 +85,14 @@ namespace assertLib
 #define SHASSERT_MSG_ONCE(condition, msg, ...) do { SHUNUSED(condition); SHUNUSED(msg); } while(0)	
 #endif
 
+
+
+
+
 #define  SASSERT(cond) SHASSERT(cond)
 
 #define	 SASSERT2(cond, msg, ...)	SHASSERT_MSG(cond, msg, ##__VA_ARGS__)
+
+
 
 #endif

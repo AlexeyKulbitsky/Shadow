@@ -1,6 +1,7 @@
 #ifndef SHADOW_GLES20_HARDWARE_BUFFER_INCLUDE
 #define SHADOW_GLES20_HARDWARE_BUFFER_INCLUDE
 
+#include "GLContext/EGLContextManager.h"
 #include "../HardwareBuffer.h"
 #include "../../Types.h"
 
@@ -8,13 +9,21 @@ namespace sh
 {
 	namespace video
 	{
+		class GLES20VertexDeclaration;
+
 		struct GLES20HardwareBuffer : public HardwareBuffer
 		{
-			u32 vbo_verticesID; 
-			u32 vbo_indicesID; 
+			// Info about all attbites for this buffer
+			GLES20VertexDeclaration* glVertexDeclaration;
 
-			u32 vbo_verticesSize;
-			u32 vbo_indicesSize;
+			// GLES 2.0 - specefic members
+			GLuint glVertexBufferID = 0;
+			GLuint glIndexBufferID = 0;
+			GLenum glVerticesUsageType = GL_STATIC_DRAW;
+			GLenum glIndicesUsageType = GL_STATIC_DRAW;
+			GLenum glTopology = GL_TRIANGLES;
+			GLsizei glVerticesSize = 0;
+			GLsizei glIindicesSize = 0;
 		};
 	}
 }

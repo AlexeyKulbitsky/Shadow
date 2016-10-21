@@ -210,10 +210,10 @@ namespace sh
 			\return Addition of the two colors, clamped to 0..255 values */
 			Color operator+(const Color& other) const
 			{
-				return Color(math::min(GetAlpha() + other.GetAlpha(), 255U),
-					math::min(GetRed() + other.GetRed(), 255U),
-					math::min(GetGreen() + other.GetGreen(), 255U),
-					math::min(GetBlue() + other.GetBlue(), 255U));
+				return Color(math::min_(GetAlpha() + other.GetAlpha(), 255U),
+					math::min_(GetRed() + other.GetRed(), 255U),
+					math::min_(GetGreen() + other.GetGreen(), 255U),
+					math::min_(GetBlue() + other.GetBlue(), 255U));
 			}
 
 			u32 color;

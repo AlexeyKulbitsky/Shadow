@@ -60,6 +60,15 @@ void GLES20ShaderProgram::Load(const c8* filename)
 
 		char* log = new char[len + 1];
 		glGetProgramInfoLog(m_programID, len, &len, log);
+
+		SASSERT2(0, "Error compliling shader [%s] ERROR: %s", filename, log);
+	}
+
+	// Collect attributes indices from shader program
+	std::vector<GLES20VertexAttribute>& attributes = m_vertexDeclaration.GetAttributes();
+	for (u32 i = 0; i < m_vertexDeclaration.attributes.size(); ++i)
+	{
+		m_vertexDeclaration.attributes[i].index = glGetAttribLocation(m_programID, m_vertexDeclaration.attributes[i].name.c_str());
 	}
 }
 
@@ -107,37 +116,57 @@ void GLES20ShaderProgram::LoadUniforms(const pugi::xml_node &node)
 
 void GLES20ShaderProgram::LoadAttributes(const pugi::xml_node &node)
 {
-	//VertexDeclaration vertexDeclaration;
 	if (node)
 	{
 		pugi::xml_node attributeNode = node.first_child();
 		while (!attributeNode.empty())
 		{
+			GLES20VertexAttribute attribute;
+
 			std::string name = attributeNode.name();
 			if (name == "position")
 			{
-				//vertexDeclaration.AddAttribute(VertexAttribute(AttributeType::FLOAT3, AttributeName::POSITION));
+				attribute.semantic = AttributeSemantic::POSITION;
 				printf("Postion attribute\n");
 			}
 			else if (name == "normal")
 			{
-				//vertexDeclaration.AddAttribute(VertexAttribute(AttributeType::FLOAT3, AttributeName::NORMAL));
+				attribute.semantic = AttributeSemantic::NORMAL;
 				printf("Normal attribute\n");
 			}
 			else if (name == "color")
 			{
-				//vertexDeclaration.AddAttribute(VertexAttribute(AttributeType::FLOAT3, AttributeName::COLOR));
+				attribute.semantic = AttributeSemantic::COLOR;
 				printf("Color attribute\n");
 			}
 			else if (name == "uv")
 			{
-				//vertexDeclaration.AddAttribute(VertexAttribute(AttributeType::FLOAT2, AttributeName::UV));
+				attribute.semantic = AttributeSemantic::UV;
 				printf("UV attribute\n");
 			}
 			else
 			{
 				printf("Unknown attribute\n");
 			}
+
+			attribute.name = attributeNode.attribute("name").as_string();
+
+			pugi::xml_attribute typeAttr = attributeNode.attribute("type");
+			name = typeAttr.as_string();
+
+			if (name == "vec3")
+			{
+				attribute.type = GL_FLOAT;
+				attribute.size = 3;
+			}
+			else if (name == "vec2")
+			{
+				attribute.type = GL_FLOAT;
+				attribute.size = 2;
+			}
+
+			m_vertexDeclaration.AddAttribute(attribute);
+
 			attributeNode = attributeNode.next_sibling();
 		}
 	}

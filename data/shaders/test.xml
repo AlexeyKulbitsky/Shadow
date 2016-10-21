@@ -1,23 +1,26 @@
 <shader language="GLSL" api="GLES20">
 
 <uniforms>
-	<matrix/>
+	<uniform name="sdf" type="float" val="1.0"/>
 </uniforms>
 
 <attributes>
-	<position name="aPosition"/>
-	<normal name="aNormal"/>
-	<color name="aColor"/>
-	<uv name="aUV"/>
+	<position type="vec3" name="aPosition"/>
+	<color type="vec3" name="aColor"/>
 </attributes>
 
 <vertexShader>
 <![CDATA[
 
 	attribute vec3 aPosition;
+	attribute vec3 aColor;
+
+	varying vec3 vColor;
+
 	void main() 
 	{
-		gl_Position = vec5(aPosition, 1.0);
+		gl_Position = vec4(aPosition, 1.0);
+		vColor = aColor;
 	}
 	
 ]]>
@@ -25,12 +28,16 @@
 
 <fragmentShader>
 <![CDATA[
+
 	precision mediump float;
+
+	varying vec3 vColor;
 	
 	void main() 
 	{
-		gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+		gl_FragColor = vec4(vColor, 1.0);
 	} 
+	
 ]]>	
 </fragmentShader>
 
