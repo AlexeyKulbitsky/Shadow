@@ -10,7 +10,9 @@ project "Shadow"
    includedirs { 
 		"source/**",
 		"libs/pugixml/src/",
-		"libs/egl/include/"
+		"libs/egl/include/",
+		"libs/soil/include/",
+		"libs/vulkan/include/"
 	}
    
    targetdir "bin/%{cfg.buildcfg}"
@@ -29,8 +31,8 @@ project "Shadow"
       optimize "On"
 	  
 	filter "platforms:Win32"
-		libdirs { "libs/egl/lib" }
-		links { "libEGL", "libGLESv2" }
+		libdirs { "libs/egl/lib", "libs/soil/lib/debug", "libs/vulkan/bin" }
+		links { "libEGL", "libGLESv2", "SOIL", "vulkan-1" }
 		characterset ("MBCS") -- Multi-byte Character Set; currently Visual Studio only
 --		characterset ("Default") --the default encoding for the toolset; usually Unicode
 --		characterset ("MBCS") --Unicode: Unicode character encoding

@@ -16,7 +16,8 @@ namespace sh
 		enum class DriverType
 		{
 			OPENGL_ES_2_0,
-			OPENGL_ES_3_0
+			OPENGL_ES_3_0,
+			VULKAN
 		};
 
 		class Driver

@@ -11,7 +11,7 @@ namespace sh
 	// Create usual device
 	SHADOW_API Device* SH_CALLCONV CreateDevice
 	(
-		video::DriverType driverType = video::DriverType::OPENGL_ES_2_0,
+		video::DriverType driverType = video::DriverType::VULKAN,
 		u32 width = 640, u32 height = 480
 	);
 

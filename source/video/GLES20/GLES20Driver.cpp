@@ -17,7 +17,7 @@ GLES20Driver::GLES20Driver(EGLContextManager* contextManager)
 
 bool GLES20Driver::Init()
 {
-	return false;
+	return false; 
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -44,7 +44,9 @@ void GLES20Driver::DrawMesh(scene::Mesh* mesh)
 	GLES20ShaderProgram* program = static_cast<GLES20ShaderProgram*>(material->GetShaderProgram());
 	program->BindProgram();
 
+	// Get a pointer to unique vertex declaration from shader program
 	GLES20VertexDeclaration* declaration = program->GetVertexDeclaration();
+	// Set this unique declaration from shader program to the buffer
 	GLES20HardwareBuffer *gles20Buffer = static_cast<GLES20HardwareBuffer*>(mesh->GetHardwareBuffer());
 	gles20Buffer->glVertexDeclaration = declaration;
 
@@ -58,9 +60,6 @@ void GLES20Driver::DrawMesh(scene::Mesh* mesh)
 void GLES20Driver::DrawHardwareBuffer(HardwareBuffer *buffer) const
 {
 	GLES20HardwareBuffer *gles20Buffer = static_cast<GLES20HardwareBuffer*>(buffer);
-
-	const void *verticesPointer = nullptr;
-	const void *indicesPointer = nullptr;
 
 	switch (gles20Buffer->info.bufferType)
 	{
@@ -80,10 +79,9 @@ void GLES20Driver::DrawHardwareBuffer(HardwareBuffer *buffer) const
 			Attribute* attr = gles20Buffer->m_vertexDeclaration.GetAttribute(attribute.semantic);
 
 			glVertexAttribPointer(attribute.index, attribute.size, attribute.type, false, gles20Buffer->m_vertexDeclaration.GetStride(), (const void*)(attr->offset));
-			//glVertexAttribPointer(attribute.index, attribute.size, attribute.type, false, gles20Buffer->glVertexDeclaration->stride, attribute.pointer);
 		}
 
-		glDrawElements(GL_TRIANGLES, gles20Buffer->glIindicesSize, GL_UNSIGNED_SHORT, 0);
+		glDrawElements(gles20Buffer->glTopology, gles20Buffer->glIindicesSize, GL_UNSIGNED_SHORT, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
@@ -102,7 +100,6 @@ void GLES20Driver::DrawHardwareBuffer(HardwareBuffer *buffer) const
 HardwareBuffer* GLES20Driver::CreateHardwareBuffer(const HardwareBuffer::CreateInfo& info) const
 {
 	GLES20HardwareBuffer *gles20Buffer = new GLES20HardwareBuffer();
-
 	gles20Buffer->info = info;
 
 	switch (info.bufferType)

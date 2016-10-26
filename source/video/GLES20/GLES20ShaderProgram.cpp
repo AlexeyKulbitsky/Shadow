@@ -1,7 +1,7 @@
 #include "GLES20ShaderProgram.h"
 #include <pugixml.hpp>
 #include "../Vertex.h"
-#include "../ShAssert.h"
+#include "../pempek_assert.h"
 
 using namespace sh;
 using namespace video;
@@ -61,7 +61,7 @@ void GLES20ShaderProgram::Load(const c8* filename)
 		char* log = new char[len + 1];
 		glGetProgramInfoLog(m_programID, len, &len, log);
 
-		SASSERT2(0, "Error compliling shader [%s] ERROR: %s", filename, log);
+		SH_ASSERT(0, "ERROR");
 	}
 
 	// Collect attributes indices from shader program

@@ -3,6 +3,8 @@
 #include "../video/GLContext/EGLContextManager.h"
 #include "../video/GLES20/GLES20Driver.h"
 
+#include "../video/Vulkan/VulkanDriver.h"
+
 using namespace sh;
 using namespace video;
 
@@ -173,6 +175,12 @@ bool Win32Device::CreateDriver()
 
 			m_GLContextManager = contextManager;
 		}
+	}
+	break;
+	case video::DriverType::VULKAN:
+	{
+		m_driver = new video::VulkanDriver(m_creationParameters);
+		m_driver->Init();
 	}
 	break;
 	default:

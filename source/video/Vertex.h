@@ -1,9 +1,8 @@
 #ifndef SHADOW_VERTEX_INCLUDE
 #define SHADOW_VERTEX_INCLUDE
 
-#include "../math/vec3.h"
 #include <vector>
-
+#include "../math/smath.h"
 namespace sh
 {
 	namespace video
@@ -39,7 +38,6 @@ namespace sh
 			AttributeType type;
 			u32 offset;
 			u32 componentsCount;
-			u32 index;
 		};
 
 		class VertexDecalaration
