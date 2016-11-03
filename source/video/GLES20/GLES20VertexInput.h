@@ -2,7 +2,7 @@
 #define SHADOW_GLES20_VERTEX_INPUT_INCLUDE
 
 #include "../GLContext/EGLContextManager.h"
-#include "../Vertex.h"
+#include "../VertexDeclaration.h"
 #include <vector>
 
 namespace sh

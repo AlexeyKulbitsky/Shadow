@@ -17,7 +17,7 @@ namespace sh
 		class ShaderProgram
 		{
 		public:
-			virtual void Load(const c8* filename) = 0;
+			virtual void Load(const char* filename) = 0;
 			virtual void Unload() = 0;
 			virtual void BindProgram() = 0;
 			virtual void UnbindProgram() = 0;

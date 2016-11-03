@@ -1,0 +1,22 @@
+#include "VulkanIndexBuffer.h"
+
+namespace sh
+{
+	namespace video
+	{
+		VulkanIndexBuffer::VulkanIndexBuffer()
+		{
+
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		VulkanIndexBuffer::~VulkanIndexBuffer()
+		{
+			vkFreeMemory(m_device, m_indexBufferMemory, nullptr);
+			vkDestroyBuffer(m_device, m_indexBuffer, nullptr);
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	}
+}

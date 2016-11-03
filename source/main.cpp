@@ -2,7 +2,7 @@
 #include "scene\Mesh.h"
 #include <pugixml.hpp>
 #include "GLES20\GLES20ShaderProgram.h"
-#include "Vertex.h"
+#include "VertexDeclaration.h"
 #include "video/Material.h"
 #include "pempek_assert.h"
 
@@ -70,7 +70,8 @@ int main()
 // 				driver->DrawMesh(&mesh);
 // 			}
 
-			driver->DrawHardwareBuffer(nullptr);
+			//driver->DrawHardwareBuffer(nullptr);
+			driver->DrawMesh(nullptr);
 
 			driver->EndRendering();
 		}

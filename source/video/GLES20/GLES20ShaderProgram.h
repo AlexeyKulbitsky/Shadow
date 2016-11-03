@@ -14,7 +14,7 @@ namespace sh
 		{
 		public:
 			GLES20ShaderProgram();
-			virtual void Load(const c8* filename) override;
+			virtual void Load(const char* filename) override;
 			virtual void Unload() override;
 			virtual void BindProgram() override;
 			virtual void UnbindProgram() override;

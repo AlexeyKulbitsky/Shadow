@@ -218,4 +218,15 @@ void GLES20Driver::InitHardwareBuffer(HardwareBuffer *buffer, const void* vertic
 	default:
 		break;
 	}
+	
+}
+
+VertexBuffer* GLES20Driver::CreateVertexBuffer()
+{
+	return nullptr;
+}
+
+IndexBuffer* GLES20Driver::CreateIndexBuffer()
+{
+	return nullptr;
 }

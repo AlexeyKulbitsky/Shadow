@@ -2,7 +2,7 @@
 #define SHADOW_HARDWARE_BUFFER_INCLUDE
 
 #include "../Types.h"
-#include "../video/Vertex.h"
+#include "../video/VertexDeclaration.h"
 #include <vector>
 
 namespace sh

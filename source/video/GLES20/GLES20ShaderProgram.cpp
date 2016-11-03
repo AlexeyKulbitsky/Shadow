@@ -1,6 +1,6 @@
 #include "GLES20ShaderProgram.h"
 #include <pugixml.hpp>
-#include "../Vertex.h"
+#include "../VertexDeclaration.h"
 #include "../pempek_assert.h"
 
 using namespace sh;
@@ -13,7 +13,7 @@ GLES20ShaderProgram::GLES20ShaderProgram()
 
 ///////////////////////////////////////////////////////////////////////
 
-void GLES20ShaderProgram::Load(const c8* filename)
+void GLES20ShaderProgram::Load(const char* filename)
 {
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file(filename);

@@ -24,6 +24,9 @@ namespace sh
 			virtual HardwareBuffer* CreateHardwareBuffer(const HardwareBuffer::CreateInfo& info) const override;
 			virtual void InitHardwareBuffer(HardwareBuffer *buffer, const void* verticesPointer, u32 verticesSize, const void* indicesPointer, u32 indicesSize) const override;
 
+			virtual VertexBuffer* CreateVertexBuffer() override;
+			virtual IndexBuffer* CreateIndexBuffer() override;
+
 		private:
 			EGLContextManager* m_contextManager = nullptr;
 		};

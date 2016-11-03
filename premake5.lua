@@ -12,7 +12,9 @@ project "Shadow"
 		"libs/pugixml/src/",
 		"libs/egl/include/",
 		"libs/soil/include/",
-		"libs/vulkan/include/"
+		"libs/vulkan/include/",
+		"libs/stb/include/",
+		"libs/tinyobjloader/include/"
 	}
    
    targetdir "bin/%{cfg.buildcfg}"
@@ -44,8 +46,8 @@ project "Shadow"
 			}
 		
 	filter "platforms:Win64"
-		libdirs { "libs/egl/lib" }
-		links { "libEGL", "libGLESv2" }
+		libdirs { "libs/egl/lib", "libs/soil/lib/debug", "libs/vulkan/bin" }
+		links { "libEGL", "libGLESv2", "SOIL", "vulkan-1" }
 		characterset ("MBCS")
 	  
 --	filter { "platforms:Static" }
