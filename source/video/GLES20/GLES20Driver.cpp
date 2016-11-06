@@ -1,10 +1,11 @@
 #include "GLES20Driver.h"
 #include "GLES20HardwareBuffer.h"
 #include "GLES20ShaderProgram.h"
-#include "GLES20VertexInput.h"
+#include "GLES20VertexDeclaration.h"
+#include "GLES20IndexBuffer.h"
+#include "GLES20VertexBuffer.h"
 #include "Material.h"
 #include "../GLContext/EGLContextManager.h"
-#include "GLES20VertexInput.h"
 #include "../../scene/Mesh.h"
 
 using namespace sh;
@@ -226,7 +227,18 @@ VertexBuffer* GLES20Driver::CreateVertexBuffer()
 	return nullptr;
 }
 
+VertexBuffer* GLES20Driver::CreateVertexBuffer(const void* data, size_t size)
+{
+	return nullptr;
+}
+
 IndexBuffer* GLES20Driver::CreateIndexBuffer()
+{
+	return nullptr;
+}
+
+
+IndexBuffer* GLES20Driver::CreateIndexBuffer(const void* data, size_t size)
 {
 	return nullptr;
 }

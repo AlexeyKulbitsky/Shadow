@@ -1,5 +1,5 @@
-#ifndef SHADOW_GLES20_VERTEX_INPUT_INCLUDE
-#define SHADOW_GLES20_VERTEX_INPUT_INCLUDE
+#ifndef SHADOW_GLES20_VERTEX_DECLARATION_INCLUDE
+#define SHADOW_GLES20_VERTEX_DECLARATION_INCLUDE
 
 #include "../GLContext/EGLContextManager.h"
 #include "../VertexDeclaration.h"
@@ -20,14 +20,15 @@ namespace sh
 			std::string name;
 		};
 
-		struct GLES20VertexDeclaration
+		class GLES20VertexDeclaration
 		{
+		public:
 			void AddAttribute(const GLES20VertexAttribute& attribute)
 			{
 				attributes.push_back(attribute);
 			}
 
-			void MapAttributes(VertexDecalaration& declatarion)
+			void Assemble(VertexDecalaration& declatarion)
 			{
 				for (auto attribute : attributes)
 				{
@@ -41,6 +42,7 @@ namespace sh
 
 			GLsizei GetStride() const { return stride; }
 
+		//private:
 			std::vector<GLES20VertexAttribute> attributes;
 			GLsizei stride = 0;
 		};

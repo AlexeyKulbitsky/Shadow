@@ -66,9 +66,9 @@ void GLES20ShaderProgram::Load(const char* filename)
 
 	// Collect attributes indices from shader program
 	std::vector<GLES20VertexAttribute>& attributes = m_vertexDeclaration.GetAttributes();
-	for (u32 i = 0; i < m_vertexDeclaration.attributes.size(); ++i)
+	for (u32 i = 0; i < attributes.size(); ++i)
 	{
-		m_vertexDeclaration.attributes[i].index = glGetAttribLocation(m_programID, m_vertexDeclaration.attributes[i].name.c_str());
+		attributes[i].index = glGetAttribLocation(m_programID, attributes[i].name.c_str());
 	}
 }
 

@@ -1,0 +1,21 @@
+#include "GLES20IndexBuffer.h"
+
+namespace sh
+{
+	namespace video
+	{
+		GLES20IndexBuffer::GLES20IndexBuffer()
+		{
+
+		}
+
+		////////////////////////////////////////////////////////////////////////
+
+		GLES20IndexBuffer::~GLES20IndexBuffer()
+		{
+
+		}
+
+		////////////////////////////////////////////////////////////////////////
+	}
+}

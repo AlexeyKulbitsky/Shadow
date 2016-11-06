@@ -3,7 +3,7 @@
 
 #include "../ShaderProgram.h"
 #include "../GLContext/EGLContextManager.h"
-#include "GLES20VertexInput.h"
+#include "GLES20VertexDeclaration.h"
 #include <pugixml.hpp>
 
 namespace sh
@@ -24,17 +24,14 @@ namespace sh
 		private:
 			void LoadUniforms(const pugi::xml_node &node);
 			void LoadAttributes(const pugi::xml_node &node);
-
 			GLuint CompileShader(GLenum shaderType, const c8* source);
 			
-
 		private:
 			GLuint m_programID;
 			GLuint m_vertexShaderID;
 			GLuint m_fragmentShaderID;
 
 			GLES20VertexDeclaration m_vertexDeclaration;
-
 		};
 	}
 }

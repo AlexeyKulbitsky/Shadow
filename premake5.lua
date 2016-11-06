@@ -43,11 +43,12 @@ project "Shadow"
 		postbuildcommands {
 			"{COPY} ../libs/egl/lib/libEGL.dll ../bin/%{cfg.buildcfg}/",
 			"{COPY} ../libs/egl/lib/libGLESv2.dll ../bin/%{cfg.buildcfg}/",
+			"{COPY} ../libs/vulkan/bin/vulkan-1.dll ../bin/%{cfg.buildcfg}/",
 			}
 		
 	filter "platforms:Win64"
 		libdirs { "libs/egl/lib", "libs/soil/lib/debug", "libs/vulkan/bin" }
-		links { "libEGL", "libGLESv2", "SOIL", "vulkan-1" }
+		links { "libEGL", "libGLESv2" }
 		characterset ("MBCS")
 	  
 --	filter { "platforms:Static" }

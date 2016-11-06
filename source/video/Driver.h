@@ -36,8 +36,15 @@ namespace sh
 			virtual HardwareBuffer* CreateHardwareBuffer(const HardwareBuffer::CreateInfo& info) const = 0;
 			virtual void InitHardwareBuffer(HardwareBuffer *buffer, const void* verticesPointer, u32 verticesSize, const void* indicesPointer, u32 indicesSize) const = 0;
 
+			// Creates empty vertex buffer
 			virtual VertexBuffer* CreateVertexBuffer() = 0;
+			// Creates and fills with data vertex buffer
+			virtual VertexBuffer* CreateVertexBuffer(const void* data, size_t size) = 0;
+
+			// Creates empty index buffer
 			virtual IndexBuffer* CreateIndexBuffer() = 0;
+			// Creates and fills with data index buffer
+			virtual IndexBuffer* CreateIndexBuffer(const void* data, size_t size) = 0;
 		};
 	}
 }

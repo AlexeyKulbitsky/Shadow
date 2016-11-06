@@ -8,8 +8,36 @@ namespace sh
 		class Texture
 		{
 		public:
-			Texture() {}
-			~Texture() {}
+			enum class Type
+			{
+				TEXTURE_1D,
+				TEXTURE_2D,
+				TEXTURE_3D,
+				TEXTURE_CUBE
+			};
+
+			enum class Tiling
+			{
+				REPEAT,
+				MIRRORED_REPEAT,
+				CLAMP_TO_EDGE
+			};
+
+			enum class Filtering
+			{
+				LINEAR,
+				BILINEAR,
+				TRILINEAR,
+				ANISOTROPIC
+			};
+			
+			Texture(){}
+			virtual ~Texture(){}
+
+			virtual void Load(const char* filename) = 0;
+			virtual void SetType(Type type) = 0;
+			virtual void SetTiling(Tiling tiling) = 0;
+			virtual void SetFiltering(Filtering filtering) = 0;
 		};
 	}
 }
