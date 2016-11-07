@@ -2,6 +2,7 @@
 #define SHADOW_DRIVER_INCLUDE
 
 #include "HardwareBuffer.h"
+#include "RenderCommand.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 
@@ -35,6 +36,8 @@ namespace sh
 			virtual void DrawHardwareBuffer(HardwareBuffer *buffer) const = 0;
 			virtual HardwareBuffer* CreateHardwareBuffer(const HardwareBuffer::CreateInfo& info) const = 0;
 			virtual void InitHardwareBuffer(HardwareBuffer *buffer, const void* verticesPointer, u32 verticesSize, const void* indicesPointer, u32 indicesSize) const = 0;
+
+			virtual void Render(RenderCommand* command){}
 
 			// Creates empty vertex buffer
 			virtual VertexBuffer* CreateVertexBuffer() = 0;
