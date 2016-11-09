@@ -45,10 +45,10 @@ namespace sh
 				Topology topology;
 			};
 			
-			void SetVertexDeclaration(const VertexDecalaration& declaration) { m_vertexDeclaration = declaration; }
+			void SetVertexDeclaration(const VertexDeclaration& declaration) { m_vertexDeclaration = declaration; }
 
 			CreateInfo info;
-			VertexDecalaration m_vertexDeclaration;
+			VertexDeclaration m_vertexDeclaration;
 		};
 	}
 }

@@ -28,7 +28,7 @@ namespace sh
 				attributes.push_back(attribute);
 			}
 
-			void Assemble(VertexDecalaration& declatarion)
+			void Assemble(VertexDeclaration& declatarion)
 			{
 				for (auto attribute : attributes)
 				{
@@ -42,7 +42,15 @@ namespace sh
 
 			GLsizei GetStride() const { return stride; }
 
-		//private:
+
+			GLES20VertexDeclaration& operator=(const GLES20VertexDeclaration& other)
+			{
+				attributes = other.attributes;
+				stride = other.stride;
+				return *this;
+			}
+
+		private:
 			std::vector<GLES20VertexAttribute> attributes;
 			GLsizei stride = 0;
 		};

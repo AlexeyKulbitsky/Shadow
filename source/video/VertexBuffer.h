@@ -12,19 +12,16 @@ namespace sh
 		{
 		public:
 			VertexBuffer() {}
-			VertexBuffer(const VertexDecalaration& declaration)
-				: m_vertexDeclaration(declaration)
-			{
-			}
 			virtual ~VertexBuffer() {}
 
+			void SetVertexDeclaration(const VertexDeclaration& declaration) { m_vertexDeclaration = declaration; }
+			VertexDeclaration* GetVertexDeclaration() { return &m_vertexDeclaration; }
 			void SetVerticesData(const void* data, size_t size);
 			const void* GetVerticesPointer() const { return m_vertices.data(); }
 
 		private:
 			std::vector<float> m_vertices;
-
-			VertexDecalaration m_vertexDeclaration;
+			VertexDeclaration m_vertexDeclaration;
 		};
 
 		inline void VertexBuffer::SetVerticesData(const void* data, size_t size)

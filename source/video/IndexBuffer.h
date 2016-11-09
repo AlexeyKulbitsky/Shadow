@@ -20,7 +20,8 @@ namespace sh
 			IndexBuffer() {}
 			virtual ~IndexBuffer() {}
 
-			//
+			virtual void SetIndexType(IndexType indexType) { m_indexType = indexType; }
+			// Set data for buffer
 			void SetIndicesData(const void* data, size_t size);
 			// Get the type of index
 			IndexType GetIndexType() const { return m_indexType; }

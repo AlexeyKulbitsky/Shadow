@@ -18,6 +18,8 @@ namespace sh
 		class VertexBuffer;
 		class IndexBuffer;
 		class VertexDeclaration;
+		class RenderState;
+		class ShaderProgram;
 
 		class RenderCommand
 		{
@@ -25,19 +27,21 @@ namespace sh
 			RenderCommand(){}
 			virtual ~RenderCommand(){}
 
-			void SetUseIndices(bool useIndices) { m_isUseIndices = useIndices; }
-			bool IsUseIndices() const { return m_isUseIndices; }
-			void SetVertexDeclaration(VertexDeclaration* declaration) { m_vertexDeclaration = declaration; }
-			VertexDeclaration* GetVertexDeclaration() { return m_vertexDeclaration; }
+			virtual void Init() = 0;
 
-			void SetVertexBuffer(const VertexBuffer* vertexBuffer);
-			VertexBuffer* GetVertexBuffer();
-			void SetIndexBuffer(const IndexBuffer* indexBuffer);
-			IndexBuffer* GetIndexBuffer();
+			virtual void SetUseIndices(bool useIndices) = 0;
+			virtual void SetVertexBuffer(VertexBuffer* vertexBuffer) = 0;
+			virtual void SetIndexBuffer(IndexBuffer* indexBuffer) = 0;
+			virtual void SetRenderState(RenderState* renderState) = 0;
+			virtual void SetShaderProgram(ShaderProgram* shaderProgram) = 0;
+			virtual void SetTopology(Topology topology) = 0;
 
-		protected:
-			bool m_isUseIndices;
-			VertexDeclaration* m_vertexDeclaration;
+			virtual bool IsUseIndices() const = 0;
+			virtual VertexBuffer* GetVertexBuffer() = 0;
+			virtual IndexBuffer* GetIndexBuffer() = 0;
+			virtual RenderState* GetRenderState() = 0;
+			virtual ShaderProgram* GetShaderProgram() = 0;
+			virtual Topology GetTopology() const = 0;
 		};
 	}
 }

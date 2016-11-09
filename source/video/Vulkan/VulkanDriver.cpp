@@ -9,7 +9,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
-#define TINYOBJLOADER_IMPLEMENTATION
+//#define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
 
 #include <iostream>
@@ -232,6 +232,13 @@ namespace sh
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		IndexBuffer* VulkanDriver::CreateIndexBuffer(const void* data, size_t size)
+		{
+			return nullptr;
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		RenderCommand* VulkanDriver::CreateRenderCommand()
 		{
 			return nullptr;
 		}

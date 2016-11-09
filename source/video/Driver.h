@@ -15,6 +15,7 @@ namespace sh
 	namespace video
 	{
 		struct HardwareBuffer;
+		class RenderCommand;
 
 		enum class DriverType
 		{
@@ -48,6 +49,8 @@ namespace sh
 			virtual IndexBuffer* CreateIndexBuffer() = 0;
 			// Creates and fills with data index buffer
 			virtual IndexBuffer* CreateIndexBuffer(const void* data, size_t size) = 0;
+
+			virtual RenderCommand* CreateRenderCommand() = 0;
 		};
 	}
 }

@@ -5,11 +5,14 @@ namespace sh
 {
 	namespace video
 	{
+		class RenderCommand;
+
 		class CommandBuffer
 		{
 		public:
 			CommandBuffer() {}
 			~CommandBuffer() {}
+			virtual void Submit(RenderCommand* renderCommand){}
 		};
 
 	}

@@ -8,20 +8,9 @@
 
 #include <iostream>
 
-// float vertices[] =
-// {
-// 	-1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-// 	0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-// 	1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f
-// };
-// 
-// short indices[] =
-// {
-// 	0, 1, 2
-// };
+
 
 sh::video::GLES20ShaderProgram shader;
-sh::video::VertexDecalaration vertexDeclaration;
 sh::video::Material material;
 
 
@@ -30,16 +19,10 @@ using namespace video;
 
 int main()
 {
-	vertexDeclaration.AddAttribute(Attribute(AttributeSemantic::POSITION, AttributeType::FLOAT, 3));
-	vertexDeclaration.AddAttribute(Attribute(AttributeSemantic::COLOR, AttributeType::FLOAT, 3));
+	sh::Device* device = sh::CreateDevice();
 
 	sh::scene::Mesh mesh;
 
-// 	mesh.SetVerticesData(vertices, 18);
-// 	mesh.SetIndicesData(indices, 3);
-
-	sh::Device* device = sh::CreateDevice();
-	
 // 	shader.Load("../data/shaders/test.xml");
 // 
 // 	material.SetShaderProgram(&shader);

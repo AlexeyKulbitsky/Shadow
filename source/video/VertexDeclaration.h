@@ -41,11 +41,11 @@ namespace sh
 			size_t componentsCount;
 		};
 
-		class VertexDecalaration
+		class VertexDeclaration
 		{
 		public:
-			VertexDecalaration() {}
-			VertexDecalaration(const VertexDecalaration& other)
+			VertexDeclaration() {}
+			VertexDeclaration(const VertexDeclaration& other)
 				: m_attributes(other.m_attributes)
 				, m_stride(other.m_stride)
 			{
@@ -70,6 +70,13 @@ namespace sh
 			size_t GetStride() const { return m_stride; }
 			size_t GetAttributesCount() const { return m_attributes.size(); }
 			Attribute* GetAttribute(size_t attributeIndex) { return &m_attributes[attributeIndex]; }
+
+			VertexDeclaration& operator=(const VertexDeclaration& other)
+			{
+				m_attributes = other.m_attributes;
+				m_stride = other.m_stride;
+				return *this;
+			}
 
 		private:
 			size_t CalculateAttributeOffset(const Attribute& attribute)

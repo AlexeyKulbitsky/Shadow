@@ -30,6 +30,8 @@ namespace sh
 #if defined SHADOW_WINDOWS
 		device = new Win32Device(parameters);
 #endif
+		Device::SetInstance(device);
+
 		return device;
 	}
 }

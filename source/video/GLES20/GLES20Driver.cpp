@@ -4,6 +4,7 @@
 #include "GLES20VertexDeclaration.h"
 #include "GLES20IndexBuffer.h"
 #include "GLES20VertexBuffer.h"
+#include "GLES20RenderCommand.h"
 #include "Material.h"
 #include "../GLContext/EGLContextManager.h"
 #include "../../scene/Mesh.h"
@@ -41,19 +42,6 @@ void GLES20Driver::EndRendering()
 
 void GLES20Driver::DrawMesh(scene::Mesh* mesh)
 {
-	Material* material = mesh->GetMaterial();
-	GLES20ShaderProgram* program = static_cast<GLES20ShaderProgram*>(material->GetShaderProgram());
-	program->BindProgram();
-
-	// Get a pointer to unique vertex declaration from shader program
-	GLES20VertexDeclaration* declaration = program->GetVertexDeclaration();
-	// Set this unique declaration from shader program to the buffer
-	GLES20HardwareBuffer *gles20Buffer = static_cast<GLES20HardwareBuffer*>(mesh->GetHardwareBuffer());
-	gles20Buffer->glVertexDeclaration = declaration;
-
-	DrawHardwareBuffer(mesh->GetHardwareBuffer());
-
-	program->UnbindProgram();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -73,7 +61,7 @@ void GLES20Driver::DrawHardwareBuffer(HardwareBuffer *buffer) const
 		glBindBuffer(GL_ARRAY_BUFFER, gles20Buffer->glVertexBufferID);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gles20Buffer->glIndexBufferID);
 
-		for (auto attribute : gles20Buffer->glVertexDeclaration->attributes)
+		for (auto attribute : gles20Buffer->glVertexDeclaration->GetAttributes())
 		{
 			glEnableVertexAttribArray(attribute.index);
 
@@ -229,7 +217,7 @@ VertexBuffer* GLES20Driver::CreateVertexBuffer()
 
 VertexBuffer* GLES20Driver::CreateVertexBuffer(const void* data, size_t size)
 {
-	return nullptr;
+	return new GLES20VertexBuffer(data, size);
 }
 
 IndexBuffer* GLES20Driver::CreateIndexBuffer()
@@ -241,4 +229,9 @@ IndexBuffer* GLES20Driver::CreateIndexBuffer()
 IndexBuffer* GLES20Driver::CreateIndexBuffer(const void* data, size_t size)
 {
 	return nullptr;
+}
+
+RenderCommand* GLES20Driver::CreateRenderCommand()
+{
+	return new GLES20RenderCommand();
 }

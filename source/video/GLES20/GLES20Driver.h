@@ -28,6 +28,7 @@ namespace sh
 			virtual VertexBuffer* CreateVertexBuffer(const void* data, size_t size) override;
 			virtual IndexBuffer* CreateIndexBuffer() override;
 			virtual IndexBuffer* CreateIndexBuffer(const void* data, size_t size) override;
+			virtual RenderCommand* CreateRenderCommand() override;
 
 		private:
 			EGLContextManager* m_contextManager = nullptr;

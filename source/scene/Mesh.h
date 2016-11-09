@@ -12,24 +12,24 @@ namespace sh
 	namespace video
 	{
 		class Material;
+		class RenderCommand;
 	}
+
 	namespace scene
 	{		
 		class Mesh
 		{
 		public:
-			Mesh() {}
+			Mesh();
+			~Mesh();
 			void Init();	
+			void Render();
 
-			void SetHardwareBuffer(video::HardwareBuffer* buffer) { m_buffer = buffer; }
-			video::HardwareBuffer* GetHardwareBuffer() { return m_buffer; }
-
-			void SetMaterial(video::Material* material) { m_material = material; }
-			video::Material* GetMaterial() { return m_material; }
-
+			void SetVertexDeclaration(sh::video::VertexDeclaration vertexDeclaration);
+			void SetVertexData(std::vector<float> data);
+			void SetIndexData(std::vector<unsigned int> data);
 		private:
-			video::HardwareBuffer* m_buffer = nullptr;			
-			video::Material* m_material = nullptr;
+			sh::video::RenderCommand* m_renderCommand;
 		};
 	}
 }

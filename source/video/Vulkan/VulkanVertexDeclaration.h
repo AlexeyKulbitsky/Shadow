@@ -31,7 +31,7 @@ namespace sh
 			size_t GetVulkanAttributesCount() const { return m_vulkanAttributes.size(); }
 
 			// Connect mesh attributes with vulkan attributes presentation
-			void Assemble(VertexDecalaration declaration)
+			void Assemble(VertexDeclaration declaration)
 			{
 				m_descriptor.binding = 0U;
 				m_descriptor.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
