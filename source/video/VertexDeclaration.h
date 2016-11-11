@@ -19,11 +19,11 @@ namespace sh
 
 		enum class AttributeType
 		{
-			FLOAT,
-			INT,
-			UNSIGNED_INT,
-			BYTE,
-			UNSIGNED_BYTE
+			FLOAT = 4,
+			INT = 4,
+			UNSIGNED_INT = 4,
+			BYTE = 1,
+			UNSIGNED_BYTE = 1
 		};
 
 		struct Attribute

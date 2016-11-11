@@ -1,17 +1,19 @@
 #include "Shadow.h"
 #include "scene\Mesh.h"
+#include "scene\Model.h"
+#include "scene\ModelLoader\TinyObjModelLoader.h"
 #include <pugixml.hpp>
 #include "GLES20\GLES20ShaderProgram.h"
 #include "VertexDeclaration.h"
 #include "video/Material.h"
+
 #include "pempek_assert.h"
 
 #include <iostream>
 
 
 
-sh::video::GLES20ShaderProgram shader;
-sh::video::Material material;
+
 
 
 using namespace sh;
@@ -20,41 +22,30 @@ using namespace video;
 int main()
 {
 	sh::Device* device = sh::CreateDevice();
+	sh::video::Driver* driver = device->GetDriver();
 
-	sh::scene::Mesh mesh;
+	sh::scene::ModelLoader* modelLoader = new sh::scene::TinyObjModelLoader();
+	//sh::scene::Model* model = modelLoader->Load("../data/models/nanosuit/nanosuit.obj");
+	sh::scene::Model* model = modelLoader->Load("../data/models/triangle/triangle.obj");
+	sh::video::ShaderProgram* shaderProgram = driver->CreateShaderProgram();
+	shaderProgram->Load("../data/shaders/gles20/test.xml");
 
-// 	shader.Load("../data/shaders/test.xml");
-// 
-// 	material.SetShaderProgram(&shader);
+	for (size_t i = 0; i < model->GetMeshesCount(); ++i)
+	{
+		sh::scene::Mesh* mesh = model->GetMesh(i);
+		mesh->SetShaderProgram(shaderProgram);
+		mesh->Init();
+	}
 
 	if (device)
-	{
-		sh::video::Driver* driver = device->GetDriver();
-
-// 		HardwareBuffer::CreateInfo info;
-// 		info.bufferType = HardwareBuffer::BufferType::VERTEX_AND_INDEX;
-// 		info.verticesUsageType = HardwareBuffer::UsageType::STATIC;
-// 		info.indicesUsageType = HardwareBuffer::UsageType::STATIC;
-// 		info.topology = HardwareBuffer::Topology::TRIANGLE_LIST;
-// 
-// 		sh::video::HardwareBuffer *buffer = driver->CreateHardwareBuffer(info);
-// 		driver->InitHardwareBuffer(buffer, (const void*)vertices, 18, (const void*)indices, 3);
-// 		buffer->SetVertexDeclaration(vertexDeclaration);
-// 		mesh.SetHardwareBuffer(buffer);
-// 		mesh.SetMaterial(&material);
-
-		
+	{		
 		while (true)
 		{
 			driver->BeginRendering();
 
-// 			if (buffer)
-// 			{
-// 				driver->DrawMesh(&mesh);
-// 			}
+			//driver->DrawMesh(nullptr);
 
-			//driver->DrawHardwareBuffer(nullptr);
-			driver->DrawMesh(nullptr);
+			model->Render();
 
 			driver->EndRendering();
 		}

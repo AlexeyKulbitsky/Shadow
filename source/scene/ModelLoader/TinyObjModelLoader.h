@@ -9,6 +9,7 @@ namespace sh
 	{
 		class TinyObjModelLoader: public ModelLoader
 		{
+		public:
 			TinyObjModelLoader();
 			virtual ~TinyObjModelLoader();
 

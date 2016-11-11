@@ -23,13 +23,15 @@ namespace sh
 
 		void Mesh::Init()
 		{
+			m_renderCommand->Init();
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
 		void Mesh::Render()
 		{
-
+			sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
+			driver->Render(m_renderCommand);
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -56,6 +58,13 @@ namespace sh
 			sh::video::IndexBuffer* indexBuffer = driver->CreateIndexBuffer(data.data(), data.size() * sizeof(unsigned int));
 			m_renderCommand->SetIndexBuffer(indexBuffer);
 			m_renderCommand->SetUseIndices(true);
+		}
+
+		/////////////////////////////////////////////////////////////////////////////////////
+
+		void Mesh::SetShaderProgram(sh::video::ShaderProgram* shaderProgram)
+		{
+			m_renderCommand->SetShaderProgram(shaderProgram);
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////

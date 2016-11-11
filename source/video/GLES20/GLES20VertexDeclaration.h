@@ -30,11 +30,13 @@ namespace sh
 
 			void Assemble(VertexDeclaration& declatarion)
 			{
-				for (auto attribute : attributes)
+				for (size_t i = 0; i < attributes.size(); ++i)
 				{
-					Attribute* attr = declatarion.GetAttribute(attribute.semantic);
-					attribute.pointer = (const GLvoid*)(attr->offset);
+					Attribute* attr = declatarion.GetAttribute(attributes[i].semantic);
+					const GLvoid* tempPointer = (const GLvoid*)(attr->offset);
+					attributes[i].pointer = tempPointer;
 				}
+				stride = declatarion.GetStride();
 			}
 
 			const std::vector<GLES20VertexAttribute>& GetAttributes() const { return attributes; }

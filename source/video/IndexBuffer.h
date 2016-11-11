@@ -25,6 +25,7 @@ namespace sh
 			void SetIndicesData(const void* data, size_t size);
 			// Get the type of index
 			IndexType GetIndexType() const { return m_indexType; }
+			void SetIndicesCount(size_t count) { m_indicesCount = count; }
 			// Get the indices count
 			size_t GetIndicesCount() const { return m_indicesCount; }
 			// Get the size of index (in bytes)

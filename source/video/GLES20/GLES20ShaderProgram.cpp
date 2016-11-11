@@ -8,7 +8,6 @@ using namespace video;
 
 GLES20ShaderProgram::GLES20ShaderProgram()
 {
-
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -31,7 +30,7 @@ void GLES20ShaderProgram::Load(const char* filename)
 	pugi::xml_node vertexShaderSrcNode = shaderProgramNode.child("vertexShader");
 	if (vertexShaderSrcNode)
 	{
-		const c8* vertexShaderSource = vertexShaderSrcNode.child_value();
+		const char* vertexShaderSource = vertexShaderSrcNode.child_value();
 		m_vertexShaderID = CompileShader(GL_VERTEX_SHADER, vertexShaderSource);		
 	}
 
@@ -39,7 +38,7 @@ void GLES20ShaderProgram::Load(const char* filename)
 	pugi::xml_node fragmentShaderSrcNode = shaderProgramNode.child("fragmentShader");
 	if (fragmentShaderSrcNode)
 	{
-		const c8* fragmentShaderSource = fragmentShaderSrcNode.child_value();
+		const char* fragmentShaderSource = fragmentShaderSrcNode.child_value();
 		m_fragmentShaderID = CompileShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
 	}
 
@@ -99,13 +98,52 @@ void GLES20ShaderProgram::UnbindProgram()
 
 void GLES20ShaderProgram::LoadUniforms(const pugi::xml_node &node)
 {
+
+	Uniform* uni = new GLES20UniformInt(2);
+
+	uni->Set(5);
+	int r = 0;
+
+	uni->Get(r);
+
+	printf("Result: %d", r);
+	//a = uni->Get();
+
+
+
 	if (node)
 	{
 		pugi::xml_node uniformNode = node.first_child();
 		while (!uniformNode.empty())
 		{
-			std::string name = uniformNode.name();
-			printf("uniform : %s\n", name.c_str());
+			pugi::xml_attribute nameAttr = uniformNode.attribute("name");
+			pugi::xml_attribute typeAttr = uniformNode.attribute("type");
+			pugi::xml_attribute valAttr = uniformNode.attribute("val");
+
+			printf("Uniform:\n");
+			std::string name = nameAttr.as_string();
+			printf("\tName: %s ", name.c_str());
+
+			std::string typeName = typeAttr.as_string();
+			printf("Type: %s ", typeName.c_str());
+			if (typeName == "float")
+			{
+				//GLES20UniformFloat uniform;
+				if (valAttr)
+				{
+					float value = valAttr.as_float();
+					printf("Value: %f", value);
+				}
+			}
+			else if (typeName == "int")
+			{
+				if (valAttr)
+				{
+					int value = valAttr.as_int();
+					printf("Value: %d", value);
+				}
+			}
+			printf("\n");
 
 			uniformNode = uniformNode.next_sibling();
 		}

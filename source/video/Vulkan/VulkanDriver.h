@@ -51,6 +51,7 @@ namespace sh
 			virtual IndexBuffer* CreateIndexBuffer() override;
 			virtual IndexBuffer* CreateIndexBuffer(const void* data, size_t size) override;
 			virtual RenderCommand* CreateRenderCommand() override;
+			virtual ShaderProgram* CreateShaderProgram() override;
 
 		private:
 			struct QueueFamilyIndices 

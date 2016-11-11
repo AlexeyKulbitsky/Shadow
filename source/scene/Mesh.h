@@ -13,6 +13,7 @@ namespace sh
 	{
 		class Material;
 		class RenderCommand;
+		class ShaderProgram;
 	}
 
 	namespace scene
@@ -28,6 +29,9 @@ namespace sh
 			void SetVertexDeclaration(sh::video::VertexDeclaration vertexDeclaration);
 			void SetVertexData(std::vector<float> data);
 			void SetIndexData(std::vector<unsigned int> data);
+			void SetShaderProgram(sh::video::ShaderProgram* shaderProgram);
+			
+			sh::video::RenderCommand* GetRenderCommand() { return m_renderCommand; }
 		private:
 			sh::video::RenderCommand* m_renderCommand;
 		};

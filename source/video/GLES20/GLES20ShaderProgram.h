@@ -4,6 +4,7 @@
 #include "../ShaderProgram.h"
 #include "../GLContext/EGLContextManager.h"
 #include "GLES20VertexDeclaration.h"
+#include "GLES20Uniform.h"
 #include <pugixml.hpp>
 
 namespace sh
@@ -31,7 +32,7 @@ namespace sh
 			GLuint m_vertexShaderID;
 			GLuint m_fragmentShaderID;
 
-			GLES20VertexDeclaration m_vertexDeclaration;
+			GLES20VertexDeclaration m_vertexDeclaration;			
 		};
 	}
 }
