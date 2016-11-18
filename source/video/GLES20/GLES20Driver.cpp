@@ -5,9 +5,11 @@
 #include "GLES20IndexBuffer.h"
 #include "GLES20VertexBuffer.h"
 #include "GLES20RenderCommand.h"
+#include "GLES20Texture.h"
 #include "Material.h"
 #include "../GLContext/EGLContextManager.h"
 #include "../../scene/Mesh.h"
+#include "../UniformBuffer.h"
 
 using namespace sh;
 using namespace video;
@@ -218,15 +220,16 @@ void GLES20Driver::Render(RenderCommand* command)
 	GLES20RenderState* renderState = glesRenderCommand->GetGLRenderState();
 	GLES20ShaderProgram* shaderProgram = glesRenderCommand->GetGLShaderProgram();
 	GLES20VertexDeclaration* vertexDeclaration = glesRenderCommand->GetGLVertexInputDeclaration();
+	UniformBuffer* uniformBuffer = shaderProgram->GetUniformBuffer();
 
 	// Bind current shader
 	shaderProgram->BindProgram();
 
 	// Send uniforms to shader
-
+	uniformBuffer->Upload();
 
 	// Bind vertex buffer
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer->GetGLId());
+	vertexBuffer->Bind();
 
 	// Send attributes to shader
 	for (auto attribute : vertexDeclaration->GetAttributes())
@@ -239,11 +242,11 @@ void GLES20Driver::Render(RenderCommand* command)
 	if (command->IsUseIndices())
 	{
 		// Bind indices buffer
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer->GetGLId());
+		indexBuffer->Bind();
 		// Draw with indices
 		glDrawElements(glesRenderCommand->GetGLTopology(), indexBuffer->GetIndicesCount(), indexBuffer->GetGLIndexType(), 0);
 		// Unbind indices buffer
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0U);
+		indexBuffer->Unbind();
 	}
 	else
 	{
@@ -251,7 +254,7 @@ void GLES20Driver::Render(RenderCommand* command)
 	}
 
 	// Unbind vertex buffer
-	glBindBuffer(GL_ARRAY_BUFFER, 0U);
+	vertexBuffer->Unbind();
 
 	// Unbind current shader
 	shaderProgram->UnbindProgram();
@@ -286,4 +289,9 @@ RenderCommand* GLES20Driver::CreateRenderCommand()
 ShaderProgram* GLES20Driver::CreateShaderProgram()
 {
 	return new GLES20ShaderProgram();
+}
+
+Texture* GLES20Driver::CreateTexture()
+{
+	return new GLES20Texture();
 }

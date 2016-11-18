@@ -32,6 +32,7 @@ namespace sh
 			virtual IndexBuffer* CreateIndexBuffer(const void* data, size_t size) override;
 			virtual RenderCommand* CreateRenderCommand() override;
 			virtual ShaderProgram* CreateShaderProgram() override;
+			virtual Texture* CreateTexture() override;
 
 		private:
 			EGLContextManager* m_contextManager = nullptr;

@@ -14,6 +14,9 @@ namespace sh
 			VertexBuffer() {}
 			virtual ~VertexBuffer() {}
 
+			virtual void Bind() {}
+			virtual void Unbind() {}
+
 			void SetVertexDeclaration(const VertexDeclaration& declaration) { m_vertexDeclaration = declaration; }
 			VertexDeclaration* GetVertexDeclaration() { return &m_vertexDeclaration; }
 			void SetVerticesData(const void* data, size_t size);

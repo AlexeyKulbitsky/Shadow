@@ -40,15 +40,17 @@ namespace sh
 		class GLES20Uniform : public Uniform
 		{
 		public:			
-			GLES20Uniform(const T& value) : Uniform(value) {}
+			GLES20Uniform(const T& value) : Uniform(value), m_shaderProgramId(0) {}
+			GLES20Uniform(const std::string& name, unsigned int shaderProgramId) : Uniform(name), m_shaderProgramId(shaderProgramId) {}
 			virtual void Load() override;
+			virtual void Init() override;
 
 			// GLES 2 - specific interface
 			void SetGLId(int id);
 
 		private:
-			T m_data;
 			int m_glID;
+			unsigned int m_shaderProgramId;
 		};
 
 		/////////////////////////////////////////////////////////////////////////////////
@@ -56,13 +58,19 @@ namespace sh
 		template <typename T>
 		inline void GLES20Uniform<T>::Load()
 		{
-			GLES20Private::GLES20UniformLoader<T>::Load(m_glID, m_data);
+			GLES20Private::GLES20UniformLoader<T>::Load(m_glID, Get<T>());
+		}
+
+		template <typename T>
+		inline void GLES20Uniform<T>::Init()
+		{
+			m_glID = glGetUniformLocation(m_shaderProgramId, m_name.c_str());
 		}
 
 		template <typename T>
 		inline void GLES20Uniform<T>::SetGLId(int id)
 		{
-			m_glId = id;
+			m_shaderProgramId = id;
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -17,6 +17,7 @@ namespace sh
 		struct HardwareBuffer;
 		class RenderCommand;
 		class ShaderProgram;
+		class Texture;
 
 		enum class DriverType
 		{
@@ -48,6 +49,7 @@ namespace sh
 			virtual IndexBuffer* CreateIndexBuffer(const void* data, size_t size) = 0;
 			virtual RenderCommand* CreateRenderCommand() = 0;
 			virtual ShaderProgram* CreateShaderProgram() = 0;
+			virtual Texture* CreateTexture() { return nullptr; }
 		};
 	}
 }

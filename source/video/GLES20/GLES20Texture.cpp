@@ -39,13 +39,13 @@ namespace sh
 			switch (type)
 			{
 			case sh::video::Texture::Type::TEXTURE_1D:
-				SH_ASSERT(0, "texture type TEXTURE_1D is not supported by driver");
+				SH_ASSERT(0, "Texture type TEXTURE_1D is not supported by driver");
 				break;
 			case sh::video::Texture::Type::TEXTURE_2D:
 				m_glType = GL_TEXTURE_2D;
 				break;
 			case sh::video::Texture::Type::TEXTURE_3D:
-				SH_ASSERT(0, "texture type TEXTURE_3D is not supported by driver");
+				SH_ASSERT(0, "Texture type TEXTURE_3D is not supported by driver");
 				break;
 			case sh::video::Texture::Type::TEXTURE_CUBE:
 				m_glType = GL_TEXTURE_CUBE_MAP;
@@ -53,30 +53,48 @@ namespace sh
 			}
 		}
 
-		void GLES20Texture::SetTiling(Tiling tiling)
+		void GLES20Texture::SetTiling(Tiling tilingU, Tiling tilingV)
 		{
-			GLint textureTiling = GL_REPEAT;			
-			switch (tiling)
+			GLint textureTilingU = GL_REPEAT;
+			GLint textureTilingV = GL_REPEAT;
+
+			switch (tilingU)
 			{
 			case sh::video::Texture::Tiling::REPEAT:
-				textureTiling = GL_REPEAT;
+				textureTilingU = GL_REPEAT;
 				break;
 			case sh::video::Texture::Tiling::MIRRORED_REPEAT:
-				textureTiling = GL_MIRRORED_REPEAT;
+				textureTilingU = GL_MIRRORED_REPEAT;
 				break;
 			case sh::video::Texture::Tiling::CLAMP_TO_EDGE:
-				textureTiling = GL_CLAMP_TO_EDGE;
+				textureTilingU = GL_CLAMP_TO_EDGE;
 				break;
 			default:
 				break;
 			}
+
+			switch (tilingV)
+			{
+			case sh::video::Texture::Tiling::REPEAT:
+				textureTilingV = GL_REPEAT;
+				break;
+			case sh::video::Texture::Tiling::MIRRORED_REPEAT:
+				textureTilingV = GL_MIRRORED_REPEAT;
+				break;
+			case sh::video::Texture::Tiling::CLAMP_TO_EDGE:
+				textureTilingV = GL_CLAMP_TO_EDGE;
+				break;
+			default:
+				break;
+			}
+
 			glBindTexture(m_glType, m_glID);
 
-			glTexParameteri(m_glType, GL_TEXTURE_WRAP_S, textureTiling);
-			glTexParameteri(m_glType, GL_TEXTURE_WRAP_T, textureTiling);
+			glTexParameteri(m_glType, GL_TEXTURE_WRAP_S, textureTilingU);
+			glTexParameteri(m_glType, GL_TEXTURE_WRAP_T, textureTilingV);
 			if (m_glType == GL_TEXTURE_CUBE_MAP)
 			{
-				glTexParameteri(m_glType, GL_TEXTURE_WRAP_R, textureTiling);
+				//glTexParameteri(m_glType, GL_TEXTURE_WRAP_R, textureTiling);
 			}
 
 			glBindTexture(m_glType, 0U);

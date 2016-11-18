@@ -45,7 +45,7 @@
 
 // include files order matters, mat4 requires vec3 and vec4, watch out!
 #include "vec2.h"
-#include "vec3.h"
+#include "Vector3.h"
 #include "vec4.h"
 #include "rect.h"//requires vec2
 #include "mat2.h"
@@ -145,7 +145,7 @@ namespace sh
 #include "func_binary.inl"
 #include "func_static_constructors.inl"
 #include "vec2.inl"
-#include "vec3.inl"
+#include "Vector3.inl"
 #include "vec4.inl"
 #include "rect.inl"
 #include "mat2.inl"

@@ -2,6 +2,7 @@
 #define SHADOW_GLES20_INDEX_BUFFER_INCLUDE
 
 #include "../IndexBuffer.h"
+#include "../GLContext/EGLContextManager.h"
 
 namespace sh
 {
@@ -14,6 +15,9 @@ namespace sh
 			GLES20IndexBuffer();
 			GLES20IndexBuffer(const void* data, size_t size);
 			virtual ~GLES20IndexBuffer();
+
+			virtual void Bind() override { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_glID); }
+			virtual void Unbind() override { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); }
 
 			virtual void SetIndexType(IndexType indexType) override;
 

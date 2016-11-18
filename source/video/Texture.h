@@ -36,7 +36,7 @@ namespace sh
 
 			virtual void Load(const char* filename) = 0;
 			virtual void SetType(Type type) = 0;
-			virtual void SetTiling(Tiling tiling) = 0;
+			virtual void SetTiling(Tiling tilingU, Tiling tilingV) = 0;
 			virtual void SetFiltering(Filtering filtering) = 0;
 		};
 	}

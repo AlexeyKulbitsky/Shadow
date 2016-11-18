@@ -16,6 +16,9 @@ namespace sh
 			GLES20VertexBuffer(const void* data, size_t size);
 			virtual ~GLES20VertexBuffer();
 
+			virtual void Bind() override { glBindBuffer(GL_ARRAY_BUFFER, m_glID); }
+			virtual void Unbind() override { glBindBuffer(GL_ARRAY_BUFFER, 0); }
+
 			unsigned int GetGLId() const { return m_glID; }
 		private:
 			unsigned int m_glID = 0U;

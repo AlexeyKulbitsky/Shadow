@@ -16,8 +16,12 @@ namespace sh
 
 			virtual void Load(const char* filename) override;
 			virtual void SetType(Type type) override;
-			virtual void SetTiling(Tiling tiling) override;
+			virtual void SetTiling(Tiling tilingU, Tiling tilingV) override;
 			virtual void SetFiltering(Filtering filtering) override;
+
+			// GLES interface
+			unsigned int GetGLId() const { return m_glID; }
+			unsigned int GetGLType() const { return m_glType; }
 
 		private:
 			GLuint m_glID = 0U;

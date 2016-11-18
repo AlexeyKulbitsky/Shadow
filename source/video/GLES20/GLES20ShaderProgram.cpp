@@ -1,6 +1,8 @@
 #include "GLES20ShaderProgram.h"
 #include <pugixml.hpp>
 #include "../VertexDeclaration.h"
+#include "../UniformBuffer.h"
+#include "GLES20Sampler.h"
 #include "../pempek_assert.h"
 
 using namespace sh;
@@ -17,10 +19,6 @@ void GLES20ShaderProgram::Load(const char* filename)
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file(filename);
 	pugi::xml_node shaderProgramNode = doc.first_child();
-
-	// Load uniforms
-	pugi::xml_node uniformsNode = shaderProgramNode.child("uniforms");
-	LoadUniforms(uniformsNode);
 
 	// Load attributes
 	pugi::xml_node attributesNode = shaderProgramNode.child("attributes");
@@ -69,6 +67,16 @@ void GLES20ShaderProgram::Load(const char* filename)
 	{
 		attributes[i].index = glGetAttribLocation(m_programID, attributes[i].name.c_str());
 	}
+
+	// Load uniforms
+	pugi::xml_node uniformsNode = shaderProgramNode.child("uniforms");
+	LoadUniforms(uniformsNode);
+	m_uniformBuffer->Init();
+
+	// Load texure samplers
+	pugi::xml_node samplersNode = shaderProgramNode.child("samplers");
+	LoadSamplers(samplersNode);
+
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -98,18 +106,9 @@ void GLES20ShaderProgram::UnbindProgram()
 
 void GLES20ShaderProgram::LoadUniforms(const pugi::xml_node &node)
 {
+	m_uniformBuffer = new UniformBuffer();
 
-	Uniform* uni = new GLES20UniformInt(2);
-
-	uni->Set(5);
-	int r = 0;
-
-	uni->Get(r);
-
-	printf("Result: %d", r);
-	//a = uni->Get();
-
-
+	Uniform* uniform = nullptr;
 
 	if (node)
 	{
@@ -128,22 +127,33 @@ void GLES20ShaderProgram::LoadUniforms(const pugi::xml_node &node)
 			printf("Type: %s ", typeName.c_str());
 			if (typeName == "float")
 			{
-				//GLES20UniformFloat uniform;
+				GLES20UniformFloat* glesUniform = new GLES20UniformFloat(0.0f);
+				glesUniform->SetGLId(m_programID);
+				uniform = glesUniform;
 				if (valAttr)
 				{
 					float value = valAttr.as_float();
 					printf("Value: %f", value);
+					uniform->Set(value);
 				}
+
 			}
 			else if (typeName == "int")
 			{
+				uniform = new GLES20UniformInt(0);
 				if (valAttr)
 				{
 					int value = valAttr.as_int();
 					printf("Value: %d", value);
+					uniform->Set(value);
 				}
 			}
 			printf("\n");
+
+			uniform->SetName(name);
+
+			m_uniformBuffer->AddUniform(uniform);
+			uniform = nullptr;
 
 			uniformNode = uniformNode.next_sibling();
 		}
@@ -209,6 +219,47 @@ void GLES20ShaderProgram::LoadAttributes(const pugi::xml_node &node)
 		}
 	}
 	printf("Done\n");
+}
+
+///////////////////////////////////////////////////////////////////////
+
+void GLES20ShaderProgram::LoadSamplers(const pugi::xml_node &node)
+{
+	if (node)
+	{
+		pugi::xml_node uniformNode = node.first_child();
+
+		GLES20Sampler* sampler = new GLES20Sampler(m_programID);
+
+		while (!uniformNode.empty())
+		{
+			pugi::xml_attribute nameAttr = uniformNode.attribute("name");
+			pugi::xml_attribute typeAttr = uniformNode.attribute("type");
+			pugi::xml_attribute valAttr = uniformNode.attribute("val");
+
+			printf("Sampler:\n");
+			std::string name = nameAttr.as_string();
+			printf("\tName: %s ", name.c_str());
+
+			std::string typeName = typeAttr.as_string();
+			printf("Type: %s ", typeName.c_str());
+			if (typeName == "2D")
+			{				
+				sampler->SetType(Texture::Type::TEXTURE_2D);
+			}
+			else if (typeName == "cube")
+			{
+				sampler->SetType(Texture::Type::TEXTURE_CUBE);
+			}
+			printf("\n");			
+
+			sampler->SetName(name);
+			//sampler->SetGLId(m_programID);
+			sampler->Init();
+
+			uniformNode = uniformNode.next_sibling();
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////
