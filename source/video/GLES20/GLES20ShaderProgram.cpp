@@ -81,6 +81,68 @@ void GLES20ShaderProgram::Load(const char* filename)
 
 ///////////////////////////////////////////////////////////////////////
 
+void GLES20ShaderProgram::Load(const pugi::xml_node &node)
+{
+	// Load vertex shader data
+	pugi::xml_node vertexShaderSrcNode = node.child("vertexShader");
+	if (vertexShaderSrcNode)
+	{
+		const char* vertexShaderSource = vertexShaderSrcNode.child_value();
+		m_vertexShaderID = CompileShader(GL_VERTEX_SHADER, vertexShaderSource);
+	}
+
+	// Load fragment shader data
+	pugi::xml_node fragmentShaderSrcNode = node.child("fragmentShader");
+	if (fragmentShaderSrcNode)
+	{
+		const char* fragmentShaderSource = fragmentShaderSrcNode.child_value();
+		m_fragmentShaderID = CompileShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
+	}
+
+	// Create shader program
+	m_programID = glCreateProgram();
+
+	glAttachShader(m_programID, m_vertexShaderID);
+	glAttachShader(m_programID, m_fragmentShaderID);
+
+	glLinkProgram(m_programID);
+
+	GLint linked;
+	glGetProgramiv(m_programID, GL_LINK_STATUS, &linked);
+	if (!linked)
+	{
+		GLsizei len;
+		glGetProgramiv(m_programID, GL_INFO_LOG_LENGTH, &len);
+
+		char* log = new char[len + 1];
+		glGetProgramInfoLog(m_programID, len, &len, log);
+
+		SH_ASSERT(0, "ERROR");
+	}
+
+	// Load attributes
+	pugi::xml_node attributesNode = node.child("attributes");
+	LoadAttributes(attributesNode);
+
+	// Collect attributes indices from shader program
+	std::vector<GLES20VertexAttribute>& attributes = m_vertexDeclaration.GetAttributes();
+	for (u32 i = 0; i < attributes.size(); ++i)
+	{
+		attributes[i].index = glGetAttribLocation(m_programID, attributes[i].name.c_str());
+	}
+
+	// Load uniforms
+	pugi::xml_node uniformsNode = node.child("uniforms");
+	LoadUniforms(uniformsNode);
+	m_uniformBuffer->Init();
+
+	// Load texure samplers
+	pugi::xml_node samplersNode = node.child("samplers");
+	LoadSamplers(samplersNode);
+}
+
+///////////////////////////////////////////////////////////////////////
+
 void GLES20ShaderProgram::Unload()
 {
 	glDeleteShader(m_vertexShaderID);
@@ -235,12 +297,15 @@ void GLES20ShaderProgram::LoadSamplers(const pugi::xml_node &node)
 		{
 			pugi::xml_attribute nameAttr = uniformNode.attribute("name");
 			pugi::xml_attribute typeAttr = uniformNode.attribute("type");
-			pugi::xml_attribute valAttr = uniformNode.attribute("val");
+			pugi::xml_attribute tilingUAttr = uniformNode.attribute("tilingU");
+			pugi::xml_attribute tilingVAttr = uniformNode.attribute("tilingV");
+			pugi::xml_attribute filerAttr = uniformNode.attribute("filter");
 
 			printf("Sampler:\n");
 			std::string name = nameAttr.as_string();
 			printf("\tName: %s ", name.c_str());
 
+			// Read texture type
 			std::string typeName = typeAttr.as_string();
 			printf("Type: %s ", typeName.c_str());
 			if (typeName == "2D")
@@ -251,11 +316,64 @@ void GLES20ShaderProgram::LoadSamplers(const pugi::xml_node &node)
 			{
 				sampler->SetType(Texture::Type::TEXTURE_CUBE);
 			}
+
+			
+			// Read tiling
+			Texture::Tiling tilingU = Texture::Tiling::REPEAT;
+			Texture::Tiling tilingV = Texture::Tiling::REPEAT;
+
+			if (tilingUAttr)
+			{
+				std::string tilingTypeName = tilingUAttr.as_string();
+				if (tilingTypeName == "clamp")
+				{
+					tilingU = Texture::Tiling::CLAMP_TO_EDGE;
+				}
+			}
+
+			if (tilingVAttr)
+			{
+				std::string tilingTypeName = tilingVAttr.as_string();
+				if (tilingTypeName == "clamp")
+				{
+					tilingV = Texture::Tiling::CLAMP_TO_EDGE;
+				}
+			}
+
+
+			// Read filter
+			Texture::Filtering filtering = Texture::Filtering::NEAREST;
+			if (filerAttr)
+			{
+				std::string filterTypeName = filerAttr.as_string();
+				if (filterTypeName == "nearest")
+				{
+					filtering = Texture::Filtering::NEAREST;
+				}
+				else if (filterTypeName == "linear")
+				{
+					filtering = Texture::Filtering::LINEAR;
+				}
+				else if (filterTypeName == "bilinear")
+				{
+					filtering = Texture::Filtering::BILINEAR;
+				}
+				else if (filterTypeName == "trilinear")
+				{
+					filtering = Texture::Filtering::TRILINEAR;
+				}
+			}
+
 			printf("\n");			
 
 			sampler->SetName(name);
-			//sampler->SetGLId(m_programID);
+			sampler->SetTiling(tilingU, tilingV);
+			sampler->SetFiltering(filtering);
 			sampler->Init();
+
+
+
+			m_uniformBuffer->AddSampler(sampler);
 
 			uniformNode = uniformNode.next_sibling();
 		}

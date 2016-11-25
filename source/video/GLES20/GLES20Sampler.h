@@ -29,7 +29,8 @@ namespace sh
 			unsigned int m_glType;
 			int m_glTilingU;
 			int m_glTilingV;
-			int m_glFilter;
+			int m_glMagFilter;
+			int m_glMinFilter;
 		};
 
 		inline void GLES20Sampler::SetGLId(int id)

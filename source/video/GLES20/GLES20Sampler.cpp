@@ -19,6 +19,9 @@ namespace sh
 			glBindTexture(m_glType, m_glID);
 			glTexParameteri(m_glType, GL_TEXTURE_WRAP_S, m_glTilingU);
 			glTexParameteri(m_glType, GL_TEXTURE_WRAP_T, m_glTilingV);
+			glTexParameteri(m_glType, GL_TEXTURE_MAG_FILTER, m_glMagFilter);
+			glTexParameteri(m_glType, GL_TEXTURE_MIN_FILTER, m_glMinFilter);
+
 			glUniform1i(m_glID, textureChannel);
 		}
 
@@ -32,17 +35,25 @@ namespace sh
 			Sampler::SetFiltering(filtering);
 			switch (filtering)
 			{
+			case sh::video::Texture::Filtering::NEAREST:
+				m_glMagFilter = GL_NEAREST;
+				m_glMinFilter = GL_NEAREST;
+				break;
 			case sh::video::Texture::Filtering::LINEAR:
-				m_glFilter = GL_NEAREST_MIPMAP_NEAREST;
+				m_glMagFilter = GL_LINEAR;
+				m_glMinFilter = GL_NEAREST_MIPMAP_NEAREST;
 				break;
 			case sh::video::Texture::Filtering::BILINEAR:
-				m_glFilter = GL_LINEAR_MIPMAP_NEAREST;
+				m_glMagFilter = GL_LINEAR;
+				m_glMinFilter = GL_LINEAR_MIPMAP_NEAREST;
 				break;
 			case sh::video::Texture::Filtering::TRILINEAR:
-				m_glFilter = GL_NEAREST_MIPMAP_LINEAR;
+				m_glMagFilter = GL_LINEAR;
+				m_glMinFilter = GL_LINEAR_MIPMAP_LINEAR;
 				break;
 			case sh::video::Texture::Filtering::ANISOTROPIC:
-				m_glFilter = GL_LINEAR_MIPMAP_LINEAR;
+				m_glMagFilter = GL_LINEAR;
+				m_glMinFilter = GL_LINEAR_MIPMAP_LINEAR;
 				break;
 			default:
 				break;

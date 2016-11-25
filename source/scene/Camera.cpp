@@ -5,6 +5,7 @@ namespace sh
 {
 	namespace scene
 	{
+		/*
 		inline math::mat4f gl2shadow(const math::mat4f& im)
 		{
 			math::mat4f mat = im;
@@ -31,8 +32,8 @@ namespace sh
 			mat.setRow(2, axisY);
 			return mat;
 		}
-
-		Camera::Camera(const math::vec3f& pos /* = math::vec3f(0) */, const math::quatf& rot /* = math::quatf() */)
+		
+		Camera::Camera(const math::Vector3f& pos, const math::quatf& rot)
 		{
 			m_fovy = 0.f;
 			m_nearDistance = 1.f;
@@ -40,10 +41,10 @@ namespace sh
 			m_worjdTransformChanged = true;
 			m_projectionTransformChanged = true;
 			m_aspectRatio = 0.f;
-			m_projectionOffCenter.set(math::vec2f(-1.f), math::vec2f(1.f));
+			//m_projectionOffCenter.set(math::vec2f(-1.f), math::vec2f(1.f));
 
 			SetTransform(pos, rot);
-			SetFov(math::radians(45.f));
+			//SetFov(math::radians(45.f));
 			SetNearDistance(0.5f);
 			SetFarDistance(10000.f);
 		}
@@ -109,5 +110,6 @@ namespace sh
 
 			return math::perspective(left, right, bottom, top, nearDist, farDist);
 		}
+		*/
 	}
 }

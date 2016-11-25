@@ -1,3 +1,11 @@
+<technique name="firstTechnique">
+
+<pass name="firstPass">
+
+<renderstate>
+	<name/>
+</renderstate>
+
 <shader language="GLSL" api="GLES20">
 
 <uniforms>
@@ -5,7 +13,7 @@
 </uniforms>
 
 <samplers>
-	<sampler name="testSample" type="2D" tilingU="repeat" tilingV="repeat" filter="bilinear"/>
+	<sampler name="testSample" type="2D" tilingU="repeat" tilingV="repeat" filter="trilinear"/>
 </samplers>
 
 <attributes>
@@ -13,6 +21,8 @@
 	<color 		type="vec3" name="aColor"/>
 	<uv			type="vec2" name="aUV"/>
 </attributes>
+
+
 
 <vertexShader>
 <![CDATA[
@@ -48,10 +58,14 @@
 	void main() 
 	{
 		vec4 col = texture2D(testSample, vUV);
-		gl_FragColor = vec4(vUV.x, vUV.y, 0.0, 1.0);
+		gl_FragColor = vec4(col.xyz, 1.0);
 	} 
 	
 ]]>	
 </fragmentShader>
 
 </shader>
+
+</pass>
+
+</technique>

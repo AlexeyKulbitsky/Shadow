@@ -29,11 +29,12 @@ namespace sh
 			void SetVertexDeclaration(sh::video::VertexDeclaration vertexDeclaration);
 			void SetVertexData(std::vector<float> data);
 			void SetIndexData(std::vector<unsigned int> data);
-			void SetShaderProgram(sh::video::ShaderProgram* shaderProgram);
+			void SetMaterial(sh::video::Material* material);
 			
 			sh::video::RenderCommand* GetRenderCommand() { return m_renderCommand; }
 		private:
 			sh::video::RenderCommand* m_renderCommand;
+			sh::video::Material* m_material;
 		};
 	}
 }

@@ -1,5 +1,8 @@
 #include "Mesh.h"
 #include "../Device.h"
+#include "../video/Material.h"
+#include "../video/RenderTechnique.h"
+#include "../video/RenderPass.h"
 #include "../video/RenderCommand.h"
 
 namespace sh
@@ -62,12 +65,12 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		void Mesh::SetShaderProgram(sh::video::ShaderProgram* shaderProgram)
+		void Mesh::SetMaterial(sh::video::Material* material)
 		{
+			m_material = material;
+			sh::video::ShaderProgram* shaderProgram = m_material->GetRenderTechnique()->GetRenderPass(0)->GetShaderProgram();
 			m_renderCommand->SetShaderProgram(shaderProgram);
 		}
-
-		/////////////////////////////////////////////////////////////////////////////////////
 	}
 }
 

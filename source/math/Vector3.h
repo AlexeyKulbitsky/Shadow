@@ -1,124 +1,72 @@
-#pragma once
+#ifndef SHADOW_VECTOR3_INCLUDE
+#define SHADOW_VECTOR3_INCLUDE
+
+#include "Vector2.h"
 
 namespace sh
 {
 
 	namespace math
 	{
-		template<typename T> struct vec2;
-		template<typename T> struct vec4;
-
 		template<typename T>
-		struct vec3
+		struct Vector3
 		{
-			typedef T value_t;
 			T x, y, z;
 
-			static struct ZUninitialized {} uninitialized;
+			// Constructors
+			Vector3() : x(0), y(0), z(0) {}
+			Vector3(T _x, T _y, T _z) : x(_x), y(_x), z(_x) {}
+			explicit Vector3(T s) : x(s), y(s), z(s) {}
+			Vector3(const Vector3<T>& v) : x(v.x), y(v.y), z(v.z) {}
+			Vector3(const Vector2<T>& v, T value) : x(v.x), y(v.y), z(value) {}
 
-			//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			// constructors
-			//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			// Operators
+			Vector3<T> operator-() const { return Vector3<T>(-z, -y, -z); }
+			Vector3<T>& operator=(const Vector3<T>& v) { x = v.x; y = v.y; z = v.z; return *this; }
 
-				//////////////////////////////////////
-				// Basic constructors
-			vec3();
+			Vector3<T> operator+(T s) const { return Vector3<T>(x + s, y + s, z + s); }
+			Vector3<T> operator+(const Vector3<T>& v) const { return Vector3<T>(x + v.x, y + v.y, z + v.z); }
+			Vector3<T>& operator+=(T s) { x += s; y += s; z += s; return *this; }
+			Vector3<T>& operator+=(const Vector3<T>& v) { x += v.x; y += v.y; z += v.z; return *this; }
 
-			//constructs the vector uninitialized
-			vec3(ZUninitialized);
+			Vector3<T> operator-(T s) const { return Vector3<T>(x - s, y - s, z - s); }
+			Vector3<T> operator-(const Vector3<T>& v) const { return Vector3<T>(x - v.x, y - v.y, z - v.z); }
+			Vector3<T>& operator-=(T s) { x -= s; y -= s; z -= s; return *this; }
+			Vector3<T>& operator-=(const Vector3<T>& v) { x -= v.x; y -= v.y; z -= v.z; return *this; }
 
-			//constructs from direct x, y, z values
-			vec3(T x, T y, T z);
+			Vector3<T> operator*(T s) const { return Vector3<T>(x * s, y * s, z * s); }
+			Vector3<T> operator*(const Vector3<T>& v) const { return Vector3<T>(x * v.x, y * v.y, z * v.z); }
+			Vector3<T>& operator*=(T s) { x *= s; y *= s; z *= s; return *this; }
+			Vector3<T>& operator*=(const Vector3<T>& v) { x *= v.x; y *= v.y; z *= v.z; return *this; }
 
-			//construct from a single value - x == y == z = s
-			//this has to be explicit to avoid undesirable casts
-			explicit vec3(T s);
+			Vector3<T> operator/(T s) const { return Vector3<T>(x / s, y / s, z / s); }
+			Vector3<T> operator/(const Vector3<T>& v) const { return Vector3<T>(x / v.x, y / v.y, z / v.z); }
+			Vector3<T>& operator/=(T s) { x /= s; y /= s; z /= s; return *this; }
+			Vector3<T>& operator/=(const Vector3<T>& v) { x /= v.x; y /= v.y; z /= v.z; return *this; }
 
-			//copy constructor
-			vec3(const vec3<T>& v);
+			T GetLength() const
+			{
+				return Sqrt(x * x + y * y + z * z);
+			}
 
-			// Conversion vector constructors
-			template<typename U>
-			explicit vec3(const vec3<U>& v);
+			Vector3<T>& Normalize()
+			{
+				T length = GetLength();
+				x /= length;
+				y /= length;
+				z /= length;
+				return *this;
+			}
 
-			//cast
-			//implementation is in cast.inl
-			explicit vec3(const vec2<T>& v);
-			explicit vec3(const vec2<T>& v, T z);
-			explicit vec3(const vec4<T>& v);
-
-			//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			// member functions
-			//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-				//////////////////////////////////////////////////////////////////////////
-				// Methods
-				// Use only non-mutable methods here pls
-
-			vec3<T>& set(T x, T y, T z);
-			T getLength() const;
-			T getLengthSq() const;
-			void setLength(T len);
-			vec3<T>& normalize();
-
-			//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			// operators
-			//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-			T& operator[](uint32_t i);
-			const T& operator[](uint32_t i) const;
-
-			bool operator==(const vec3<T>& v) const;
-			bool operator!=(const vec3<T>& v) const;
-
-			vec3<T> operator-() const;
-
-			vec3<T> operator+(T s) const;
-			vec3<T> operator+(const vec3<T>& v) const;
-
-			vec3<T> operator-(T s) const;
-			vec3<T> operator-(const vec3<T>& v) const;
-
-			vec3<T> operator*(T s) const;
-			vec3<T> operator/(T s) const;
-
-			vec3<T>& operator=(const vec3<T>& v);
-
-			//cast
-			//implementation is in cast.inl
-			vec3<T>& operator=(const vec2<T>& v);
-			vec3<T>& operator=(const vec4<T>& v);
-
-			vec3<T>& operator+=(T s);
-			vec3<T>& operator+=(const vec3<T>& v);
-
-			vec3<T>& operator-=(T s);
-			vec3<T>& operator-=(const vec3<T>& v);
-
-			vec3<T>& operator*=(T s);
-			vec3<T>& operator*=(const vec3<T>& v);
-
-			vec3<T>& operator/=(T s);
-			vec3<T>& operator/=(const vec3<T>& v);
+			Vector3<T> GetNormalized() const
+			{
+				T length = GetLength();
+				return Vector3<T>(x / length, y / length, z / length);
+			}
 		};
 
-		template <typename T>
-		vec3<T> operator*(T s, const vec3<T>&);
-
-		template<typename T>
-		vec3<T> operator*(const vec3<T>& v0, const vec3<T>& v1);
-
-		template <typename T>
-		vec3<T> operator/(T s, const vec3<T>&);
-
-		template <typename T>
-		vec3<T> operator/(const vec3<T>& v0, const vec3<T>& v1);
-
-		//////////////////////////////////////////////////////////////////////////
-
-		template <typename T>
-		typename vec3<T>::ZUninitialized vec3<T>::uninitialized;
-
-	} //math
+	} 
 
 }
+
+#endif

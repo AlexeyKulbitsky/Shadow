@@ -25,6 +25,7 @@ namespace sh
 
 			enum class Filtering
 			{
+				NEAREST,
 				LINEAR,
 				BILINEAR,
 				TRILINEAR,

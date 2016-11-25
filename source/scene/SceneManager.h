@@ -10,15 +10,15 @@ namespace sh
 		class SceneManager
 		{
 		public:
-			static const math::vec3f& GetFrontVector() { return s_frontVector; }
-			static const math::vec3f& GetUpVector() { return s_upVector; }
-			static const math::vec3f& GetRightVector() { return s_rightVector; }
+			static const math::Vector3f& GetFrontVector() { return s_frontVector; }
+			static const math::Vector3f& GetUpVector() { return s_upVector; }
+			static const math::Vector3f& GetRightVector() { return s_rightVector; }
 
 			void Render();
 		private:
-			static math::vec3f	s_frontVector;
-			static math::vec3f	s_upVector;
-			static math::vec3f	s_rightVector;
+			static math::Vector3f	s_frontVector;
+			static math::Vector3f	s_upVector;
+			static math::Vector3f	s_rightVector;
 
 		};
 	}

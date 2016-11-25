@@ -18,12 +18,13 @@ namespace sh
 		public:
 			GLES20ShaderProgram();
 			virtual void Load(const char* filename) override;
+			virtual void Load(const pugi::xml_node &node) override;
 			virtual void Unload() override;
 			virtual void BindProgram() override;
 			virtual void UnbindProgram() override;
 
 			GLES20VertexDeclaration* GetVertexDeclaration() { return &m_vertexDeclaration; }
-			UniformBuffer* GetUniformBuffer() { return m_uniformBuffer; }
+			
 
 		private:
 			void LoadUniforms(const pugi::xml_node &node);
@@ -37,7 +38,6 @@ namespace sh
 			GLuint m_fragmentShaderID;
 
 			GLES20VertexDeclaration m_vertexDeclaration;		
-			UniformBuffer* m_uniformBuffer;
 		};
 	}
 }

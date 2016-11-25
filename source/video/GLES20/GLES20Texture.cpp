@@ -28,6 +28,7 @@ namespace sh
 			glBindTexture(m_glType, m_glID);
 
 			glTexImage2D(m_glType, 0, GL_RGBA, texWidth, texHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+			glGenerateMipmap(m_glType);
 
 			glBindTexture(m_glType, 0U);
 

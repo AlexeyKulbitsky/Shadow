@@ -2,6 +2,7 @@
 #define SHADOW_SHADER_PROGRAM_INCLUDE
 
 #include "../Types.h"
+#include <pugixml.hpp>
 
 namespace sh
 {
@@ -14,13 +15,21 @@ namespace sh
 			NONE
 		};
 
+		class UniformBuffer;
+
 		class ShaderProgram
 		{
 		public:
 			virtual void Load(const char* filename) = 0;
+			virtual void Load(const pugi::xml_node &node) = 0;
 			virtual void Unload() = 0;
 			virtual void BindProgram() = 0;
 			virtual void UnbindProgram() = 0;
+
+			UniformBuffer* GetUniformBuffer() { return m_uniformBuffer; }
+
+		protected:
+			UniformBuffer* m_uniformBuffer;
 		};
 	}
 }

@@ -7,17 +7,17 @@ namespace sh
 {
 	namespace video
 	{
-		class ShaderProgram;
+		class RenderTechnique;
 
 		class Material
 		{
 		public:
 			Material() {}
-			void SetShaderProgram(ShaderProgram* program) { m_shaderProgram = program; }
+			void SetRenderTechnique(RenderTechnique* technique) { m_renderTechnique = technique; }
 
-			ShaderProgram* GetShaderProgram() { return m_shaderProgram; }
+			RenderTechnique* GetRenderTechnique() { return m_renderTechnique; }
 		private:
-			ShaderProgram* m_shaderProgram = nullptr;
+			RenderTechnique* m_renderTechnique = nullptr;
 		};
 	}
 }

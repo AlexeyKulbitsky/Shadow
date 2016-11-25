@@ -7,6 +7,7 @@ namespace sh
 {
 	namespace scene
 	{
+		/*
 		class Camera
 		{
 		public:
@@ -125,6 +126,7 @@ namespace sh
 			m_projectionOffCenter = offset;
 			m_projectionTransformChanged = true;
 		}
+		*/
 	}
 }
 

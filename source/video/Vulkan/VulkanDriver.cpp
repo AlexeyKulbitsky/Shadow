@@ -51,9 +51,9 @@ namespace sh
 
 		struct UniformBufferObject 
 		{
-			math::mat4f model;
-			math::mat4f view;
-			math::mat4f proj;
+//			math::mat4f model;
+//			math::mat4f view;
+//			math::mat4f proj;
 		};
 
 		const std::string MODEL_PATH = "../data/models/chalet.obj";
@@ -1318,6 +1318,7 @@ namespace sh
 		{
 			static float rot = 0.0f;
 			UniformBufferObject ubo = {};
+			/*
 			ubo.model.setIdentity();
 			math::quatf rr = math::quatf().setFromAngleAxis(-math::k_pi2, math::vec3f(1.0f, 0.0f, 0.0f));
 			math::quatf r = math::quatf().setFromAngleAxis(rot, math::vec3f(0.0f, 0.0f, 1.0f));
@@ -1327,7 +1328,7 @@ namespace sh
 			ubo.view.setTranslation(math::vec3f(0.0f, 0.5f, -3.0f));
 			
 			ubo.proj = math::perspective(math::radians(45.0f), 800.0f / 600.0f, 0.1f, 1000.0f);
-
+			*/
 			void* data;
 			vkMapMemory(m_device, m_uniformStagingBufferMemory, 0, sizeof(ubo), 0, &data);
 			memcpy(data, &ubo, sizeof(ubo));

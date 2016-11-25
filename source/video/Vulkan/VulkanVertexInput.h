@@ -12,9 +12,9 @@ namespace sh
 		{
 			struct Vertex
 			{
-				math::vec3f pos;
-				math::vec3f color;
-				math::vec2f texCoord;
+				math::Vector3f pos;
+				math::Vector3f color;
+				math::Vector2f texCoord;
 			};
 
 			static VkVertexInputBindingDescription getBindingDescription() 
