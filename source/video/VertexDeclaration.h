@@ -59,10 +59,10 @@ namespace sh
 			}
 			Attribute* GetAttribute(AttributeSemantic sematic)
 			{
-				for (auto attr : m_attributes)
+				for (size_t i = 0, sz = m_attributes.size(); i < sz; ++i)
 				{
-					if (attr.semantic == sematic)
-						return &attr;
+					if (m_attributes[i].semantic == sematic)
+						return &m_attributes[i];
 				}
 				return nullptr;
 			}

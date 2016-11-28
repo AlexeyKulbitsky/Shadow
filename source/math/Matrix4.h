@@ -70,25 +70,25 @@ namespace sh
 
 			Matrix4<T>& operator*=(const Matrix4<T>& other)
 			{
-				m[0] = m[0] * other.m[0] + m[4] * other.m[1] + m[8] * other.m[2] + m[12] * other.m[3];
-				m[1] = m[1] * other.m[0] + m[5] * other.m[1] + m[9] * other.m[2] + m[13] * other.m[3];
-				m[2] = m[2] * other.m[0] + m[6] * other.m[1] + m[10] * other.m[2] + m[14] * other.m[3];
-				m[3] = m[3] * other.m[0] + m[7] * other.m[1] + m[11] * other.m[2] + m[15] * other.m[3];
+				m[0] = m[0] * other.m[0] + m[1] * other.m[4] + m[2] * other.m[8] + m[3] * other.m[12];
+				m[1] = m[0] * other.m[1] + m[1] * other.m[5] + m[2] * other.m[9] + m[3] * other.m[13];
+				m[2] = m[0] * other.m[2] + m[1] * other.m[6] + m[2] * other.m[10] + m[3] * other.m[14];
+				m[3] = m[0] * other.m[3] + m[1] * other.m[7] + m[2] * other.m[11] + m[3] * other.m[15];
 
-				m[4] = m[0] * other.m[4] + m[4] * other.m[5] + m[8] * other.m[6] + m[12] * other.m[7];
-				m[5] = m[1] * other.m[4] + m[5] * other.m[5] + m[9] * other.m[6] + m[13] * other.m[7];
-				m[6] = m[2] * other.m[4] + m[6] * other.m[5] + m[10] * other.m[6] + m[14] * other.m[7];
-				m[7] = m[3] * other.m[4] + m[7] * other.m[5] + m[11] * other.m[6] + m[15] * other.m[7];
+				m[4] = m[4] * other.m[0] + m[5] * other.m[4] + m[6] * other.m[8] + m[7] * other.m[12];
+				m[5] = m[4] * other.m[1] + m[5] * other.m[5] + m[6] * other.m[9] + m[7] * other.m[13];
+				m[6] = m[4] * other.m[2] + m[5] * other.m[6] + m[6] * other.m[10] + m[7] * other.m[14];
+				m[7] = m[4] * other.m[3] + m[5] * other.m[7] + m[6] * other.m[11] + m[7] * other.m[15];
 
-				m[8] = m[0] * other.m[8] + m[4] * other.m[9] + m[8] * other.m[10] + m[12] * other.m[11];
-				m[9] = m[1] * other.m[8] + m[5] * other.m[9] + m[9] * other.m[10] + m[13] * other.m[11];
-				m[10] = m[2] * other.m[8] + m[6] * other.m[9] + m[10] * other.m[10] + m[14] * other.m[11];
-				m[11] = m[3] * other.m[8] + m[7] * other.m[9] + m[11] * other.m[10] + m[15] * other.m[11];
+				m[8] = m[8] * other.m[0] + m[9] * other.m[4] + m[10] * other.m[8] + m[11] * other.m[12];
+				m[9] = m[8] * other.m[1] + m[9] * other.m[5] + m[10] * other.m[9] + m[11] * other.m[13];
+				m[10] = m[8] * other.m[2] + m[9] * other.m[6] + m[10] * other.m[10] + m[11] * other.m[14];
+				m[11] = m[8] * other.m[3] + m[9] * other.m[7] + m[10] * other.m[11] + m[11] * other.m[15];
 
-				m[12] = m[0] * other.m[12] + m[4] * other.m[13] + m[8] * other.m[14] + m[12] * other.m[15];
-				m[13] = m[1] * other.m[12] + m[5] * other.m[13] + m[9] * other.m[14] + m[13] * other.m[15];
-				m[14] = m[2] * other.m[12] + m[6] * other.m[13] + m[10] * other.m[14] + m[14] * other.m[15];
-				m[15] = m[3] * other.m[12] + m[7] * other.m[13] + m[11] * other.m[14] + m[15] * other.m[15];
+				m[12] = m[12] * other.m[0] + m[13] * other.m[4] + m[14] * other.m[8] + m[15] * other.m[12];
+				m[13] = m[12] * other.m[1] + m[13] * other.m[5] + m[14] * other.m[9] + m[15] * other.m[13];
+				m[14] = m[12] * other.m[2] + m[13] * other.m[6] + m[14] * other.m[10] + m[15] * other.m[14];
+				m[15] = m[12] * other.m[3] + m[13] * other.m[7] + m[14] * other.m[11] + m[15] * other.m[15];
 
 				return *this;
 			}
@@ -186,6 +186,71 @@ namespace sh
 				m[0] = scale.x;
 				m[5] = scale.y;
 				m[10] = scale.z;
+			}
+
+			Vector3<T> GetScale() const
+			{
+				return Vector3<T>(m[0], m[5], m[10]);
+			}
+
+			void SetTranslation(const Vector3<T>& translation)
+			{
+				m[12] = translation.x;
+				m[13] = translation.y;
+				m[14] = translation.z;
+			}
+
+			Vector3<T> GetTranslation() const
+			{
+				return Vector3<T>(m[12], m[13], m[14]);
+			}
+
+			void SetPerspective(T fovy, T aspect, T zNear, T zFar)
+			{
+				T tanFov = Tan(fovy / static_cast<T>2);
+
+				m[0] = 1 / (aspect * tanFov);
+				m[1] = 0;
+				m[2] = 0;
+				m[3] = 0;
+
+				m[4] = 0;
+				m[5] = 1 / tanFov;
+				m[6] = 0;
+				m[7] = 0;
+
+				m[8] = 0;
+				m[9] = 0;
+				m[10] = T(-1) * (zFar + zNear) / (zFar - zNear);
+				m[11] = T(-1) * (T(2) * zFar * zNear) / (zFar - zNear);
+
+				m[12] = 0;
+				m[13] = 0;
+				m[14] = -1;
+				m[15] = 0;
+			}
+
+			void SetOrtho(T leftP, T rightP, T bottomP, T topP, T nearP, T farP)
+			{
+				m.m[0] = 2 / (rightP - leftP);
+				m.m[1] = 0;
+				m.m[2] = 0;
+				m.m[3] = (-1) * (rightP + leftP) / (rightP - leftP);
+
+				m.m[4] = 0;
+				m.m[5] = 2 / (topP - bottomP);
+				m.m[6] = 0;
+				m.m[7] = (-1) * (topP + bottomP) / (topP - bottomP);
+
+				m.m[8] = 0;
+				m.m[9] = 0;
+				m.m[10] = -2 / (farP - nearP);
+				m.m[11] = (-1) * (farP + nearP) / (farP - nearP);
+
+				m.m[12] = 0;
+				m.m[13] = 0;
+				m.m[14] = 0;
+				m.m[15] = 1;
 			}
 		};
 	}

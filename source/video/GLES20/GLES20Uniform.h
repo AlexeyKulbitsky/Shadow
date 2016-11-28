@@ -15,18 +15,18 @@ namespace sh
 			struct GLES20UniformLoader;
 
 			template <>
-			struct GLES20UniformLoader<float>
+			struct GLES20UniformLoader<f32>
 			{
-				static void Load(const int location, const float& value)
+				static void Load(const s32 location, const f32& value)
 				{
 					glUniform1f(location, value);
 				}
 			};
 
 			template <>
-			struct GLES20UniformLoader<int>
+			struct GLES20UniformLoader<s32>
 			{
-				static void Load(const int location, const int& value)
+				static void Load(const s32 location, const s32& value)
 				{
 					glUniform1i(location, value);
 				}
@@ -46,11 +46,11 @@ namespace sh
 			virtual void Init() override;
 
 			// GLES 2 - specific interface
-			void SetGLId(int id);
+			void SetGLId(s32 id);
 
 		private:
-			int m_glID;
-			unsigned int m_shaderProgramId;
+			s32 m_glID;
+			u32 m_shaderProgramId;
 		};
 
 		/////////////////////////////////////////////////////////////////////////////////
@@ -68,15 +68,15 @@ namespace sh
 		}
 
 		template <typename T>
-		inline void GLES20Uniform<T>::SetGLId(int id)
+		inline void GLES20Uniform<T>::SetGLId(s32 id)
 		{
 			m_shaderProgramId = id;
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		typedef GLES20Uniform<float> GLES20UniformFloat;
-		typedef GLES20Uniform<int> GLES20UniformInt;
+		typedef GLES20Uniform<f32> GLES20UniformFloat;
+		typedef GLES20Uniform<s32> GLES20UniformInt;
 	}
 }
 

@@ -20,17 +20,17 @@ namespace sh
 			virtual void SetType(Texture::Type type) override;
 
 			// GLES 2 - specific interface
-			void SetGLId(int id);
+			void SetGLId(s32 id);
 
 		private:
-			int m_glID;
-			unsigned int m_shaderProgramId;
+			s32 m_glID;
+			u32 m_shaderProgramId;
 
-			unsigned int m_glType;
-			int m_glTilingU;
-			int m_glTilingV;
-			int m_glMagFilter;
-			int m_glMinFilter;
+			u32 m_glType;
+			s32 m_glTilingU;
+			s32 m_glTilingV;
+			s32 m_glMagFilter;
+			s32 m_glMinFilter;
 		};
 
 		inline void GLES20Sampler::SetGLId(int id)

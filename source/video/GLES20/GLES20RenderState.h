@@ -20,8 +20,8 @@ namespace sh
 			virtual void SetLineWidth(float lineWidth) override;
 
 		private:
-			GLenum m_glFrontFace;
-			GLenum m_glCullFace;
+			u32 m_glFrontFace;
+			u32 m_glCullFace;
 		};
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////

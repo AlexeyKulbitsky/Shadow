@@ -11,10 +11,10 @@ namespace sh
 	{
 		struct GLES20VertexAttribute
 		{
-			GLuint index;
-			GLint size;
-			GLenum type;
-			const GLvoid* pointer;
+			u32 index;
+			s32 size;
+			u32 type;
+			const void* pointer;
 
 			AttributeSemantic semantic;
 			std::string name;
@@ -33,7 +33,7 @@ namespace sh
 				for (size_t i = 0; i < attributes.size(); ++i)
 				{
 					Attribute* attr = declatarion.GetAttribute(attributes[i].semantic);
-					const GLvoid* tempPointer = (const GLvoid*)(attr->offset);
+					const void* tempPointer = (const void*)(attr->offset);
 					attributes[i].pointer = tempPointer;
 				}
 				stride = declatarion.GetStride();
@@ -54,7 +54,7 @@ namespace sh
 
 		private:
 			std::vector<GLES20VertexAttribute> attributes;
-			GLsizei stride = 0;
+			s32 stride = 0;
 		};
 	}
 }

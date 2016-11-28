@@ -41,7 +41,7 @@ namespace sh
 			GLES20RenderState* GetGLRenderState() { return m_renderState; }
 			GLES20ShaderProgram* GetGLShaderProgram() { return m_shaderProgram; }
 			GLES20VertexDeclaration* GetGLVertexInputDeclaration() { return &m_inputDeclaration; }
-			unsigned int GetGLTopology() const { return m_glTopology; }
+			u32 GetGLTopology() const { return m_glTopology; }
 
 		private:
 			bool m_useIndices;
@@ -52,7 +52,7 @@ namespace sh
 			GLES20ShaderProgram* m_shaderProgram;
 			GLES20VertexDeclaration m_inputDeclaration;
 			Topology m_topology;
-			unsigned int m_glTopology;
+			u32 m_glTopology;
 		};
 	}
 }

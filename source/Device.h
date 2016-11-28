@@ -20,6 +20,8 @@ namespace sh
 		Device(const CreationParameters &parameters);	
 		virtual ~Device();
 
+		virtual bool Run() = 0;
+
 		virtual SHADOW_API video::Driver* SH_CALLCONV GetDriver() { return m_driver; }
 
 		static void SetInstance(Device* instance) { m_instance = instance; }
@@ -29,6 +31,7 @@ namespace sh
 		CreationParameters m_creationParameters;
 		video::GLContextManager *m_GLContextManager = nullptr;
 		video::Driver *m_driver = nullptr;
+		bool m_needsToClose = false;
 
 	private:
 		static Device* m_instance;

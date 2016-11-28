@@ -17,6 +17,8 @@ namespace sh
 		explicit Win32Device(const CreationParameters &parameters);
 		virtual ~Win32Device();
 
+		virtual bool Run() override;
+
 		bool CreateDriver();
 	private:
 		HWND m_hwnd;

@@ -21,11 +21,11 @@ namespace sh
 
 			virtual void SetIndexType(IndexType indexType) override;
 
-			unsigned int GetGLId() const { return m_glID; }
-			unsigned int GetGLIndexType() const { return m_glIndexType; }
+			u32 GetGLId() const { return m_glID; }
+			u32 GetGLIndexType() const { return m_glIndexType; }
 		private:
-			unsigned int m_glID = 0U;
-			unsigned int m_glIndexType;
+			u32 m_glID = 0U;
+			u32 m_glIndexType;
 		};
 	}
 }

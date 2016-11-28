@@ -12,6 +12,29 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
+	case WM_LBUTTONDOWN:
+	{
+		int x = LOWORD(lParam);
+		int y = HIWORD(lParam);
+		printf("LMB down, pos: x=%d y=%d\n", x, y);		
+	}
+		break;
+
+	case WM_LBUTTONUP:
+	{
+		int x = LOWORD(lParam);
+		int y = HIWORD(lParam);
+		printf("LMB up, pos: x=%d y=%d\n", x, y);		
+	}
+		break;
+	case WM_MOUSEMOVE:
+	{
+		bool isShiftPressed = (LOWORD(wParam) & MK_SHIFT) != 0;
+		int x = LOWORD(lParam);
+		int y = HIWORD(lParam);
+		printf("Mouse move, pos: x=%d y=%d\n", x, y);
+	}
+		break;
 	case WM_PAINT:
 	{
 
@@ -30,7 +53,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 	case WM_SIZE:
 	{
-
+					printf("Resize");
 	}
 	return 0;
 
@@ -156,6 +179,40 @@ Win32Device::Win32Device(const CreationParameters &parameters)
 Win32Device::~Win32Device()
 {
 
+}
+
+////////////////////////////////////////////////////////////////////////
+
+bool Win32Device::Run()
+{
+
+	MSG msg;
+	bool done, result;
+
+
+	// Initialize the message structure.
+	ZeroMemory(&msg, sizeof(MSG));
+
+	// Loop until there is a quit message from the window or the user.
+	done = false;
+	//while (!done)
+	{
+		// Handle the windows messages.
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+
+		// If windows signals to end the application then exit out.
+		if (msg.message == WM_QUIT)
+		{
+			m_needsToClose = true;
+			//done = true;
+		}
+	}
+
+	return !m_needsToClose;
 }
 
 ////////////////////////////////////////////////////////////////////////

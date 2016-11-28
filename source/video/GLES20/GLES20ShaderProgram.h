@@ -30,12 +30,12 @@ namespace sh
 			void LoadUniforms(const pugi::xml_node &node);
 			void LoadAttributes(const pugi::xml_node &node);
 			void LoadSamplers(const pugi::xml_node &node);
-			GLuint CompileShader(GLenum shaderType, const c8* source);
+			u32 CompileShader(u32 shaderType, const c8* source);
 			
 		private:
-			GLuint m_programID;
-			GLuint m_vertexShaderID;
-			GLuint m_fragmentShaderID;
+			u32 m_programID;
+			u32 m_vertexShaderID;
+			u32 m_fragmentShaderID;
 
 			GLES20VertexDeclaration m_vertexDeclaration;		
 		};

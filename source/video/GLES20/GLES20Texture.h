@@ -20,12 +20,12 @@ namespace sh
 			virtual void SetFiltering(Filtering filtering) override;
 
 			// GLES interface
-			unsigned int GetGLId() const { return m_glID; }
-			unsigned int GetGLType() const { return m_glType; }
+			u32 GetGLId() const { return m_glID; }
+			u32 GetGLType() const { return m_glType; }
 
 		private:
-			GLuint m_glID = 0U;
-			GLenum m_glType = GL_TEXTURE_2D;
+			u32 m_glID = 0U;
+			u32 m_glType = GL_TEXTURE_2D;
 		};
 	}
 }

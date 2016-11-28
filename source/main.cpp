@@ -56,8 +56,8 @@ int main()
 	}
 
 	if (device)
-	{		
-		while (true)
+	{
+		while (device->Run())
 		{
 			driver->BeginRendering();
 

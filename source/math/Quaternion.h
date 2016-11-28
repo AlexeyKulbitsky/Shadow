@@ -18,7 +18,13 @@ namespace sh
 			Quaternion(const Quaternion<T>& v) : x(v.x), y(v.y), z(v.z), w(v.w) {}
 			Quaternion(const Vector3<T>& axis, T angle)
 			{
-
+				T halfAngle = angle / 2;
+				T cosA = Cos(halfAngle);
+				T sinA = Sin(halfAngle);
+				x = axis.x * sinA;
+				y = axis.y * sinA;
+				z = axis.z * sinA;
+				w = cosA;
 			}
 
 		};

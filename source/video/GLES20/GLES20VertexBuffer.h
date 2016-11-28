@@ -21,7 +21,7 @@ namespace sh
 
 			unsigned int GetGLId() const { return m_glID; }
 		private:
-			unsigned int m_glID = 0U;
+			u32 m_glID = 0U;
 		};
 	}
 }
