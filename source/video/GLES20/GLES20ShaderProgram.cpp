@@ -143,6 +143,19 @@ void GLES20ShaderProgram::Load(const pugi::xml_node &node)
 
 ///////////////////////////////////////////////////////////////////////
 
+ShaderProgram* GLES20ShaderProgram::Clone()
+{
+	GLES20ShaderProgram* result = new GLES20ShaderProgram();
+	result->m_fragmentShaderID = m_fragmentShaderID;
+	result->m_vertexShaderID = m_vertexShaderID;
+	result->m_programID = m_programID;
+	result->m_vertexDeclaration = m_vertexDeclaration;
+	result->m_uniformBuffer = m_uniformBuffer->Clone();
+	return result;
+}
+
+///////////////////////////////////////////////////////////////////////
+
 void GLES20ShaderProgram::Unload()
 {
 	glDeleteShader(m_vertexShaderID);
@@ -202,7 +215,9 @@ void GLES20ShaderProgram::LoadUniforms(const pugi::xml_node &node)
 			}
 			else if (typeName == "int")
 			{
-				uniform = new GLES20UniformInt(0);
+				GLES20UniformInt *glesUniform = new GLES20UniformInt(0);
+				glesUniform->SetGLId(m_programID);
+				uniform = glesUniform;
 				if (valAttr)
 				{
 					int value = valAttr.as_int();
@@ -210,6 +225,48 @@ void GLES20ShaderProgram::LoadUniforms(const pugi::xml_node &node)
 					uniform->Set(value);
 				}
 			}
+			else if (typeName == "vec2")
+			{
+				GLES20UniformVector2f *glesUniform = new GLES20UniformVector2f(sh::math::Vector2f(0.0f));
+				glesUniform->SetGLId(m_programID);
+				uniform = glesUniform;
+				if (valAttr)
+				{
+
+				}
+			}
+			else if (typeName == "vec3")
+			{
+				GLES20UniformVector3f *glesUniform = new GLES20UniformVector3f(sh::math::Vector3f(0.0f));
+				glesUniform->SetGLId(m_programID);
+				uniform = glesUniform;
+				if (valAttr)
+				{
+
+				}
+			}
+			else if (typeName == "vec4")
+			{
+				GLES20UniformVector4f *glesUniform = new GLES20UniformVector4f(sh::math::Vector4f(0.0f));
+				glesUniform->SetGLId(m_programID);
+				uniform = glesUniform;
+				if (valAttr)
+				{
+
+				}
+			}
+			else if (typeName == "mat4")
+			{
+				GLES20UniformMatrix4f *glesUniform = new GLES20UniformMatrix4f(sh::math::Matrix4f());
+				glesUniform->SetGLId(m_programID);
+				uniform = glesUniform;
+				if (valAttr)
+				{
+
+				}
+			}
+
+
 			printf("\n");
 
 			uniform->SetName(name);

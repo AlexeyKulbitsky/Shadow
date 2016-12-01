@@ -10,6 +10,7 @@
 
 <uniforms>
 	<uniform name="uniA" type="float" val="1.0"/>
+	<uniform name="matMVP" type="mat4" val="mvp"/>
 </uniforms>
 
 <samplers>
@@ -31,12 +32,14 @@
 	attribute vec3 aColor;
 	attribute vec2 aUV;
 
+	uniform mat4 matMVP;
+
 	varying vec3 vColor;
 	varying vec2 vUV;
 
 	void main() 
 	{
-		gl_Position = vec4(aPosition, 1.0);
+		gl_Position = matMVP * vec4(aPosition, 1.0);
 		vColor = aColor;
 		vUV = aUV;
 	}
@@ -57,7 +60,7 @@
 	
 	void main() 
 	{
-		vec4 col = texture2D(testSample, vUV);
+		vec3 col = texture2D(testSample, vUV).xyz * uniA;
 		gl_FragColor = vec4(col.xyz, 1.0);
 	} 
 	

@@ -1,12 +1,55 @@
 #ifndef SHADOW_CAMERA_INCLUDE
 #define SHADOW_CAMERA_INCLUDE
 
-#include "../math/smath.h"
+#include "../Globals.h"
 
 namespace sh
 {
 	namespace scene
 	{
+		class Camera
+		{
+		public:
+			Camera();
+			~Camera();
+
+			void SetPosition(const math::Vector3f& pos);
+			const math::Vector3f& GetPosition() const { return m_position; }
+
+			void SetRotation(const math::Quaternionf& rot);
+			const math::Quaternionf& GetRotation() const { return m_rotation; }
+
+			void SetProjection(f32 fov, f32 aspect, f32 nearP, f32 farP);
+
+			const math::Matrix4f& GetViewMatrix();
+			const math::Matrix4f& GetProjectionMatrix();
+			const math::Matrix4f& GetViewProjectionMatrix();
+
+			const math::Vector3f& GetFrontVector() const { return m_frontVector; }
+			const math::Vector3f& GetRightVector() const { return m_rightVector; }
+			const math::Vector3f& GetUpVector() const { return m_upVector; }
+
+
+		protected:
+			math::Vector3f m_position;
+			math::Quaternionf m_rotation;
+
+			f32 m_fovy;
+			f32 m_nearDistance;
+			f32 m_farDistance;
+			f32 m_aspectRatio;
+
+			math::Matrix4f m_projectionMatrix;
+			math::Matrix4f m_viewMatrix;
+			math::Matrix4f m_viewProjectionMatrix;
+
+			math::Vector3f m_frontVector;
+			math::Vector3f m_upVector;
+			math::Vector3f m_rightVector;
+
+			bool m_needsToRecalculateViewMatrix;
+			bool m_needsToRecalculateProjectionMatrix;
+		};
 		/*
 		class Camera
 		{

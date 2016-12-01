@@ -2,6 +2,7 @@
 #define SHADOW_MATRIX4_INCLUDE
 
 #include "Vector4.h"
+#include "Matrix3.h"
 
 namespace sh
 {
@@ -11,9 +12,10 @@ namespace sh
 		struct Matrix4
 		{
 			T m[16];
-
+			
+			
 			Matrix4()
-			{
+			{				
 			}
 
 			explicit Matrix4(T value)
@@ -26,137 +28,167 @@ namespace sh
 			}
 			Matrix4(const Matrix4<T>& other)
 			{
-				m[0] = other.m[0]; m[1] = other.m[1]; m[2] = other.m[2]; m[3] = other.m[3];
-				m[4] = other.m[4]; m[5] = other.m[5]; m[6] = other.m[6]; m[7] = other.m[7];
-				m[8] = other.m[8]; m[9] = other.m[9]; m[10] = other.m[10]; m[11] = other.m[11];
-				m[12] = other.m[12]; m[13] = other.m[13]; m[14] = other.m[14]; m[15] = other.m[15];
+				operator=(other);
+			}
+
+			Matrix4(const Matrix3<T>& other)
+			{
+				operator=(other);
 			}
 
 			Matrix4<T>& operator=(const Matrix4<T>& other)
 			{
-				m[0] = other.m[0]; m[1] = other.m[1]; m[2] = other.m[2]; m[3] = other.m[3];
-				m[4] = other.m[4]; m[5] = other.m[5]; m[6] = other.m[6]; m[7] = other.m[7];
-				m[8] = other.m[8]; m[9] = other.m[9]; m[10] = other.m[10]; m[11] = other.m[11];
-				m[12] = other.m[12]; m[13] = other.m[13]; m[14] = other.m[14]; m[15] = other.m[15];
+				m[0] = other.m[0];
+				m[1] = other.m[1];
+				m[2] = other.m[2];
+				m[3] = other.m[3];
+
+				m[4] = other.m[4];
+				m[5] = other.m[5];
+				m[6] = other.m[6];
+				m[7] = other.m[7];
+
+				m[8] = other.m[8];
+				m[9] = other.m[9];
+				m[10] = other.m[10];
+				m[11] = other.m[11];
+
+				m[12] = other.m[12];
+				m[13] = other.m[13];
+				m[14] = other.m[14];
+				m[15] = other.m[15];
+
+				return *this;
+			}
+
+			Matrix4<T>& operator=(const Matrix3<T>& other)
+			{
+				m[0] = other.m[0];
+				m[1] = other.m[1];
+				m[2] = other.m[2];
+				m[3] = (T)0;
+
+				m[4] = other.m[3];
+				m[5] = other.m[4];
+				m[6] = other.m[5];
+				m[7] = (T)0;
+
+				m[8] = other.m[6];
+				m[9] = other.m[7];
+				m[10] = other.m[8];
+				m[11] = (T)0;
+
+				m[12] = (T)0;
+				m[13] = (T)0;
+				m[14] = (T)0;
+				m[15] = (T)1;
+
 				return *this;
 			}
 
 			Matrix4<T> operator*(const Matrix4<T>& other) const
 			{
-				Matrix4<T> result;
+				Matrix4<T> r;
 
-				result.m[0] = m[0] * other.m[0] + m[4] * other.m[1] + m[8] * other.m[2] + m[12] * other.m[3];
-				result.m[1] = m[1] * other.m[0] + m[5] * other.m[1] + m[9] * other.m[2] + m[13] * other.m[3];
-				result.m[2] = m[2] * other.m[0] + m[6] * other.m[1] + m[10] * other.m[2] + m[14] * other.m[3];
-				result.m[3] = m[3] * other.m[0] + m[7] * other.m[1] + m[11] * other.m[2] + m[15] * other.m[3];
+				const T* m1 = m;
+				const T* m2 = other.m;
+				T* m3 = r.m;
 
-				result.m[4] = m[0] * other.m[4] + m[4] * other.m[5] + m[8] * other.m[6] + m[12] * other.m[7];
-				result.m[5] = m[1] * other.m[4] + m[5] * other.m[5] + m[9] * other.m[6] + m[13] * other.m[7];
-				result.m[6] = m[2] * other.m[4] + m[6] * other.m[5] + m[10] * other.m[6] + m[14] * other.m[7];
-				result.m[7] = m[3] * other.m[4] + m[7] * other.m[5] + m[11] * other.m[6] + m[15] * other.m[7];
+				// using this code only on release and when on the iphone
+				m3[0] = m1[0] * m2[0] + m1[4] * m2[1] + m1[8] * m2[2] + m1[12] * m2[3];
+				m3[1] = m1[1] * m2[0] + m1[5] * m2[1] + m1[9] * m2[2] + m1[13] * m2[3];
+				m3[2] = m1[2] * m2[0] + m1[6] * m2[1] + m1[10] * m2[2] + m1[14] * m2[3];
+				m3[3] = m1[3] * m2[0] + m1[7] * m2[1] + m1[11] * m2[2] + m1[15] * m2[3];
 
-				result.m[8] = m[0] * other.m[8] + m[4] * other.m[9] + m[8] * other.m[10] + m[12] * other.m[11];
-				result.m[9] = m[1] * other.m[8] + m[5] * other.m[9] + m[9] * other.m[10] + m[13] * other.m[11];
-				result.m[10] = m[2] * other.m[8] + m[6] * other.m[9] + m[10] * other.m[10] + m[14] * other.m[11];
-				result.m[11] = m[3] * other.m[8] + m[7] * other.m[9] + m[11] * other.m[10] + m[15] * other.m[11];
+				m3[4] = m1[0] * m2[4] + m1[4] * m2[5] + m1[8] * m2[6] + m1[12] * m2[7];
+				m3[5] = m1[1] * m2[4] + m1[5] * m2[5] + m1[9] * m2[6] + m1[13] * m2[7];
+				m3[6] = m1[2] * m2[4] + m1[6] * m2[5] + m1[10] * m2[6] + m1[14] * m2[7];
+				m3[7] = m1[3] * m2[4] + m1[7] * m2[5] + m1[11] * m2[6] + m1[15] * m2[7];
 
-				result.m[12] = m[0] * other.m[12] + m[4] * other.m[13] + m[8] * other.m[14] + m[12] * other.m[15];
-				result.m[13] = m[1] * other.m[12] + m[5] * other.m[13] + m[9] * other.m[14] + m[13] * other.m[15];
-				result.m[14] = m[2] * other.m[12] + m[6] * other.m[13] + m[10] * other.m[14] + m[14] * other.m[15];
-				result.m[15] = m[3] * other.m[12] + m[7] * other.m[13] + m[11] * other.m[14] + m[15] * other.m[15];
+				m3[8] = m1[0] * m2[8] + m1[4] * m2[9] + m1[8] * m2[10] + m1[12] * m2[11];
+				m3[9] = m1[1] * m2[8] + m1[5] * m2[9] + m1[9] * m2[10] + m1[13] * m2[11];
+				m3[10] = m1[2] * m2[8] + m1[6] * m2[9] + m1[10] * m2[10] + m1[14] * m2[11];
+				m3[11] = m1[3] * m2[8] + m1[7] * m2[9] + m1[11] * m2[10] + m1[15] * m2[11];
 
-				return result;
+				m3[12] = m1[0] * m2[12] + m1[4] * m2[13] + m1[8] * m2[14] + m1[12] * m2[15];
+				m3[13] = m1[1] * m2[12] + m1[5] * m2[13] + m1[9] * m2[14] + m1[13] * m2[15];
+				m3[14] = m1[2] * m2[12] + m1[6] * m2[13] + m1[10] * m2[14] + m1[14] * m2[15];
+				m3[15] = m1[3] * m2[12] + m1[7] * m2[13] + m1[11] * m2[14] + m1[15] * m2[15];
+				
+				return r;
 			}
-
-			Matrix4<T>& operator*=(const Matrix4<T>& other)
-			{
-				m[0] = m[0] * other.m[0] + m[1] * other.m[4] + m[2] * other.m[8] + m[3] * other.m[12];
-				m[1] = m[0] * other.m[1] + m[1] * other.m[5] + m[2] * other.m[9] + m[3] * other.m[13];
-				m[2] = m[0] * other.m[2] + m[1] * other.m[6] + m[2] * other.m[10] + m[3] * other.m[14];
-				m[3] = m[0] * other.m[3] + m[1] * other.m[7] + m[2] * other.m[11] + m[3] * other.m[15];
-
-				m[4] = m[4] * other.m[0] + m[5] * other.m[4] + m[6] * other.m[8] + m[7] * other.m[12];
-				m[5] = m[4] * other.m[1] + m[5] * other.m[5] + m[6] * other.m[9] + m[7] * other.m[13];
-				m[6] = m[4] * other.m[2] + m[5] * other.m[6] + m[6] * other.m[10] + m[7] * other.m[14];
-				m[7] = m[4] * other.m[3] + m[5] * other.m[7] + m[6] * other.m[11] + m[7] * other.m[15];
-
-				m[8] = m[8] * other.m[0] + m[9] * other.m[4] + m[10] * other.m[8] + m[11] * other.m[12];
-				m[9] = m[8] * other.m[1] + m[9] * other.m[5] + m[10] * other.m[9] + m[11] * other.m[13];
-				m[10] = m[8] * other.m[2] + m[9] * other.m[6] + m[10] * other.m[10] + m[11] * other.m[14];
-				m[11] = m[8] * other.m[3] + m[9] * other.m[7] + m[10] * other.m[11] + m[11] * other.m[15];
-
-				m[12] = m[12] * other.m[0] + m[13] * other.m[4] + m[14] * other.m[8] + m[15] * other.m[12];
-				m[13] = m[12] * other.m[1] + m[13] * other.m[5] + m[14] * other.m[9] + m[15] * other.m[13];
-				m[14] = m[12] * other.m[2] + m[13] * other.m[6] + m[14] * other.m[10] + m[15] * other.m[14];
-				m[15] = m[12] * other.m[3] + m[13] * other.m[7] + m[14] * other.m[11] + m[15] * other.m[15];
-
-				return *this;
-			}
-
-			Vector4<T> operator*(const Vector4<T>& v)
-			{
-				return Vector4<T>
-					(
-						m[0] * v.x + m[1] * v.y + m[2] * v.z + m[3] * v.w,
-						m[4] * v.x + m[5] * v.y + m[6] * v.z + m[7] * v.w,
-						m[8] * v.x + m[9] * v.y + m[10] * v.z + m[11] * v.w,
-						m[12] * v.x + m[13] * v.y + m[14] * v.z + m[15] * v.w
-					);
-			}
+			
 
 			Matrix4<T> operator+(const Matrix4<T>& other) const
 			{
-				Matrix4<T> result;
+				Matrix4<T> r;
 
-				result.m[0] = m[0] + other[0];
-				result.m[1] = m[1] + other[1];
-				result.m[2] = m[2] + other[2];
-				result.m[3] = m[3] + other[3];
-				result.m[4] = m[4] + other[4];
-				result.m[5] = m[5] + other[5];
-				result.m[6] = m[6] + other[6];
-				result.m[7] = m[7] + other[7];
-				result.m[8] = m[8] + other[8];
-				result.m[9] = m[9] + other[9];
-				result.m[10] = m[10] + other[10];
-				result.m[11] = m[11] + other[11];
-				result.m[12] = m[12] + other[12];
-				result.m[13] = m[13] + other[13];
-				result.m[14] = m[14] + other[14];
-				result.m[15] = m[15] + other[15];
+				r[0] = m[0] + other[0];
+				r[1] = m[1] + other[1];
+				r[2] = m[2] + other[2];
+				r[3] = m[3] + other[3];
+				r[4] = m[4] + other[4];
+				r[5] = m[5] + other[5];
+				r[6] = m[6] + other[6];
+				r[7] = m[7] + other[7];
+				r[8] = m[8] + other[8];
+				r[9] = m[9] + other[9];
+				r[10] = m[10] + other[10];
+				r[11] = m[11] + other[11];
+				r[12] = m[12] + other[12];
+				r[13] = m[13] + other[13];
+				r[14] = m[14] + other[14];
+				r[15] = m[15] + other[15];
 
-				return result;
+				return r;
 			}
 
 			Matrix4<T> operator-(const Matrix4<T>& other) const
 			{
-				Matrix4<T> result;
-				result.m[0] = m[0] - other[0];
-				result.m[1] = m[1] - other[1];
-				result.m[2] = m[2] - other[2];
-				result.m[3] = m[3] - other[3];
-				result.m[4] = m[4] - other[4];
-				result.m[5] = m[5] - other[5];
-				result.m[6] = m[6] - other[6];
-				result.m[7] = m[7] - other[7];
-				result.m[8] = m[8] - other[8];
-				result.m[9] = m[9] - other[9];
-				result.m[10] = m[10] - other[10];
-				result.m[11] = m[11] - other[11];
-				result.m[12] = m[12] - other[12];
-				result.m[13] = m[13] - other[13];
-				result.m[14] = m[14] - other[14];
-				result.m[15] = m[15] - other[15];
-				return result;
+				Matrix4 r;
+				r[0] = m[0] - other[0];
+				r[1] = m[1] - other[1];
+				r[2] = m[2] - other[2];
+				r[3] = m[3] - other[3];
+				r[4] = m[4] - other[4];
+				r[5] = m[5] - other[5];
+				r[6] = m[6] - other[6];
+				r[7] = m[7] - other[7];
+				r[8] = m[8] - other[8];
+				r[9] = m[9] - other[9];
+				r[10] = m[10] - other[10];
+				r[11] = m[11] - other[11];
+				r[12] = m[12] - other[12];
+				r[13] = m[13] - other[13];
+				r[14] = m[14] - other[14];
+				r[15] = m[15] - other[15];
+
+				return r;
 			}
 
 			void SetIdentity()
 			{
-				m[0] = (T)1; m[1] = (T)0; m[2] = (T)0; m[3] = (T)0;
-				m[4] = (T)0; m[5] = (T)1; m[6] = (T)0; m[7] = (T)0;
-				m[8] = (T)0; m[9] = (T)0; m[10] = (T)1; m[11] = (T)0;
-				m[12] = (T)0; m[13] = (T)0; m[14] = (T)0; m[15] = (T)1;
+				m[0] = (T)1;
+				m[1] = (T)0;
+				m[2] = (T)0;
+				m[3] = (T)0;
+
+				m[4] = (T)0;
+				m[5] = (T)1;
+				m[6] = (T)0;
+				m[7] = (T)0;
+
+				m[8] = (T)0;
+				m[9] = (T)0;
+				m[10] = (T)1;
+				m[11] = (T)0;
+
+				m[12] = (T)0;
+				m[13] = (T)0;
+				m[14] = (T)0;
+				m[15] = (T)1;
 			}
+
 
 			Matrix4<T>& Transpose()
 			{
@@ -171,14 +203,9 @@ namespace sh
 
 			Matrix4<T> GetTransposed() const
 			{
-				Matrix4<T> result;
-
-				result.m[0] = m[0]; result.m[1] = m[4]; result.m[2] = m[8]; result.m[3] = m[12];
-				result.m[4] = m[1]; result.m[5] = m[5]; result.m[6] = m[9]; result.m[7] = m[13];
-				result.m[8] = m[2]; result.m[9] = m[6]; result.m[10] = m[10]; result.m[11] = m[14];
-				result.m[12] = m[3]; result.m[13] = m[7]; result.m[14] = m[11]; result.m[15] = m[15];
-
-				return result;
+				Matrix4<T> r(*this);
+				r.Transpose();
+				return res;
 			}
 
 			void SetScale(const Vector3<T>& scale)
@@ -203,11 +230,11 @@ namespace sh
 			Vector3<T> GetTranslation() const
 			{
 				return Vector3<T>(m[12], m[13], m[14]);
-			}
+			}			
 
 			void SetPerspective(T fovy, T aspect, T zNear, T zFar)
 			{
-				T tanFov = Tan(fovy / static_cast<T>2);
+				const T tanFov = Tan(fovy / static_cast<T>(2));
 
 				m[0] = 1 / (aspect * tanFov);
 				m[1] = 0;
@@ -221,15 +248,16 @@ namespace sh
 
 				m[8] = 0;
 				m[9] = 0;
-				m[10] = T(-1) * (zFar + zNear) / (zFar - zNear);
-				m[11] = T(-1) * (T(2) * zFar * zNear) / (zFar - zNear);
+				m[10] = -(zFar + zNear) / (zFar - zNear);
+				m[11] = -1;
 
 				m[12] = 0;
 				m[13] = 0;
-				m[14] = -1;
+				m[14] = -(2 * zFar*zNear) / (zFar - zNear);
 				m[15] = 0;
 			}
 
+			/*
 			void SetOrtho(T leftP, T rightP, T bottomP, T topP, T nearP, T farP)
 			{
 				m.m[0] = 2 / (rightP - leftP);
@@ -252,6 +280,7 @@ namespace sh
 				m.m[14] = 0;
 				m.m[15] = 1;
 			}
+			*/
 		};
 	}
 }

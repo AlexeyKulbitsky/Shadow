@@ -19,6 +19,7 @@ namespace sh
 			GLES20ShaderProgram();
 			virtual void Load(const char* filename) override;
 			virtual void Load(const pugi::xml_node &node) override;
+			virtual ShaderProgram* Clone() override;
 			virtual void Unload() override;
 			virtual void BindProgram() override;
 			virtual void UnbindProgram() override;

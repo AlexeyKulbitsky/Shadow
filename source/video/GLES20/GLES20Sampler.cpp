@@ -30,6 +30,21 @@ namespace sh
 			m_glID = glGetUniformLocation(m_shaderProgramId, m_name.c_str());
 		}
 
+		Sampler* GLES20Sampler::Clone()
+		{
+			GLES20Sampler* result = new GLES20Sampler(m_shaderProgramId);
+			result->m_filtering = m_filtering;
+			result->m_glID = m_glID;
+			result->m_glMagFilter = m_glMagFilter;
+			result->m_glMinFilter = m_glMinFilter;
+			result->m_glTilingU = m_glTilingU;
+			result->m_glTilingV = m_glTilingV;
+			result->m_glType = m_glType;
+			result->m_name = m_name;
+			result->m_type = m_type;
+			return result;
+		}
+
 		void GLES20Sampler::SetFiltering(Texture::Filtering filtering)
 		{
 			Sampler::SetFiltering(filtering);

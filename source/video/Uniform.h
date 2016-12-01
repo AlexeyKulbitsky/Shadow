@@ -3,6 +3,7 @@
 
 #include <string>
 #include "../pempek_assert.h"
+#include "../Globals.h"
 
 namespace sh
 {
@@ -17,6 +18,8 @@ namespace sh
 				INT,
 				VEC2,
 				VEC3,
+				VEC4,
+				MAT4,
 				UNKNOWN
 			};
 
@@ -41,9 +44,11 @@ namespace sh
 			}
 
 			void SetName(const std::string& name) { m_name = name; }
+			const std::string& GetName() const { return m_name; }
 
 			virtual void Load() = 0;
 			virtual void Init() = 0;
+			virtual Uniform* Clone() = 0;
 
 		private:
 			class UniformPlaceHolder
@@ -93,6 +98,34 @@ namespace sh
 		inline Uniform::Uniform(const int& value)
 			: m_placeHolder(new UniformHolder<int>(value))
 			, m_type(Type::INT)
+		{
+		}
+
+		template<>
+		inline Uniform::Uniform(const math::Vector2f& value)
+			: m_placeHolder(new UniformHolder<math::Vector2f>(value))
+			, m_type(Type::VEC2)
+		{
+		}
+
+		template<>
+		inline Uniform::Uniform(const math::Vector3f& value)
+			: m_placeHolder(new UniformHolder<math::Vector3f>(value))
+			, m_type(Type::VEC3)
+		{
+		}
+
+		template<>
+		inline Uniform::Uniform(const math::Vector4f& value)
+			: m_placeHolder(new UniformHolder<math::Vector4f>(value))
+			, m_type(Type::VEC4)
+		{
+		}
+
+		template<>
+		inline Uniform::Uniform(const math::Matrix4f& value)
+			: m_placeHolder(new UniformHolder<math::Matrix4f>(value))
+			, m_type(Type::MAT4)
 		{
 		}
 	}

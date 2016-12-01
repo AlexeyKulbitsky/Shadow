@@ -1,6 +1,7 @@
 #include "RenderPass.h"
 #include "ShaderProgram.h"
 #include "UniformBuffer.h"
+#include "RenderState.h"
 #include "../Device.h"
 
 namespace sh
@@ -17,6 +18,14 @@ namespace sh
 		RenderPass::~RenderPass()
 		{
 
+		}
+
+		RenderPass* RenderPass::Clone()
+		{
+			RenderPass* result = new RenderPass();
+			result->m_shaderProgram = m_shaderProgram->Clone();
+			//result->m_renderState = m_renderState->Clone();
+			return result;
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////

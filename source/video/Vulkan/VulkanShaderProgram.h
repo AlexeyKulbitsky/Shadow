@@ -22,6 +22,7 @@ namespace sh
 			virtual ~VulkanShaderProgram();
 
 			virtual void Load(const char* filename) override;
+			virtual ShaderProgram* Clone() override;
 			virtual void Unload() override;
 			virtual void BindProgram() override;
 			virtual void UnbindProgram() override;

@@ -21,6 +21,7 @@ GLES20Driver::GLES20Driver(EGLContextManager* contextManager)
 
 bool GLES20Driver::Init()
 {
+	glEnable(GL_DEPTH_TEST);
 	return false; 
 }
 
@@ -28,6 +29,7 @@ bool GLES20Driver::Init()
 
 void GLES20Driver::BeginRendering()
 {
+	glEnable(GL_DEPTH_TEST);
 	glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }

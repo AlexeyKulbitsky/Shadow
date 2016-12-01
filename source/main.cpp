@@ -1,6 +1,8 @@
 #include "Shadow.h"
 #include "scene\Mesh.h"
 #include "scene\Model.h"
+#include "scene\SceneManager.h"
+#include "scene\Camera.h"
 #include "scene\ModelLoader\TinyObjModelLoader.h"
 #include <pugixml.hpp>
 #include "GLES20\GLES20ShaderProgram.h"
@@ -17,10 +19,6 @@
 #include <iostream>
 
 
-
-
-
-
 using namespace sh;
 using namespace video;
 
@@ -30,30 +28,17 @@ int main()
 	sh::video::Driver* driver = device->GetDriver();
 
 	sh::scene::ModelLoader* modelLoader = new sh::scene::TinyObjModelLoader();
-	//sh::scene::Model* model = modelLoader->Load("../data/models/nanosuit/nanosuit.obj");
-	sh::scene::Model* model = modelLoader->Load("../data/models/triangle/triangle.obj");
+	sh::scene::ModelLoader::SetInstance(modelLoader);
 
-	sh::video::RenderTechnique* rt = new sh::video::RenderTechnique();
-	rt->Load("../data/shaders/gles20/test.xml");
+	sh::scene::SceneManager* sceneMgr = new sh::scene::SceneManager();
+	device->SetSceneManager(sceneMgr);
+	sceneMgr->LoadScene("../data/scenes/test_scene.xml");
 
-	sh::video::Material* mat = new sh::video::Material();
-	mat->SetRenderTechnique(rt);
+	sh::scene::Camera* camera = new sh::scene::Camera();
+	camera->SetProjection(3.1415926535f / 4.0f, 640.0f / 480.0f, 0.1f, 1000.0f);
+	camera->SetPosition(math::Vector3f(0.0f));
+	sceneMgr->SetCamera(camera);
 
-	sh::video::Texture* texture = driver->CreateTexture();
-	texture->SetType(sh::video::Texture::Type::TEXTURE_2D);
-	texture->Load("../data/textures/statue.jpg");
-	texture->SetFiltering(sh::video::Texture::Filtering::BILINEAR);
-	texture->SetTiling(sh::video::Texture::Tiling::REPEAT, sh::video::Texture::Tiling::REPEAT);
-
-	sh::video::UniformBuffer* uniBuffer = mat->GetRenderTechnique()->GetRenderPass(0)->GetShaderProgram()->GetUniformBuffer();
-	uniBuffer->GetSampler(0)->Set(texture);
-
-	for (size_t i = 0; i < model->GetMeshesCount(); ++i)
-	{
-		sh::scene::Mesh* mesh = model->GetMesh(i);
-		mesh->SetMaterial(mat);
-		mesh->Init();
-	}
 
 	if (device)
 	{
@@ -61,9 +46,7 @@ int main()
 		{
 			driver->BeginRendering();
 
-			//driver->DrawMesh(nullptr);
-
-			model->Render();
+			sceneMgr->Render();
 
 			driver->EndRendering();
 		}

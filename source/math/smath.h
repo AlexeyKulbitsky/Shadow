@@ -2,7 +2,9 @@
 #define SHADOW_MATH_INCLUDE
 
 #include "Vector4.h"
+#include "Matrix3.h"
 #include "Matrix4.h"
+#include "Quaternion.h"
 
 namespace sh
 {
@@ -26,11 +28,23 @@ namespace sh
 		typedef Vector4<float> Vector4f;
 		typedef Vector4<double> Vector4d;
 
+		typedef Matrix3<short> Matrix3s;
+		typedef Matrix3<int> Matrix3i;
+		typedef Matrix3<unsigned int> Matrix3u;
+		typedef Matrix3<float> Matrix3f;
+		typedef Matrix3<double> Matrix3d;
+
 		typedef Matrix4<short> Matrix4s;
 		typedef Matrix4<int> Matrix4i;
 		typedef Matrix4<unsigned int> Matrix4u;
 		typedef Matrix4<float> Matrix4f;
 		typedef Matrix4<double> Matrix4d;
+
+		typedef Quaternion<short> Quaternions;
+		typedef Quaternion<int> Quaternioni;
+		typedef Quaternion<unsigned int> Quaternionu;
+		typedef Quaternion<float> Quaternionf;
+		typedef Quaternion<double> Quaterniond;
 
 	}
 }

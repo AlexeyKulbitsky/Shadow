@@ -18,6 +18,8 @@ namespace sh
 		virtual ~Win32Device();
 
 		virtual bool Run() override;
+		virtual void OnEvent(const Event& e) override;
+		virtual u64 GetTime() override;
 
 		bool CreateDriver();
 	private:

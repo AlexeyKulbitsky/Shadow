@@ -1,9 +1,8 @@
 #ifndef SHADOW_DEVICE_INCLUDE
 #define SHADOW_DEVICE_INCLUDE
 
-#include "Types.h"
-#include "video/GLContext/GLContextManager.h"
 #include "CreationParameters.h"
+#include "Globals.h"
 
 namespace sh
 {
@@ -11,6 +10,11 @@ namespace sh
 	{
 		class GLContextManager;
 		class Driver;
+	}
+
+	namespace scene
+	{
+		class SceneManager;
 	}
 
 	class Device
@@ -21,8 +25,12 @@ namespace sh
 		virtual ~Device();
 
 		virtual bool Run() = 0;
+		virtual void OnEvent(const Event& e) = 0;
+		virtual u64 GetTime() = 0;
 
 		virtual SHADOW_API video::Driver* SH_CALLCONV GetDriver() { return m_driver; }
+		void SetSceneManager(scene::SceneManager* manager) { m_sceneManager = manager; }
+		scene::SceneManager* GetSceneManager() { return m_sceneManager; }
 
 		static void SetInstance(Device* instance) { m_instance = instance; }
 		static Device* GetInstance() { return m_instance; }
@@ -31,6 +39,7 @@ namespace sh
 		CreationParameters m_creationParameters;
 		video::GLContextManager *m_GLContextManager = nullptr;
 		video::Driver *m_driver = nullptr;
+		scene::SceneManager* m_sceneManager = nullptr;
 		bool m_needsToClose = false;
 
 	private:

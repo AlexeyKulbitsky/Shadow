@@ -14,8 +14,10 @@ namespace sh
 		class RenderPass
 		{
 		public:
-			RenderPass();
+			RenderPass();			
 			~RenderPass();
+
+			RenderPass* Clone();
 
 			void Load(const pugi::xml_node &node);
 			ShaderProgram* GetShaderProgram() const { return m_shaderProgram; }

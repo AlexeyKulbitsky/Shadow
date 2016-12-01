@@ -2,6 +2,7 @@
 #define SHADOW_GLES20_SAMPLER_INCLUDE
 
 #include "../Sampler.h"
+#include "../../Types.h"          
 
 namespace sh
 {
@@ -14,6 +15,7 @@ namespace sh
 			virtual void Set(Texture* texture) override;
 			virtual void Load(int textureChannel) override;
 			virtual void Init() override;
+			virtual Sampler* Clone() override;
 
 			virtual void SetFiltering(Texture::Filtering filtering) override;
 			virtual void SetTiling(Texture::Tiling tilingU, Texture::Tiling tilingV) override;

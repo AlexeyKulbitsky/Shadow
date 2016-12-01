@@ -18,11 +18,13 @@ namespace sh
 			virtual void Set(Texture* texture) = 0;
 			virtual void Load(int textureChannel) = 0;
 			virtual void Init() = 0;
+			virtual Sampler* Clone() = 0;
 
 			virtual void SetFiltering(Texture::Filtering filtering);
 			virtual void SetTiling(Texture::Tiling tilingU, Texture::Tiling tilingV);
 			virtual void SetType(Texture::Type type);
 			virtual void SetName(const std::string& name);
+			const std::string& GetName() const { return m_name; }
 
 			Texture::Filtering GetFiltering() const { return m_filtering; }
 			Texture::Tiling GetTilingU() const { return m_tilingU; }

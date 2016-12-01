@@ -2,21 +2,32 @@
 #include "../video/Driver.h"
 #include "../video/GLContext/EGLContextManager.h"
 #include "../video/GLES20/GLES20Driver.h"
-
 #include "../video/Vulkan/VulkanDriver.h"
+#include "../scene/SceneManager.h"
 
 using namespace sh;
 using namespace video;
 
+
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+	Device* device = Device::GetInstance();
+
 	switch (message)
 	{
 	case WM_LBUTTONDOWN:
 	{
 		int x = LOWORD(lParam);
 		int y = HIWORD(lParam);
-		printf("LMB down, pos: x=%d y=%d\n", x, y);		
+
+		Event e;
+		e.type = EventType::MOUSE_INPUT_EVENT;
+		e.mouseEvent.x = x;
+		e.mouseEvent.y = y;
+		e.mouseEvent.type = MouseEventType::LMB_PRESSED;
+		if (device)
+			device->OnEvent(e);
 	}
 		break;
 
@@ -24,7 +35,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 		int x = LOWORD(lParam);
 		int y = HIWORD(lParam);
-		printf("LMB up, pos: x=%d y=%d\n", x, y);		
+
+		Event e;
+		e.type = EventType::MOUSE_INPUT_EVENT;
+		e.mouseEvent.x = x;
+		e.mouseEvent.y = y;
+		e.mouseEvent.type = MouseEventType::LMB_RELEASED;
+		if (device)
+			device->OnEvent(e);
 	}
 		break;
 	case WM_MOUSEMOVE:
@@ -32,28 +50,50 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		bool isShiftPressed = (LOWORD(wParam) & MK_SHIFT) != 0;
 		int x = LOWORD(lParam);
 		int y = HIWORD(lParam);
-		printf("Mouse move, pos: x=%d y=%d\n", x, y);
+
+		Event e;
+		e.type = EventType::MOUSE_INPUT_EVENT;
+		e.mouseEvent.x = x;
+		e.mouseEvent.y = y;
+		e.mouseEvent.type = MouseEventType::MOVED;
+		if (device)
+			device->OnEvent(e);
 	}
 		break;
 	case WM_PAINT:
-	{
-
-	}
-	return 0;
+		break;
 
 	case WM_ERASEBKGND:
-		return 0;
+		break;
 
 	case WM_SYSKEYDOWN:
+		break;
 	case WM_SYSKEYUP:
+		break;
 	case WM_KEYDOWN:
+	{
+		Event e;
+		e.type = EventType::KEYBOARD_INPUT_EVENT;
+		e.keyboardEvent.type = KeyboardEventType::KEY_PRESEED;
+		e.keyboardEvent.keyCode = (KeyCode)wParam;
+		if (device)
+			device->OnEvent(e);
+	}
+		break;
 	case WM_KEYUP:
 	{
+		Event e;
+		e.type = EventType::KEYBOARD_INPUT_EVENT;
+		e.keyboardEvent.type = KeyboardEventType::KEY_RELEASED;
+		e.keyboardEvent.keyCode = (KeyCode)wParam;
+		if (device)
+			device->OnEvent(e);
 	}
+		break;
 
 	case WM_SIZE:
 	{
-					printf("Resize");
+		printf("Resize");
 	}
 	return 0;
 
@@ -185,10 +225,16 @@ Win32Device::~Win32Device()
 
 bool Win32Device::Run()
 {
+	/*
+	static char capture[128];
+	static u64 t = 0;
+	sprintf(capture, "Shdow engine: FPS %d", GetTime() - t);
+	t = GetTime();
+	SetWindowText(m_hwnd, capture);
+	*/
 
 	MSG msg;
 	bool done, result;
-
 
 	// Initialize the message structure.
 	ZeroMemory(&msg, sizeof(MSG));
@@ -216,6 +262,55 @@ bool Win32Device::Run()
 }
 
 ////////////////////////////////////////////////////////////////////////
+
+void Win32Device::OnEvent(const Event& e)
+{
+	switch (e.type)
+	{
+	case EventType::MOUSE_INPUT_EVENT:
+	{
+		switch (e.mouseEvent.type)
+		{
+		case MouseEventType::LMB_PRESSED:
+		{
+			//printf("LMB pressed, pos: x=%d y=%d\n", e.mouseEvent.x, e.mouseEvent.y);
+		}
+			break;
+		case MouseEventType::LMB_RELEASED:
+		{
+			//printf("LMB release, pos: x=%d y=%d\n", e.mouseEvent.x, e.mouseEvent.y);
+		}
+			break;
+		case MouseEventType::MOVED:
+		{
+			//printf("Mouse move, pos: x=%d y=%d\n", e.mouseEvent.x, e.mouseEvent.y);
+		}
+			break;
+		default:
+			break;
+		}
+	}
+		break;
+	case EventType::KEYBOARD_INPUT_EVENT:
+	{
+		m_sceneManager->OnEvent(e);
+	}
+		break;
+	default:
+		break;
+	}
+}
+
+////////////////////////////////////////////////////////////////////////
+
+u64 Win32Device::GetTime()
+{
+	static LARGE_INTEGER freq;
+	static LARGE_INTEGER crt;
+	QueryPerformanceFrequency(&freq);
+	QueryPerformanceCounter(&crt);
+	return (crt.QuadPart * 1000000) / freq.QuadPart;
+}
 
 bool Win32Device::CreateDriver()
 {

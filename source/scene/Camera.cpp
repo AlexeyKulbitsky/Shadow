@@ -5,6 +5,92 @@ namespace sh
 {
 	namespace scene
 	{
+		Camera::Camera()
+		{
+			m_frontVector = SceneManager::GetFrontVector();
+			m_rightVector = SceneManager::GetRightVector();
+			m_upVector = SceneManager::GetUpVector();
+			m_rotation.SetIndentity();
+		}
+
+		Camera::~Camera()
+		{
+
+		}
+
+		void Camera::SetPosition(const math::Vector3f& pos)
+		{
+			m_position = pos;
+			m_needsToRecalculateViewMatrix = true;
+		}
+
+		void Camera::SetRotation(const math::Quaternionf& rot)
+		{
+			m_rotation = rot;
+			m_needsToRecalculateViewMatrix = true;
+
+			m_upVector = m_rotation * SceneManager::GetUpVector();
+			m_frontVector = m_rotation * SceneManager::GetFrontVector();
+			m_rightVector = m_rotation * SceneManager::GetRightVector();
+		}
+
+		void Camera::SetProjection(f32 fov, f32 aspect, f32 nearP, f32 farP)
+		{
+			m_fovy = fov;
+			m_aspectRatio = aspect;
+			m_nearDistance = nearP;
+			m_farDistance = farP;
+
+			m_needsToRecalculateProjectionMatrix = true;
+		}
+
+		const math::Matrix4f& Camera::GetViewMatrix()
+		{
+			if (m_needsToRecalculateViewMatrix)
+			{
+				m_viewMatrix.SetIdentity();				
+				m_viewMatrix = m_rotation.GetAsMatrix4();
+				m_viewMatrix.SetTranslation(m_position);
+				m_needsToRecalculateViewMatrix = false;
+
+				m_viewProjectionMatrix = m_viewMatrix * m_projectionMatrix;
+			}
+			return m_viewMatrix;
+		}
+
+		const math::Matrix4f& Camera::GetProjectionMatrix()
+		{
+			if (m_needsToRecalculateProjectionMatrix)
+			{
+				m_projectionMatrix.SetPerspective(m_fovy, m_aspectRatio, m_nearDistance, m_farDistance);
+				m_needsToRecalculateProjectionMatrix = false;
+
+				m_viewProjectionMatrix = m_viewMatrix * m_projectionMatrix;
+			}
+			return m_projectionMatrix;
+		}
+
+		const math::Matrix4f& Camera::GetViewProjectionMatrix()
+		{
+			if (m_needsToRecalculateProjectionMatrix)
+			{
+				m_projectionMatrix.SetPerspective(m_fovy, m_aspectRatio, m_nearDistance, m_farDistance);
+				m_needsToRecalculateProjectionMatrix = false;
+
+				m_viewProjectionMatrix = m_viewMatrix * m_projectionMatrix;
+			}
+			if (m_needsToRecalculateViewMatrix)
+			{
+				m_viewMatrix.SetIdentity();
+				m_viewMatrix.SetTranslation(-m_position);
+				m_needsToRecalculateViewMatrix = false;
+
+				m_viewProjectionMatrix = m_viewMatrix * m_projectionMatrix;
+			}
+			
+			return m_viewProjectionMatrix;
+		}
+
 		/*
 		inline math::mat4f gl2shadow(const math::mat4f& im)
 		{

@@ -29,6 +29,7 @@ namespace sh
 		{
 		public:
 			virtual void Apply(){}
+			virtual RenderState* Clone() { return nullptr; }
 
 			virtual void SetFrontFace(FrontFace frontFace) { m_frontFace = frontFace; }
 			virtual void SetCullFace(CullFace cullFace) { m_cullFace = cullFace; }

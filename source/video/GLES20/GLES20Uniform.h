@@ -32,6 +32,41 @@ namespace sh
 				}
 			};
 
+			template <>
+			struct GLES20UniformLoader<math::Vector2f>
+			{
+				static void Load(const s32 location, const math::Vector2f& value)
+				{
+					glUniform2f(location, value.x, value.y);
+				}
+			};
+
+			template <>
+			struct GLES20UniformLoader<math::Vector3f>
+			{
+				static void Load(const s32 location, const math::Vector3f& value)
+				{
+					glUniform3f(location, value.x, value.y, value.z);
+				}
+			};
+
+			template <>
+			struct GLES20UniformLoader<math::Vector4f>
+			{
+				static void Load(const s32 location, const math::Vector4f& value)
+				{
+					glUniform4f(location, value.x, value.y, value.z, value.w);
+				}
+			};
+
+			template <>
+			struct GLES20UniformLoader<math::Matrix4f>
+			{
+				static void Load(const s32 location, const math::Matrix4f& value)
+				{
+					glUniformMatrix4fv(location, 1, GL_FALSE, &value.m[0]);
+				}
+			};
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -44,6 +79,7 @@ namespace sh
 			GLES20Uniform(const std::string& name, unsigned int shaderProgramId) : Uniform(name), m_shaderProgramId(shaderProgramId) {}
 			virtual void Load() override;
 			virtual void Init() override;
+			virtual Uniform* Clone() override;
 
 			// GLES 2 - specific interface
 			void SetGLId(s32 id);
@@ -68,6 +104,19 @@ namespace sh
 		}
 
 		template <typename T>
+		inline Uniform* GLES20Uniform<T>::Clone()
+		{
+			const T& value = Get<T>();
+			GLES20Uniform<T>* result = new GLES20Uniform<T>(value);
+			result->m_glID = m_glID;
+			result->m_name = m_name;
+			result->m_shaderProgramId = m_shaderProgramId;
+			result->m_type = m_type;
+
+			return result;
+		}
+
+		template <typename T>
 		inline void GLES20Uniform<T>::SetGLId(s32 id)
 		{
 			m_shaderProgramId = id;
@@ -75,8 +124,12 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		typedef GLES20Uniform<f32> GLES20UniformFloat;
-		typedef GLES20Uniform<s32> GLES20UniformInt;
+		typedef GLES20Uniform<f32>				GLES20UniformFloat;
+		typedef GLES20Uniform<s32>				GLES20UniformInt;
+		typedef GLES20Uniform<math::Vector2f>	GLES20UniformVector2f;
+		typedef GLES20Uniform<math::Vector3f>	GLES20UniformVector3f;
+		typedef GLES20Uniform<math::Vector4f>	GLES20UniformVector4f;
+		typedef GLES20Uniform<math::Matrix4f>	GLES20UniformMatrix4f;
 	}
 }
 
