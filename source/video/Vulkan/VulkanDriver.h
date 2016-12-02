@@ -42,9 +42,10 @@ namespace sh
 			virtual void BeginRendering() override;
 			virtual void EndRendering() override;
 			virtual void DrawMesh(scene::Mesh* mesh) override;
-			virtual void DrawHardwareBuffer(HardwareBuffer *buffer) const override;
-			virtual HardwareBuffer* CreateHardwareBuffer(const HardwareBuffer::CreateInfo& info) const override;
-			virtual void InitHardwareBuffer(HardwareBuffer *buffer, const void* verticesPointer, u32 verticesSize, const void* indicesPointer, u32 indicesSize) const override;
+
+			void DrawHardwareBuffer(HardwareBuffer *buffer) const;
+			HardwareBuffer* CreateHardwareBuffer(const HardwareBuffer::CreateInfo& info) const;
+			void InitHardwareBuffer(HardwareBuffer *buffer, const void* verticesPointer, u32 verticesSize, const void* indicesPointer, u32 indicesSize) const;
 
 			virtual VertexBuffer* CreateVertexBuffer() override;
 			virtual VertexBuffer* CreateVertexBuffer(const void* data, size_t size) override;

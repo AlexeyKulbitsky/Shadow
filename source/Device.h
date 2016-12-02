@@ -1,8 +1,12 @@
 #ifndef SHADOW_DEVICE_INCLUDE
 #define SHADOW_DEVICE_INCLUDE
 
-#include "CreationParameters.h"
 #include "Globals.h"
+#include "CreationParameters.h"
+#include "InputManager.h"
+#include "io/FileSystem.h"
+#include "resources/ResourceManager.h"
+
 
 namespace sh
 {
@@ -16,6 +20,7 @@ namespace sh
 	{
 		class SceneManager;
 	}
+
 
 	class Device
 	{
@@ -31,6 +36,9 @@ namespace sh
 		virtual SHADOW_API video::Driver* SH_CALLCONV GetDriver() { return m_driver; }
 		void SetSceneManager(scene::SceneManager* manager) { m_sceneManager = manager; }
 		scene::SceneManager* GetSceneManager() { return m_sceneManager; }
+		InputManager* GetInputManager() { return m_inputManager; }
+		ResourceManager* GetResourceManager() { return m_resourceManager; }
+		io::FileSystem* GetFileSystem() { return m_fileSystem; }
 
 		static void SetInstance(Device* instance) { m_instance = instance; }
 		static Device* GetInstance() { return m_instance; }
@@ -40,6 +48,9 @@ namespace sh
 		video::GLContextManager *m_GLContextManager = nullptr;
 		video::Driver *m_driver = nullptr;
 		scene::SceneManager* m_sceneManager = nullptr;
+		InputManager* m_inputManager = nullptr;
+		ResourceManager* m_resourceManager = nullptr;
+		io::FileSystem* m_fileSystem = nullptr;
 		bool m_needsToClose = false;
 
 	private:

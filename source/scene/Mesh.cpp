@@ -48,8 +48,7 @@ namespace sh
 			sh::math::Matrix4f projectionMatrix = camera->GetProjectionMatrix();
 
 			sh::math::Matrix4f resultMatrix = projectionMatrix * viewMatrix * modelMatrix;
-			//sh::math::Matrix4f resultMatrix = modelMatrix * viewMatrix * projectionMatrix;
-			//resultMatrix.Transpose();
+			resultMatrix.Transpose();
 
 			mvp->Set(resultMatrix);
 			sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();

@@ -64,7 +64,7 @@ namespace sh
 			{
 				static void Load(const s32 location, const math::Matrix4f& value)
 				{
-					glUniformMatrix4fv(location, 1, GL_FALSE, &value.m[0]);
+					glUniformMatrix4fv(location, 1, GL_FALSE, &value._m[0]);
 				}
 			};
 		}

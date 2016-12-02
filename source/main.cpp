@@ -35,7 +35,7 @@ int main()
 	sceneMgr->LoadScene("../data/scenes/test_scene.xml");
 
 	sh::scene::Camera* camera = new sh::scene::Camera();
-	camera->SetProjection(3.1415926535f / 4.0f, 640.0f / 480.0f, 0.1f, 1000.0f);
+	camera->SetProjection(3.1415926535f / 4.0f, 800.0f / 600.0f, 0.1f, 1000.0f);
 	camera->SetPosition(math::Vector3f(0.0f));
 	sceneMgr->SetCamera(camera);
 
@@ -45,7 +45,7 @@ int main()
 		while (device->Run())
 		{
 			driver->BeginRendering();
-
+			sceneMgr->Update();
 			sceneMgr->Render();
 
 			driver->EndRendering();

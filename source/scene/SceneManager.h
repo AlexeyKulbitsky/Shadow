@@ -23,6 +23,7 @@ namespace sh
 			Camera* GetCamera() { return m_camera; }
 
 			void Render();
+			void Update();
 			void OnEvent(const Event& e);
 
 		private:

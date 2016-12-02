@@ -75,12 +75,12 @@ bool EGLContextManager::InitContext(const CreationParameters &parameters)
 		EGLint numConfigs = 0;
 		EGLint attribList[] =
 		{
-			EGL_RED_SIZE,       5,
-			EGL_GREEN_SIZE,     6,
-			EGL_BLUE_SIZE,      5,
-			EGL_ALPHA_SIZE,     EGL_DONT_CARE,
-			EGL_DEPTH_SIZE,     EGL_DONT_CARE,
-			EGL_STENCIL_SIZE,   EGL_DONT_CARE,
+			EGL_RED_SIZE,       8,
+			EGL_GREEN_SIZE,     8,
+			EGL_BLUE_SIZE,      8,
+			EGL_ALPHA_SIZE,     8,
+			EGL_DEPTH_SIZE,		24,
+			EGL_STENCIL_SIZE,   8,
 			EGL_SAMPLE_BUFFERS, 0,
 			// if EGL_KHR_create_context extension is supported, then we will use
 			// EGL_OPENGL_ES3_BIT_KHR instead of EGL_OPENGL_ES2_BIT in the attribute list

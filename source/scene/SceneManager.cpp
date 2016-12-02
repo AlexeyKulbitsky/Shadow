@@ -183,59 +183,18 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
 
+		void SceneManager::Update()
+		{
+			m_camera->Update();
+		}
+
+		//////////////////////////////////////////////////////////////////////////////////////////////
+
 		void SceneManager::OnEvent(const Event& e)
 		{
 			switch (e.type)
 			{
 			case EventType::KEYBOARD_INPUT_EVENT:
-			{
-				
-				if (e.keyboardEvent.type == KeyboardEventType::KEY_PRESEED)
-				{
-					math::Vector3f deltaPos(0.0f);
-					math::Quaternionf deltaRot;
-					
-					switch (e.keyboardEvent.keyCode)
-					{
-					case KeyCode::KEY_KEY_W:
-						deltaPos = m_camera->GetFrontVector() * (-0.3f);
-						break;
-					case KeyCode::KEY_KEY_S:
-						deltaPos = m_camera->GetFrontVector() * 0.3f;
-						break;
-					case KeyCode::KEY_KEY_A:
-						deltaPos = m_camera->GetRightVector() * 0.3f;
-						break;
-					case KeyCode::KEY_KEY_D:
-						deltaPos = m_camera->GetRightVector() * (-0.3f);
-						break;
-
-					case KeyCode::KEY_UP:	
-						deltaRot.SetFromAxisAngle(m_camera->GetRightVector(), 0.03f);
-						//deltaRot.SetFromAxisAngle(s_rightVector, 0.03f);
-						break;
-					case KeyCode::KEY_DOWN:
-						deltaRot.SetFromAxisAngle(m_camera->GetRightVector(), -0.03f);
-						//deltaRot.SetFromAxisAngle(s_rightVector, -0.03f);
-						break;
-					case KeyCode::KEY_LEFT:
-						deltaRot.SetFromAxisAngle(s_upVector, 0.03f);
-						break;
-					case KeyCode::KEY_RIGHT:
-						deltaRot.SetFromAxisAngle(s_upVector, -0.03f);
-						break;
-					}
-
-					math::Vector3f camFront = m_camera->GetFrontVector();
-					printf("x=%f, y=%f, z=%f\n", camFront.x, camFront.y, camFront.z);
-
-					math::Vector3f pos = m_camera->GetPosition();
-					m_camera->SetPosition(pos + deltaPos);
-
-					math::Quaternionf rot = m_camera->GetRotation();
-					m_camera->SetRotation(deltaRot * rot);
-				}
-			}
 				break;
 			case EventType::MOUSE_INPUT_EVENT:
 				break;

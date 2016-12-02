@@ -13,6 +13,8 @@ namespace sh
 			Camera();
 			~Camera();
 
+			void Update();
+
 			void SetPosition(const math::Vector3f& pos);
 			const math::Vector3f& GetPosition() const { return m_position; }
 

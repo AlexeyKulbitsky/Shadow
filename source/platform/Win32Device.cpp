@@ -25,7 +25,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		e.type = EventType::MOUSE_INPUT_EVENT;
 		e.mouseEvent.x = x;
 		e.mouseEvent.y = y;
-		e.mouseEvent.type = MouseEventType::LMB_PRESSED;
+		e.mouseEvent.type = MouseEventType::BUTTON_PRESSED;
+		e.mouseEvent.mouseCode = MouseCode::BUTTON_LEFT;
 		if (device)
 			device->OnEvent(e);
 	}
@@ -40,7 +41,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		e.type = EventType::MOUSE_INPUT_EVENT;
 		e.mouseEvent.x = x;
 		e.mouseEvent.y = y;
-		e.mouseEvent.type = MouseEventType::LMB_RELEASED;
+		e.mouseEvent.type = MouseEventType::BUTTON_RELEASED;
+		e.mouseEvent.mouseCode = MouseCode::BUTTON_LEFT;
 		if (device)
 			device->OnEvent(e);
 	}
@@ -269,31 +271,12 @@ void Win32Device::OnEvent(const Event& e)
 	{
 	case EventType::MOUSE_INPUT_EVENT:
 	{
-		switch (e.mouseEvent.type)
-		{
-		case MouseEventType::LMB_PRESSED:
-		{
-			//printf("LMB pressed, pos: x=%d y=%d\n", e.mouseEvent.x, e.mouseEvent.y);
-		}
-			break;
-		case MouseEventType::LMB_RELEASED:
-		{
-			//printf("LMB release, pos: x=%d y=%d\n", e.mouseEvent.x, e.mouseEvent.y);
-		}
-			break;
-		case MouseEventType::MOVED:
-		{
-			//printf("Mouse move, pos: x=%d y=%d\n", e.mouseEvent.x, e.mouseEvent.y);
-		}
-			break;
-		default:
-			break;
-		}
+		m_inputManager->OnEvent(e);
 	}
 		break;
 	case EventType::KEYBOARD_INPUT_EVENT:
 	{
-		m_sceneManager->OnEvent(e);
+		m_inputManager->OnEvent(e);
 	}
 		break;
 	default:

@@ -55,36 +55,32 @@ namespace sh
 
 			Matrix3<T> GetAsMatrix3() const
 			{				
-				T x2 = (T)(x * 2);
-				T y2 = (T)(y * 2);
-				T z2 = (T)(z * 2);
+				const T fTx = x + x;
+				const T fTy = y + y;
+				const T fTz = z + z;
+				const T fTwx = fTx*w;
+				const T fTwy = fTy*w;
+				const T fTwz = fTz*w;
+				const T fTxx = fTx*x;
+				const T fTxy = fTy*x;
+				const T fTxz = fTz*x;
+				const T fTyy = fTy*y;
+				const T fTyz = fTz*y;
+				const T fTzz = fTz*z;
 
-				const T _2xx = x2*x;
-				const T _2yy = y2*y;
-				const T _2zz = z2*z;
-				const T _2xy = x2*y;
-				const T _2xz = x2*z;
-				const T _2xw = x2*w;
-				const T _2yz = y2*z;
-				const T _2yw = y2*w;
-				const T _2zw = z2*w;
+				Matrix3<T> r;
 
-				Matrix3<T> ret;
-				T *m = ret.m;
+				r.m[0][0] = 1.0f - (fTyy + fTzz);
+				r.m[0][1] = fTxy - fTwz;
+				r.m[0][2] = fTxz + fTwy;
+				r.m[1][0] = fTxy + fTwz;
+				r.m[1][1] = 1.0f - (fTxx + fTzz);
+				r.m[1][2] = fTyz - fTwx;
+				r.m[2][0] = fTxz - fTwy;
+				r.m[2][1] = fTyz + fTwx;
+				r.m[2][2] = 1.0f - (fTxx + fTyy);
 
-				m[0] = 1 - _2yy - _2zz;
-				m[3] = _2xy + _2zw;
-				m[6] = _2xz - _2yw;
-
-				m[1] = _2xy - _2zw;
-				m[4] = 1 - _2xx - _2zz;
-				m[7] = _2yz + _2xw;
-
-				m[2] = _2xz + _2yw;
-				m[5] = _2yz - _2xw;
-				m[8] = 1 - _2yy - _2xx;
-
-				return ret;
+				return r;
 			}
 
 			Quaternion<T>& Invert()

@@ -11,7 +11,12 @@ namespace sh
 		template<typename T>
 		struct Matrix4
 		{
-			T m[16];
+			union
+			{
+				T m[4][4];
+				T _m[16];
+			};
+			
 			
 			
 			Matrix4()
@@ -20,10 +25,10 @@ namespace sh
 
 			explicit Matrix4(T value)
 			{
-				m[0] = m[1] = m[2] = m[3] = value;
-				m[4] = m[5] = m[6] = m[7] = value;
-				m[8] = m[9] = m[10] = m[11] = value;
-				m[12] = m[13] = m[14] = m[15] = value;
+				m[0][0] = m[0][1] = m[0][2] = m[0][3] = value;
+				m[1][0] = m[1][1] = m[1][2] = m[1][3] = value;
+				m[2][0] = m[2][1] = m[2][2] = m[2][3] = value;
+				m[3][0] = m[3][1] = m[3][2] = m[3][3] = value;
 
 			}
 			Matrix4(const Matrix4<T>& other)
@@ -36,168 +41,178 @@ namespace sh
 				operator=(other);
 			}
 
-			Matrix4<T>& operator=(const Matrix4<T>& other)
+			Matrix4<T>& operator=(const Matrix4<T>& m2)
 			{
-				m[0] = other.m[0];
-				m[1] = other.m[1];
-				m[2] = other.m[2];
-				m[3] = other.m[3];
+				m[0][0] = m2.m[0][0];
+				m[0][1] = m2.m[0][1];
+				m[0][2] = m2.m[0][2];
+				m[0][3] = m2.m[0][3];
 
-				m[4] = other.m[4];
-				m[5] = other.m[5];
-				m[6] = other.m[6];
-				m[7] = other.m[7];
+				m[1][0] = m2.m[1][0];
+				m[1][1] = m2.m[1][1];
+				m[1][2] = m2.m[1][2];
+				m[1][3] = m2.m[1][3];
 
-				m[8] = other.m[8];
-				m[9] = other.m[9];
-				m[10] = other.m[10];
-				m[11] = other.m[11];
+				m[2][0] = m2.m[2][0];
+				m[2][1] = m2.m[2][1];
+				m[2][2] = m2.m[2][2];
+				m[2][3] = m2.m[2][3];
 
-				m[12] = other.m[12];
-				m[13] = other.m[13];
-				m[14] = other.m[14];
-				m[15] = other.m[15];
+				m[3][0] = m2.m[3][0];
+				m[3][1] = m2.m[3][1];
+				m[3][2] = m2.m[3][2];
+				m[3][3] = m2.m[3][3];
 
 				return *this;
 			}
 
-			Matrix4<T>& operator=(const Matrix3<T>& other)
+			Matrix4<T>& operator=(const Matrix3<T>& m2)
 			{
-				m[0] = other.m[0];
-				m[1] = other.m[1];
-				m[2] = other.m[2];
-				m[3] = (T)0;
+				m[0][0] = m2.m[0][0];
+				m[0][1] = m2.m[0][1];
+				m[0][2] = m2.m[0][2];
+				m[0][3] = (T)0;
 
-				m[4] = other.m[3];
-				m[5] = other.m[4];
-				m[6] = other.m[5];
-				m[7] = (T)0;
+				m[1][0] = m2.m[1][0];
+				m[1][1] = m2.m[1][1];
+				m[1][2] = m2.m[1][2];
+				m[1][3] = (T)0;
 
-				m[8] = other.m[6];
-				m[9] = other.m[7];
-				m[10] = other.m[8];
-				m[11] = (T)0;
+				m[2][0] = m2.m[2][0];
+				m[2][1] = m2.m[2][1];
+				m[2][2] = m2.m[2][2];
+				m[2][3] = (T)0;
 
-				m[12] = (T)0;
-				m[13] = (T)0;
-				m[14] = (T)0;
-				m[15] = (T)1;
+				m[3][0] = (T)0;
+				m[3][1] = (T)0;
+				m[3][2] = (T)0;
+				m[3][3] = (T)1;
 
 				return *this;
 			}
 
-			Matrix4<T> operator*(const Matrix4<T>& other) const
+			Matrix4<T> operator*(const Matrix4<T>& m2) const
 			{
 				Matrix4<T> r;
 
-				const T* m1 = m;
-				const T* m2 = other.m;
-				T* m3 = r.m;
+				r.m[0][0] = m[0][0] * m2.m[0][0] + m[0][1] * m2.m[1][0] + m[0][2] * m2.m[2][0] + m[0][3] * m2.m[3][0];
+				r.m[0][1] = m[0][0] * m2.m[0][1] + m[0][1] * m2.m[1][1] + m[0][2] * m2.m[2][1] + m[0][3] * m2.m[3][1];
+				r.m[0][2] = m[0][0] * m2.m[0][2] + m[0][1] * m2.m[1][2] + m[0][2] * m2.m[2][2] + m[0][3] * m2.m[3][2];
+				r.m[0][3] = m[0][0] * m2.m[0][3] + m[0][1] * m2.m[1][3] + m[0][2] * m2.m[2][3] + m[0][3] * m2.m[3][3];
 
-				// using this code only on release and when on the iphone
-				m3[0] = m1[0] * m2[0] + m1[4] * m2[1] + m1[8] * m2[2] + m1[12] * m2[3];
-				m3[1] = m1[1] * m2[0] + m1[5] * m2[1] + m1[9] * m2[2] + m1[13] * m2[3];
-				m3[2] = m1[2] * m2[0] + m1[6] * m2[1] + m1[10] * m2[2] + m1[14] * m2[3];
-				m3[3] = m1[3] * m2[0] + m1[7] * m2[1] + m1[11] * m2[2] + m1[15] * m2[3];
+				r.m[1][0] = m[1][0] * m2.m[0][0] + m[1][1] * m2.m[1][0] + m[1][2] * m2.m[2][0] + m[1][3] * m2.m[3][0];
+				r.m[1][1] = m[1][0] * m2.m[0][1] + m[1][1] * m2.m[1][1] + m[1][2] * m2.m[2][1] + m[1][3] * m2.m[3][1];
+				r.m[1][2] = m[1][0] * m2.m[0][2] + m[1][1] * m2.m[1][2] + m[1][2] * m2.m[2][2] + m[1][3] * m2.m[3][2];
+				r.m[1][3] = m[1][0] * m2.m[0][3] + m[1][1] * m2.m[1][3] + m[1][2] * m2.m[2][3] + m[1][3] * m2.m[3][3];
 
-				m3[4] = m1[0] * m2[4] + m1[4] * m2[5] + m1[8] * m2[6] + m1[12] * m2[7];
-				m3[5] = m1[1] * m2[4] + m1[5] * m2[5] + m1[9] * m2[6] + m1[13] * m2[7];
-				m3[6] = m1[2] * m2[4] + m1[6] * m2[5] + m1[10] * m2[6] + m1[14] * m2[7];
-				m3[7] = m1[3] * m2[4] + m1[7] * m2[5] + m1[11] * m2[6] + m1[15] * m2[7];
+				r.m[2][0] = m[2][0] * m2.m[0][0] + m[2][1] * m2.m[1][0] + m[2][2] * m2.m[2][0] + m[2][3] * m2.m[3][0];
+				r.m[2][1] = m[2][0] * m2.m[0][1] + m[2][1] * m2.m[1][1] + m[2][2] * m2.m[2][1] + m[2][3] * m2.m[3][1];
+				r.m[2][2] = m[2][0] * m2.m[0][2] + m[2][1] * m2.m[1][2] + m[2][2] * m2.m[2][2] + m[2][3] * m2.m[3][2];
+				r.m[2][3] = m[2][0] * m2.m[0][3] + m[2][1] * m2.m[1][3] + m[2][2] * m2.m[2][3] + m[2][3] * m2.m[3][3];
 
-				m3[8] = m1[0] * m2[8] + m1[4] * m2[9] + m1[8] * m2[10] + m1[12] * m2[11];
-				m3[9] = m1[1] * m2[8] + m1[5] * m2[9] + m1[9] * m2[10] + m1[13] * m2[11];
-				m3[10] = m1[2] * m2[8] + m1[6] * m2[9] + m1[10] * m2[10] + m1[14] * m2[11];
-				m3[11] = m1[3] * m2[8] + m1[7] * m2[9] + m1[11] * m2[10] + m1[15] * m2[11];
+				r.m[3][0] = m[3][0] * m2.m[0][0] + m[3][1] * m2.m[1][0] + m[3][2] * m2.m[2][0] + m[3][3] * m2.m[3][0];
+				r.m[3][1] = m[3][0] * m2.m[0][1] + m[3][1] * m2.m[1][1] + m[3][2] * m2.m[2][1] + m[3][3] * m2.m[3][1];
+				r.m[3][2] = m[3][0] * m2.m[0][2] + m[3][1] * m2.m[1][2] + m[3][2] * m2.m[2][2] + m[3][3] * m2.m[3][2];
+				r.m[3][3] = m[3][0] * m2.m[0][3] + m[3][1] * m2.m[1][3] + m[3][2] * m2.m[2][3] + m[3][3] * m2.m[3][3];
 
-				m3[12] = m1[0] * m2[12] + m1[4] * m2[13] + m1[8] * m2[14] + m1[12] * m2[15];
-				m3[13] = m1[1] * m2[12] + m1[5] * m2[13] + m1[9] * m2[14] + m1[13] * m2[15];
-				m3[14] = m1[2] * m2[12] + m1[6] * m2[13] + m1[10] * m2[14] + m1[14] * m2[15];
-				m3[15] = m1[3] * m2[12] + m1[7] * m2[13] + m1[11] * m2[14] + m1[15] * m2[15];
-				
 				return r;
+			}
+
+			Vector3<T> operator*(const Vector3<T> &v) const
+			{
+				Vector3<T> r;
+
+				T fInvW = 1.0f / (m[3][0] * v.x + m[3][1] * v.y + m[3][2] * v.z + m[3][3]);
+
+				r.x = (m[0][0] * v.x + m[0][1] * v.y + m[0][2] * v.z + m[0][3]) * fInvW;
+				r.y = (m[1][0] * v.x + m[1][1] * v.y + m[1][2] * v.z + m[1][3]) * fInvW;
+				r.z = (m[2][0] * v.x + m[2][1] * v.y + m[2][2] * v.z + m[2][3]) * fInvW;
+
+				return r;
+			}
+
+			Vector4<T> operator*(const Vector4<T>& v) const
+			{
+				return Vector4<T>(
+					m[0][0] * v.x + m[0][1] * v.y + m[0][2] * v.z + m[0][3] * v.w,
+					m[1][0] * v.x + m[1][1] * v.y + m[1][2] * v.z + m[1][3] * v.w,
+					m[2][0] * v.x + m[2][1] * v.y + m[2][2] * v.z + m[2][3] * v.w,
+					m[3][0] * v.x + m[3][1] * v.y + m[3][2] * v.z + m[3][3] * v.w
+					);
 			}
 			
 
-			Matrix4<T> operator+(const Matrix4<T>& other) const
+			Matrix4<T> operator+(const Matrix4<T>& m2) const
 			{
 				Matrix4<T> r;
 
-				r[0] = m[0] + other[0];
-				r[1] = m[1] + other[1];
-				r[2] = m[2] + other[2];
-				r[3] = m[3] + other[3];
-				r[4] = m[4] + other[4];
-				r[5] = m[5] + other[5];
-				r[6] = m[6] + other[6];
-				r[7] = m[7] + other[7];
-				r[8] = m[8] + other[8];
-				r[9] = m[9] + other[9];
-				r[10] = m[10] + other[10];
-				r[11] = m[11] + other[11];
-				r[12] = m[12] + other[12];
-				r[13] = m[13] + other[13];
-				r[14] = m[14] + other[14];
-				r[15] = m[15] + other[15];
+				r.m[0][0] = m[0][0] + m2.m[0][0];
+				r.m[0][1] = m[0][1] + m2.m[0][1];
+				r.m[0][2] = m[0][2] + m2.m[0][2];
+				r.m[0][3] = m[0][3] + m2.m[0][3];
+
+				r.m[1][0] = m[1][0] + m2.m[1][0];
+				r.m[1][1] = m[1][1] + m2.m[1][1];
+				r.m[1][2] = m[1][2] + m2.m[1][2];
+				r.m[1][3] = m[1][3] + m2.m[1][3];
+
+				r.m[2][0] = m[2][0] + m2.m[2][0];
+				r.m[2][1] = m[2][1] + m2.m[2][1];
+				r.m[2][2] = m[2][2] + m2.m[2][2];
+				r.m[2][3] = m[2][3] + m2.m[2][3];
+
+				r.m[3][0] = m[3][0] + m2.m[3][0];
+				r.m[3][1] = m[3][1] + m2.m[3][1];
+				r.m[3][2] = m[3][2] + m2.m[3][2];
+				r.m[3][3] = m[3][3] + m2.m[3][3];
 
 				return r;
 			}
 
-			Matrix4<T> operator-(const Matrix4<T>& other) const
+			Matrix4<T> operator-(const Matrix4<T>& m2) const
 			{
 				Matrix4 r;
-				r[0] = m[0] - other[0];
-				r[1] = m[1] - other[1];
-				r[2] = m[2] - other[2];
-				r[3] = m[3] - other[3];
-				r[4] = m[4] - other[4];
-				r[5] = m[5] - other[5];
-				r[6] = m[6] - other[6];
-				r[7] = m[7] - other[7];
-				r[8] = m[8] - other[8];
-				r[9] = m[9] - other[9];
-				r[10] = m[10] - other[10];
-				r[11] = m[11] - other[11];
-				r[12] = m[12] - other[12];
-				r[13] = m[13] - other[13];
-				r[14] = m[14] - other[14];
-				r[15] = m[15] - other[15];
+
+				r.m[0][0] = m[0][0] - m2.m[0][0];
+				r.m[0][1] = m[0][1] - m2.m[0][1];
+				r.m[0][2] = m[0][2] - m2.m[0][2];
+				r.m[0][3] = m[0][3] - m2.m[0][3];
+
+				r.m[1][0] = m[1][0] - m2.m[1][0];
+				r.m[1][1] = m[1][1] - m2.m[1][1];
+				r.m[1][2] = m[1][2] - m2.m[1][2];
+				r.m[1][3] = m[1][3] - m2.m[1][3];
+
+				r.m[2][0] = m[2][0] - m2.m[2][0];
+				r.m[2][1] = m[2][1] - m2.m[2][1];
+				r.m[2][2] = m[2][2] - m2.m[2][2];
+				r.m[2][3] = m[2][3] - m2.m[2][3];
+
+				r.m[3][0] = m[3][0] - m2.m[3][0];
+				r.m[3][1] = m[3][1] - m2.m[3][1];
+				r.m[3][2] = m[3][2] - m2.m[3][2];
+				r.m[3][3] = m[3][3] - m2.m[3][3];
 
 				return r;
 			}
 
 			void SetIdentity()
 			{
-				m[0] = (T)1;
-				m[1] = (T)0;
-				m[2] = (T)0;
-				m[3] = (T)0;
-
-				m[4] = (T)0;
-				m[5] = (T)1;
-				m[6] = (T)0;
-				m[7] = (T)0;
-
-				m[8] = (T)0;
-				m[9] = (T)0;
-				m[10] = (T)1;
-				m[11] = (T)0;
-
-				m[12] = (T)0;
-				m[13] = (T)0;
-				m[14] = (T)0;
-				m[15] = (T)1;
+				m[0][0] = (T)1; m[0][1] = (T)0; m[0][2] = (T)0; m[0][3] = (T)0;
+				m[1][0] = (T)0; m[1][1] = (T)1; m[1][2] = (T)0; m[1][3] = (T)0;
+				m[2][0] = (T)0; m[2][1] = (T)0; m[2][2] = (T)1; m[2][3] = (T)0;
+				m[3][0] = (T)0; m[3][1] = (T)0; m[3][2] = (T)0; m[3][3] = (T)1;				
 			}
 
 
 			Matrix4<T>& Transpose()
 			{
-				std::swap(m[1], m[4]);
-				std::swap(m[2], m[8]);
-				std::swap(m[3], m[12]);
-				std::swap(m[6], m[9]);
-				std::swap(m[7], m[13]);
-				std::swap(m[11], m[14]);
+				std::swap(m[0][1], m[1][0]);
+				std::swap(m[0][2], m[2][0]);
+				std::swap(m[0][3], m[3][0]);
+				std::swap(m[1][2], m[2][1]);
+				std::swap(m[1][3], m[3][1]);
+				std::swap(m[2][3], m[3][2]);
 				return *this;
 			}
 
@@ -210,51 +225,51 @@ namespace sh
 
 			void SetScale(const Vector3<T>& scale)
 			{
-				m[0] = scale.x;
-				m[5] = scale.y;
-				m[10] = scale.z;
+				m[0][0] = scale.x;
+				m[1][1] = scale.y;
+				m[2][2] = scale.z;
 			}
 
 			Vector3<T> GetScale() const
 			{
-				return Vector3<T>(m[0], m[5], m[10]);
+				return Vector3<T>(m[0][0], m[1][1], m[2][2]);
 			}
 
 			void SetTranslation(const Vector3<T>& translation)
 			{
-				m[12] = translation.x;
-				m[13] = translation.y;
-				m[14] = translation.z;
+				m[0][3] = translation.x;
+				m[1][3] = translation.y;
+				m[2][3] = translation.z;
 			}
 
 			Vector3<T> GetTranslation() const
 			{
-				return Vector3<T>(m[12], m[13], m[14]);
+				return Vector3<T>(m[0][3], m[1][3], m[2][3]);
 			}			
 
 			void SetPerspective(T fovy, T aspect, T zNear, T zFar)
 			{
 				const T tanFov = Tan(fovy / static_cast<T>(2));
 
-				m[0] = 1 / (aspect * tanFov);
-				m[1] = 0;
-				m[2] = 0;
-				m[3] = 0;
+				m[0][0] = 1 / (aspect * tanFov);
+				m[0][1] = 0;
+				m[0][2] = 0;
+				m[0][3] = 0;
 
-				m[4] = 0;
-				m[5] = 1 / tanFov;
-				m[6] = 0;
-				m[7] = 0;
+				m[1][0] = 0;
+				m[1][1] = 1 / tanFov;
+				m[1][2] = 0;
+				m[1][3] = 0;
 
-				m[8] = 0;
-				m[9] = 0;
-				m[10] = -(zFar + zNear) / (zFar - zNear);
-				m[11] = -1;
+				m[2][0] = 0;
+				m[2][1] = 0;
+				m[2][2] = (-1) * (zFar + zNear) / (zFar - zNear);
+				m[2][3] = (-1) * (2 * zFar * zNear) / (zFar - zNear);
 
-				m[12] = 0;
-				m[13] = 0;
-				m[14] = -(2 * zFar*zNear) / (zFar - zNear);
-				m[15] = 0;
+				m[3][0] = 0;
+				m[3][1] = 0;
+				m[3][2] = -1;
+				m[3][3] = 0;
 			}
 
 			/*

@@ -36,10 +36,6 @@ namespace sh
 			virtual void BeginRendering() = 0;
 			virtual void EndRendering() = 0;
 			virtual void DrawMesh(scene::Mesh* mesh) = 0;
-			virtual void DrawHardwareBuffer(HardwareBuffer *buffer) const = 0;
-			virtual HardwareBuffer* CreateHardwareBuffer(const HardwareBuffer::CreateInfo& info) const = 0;
-			virtual void InitHardwareBuffer(HardwareBuffer *buffer, const void* verticesPointer, u32 verticesSize, const void* indicesPointer, u32 indicesSize) const = 0;
-
 			virtual void Render(RenderCommand* command){}
 
 			

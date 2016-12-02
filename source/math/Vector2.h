@@ -15,12 +15,12 @@ namespace sh
 
 			// Constructors
 			Vector2() : x(0), y(0) {}
-			Vector2(T _x, T _y) : x(_x), y(_x) {}
+			Vector2(T _x, T _y) : x(_x), y(_y) {}
 			explicit Vector2(T s) : x(s), y(s) {}
 			Vector2(const Vector2<T>& v) : x(v.x), y(v.y) {}
 
 			// Operators
-			Vector2<T> operator-() const { return Vector2<T>(-z, -y); }
+			Vector2<T> operator-() const { return Vector2<T>(-x, -y); }
 			Vector2<T>& operator=(const Vector2<T>& v) { x = v.x; y = v.y; return *this; }
 
 			Vector2<T> operator+(T s) const { return Vector2<T>(x + s, y + s); }

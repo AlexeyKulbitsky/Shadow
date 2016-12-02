@@ -10,7 +10,11 @@ namespace sh
 		template<typename T>
 		struct Matrix3
 		{
-			T m[9];
+			union
+			{
+				T m[3][3];
+				T _m[9];
+			};
 			
 			Matrix3()
 			{
@@ -18,74 +22,67 @@ namespace sh
 
 			explicit Matrix3(T value)
 			{
-				m[0] = m[1] = m[2] = value;
-				m[3] = m[4] = m[5] = value;
-				m[6] = m[7] = m[8] = value;
+				m[0][0] = m[0][1] = m[0][2] = value;
+				m[1][0] = m[1][1] = m[1][2] = value;
+				m[2][0] = m[2][1] = m[2][2] = value;
+				
 
 			}
 			Matrix3(const Matrix3<T>& other)
 			{
-				m[0] = other.m[0];
-				m[1] = other.m[1];
-				m[2] = other.m[2];
-				m[3] = other.m[3];
-				m[4] = other.m[4];
-				m[5] = other.m[5];
-				m[6] = other.m[6];
-				m[7] = other.m[7];
-				m[8] = other.m[8];
+				operator=(other);
 			}
 
-			Matrix3<T>& operator=(const Matrix3<T>& other)
+			Matrix3<T>& operator=(const Matrix3<T>& m2)
 			{
-				m[0] = other.m[0];
-				m[1] = other.m[1];
-				m[2] = other.m[2];
-				m[3] = other.m[3];
-				m[4] = other.m[4];
-				m[5] = other.m[5];
-				m[6] = other.m[6];
-				m[7] = other.m[7];
-				m[8] = other.m[8];
+				m[0][0] = m2.m[0][0];
+				m[0][1] = m2.m[0][1];
+				m[0][2] = m2.m[0][2];
+
+				m[1][0] = m2.m[1][0];
+				m[1][1] = m2.m[1][1];
+				m[1][2] = m2.m[1][2];
+
+				m[2][0] = m2.m[2][0];
+				m[2][1] = m2.m[2][1];
+				m[2][2] = m2.m[2][2];
 				return *this;
 			}
 
-			Matrix3<T> operator*(const Matrix3<T>& other) const
+			Matrix3<T> operator*(const Matrix3<T>& m2) const
 			{
 				Matrix3<T> r;
 
-				const T* m1 = m;
-				const T* m2 = other.m;
-				T* m3 = r.m;
+				r.m[0][0] = m[0][0] * m2.m[0][0] + m[0][1] * m2.m[1][0] + m[0][2] * m2.m[2][0];
+				r.m[0][1] = m[0][0] * m2.m[0][1] + m[0][1] * m2.m[1][1] + m[0][2] * m2.m[2][1];
+				r.m[0][2] = m[0][0] * m2.m[0][2] + m[0][1] * m2.m[1][2] + m[0][2] * m2.m[2][2];
 
-				m3[0] = m1[0] * m2[0] + m1[3] * m2[1] + m1[6] * m2[2];
-				m3[1] = m1[1] * m2[0] + m1[4] * m2[1] + m1[7] * m2[2];
-				m3[2] = m1[2] * m2[0] + m1[5] * m2[1] + m1[8] * m2[2];
+				r.m[1][0] = m[1][0] * m2.m[0][0] + m[1][1] * m2.m[1][0] + m[1][2] * m2.m[2][0];
+				r.m[1][1] = m[1][0] * m2.m[0][1] + m[1][1] * m2.m[1][1] + m[1][2] * m2.m[2][1];
+				r.m[1][2] = m[1][0] * m2.m[0][2] + m[1][1] * m2.m[1][2] + m[1][2] * m2.m[2][2];
 
-				m3[3] = m1[0] * m2[3] + m1[3] * m2[4] + m1[6] * m2[5];
-				m3[4] = m1[1] * m2[3] + m1[4] * m2[4] + m1[7] * m2[5];
-				m3[5] = m1[2] * m2[3] + m1[5] * m2[4] + m1[8] * m2[5];
-
-				m3[6] = m1[0] * m2[6] + m1[3] * m2[7] + m1[6] * m2[8];
-				m3[7] = m1[1] * m2[6] + m1[4] * m2[7] + m1[7] * m2[8];
-				m3[8] = m1[2] * m2[6] + m1[5] * m2[7] + m1[8] * m2[8];
+				r.m[2][0] = m[2][0] * m2.m[0][0] + m[2][1] * m2.m[1][0] + m[2][2] * m2.m[2][0];
+				r.m[2][1] = m[2][0] * m2.m[0][1] + m[2][1] * m2.m[1][1] + m[2][2] * m2.m[2][1];
+				r.m[2][2] = m[2][0] * m2.m[0][2] + m[2][1] * m2.m[1][2] + m[2][2] * m2.m[2][2];
 
 				return r;
 			}
 
-			Matrix3<T> operator+(const Matrix3<T>& other) const
+			Matrix3<T> operator+(const Matrix3<T>& m2) const
 			{
 				Matrix3<T> r;
 
-				r[0] = m[0] + other[0];
-				r[1] = m[1] + other[1];
-				r[2] = m[2] + other[2];
-				r[3] = m[3] + other[3];
-				r[4] = m[4] + other[4];
-				r[5] = m[5] + other[5];
-				r[6] = m[6] + other[6];
-				r[7] = m[7] + other[7];
-				r[8] = m[8] + other[8];
+				r.m[0][0] = m[0][0] + m2.m[0][0];
+				r.m[0][1] = m[0][1] + m2.m[0][1];
+				r.m[0][2] = m[0][2] + m2.m[0][2];
+
+				r.m[1][0] = m[1][0] + m2.m[1][0];
+				r.m[1][1] = m[1][1] + m2.m[1][1];
+				r.m[1][2] = m[1][2] + m2.m[1][2];
+
+				r.m[2][0] = m[2][0] + m2.m[2][0];
+				r.m[2][1] = m[2][1] + m2.m[2][1];
+				r.m[2][2] = m[2][2] + m2.m[2][2];
 
 				return r;
 			}
@@ -93,16 +90,17 @@ namespace sh
 			Matrix3<T> operator-(const Matrix3<T>& m2) const
 			{
 				Matrix3<T> r;
+				r.m[0][0] = m[0][0] - m2.m[0][0];
+				r.m[0][1] = m[0][1] - m2.m[0][1];
+				r.m[0][2] = m[0][2] - m2.m[0][2];
 
-				r.m[0] = m[0] - other.m[0];
-				r.m[1] = m[1] - other.m[1];
-				r.m[2] = m[2] - other.m[2];
-				r.m[3] = m[3] - other.m[3];
-				r.m[4] = m[4] - other.m[4];
-				r.m[5] = m[5] - other.m[5];
-				r.m[6] = m[6] - other.m[6];
-				r.m[7] = m[7] - other.m[7];
-				r.m[8] = m[8] - other.m[8];
+				r.m[1][0] = m[1][0] - m2.m[1][0];
+				r.m[1][1] = m[1][1] - m2.m[1][1];
+				r.m[1][2] = m[1][2] - m2.m[1][2];
+
+				r.m[2][0] = m[2][0] - m2.m[2][0];
+				r.m[2][1] = m[2][1] - m2.m[2][1];
+				r.m[2][2] = m[2][2] - m2.m[2][2];
 
 				return r;
 			}
@@ -111,15 +109,17 @@ namespace sh
 			{
 				Matrix3<T> r;
 
-				r.m[0] = -m[0];
-				r.m[1] = -m[1];
-				r.m[2] = -m[2];
-				r.m[3] = -m[3];
-				r.m[4] = -m[4];
-				r.m[5] = -m[5]; 
-				r.m[6] = -m[6];
-				r.m[7] = -m[7];
-				r.m[8] = -m[8];
+				r.m[0][0] = -m[0][0];
+				r.m[0][1] = -m[0][1];
+				r.m[0][2] = -m[0][2];
+
+				r.m[1][0] = -m[1][0];
+				r.m[1][1] = -m[1][1];
+				r.m[1][2] = -m[1][2];
+
+				r.m[2][0] = -m[2][0];
+				r.m[2][1] = -m[2][1];
+				r.m[2][2] = -m[2][2];
 
 				return r;
 			}
@@ -127,24 +127,24 @@ namespace sh
 			Vector3<T> operator*(const Vector3<T>& v) const
 			{
 				return Vector3<T>(
-					m[0] * v.x + m[3] * v.y + m[6] * v.z,
-					m[1] * v.x + m[4] * v.y + m[7] * v.z,
-					m[2] * v.x + m[5] * v.y + m[8] * v.z
+					m[0][0] * v.x + m[0][1] * v.y + m[0][2] * v.z,
+					m[1][0] * v.x + m[1][1] * v.y + m[1][2] * v.z,
+					m[2][0] * v.x + m[2][1] * v.y + m[2][2] * v.z
 					);
 			}
 
 			void SetIdentity()
 			{
-				m[0] = (T)1; m[1] = (T)0; m[2] = (T)0;
-				m[3] = (T)0; m[4] = (T)1; m[5] = (T)0;
-				m[6] = (T)0; m[7] = (T)0; m[8] = (T)1;
+				m[0][0] = (T)1; m[0][1] = (T)0; m[0][2] = (T)0;
+				m[1][0] = (T)0; m[1][1] = (T)1; m[1][2] = (T)0;
+				m[2][0] = (T)0; m[2][1] = (T)0; m[2][2] = (T)1;
 			}
 
 			Matrix3<T>& Transpose()
 			{
-				std::swap(m[1], m[3]);
-				std::swap(m[2], m[6]);
-				std::swap(m[5], m[7]);
+				std::swap(m[0][1], m[1][0]);
+				std::swap(m[0][2], m[2][0]);
+				std::swap(m[1][2], m[2][1]);
 				return *this;
 			}
 

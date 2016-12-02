@@ -1,5 +1,6 @@
 #include "Camera.h"
 #include "SceneManager.h"
+#include "../Device.h"
 
 namespace sh
 {
@@ -16,6 +17,50 @@ namespace sh
 		Camera::~Camera()
 		{
 
+		}
+
+		void Camera::Update()
+		{
+			InputManager* inputManager = Device::GetInstance()->GetInputManager();
+
+			if (inputManager->IsKeyPressed(KeyCode::KEY_KEY_W))
+			{
+				SetPosition(m_position + m_frontVector * 0.3f);
+			}
+
+			if (inputManager->IsKeyPressed(KeyCode::KEY_KEY_S))
+			{
+				SetPosition(m_position - m_frontVector * 0.3f);
+			}
+
+			if (inputManager->IsKeyPressed(KeyCode::KEY_KEY_A))
+			{
+				SetPosition(m_position - m_rightVector * 0.3f);
+			}
+
+			if (inputManager->IsKeyPressed(KeyCode::KEY_KEY_D))
+			{
+				SetPosition(m_position + m_rightVector * 0.3f);
+			}
+
+			math::Vector2i old = inputManager->GetMousePositionOld();
+			math::Vector2i current = inputManager->GetMousePositionCurrent();
+			if (inputManager->IsMouseButtonPressed(MouseCode::BUTTON_LEFT))
+			{
+				
+				math::Vector2i delta = current - old;
+				float xAngle = (float)delta.x * 0.01f;
+				float yAngle = (float)delta.y * 0.01f;
+
+				math::Quaternionf xRot;
+				xRot.SetFromAxisAngle(SceneManager::GetUpVector(), xAngle);
+
+				math::Quaternionf yRot;
+				yRot.SetFromAxisAngle(m_rightVector, yAngle);
+
+				SetRotation(xRot * yRot * m_rotation);
+			}
+			inputManager->SetMousePositionOld(current);
 		}
 
 		void Camera::SetPosition(const math::Vector3f& pos)
@@ -48,9 +93,29 @@ namespace sh
 		{
 			if (m_needsToRecalculateViewMatrix)
 			{
-				m_viewMatrix.SetIdentity();				
-				m_viewMatrix = m_rotation.GetAsMatrix4();
-				m_viewMatrix.SetTranslation(m_position);
+				m_viewMatrix.SetIdentity();			
+
+				m_viewMatrix.m[2][0] = -m_frontVector.x;
+				m_viewMatrix.m[2][1] = -m_frontVector.y;
+				m_viewMatrix.m[2][2] = -m_frontVector.z;
+
+				m_viewMatrix.m[0][0] = m_rightVector.x;
+				m_viewMatrix.m[0][1] = m_rightVector.y;
+				m_viewMatrix.m[0][2] = m_rightVector.z;
+
+				m_viewMatrix.m[1][0] = m_upVector.x;
+				m_viewMatrix.m[1][1] = m_upVector.y;
+				m_viewMatrix.m[1][2] = m_upVector.z;
+
+				
+				math::Matrix4f posMatrix;
+				posMatrix.SetIdentity();
+				posMatrix.m[0][3] = -m_position.x;
+				posMatrix.m[1][3] = -m_position.y;
+				posMatrix.m[2][3] = -m_position.z;
+
+				m_viewMatrix = m_viewMatrix * posMatrix;
+				
 				m_needsToRecalculateViewMatrix = false;
 
 				m_viewProjectionMatrix = m_viewMatrix * m_projectionMatrix;

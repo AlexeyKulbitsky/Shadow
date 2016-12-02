@@ -165,25 +165,27 @@ namespace sh
 		KEY_KEY_CODES_COUNT = 0xFF // this is not a key, but the amount of keycodes there are.
 	};
 
+	enum class MouseCode
+	{
+		BUTTON_LEFT = 0,
+		BUTTON_RIGHT = 1,
+		BUTTON_WHEEL = 2
+	};
+
 	enum class EventType
 	{
 		MOUSE_INPUT_EVENT,
-		KEYBOARD_INPUT_EVENT
+		KEYBOARD_INPUT_EVENT,
+		UNKNOWN
 	};
 
 	enum class MouseEventType
 	{
-		LMB_PRESSED,
-		RMB_PRESSED,
-		MMB_PRESSED,
-		LMB_RELEASED,
-		RMB_RELEASED,
-		MMB_RELEASED,
-		LMB_DOUBLE_CLICKED,
-		RMB_DOUBLE_CLICKED,
-		MMB_DOUBLE_CLICKED,
+		BUTTON_PRESSED,
+		BUTTON_RELEASED,
+		BUTTON_DOUBLE_CLICKED,
 		MOVED,
-		WHEEL
+		WHEEL_SCROLLED
 	};
 
 	enum class KeyboardEventType
@@ -198,7 +200,8 @@ namespace sh
 		{
 			s32 x;
 			s32 y;
-			f32 wheel;
+
+			MouseCode mouseCode;
 
 			MouseEventType type;
 		};
