@@ -14,7 +14,9 @@ namespace sh
 			GLES20Texture();
 			virtual ~GLES20Texture();
 
-			virtual void Load(const char* filename) override;
+			virtual void Load(const String& filePath) override;
+			virtual void Unload() override;
+
 			virtual void SetType(Type type) override;
 			virtual void SetTiling(Tiling tilingU, Tiling tilingV) override;
 			virtual void SetFiltering(Filtering filtering) override;

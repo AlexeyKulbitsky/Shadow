@@ -1,4 +1,5 @@
 #include "SceneManager.h"
+#include "../resources/ResourceManager.h"
 #include "../Device.h"
 #include "../video/Driver.h"
 #include "../video/RenderPass.h"
@@ -26,6 +27,10 @@ namespace sh
 
 		void SceneManager::LoadScene(const char* filename)
 		{
+			ResourceManager* resourceManager = Device::GetInstance()->GetResourceManager();
+
+
+
 			pugi::xml_document doc;
 			pugi::xml_parse_result result = doc.load_file(filename);
 			pugi::xml_node firstChild = doc.first_child();
@@ -78,11 +83,11 @@ namespace sh
 					sh::video::Material* material = new sh::video::Material();
 
 					pugi::xml_node techniqueNode = materialNode.child("technique");
-					pugi::xml_attribute path = techniqueNode.attribute("path");
-					const char* techniquePath = path.as_string();
-					sh::video::RenderTechnique* rt = new sh::video::RenderTechnique();
+					pugi::xml_attribute fileName = techniqueNode.attribute("filename");
+					String techniqueFileName = fileName.as_string();
 
-					rt->Load(techniquePath);
+					sh::video::RenderTechnique* rt = resourceManager->GetRenderTechnique(techniqueFileName);
+
 					material->SetRenderTechnique(rt);
 
 					// Read uniforms
@@ -128,15 +133,14 @@ namespace sh
 						while (!samplNode.empty())
 						{
 							pugi::xml_attribute nameAttr = samplNode.attribute("name");
-							pugi::xml_attribute pathAttr = samplNode.attribute("path");
+							pugi::xml_attribute fileNameAttr = samplNode.attribute("filename");
 
 							std::string name = nameAttr.as_string();
-							std::string path = pathAttr.as_string();
+							std::string fileName = fileNameAttr.as_string();
 
 							sh::video::Sampler* sampler = uniformBuffer->GetSampler(name);
 
-							sh::video::Texture* texture = sh::Device::GetInstance()->GetDriver()->CreateTexture();
-							texture->Load(path.c_str());
+							sh::video::Texture* texture = resourceManager->GetTexture(fileName);						
 
 							sampler->Set(texture);
 
@@ -150,10 +154,7 @@ namespace sh
 						sh::scene::Mesh* mesh = model->GetMesh(i);
 						mesh->SetMaterial(material);
 						mesh->Init();
-					}
-
-					
-
+					}					
 				}
 				// Add model to render list
 				m_models.push_back(model);
@@ -173,8 +174,6 @@ namespace sh
 
 		void SceneManager::Render()
 		{
-			//math::Matrix4f viewProjectionMatrix = m_camera->GetViewProjectionMatrix();
-
 			for (size_t i = 0, sz = m_models.size(); i < sz; ++i)
 			{
 				m_models[i]->Render();

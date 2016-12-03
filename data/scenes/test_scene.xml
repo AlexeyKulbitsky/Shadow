@@ -7,12 +7,12 @@
 			<scale/>
 		</transform>		
 		<material>
-			<technique path="../data/shaders/gles20/test.xml"/>
+			<technique filename="test.xml"/>
 			<uniforms>
 				<uniform name="uniA" type="float" val="0.5"/>
 			</uniforms>
 			<samplers>
-				<sampler name="testSample" path="../data/textures/statue.jpg"/>
+				<sampler name="testSample" filename="statue.jpg"/>
 			</samplers>
 		</material>
 	</object>

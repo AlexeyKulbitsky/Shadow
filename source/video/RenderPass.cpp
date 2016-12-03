@@ -46,11 +46,37 @@ namespace sh
 				m_shaderProgram = Device::GetInstance()->GetDriver()->CreateShaderProgram();
 				m_shaderProgram->Load(shaderProgramNode);
 			}			
+
+			// Load attributes
+			pugi::xml_node attributesNode = node.child("attributes");
+			LoadAttributes(attributesNode);
 		}		
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 
 		void RenderPass::LoadRenderState(const pugi::xml_node &node)
+		{
+
+		}
+
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+
+		void RenderPass::LoadUniforms(const pugi::xml_node &node)
+		{
+
+		}
+
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+
+		void RenderPass::LoadAttributes(const pugi::xml_node &node)
+		{
+			m_vertexInputDeclaration = Device::GetInstance()->GetDriver()->CreateVertexInputDeclaration();
+			m_vertexInputDeclaration->Load(node);
+		}
+
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+
+		void RenderPass::LoadSamplers(const pugi::xml_node &node)
 		{
 
 		}

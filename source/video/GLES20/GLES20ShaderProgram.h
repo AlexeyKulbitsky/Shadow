@@ -25,7 +25,7 @@ namespace sh
 			virtual void UnbindProgram() override;
 
 			GLES20VertexDeclaration* GetVertexDeclaration() { return &m_vertexDeclaration; }
-			
+			u32 GetGLId() const { return m_programID; }
 
 		private:
 			void LoadUniforms(const pugi::xml_node &node);

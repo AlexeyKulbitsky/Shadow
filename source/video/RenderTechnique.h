@@ -2,6 +2,8 @@
 #define SHADOW_RENDER_TECHNIQUE_INLCLUDE
 
 #include <vector>
+#include "../resources/Resource.h"
+#include "../Globals.h"
 
 namespace sh
 {
@@ -9,13 +11,14 @@ namespace sh
 	{
 		class RenderPass;
 
-		class RenderTechnique
+		class RenderTechnique : public Resource
 		{
 		public:
 			RenderTechnique();
 			~RenderTechnique();
 
-			void Load(const char* filename);
+			virtual void Load(const String& filePath) override;
+			virtual void Unload() override;
 
 			size_t GetRenderPassesCount() const { return m_renderPasses.size(); }
 			RenderPass* GetRenderPass(size_t index) { return m_renderPasses[index]; }

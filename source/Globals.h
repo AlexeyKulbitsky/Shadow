@@ -4,6 +4,7 @@
 #include <vector>
 #include <set>
 #include <map>
+#include <pugixml.hpp>
 
 #include "Types.h"
 #include "math\smath.h"
@@ -19,6 +20,7 @@ namespace sh
 
 	template<typename T>
 	using HashSet = std::set<T>;
+
 }
 
 

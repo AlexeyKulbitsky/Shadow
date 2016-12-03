@@ -11,15 +11,19 @@ namespace sh
 
 		}
 
+		//////////////////////////////////////////////////////////////////////////////////////
+
 		RenderTechnique::~RenderTechnique()
 		{
 
 		}
 
-		void RenderTechnique::Load(const char* filename)
+		//////////////////////////////////////////////////////////////////////////////////////
+
+		void RenderTechnique::Load(const String& filePath)
 		{
 			pugi::xml_document doc;
-			pugi::xml_parse_result result = doc.load_file(filename);
+			pugi::xml_parse_result result = doc.load_file(filePath.c_str());
 			pugi::xml_node techniqueNode = doc.first_child();
 
 			pugi::xml_node renderPassNode = techniqueNode.child("pass");
@@ -33,6 +37,13 @@ namespace sh
 				renderPassNode = renderPassNode.next_sibling();
 			}
 			
+		}
+
+		//////////////////////////////////////////////////////////////////////////////////////
+
+		void RenderTechnique::Unload()
+		{
+
 		}
 	}
 }

@@ -46,6 +46,7 @@ namespace sh
 			virtual RenderCommand* CreateRenderCommand() = 0;
 			virtual ShaderProgram* CreateShaderProgram() = 0;
 			virtual Texture* CreateTexture() { return nullptr; }
+			virtual VertexInputDeclaration* CreateVertexInputDeclaration() { return nullptr; }
 		};
 	}
 }

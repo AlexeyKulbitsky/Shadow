@@ -133,3 +133,8 @@ Texture* GLES20Driver::CreateTexture()
 {
 	return new GLES20Texture();
 }
+
+VertexInputDeclaration* GLES20Driver::CreateVertexInputDeclaration()
+{
+	return new GLES20VertexDeclaration();
+}

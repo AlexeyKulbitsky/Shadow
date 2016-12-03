@@ -15,6 +15,7 @@ namespace sh
 	namespace scene
 	{
 		Mesh::Mesh()
+			: m_useIndices(false)
 		{
 			sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
 			m_renderCommand = driver->CreateRenderCommand();
@@ -60,6 +61,7 @@ namespace sh
 		void Mesh::SetVertexDeclaration(sh::video::VertexDeclaration vertexDeclaration)
 		{
 			m_renderCommand->GetVertexBuffer()->SetVertexDeclaration(vertexDeclaration);
+			m_vertexDeclaration = vertexDeclaration;
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -67,8 +69,8 @@ namespace sh
 		void Mesh::SetVertexData(std::vector<float> data)
 		{
 			sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
-			sh::video::VertexBuffer* vertexBuffer = driver->CreateVertexBuffer(data.data(), data.size() * sizeof(float));
-			m_renderCommand->SetVertexBuffer(vertexBuffer);
+			m_vertexBuffer = driver->CreateVertexBuffer(data.data(), data.size() * sizeof(float));
+			m_renderCommand->SetVertexBuffer(m_vertexBuffer);
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -76,8 +78,9 @@ namespace sh
 		void Mesh::SetIndexData(std::vector<unsigned int> data)
 		{
 			sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
-			sh::video::IndexBuffer* indexBuffer = driver->CreateIndexBuffer(data.data(), data.size() * sizeof(unsigned int));
-			m_renderCommand->SetIndexBuffer(indexBuffer);
+			m_indexBuffer = driver->CreateIndexBuffer(data.data(), data.size() * sizeof(unsigned int));
+			m_useIndices = true;
+			m_renderCommand->SetIndexBuffer(m_indexBuffer);
 			m_renderCommand->SetUseIndices(true);
 		}
 
@@ -90,6 +93,27 @@ namespace sh
 			sh::video::ShaderProgram* shaderProgram = m_material->GetRenderPass(0)->GetShaderProgram();
 			m_renderCommand->SetShaderProgram(shaderProgram);
 
+		}
+
+		/////////////////////////////////////////////////////////////////////////////////////
+
+		video::VertexBuffer* Mesh::GetVertexBuffer()
+		{
+			return m_vertexBuffer;
+		}
+
+		/////////////////////////////////////////////////////////////////////////////////////
+
+		video::IndexBuffer* Mesh::GetIndexBuffer()
+		{
+			return m_indexBuffer;
+		}
+
+		/////////////////////////////////////////////////////////////////////////////////////
+
+		video::VertexDeclaration Mesh::GetVertexDeclaration()
+		{
+			return m_vertexDeclaration;
 		}
 	}
 }

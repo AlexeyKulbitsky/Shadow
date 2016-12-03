@@ -19,10 +19,10 @@ namespace sh
 			glDeleteTextures(1, &m_glID);
 		}
 
-		void GLES20Texture::Load(const char* filename)
+		void GLES20Texture::Load(const String& filePath)
 		{
 			int texWidth, texHeight, texChannels;
-			stbi_uc* pixels = stbi_load(filename, &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
+			stbi_uc* pixels = stbi_load(filePath.c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
 			SH_ASSERT(pixels, "failed to load texture image!");
 
 			glBindTexture(m_glType, m_glID);
@@ -33,6 +33,11 @@ namespace sh
 			glBindTexture(m_glType, 0U);
 
 			stbi_image_free(pixels);
+		}
+
+		void GLES20Texture::Unload()
+		{
+
 		}
 
 		void GLES20Texture::SetType(Type type)

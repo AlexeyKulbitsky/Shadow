@@ -1,7 +1,7 @@
 #ifndef SHADOW_VERTEX_DECLARATION_INCLUDE
 #define SHADOW_VERTEX_DECLARATION_INCLUDE
 
-#include <vector>
+#include "../Globals.h"
 
 namespace sh
 {
@@ -92,6 +92,17 @@ namespace sh
 		private:
 			std::vector<Attribute> m_attributes;
 			size_t m_stride = 0U;
+		};
+
+		class ShaderProgram;
+
+		class VertexInputDeclaration
+		{
+		public:
+			virtual void Load(const pugi::xml_node &node){}
+			virtual void Init(){}
+			virtual void Assemble(VertexDeclaration& declaration){}
+			virtual void SetShaderProgram(ShaderProgram* shaderProgram){}
 		};
 	}
 }

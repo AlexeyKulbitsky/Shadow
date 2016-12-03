@@ -14,7 +14,7 @@ namespace sh
 		: m_creationParameters(parameters)
 	{
 		m_fileSystem = new io::FileSystem();
-		m_fileSystem->AddFolder(String("../../data/models"));
+		m_fileSystem->AddFolder(String("../../data"));
 		m_fileSystem->Init();
 
 		m_inputManager = new InputManager();

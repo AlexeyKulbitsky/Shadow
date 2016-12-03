@@ -1236,6 +1236,7 @@ namespace sh
 			}
 
 			SH_ASSERT(0, "failed to find suitable memory type!");
+			return 0;
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1554,7 +1555,9 @@ namespace sh
 				}
 			}
 
-			SH_ASSERT(0, "failed to find supported format!");			
+			SH_ASSERT(0, "failed to find supported format!");	
+			VkFormat format;
+			return format;
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////

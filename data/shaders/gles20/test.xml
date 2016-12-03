@@ -69,6 +69,12 @@
 
 </shader>
 
+<attributes>
+	<position 	type="vec3" name="aPosition"/>
+	<color 		type="vec3" name="aColor"/>
+	<uv			type="vec2" name="aUV"/>
+</attributes>
+
 </pass>
 
 </technique>

@@ -1,11 +1,13 @@
 #ifndef SHADOW_TEXTURE_INCLUDE
 #define SHADOW_TEXTURE_INCLUDE
 
+#include "../resources/Resource.h"
+
 namespace sh
 {
 	namespace video
 	{
-		class Texture
+		class Texture : public Resource
 		{
 		public:
 			enum class Type
@@ -35,7 +37,6 @@ namespace sh
 			Texture(){}
 			virtual ~Texture(){}
 
-			virtual void Load(const char* filename) = 0;
 			virtual void SetType(Type type) = 0;
 			virtual void SetTiling(Tiling tilingU, Tiling tilingV) = 0;
 			virtual void SetFiltering(Filtering filtering) = 0;

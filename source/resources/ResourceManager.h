@@ -3,8 +3,20 @@
 
 #include "Resource.h"
 
+
+
 namespace sh
 {
+	namespace video
+	{
+		class Texture;
+		class RenderTechnique;
+	}
+
+	namespace scene
+	{
+		class Model;
+	}
 
 	class ResourceManager
 	{
@@ -13,7 +25,12 @@ namespace sh
 		~ResourceManager();
 		void Init();
 
+		video::Texture* GetTexture(const String& fileName);
+		video::RenderTechnique* GetRenderTechnique(const String& fileName);
+
 	private:
+		std::vector<video::RenderTechnique*> m_renderTechniques;
+		std::vector<video::Texture*> m_textures;
 	};
 }
 
