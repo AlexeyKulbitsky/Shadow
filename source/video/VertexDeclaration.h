@@ -101,6 +101,7 @@ namespace sh
 		public:
 			virtual void Load(const pugi::xml_node &node){}
 			virtual void Init(){}
+			virtual VertexInputDeclaration* Clone() { return nullptr; }
 			virtual void Assemble(VertexDeclaration& declaration){}
 			virtual void SetShaderProgram(ShaderProgram* shaderProgram){}
 		};

@@ -23,8 +23,10 @@ namespace sh
 		RenderPass* RenderPass::Clone()
 		{
 			RenderPass* result = new RenderPass();
-			result->m_shaderProgram = m_shaderProgram->Clone();
-			//result->m_renderState = m_renderState->Clone();
+			result->m_shaderProgram = m_shaderProgram;
+			result->m_uniformBuffer = m_uniformBuffer->Clone();
+			result->m_renderState = m_renderState->Clone();
+			result->m_vertexInputDeclaration = m_vertexInputDeclaration->Clone();
 			return result;
 		}
 
@@ -32,51 +34,48 @@ namespace sh
 
 		void RenderPass::Load(const pugi::xml_node &node)
 		{
+			Driver* driver = Device::GetInstance()->GetDriver();
+
 			// Load render state
 			pugi::xml_node renderstateNode = node.child("renderstate");
 			if (!renderstateNode.empty())
 			{
-				LoadRenderState(renderstateNode);
+				m_renderState = driver->CreateRenderState();
+				m_renderState->Load(renderstateNode);
 			}
 
 			// Load shader program
 			pugi::xml_node shaderProgramNode = node.child("shader");
 			if (!shaderProgramNode.empty())
 			{
-				m_shaderProgram = Device::GetInstance()->GetDriver()->CreateShaderProgram();
+				m_shaderProgram = driver->CreateShaderProgram();
 				m_shaderProgram->Load(shaderProgramNode);
 			}			
 
 			// Load attributes
 			pugi::xml_node attributesNode = node.child("attributes");
-			LoadAttributes(attributesNode);
+			if (!attributesNode.empty())
+			{
+				m_vertexInputDeclaration = driver->CreateVertexInputDeclaration();
+				m_vertexInputDeclaration->SetShaderProgram(m_shaderProgram);
+				m_vertexInputDeclaration->Load(attributesNode);
+				m_vertexInputDeclaration->Init();
+			}
+
+			// Load uniforms
+			pugi::xml_node uniformsNode = node.child("constants");
+			if (!uniformsNode.empty())
+			{
+				m_uniformBuffer = driver->CreateUniformBuffer();
+				m_uniformBuffer->SetShaderProgram(m_shaderProgram);
+				m_uniformBuffer->Load(uniformsNode);
+				m_uniformBuffer->Init();
+			}
 		}		
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 
 		void RenderPass::LoadRenderState(const pugi::xml_node &node)
-		{
-
-		}
-
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-
-		void RenderPass::LoadUniforms(const pugi::xml_node &node)
-		{
-
-		}
-
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-
-		void RenderPass::LoadAttributes(const pugi::xml_node &node)
-		{
-			m_vertexInputDeclaration = Device::GetInstance()->GetDriver()->CreateVertexInputDeclaration();
-			m_vertexInputDeclaration->Load(node);
-		}
-
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-
-		void RenderPass::LoadSamplers(const pugi::xml_node &node)
 		{
 
 		}

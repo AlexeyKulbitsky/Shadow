@@ -7,59 +7,59 @@ namespace sh
 	{
 		void GLES20VertexDeclaration::Load(const pugi::xml_node &node)
 		{
-			if (node)
+			if (node.empty())
+				return;
+
+			pugi::xml_node attributeNode = node.first_child();
+			while (!attributeNode.empty())
 			{
-				pugi::xml_node attributeNode = node.first_child();
-				while (!attributeNode.empty())
+				GLES20VertexAttribute attribute;
+
+				std::string name = attributeNode.name();
+				if (name == "position")
 				{
-					GLES20VertexAttribute attribute;
-
-					std::string name = attributeNode.name();
-					if (name == "position")
-					{
-						attribute.semantic = AttributeSemantic::POSITION;
-						printf("Postion attribute\n");
-					}
-					else if (name == "normal")
-					{
-						attribute.semantic = AttributeSemantic::NORMAL;
-						printf("Normal attribute\n");
-					}
-					else if (name == "color")
-					{
-						attribute.semantic = AttributeSemantic::COLOR;
-						printf("Color attribute\n");
-					}
-					else if (name == "uv")
-					{
-						attribute.semantic = AttributeSemantic::UV;
-						printf("UV attribute\n");
-					}
-					else
-					{
-						printf("Unknown attribute\n");
-					}
-
-					attribute.name = attributeNode.attribute("name").as_string();
-
-					pugi::xml_attribute typeAttr = attributeNode.attribute("type");
-					name = typeAttr.as_string();
-
-					if (name == "vec3")
-					{
-						attribute.type = GL_FLOAT;
-						attribute.size = 3;
-					}
-					else if (name == "vec2")
-					{
-						attribute.type = GL_FLOAT;
-						attribute.size = 2;
-					}
-
-					AddAttribute(attribute);
-
-					attributeNode = attributeNode.next_sibling();
+					attribute.semantic = AttributeSemantic::POSITION;
+					printf("Postion attribute\n");
 				}
+				else if (name == "normal")
+				{
+					attribute.semantic = AttributeSemantic::NORMAL;
+					printf("Normal attribute\n");
+				}
+				else if (name == "color")
+				{
+					attribute.semantic = AttributeSemantic::COLOR;
+					printf("Color attribute\n");
+				}
+				else if (name == "uv")
+				{
+					attribute.semantic = AttributeSemantic::UV;
+					printf("UV attribute\n");
+				}
+				else
+				{
+					printf("Unknown attribute\n");
+				}
+
+				attribute.name = attributeNode.attribute("name").as_string();
+
+				pugi::xml_attribute typeAttr = attributeNode.attribute("type");
+				name = typeAttr.as_string();
+
+				if (name == "vec3")
+				{
+					attribute.type = GL_FLOAT;
+					attribute.size = 3;
+				}
+				else if (name == "vec2")
+				{
+					attribute.type = GL_FLOAT;
+					attribute.size = 2;
+				}
+
+				AddAttribute(attribute);
+
+				attributeNode = attributeNode.next_sibling();
 			}
 		}
 
@@ -80,6 +80,15 @@ namespace sh
 				attributes[i].index = glGetAttribLocation(m_shaderProgram->GetGLId(), attributes[i].name.c_str());
 			}
 			m_shaderProgram->UnbindProgram();
+		}
+
+		/////////////////////////////////////////////////////////////////////////////////
+
+		VertexInputDeclaration* GLES20VertexDeclaration::Clone()
+		{
+			GLES20VertexDeclaration* result = new GLES20VertexDeclaration();
+			(*result) = (*this);
+			return result;
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////

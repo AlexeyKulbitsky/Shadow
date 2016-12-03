@@ -26,11 +26,6 @@ namespace sh
 			virtual void Unload() = 0;
 			virtual void BindProgram() = 0;
 			virtual void UnbindProgram() = 0;
-
-			UniformBuffer* GetUniformBuffer() { return m_uniformBuffer; }
-
-		protected:
-			UniformBuffer* m_uniformBuffer;
 		};
 	}
 }

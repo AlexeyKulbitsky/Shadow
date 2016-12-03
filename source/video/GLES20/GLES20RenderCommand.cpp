@@ -6,13 +6,11 @@ namespace sh
 	{
 		void GLES20RenderCommand::Init()
 		{
-			GLES20VertexDeclaration* shaderInternalVertexDeclaration = m_shaderProgram->GetVertexDeclaration();
-			VertexDeclaration* vertexBufferInternalVertexDeclaration = m_vertexBuffer->GetVertexDeclaration();
+			//GLES20VertexDeclaration* shaderInternalVertexDeclaration = m_shaderProgram->GetVertexDeclaration();
+			//VertexDeclaration* vertexBufferInternalVertexDeclaration = m_vertexBuffer->GetVertexDeclaration();
 
-			// Make a copy of shader vertex declaration
-			m_inputDeclaration = *shaderInternalVertexDeclaration;
 			// Connect it with buffer declaration
-			m_inputDeclaration.Assemble(*vertexBufferInternalVertexDeclaration);
+			//m_inputDeclaration->Assemble(*vertexBufferInternalVertexDeclaration);
 		}
 
 		void GLES20RenderCommand::SetUseIndices(bool useIndices)
@@ -69,6 +67,11 @@ namespace sh
 				m_glTopology = GL_TRIANGLE_STRIP;
 				break;
 			}
+		}
+
+		void GLES20RenderCommand::SetVertexInputDeclaration(VertexInputDeclaration* declaration)
+		{
+			m_inputDeclaration = static_cast<GLES20VertexDeclaration*>(declaration);
 		}
 	}
 }

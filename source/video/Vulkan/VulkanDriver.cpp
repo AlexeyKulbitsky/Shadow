@@ -124,7 +124,7 @@ namespace sh
 			LoadModel();
 			createVertexBuffer();
 			createIndexBuffer();
-			CreateUniformBuffer();
+			createUniformBuffer();
 			CreateDescriptorPool();
 			CreateDescriptorSet();
 			CreateCommandBuffers();
@@ -899,7 +899,7 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		void VulkanDriver::CreateUniformBuffer()
+		void VulkanDriver::createUniformBuffer()
 		{
 			VkDeviceSize bufferSize = sizeof(UniformBufferObject);
 			createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, m_uniformStagingBuffer, m_uniformStagingBufferMemory);

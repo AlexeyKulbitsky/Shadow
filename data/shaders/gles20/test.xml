@@ -2,78 +2,70 @@
 
 <pass name="firstPass">
 
-<renderstate>
-	<name/>
-</renderstate>
+	<renderstate>
+		<name/>
+	</renderstate>
+		
+	<constants>
+		<uniforms>
+			<uniform name="uniA" type="float" val="1.0"/>
+			<uniform name="matMVP" type="mat4" val="mvp"/>
+		</uniforms>
 
-<shader language="GLSL" api="GLES20">
-
-<uniforms>
-	<uniform name="uniA" type="float" val="1.0"/>
-	<uniform name="matMVP" type="mat4" val="mvp"/>
-</uniforms>
-
-<samplers>
-	<sampler name="testSample" type="2D" tilingU="repeat" tilingV="repeat" filter="trilinear"/>
-</samplers>
-
-<attributes>
-	<position 	type="vec3" name="aPosition"/>
-	<color 		type="vec3" name="aColor"/>
-	<uv			type="vec2" name="aUV"/>
-</attributes>
-
-
-
-<vertexShader>
-<![CDATA[
-
-	attribute vec3 aPosition;
-	attribute vec3 aColor;
-	attribute vec2 aUV;
-
-	uniform mat4 matMVP;
-
-	varying vec3 vColor;
-	varying vec2 vUV;
-
-	void main() 
-	{
-		gl_Position = matMVP * vec4(aPosition, 1.0);
-		vColor = aColor;
-		vUV = aUV;
-	}
+		<samplers>
+			<sampler name="testSample" type="2D" tilingU="repeat" tilingV="repeat" filter="trilinear"/>
+		</samplers>
+	</constants>
 	
-]]>
-</vertexShader>
-
-<fragmentShader>
-<![CDATA[
-
-	precision mediump float;
+	<attributes>
+		<position 	type="vec3" name="aPosition"/>
+		<color 		type="vec3" name="aColor"/>
+		<uv			type="vec2" name="aUV"/>
+	</attributes>
 	
-	uniform float uniA;
-	uniform sampler2D testSample;
+	<shader language="GLSL" api="GLES20">
+		<vertexShader>
+		<![CDATA[
 
-	varying vec3 vColor;
-	varying vec2 vUV;
+			attribute vec3 aPosition;
+			attribute vec3 aColor;
+			attribute vec2 aUV;
+
+			uniform mat4 matMVP;
+
+			varying vec3 vColor;
+			varying vec2 vUV;
+
+			void main() 
+			{
+				gl_Position = matMVP * vec4(aPosition, 1.0);
+				vColor = aColor;
+				vUV = aUV;
+			}
 	
-	void main() 
-	{
-		vec3 col = texture2D(testSample, vUV).xyz * uniA;
-		gl_FragColor = vec4(col.xyz, 1.0);
-	} 
+		]]>
+		</vertexShader>
+
+		<fragmentShader>
+		<![CDATA[
+
+			precision mediump float;
 	
-]]>	
-</fragmentShader>
+			uniform float uniA;
+			uniform sampler2D testSample;
 
-</shader>
-
-<attributes>
-	<position 	type="vec3" name="aPosition"/>
-	<color 		type="vec3" name="aColor"/>
-	<uv			type="vec2" name="aUV"/>
-</attributes>
+			varying vec3 vColor;
+			varying vec2 vUV;
+	
+			void main() 
+			{
+				vec3 col = texture2D(testSample, vUV).xyz * uniA;
+				gl_FragColor = vec4(col.xyz, 1.0);
+			} 
+	
+		]]>	
+		</fragmentShader>
+	</shader>
 
 </pass>
 

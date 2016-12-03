@@ -27,10 +27,12 @@ namespace sh
 			virtual VertexBuffer* CreateVertexBuffer(const void* data, size_t size) override;
 			virtual IndexBuffer* CreateIndexBuffer() override;
 			virtual IndexBuffer* CreateIndexBuffer(const void* data, size_t size) override;
+			virtual UniformBuffer* CreateUniformBuffer() override;
 			virtual RenderCommand* CreateRenderCommand() override;
 			virtual ShaderProgram* CreateShaderProgram() override;
 			virtual Texture* CreateTexture() override;
 			virtual VertexInputDeclaration* CreateVertexInputDeclaration() override;
+			virtual RenderState* CreateRenderState() override;
 
 		private:
 			EGLContextManager* m_contextManager = nullptr;

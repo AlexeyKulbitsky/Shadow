@@ -91,7 +91,7 @@ namespace sh
 					material->SetRenderTechnique(rt);
 
 					// Read uniforms
-					sh::video::UniformBuffer* uniformBuffer = material->GetRenderPass(0)->GetShaderProgram()->GetUniformBuffer();
+					sh::video::UniformBuffer* uniformBuffer = material->GetRenderPass(0)->GetUniformBuffer();
 
 					pugi::xml_node uniformsNode = materialNode.child("uniforms");
 					if (uniformsNode)

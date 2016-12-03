@@ -18,6 +18,7 @@ namespace sh
 		class VertexBuffer;
 		class IndexBuffer;
 		class VertexDeclaration;
+		class VertexInputDeclaration;
 		class RenderState;
 		class ShaderProgram;
 		class UniformBuffer;
@@ -37,6 +38,7 @@ namespace sh
 			virtual void SetRenderState(RenderState* renderState) = 0;
 			virtual void SetShaderProgram(ShaderProgram* shaderProgram) = 0;
 			virtual void SetTopology(Topology topology) = 0;
+			virtual void SetVertexInputDeclaration(VertexInputDeclaration* declaration) = 0;
 
 			virtual bool IsUseIndices() const = 0;
 			virtual VertexBuffer* GetVertexBuffer() = 0;
@@ -45,6 +47,7 @@ namespace sh
 			virtual RenderState* GetRenderState() = 0;
 			virtual ShaderProgram* GetShaderProgram() = 0;
 			virtual Topology GetTopology() const = 0;
+			virtual VertexInputDeclaration* GetVertexInputDeclaration() const = 0;
 		};
 	}
 }

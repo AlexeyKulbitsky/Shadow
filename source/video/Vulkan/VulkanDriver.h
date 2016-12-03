@@ -89,7 +89,7 @@ namespace sh
 			void CreateSemaphores();
 			void createVertexBuffer();
 			void createIndexBuffer();
-			void CreateUniformBuffer();
+			void createUniformBuffer();
 			void CreateDescriptorPool();
 			void CreateDescriptorSetLayout();
 			void CreateDescriptorSet();

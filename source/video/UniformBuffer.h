@@ -1,7 +1,7 @@
 #ifndef SHADOW_UNIFORM_BUFFER_INCLUDE
 #define SHADOW_UNIFORM_BUFFER_INCLUDE
 
-#include <vector>
+#include "../Globals.h"
 
 namespace sh
 {
@@ -9,6 +9,7 @@ namespace sh
 	{
 		class Uniform;
 		class Sampler;
+		class ShaderProgram;
 
 		class UniformBuffer
 		{
@@ -16,6 +17,8 @@ namespace sh
 			UniformBuffer() {}
 			virtual ~UniformBuffer() {}
 
+			virtual void Load(const pugi::xml_node &node){}
+			virtual void SetShaderProgram(ShaderProgram* shaderProgram){}
 			virtual void Init();
 			virtual void Upload();
 			virtual UniformBuffer* Clone();

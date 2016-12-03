@@ -29,9 +29,6 @@ namespace sh
 
 		private:
 			void LoadRenderState(const pugi::xml_node &node);
-			void LoadUniforms(const pugi::xml_node &node);
-			void LoadAttributes(const pugi::xml_node &node);
-			void LoadSamplers(const pugi::xml_node &node);
 
 		protected:
 			ShaderProgram* m_shaderProgram;

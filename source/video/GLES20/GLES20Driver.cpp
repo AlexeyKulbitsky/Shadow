@@ -4,6 +4,7 @@
 #include "GLES20VertexDeclaration.h"
 #include "GLES20IndexBuffer.h"
 #include "GLES20VertexBuffer.h"
+#include "GLES20UniformBuffer.h"
 #include "GLES20RenderCommand.h"
 #include "GLES20Texture.h"
 #include "Material.h"
@@ -58,7 +59,7 @@ void GLES20Driver::Render(RenderCommand* command)
 	GLES20RenderState* renderState = glesRenderCommand->GetGLRenderState();
 	GLES20ShaderProgram* shaderProgram = glesRenderCommand->GetGLShaderProgram();
 	GLES20VertexDeclaration* vertexDeclaration = glesRenderCommand->GetGLVertexInputDeclaration();
-	UniformBuffer* uniformBuffer = shaderProgram->GetUniformBuffer();
+	UniformBuffer* uniformBuffer = glesRenderCommand->GetUniformBuffer();
 
 	// Bind current shader
 	shaderProgram->BindProgram();
@@ -119,6 +120,11 @@ IndexBuffer* GLES20Driver::CreateIndexBuffer(const void* data, size_t size)
 	return new GLES20IndexBuffer(data, size);
 }
 
+UniformBuffer* GLES20Driver::CreateUniformBuffer()
+{
+	return new GLES20UniformBuffer();
+}
+
 RenderCommand* GLES20Driver::CreateRenderCommand()
 {
 	return new GLES20RenderCommand();
@@ -137,4 +143,9 @@ Texture* GLES20Driver::CreateTexture()
 VertexInputDeclaration* GLES20Driver::CreateVertexInputDeclaration()
 {
 	return new GLES20VertexDeclaration();
+}
+
+RenderState* GLES20Driver::CreateRenderState()
+{
+	return new GLES20RenderState();
 }

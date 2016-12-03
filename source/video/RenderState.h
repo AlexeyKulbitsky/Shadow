@@ -1,6 +1,8 @@
 #ifndef SHADOW_RENDER_STATE_INCLUDE
 #define SHADOW_RENDER_STATE_INCLUDE
 
+#include "../Globals.h"
+
 namespace sh
 {
 	namespace video
@@ -28,6 +30,7 @@ namespace sh
 		class RenderState
 		{
 		public:
+			virtual void Load(const pugi::xml_node &node){}
 			virtual void Apply(){}
 			virtual RenderState* Clone() { return nullptr; }
 

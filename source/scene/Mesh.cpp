@@ -39,7 +39,7 @@ namespace sh
 
 		void Mesh::Render()
 		{
-			sh::video::Uniform* mvp = m_renderCommand->GetShaderProgram()->GetUniformBuffer()->GetUniform("matMVP");
+			sh::video::Uniform* mvp = m_renderCommand->GetUniformBuffer()->GetUniform("matMVP");
 			math::Matrix4f modelMatrix;
 			modelMatrix.SetIdentity();
 			modelMatrix.SetTranslation(math::Vector3f(0.0f, 0.0f, -10.0f));
@@ -88,10 +88,16 @@ namespace sh
 
 		void Mesh::SetMaterial(sh::video::Material* material)
 		{
-			m_material = material;
-			//sh::video::ShaderProgram* shaderProgram = m_material->GetRenderTechnique()->GetRenderPass(0)->GetShaderProgram();
-			sh::video::ShaderProgram* shaderProgram = m_material->GetRenderPass(0)->GetShaderProgram();
-			m_renderCommand->SetShaderProgram(shaderProgram);
+			m_material = material;			
+
+			video::RenderPass* renderPass = m_material->GetRenderPass(0);
+			m_renderCommand->SetShaderProgram(renderPass->GetShaderProgram());
+			m_renderCommand->SetRenderState(renderPass->GetRenderState());
+			m_renderCommand->SetUniformBuffer(renderPass->GetUniformBuffer());
+
+			video::VertexInputDeclaration* inputDeclaration = renderPass->GetVertexInputDeclaration();
+			inputDeclaration->Assemble(m_vertexDeclaration);
+			m_renderCommand->SetVertexInputDeclaration(inputDeclaration);
 
 		}
 

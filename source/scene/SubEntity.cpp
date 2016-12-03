@@ -35,7 +35,7 @@ namespace sh
 
 		void SubEntity::Render()
 		{
-			sh::video::Uniform* mvp = m_renderCommand->GetShaderProgram()->GetUniformBuffer()->GetUniform("matMVP");
+			sh::video::Uniform* mvp = m_renderCommand->GetUniformBuffer()->GetUniform("matMVP");
 			math::Matrix4f modelMatrix;
 			modelMatrix.SetIdentity();
 			modelMatrix.SetTranslation(math::Vector3f(0.0f, 0.0f, -10.0f));

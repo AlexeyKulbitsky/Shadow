@@ -25,6 +25,7 @@ namespace sh
 			virtual void SetRenderState(RenderState* renderState) override;
 			virtual void SetShaderProgram(ShaderProgram* shaderProgram) override;
 			virtual void SetTopology(Topology topology) override;
+			virtual void SetVertexInputDeclaration(VertexInputDeclaration* declaration) override;
 
 			virtual bool IsUseIndices() const override { return m_useIndices; }
 			virtual VertexBuffer* GetVertexBuffer() override { return m_vertexBuffer; }
@@ -33,6 +34,7 @@ namespace sh
 			virtual RenderState* GetRenderState() override { return m_renderState; }
 			virtual ShaderProgram* GetShaderProgram() override { return m_shaderProgram; }
 			virtual Topology GetTopology() const override { return m_topology; }
+			virtual VertexInputDeclaration* GetVertexInputDeclaration() const override { return m_inputDeclaration; }
 
 			// GLES20 - specific interface
 			GLES20VertexBuffer* GetGLVertexBuffer() { return m_vertexBuffer; }
@@ -40,7 +42,7 @@ namespace sh
 			GLES20UniformBuffer* GetGLUniformBuffer() { return m_uniformBuffer; }
 			GLES20RenderState* GetGLRenderState() { return m_renderState; }
 			GLES20ShaderProgram* GetGLShaderProgram() { return m_shaderProgram; }
-			GLES20VertexDeclaration* GetGLVertexInputDeclaration() { return &m_inputDeclaration; }
+			GLES20VertexDeclaration* GetGLVertexInputDeclaration() { return m_inputDeclaration; }
 			u32 GetGLTopology() const { return m_glTopology; }
 
 		private:
@@ -50,7 +52,7 @@ namespace sh
 			GLES20UniformBuffer* m_uniformBuffer;
 			GLES20RenderState* m_renderState;
 			GLES20ShaderProgram* m_shaderProgram;
-			GLES20VertexDeclaration m_inputDeclaration;
+			GLES20VertexDeclaration* m_inputDeclaration;
 			Topology m_topology;
 			u32 m_glTopology;
 		};
