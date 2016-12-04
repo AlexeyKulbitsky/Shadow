@@ -13,7 +13,7 @@
 		</uniforms>
 
 		<samplers>
-			<sampler name="testSample" type="2D" tilingU="repeat" tilingV="repeat" filter="trilinear"/>
+			<sampler name="testSample" type="2D" tilingU="repeat" tilingV="repeat" filter="trilinear" usage="diffuse_map"/>
 		</samplers>
 	</constants>
 	

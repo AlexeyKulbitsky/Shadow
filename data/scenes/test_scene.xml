@@ -1,6 +1,6 @@
 <scene name="test Scene">
-	<object name="model_0">
-		<model path="../data/models/triangle/nanosuit.obj"/>
+	<entity name="model_0">
+		<model filename="nanosuit.obj"/>
 		<transform>
 			<position x="1.0" y="0.5" z="0.2"/>
 			<rotation/>
@@ -15,5 +15,5 @@
 				<sampler name="testSample" filename="statue.jpg"/>
 			</samplers>
 		</material>
-	</object>
+	</entity>
 </scene>

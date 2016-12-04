@@ -23,7 +23,12 @@ namespace sh
 				UNKNOWN
 			};
 
-		public:		
+		public:	
+			enum class Usage
+			{
+				UNKNOWN
+			};
+
 			template<typename T>
 			Uniform(const T& value);
 
@@ -45,10 +50,12 @@ namespace sh
 
 			void SetName(const std::string& name) { m_name = name; }
 			const std::string& GetName() const { return m_name; }
+			void SetUsage(Usage usage) { m_usage = usage; }
+			Usage GetUsage() const { return m_usage; }
 
-			virtual void Load() = 0;
-			virtual void Init() = 0;
-			virtual Uniform* Clone() = 0;
+			virtual void Load(){}
+			virtual void Init(){}
+			virtual Uniform* Clone(){ return nullptr; }
 
 		private:
 			class UniformPlaceHolder
@@ -73,6 +80,7 @@ namespace sh
 
 		protected:
 			Type m_type;
+			Usage m_usage;
 			std::string m_name;
 			UniformPlaceHolder* m_placeHolder;
 		};

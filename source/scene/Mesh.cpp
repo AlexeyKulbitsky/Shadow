@@ -1,4 +1,5 @@
 #include "Mesh.h"
+#include "MeshBase.h"
 #include "../Device.h"
 #include "../video/Material.h"
 #include "../video/RenderTechnique.h"
@@ -14,11 +15,23 @@ namespace sh
 {
 	namespace scene
 	{
-		Mesh::Mesh()
-			: m_useIndices(false)
+		Mesh::Mesh(MeshBase* meshBase)
+			: m_meshBase(meshBase)
+			, m_useIndices(false)
 		{
 			sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
 			m_renderCommand = driver->CreateRenderCommand();
+			m_renderCommand->SetVertexBuffer(m_meshBase->GetVertexBuffer());
+			if (m_meshBase->IsUseIndices())
+			{
+				m_renderCommand->SetIndexBuffer(m_meshBase->GetIndexBuffer());
+				m_renderCommand->SetUseIndices(true);
+			}
+			else
+			{
+				m_renderCommand->SetUseIndices(false);
+			}
+			m_renderCommand->SetTopology(meshBase->GetTopology());
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -26,13 +39,6 @@ namespace sh
 		Mesh::~Mesh()
 		{
 
-		}
-
-		/////////////////////////////////////////////////////////////////////////////////////
-
-		void Mesh::Init()
-		{
-			m_renderCommand->Init();
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -58,34 +64,6 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		void Mesh::SetVertexDeclaration(sh::video::VertexDeclaration vertexDeclaration)
-		{
-			m_renderCommand->GetVertexBuffer()->SetVertexDeclaration(vertexDeclaration);
-			m_vertexDeclaration = vertexDeclaration;
-		}
-
-		/////////////////////////////////////////////////////////////////////////////////////
-
-		void Mesh::SetVertexData(std::vector<float> data)
-		{
-			sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
-			m_vertexBuffer = driver->CreateVertexBuffer(data.data(), data.size() * sizeof(float));
-			m_renderCommand->SetVertexBuffer(m_vertexBuffer);
-		}
-
-		/////////////////////////////////////////////////////////////////////////////////////
-
-		void Mesh::SetIndexData(std::vector<unsigned int> data)
-		{
-			sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
-			m_indexBuffer = driver->CreateIndexBuffer(data.data(), data.size() * sizeof(unsigned int));
-			m_useIndices = true;
-			m_renderCommand->SetIndexBuffer(m_indexBuffer);
-			m_renderCommand->SetUseIndices(true);
-		}
-
-		/////////////////////////////////////////////////////////////////////////////////////
-
 		void Mesh::SetMaterial(sh::video::Material* material)
 		{
 			m_material = material;			
@@ -96,31 +74,12 @@ namespace sh
 			m_renderCommand->SetUniformBuffer(renderPass->GetUniformBuffer());
 
 			video::VertexInputDeclaration* inputDeclaration = renderPass->GetVertexInputDeclaration();
-			inputDeclaration->Assemble(m_vertexDeclaration);
+			inputDeclaration->Assemble(*(m_meshBase->GetVertexDeclaration()));
 			m_renderCommand->SetVertexInputDeclaration(inputDeclaration);
 
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
-
-		video::VertexBuffer* Mesh::GetVertexBuffer()
-		{
-			return m_vertexBuffer;
-		}
-
-		/////////////////////////////////////////////////////////////////////////////////////
-
-		video::IndexBuffer* Mesh::GetIndexBuffer()
-		{
-			return m_indexBuffer;
-		}
-
-		/////////////////////////////////////////////////////////////////////////////////////
-
-		video::VertexDeclaration Mesh::GetVertexDeclaration()
-		{
-			return m_vertexDeclaration;
-		}
 	}
 }
 

@@ -1,4 +1,5 @@
 #include "Model.h"
+#include "ModelBase.h"
 #include "Mesh.h"
 
 namespace sh
@@ -8,6 +9,18 @@ namespace sh
 		Model::Model()
 		{
 
+		}
+
+		//////////////////////////////////////////////////////////////////////////////
+
+		Model::Model(ModelBase* modelBase)
+		{
+			size_t meshesCount = modelBase->GetMeshesCount();
+			m_meshes.resize(meshesCount);
+			for (size_t i = 0; i < meshesCount; ++i)
+			{
+				m_meshes[i] = new Mesh(modelBase->GetMesh(i));
+			}
 		}
 
 		//////////////////////////////////////////////////////////////////////////////

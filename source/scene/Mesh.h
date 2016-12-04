@@ -10,7 +10,7 @@
 namespace sh
 {
 	namespace video
-	{
+	{		
 		class Material;
 		class RenderCommand;
 		class ShaderProgram;
@@ -18,12 +18,12 @@ namespace sh
 
 	namespace scene
 	{		
+		class MeshBase;
 		class Mesh
 		{
-		public:
-			Mesh();
-			~Mesh();
-			void Init();	
+		public:			
+			explicit Mesh(MeshBase* meshBase);
+			~Mesh();	
 			void Render();
 
 			bool IsUseIndices() { return m_useIndices; }
@@ -35,10 +35,17 @@ namespace sh
 
 			video::VertexBuffer* GetVertexBuffer();
 			video::IndexBuffer* GetIndexBuffer();
-			video::VertexDeclaration GetVertexDeclaration();
+			video::VertexDeclaration* GetVertexDeclaration();
 			
 			sh::video::RenderCommand* GetRenderCommand() { return m_renderCommand; }
+
 		private:
+			Mesh(){}
+			Mesh(const Mesh& other){}
+
+		private:
+			MeshBase* m_meshBase;
+
 			video::VertexBuffer* m_vertexBuffer;
 			video::IndexBuffer* m_indexBuffer;
 			video::VertexDeclaration m_vertexDeclaration;

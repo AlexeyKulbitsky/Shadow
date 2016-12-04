@@ -27,9 +27,6 @@ namespace sh
 			UniformBuffer* GetUniformBuffer() const { return m_uniformBuffer; }
 			RenderState* GetRenderState() const { return m_renderState; }
 
-		private:
-			void LoadRenderState(const pugi::xml_node &node);
-
 		protected:
 			ShaderProgram* m_shaderProgram;
 			VertexInputDeclaration* m_vertexInputDeclaration;

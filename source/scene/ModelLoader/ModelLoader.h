@@ -7,7 +7,7 @@ namespace sh
 {
 	namespace scene
 	{
-		class Model;
+		class ModelBase;
 
 		class ModelLoader
 		{
@@ -15,8 +15,8 @@ namespace sh
 			ModelLoader(){}
 			virtual ~ModelLoader(){}
 
-			virtual Model* Load(const char* path) = 0;
-			virtual Model* Load(const std::string &path) = 0;
+			virtual ModelBase* Load(const char* path) = 0;
+			virtual ModelBase* Load(const std::string &path) = 0;
 
 			static void SetInstance(ModelLoader* loader);
 			static ModelLoader* GetInstance();

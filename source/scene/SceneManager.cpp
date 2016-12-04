@@ -35,7 +35,7 @@ namespace sh
 			pugi::xml_parse_result result = doc.load_file(filename);
 			pugi::xml_node firstChild = doc.first_child();
 
-			pugi::xml_node objectNode = firstChild.child("object");
+			pugi::xml_node objectNode = firstChild.child("entity");
 			while (objectNode)
 			{
 				// Read model
@@ -43,9 +43,10 @@ namespace sh
 				pugi::xml_node modelNode = objectNode.child("model");
 				if (modelNode)
 				{
-					pugi::xml_attribute attr = modelNode.attribute("path");
-					const char* modelPath = attr.as_string();
-					model = ModelLoader::GetInstance()->Load(modelPath);
+					pugi::xml_attribute attr = modelNode.attribute("filename");
+					String modelFileName = attr.as_string();
+					ModelBase* modelBase = resourceManager->GetModelBase(modelFileName);
+					model = new Model(modelBase);
 				}
 
 				// Read name
@@ -153,7 +154,6 @@ namespace sh
 					{
 						sh::scene::Mesh* mesh = model->GetMesh(i);
 						mesh->SetMaterial(material);
-						mesh->Init();
 					}					
 				}
 				// Add model to render list

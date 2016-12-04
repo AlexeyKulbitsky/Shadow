@@ -15,7 +15,7 @@ namespace sh
 
 	namespace scene
 	{
-		class Model;
+		class ModelBase;
 	}
 
 	class ResourceManager
@@ -27,10 +27,12 @@ namespace sh
 
 		video::Texture* GetTexture(const String& fileName);
 		video::RenderTechnique* GetRenderTechnique(const String& fileName);
+		scene::ModelBase* GetModelBase(const String& fileName);
 
 	private:
 		std::vector<video::RenderTechnique*> m_renderTechniques;
 		std::vector<video::Texture*> m_textures;
+		std::vector<scene::ModelBase*> m_models;
 	};
 }
 

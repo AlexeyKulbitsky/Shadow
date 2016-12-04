@@ -28,10 +28,12 @@ namespace sh
 			virtual size_t GetUniformsCount() const { return m_uniforms.size(); }
 			virtual Uniform* GetUniform(size_t index) { return m_uniforms[index]; }
 			Uniform* GetUniform(const std::string& name);
+			Uniform* GetUniform(Uniform::Usage usage);
 
 			virtual size_t GetSamplersCount() const { return m_samplers.size(); }
 			virtual Sampler* GetSampler(size_t index) { return m_samplers[index]; }
 			Sampler* GetSampler(const std::string& name);
+			Sampler* GetSampler(Sampler::Usage usage);
 
 		private:
 			std::vector<Uniform*> m_uniforms;

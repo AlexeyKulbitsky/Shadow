@@ -89,7 +89,7 @@ void GLES20Driver::Render(RenderCommand* command)
 	}
 	else
 	{
-		//glDrawArrays(glesRenderCommand->GetGLTopology(), 0, 3);
+		glDrawArrays(glesRenderCommand->GetGLTopology(), 0, vertexBuffer->GetVerticesCount());
 	}
 
 	// Unbind vertex buffer

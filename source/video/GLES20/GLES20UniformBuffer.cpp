@@ -152,6 +152,7 @@ namespace sh
 				pugi::xml_attribute tilingUAttr = uniformNode.attribute("tilingU");
 				pugi::xml_attribute tilingVAttr = uniformNode.attribute("tilingV");
 				pugi::xml_attribute filerAttr = uniformNode.attribute("filter");
+				pugi::xml_attribute usageAttr = uniformNode.attribute("usage");
 
 				printf("Sampler:\n");
 				std::string name = nameAttr.as_string();
@@ -213,6 +214,15 @@ namespace sh
 					else if (filterTypeName == "trilinear")
 					{
 						filtering = Texture::Filtering::TRILINEAR;
+					}
+				}
+
+				if (!usageAttr.empty())
+				{
+					String usage = usageAttr.as_string();
+					if (usage == "diffuse_map")
+					{
+						sampler->SetUsage(Sampler::Usage::DIFFUSE_MAP);
 					}
 				}
 

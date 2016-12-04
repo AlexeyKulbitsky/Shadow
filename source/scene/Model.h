@@ -1,19 +1,21 @@
 #ifndef SHADOW_MODEL_INCLUDE
 #define SHADOW_MODEL_INCLUDE
 
-#include <vector>
 #include "../Globals.h"
+#include "../resources/Resource.h"
 
 namespace sh
 {
 	namespace scene
 	{
 		class Mesh;
+		class ModelBase;
 
-		class Model
+		class Model : public Resource
 		{
 		public:
 			Model();
+			Model(ModelBase* modelBase);
 			~Model();
 
 			void SetPosition(const math::Vector3f& pos) { m_position = pos; }

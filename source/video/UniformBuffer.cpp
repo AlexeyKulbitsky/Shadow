@@ -66,6 +66,11 @@ namespace sh
 			return nullptr;
 		}
 
+		Uniform* UniformBuffer::GetUniform(Uniform::Usage usage)
+		{
+			return nullptr;
+		}
+
 		Sampler* UniformBuffer::GetSampler(const std::string& name)
 		{
 			for (size_t i = 0, sz = m_samplers.size(); i < sz; ++i)
@@ -73,6 +78,11 @@ namespace sh
 				if (m_samplers[i]->GetName() == name)
 					return m_samplers[i];
 			}
+			return nullptr;
+		}
+
+		Sampler* UniformBuffer::GetSampler(Sampler::Usage usage)
+		{
 			return nullptr;
 		}
 	}
