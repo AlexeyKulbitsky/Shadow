@@ -61,6 +61,17 @@ namespace sh
 				SetRotation(xRot * yRot * m_rotation);
 			}
 			inputManager->SetMousePositionOld(current);
+
+			if (m_needsToRecalculateViewMatrix)
+			{
+				UpdateViewMatrix();
+				video::Driver* driver = Device::GetInstance()->GetDriver();
+				driver->GetGlobalUniform(video::GlobalUniformName::CAMERA_VIEW_MATRIX)->Set(m_viewMatrix);
+				driver->GetGlobalUniform(video::GlobalUniformName::CAMERA_VIEW_ROTATION_MATRIX)->Set(m_rotationMatrix);
+				driver->GetGlobalUniform(video::GlobalUniformName::CAMERA_VIEW_PROJECTION_MATRIX)->Set((m_projectionMatrix * m_viewMatrix).GetTransposed());
+				driver->GetGlobalUniform(video::GlobalUniformName::CAMERA_VIEW_ROTATION_PROJECTION_MATRIX)->Set((m_projectionMatrix * m_rotationMatrix).GetTransposed());
+				m_needsToRecalculateViewMatrix = false;
+			}
 		}
 
 		void Camera::SetPosition(const math::Vector3f& pos)
@@ -86,38 +97,17 @@ namespace sh
 			m_nearDistance = nearP;
 			m_farDistance = farP;
 
-			m_needsToRecalculateProjectionMatrix = true;
+			UpdateProjectionMatrix();
+			Device::GetInstance()->GetDriver()->GetGlobalUniform(video::GlobalUniformName::CAMERA_PROJECTION_MATRIX)->Set(m_projectionMatrix);
+			m_needsToRecalculateProjectionMatrix = false;
 		}
 
 		const math::Matrix4f& Camera::GetViewMatrix()
 		{
 			if (m_needsToRecalculateViewMatrix)
 			{
-				m_viewMatrix.SetIdentity();			
-
-				m_viewMatrix.m[2][0] = -m_frontVector.x;
-				m_viewMatrix.m[2][1] = -m_frontVector.y;
-				m_viewMatrix.m[2][2] = -m_frontVector.z;
-
-				m_viewMatrix.m[0][0] = m_rightVector.x;
-				m_viewMatrix.m[0][1] = m_rightVector.y;
-				m_viewMatrix.m[0][2] = m_rightVector.z;
-
-				m_viewMatrix.m[1][0] = m_upVector.x;
-				m_viewMatrix.m[1][1] = m_upVector.y;
-				m_viewMatrix.m[1][2] = m_upVector.z;
-
-				
-				math::Matrix4f posMatrix;
-				posMatrix.SetIdentity();
-				posMatrix.m[0][3] = -m_position.x;
-				posMatrix.m[1][3] = -m_position.y;
-				posMatrix.m[2][3] = -m_position.z;
-
-				m_viewMatrix = m_viewMatrix * posMatrix;
-				
+				UpdateViewMatrix();				
 				m_needsToRecalculateViewMatrix = false;
-
 				m_viewProjectionMatrix = m_viewMatrix * m_projectionMatrix;
 			}
 			return m_viewMatrix;
@@ -127,7 +117,7 @@ namespace sh
 		{
 			if (m_needsToRecalculateProjectionMatrix)
 			{
-				m_projectionMatrix.SetPerspective(m_fovy, m_aspectRatio, m_nearDistance, m_farDistance);
+				UpdateProjectionMatrix();
 				m_needsToRecalculateProjectionMatrix = false;
 
 				m_viewProjectionMatrix = m_viewMatrix * m_projectionMatrix;
@@ -139,21 +129,57 @@ namespace sh
 		{
 			if (m_needsToRecalculateProjectionMatrix)
 			{
-				m_projectionMatrix.SetPerspective(m_fovy, m_aspectRatio, m_nearDistance, m_farDistance);
+				UpdateProjectionMatrix();
 				m_needsToRecalculateProjectionMatrix = false;
-
 				m_viewProjectionMatrix = m_viewMatrix * m_projectionMatrix;
 			}
 			if (m_needsToRecalculateViewMatrix)
 			{
-				m_viewMatrix.SetIdentity();
-				m_viewMatrix.SetTranslation(-m_position);
+				UpdateViewMatrix();
 				m_needsToRecalculateViewMatrix = false;
-
 				m_viewProjectionMatrix = m_viewMatrix * m_projectionMatrix;
 			}
 			
 			return m_viewProjectionMatrix;
+		}
+
+		void Camera::UpdateViewMatrix()
+		{
+			// Update rotation part
+			m_rotationMatrix.SetIdentity();
+			m_rotationMatrix.m[2][0] = -m_frontVector.x;
+			m_rotationMatrix.m[2][1] = -m_frontVector.y;
+			m_rotationMatrix.m[2][2] = -m_frontVector.z;
+
+			m_rotationMatrix.m[0][0] = m_rightVector.x;
+			m_rotationMatrix.m[0][1] = m_rightVector.y;
+			m_rotationMatrix.m[0][2] = m_rightVector.z;
+
+			m_rotationMatrix.m[1][0] = m_upVector.x;
+			m_rotationMatrix.m[1][1] = m_upVector.y;
+			m_rotationMatrix.m[1][2] = m_upVector.z;
+
+			// Update translation part
+			m_translationMatrix.SetIdentity();
+			m_translationMatrix.m[0][3] = -m_position.x;
+			m_translationMatrix.m[1][3] = -m_position.y;
+			m_translationMatrix.m[2][3] = -m_position.z;
+
+			m_viewMatrix = m_rotationMatrix * m_translationMatrix;
+		}
+
+		void Camera::UpdateProjectionMatrix()
+		{
+			m_projectionMatrix.SetPerspective(m_fovy, m_aspectRatio, m_nearDistance, m_farDistance);
+		}
+
+		void Camera::UpdateMatrixTransform()
+		{
+			if (m_needsToRecalculateViewMatrix)
+				UpdateViewMatrix();
+
+			if (m_needsToRecalculateProjectionMatrix)
+				UpdateProjectionMatrix();
 		}
 
 		/*

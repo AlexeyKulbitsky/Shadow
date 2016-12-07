@@ -1,10 +1,12 @@
 #ifndef SHADOW_DRIVER_INCLUDE
 #define SHADOW_DRIVER_INCLUDE
 
+#include "../Globals.h"
 #include "HardwareBuffer.h"
 #include "RenderCommand.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "Uniform.h"
 
 namespace sh
 {
@@ -49,6 +51,16 @@ namespace sh
 			virtual Texture* CreateTexture() { return nullptr; }
 			virtual VertexInputDeclaration* CreateVertexInputDeclaration() { return nullptr; }
 			virtual RenderState* CreateRenderState() { return nullptr; }
+
+			template<typename T>
+			void SetGlobalUniform(GlobalUniformName globalName, const T& value);
+			Uniform* GetGlobalUniform(GlobalUniformName globalName) { return m_globalUniforms[(size_t)globalName]; }
+
+		protected:
+			void InitGlobalUniforms();
+
+		protected:
+			Uniform* m_globalUniforms[(size_t)GlobalUniformName::COUNT];
 		};
 	}
 }

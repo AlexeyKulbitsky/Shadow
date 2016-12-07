@@ -220,7 +220,7 @@ namespace sh
 			{
 				Matrix4<T> r(*this);
 				r.Transpose();
-				return res;
+				return r;
 			}
 
 			void SetScale(const Vector3<T>& scale)

@@ -5,6 +5,11 @@
 
 namespace sh
 {
+	namespace video
+	{
+		class CommandPool;
+	}
+
 	namespace scene
 	{
 		class Model;
@@ -16,6 +21,9 @@ namespace sh
 			static const math::Vector3f& GetFrontVector() { return s_frontVector; }
 			static const math::Vector3f& GetUpVector() { return s_upVector; }
 			static const math::Vector3f& GetRightVector() { return s_rightVector; }
+
+			SceneManager();
+			~SceneManager();
 
 			void LoadScene(const char* filename);
 
@@ -33,6 +41,8 @@ namespace sh
 
 			Camera* m_camera;
 			std::vector<Model*> m_models;
+
+			video::CommandPool* m_commandPool;
 		};
 	}
 }

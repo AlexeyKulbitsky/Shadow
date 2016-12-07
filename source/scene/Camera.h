@@ -31,6 +31,10 @@ namespace sh
 			const math::Vector3f& GetRightVector() const { return m_rightVector; }
 			const math::Vector3f& GetUpVector() const { return m_upVector; }
 
+		protected:
+			void UpdateViewMatrix();
+			void UpdateProjectionMatrix();
+			void UpdateMatrixTransform();
 
 		protected:
 			math::Vector3f m_position;
@@ -42,6 +46,8 @@ namespace sh
 			f32 m_aspectRatio;
 
 			math::Matrix4f m_projectionMatrix;
+			math::Matrix4f m_rotationMatrix;
+			math::Matrix4f m_translationMatrix;
 			math::Matrix4f m_viewMatrix;
 			math::Matrix4f m_viewProjectionMatrix;
 

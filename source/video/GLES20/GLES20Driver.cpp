@@ -22,6 +22,8 @@ GLES20Driver::GLES20Driver(EGLContextManager* contextManager)
 
 bool GLES20Driver::Init()
 {
+	InitGlobalUniforms();
+
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
 	return false; 
@@ -56,13 +58,8 @@ void GLES20Driver::Render(RenderCommand* command)
 	GLES20RenderCommand* glesRenderCommand = static_cast<GLES20RenderCommand*>(command);
 	GLES20VertexBuffer* vertexBuffer = glesRenderCommand->GetGLVertexBuffer();
 	GLES20IndexBuffer* indexBuffer = glesRenderCommand->GetGLIndexBuffer();
-	GLES20RenderState* renderState = glesRenderCommand->GetGLRenderState();
-	GLES20ShaderProgram* shaderProgram = glesRenderCommand->GetGLShaderProgram();
 	GLES20VertexDeclaration* vertexDeclaration = glesRenderCommand->GetGLVertexInputDeclaration();
 	UniformBuffer* uniformBuffer = glesRenderCommand->GetUniformBuffer();
-
-	// Bind current shader
-	shaderProgram->BindProgram();
 
 	// Send uniforms to shader
 	uniformBuffer->Upload();
@@ -94,9 +91,6 @@ void GLES20Driver::Render(RenderCommand* command)
 
 	// Unbind vertex buffer
 	vertexBuffer->Unbind();
-
-	// Unbind current shader
-	shaderProgram->UnbindProgram();
 }
 
 VertexBuffer* GLES20Driver::CreateVertexBuffer()

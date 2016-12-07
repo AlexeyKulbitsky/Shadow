@@ -32,7 +32,14 @@ int main()
 
 	sh::scene::SceneManager* sceneMgr = new sh::scene::SceneManager();
 	device->SetSceneManager(sceneMgr);
-	sceneMgr->LoadScene("../data/scenes/test_scene.xml");
+
+
+	io::FileSystem* fs = device->GetFileSystem();
+	io::FileInfo finfo = fs->FindFile(String("test_scene.xml"));
+	if (finfo.name == "")
+		return 0;
+
+	sceneMgr->LoadScene(finfo.absolutePath.c_str());
 
 	sh::scene::Camera* camera = new sh::scene::Camera();
 	camera->SetProjection(3.1415926535f / 4.0f, 800.0f / 600.0f, 0.1f, 1000.0f);

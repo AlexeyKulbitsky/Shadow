@@ -118,7 +118,19 @@ namespace sh
 					uniform = glesUniform;
 					if (valAttr)
 					{
-
+						String value = valAttr.as_string();
+						if (value == "model.worldViewProjectionMatrix")
+						{
+							glesUniform->SetGlobalUniformName(GlobalUniformName::MODEL_WORLD_VIEW_PROJECTION_MATRIX);
+						}
+						else if (value == "camera.viewProjectionMatrix")
+						{
+							glesUniform->SetGlobalUniformName(GlobalUniformName::CAMERA_VIEW_PROJECTION_MATRIX);
+						}
+						else if (value == "camera.viewRotationProjectionMatrix")
+						{
+							glesUniform->SetGlobalUniformName(GlobalUniformName::CAMERA_VIEW_ROTATION_PROJECTION_MATRIX);
+						}
 					}
 				}
 
@@ -151,6 +163,7 @@ namespace sh
 				pugi::xml_attribute typeAttr = uniformNode.attribute("type");
 				pugi::xml_attribute tilingUAttr = uniformNode.attribute("tilingU");
 				pugi::xml_attribute tilingVAttr = uniformNode.attribute("tilingV");
+				pugi::xml_attribute tilingWAttr = uniformNode.attribute("tilingW");
 				pugi::xml_attribute filerAttr = uniformNode.attribute("filter");
 				pugi::xml_attribute usageAttr = uniformNode.attribute("usage");
 
@@ -174,6 +187,7 @@ namespace sh
 				// Read tiling
 				Texture::Tiling tilingU = Texture::Tiling::REPEAT;
 				Texture::Tiling tilingV = Texture::Tiling::REPEAT;
+				Texture::Tiling tilingW = Texture::Tiling::REPEAT;
 
 				if (tilingUAttr)
 				{
@@ -190,6 +204,14 @@ namespace sh
 					if (tilingTypeName == "clamp")
 					{
 						tilingV = Texture::Tiling::CLAMP_TO_EDGE;
+					}
+				}
+				if (tilingWAttr)
+				{
+					std::string tilingTypeName = tilingVAttr.as_string();
+					if (tilingTypeName == "clamp")
+					{
+						tilingW = Texture::Tiling::CLAMP_TO_EDGE;
 					}
 				}
 
@@ -229,7 +251,7 @@ namespace sh
 				printf("\n");
 
 				sampler->SetName(name);
-				sampler->SetTiling(tilingU, tilingV);
+				sampler->SetTiling(tilingU, tilingV, tilingW);
 				sampler->SetFiltering(filtering);
 				sampler->Init();
 

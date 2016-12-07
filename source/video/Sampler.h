@@ -31,7 +31,7 @@ namespace sh
 			virtual Sampler* Clone(){ return nullptr; }
 
 			virtual void SetFiltering(Texture::Filtering filtering);
-			virtual void SetTiling(Texture::Tiling tilingU, Texture::Tiling tilingV);
+			virtual void SetTiling(Texture::Tiling tilingU, Texture::Tiling tilingV, Texture::Tiling tilingW = Texture::Tiling::REPEAT);
 			virtual void SetType(Texture::Type type);
 			virtual void SetName(const std::string& name);
 			void SetUsage(Usage usage) { m_usage = usage; }
@@ -49,10 +49,12 @@ namespace sh
 			Texture::Filtering m_filtering;
 			Texture::Tiling m_tilingU;
 			Texture::Tiling m_tilingV;
+			Texture::Tiling m_tilingW;
 			Texture::Type m_type;
 			Usage m_usage;
 			String m_textureName;
 			std::string m_name;
+			bool m_hasMipMaps;
 		};
 
 		inline void Sampler::SetFiltering(Texture::Filtering filtering)
@@ -60,10 +62,11 @@ namespace sh
 			m_filtering = filtering;
 		}
 
-		inline void Sampler::SetTiling(Texture::Tiling tilingU, Texture::Tiling tilingV)
+		inline void Sampler::SetTiling(Texture::Tiling tilingU, Texture::Tiling tilingV, Texture::Tiling tilingW)
 		{
 			m_tilingU = tilingU;
 			m_tilingV = tilingV;
+			m_tilingW = tilingW;
 		}
 
 		inline void Sampler::SetType(Texture::Type type)

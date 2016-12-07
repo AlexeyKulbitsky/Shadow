@@ -24,15 +24,32 @@ namespace sh
 			int texWidth, texHeight, texChannels;
 			stbi_uc* pixels = stbi_load(filePath.c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
 			SH_ASSERT(pixels, "failed to load texture image!");
-
+			
 			glBindTexture(m_glType, m_glID);
 
 			glTexImage2D(m_glType, 0, GL_RGBA, texWidth, texHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 			glGenerateMipmap(m_glType);
-
+			m_hasMipMaps = true;
 			glBindTexture(m_glType, 0U);
 
 			stbi_image_free(pixels);
+		}
+
+		void GLES20Texture::Load(const std::vector<String>& fileNames)
+		{
+			int texWidth, texHeight, texChannels;
+
+			glBindTexture(m_glType, m_glID);
+
+			for (size_t i = 0; i < fileNames.size(); ++i)
+			{
+				stbi_uc* pixels = stbi_load(fileNames[i].c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
+				glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, texWidth, texHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+				stbi_image_free(pixels);
+			}
+			glGenerateMipmap(m_glType);
+			m_hasMipMaps = true;
+			glBindTexture(m_glType, 0U);
 		}
 
 		void GLES20Texture::Unload()

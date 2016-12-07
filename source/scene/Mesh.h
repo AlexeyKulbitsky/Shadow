@@ -26,16 +26,8 @@ namespace sh
 			~Mesh();	
 			void Render();
 
-			bool IsUseIndices() { return m_useIndices; }
-
-			void SetVertexDeclaration(sh::video::VertexDeclaration vertexDeclaration);
-			void SetVertexData(std::vector<float> data);
-			void SetIndexData(std::vector<unsigned int> data);
 			void SetMaterial(sh::video::Material* material);
-
-			video::VertexBuffer* GetVertexBuffer();
-			video::IndexBuffer* GetIndexBuffer();
-			video::VertexDeclaration* GetVertexDeclaration();
+			video::Material* GetMaterial();
 			
 			sh::video::RenderCommand* GetRenderCommand() { return m_renderCommand; }
 
@@ -45,11 +37,7 @@ namespace sh
 
 		private:
 			MeshBase* m_meshBase;
-
-			video::VertexBuffer* m_vertexBuffer;
-			video::IndexBuffer* m_indexBuffer;
-			video::VertexDeclaration m_vertexDeclaration;
-			bool m_useIndices;
+			math::Matrix4f m_worldMatrix;
 
 			sh::video::RenderCommand* m_renderCommand;
 			sh::video::Material* m_material;

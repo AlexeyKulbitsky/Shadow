@@ -11,7 +11,9 @@ namespace sh
 		class GLES20RenderState : public RenderState
 		{
 		public:
-			virtual void Load(const pugi::xml_node &node) override;
+			GLES20RenderState();
+			virtual ~GLES20RenderState();
+			//virtual void Load(const pugi::xml_node &node) override;
 			virtual void Apply() override;
 
 			virtual void SetFrontFace(FrontFace frontFace) override;

@@ -26,6 +26,7 @@ namespace sh
 		void Init();
 
 		video::Texture* GetTexture(const String& fileName);
+		video::Texture* GetCubeTexture(const std::vector<String>& faces);
 		video::RenderTechnique* GetRenderTechnique(const String& fileName);
 		scene::ModelBase* GetModelBase(const String& fileName);
 

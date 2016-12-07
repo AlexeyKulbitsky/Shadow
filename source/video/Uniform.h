@@ -9,9 +9,51 @@ namespace sh
 {
 	namespace video
 	{
-		
+		enum class GlobalUniformName
+		{
+			NONE = -1,
+
+			// Model uniforms
+			MODEL_WORLD_MATRIX = 0,
+			MODEL_WORLD_VIEW_PROJECTION_MATRIX,
+			MODEL_NORMAL_MATRIX,
+
+			// Camera uniforms			
+			CAMERA_VIEW_MATRIX,
+			CAMERA_VIEW_TRANSLATION_MATRIX,
+			CAMERA_VIEW_ROTATION_MATRIX,
+			CAMERA_PROJECTION_MATRIX,
+			CAMERA_VIEW_PROJECTION_MATRIX,
+			CAMERA_VIEW_ROTATION_PROJECTION_MATRIX,
+			CAMERA_POSITION,
+
+			COUNT
+		};
+
+		static const String k_globalUniformsStringNames[] =
+		{
+			// Model uniforms
+			String("model.worldMatrix"),
+			String("model.worldViewProjectionMatrix"),
+			String("model.normalMatrix"),
+
+			// Camera uniforms
+			String("camera.viewMatrix"),
+			String("camera.viewTranslationMatrix"),
+			String("camera.viewRotationMatrix"),
+			String("camera.projectionMatrix"),
+			String("camera.viewProjectionMatrix"),		
+			String("camera.viewRotationProjectionMatrix"),
+			String("camera.position")
+		};
+
 		class Uniform
 		{
+			/*
+			Base implementation used just for holding values
+			More specific type of Uniform that includes renderindg system
+			information is defined in derived classes for each renser system
+			*/
 			enum class Type
 			{
 				FLOAT,
@@ -52,6 +94,8 @@ namespace sh
 			const std::string& GetName() const { return m_name; }
 			void SetUsage(Usage usage) { m_usage = usage; }
 			Usage GetUsage() const { return m_usage; }
+			void SetGlobalUniformName(GlobalUniformName name) { m_globalName = name; }
+			GlobalUniformName GetGlobalUniformName() const { return m_globalName; }
 
 			virtual void Load(){}
 			virtual void Init(){}
@@ -81,6 +125,7 @@ namespace sh
 		protected:
 			Type m_type;
 			Usage m_usage;
+			GlobalUniformName m_globalName = GlobalUniformName::NONE;
 			std::string m_name;
 			UniformPlaceHolder* m_placeHolder;
 		};

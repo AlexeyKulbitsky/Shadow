@@ -33,6 +33,18 @@ namespace sh
 				TRILINEAR,
 				ANISOTROPIC
 			};
+
+			enum class Face
+			{
+				FRONT_FACE,
+				BACK_FACE,
+				RIGHT_FACE,
+				LEFT_FACE,
+				TOP_FACE,
+				BOTTOM_FACE,
+
+				COUNT = 6
+			};
 			
 			Texture(){}
 			virtual ~Texture(){}
@@ -40,6 +52,11 @@ namespace sh
 			virtual void SetType(Type type) = 0;
 			virtual void SetTiling(Tiling tilingU, Tiling tilingV) = 0;
 			virtual void SetFiltering(Filtering filtering) = 0;
+
+			bool HasMipMaps() const { return m_hasMipMaps; }
+
+		protected:
+			bool m_hasMipMaps = false;
 		};
 	}
 }

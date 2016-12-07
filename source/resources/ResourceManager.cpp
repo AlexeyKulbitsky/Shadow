@@ -54,6 +54,27 @@ namespace sh
 		return nullptr;
 	}
 
+	video::Texture* ResourceManager::GetCubeTexture(const std::vector<String>& faces)
+	{
+		video::Texture* texture = Device::GetInstance()->GetDriver()->CreateTexture();
+		texture->SetType(video::Texture::Type::TEXTURE_CUBE);
+
+		io::FileSystem* fs = Device::GetInstance()->GetFileSystem();
+		
+		std::vector<String> facesPathes;
+		for (auto face : faces)
+		{
+			io::FileInfo textureFileInfo = fs->FindFile(face);
+			if (textureFileInfo.name != "")
+			{
+				facesPathes.push_back(textureFileInfo.absolutePath);
+			}
+		}
+
+		texture->Load(facesPathes);
+		return texture;
+	}
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	video::RenderTechnique* ResourceManager::GetRenderTechnique(const String& fileName)

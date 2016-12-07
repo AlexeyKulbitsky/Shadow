@@ -1,6 +1,8 @@
 #include "UniformBuffer.h"
 #include "Uniform.h"
 #include "Sampler.h"
+#include "Driver.h"
+#include "../Device.h"
 
 namespace sh
 {
@@ -16,8 +18,35 @@ namespace sh
 
 		void UniformBuffer::Upload()
 		{
+			Driver* driver = Device::GetInstance()->GetDriver();
+
 			for (size_t i = 0; i < m_uniforms.size(); ++i)
 			{
+				GlobalUniformName globalUniformName = m_uniforms[i]->GetGlobalUniformName();
+				Uniform* globalUniform = nullptr;
+
+				switch (globalUniformName)
+				{
+				case GlobalUniformName::MODEL_WORLD_VIEW_PROJECTION_MATRIX:
+				{
+					globalUniform = driver->GetGlobalUniform(GlobalUniformName::MODEL_WORLD_VIEW_PROJECTION_MATRIX);
+					m_uniforms[i]->Set(globalUniform->Get<math::Matrix4f>());
+				}
+					break;
+				case GlobalUniformName::CAMERA_VIEW_PROJECTION_MATRIX:
+				{
+					globalUniform = driver->GetGlobalUniform(GlobalUniformName::CAMERA_VIEW_PROJECTION_MATRIX);
+					m_uniforms[i]->Set(globalUniform->Get<math::Matrix4f>());
+				}
+					break;
+				case GlobalUniformName::CAMERA_VIEW_ROTATION_PROJECTION_MATRIX:
+				{
+					globalUniform = driver->GetGlobalUniform(GlobalUniformName::CAMERA_VIEW_ROTATION_PROJECTION_MATRIX);
+					m_uniforms[i]->Set(globalUniform->Get<math::Matrix4f>());
+				}
+					break;
+				}
+
 				m_uniforms[i]->Load();
 			}
 
@@ -68,6 +97,11 @@ namespace sh
 
 		Uniform* UniformBuffer::GetUniform(Uniform::Usage usage)
 		{
+			for (size_t i = 0, sz = m_uniforms.size(); i < sz; ++i)
+			{
+				if (m_uniforms[i]->GetUsage() == usage)
+					return m_uniforms[i];
+			}
 			return nullptr;
 		}
 
@@ -83,6 +117,11 @@ namespace sh
 
 		Sampler* UniformBuffer::GetSampler(Sampler::Usage usage)
 		{
+			for (size_t i = 0, sz = m_samplers.size(); i < sz; ++i)
+			{
+				if (m_samplers[i]->GetUsage() == usage)
+					return m_samplers[i];
+			}
 			return nullptr;
 		}
 	}

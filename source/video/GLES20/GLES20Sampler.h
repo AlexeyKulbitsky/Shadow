@@ -18,7 +18,7 @@ namespace sh
 			virtual Sampler* Clone() override;
 
 			virtual void SetFiltering(Texture::Filtering filtering) override;
-			virtual void SetTiling(Texture::Tiling tilingU, Texture::Tiling tilingV) override;
+			virtual void SetTiling(Texture::Tiling tilingU, Texture::Tiling tilingV, Texture::Tiling tilingW = Texture::Tiling::REPEAT) override;
 			virtual void SetType(Texture::Type type) override;
 
 			// GLES 2 - specific interface
@@ -29,8 +29,9 @@ namespace sh
 			u32 m_shaderProgramId;
 
 			u32 m_glType;
-			s32 m_glTilingU;
-			s32 m_glTilingV;
+			s32 m_glTilingS;
+			s32 m_glTilingT;
+			s32 m_glTilingR;
 			s32 m_glMagFilter;
 			s32 m_glMinFilter;
 		};

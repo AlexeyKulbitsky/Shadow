@@ -10,8 +10,11 @@
 #include "ModelLoader/ModelLoader.h"
 #include "../video/RenderTechnique.h"
 #include "../video/Material.h"
+#include "../video/CommandPool.h"
 #include "Model.h"
+#include "ModelBase.h"
 #include "Mesh.h"
+#include "MeshBase.h"
 #include "Camera.h"
 #include <pugixml.hpp>
 
@@ -22,6 +25,20 @@ namespace sh
 		math::Vector3f SceneManager::s_rightVector(1.0f, 0.0f, 0.0f);
 		math::Vector3f SceneManager::s_upVector(0.0f, 1.0f, 0.0f);
 		math::Vector3f SceneManager::s_frontVector(0.0f, 0.0f, -1.0f);
+
+		//////////////////////////////////////////////////////////////////////////////////////////////
+
+		SceneManager::SceneManager()
+		{
+			m_commandPool = new video::CommandPool();
+		}
+
+		//////////////////////////////////////////////////////////////////////////////////////////////
+
+		SceneManager::~SceneManager()
+		{
+
+		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -40,12 +57,13 @@ namespace sh
 			{
 				// Read model
 				sh::scene::Model* model = nullptr;
+				sh::scene::ModelBase* modelBase = nullptr;
 				pugi::xml_node modelNode = objectNode.child("model");
 				if (modelNode)
 				{
 					pugi::xml_attribute attr = modelNode.attribute("filename");
 					String modelFileName = attr.as_string();
-					ModelBase* modelBase = resourceManager->GetModelBase(modelFileName);
+					modelBase = resourceManager->GetModelBase(modelFileName);
 					model = new Model(modelBase);
 				}
 
@@ -133,15 +151,40 @@ namespace sh
 
 						while (!samplNode.empty())
 						{
-							pugi::xml_attribute nameAttr = samplNode.attribute("name");
-							pugi::xml_attribute fileNameAttr = samplNode.attribute("filename");
+							pugi::xml_attribute typeAttr = samplNode.attribute("type");
+							String typeName = typeAttr.as_string();
 
+							pugi::xml_attribute nameAttr = samplNode.attribute("name");
 							std::string name = nameAttr.as_string();
-							std::string fileName = fileNameAttr.as_string();
 
 							sh::video::Sampler* sampler = uniformBuffer->GetSampler(name);
+							sh::video::Texture* texture = nullptr;
+							if (typeName == "2D")
+							{
+								pugi::xml_attribute fileNameAttr = samplNode.attribute("filename");
+								std::string fileName = fileNameAttr.as_string();
+								texture = resourceManager->GetTexture(fileName);
+							}
+							else if (typeName == "cube")
+							{
+								pugi::xml_attribute right = samplNode.attribute("right");
+								pugi::xml_attribute left = samplNode.attribute("left");
+								pugi::xml_attribute top = samplNode.attribute("top");
+								pugi::xml_attribute bottom = samplNode.attribute("bottom");
+								pugi::xml_attribute back = samplNode.attribute("back");
+								pugi::xml_attribute front = samplNode.attribute("front");
 
-							sh::video::Texture* texture = resourceManager->GetTexture(fileName);						
+								std::vector<String> faces;
+								faces.push_back(right.as_string());
+								faces.push_back(left.as_string());
+								faces.push_back(top.as_string());
+								faces.push_back(bottom.as_string());
+								faces.push_back(back.as_string());
+								faces.push_back(front.as_string());
+
+								texture = resourceManager->GetCubeTexture(faces);
+							}
+													
 
 							sampler->Set(texture);
 
@@ -149,15 +192,43 @@ namespace sh
 						}
 					}
 
+					
+
 					// Init model with material
 					for (size_t i = 0, sz = model->GetMeshesCount(); i < sz; ++i)
 					{
 						sh::scene::Mesh* mesh = model->GetMesh(i);
 						mesh->SetMaterial(material);
-					}					
+					}		
+
+					// Reinit samplers
+					{
+						for (size_t i = 0; i < modelBase->GetMeshesCount(); ++i)
+						{
+							MeshBase* meshBase = modelBase->GetMesh(i);
+							Mesh* mesh = model->GetMesh(i);
+							video::UniformBuffer* meshUniformBuffer = mesh->GetRenderCommand()->GetUniformBuffer();
+
+							for (size_t j = 0; j < meshBase->GetSamplersCount(); ++j)
+							{
+								video::Sampler* baseSampler = meshBase->GetSampler(j);
+								video::Sampler* sampler = meshUniformBuffer->GetSampler(baseSampler->GetUsage());
+								if (sampler)
+								{
+									sh::video::Texture* texture = resourceManager->GetTexture(baseSampler->GetTextureName());
+									sampler->Set(texture);
+								}
+							}
+						}
+					}
 				}
 				// Add model to render list
 				m_models.push_back(model);
+
+				for (size_t i = 0, sz = model->GetMeshesCount(); i < sz; ++i)
+				{
+					m_commandPool->AddMesh(model->GetMesh(i));
+				}
 
 				// Read next object
 				objectNode = objectNode.next_sibling();
@@ -178,6 +249,8 @@ namespace sh
 			{
 				m_models[i]->Render();
 			}
+
+			m_commandPool->Submit();
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////

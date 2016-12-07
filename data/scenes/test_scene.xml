@@ -1,4 +1,22 @@
 <scene name="test Scene">
+	
+	
+	
+	<entity name="model_1">
+		<model filename="cube.obj"/>
+		<transform>
+			<position x="1.0" y="0.5" z="0.2"/>
+			<rotation/>
+			<scale/>
+		</transform>		
+		<material>
+			<technique filename="skybox.xml"/>
+			<samplers>
+				<sampler name="cubeMap" type="cube" right="right.jpg" left="left.jpg" top="top.jpg" bottom="bottom.jpg" back="back.jpg" front="front.jpg"/>
+			</samplers>
+		</material>
+	</entity>
+	
 	<entity name="model_0">
 		<model filename="nanosuit.obj"/>
 		<transform>
@@ -12,7 +30,7 @@
 				<uniform name="uniA" type="float" val="0.5"/>
 			</uniforms>
 			<samplers>
-				<sampler name="testSample" filename="statue.jpg"/>
+				<sampler name="testSample" type="2D" filename="statue.jpg"/>
 			</samplers>
 		</material>
 	</entity>

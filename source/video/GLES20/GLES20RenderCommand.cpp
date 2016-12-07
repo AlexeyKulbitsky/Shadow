@@ -33,16 +33,6 @@ namespace sh
 			m_uniformBuffer = static_cast<GLES20UniformBuffer*>(uniformBuffer);
 		}
 
-		void GLES20RenderCommand::SetRenderState(RenderState* renderState)
-		{
-			m_renderState = static_cast<GLES20RenderState*>(renderState);
-		}
-
-		void GLES20RenderCommand::SetShaderProgram(ShaderProgram* shaderProgram)
-		{
-			m_shaderProgram = static_cast<GLES20ShaderProgram*>(shaderProgram);
-		}
-
 		void GLES20RenderCommand::SetTopology(Topology topology)
 		{
 			m_topology = topology;

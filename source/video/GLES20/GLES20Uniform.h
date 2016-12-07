@@ -112,6 +112,8 @@ namespace sh
 			result->m_name = m_name;
 			result->m_shaderProgramId = m_shaderProgramId;
 			result->m_type = m_type;
+			result->m_usage = m_usage;
+			result->m_globalName = m_globalName;
 
 			return result;
 		}

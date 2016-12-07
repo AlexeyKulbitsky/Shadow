@@ -30,7 +30,10 @@ namespace sh
 		class RenderState
 		{
 		public:
-			virtual void Load(const pugi::xml_node &node){}
+			RenderState();
+			virtual ~RenderState();
+			virtual void Init();
+			virtual void Load(const pugi::xml_node &node);
 			virtual void Apply(){}
 			virtual RenderState* Clone() { return nullptr; }
 

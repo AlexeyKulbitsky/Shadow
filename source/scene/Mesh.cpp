@@ -17,7 +17,6 @@ namespace sh
 	{
 		Mesh::Mesh(MeshBase* meshBase)
 			: m_meshBase(meshBase)
-			, m_useIndices(false)
 		{
 			sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
 			m_renderCommand = driver->CreateRenderCommand();
@@ -32,6 +31,9 @@ namespace sh
 				m_renderCommand->SetUseIndices(false);
 			}
 			m_renderCommand->SetTopology(meshBase->GetTopology());
+
+			m_worldMatrix.SetIdentity();
+			m_worldMatrix.SetTranslation(math::Vector3f(0.0f, 0.0f, -10.0f));
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -44,22 +46,15 @@ namespace sh
 		/////////////////////////////////////////////////////////////////////////////////////
 
 		void Mesh::Render()
-		{
-			sh::video::Uniform* mvp = m_renderCommand->GetUniformBuffer()->GetUniform("matMVP");
-			math::Matrix4f modelMatrix;
-			modelMatrix.SetIdentity();
-			modelMatrix.SetTranslation(math::Vector3f(0.0f, 0.0f, -10.0f));
-
+		{			
 			Camera* camera = Device::GetInstance()->GetSceneManager()->GetCamera();
 			sh::math::Matrix4f viewMatrix = camera->GetViewMatrix();
 			sh::math::Matrix4f projectionMatrix = camera->GetProjectionMatrix();
 
-			sh::math::Matrix4f resultMatrix = projectionMatrix * viewMatrix * modelMatrix;
-			resultMatrix.Transpose();
-
-			mvp->Set(resultMatrix);
-			sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
-			driver->Render(m_renderCommand);
+			video::Driver* driver = Device::GetInstance()->GetDriver();
+			math::Matrix4f wvp = projectionMatrix * viewMatrix * m_worldMatrix;
+			wvp.Transpose();
+			driver->GetGlobalUniform(video::GlobalUniformName::MODEL_WORLD_VIEW_PROJECTION_MATRIX)->Set(wvp);
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -69,9 +64,7 @@ namespace sh
 			m_material = material;			
 
 			video::RenderPass* renderPass = m_material->GetRenderPass(0);
-			m_renderCommand->SetShaderProgram(renderPass->GetShaderProgram());
-			m_renderCommand->SetRenderState(renderPass->GetRenderState());
-			m_renderCommand->SetUniformBuffer(renderPass->GetUniformBuffer());
+			m_renderCommand->SetUniformBuffer(renderPass->GetUniformBuffer()->Clone());
 
 			video::VertexInputDeclaration* inputDeclaration = renderPass->GetVertexInputDeclaration();
 			inputDeclaration->Assemble(*(m_meshBase->GetVertexDeclaration()));
@@ -80,6 +73,14 @@ namespace sh
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
+				
+		video::Material* Mesh::GetMaterial()
+		{
+			return m_material;
+		}
+
+		/////////////////////////////////////////////////////////////////////////////////////
+
 	}
 }
 

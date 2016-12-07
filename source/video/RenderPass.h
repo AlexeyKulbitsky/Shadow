@@ -22,12 +22,14 @@ namespace sh
 
 			void Load(const pugi::xml_node &node);
 
+			const String& GetName() const { return m_name; }
 			ShaderProgram* GetShaderProgram() const { return m_shaderProgram; }
 			VertexInputDeclaration* GetVertexInputDeclaration() const { return m_vertexInputDeclaration; }
 			UniformBuffer* GetUniformBuffer() const { return m_uniformBuffer; }
 			RenderState* GetRenderState() const { return m_renderState; }
 
 		protected:
+			String m_name;
 			ShaderProgram* m_shaderProgram;
 			VertexInputDeclaration* m_vertexInputDeclaration;
 			UniformBuffer* m_uniformBuffer;

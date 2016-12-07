@@ -36,6 +36,13 @@ namespace sh
 		{
 			Driver* driver = Device::GetInstance()->GetDriver();
 
+			// Read name
+			pugi::xml_attribute nameAttr = node.attribute("name");
+			if (nameAttr)
+			{
+				m_name = nameAttr.as_string();
+			}
+
 			// Load render state
 			pugi::xml_node renderstateNode = node.child("renderstate");
 			if (!renderstateNode.empty())

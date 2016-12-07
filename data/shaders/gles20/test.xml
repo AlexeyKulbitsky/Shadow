@@ -9,7 +9,7 @@
 	<constants>
 		<uniforms>
 			<uniform name="uniA" type="float" val="1.0"/>
-			<uniform name="matMVP" type="mat4" val="mvp"/>
+			<uniform name="matMVP" type="mat4" val="model.worldViewProjectionMatrix"/>
 		</uniforms>
 
 		<samplers>

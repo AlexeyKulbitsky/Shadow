@@ -2,13 +2,15 @@
 #define SHADOW_UNIFORM_BUFFER_INCLUDE
 
 #include "../Globals.h"
+#include "Uniform.h"
+#include "Sampler.h"
 
 namespace sh
 {
 	namespace video
 	{
-		class Uniform;
-		class Sampler;
+		//class Uniform;
+		//class Sampler;
 		class ShaderProgram;
 
 		class UniformBuffer
@@ -37,6 +39,7 @@ namespace sh
 
 		private:
 			std::vector<Uniform*> m_uniforms;
+			std::vector<Uniform*> m_globalUniforms;
 			std::vector<Sampler*> m_samplers;
 		};
 	}

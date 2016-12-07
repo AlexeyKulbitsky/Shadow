@@ -15,6 +15,7 @@ namespace sh
 			virtual ~GLES20Texture();
 
 			virtual void Load(const String& filePath) override;
+			virtual void Load(const std::vector<String>& fileNames) override;
 			virtual void Unload() override;
 
 			virtual void SetType(Type type) override;

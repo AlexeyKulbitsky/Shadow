@@ -30,7 +30,11 @@ namespace sh
 			std::vector<tinyobj::material_t> materials;
 			std::string err;
 
-			if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &err, path, "../data/models/nanosuit/"))
+			String fullPath(path);
+			String::size_type pos = String(path).find_last_of("\\/");
+			String materialFolder = String(fullPath).substr(0, pos) + "/";
+
+			if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &err, path, materialFolder.c_str()))
 			{
 				throw std::runtime_error(err);
 			}
@@ -105,12 +109,16 @@ namespace sh
 
 				// Set base material
 				int materialId = shape.mesh.material_ids[0];
-				String diffuseTexName = materials[materialId].diffuse_texname;
-				sh::video::Sampler* diffuseSampler = new sh::video::Sampler();
-				diffuseSampler->SetTexureName(diffuseTexName);
-				diffuseSampler->SetUsage(video::Sampler::Usage::DIFFUSE_MAP);
+				if (materialId >= 0)
+				{
+					String diffuseTexName = materials[materialId].diffuse_texname;
+					sh::video::Sampler* diffuseSampler = new sh::video::Sampler();
+					diffuseSampler->SetTexureName(diffuseTexName);
+					diffuseSampler->SetUsage(video::Sampler::Usage::DIFFUSE_MAP);
 
-				mesh->AddSampler(diffuseSampler);
+					mesh->AddSampler(diffuseSampler);
+				}
+				
 				
 				model->AddMesh(mesh);
 			}
