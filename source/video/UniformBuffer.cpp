@@ -27,12 +27,12 @@ namespace sh
 
 				switch (globalUniformName)
 				{
-				case GlobalUniformName::MODEL_WORLD_VIEW_PROJECTION_MATRIX:
-				{
-					globalUniform = driver->GetGlobalUniform(GlobalUniformName::MODEL_WORLD_VIEW_PROJECTION_MATRIX);
-					m_uniforms[i]->Set(globalUniform->Get<math::Matrix4f>());
-				}
-					break;
+				//case GlobalUniformName::MODEL_WORLD_VIEW_PROJECTION_MATRIX:
+				//{
+					//globalUniform = driver->GetGlobalUniform(GlobalUniformName::MODEL_WORLD_VIEW_PROJECTION_MATRIX);
+					//m_uniforms[i]->Set(globalUniform->Get<math::Matrix4f>());
+				//}
+				//	break;
 				case GlobalUniformName::CAMERA_VIEW_PROJECTION_MATRIX:
 				{
 					globalUniform = driver->GetGlobalUniform(GlobalUniformName::CAMERA_VIEW_PROJECTION_MATRIX);

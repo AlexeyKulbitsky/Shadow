@@ -25,7 +25,7 @@ namespace sh
 			explicit Mesh(MeshBase* meshBase);
 			~Mesh();	
 			void Render();
-
+			void SetWorldMatrix(const math::Matrix4f& matrix);
 			void SetMaterial(sh::video::Material* material);
 			video::Material* GetMaterial();
 			

@@ -15,8 +15,10 @@ namespace sh
 		{
 			Material* material = mesh->GetMaterial();
 			String techniqueName = material->GetRenderTechnique()->GetName();
+			RenderPass::Layer layer = material->GetRenderPass(0)->GetLayer();
+			size_t layerIndex = (size_t)layer;
 
-			if (m_buffers.find(techniqueName) == m_buffers.end())
+			if (m_buffers[layerIndex].find(techniqueName) == m_buffers[layerIndex].end())
 			{
 				CommandBuffer* buffer = new CommandBuffer();
 				ShaderProgram* shader = material->GetRenderTechnique()->GetRenderPass(0)->GetShaderProgram();
@@ -25,20 +27,24 @@ namespace sh
 				buffer->SetRenderState(renderState);
 				buffer->SetTechniqueName(techniqueName);
 
-				m_buffers[techniqueName] = buffer;
+				m_buffers[layerIndex][techniqueName] = buffer;
 			}
 
-			m_buffers[techniqueName]->AddCommand(mesh->GetRenderCommand());
+			m_buffers[layerIndex][techniqueName]->AddCommand(mesh->GetRenderCommand());
 		}
 
 		///////////////////////////////////////////////////////////////////
 
 		void CommandPool::Submit()
 		{
-			for (auto buffer : m_buffers)
+			for (size_t i = 0; i < (size_t)RenderPass::Layer::COUNT; ++i)
 			{
-				buffer.second->Submit();
+				for (auto buffer : m_buffers[i])
+				{
+					buffer.second->Submit();
+				}
 			}
+			
 		}
 
 		///////////////////////////////////////////////////////////////////

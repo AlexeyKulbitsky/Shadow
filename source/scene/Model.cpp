@@ -32,10 +32,20 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////////////////
 
+		void Model::SetPosition(const math::Vector3f& pos) 
+		{ 
+			m_position = pos; 
+			m_worldMatrix.SetIdentity();
+			m_worldMatrix.SetTranslation(m_position);
+		}
+
+		//////////////////////////////////////////////////////////////////////////////
+
 		void Model::Render()
 		{
 			for (auto mesh : m_meshes)
 			{
+				mesh->SetWorldMatrix(m_worldMatrix);
 				mesh->Render();
 			}
 		}

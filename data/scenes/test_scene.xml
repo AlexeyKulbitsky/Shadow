@@ -5,9 +5,9 @@
 	<entity name="model_1">
 		<model filename="cube.obj"/>
 		<transform>
-			<position x="1.0" y="0.5" z="0.2"/>
+			<!--position val="0.0 0.0 0.0"/>
 			<rotation/>
-			<scale/>
+			<scale/-->
 		</transform>		
 		<material>
 			<technique filename="skybox.xml"/>
@@ -20,9 +20,27 @@
 	<entity name="model_0">
 		<model filename="nanosuit.obj"/>
 		<transform>
-			<position x="1.0" y="0.5" z="0.2"/>
-			<rotation/>
-			<scale/>
+			<position val="0.0 0.0 -20.0"/>
+			<!--rotation/>
+			<scale/-->
+		</transform>		
+		<material>
+			<technique filename="test.xml"/>
+			<uniforms>
+				<uniform name="uniA" type="float" val="0.5"/>
+			</uniforms>
+			<samplers>
+				<sampler name="testSample" type="2D" filename="statue.jpg"/>
+			</samplers>
+		</material>
+	</entity>
+	
+	<entity name="model_2">
+		<model filename="nanosuit.obj"/>
+		<transform>
+			<position val="10.0 0.0 -20.0"/>
+			<!--rotation/>
+			<scale/-->
 		</transform>		
 		<material>
 			<technique filename="test.xml"/>

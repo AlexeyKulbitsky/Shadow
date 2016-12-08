@@ -2,6 +2,7 @@
 #define SHADOW_COMMAND_POOL_INCLUDE
 
 #include "../Globals.h"
+#include "RenderPass.h"
 
 namespace sh
 {
@@ -21,7 +22,9 @@ namespace sh
 			void Submit();
 
 		protected:
-			HashMap<String, CommandBuffer*> m_buffers;
+			typedef HashMap<String, CommandBuffer*> PerTechniqueCommandBuffersMap;
+
+			PerTechniqueCommandBuffersMap m_buffers[(size_t)RenderPass::Layer::COUNT];
 		};
 	}
 }

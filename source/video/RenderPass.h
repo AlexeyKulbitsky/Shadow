@@ -15,6 +15,13 @@ namespace sh
 		class RenderPass
 		{
 		public:
+			enum class Layer
+			{
+				BACKGROUND = 0,
+				MAIN,
+
+				COUNT
+			};
 			RenderPass();			
 			~RenderPass();
 
@@ -27,6 +34,7 @@ namespace sh
 			VertexInputDeclaration* GetVertexInputDeclaration() const { return m_vertexInputDeclaration; }
 			UniformBuffer* GetUniformBuffer() const { return m_uniformBuffer; }
 			RenderState* GetRenderState() const { return m_renderState; }
+			Layer GetLayer() const { return m_layer; }
 
 		protected:
 			String m_name;
@@ -34,6 +42,7 @@ namespace sh
 			VertexInputDeclaration* m_vertexInputDeclaration;
 			UniformBuffer* m_uniformBuffer;
 			RenderState* m_renderState;
+			Layer m_layer;
 		};
 	}
 }

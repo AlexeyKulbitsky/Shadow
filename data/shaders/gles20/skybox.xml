@@ -1,6 +1,6 @@
-<technique name="aaaaaskybox">
+<technique name="skybox">
 
-<pass name="firstPass">
+<pass name="firstPass" layer="background">
 
 	<renderstate>
 		<depthTest val="false"/>

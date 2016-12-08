@@ -33,7 +33,6 @@ namespace sh
 			m_renderCommand->SetTopology(meshBase->GetTopology());
 
 			m_worldMatrix.SetIdentity();
-			m_worldMatrix.SetTranslation(math::Vector3f(0.0f, 0.0f, -10.0f));
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -54,7 +53,24 @@ namespace sh
 			video::Driver* driver = Device::GetInstance()->GetDriver();
 			math::Matrix4f wvp = projectionMatrix * viewMatrix * m_worldMatrix;
 			wvp.Transpose();
-			driver->GetGlobalUniform(video::GlobalUniformName::MODEL_WORLD_VIEW_PROJECTION_MATRIX)->Set(wvp);
+			//driver->GetGlobalUniform(video::GlobalUniformName::MODEL_WORLD_VIEW_PROJECTION_MATRIX)->Set(wvp);
+
+			size_t uniformsCount = m_renderCommand->GetUniformBuffer()->GetUniformsCount();
+			for (size_t i = 0; i < uniformsCount; ++i)
+			{
+				video::Uniform* uniform = m_renderCommand->GetUniformBuffer()->GetUniform(i);
+				if (uniform->GetGlobalUniformName() == video::GlobalUniformName::MODEL_WORLD_VIEW_PROJECTION_MATRIX)
+				{
+					uniform->Set(wvp);
+				}
+			}
+		}
+
+		/////////////////////////////////////////////////////////////////////////////////////
+
+		void Mesh::SetWorldMatrix(const math::Matrix4f& matrix)
+		{
+			m_worldMatrix = matrix;
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////

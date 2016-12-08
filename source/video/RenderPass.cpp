@@ -9,6 +9,7 @@ namespace sh
 	namespace video
 	{
 		RenderPass::RenderPass()
+			: m_layer(Layer::MAIN)
 		{
 
 		}
@@ -27,6 +28,8 @@ namespace sh
 			result->m_uniformBuffer = m_uniformBuffer->Clone();
 			result->m_renderState = m_renderState->Clone();
 			result->m_vertexInputDeclaration = m_vertexInputDeclaration->Clone();
+			result->m_name = m_name;
+			result->m_layer = m_layer;
 			return result;
 		}
 
@@ -41,6 +44,21 @@ namespace sh
 			if (nameAttr)
 			{
 				m_name = nameAttr.as_string();
+			}
+
+			// Read render layer
+			pugi::xml_attribute layerAttr = node.attribute("layer");
+			if (layerAttr)
+			{
+				String layerName = layerAttr.as_string();
+				if (layerName == "main")
+				{
+					m_layer = Layer::MAIN;
+				}
+				else if (layerName == "background")
+				{
+					m_layer = Layer::BACKGROUND;
+				}
 			}
 
 			// Load render state

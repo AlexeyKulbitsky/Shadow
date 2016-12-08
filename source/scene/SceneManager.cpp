@@ -78,20 +78,44 @@ namespace sh
 				pugi::xml_node transformNode = objectNode.child("transform");
 				if (transformNode)
 				{
+					// Position
 					pugi::xml_node positionNode = transformNode.child("position");
 					if (positionNode)
 					{
-						math::Vector3f pos(0.0f);
-						pugi::xml_attribute attr = positionNode.attribute("x");
-						pos.x = attr.as_float();
+						pugi::xml_attribute valAttr = positionNode.attribute("val");
+						if (valAttr)
+						{
+							String positionString = valAttr.as_string();
+							std::istringstream in(positionString);
+							float val = 0.0f;
+							std::vector<float> temp;
+							while (in >> val) temp.push_back(val);
+							math::Vector3f pos(0.0f);
+							pos.x = temp[0];
+							pos.y = temp[1];
+							pos.z = temp[2];
+							model->SetPosition(pos);
+						}					
+					}
 
-						attr = positionNode.attribute("y");
-						pos.y = attr.as_float();
+					// Rotation
+					pugi::xml_node rotationNode = transformNode.child("rotation");
+					if (rotationNode)
+					{
+						pugi::xml_attribute valAttr = rotationNode.attribute("val");
+						if (valAttr)
+						{							
+						}
+					}
 
-						attr = positionNode.attribute("z");
-						pos.z = attr.as_float();
-
-						model->SetPosition(pos);
+					// Scale
+					pugi::xml_node scaleNodeNode = transformNode.child("scale");
+					if (scaleNodeNode)
+					{
+						pugi::xml_attribute valAttr = scaleNodeNode.attribute("val");
+						if (valAttr)
+						{
+						}
 					}
 				}	
 

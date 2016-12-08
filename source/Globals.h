@@ -4,6 +4,7 @@
 #include <vector>
 #include <set>
 #include <map>
+#include <sstream>
 #include <pugixml.hpp>
 
 #include "Types.h"

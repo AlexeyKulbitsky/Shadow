@@ -18,7 +18,7 @@ namespace sh
 			Model(ModelBase* modelBase);
 			~Model();
 
-			void SetPosition(const math::Vector3f& pos) { m_position = pos; }
+			void SetPosition(const math::Vector3f& pos);
 			const math::Vector3f& GetPosition() const { return m_position; }
 			void Render();
 			void AddMesh(Mesh* mesh);
@@ -28,6 +28,7 @@ namespace sh
 		private:
 			std::vector<Mesh*> m_meshes;
 			math::Vector3f m_position;
+			math::Matrix4f m_worldMatrix;
 		};
 	}
 }

@@ -1,6 +1,6 @@
 <technique name="firstTechnique">
 
-<pass name="firstPass">
+<pass name="firstPass" layer="main">
 
 	<renderstate>
 		<name/>
