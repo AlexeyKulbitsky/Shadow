@@ -40,7 +40,7 @@ namespace sh
 			virtual void DrawMesh(scene::Mesh* mesh) = 0;
 			virtual void Render(RenderCommand* command){}
 
-			
+			// Resources creation interface
 			virtual VertexBuffer* CreateVertexBuffer() = 0;
 			virtual VertexBuffer* CreateVertexBuffer(const void* data, size_t size) = 0;		
 			virtual IndexBuffer* CreateIndexBuffer() = 0;
