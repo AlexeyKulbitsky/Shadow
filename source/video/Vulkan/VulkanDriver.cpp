@@ -6,7 +6,10 @@
 #include "VulkanIndexBuffer.h"
 #include "VulkanVertexInput.h"
 
-#define STB_IMAGE_IMPLEMENTATION
+//#ifndef STB_IMAGE_IMPLEMENTATION
+//#define STB_IMAGE_IMPLEMENTATION
+//#endif
+
 #include <stb_image.h>
 
 //#define TINYOBJLOADER_IMPLEMENTATION

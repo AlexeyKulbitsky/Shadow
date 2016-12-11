@@ -16,6 +16,11 @@
 #include "Mesh.h"
 #include "MeshBase.h"
 #include "Camera.h"
+#include "../entity/System.h"
+#include "../entity/systems/RenderSystem.h"
+#include "../entity/systems/TransformSystem.h"
+#include "../entity/Component.h"
+#include "../entity/Entity.h"
 #include <pugixml.hpp>
 
 namespace sh
@@ -31,6 +36,9 @@ namespace sh
 		SceneManager::SceneManager()
 		{
 			m_commandPool = new video::CommandPool();
+
+			m_systems.push_back(new TransformSystem());
+			m_systems.push_back(new RenderSystem());
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
@@ -46,216 +54,54 @@ namespace sh
 		{
 			ResourceManager* resourceManager = Device::GetInstance()->GetResourceManager();
 
-
-
 			pugi::xml_document doc;
 			pugi::xml_parse_result result = doc.load_file(filename);
 			pugi::xml_node firstChild = doc.first_child();
 
-			pugi::xml_node objectNode = firstChild.child("entity");
-			while (objectNode)
+			pugi::xml_node entityNode = firstChild.child("entity");
+			while (entityNode)
 			{
-				// Read model
-				sh::scene::Model* model = nullptr;
-				sh::scene::ModelBase* modelBase = nullptr;
-				pugi::xml_node modelNode = objectNode.child("model");
-				if (modelNode)
-				{
-					pugi::xml_attribute attr = modelNode.attribute("filename");
-					String modelFileName = attr.as_string();
-					modelBase = resourceManager->GetModelBase(modelFileName);
-					model = new Model(modelBase);
-				}
+				sh::Entity* entity = new sh::Entity();
 
 				// Read name
-				pugi::xml_attribute nameAttribute = objectNode.attribute("name");
+				pugi::xml_attribute nameAttribute = entityNode.attribute("name");
 				if (nameAttribute)
 				{
-					printf("Object %s", nameAttribute.as_string());
+					printf("Entity %s", nameAttribute.as_string());
 				}
 
-				// Read transform
-				pugi::xml_node transformNode = objectNode.child("transform");
-				if (transformNode)
+				pugi::xml_node componentNode = entityNode.child("component");
+
+				while (componentNode)
 				{
-					// Position
-					pugi::xml_node positionNode = transformNode.child("position");
-					if (positionNode)
-					{
-						pugi::xml_attribute valAttr = positionNode.attribute("val");
-						if (valAttr)
-						{
-							String positionString = valAttr.as_string();
-							std::istringstream in(positionString);
-							float val = 0.0f;
-							std::vector<float> temp;
-							while (in >> val) temp.push_back(val);
-							math::Vector3f pos(0.0f);
-							pos.x = temp[0];
-							pos.y = temp[1];
-							pos.z = temp[2];
-							model->SetPosition(pos);
-						}					
-					}
+					pugi::xml_attribute componentName = componentNode.attribute("name");
+					String nameStr = componentName.as_string();
+					Component::Type componentType;
+					Component* component = nullptr;
 
-					// Rotation
-					pugi::xml_node rotationNode = transformNode.child("rotation");
-					if (rotationNode)
-					{
-						pugi::xml_attribute valAttr = rotationNode.attribute("val");
-						if (valAttr)
-						{							
-						}
-					}
+					if (nameStr == "transform")
+						componentType = Component::Type::TRANSFORM;
+					else if (nameStr == "render")
+						componentType = Component::Type::RENDER;
+					else
+						componentNode = componentNode.next_sibling();
 
-					// Scale
-					pugi::xml_node scaleNodeNode = transformNode.child("scale");
-					if (scaleNodeNode)
-					{
-						pugi::xml_attribute valAttr = scaleNodeNode.attribute("val");
-						if (valAttr)
-						{
-						}
-					}
-				}	
+					component = Component::Create(componentType);
+					component->Load(componentNode);
 
-				// Read material
-				pugi::xml_node materialNode = objectNode.child("material");
-				if (materialNode)
-				{
-					sh::video::Material* material = new sh::video::Material();
+					entity->AddComponent(component);
 
-					pugi::xml_node techniqueNode = materialNode.child("technique");
-					pugi::xml_attribute fileName = techniqueNode.attribute("filename");
-					String techniqueFileName = fileName.as_string();
+					if (componentType == Component::Type::TRANSFORM)
+						m_systems[0]->AddEntity(entity);
+					if (componentType == Component::Type::RENDER)
+						m_systems[1]->AddEntity(entity);
 
-					sh::video::RenderTechnique* rt = resourceManager->GetRenderTechnique(techniqueFileName);
-
-					material->SetRenderTechnique(rt);
-
-					// Read uniforms
-					sh::video::UniformBuffer* uniformBuffer = material->GetRenderPass(0)->GetUniformBuffer();
-
-					pugi::xml_node uniformsNode = materialNode.child("uniforms");
-					if (uniformsNode)
-					{
-						pugi::xml_node uniNode = uniformsNode.first_child();
-						
-						while (!uniNode.empty())
-						{
-							pugi::xml_attribute nameAttr = uniNode.attribute("name");
-							pugi::xml_attribute typeAttr = uniNode.attribute("type");
-							pugi::xml_attribute valAttr = uniNode.attribute("val");
-
-							std::string name = nameAttr.as_string();
-							std::string typeName = typeAttr.as_string();
-
-							
-							sh::video::Uniform* uniform = uniformBuffer->GetUniform(name);
-							if (typeName == "float")
-							{
-								float value = valAttr.as_float();							
-								uniform->Set(value);
-
-							}
-							else if (typeName == "int")
-							{
-								int value = valAttr.as_int();
-								uniform->Set(value);
-							}
-							uniNode = uniNode.next_sibling();
-						}
-					}
-
-					// Read samplers
-					pugi::xml_node samplersNode = materialNode.child("samplers");
-					if (samplersNode)
-					{
-						pugi::xml_node samplNode = samplersNode.first_child();
-
-						while (!samplNode.empty())
-						{
-							pugi::xml_attribute typeAttr = samplNode.attribute("type");
-							String typeName = typeAttr.as_string();
-
-							pugi::xml_attribute nameAttr = samplNode.attribute("name");
-							std::string name = nameAttr.as_string();
-
-							sh::video::Sampler* sampler = uniformBuffer->GetSampler(name);
-							sh::video::Texture* texture = nullptr;
-							if (typeName == "2D")
-							{
-								pugi::xml_attribute fileNameAttr = samplNode.attribute("filename");
-								std::string fileName = fileNameAttr.as_string();
-								texture = resourceManager->GetTexture(fileName);
-							}
-							else if (typeName == "cube")
-							{
-								pugi::xml_attribute right = samplNode.attribute("right");
-								pugi::xml_attribute left = samplNode.attribute("left");
-								pugi::xml_attribute top = samplNode.attribute("top");
-								pugi::xml_attribute bottom = samplNode.attribute("bottom");
-								pugi::xml_attribute back = samplNode.attribute("back");
-								pugi::xml_attribute front = samplNode.attribute("front");
-
-								std::vector<String> faces;
-								faces.push_back(right.as_string());
-								faces.push_back(left.as_string());
-								faces.push_back(top.as_string());
-								faces.push_back(bottom.as_string());
-								faces.push_back(back.as_string());
-								faces.push_back(front.as_string());
-
-								texture = resourceManager->GetCubeTexture(faces);
-							}
-													
-
-							sampler->Set(texture);
-
-							samplNode = samplNode.next_sibling();
-						}
-					}
-
-					
-
-					// Init model with material
-					for (size_t i = 0, sz = model->GetMeshesCount(); i < sz; ++i)
-					{
-						sh::scene::Mesh* mesh = model->GetMesh(i);
-						mesh->SetMaterial(material);
-					}		
-
-					// Reinit samplers
-					{
-						for (size_t i = 0; i < modelBase->GetMeshesCount(); ++i)
-						{
-							MeshBase* meshBase = modelBase->GetMesh(i);
-							Mesh* mesh = model->GetMesh(i);
-							video::UniformBuffer* meshUniformBuffer = mesh->GetRenderCommand()->GetUniformBuffer();
-
-							for (size_t j = 0; j < meshBase->GetSamplersCount(); ++j)
-							{
-								video::Sampler* baseSampler = meshBase->GetSampler(j);
-								video::Sampler* sampler = meshUniformBuffer->GetSampler(baseSampler->GetUsage());
-								if (sampler)
-								{
-									sh::video::Texture* texture = resourceManager->GetTexture(baseSampler->GetTextureName());
-									sampler->Set(texture);
-								}
-							}
-						}
-					}
+					componentNode = componentNode.next_sibling();
 				}
-				// Add model to render list
-				m_models.push_back(model);
 
-				for (size_t i = 0, sz = model->GetMeshesCount(); i < sz; ++i)
-				{
-					m_commandPool->AddMesh(model->GetMesh(i));
-				}
 
 				// Read next object
-				objectNode = objectNode.next_sibling();
+				entityNode = entityNode.next_sibling();
 			}
 		}
 		//////////////////////////////////////////////////////////////////////////////////////////////
@@ -279,9 +125,15 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
 
-		void SceneManager::Update()
+		void SceneManager::Update(f32 deltaTime)
 		{
 			m_camera->Update();
+
+			// Update all systems
+			for (auto system : m_systems)
+			{
+				system->Update(deltaTime);
+			}
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////

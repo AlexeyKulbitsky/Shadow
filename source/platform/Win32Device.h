@@ -17,6 +17,7 @@ namespace sh
 		explicit Win32Device(const CreationParameters &parameters);
 		virtual ~Win32Device();
 
+		virtual void Update(f32 deltaTime) override;
 		virtual bool Run() override;
 		virtual void OnEvent(const Event& e) override;
 		virtual u64 GetTime() override;

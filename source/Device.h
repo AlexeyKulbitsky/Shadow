@@ -21,6 +21,7 @@ namespace sh
 		class SceneManager;
 	}
 
+	class System;
 
 	class Device
 	{
@@ -30,6 +31,7 @@ namespace sh
 		virtual ~Device();
 
 		virtual bool Run() = 0;
+		virtual void Update(f32 deltaTime) = 0;
 		virtual void OnEvent(const Event& e) = 0;
 		virtual u64 GetTime() = 0;
 

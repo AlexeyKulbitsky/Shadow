@@ -20,6 +20,7 @@ namespace sh
 
 			void SetPosition(const math::Vector3f& pos);
 			const math::Vector3f& GetPosition() const { return m_position; }
+			void SetWorldMatrix(const math::Matrix4f& matrix) { m_worldMatrix = matrix; }
 			void Render();
 			void AddMesh(Mesh* mesh);
 			size_t GetMeshesCount() const;

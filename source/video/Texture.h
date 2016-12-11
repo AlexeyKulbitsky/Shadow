@@ -52,6 +52,11 @@ namespace sh
 			virtual void SetType(Type type) = 0;
 			virtual void SetTiling(Tiling tilingU, Tiling tilingV) = 0;
 			virtual void SetFiltering(Filtering filtering) = 0;
+			virtual void Bind() = 0;
+			virtual void Unbind() = 0;
+			virtual void LoadData(u32 mipLevel, s32 width, s32 height, const void* data) = 0;
+			virtual void LoadFaceData(Face face, u32 mipLevel, s32 width, s32 height, const void* data) = 0;
+			virtual void GenerateMipMaps() = 0;
 
 			bool HasMipMaps() const { return m_hasMipMaps; }
 

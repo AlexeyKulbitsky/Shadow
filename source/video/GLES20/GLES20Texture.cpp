@@ -1,9 +1,6 @@
 #include "GLES20Texture.h"
 #include "../../pempek_assert.h"
 
-//#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
-
 namespace sh
 {
 	namespace video
@@ -14,48 +11,33 @@ namespace sh
 			glGenTextures(1, &m_glID);
 		}
 
+		////////////////////////////////////////////////////////////////////
+
 		GLES20Texture::~GLES20Texture()
 		{
 			glDeleteTextures(1, &m_glID);
 		}
 
+		////////////////////////////////////////////////////////////////////
+
 		void GLES20Texture::Load(const String& filePath)
 		{
-			int texWidth, texHeight, texChannels;
-			stbi_uc* pixels = stbi_load(filePath.c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
-			SH_ASSERT(pixels, "failed to load texture image!");
-			
-			glBindTexture(m_glType, m_glID);
-
-			glTexImage2D(m_glType, 0, GL_RGBA, texWidth, texHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-			glGenerateMipmap(m_glType);
-			m_hasMipMaps = true;
-			glBindTexture(m_glType, 0U);
-
-			stbi_image_free(pixels);
 		}
+
+		////////////////////////////////////////////////////////////////////
 
 		void GLES20Texture::Load(const std::vector<String>& fileNames)
 		{
-			int texWidth, texHeight, texChannels;
-
-			glBindTexture(m_glType, m_glID);
-
-			for (size_t i = 0; i < fileNames.size(); ++i)
-			{
-				stbi_uc* pixels = stbi_load(fileNames[i].c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
-				glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, texWidth, texHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-				stbi_image_free(pixels);
-			}
-			glGenerateMipmap(m_glType);
-			m_hasMipMaps = true;
-			glBindTexture(m_glType, 0U);
 		}
+
+		////////////////////////////////////////////////////////////////////
 
 		void GLES20Texture::Unload()
 		{
 
 		}
+
+		////////////////////////////////////////////////////////////////////
 
 		void GLES20Texture::SetType(Type type)
 		{
@@ -75,6 +57,8 @@ namespace sh
 				break;
 			}
 		}
+
+		////////////////////////////////////////////////////////////////////
 
 		void GLES20Texture::SetTiling(Tiling tilingU, Tiling tilingV)
 		{
@@ -123,6 +107,8 @@ namespace sh
 			glBindTexture(m_glType, 0U);
 		}
 
+		////////////////////////////////////////////////////////////////////
+
 		void GLES20Texture::SetFiltering(Filtering filtering)
 		{
 			GLint filter;
@@ -147,5 +133,68 @@ namespace sh
 			glTexParameteri(m_glType, GL_TEXTURE_MIN_FILTER, filter);
 			glTexParameteri(m_glType, GL_TEXTURE_MAG_FILTER, filter);
 		}
+
+		////////////////////////////////////////////////////////////////////
+
+		void GLES20Texture::Bind()
+		{
+			glBindTexture(m_glType, m_glID);
+		}
+
+		////////////////////////////////////////////////////////////////////
+
+		void GLES20Texture::Unbind()
+		{
+			glBindTexture(m_glType, 0U);
+		}
+
+		////////////////////////////////////////////////////////////////////
+
+		void GLES20Texture::LoadData(u32 mipLevel, s32 width, s32 height, const void* data)
+		{
+			glTexImage2D(m_glType, mipLevel, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		}
+
+		////////////////////////////////////////////////////////////////////
+
+		void GLES20Texture::LoadFaceData(Face face, u32 mipLevel, s32 width, s32 height, const void* data)
+		{
+
+			GLenum target;
+			switch (face)
+			{
+				case Face::FRONT_FACE:
+					target = GL_TEXTURE_CUBE_MAP_POSITIVE_X;
+					break;
+				case Face::BACK_FACE:
+					target = GL_TEXTURE_CUBE_MAP_NEGATIVE_X;
+					break;
+				case Face::RIGHT_FACE:
+					target = GL_TEXTURE_CUBE_MAP_POSITIVE_Y;
+					break;
+				case Face::LEFT_FACE:
+					target = GL_TEXTURE_CUBE_MAP_NEGATIVE_Y;
+					break;
+				case Face::TOP_FACE:
+					target = GL_TEXTURE_CUBE_MAP_POSITIVE_Z;
+					break;
+				case Face::BOTTOM_FACE:
+					target = GL_TEXTURE_CUBE_MAP_NEGATIVE_Z;
+					break;
+			}
+
+			glTexImage2D(target, mipLevel, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		}
+
+		////////////////////////////////////////////////////////////////////
+
+		void GLES20Texture::GenerateMipMaps()
+		{
+			glGenerateMipmap(m_glType);
+			m_hasMipMaps = true;
+		}
+
+		////////////////////////////////////////////////////////////////////
+
 	}
 }

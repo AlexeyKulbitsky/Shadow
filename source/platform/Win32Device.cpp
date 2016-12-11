@@ -126,7 +126,6 @@ Win32Device::Win32Device()
 Win32Device::Win32Device(const CreationParameters &parameters)
 	:Device(parameters)
 {
-
 	// get handle to exe file
 	HINSTANCE hInstance = GetModuleHandle(0);
 
@@ -221,6 +220,13 @@ Win32Device::Win32Device(const CreationParameters &parameters)
 Win32Device::~Win32Device()
 {
 
+}
+
+////////////////////////////////////////////////////////////////////////
+
+void Win32Device::Update(f32 deltaTime)
+{
+	
 }
 
 ////////////////////////////////////////////////////////////////////////

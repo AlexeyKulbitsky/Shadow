@@ -1,5 +1,5 @@
-#ifndef SHADOW_SUB_ENTITY_INCLUDE
-#define SHADOW_SUB_ENTITY_INCLUDE
+#ifndef SHADOW_MESH_BASE_INCLUDE
+#define SHADOW_MESH_BASE_INCLUDE
 
 #include "../Globals.h"
 #include "../video/VertexBuffer.h"

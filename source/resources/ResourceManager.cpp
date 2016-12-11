@@ -2,6 +2,7 @@
 #include "../Device.h"
 #include "../video/RenderTechnique.h"
 #include "../video/Texture.h"
+#include "../video/TextureLoader/TextureLoader.h"
 #include "../scene/ModelBase.h"
 #include "../scene/ModelLoader/ModelLoader.h"
 
@@ -9,14 +10,15 @@ namespace sh
 {
 	ResourceManager::ResourceManager()
 	{
-
+		m_textureLoader = new video::TextureLoader();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	ResourceManager::~ResourceManager()
 	{
-
+		delete m_textureLoader;
+		m_textureLoader = nullptr;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -44,10 +46,10 @@ namespace sh
 		// If file exists in file system then load
 		if (textureFileInfo.name != "")
 		{
-			video::Texture* texture = Device::GetInstance()->GetDriver()->CreateTexture();
-			texture->Load(textureFileInfo.absolutePath);
+			video::Texture* texture = m_textureLoader->Load(textureFileInfo.absolutePath);
 			texture->SetFileName(textureFileInfo.name);
 			m_textures.push_back(texture);
+
 			return texture;
 		}
 
@@ -56,9 +58,6 @@ namespace sh
 
 	video::Texture* ResourceManager::GetCubeTexture(const std::vector<String>& faces)
 	{
-		video::Texture* texture = Device::GetInstance()->GetDriver()->CreateTexture();
-		texture->SetType(video::Texture::Type::TEXTURE_CUBE);
-
 		io::FileSystem* fs = Device::GetInstance()->GetFileSystem();
 		
 		std::vector<String> facesPathes;
@@ -70,8 +69,8 @@ namespace sh
 				facesPathes.push_back(textureFileInfo.absolutePath);
 			}
 		}
-
-		texture->Load(facesPathes);
+		video::Texture* texture = m_textureLoader->LoadCube(facesPathes);
+		
 		return texture;
 	}
 

@@ -10,6 +10,8 @@ namespace sh
 		class CommandPool;
 	}
 
+	class System;
+
 	namespace scene
 	{
 		class Model;
@@ -31,7 +33,7 @@ namespace sh
 			Camera* GetCamera() { return m_camera; }
 
 			void Render();
-			void Update();
+			void Update(f32 deltaTime = 0.0f);
 			void OnEvent(const Event& e);
 
 		private:
@@ -41,6 +43,8 @@ namespace sh
 
 			Camera* m_camera;
 			std::vector<Model*> m_models;
+
+			std::vector<System*> m_systems;
 
 			video::CommandPool* m_commandPool;
 		};

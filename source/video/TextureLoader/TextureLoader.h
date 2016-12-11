@@ -16,9 +16,11 @@ namespace sh
 			~TextureLoader();
 
 			Texture* Load(const String& path);
+			Texture* LoadCube(const std::vector<String>& faces);
 
 		private:
-			void LoadSTB();
+			Texture* LoadSTB(const String& path);
+			Texture* LoadSTBCube(const std::vector<String>& faces);
 		};
 	}
 }

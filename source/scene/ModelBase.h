@@ -1,5 +1,5 @@
-#ifndef SHADOW_ENTITY_INCLUDE
-#define SHADOW_ENTITY_INCLUDE
+#ifndef SHADOW_MODEL_BASE_INCLUDE
+#define SHADOW_MODEL_BASE_INCLUDE
 
 #include "../Globals.h"
 #include "Model.h"

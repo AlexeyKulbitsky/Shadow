@@ -10,6 +10,7 @@ namespace sh
 	namespace video
 	{
 		class Texture;
+		class TextureLoader;
 		class RenderTechnique;
 	}
 
@@ -30,10 +31,15 @@ namespace sh
 		video::RenderTechnique* GetRenderTechnique(const String& fileName);
 		scene::ModelBase* GetModelBase(const String& fileName);
 
+		video::TextureLoader* GetTextureLoader() const { return m_textureLoader; }
+
 	private:
 		std::vector<video::RenderTechnique*> m_renderTechniques;
 		std::vector<video::Texture*> m_textures;
 		std::vector<scene::ModelBase*> m_models;
+
+		// Managers for loading assets
+		video::TextureLoader* m_textureLoader;
 	};
 }
 

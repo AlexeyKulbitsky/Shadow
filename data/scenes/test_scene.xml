@@ -1,55 +1,54 @@
 <scene name="test Scene">
-	
-	
-	
+		
 	<entity name="model_1">
-		<model filename="cube.obj"/>
-		<transform>
-			<!--position val="0.0 0.0 0.0"/>
-			<rotation/>
-			<scale/-->
-		</transform>		
-		<material>
-			<technique filename="skybox.xml"/>
-			<samplers>
-				<sampler name="cubeMap" type="cube" right="right.jpg" left="left.jpg" top="top.jpg" bottom="bottom.jpg" back="back.jpg" front="front.jpg"/>
-			</samplers>
-		</material>
+		<component name="render">	
+			<model filename="cube.obj"/>		
+			<material>
+				<technique filename="skybox.xml"/>
+				<samplers>
+					<sampler name="cubeMap" type="cube" right="right.jpg" left="left.jpg" top="top.jpg" bottom="bottom.jpg" back="back.jpg" front="front.jpg"/>
+				</samplers>
+			</material>		
+		</component>
 	</entity>
 	
 	<entity name="model_0">
-		<model filename="nanosuit.obj"/>
-		<transform>
+		<component name="transform">
 			<position val="0.0 0.0 -20.0"/>
-			<!--rotation/>
-			<scale/-->
-		</transform>		
-		<material>
-			<technique filename="test.xml"/>
-			<uniforms>
-				<uniform name="uniA" type="float" val="0.5"/>
-			</uniforms>
-			<samplers>
-				<sampler name="testSample" type="2D" filename="statue.jpg"/>
-			</samplers>
-		</material>
+		</component>
+	
+		<component name="render">	
+			<model filename="nanosuit.obj"/>				
+			<material>
+				<technique filename="test.xml"/>
+				<uniforms>
+					<uniform name="uniA" type="float" val="0.5"/>
+				</uniforms>
+				<samplers>
+					<sampler name="testSample" type="2D" filename="statue.jpg"/>
+				</samplers>
+			</material>
+		</component>
 	</entity>
 	
 	<entity name="model_2">
-		<model filename="nanosuit.obj"/>
-		<transform>
+		<component name="transform">
 			<position val="10.0 0.0 -20.0"/>
 			<!--rotation/>
 			<scale/-->
-		</transform>		
-		<material>
-			<technique filename="test.xml"/>
-			<uniforms>
-				<uniform name="uniA" type="float" val="0.5"/>
-			</uniforms>
-			<samplers>
-				<sampler name="testSample" type="2D" filename="statue.jpg"/>
-			</samplers>
-		</material>
+		</component>
+	
+		<component name="render">	
+			<model filename="nanosuit.obj"/>		
+			<material>
+				<technique filename="test.xml"/>
+				<uniforms>
+					<uniform name="uniA" type="float" val="0.5"/>
+				</uniforms>
+				<samplers>
+					<sampler name="testSample" type="2D" filename="statue.jpg"/>
+				</samplers>
+			</material>
+		</component>
 	</entity>
 </scene>
