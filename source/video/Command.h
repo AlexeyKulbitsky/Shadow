@@ -1,6 +1,8 @@
 #ifndef SHADOW_COMMAND_INCLUDE
 #define SHADOW_COMMAND_INCLUDE
 
+#include "../Globals.h"
+
 namespace sh
 {
 	namespace video
@@ -38,6 +40,9 @@ namespace sh
 
 		protected:
 			CommandContext* m_commandContext;
+			u8* m_commandData = nullptr;
+			u32 commandDataSize = 0;
+			u32 currentUsedSize = 0;
 		};
 
 		// Commands

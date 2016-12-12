@@ -13,7 +13,7 @@ namespace sh
 
 	namespace video
 	{
-		class CommandBuffer;
+		class RenderBatch;
 
 		class CommandPool
 		{
@@ -22,9 +22,9 @@ namespace sh
 			void Submit();
 
 		protected:
-			typedef HashMap<String, CommandBuffer*> PerTechniqueCommandBuffersMap;
+			typedef HashMap<String, RenderBatch*> PerTechniqueRenderBatchesMap;
 
-			PerTechniqueCommandBuffersMap m_buffers[(size_t)RenderPass::Layer::COUNT];
+			PerTechniqueRenderBatchesMap m_renderBatches[(size_t)RenderPass::Layer::COUNT];
 		};
 	}
 }

@@ -1,5 +1,5 @@
 #include "CommandPool.h"
-#include "CommandBuffer.h"
+#include "RenderBatch.h"
 #include "Material.h"
 #include "RenderTechnique.h"
 #include "RenderPass.h"
@@ -18,19 +18,19 @@ namespace sh
 			RenderPass::Layer layer = material->GetRenderPass(0)->GetLayer();
 			size_t layerIndex = (size_t)layer;
 
-			if (m_buffers[layerIndex].find(techniqueName) == m_buffers[layerIndex].end())
+			if (m_renderBatches[layerIndex].find(techniqueName) == m_renderBatches[layerIndex].end())
 			{
-				CommandBuffer* buffer = new CommandBuffer();
+				RenderBatch* renderBatch = new RenderBatch();
 				ShaderProgram* shader = material->GetRenderTechnique()->GetRenderPass(0)->GetShaderProgram();
 				RenderState* renderState = material->GetRenderTechnique()->GetRenderPass(0)->GetRenderState();
-				buffer->SetShaderProgram(shader);
-				buffer->SetRenderState(renderState);
-				buffer->SetTechniqueName(techniqueName);
+				renderBatch->SetShaderProgram(shader);
+				renderBatch->SetRenderState(renderState);
+				renderBatch->SetTechniqueName(techniqueName);
 
-				m_buffers[layerIndex][techniqueName] = buffer;
+				m_renderBatches[layerIndex][techniqueName] = renderBatch;
 			}
 
-			m_buffers[layerIndex][techniqueName]->AddCommand(mesh->GetRenderCommand());
+			m_renderBatches[layerIndex][techniqueName]->AddCommand(mesh->GetRenderCommand());
 		}
 
 		///////////////////////////////////////////////////////////////////
@@ -39,9 +39,9 @@ namespace sh
 		{
 			for (size_t i = 0; i < (size_t)RenderPass::Layer::COUNT; ++i)
 			{
-				for (auto buffer : m_buffers[i])
+				for (auto renderBatch : m_renderBatches[i])
 				{
-					buffer.second->Submit();
+					renderBatch.second->Submit();
 				}
 			}
 			
