@@ -48,6 +48,21 @@ namespace sh
 			virtual void EnableCullFace(bool enable) { m_enableCullFace = enable; }
 			virtual void EnableStencilTest(bool enable) { m_enableStencilTest = enable; }
 
+			struct BlendState
+			{
+
+			} blendState;
+
+			struct DepthStencilState
+			{
+
+			} depthStencilState;
+
+			struct RaterizerState
+			{
+
+			} rasterizerState;
+
 		protected:
 			FrontFace m_frontFace;
 			CullFace m_cullFace;
