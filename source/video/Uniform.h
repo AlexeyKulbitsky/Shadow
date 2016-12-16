@@ -27,6 +27,11 @@ namespace sh
 			CAMERA_VIEW_ROTATION_PROJECTION_MATRIX,
 			CAMERA_POSITION,
 
+			// Light uniforms
+			LIGHT_DIRECTIONAL_LIGHTS_COUNT,
+			LIGHT_DIRECTIONAL_DIRECTION,
+			LIGHT_DIRECTIONAL_COLOR,
+
 			COUNT
 		};
 
@@ -44,7 +49,12 @@ namespace sh
 			String("camera.projectionMatrix"),
 			String("camera.viewProjectionMatrix"),		
 			String("camera.viewRotationProjectionMatrix"),
-			String("camera.position")
+			String("camera.position"),
+
+			// Light uniforms
+			String("light.directional.count"),
+			String("light.directional.direction"),
+			String("light.directional.color")
 		};
 
 		class Uniform

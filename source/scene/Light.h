@@ -14,14 +14,31 @@ namespace sh
 			{
 				POINT,
 				DIRECTIONAL,
-				SPOT
+				SPOT,
+				AMBIENT
 			};
 
 			Light();
 			~Light();
 
+			void SetType(Type type) { m_type = type; }
+			Type GetType() const { return m_type; }
+
+			void SetPosition(const math::Vector3f& position) { m_position = position; }
+			const math::Vector3f& GetPosition() const { return m_position; }
+
+			void SetDirection(const math::Vector3f& direction) { m_direction = direction; }
+			const math::Vector3f& GetDirection() const { return m_direction; }
+
+			void SetColor(math::Vector3f& color) { m_color = color; }
+			const math::Vector3f&  GetColor() const { return m_color; }
+
 		private:
-			math::Vector3f m_positionDirection;
+			Type m_type;
+			math::Vector3f m_position;
+			math::Vector3f m_direction;
+
+			math::Vector3f m_color;
 		};
 	}
 }

@@ -1,6 +1,7 @@
 #include "Component.h"
 #include "components/TransformComponent.h"
 #include "components/RenderComponent.h"
+#include "components/LightComponent.h"
 
 namespace sh
 {
@@ -12,6 +13,8 @@ namespace sh
 				return new TransformComponent();
 			case Type::RENDER:
 				return new RenderComponent();
+			case Type::LIGHT:
+				return new LightComponent();
 		}
 		return nullptr;
 	}

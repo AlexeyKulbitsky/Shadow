@@ -11,7 +11,8 @@ namespace sh
 		enum class Type
 		{
 			TRANSFORM,
-			RENDER
+			RENDER,
+			LIGHT
 		};
 
 		static Component* Create(Type type);

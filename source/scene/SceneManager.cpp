@@ -19,6 +19,7 @@
 #include "../entity/System.h"
 #include "../entity/systems/RenderSystem.h"
 #include "../entity/systems/TransformSystem.h"
+#include "../entity/systems/LightSystem.h"
 #include "../entity/Component.h"
 #include "../entity/Entity.h"
 #include <pugixml.hpp>
@@ -39,6 +40,7 @@ namespace sh
 
 			m_systems.push_back(new TransformSystem());
 			m_systems.push_back(new RenderSystem());
+			m_systems.push_back(new LightSystem());
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
@@ -83,6 +85,8 @@ namespace sh
 						componentType = Component::Type::TRANSFORM;
 					else if (nameStr == "render")
 						componentType = Component::Type::RENDER;
+					else if (nameStr == "light")
+						componentType = Component::Type::LIGHT;
 					else
 						componentNode = componentNode.next_sibling();
 
@@ -95,6 +99,8 @@ namespace sh
 						m_systems[0]->AddEntity(entity);
 					if (componentType == Component::Type::RENDER)
 						m_systems[1]->AddEntity(entity);
+					if (componentType == Component::Type::LIGHT)
+						m_systems[2]->AddEntity(entity);
 
 					componentNode = componentNode.next_sibling();
 				}
