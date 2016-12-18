@@ -38,9 +38,17 @@ namespace sh
 		{
 			m_commandPool = new video::CommandPool();
 
-			m_systems.push_back(new TransformSystem());
-			m_systems.push_back(new RenderSystem());
-			m_systems.push_back(new LightSystem());
+			TransformSystem* transformSystem = new TransformSystem();
+			transformSystem->AddComponentType(Component::Type::TRANSFORM);
+			m_systems.push_back(transformSystem);
+
+			RenderSystem* renderSystem = new RenderSystem();
+			renderSystem->AddComponentType(Component::Type::RENDER);
+			m_systems.push_back(renderSystem);
+
+			LightSystem* lightSystem = new LightSystem();
+			lightSystem->AddComponentType(Component::Type::LIGHT);
+			m_systems.push_back(lightSystem);
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
@@ -95,12 +103,20 @@ namespace sh
 
 					entity->AddComponent(component);
 
+
+					for (auto system : m_systems)
+					{
+						system->RegisterEntity(entity);
+					}
+
+					/*
 					if (componentType == Component::Type::TRANSFORM)
 						m_systems[0]->AddEntity(entity);
 					if (componentType == Component::Type::RENDER)
 						m_systems[1]->AddEntity(entity);
 					if (componentType == Component::Type::LIGHT)
 						m_systems[2]->AddEntity(entity);
+					*/
 
 					componentNode = componentNode.next_sibling();
 				}

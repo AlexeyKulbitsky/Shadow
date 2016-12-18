@@ -2,6 +2,7 @@
 #define SHADOW_GLOBALS_INCLUDE
 
 #include <vector>
+#include <array>
 #include <set>
 #include <map>
 #include <sstream>

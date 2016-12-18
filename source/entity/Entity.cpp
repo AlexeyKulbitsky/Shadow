@@ -4,7 +4,10 @@ namespace sh
 {
 	Entity::Entity()
 	{
-
+		for (size_t i = 0; i < static_cast<size_t>(Component::Type::COUNT); ++i)
+		{
+			m_components[i] = nullptr;
+		}
 	}
 
 	//////////////////////////////////////////////////////////////
@@ -18,20 +21,14 @@ namespace sh
 
 	void Entity::AddComponent(Component* component)
 	{
-		m_components.push_back(component);
+		m_components[static_cast<size_t>(component->GetType())] = component;
 	}
 
 	//////////////////////////////////////////////////////////////
 
 	Component* Entity::GetComponent(Component::Type type)
-	{
-		for (size_t i = 0, sz = m_components.size(); i < sz; ++i)
-		{
-			if (m_components[i]->GetType() == type)
-				return m_components[i];
-		}
-
-		return nullptr;
+	{		
+		return m_components[static_cast<size_t>(type)];
 	}
 
 	//////////////////////////////////////////////////////////////

@@ -58,4 +58,51 @@ namespace sh
 
 		}
 	}
+
+	//////////////////////////////////////////////////////////
+
+	void LightComponent::SetPosition(const math::Vector3f& position)
+	{
+		m_light->SetPosition(position);
+		m_needsToRecalculate = true;
+	}
+
+	//////////////////////////////////////////////////////////
+
+	const math::Vector3f& LightComponent::GetPosition() const
+	{
+		return m_light->GetPosition();
+	}
+
+	//////////////////////////////////////////////////////////
+
+	void LightComponent::SetDirection(const math::Vector3f& direction)
+	{
+		m_light->SetDirection(direction);
+		m_needsToRecalculate = true;
+	}
+
+	//////////////////////////////////////////////////////////
+
+	const math::Vector3f& LightComponent::GetDirection() const
+	{
+		return m_light->GetDirection();
+	}
+
+	//////////////////////////////////////////////////////////
+
+	void LightComponent::SetColor(math::Vector3f& color)
+	{
+		m_light->SetColor(color);
+		m_needsToRecalculate = true;
+	}
+
+	//////////////////////////////////////////////////////////
+
+	const math::Vector3f&  LightComponent::GetColor() const
+	{
+		return m_light->GetColor();
+	}
+
+	//////////////////////////////////////////////////////////
 }

@@ -10,9 +10,11 @@ namespace sh
 	public:
 		enum class Type
 		{
-			TRANSFORM,
+			TRANSFORM = 0,
 			RENDER,
-			LIGHT
+			LIGHT,
+
+			COUNT
 		};
 
 		static Component* Create(Type type);

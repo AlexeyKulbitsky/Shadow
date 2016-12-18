@@ -16,7 +16,8 @@ namespace sh
 		Component* GetComponent(Component::Type type);
 
 	private:
-		std::vector<Component*> m_components;
+		
+		Component* m_components[static_cast<size_t>(Component::Type::COUNT)];
 	};
 }
 
