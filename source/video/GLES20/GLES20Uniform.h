@@ -67,6 +67,15 @@ namespace sh
 					glUniformMatrix4fv(location, 1, GL_FALSE, &value._m[0]);
 				}
 			};
+
+			template <>
+			struct GLES20UniformLoader<std::vector<math::Vector3f> >
+			{
+				static void Load(const s32 location, const std::vector<math::Vector3f>& value)
+				{
+					glUniform3fv(location, value.size(), &value[0].x);
+				}
+			};
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -132,6 +141,7 @@ namespace sh
 		typedef GLES20Uniform<math::Vector3f>	GLES20UniformVector3f;
 		typedef GLES20Uniform<math::Vector4f>	GLES20UniformVector4f;
 		typedef GLES20Uniform<math::Matrix4f>	GLES20UniformMatrix4f;
+		typedef GLES20Uniform<std::vector<math::Vector3f> >	GLES20UniformVector3fArray;
 	}
 }
 

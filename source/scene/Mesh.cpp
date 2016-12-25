@@ -63,6 +63,10 @@ namespace sh
 				{
 					uniform->Set(wvp);
 				}
+				else if (uniform->GetGlobalUniformName() == video::GlobalUniformName::MODEL_WORLD_MATRIX)
+				{
+					uniform->Set(m_worldMatrix);
+				}
 			}
 		}
 

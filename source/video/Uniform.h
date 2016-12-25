@@ -72,6 +72,7 @@ namespace sh
 				VEC3,
 				VEC4,
 				MAT4,
+				VEC3_ARRAY,
 				UNKNOWN
 			};
 
@@ -189,6 +190,13 @@ namespace sh
 		inline Uniform::Uniform(const math::Matrix4f& value)
 			: m_placeHolder(new UniformHolder<math::Matrix4f>(value))
 			, m_type(Type::MAT4)
+		{
+		}
+
+		template<>
+		inline Uniform::Uniform(const std::vector<math::Vector3f>& value)
+			: m_placeHolder(new UniformHolder<std::vector<math::Vector3f> >(value))
+			, m_type(Type::VEC3_ARRAY)
 		{
 		}
 	}

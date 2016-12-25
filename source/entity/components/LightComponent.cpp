@@ -1,5 +1,6 @@
 #include "LightComponent.h"
 #include "../../scene/Light.h"
+#include "../../Device.h"
 
 namespace sh
 {
@@ -34,6 +35,12 @@ namespace sh
 					direction.z = temp[2];
 
 					m_light->SetDirection(direction);
+					video::Driver* driver = Device::GetInstance()->GetDriver();
+					video::Uniform* uniform = driver->GetGlobalUniform(video::GlobalUniformName::LIGHT_DIRECTIONAL_DIRECTION);
+					std::vector<math::Vector3f> value;
+					value.push_back(direction);
+					uniform->Set(value);
+						
 				}
 			}
 

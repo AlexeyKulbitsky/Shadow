@@ -58,9 +58,9 @@ namespace sh
 					vertexArray.push_back(attrib.vertices[3 * index.vertex_index + 2]);
 					
 					// normal
-					//vertexArray.push_back(attrib.normals[3 * index.vertex_index + 0]);
-					//vertexArray.push_back(attrib.normals[3 * index.vertex_index + 1]);
-					//vertexArray.push_back(attrib.normals[3 * index.vertex_index + 2]);
+					vertexArray.push_back(attrib.normals[3 * index.normal_index + 0]);
+					vertexArray.push_back(attrib.normals[3 * index.normal_index + 1]);
+					vertexArray.push_back(attrib.normals[3 * index.normal_index + 2]);
 
 					// color
 					vertexArray.push_back(0.5f);
@@ -76,9 +76,11 @@ namespace sh
 				}
 
 				sh::video::Attribute positionAttribute(sh::video::AttributeSemantic::POSITION, sh::video::AttributeType::FLOAT, 3U);
+				sh::video::Attribute normalAttribute(sh::video::AttributeSemantic::NORMAL, sh::video::AttributeType::FLOAT, 3U);
 				sh::video::Attribute colorAttribute(sh::video::AttributeSemantic::COLOR, sh::video::AttributeType::FLOAT, 3U);
 				sh::video::Attribute uvAttribute(sh::video::AttributeSemantic::UV, sh::video::AttributeType::FLOAT, 2U);
 				vertexDeclaration->AddAttribute(positionAttribute);	
+				vertexDeclaration->AddAttribute(normalAttribute);
 				vertexDeclaration->AddAttribute(colorAttribute);
 				vertexDeclaration->AddAttribute(uvAttribute);
 

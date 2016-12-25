@@ -97,8 +97,7 @@ namespace sh
 					glesUniform->SetGLId(m_shaderProgram->GetGLId());
 					uniform = glesUniform;
 					if (valAttr)
-					{
-
+					{									
 					}
 				}
 				else if (typeName == "vec4")
@@ -119,7 +118,11 @@ namespace sh
 					if (valAttr)
 					{
 						String value = valAttr.as_string();
-						if (value == "model.worldViewProjectionMatrix")
+						if (value == "model.worldMatrix")
+						{
+							glesUniform->SetGlobalUniformName(GlobalUniformName::MODEL_WORLD_MATRIX);
+						}
+						else if (value == "model.worldViewProjectionMatrix")
 						{
 							glesUniform->SetGlobalUniformName(GlobalUniformName::MODEL_WORLD_VIEW_PROJECTION_MATRIX);
 						}
@@ -133,7 +136,17 @@ namespace sh
 						}
 					}
 				}
-
+				else if (typeName == "vec3Array")
+				{
+					GLES20UniformVector3fArray* glesUniform = new GLES20UniformVector3fArray(std::vector<math::Vector3f>(0.0f));
+					glesUniform->SetGLId(m_shaderProgram->GetGLId());
+					uniform = glesUniform;
+					String value = valAttr.as_string();
+					if (value == "light.directional.direction")
+					{
+						glesUniform->SetGlobalUniformName(GlobalUniformName::LIGHT_DIRECTIONAL_DIRECTION);
+					}
+				}
 
 				printf("\n");
 

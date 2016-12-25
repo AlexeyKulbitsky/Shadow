@@ -26,8 +26,8 @@ namespace sh
 
 			// Light uniforms
 			m_globalUniforms[(size_t)GlobalUniformName::LIGHT_DIRECTIONAL_LIGHTS_COUNT] = new Uniform(0);
-			m_globalUniforms[(size_t)GlobalUniformName::LIGHT_DIRECTIONAL_DIRECTION] = new Uniform(math::Vector3f());
-			m_globalUniforms[(size_t)GlobalUniformName::LIGHT_DIRECTIONAL_COLOR] = new Uniform(math::Vector3f());
+			m_globalUniforms[(size_t)GlobalUniformName::LIGHT_DIRECTIONAL_DIRECTION] = new Uniform(std::vector<math::Vector3f>(0.0f));
+			m_globalUniforms[(size_t)GlobalUniformName::LIGHT_DIRECTIONAL_COLOR] = new Uniform(std::vector<math::Vector3f>(0.0f));
 		}
 	}
 }

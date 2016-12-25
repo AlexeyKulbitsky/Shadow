@@ -45,6 +45,12 @@ namespace sh
 					m_uniforms[i]->Set(globalUniform->Get<math::Matrix4f>());
 				}
 					break;
+				case GlobalUniformName::LIGHT_DIRECTIONAL_DIRECTION:
+				{
+					globalUniform = driver->GetGlobalUniform(GlobalUniformName::LIGHT_DIRECTIONAL_DIRECTION);
+					m_uniforms[i]->Set(globalUniform->Get<std::vector<math::Vector3f> >());
+				}
+					break;
 				}
 
 				m_uniforms[i]->Load();

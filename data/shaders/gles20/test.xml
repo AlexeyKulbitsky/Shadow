@@ -9,7 +9,10 @@
 	<constants>
 		<uniforms>
 			<uniform name="uniA" type="float" val="1.0"/>
+			<uniform name="matWorld" type="mat4" val="model.worldMatrix"/>
 			<uniform name="matMVP" type="mat4" val="model.worldViewProjectionMatrix"/>
+			<uniform name="lightDirection" type="vec3Array" val="light.directional.direction"/>
+			<!--uniform name="lightColor" type="vec3Array" val="light.directional.color"/-->
 		</uniforms>
 
 		<samplers>
@@ -19,6 +22,7 @@
 	
 	<attributes>
 		<position 	type="vec3" name="aPosition"/>
+		<normal		type="vec3" name="aNormal"/>
 		<color 		type="vec3" name="aColor"/>
 		<uv			type="vec2" name="aUV"/>
 	</attributes>
@@ -28,17 +32,21 @@
 		<![CDATA[
 
 			attribute vec3 aPosition;
+			attribute vec3 aNormal;
 			attribute vec3 aColor;
 			attribute vec2 aUV;
 
 			uniform mat4 matMVP;
-
+			uniform mat4 matWorld;
+			
+			varying vec3 vNormal;
 			varying vec3 vColor;
 			varying vec2 vUV;
 
 			void main() 
 			{
 				gl_Position = matMVP * vec4(aPosition, 1.0);
+				vNormal = (matWorld * vec4(aNormal, 0.0)).xyz;
 				vColor = aColor;
 				vUV = aUV;
 			}
@@ -53,13 +61,19 @@
 	
 			uniform float uniA;
 			uniform sampler2D testSample;
+			uniform vec3 lightDirection[8];
 
+			varying vec3 vNormal;
 			varying vec3 vColor;
 			varying vec2 vUV;
 	
 			void main() 
 			{
+				vec3 N = normalize(vNormal);
+				vec3 L = normalize(lightDirection[0]);
+				float NdotL = dot(N, L);
 				vec3 col = texture2D(testSample, vUV).xyz * uniA;
+				col = col * NdotL * vec3(1.0);
 				gl_FragColor = vec4(col.xyz, 1.0);
 			} 
 	
