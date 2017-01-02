@@ -9,70 +9,17 @@ solution "Shadow Editor"
 	--
 	-- setup your solution's configuration here ...
 	--
-			
-	project "Shadow"
-   kind "ConsoleApp"
-   language "C++"
-   includedirs { 
-		"../engine/source/**",
-		"../libs/pugixml/src/",
-		"../libs/egl/include/",
-		"../libs/soil/include/",
-		"../libs/vulkan/include/",
-		"../libs/stb/include/",
-		"../libs/tinyobjloader/include/"
-	}
-   
-   targetdir "bin/%{cfg.buildcfg}"
-   objdir "prj/obj/%{cfg.buildcfg}"
-
-   files { 
-		"../engine/source/**", 
-		}
-
-   filter "configurations:Debug"
-      defines { "DEBUG" }
-      flags { "Symbols" }
-
-   filter "configurations:Release"
-      defines { "NDEBUG" }
-      optimize "On"
-	  
-	filter "platforms:Win32"
-		libdirs { "../libs/egl/lib", "../libs/soil/lib/debug", "../libs/vulkan/bin" }
-		links { "libEGL", "libGLESv2", "SOIL", "vulkan-1" }
-		characterset ("MBCS") -- Multi-byte Character Set; currently Visual Studio only
---		characterset ("Default") --the default encoding for the toolset; usually Unicode
---		characterset ("MBCS") --Unicode: Unicode character encoding
-
-		-- copy a file from the objects directory to the target directory
-		postbuildcommands {
-			"{COPY} ../../libs/egl/lib/libEGL.dll ../bin/%{cfg.buildcfg}/",
-			"{COPY} ../../libs/egl/lib/libGLESv2.dll ../bin/%{cfg.buildcfg}/",
-			"{COPY} ../../libs/vulkan/bin/vulkan-1.dll ../bin/%{cfg.buildcfg}/",
-			}
-		
-	filter "platforms:Win64"
-		libdirs { "../libs/egl/lib", "../libs/soil/lib/debug", "../libs/vulkan/bin" }
-		links { "libEGL", "libGLESv2" }
-		characterset ("MBCS")
 	
-	
-	
+	include "../engine/premake5.lua"		
 
 	-- main project
-	project "Shadow Editor"
+	project "Editor"
 		kind "ConsoleApp"
 		language "C++"
 		includedirs { 
-		"source/**",
-		"../engine/source/",
-		"../libs/pugixml/src/",
-		"../libs/egl/include/",
-		"../libs/soil/include/",
-		"../libs/vulkan/include/",
-		"../libs/stb/include/",
-		"../libs/tinyobjloader/include/"
+			"source/**",
+			"../libs/pugixml/src/",
+			"../engine/source/"
 		}
 		--
 		-- setup your project's configuration here ...
@@ -97,7 +44,7 @@ solution "Shadow Editor"
 		-- will return an error since it won't be able to find the path
 		-- to your Qt installation.
 		--
-		--qtpath "D:/Qt/5.6"
+		qtpath "D:/Qt_5_XXX/5.6/msvc2013"
 
 		--
 		-- Setup which Qt modules will be used. This also apply to the
@@ -123,3 +70,16 @@ solution "Shadow Editor"
 			qtsuffix "d"
 			defines { "DEBUG" }
 			flags { "Symbols" }
+			
+		filter "platforms:Win32"
+			libdirs { "../libs/egl/lib", "../libs/vulkan/bin" }
+			links { "libEGL", "libGLESv2", "vulkan-1", "Shadow" }
+			characterset ("MBCS") -- Multi-byte Character Set; currently Visual Studio only
+--			characterset ("Default") --the default encoding for the toolset; usually Unicode
+--			characterset ("MBCS") --Unicode: Unicode character encoding
+
+			postbuildcommands {
+				"{COPY} ../../libs/egl/lib/libEGL.dll ../prj/bin/%{cfg.platform}/%{cfg.buildcfg}/",
+				"{COPY} ../../libs/egl/lib/libGLESv2.dll ../prj/bin/%{cfg.platform}/%{cfg.buildcfg}/",
+				"{COPY} ../../libs/vulkan/bin/vulkan-1.dll ../prj/bin/%{cfg.platform}/%{cfg.buildcfg}/",
+			}
