@@ -29,6 +29,10 @@ namespace sh
 
 			void LoadScene(const char* filename);
 
+			void AddModel(Model* model) { m_models.push_back(model); }
+			size_t GetModelsCount() const { return m_models.size(); }
+			Model* GetModel(size_t index) { return m_models[index]; }
+
 			void SetCamera(Camera* camera);
 			Camera* GetCamera() { return m_camera; }
 

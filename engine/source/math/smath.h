@@ -5,6 +5,8 @@
 #include "Matrix3.h"
 #include "Matrix4.h"
 #include "Quaternion.h"
+#include "Sphere.h"
+#include "FunctionsRayIntersect.h"
 
 namespace sh
 {
@@ -46,6 +48,11 @@ namespace sh
 		typedef Quaternion<float> Quaternionf;
 		typedef Quaternion<double> Quaterniond;
 
+		typedef Sphere<short> Spheres;
+		typedef Sphere<int> Spherei;
+		typedef Sphere<unsigned int> Sphereu;
+		typedef Sphere<float> Spheref;
+		typedef Sphere<double> Sphered;
 	}
 }
 

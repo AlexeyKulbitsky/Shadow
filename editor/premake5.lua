@@ -44,7 +44,7 @@ solution "Shadow Editor"
 		-- will return an error since it won't be able to find the path
 		-- to your Qt installation.
 		--
-		--qtpath "D:/Qt_5_XXX/5.6/msvc2013"
+		qtpath "D:/Qt_5_XXX/5.6/msvc2013"
 
 		--
 		-- Setup which Qt modules will be used. This also apply to the

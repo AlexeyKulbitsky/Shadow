@@ -5,6 +5,7 @@
 #include <Shadow.h>
 #include <scene\SceneManager.h>
 #include <scene\Camera.h>
+#include <scene\Model.h>
 
 
 GraphicsWidget::GraphicsWidget(QWidget* parent) : QWidget(parent)
@@ -65,6 +66,49 @@ void GraphicsWidget::mousePressEvent(QMouseEvent * ev)
 	e.mouseEvent.y = ev->y();
 	
 	sh::Device::GetInstance()->OnEvent(e);
+
+
+	sh::math::Matrix4f inverseProjMatrix = m_sceneManager->GetCamera()->GetProjectionMatrix().GetInversed();
+	sh::math::Matrix4f inverseViewMatrix = m_sceneManager->GetCamera()->GetViewMatrix().GetInversed();
+	sh::math::Vector3f cameraPos = m_sceneManager->GetCamera()->GetPosition();
+	
+	// 3d Normalised Device Coordinates	
+	float x = (2.0f * ev->x()) / width() - 1.0f;
+	float y = 1.0f - (2.0f * ev->y()) / height();
+	float z = 1.0f;
+	sh::math::Vector3f rayNds(x, y, z);
+
+	// 4d Homogeneous Clip Coordinates
+	sh::math::Vector4f rayClip(rayNds.x, rayNds.y, -1.0f, 1.0f);
+
+	// 4d Eye (Camera) Coordinates
+	sh::math::Vector4f rayEye = inverseProjMatrix * rayClip;
+	rayEye = sh::math::Vector4f(rayEye.x, rayEye.y, -1.0f, 0.0f);
+
+	// 4d World Coordinates
+	sh::math::Vector4f temp = inverseViewMatrix * rayEye;
+	sh::math::Vector3f rayWorld(temp.x, temp.y, temp.z);
+	// don't forget to normalise the vector at some point
+	rayWorld.Normalize();
+	//printf("x:%f y:%f z:%f\n", rayWorld.x, rayWorld.y, rayWorld.z);
+
+	size_t modelsCount = m_sceneManager->GetModelsCount();
+	for (size_t i = 0; i < modelsCount; ++i)
+	{
+		sh::math::Vector3f pos = m_sceneManager->GetModel(i)->GetPosition();
+		float radius = 1.0f;
+		float t1 = 0.0f, t2 = 0.0f;
+		int result = sh::math::RayIntersectSphere(cameraPos, rayWorld, pos, radius, t1, t2);
+		if (result != 0)
+		{
+			printf("Intersection with %s\n", m_sceneManager->GetModel(i)->GetName().c_str());
+		}
+		else
+		{
+			printf("No intersection with %s\n", m_sceneManager->GetModel(i)->GetName().c_str());
+		}
+	}
+	
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

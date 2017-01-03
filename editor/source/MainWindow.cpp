@@ -16,7 +16,7 @@
 
 MainWindow::MainWindow(QWidget *parent)
 {
-	resize(QSize(800, 600));
+	resize(QSize(640, 480));
 	CreateActions();
 	CreateMenu();
 
@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
 	m_splitter->setObjectName("mainsplitter");
 
 	m_graphicsWidget = new GraphicsWidget(this);	
-	m_graphicsWidget->resize(QSize(800, 600));
+	m_graphicsWidget->resize(QSize(640, 480));
 	m_splitter->addWidget(m_graphicsWidget);
 	setCentralWidget(m_splitter);
 

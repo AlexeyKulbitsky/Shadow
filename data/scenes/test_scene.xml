@@ -42,8 +42,6 @@
 	<entity name="model_2">
 		<component name="transform">
 			<position val="10.0 0.0 -20.0"/>
-			<!--rotation/>
-			<scale/-->
 		</component>
 	
 		<component name="render">	

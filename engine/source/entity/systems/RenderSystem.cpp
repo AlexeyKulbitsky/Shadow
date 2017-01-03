@@ -58,6 +58,7 @@ namespace sh
 			TransformComponent* transformComponent = static_cast<TransformComponent*>( entity->GetComponent(Component::Type::TRANSFORM) );
 			if (transformComponent)
 			{
+				renderComponent->GetModel()->SetPosition(transformComponent->GetPosition());
 				renderComponent->GetModel()->SetWorldMatrix(transformComponent->GetWorldMatrix());
 			}			
 			renderComponent->GetModel()->Render();

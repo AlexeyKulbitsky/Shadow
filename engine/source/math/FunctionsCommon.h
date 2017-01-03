@@ -11,7 +11,7 @@ namespace sh
 		template<typename T>
 		T Sqrt(T value)
 		{
-			std::sqrt(value);
+			return std::sqrt(value);
 		}
 
 		template<typename T>

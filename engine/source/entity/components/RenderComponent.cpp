@@ -8,6 +8,7 @@
 #include "../../video/Material.h"
 #include "../../video/RenderPass.h"
 #include "../../video/UniformBuffer.h"
+#include "../../scene/SceneManager.h"
 
 
 namespace sh
@@ -155,6 +156,7 @@ namespace sh
 			}
 
 			m_model = model;
+			Device::GetInstance()->GetSceneManager()->AddModel(m_model);
 		}
 	}
 
