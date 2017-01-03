@@ -1,7 +1,7 @@
 #ifndef SHADOW_GLES20_HARDWARE_BUFFER_INCLUDE
 #define SHADOW_GLES20_HARDWARE_BUFFER_INCLUDE
 
-#include "GLContext/EGLContextManager.h"
+#include "../GLContext/EGLContextManager.h"
 #include "../HardwareBuffer.h"
 #include "../../Types.h"
 

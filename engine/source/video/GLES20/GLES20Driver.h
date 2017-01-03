@@ -22,6 +22,7 @@ namespace sh
 			virtual void DrawMesh(scene::Mesh* mesh) override;
 			
 			virtual void Render(RenderCommand* command) override;
+			virtual void SetViewport(u32 x, u32 y, u32 width, u32 height) override;
 
 			virtual VertexBuffer* CreateVertexBuffer() override;
 			virtual VertexBuffer* CreateVertexBuffer(const void* data, size_t size) override;

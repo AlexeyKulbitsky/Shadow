@@ -213,6 +213,7 @@ Win32Device::Win32Device(const CreationParameters &parameters)
 	}
 
 	CreateDriver();
+	m_driver->SetViewport(0, 0, m_creationParameters.width, m_creationParameters.height);
 }
 
 ////////////////////////////////////////////////////////////////////////

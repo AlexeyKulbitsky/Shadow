@@ -1,7 +1,7 @@
 #ifndef SHADOW_GLES20_RENDER_STATE_INCLUDE
 #define SHADOW_GLES20_RENDER_STATE_INCLUDE
 
-#include "RenderState.h"
+#include "../RenderState.h"
 #include "../GLContext/EGLContextManager.h"
 
 namespace sh

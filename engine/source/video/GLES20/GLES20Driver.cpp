@@ -7,7 +7,7 @@
 #include "GLES20UniformBuffer.h"
 #include "GLES20RenderCommand.h"
 #include "GLES20Texture.h"
-#include "Material.h"
+#include "../Material.h"
 #include "../GLContext/EGLContextManager.h"
 #include "../../scene/Mesh.h"
 #include "../UniformBuffer.h"
@@ -19,6 +19,8 @@ GLES20Driver::GLES20Driver(EGLContextManager* contextManager)
 	:m_contextManager(contextManager)
 {
 }
+
+////////////////////////////////////////////////////////////////////////
 
 bool GLES20Driver::Init()
 {
@@ -93,53 +95,81 @@ void GLES20Driver::Render(RenderCommand* command)
 	vertexBuffer->Unbind();
 }
 
+////////////////////////////////////////////////////////////////////////
+
+void GLES20Driver::SetViewport(u32 x, u32 y, u32 width, u32 height)
+{
+	glViewport((GLint)x, (GLint)y, (GLint)width, (GLint)height);
+}
+
+////////////////////////////////////////////////////////////////////////
+
 VertexBuffer* GLES20Driver::CreateVertexBuffer()
 {
 	return nullptr;
 }
+
+////////////////////////////////////////////////////////////////////////
 
 VertexBuffer* GLES20Driver::CreateVertexBuffer(const void* data, size_t size)
 {
 	return new GLES20VertexBuffer(data, size);
 }
 
+////////////////////////////////////////////////////////////////////////
+
 IndexBuffer* GLES20Driver::CreateIndexBuffer()
 {
 	return nullptr;
 }
 
+////////////////////////////////////////////////////////////////////////
 
 IndexBuffer* GLES20Driver::CreateIndexBuffer(const void* data, size_t size)
 {
 	return new GLES20IndexBuffer(data, size);
 }
 
+////////////////////////////////////////////////////////////////////////
+
 UniformBuffer* GLES20Driver::CreateUniformBuffer()
 {
 	return new GLES20UniformBuffer();
 }
+
+////////////////////////////////////////////////////////////////////////
 
 RenderCommand* GLES20Driver::CreateRenderCommand()
 {
 	return new GLES20RenderCommand();
 }
 
+////////////////////////////////////////////////////////////////////////
+
 ShaderProgram* GLES20Driver::CreateShaderProgram()
 {
 	return new GLES20ShaderProgram();
 }
+
+////////////////////////////////////////////////////////////////////////
 
 Texture* GLES20Driver::CreateTexture()
 {
 	return new GLES20Texture();
 }
 
+////////////////////////////////////////////////////////////////////////
+
 VertexInputDeclaration* GLES20Driver::CreateVertexInputDeclaration()
 {
 	return new GLES20VertexDeclaration();
 }
 
+////////////////////////////////////////////////////////////////////////
+
 RenderState* GLES20Driver::CreateRenderState()
 {
 	return new GLES20RenderState();
 }
+
+////////////////////////////////////////////////////////////////////////

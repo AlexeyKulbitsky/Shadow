@@ -39,6 +39,7 @@ namespace sh
 			virtual void EndRendering() = 0;
 			virtual void DrawMesh(scene::Mesh* mesh) = 0;
 			virtual void Render(RenderCommand* command){}
+			virtual void SetViewport(u32 x, u32 y, u32 width, u32 height) {}
 
 			// Resources creation interface
 			virtual VertexBuffer* CreateVertexBuffer() = 0;

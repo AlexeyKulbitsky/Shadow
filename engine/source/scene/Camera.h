@@ -23,6 +23,10 @@ namespace sh
 
 			void SetProjection(f32 fov, f32 aspect, f32 nearP, f32 farP);
 
+			f32 GetFov() const { return m_fovy; }
+			f32 GetNearPlane() const { return m_nearDistance; }
+			f32 GetFarPlane() const { return m_farDistance; }
+
 			const math::Matrix4f& GetViewMatrix();
 			const math::Matrix4f& GetProjectionMatrix();
 			const math::Matrix4f& GetViewProjectionMatrix();

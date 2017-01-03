@@ -3,7 +3,7 @@
 #include "../VertexDeclaration.h"
 #include "../UniformBuffer.h"
 #include "GLES20Sampler.h"
-#include "../pempek_assert.h"
+#include "../../pempek_assert.h"
 
 using namespace sh;
 using namespace video;

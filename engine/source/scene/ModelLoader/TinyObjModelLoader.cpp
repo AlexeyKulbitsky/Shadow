@@ -1,7 +1,7 @@
 #include "TinyObjModelLoader.h"
 #include "../ModelBase.h"
 #include "../MeshBase.h"
-#include "../video/VertexDeclaration.h"
+#include "../../video/VertexDeclaration.h"
 #include "../../Device.h"
 #include "../../video/Sampler.h"
 #include "../../video/Uniform.h"
