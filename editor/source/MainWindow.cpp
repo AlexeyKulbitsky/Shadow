@@ -6,6 +6,9 @@
 #include <QFileDialog>
 #include <QSplitter>
 #include <QTimer>
+#include <qdockwidget.h>
+#include <qfilesystemmodel.h>
+#include <qtreeview.h>
 
 #include "gui\GraphicsWidget.h"
 
@@ -19,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
 	resize(QSize(640, 480));
 	CreateActions();
 	CreateMenu();
+	
 
 	QSplitter *m_splitter = new QSplitter(Qt::Vertical, this);
 	m_splitter->setObjectName("mainsplitter");
@@ -31,6 +35,8 @@ MainWindow::MainWindow(QWidget *parent)
 	InitDevice();
 
 	m_graphicsWidget->Init();
+
+	CreateAssetsWidget();
 
 	m_timer = new QTimer(this);
 	connect(m_timer, SIGNAL(timeout()), this, SLOT(Update()), Qt::QueuedConnection);
@@ -98,7 +104,7 @@ void MainWindow::CreateActions()
 	exitAction = new QAction(tr("Quit"), this);
 	exitAction->setShortcut(tr("Ctrl+Q"));
 	exitAction->setStatusTip(tr("Close application"));
-	//connect(exitAction, SIGNAL(triggered()), this, SLOT(close()));
+	connect(exitAction, SIGNAL(triggered()), this, SLOT(close()));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -113,6 +119,27 @@ void MainWindow::CreateMenu()
 	fileMenu->addAction(saveAsAction);
 	fileMenu->addSeparator();
 	fileMenu->addAction(exitAction);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void MainWindow::CreateAssetsWidget()
+{
+	assetsWidget = new QDockWidget(tr("File explorer"), this);
+	assetsWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+
+	QFileSystemModel *model = new QFileSystemModel;
+
+	sh::String workingDir = sh::Device::GetInstance()->GetFileSystem()->GetWorkingDirectory();
+    QString path = QDir::currentPath();
+	model->setRootPath(path);
+
+    QTreeView *tree = new QTreeView(assetsWidget);
+    tree->setModel(model);
+	tree->setRootIndex(model->index(path));
+
+	assetsWidget->setWidget(tree);
+	addDockWidget(Qt::LeftDockWidgetArea, assetsWidget);
 }
 
 //////////////////////////////////////////////////////////////////////////

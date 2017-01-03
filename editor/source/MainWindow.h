@@ -29,6 +29,7 @@ public slots:
 private:
 	void CreateActions();
 	void CreateMenu();
+	void CreateAssetsWidget();
 	void InitDevice();
 
 private:
@@ -49,6 +50,7 @@ private:
 	QMenu* optionsMenu;
 	QMenu* contextMenu;
 
+	QDockWidget *assetsWidget;
 
 	GraphicsWidget* m_graphicsWidget;
 	QTimer *m_timer;
