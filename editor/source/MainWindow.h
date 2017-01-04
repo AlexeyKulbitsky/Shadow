@@ -30,6 +30,7 @@ private:
 	void CreateActions();
 	void CreateMenu();
 	void CreateAssetsWidget();
+	void CreateInspectorWidget();
 	void InitDevice();
 
 private:
@@ -51,6 +52,7 @@ private:
 	QMenu* contextMenu;
 
 	QDockWidget *assetsWidget;
+	QDockWidget *inspectorWidget;
 
 	GraphicsWidget* m_graphicsWidget;
 	QTimer *m_timer;

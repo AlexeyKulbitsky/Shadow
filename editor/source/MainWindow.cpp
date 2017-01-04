@@ -9,8 +9,11 @@
 #include <qdockwidget.h>
 #include <qfilesystemmodel.h>
 #include <qtreeview.h>
+#include <QScrollArea>
 
 #include "gui\GraphicsWidget.h"
+#include "gui\ExpandableWidget.h"
+#include "gui\decorators\TransformComponentDecorator.h"
 
 #include <Shadow.h>
 #include <scene\Camera.h>
@@ -36,7 +39,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 	m_graphicsWidget->Init();
 
-	CreateAssetsWidget();
+	//CreateAssetsWidget();
+	CreateInspectorWidget();
 
 	m_timer = new QTimer(this);
 	connect(m_timer, SIGNAL(timeout()), this, SLOT(Update()), Qt::QueuedConnection);
@@ -140,6 +144,36 @@ void MainWindow::CreateAssetsWidget()
 
 	assetsWidget->setWidget(tree);
 	addDockWidget(Qt::LeftDockWidgetArea, assetsWidget);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void MainWindow::CreateInspectorWidget()
+{
+	inspectorWidget = new QDockWidget(tr("Inspector"), this);
+	inspectorWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+
+	QScrollArea* inspectorScrollArea = new QScrollArea(inspectorWidget);
+	inspectorScrollArea->setFocusPolicy(Qt::StrongFocus);
+	inspectorWidget->setWidget(inspectorScrollArea);
+	
+	QWidget* inspector = new QWidget(inspectorWidget);
+	QVBoxLayout* inspectorLayout = new QVBoxLayout(inspector);
+	inspectorLayout->setAlignment(Qt::AlignTop);
+	inspector->setLayout(inspectorLayout);
+	inspectorScrollArea->setWidget(inspector);
+
+
+	TransformComponenetDecorator* testDecorator = new TransformComponenetDecorator();
+	inspectorLayout->addWidget(testDecorator->GetParametersWidget());
+
+	ExpandableWidget* w1 = new ExpandableWidget("Transform");
+	ExpandableWidget* w2 = new ExpandableWidget("Custom component");
+	inspectorLayout->addWidget(w1);
+	inspectorLayout->addWidget(w2);
+
+	inspectorScrollArea->setWidgetResizable(true);
+	addDockWidget(Qt::RightDockWidgetArea, inspectorWidget);
 }
 
 //////////////////////////////////////////////////////////////////////////
