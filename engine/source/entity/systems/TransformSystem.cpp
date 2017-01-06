@@ -34,6 +34,9 @@ namespace sh
 			{
 				transformComponent->m_worldMatrix.SetIdentity();
 				math::Vector3f translation = transformComponent->m_position;
+				math::Vector3f scale = transformComponent->m_scale;
+
+				transformComponent->m_worldMatrix.SetScale(scale);
 				transformComponent->m_worldMatrix.SetTranslation(translation);
 				transformComponent->m_needsToRecalculateWorldMatrix = false;
 			}

@@ -43,6 +43,12 @@ namespace sh
 		{
 			return (radians / k_pi) * 180.0f;
 		}
+
+		template<typename T>
+		T Abs(const T& value)
+		{
+			return std::abs(value);
+		}
 	}
 }
 

@@ -22,6 +22,7 @@
 #include "../entity/systems/LightSystem.h"
 #include "../entity/Component.h"
 #include "../entity/Entity.h"
+#include "../entity/ComponentsFactory.h"
 #include <pugixml.hpp>
 
 namespace sh
@@ -98,29 +99,22 @@ namespace sh
 					else
 						componentNode = componentNode.next_sibling();
 
-					component = Component::Create(componentType);
+					//component = Component::Create(componentType);
+					component = m_componentsFactory->CreateComponent(componentType);
 					component->Load(componentNode);
 
 					entity->AddComponent(component);
 
-
 					for (auto system : m_systems)
 					{
 						system->RegisterEntity(entity);
-					}
-
-					/*
-					if (componentType == Component::Type::TRANSFORM)
-						m_systems[0]->AddEntity(entity);
-					if (componentType == Component::Type::RENDER)
-						m_systems[1]->AddEntity(entity);
-					if (componentType == Component::Type::LIGHT)
-						m_systems[2]->AddEntity(entity);
-					*/
+					}					
 
 					componentNode = componentNode.next_sibling();
 				}
 
+				// Add entity to entities list
+				AddEntity(entity);
 
 				// Read next object
 				entityNode = entityNode.next_sibling();

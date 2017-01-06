@@ -1,4 +1,7 @@
 #include "Entity.h"
+#include "components\TransformComponent.h"
+#include "components\RenderComponent.h"
+
 
 namespace sh
 {
@@ -22,6 +25,15 @@ namespace sh
 	void Entity::AddComponent(Component* component)
 	{
 		m_components[static_cast<size_t>(component->GetType())] = component;
+		component->SetParentEntity(this);
+	}
+
+	//////////////////////////////////////////////////////////////
+
+	void Entity::SetComponent(Component::Type type, Component* component)
+	{
+		m_components[static_cast<size_t>(type)] = component;
+		component->SetParentEntity(this);
 	}
 
 	//////////////////////////////////////////////////////////////
@@ -29,6 +41,33 @@ namespace sh
 	Component* Entity::GetComponent(Component::Type type)
 	{		
 		return m_components[static_cast<size_t>(type)];
+	}
+
+	//////////////////////////////////////////////////////////////
+
+	bool Entity::IntersectsRay(const math::Vector3f& origin, const math::Vector3f& direction)
+	{		
+		if (GetComponent(Component::Type::TRANSFORM) && GetComponent(Component::Type::RENDER))
+		{
+			TransformComponent* transformComponent = static_cast<TransformComponent*>(GetComponent(Component::Type::TRANSFORM));
+			RenderComponent* renderComponent = static_cast<RenderComponent*>(GetComponent(Component::Type::RENDER));
+
+			math::Vector3f pos = transformComponent->GetPosition();
+
+			float radius = 1.0f;
+			float t1 = 0.0f, t2 = 0.0f;
+			int result = math::RayIntersectSphere(origin, direction, pos, radius, t1, t2);
+			if (result != 0)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		return false;
 	}
 
 	//////////////////////////////////////////////////////////////

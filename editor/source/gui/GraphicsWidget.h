@@ -2,6 +2,7 @@
 #define SHADOW_EDITOR_GRAPHICS_WIDGET_INCLUDE
 
 #include <QWidget>
+#include "../gizmo/Gizmo.h"
 
 namespace sh
 {
@@ -14,6 +15,8 @@ namespace sh
 	{
 		class SceneManager;
 	}
+
+	class Entity;
 }
 
 class GraphicsWidget : public QWidget
@@ -26,6 +29,9 @@ public:
 	void Init();
 	void Render();
 
+signals:
+	void EntitySelected(sh::Entity* entity);
+
 protected:
 	virtual void resizeEvent(QResizeEvent *e);
 	virtual void mouseMoveEvent(QMouseEvent * e);
@@ -35,6 +41,7 @@ protected:
 private:
 	sh::video::Driver* m_driver = nullptr;
 	sh::scene::SceneManager* m_sceneManager = nullptr;
+	Gizmo* m_gizmo = nullptr;
 };
 
 #endif

@@ -5,6 +5,8 @@
 
 namespace sh
 {
+	class Entity;
+
 	class Component
 	{
 	public:
@@ -21,6 +23,12 @@ namespace sh
 
 		virtual Type GetType() const = 0;
 		virtual void Load(const pugi::xml_node &node) = 0;
+
+		void SetParentEntity(Entity* entity) { m_parentEntity = entity; }
+		Entity* GetParentEntity() const { return m_parentEntity; }
+
+	protected:
+		Entity* m_parentEntity = nullptr;
 	};
 }
 

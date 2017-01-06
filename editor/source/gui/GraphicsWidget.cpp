@@ -6,6 +6,7 @@
 #include <scene\SceneManager.h>
 #include <scene\Camera.h>
 #include <scene\Model.h>
+#include <entity\Entity.h>
 
 
 GraphicsWidget::GraphicsWidget(QWidget* parent) : QWidget(parent)
@@ -92,20 +93,14 @@ void GraphicsWidget::mousePressEvent(QMouseEvent * ev)
 	rayWorld.Normalize();
 	//printf("x:%f y:%f z:%f\n", rayWorld.x, rayWorld.y, rayWorld.z);
 
-	size_t modelsCount = m_sceneManager->GetModelsCount();
-	for (size_t i = 0; i < modelsCount; ++i)
+
+	size_t entitiesCount = m_sceneManager->GetEntitiesCount();
+	for (size_t i = 0; i < entitiesCount; ++i)
 	{
-		sh::math::Vector3f pos = m_sceneManager->GetModel(i)->GetPosition();
-		float radius = 1.0f;
-		float t1 = 0.0f, t2 = 0.0f;
-		int result = sh::math::RayIntersectSphere(cameraPos, rayWorld, pos, radius, t1, t2);
-		if (result != 0)
+		sh::Entity* entity = m_sceneManager->GetEntity(i);
+		if (entity->IntersectsRay(cameraPos, rayWorld))
 		{
-			printf("Intersection with %s\n", m_sceneManager->GetModel(i)->GetName().c_str());
-		}
-		else
-		{
-			printf("No intersection with %s\n", m_sceneManager->GetModel(i)->GetName().c_str());
+			emit EntitySelected(entity);
 		}
 	}
 	
@@ -143,6 +138,7 @@ void GraphicsWidget::mouseReleaseEvent(QMouseEvent * ev)
 
 GraphicsWidget::~GraphicsWidget()
 {
+	delete m_gizmo;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -151,6 +147,9 @@ void GraphicsWidget::Init()
 {
 	m_driver = sh::Device::GetInstance()->GetDriver();
 	m_sceneManager = sh::Device::GetInstance()->GetSceneManager();
+
+	m_gizmo = new Gizmo();
+	m_gizmo->m_lineModel->SetPosition(sh::math::Vector3f(0.0f, 0.0f, -3.0f));
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -160,6 +159,8 @@ void GraphicsWidget::Render()
 	m_driver->BeginRendering();
 	m_sceneManager->Update();
 	m_sceneManager->Render();
+
+	m_gizmo->Render();
 
 	m_driver->EndRendering();
 }

@@ -1,0 +1,53 @@
+<technique name="firstTechnique">
+
+<pass name="firstPass" layer="main">
+
+	<renderstate>
+		<name/>
+	</renderstate>
+		
+	<constants>
+		<uniforms>
+			<uniform name="color" type="vec3"/>
+			<uniform name="matMVP" type="mat4" val="model.worldViewProjectionMatrix"/>
+		</uniforms>
+	</constants>
+	
+	<attributes>
+		<position 	type="vec3" name="aPosition"/>
+	</attributes>
+	
+	<shader language="GLSL" api="GLES20">
+		<vertexShader>
+		<![CDATA[
+
+			attribute vec3 aPosition;
+			uniform mat4 matMVP;
+			
+			void main() 
+			{
+				gl_Position = matMVP * vec4(aPosition, 1.0);
+			}
+			
+		]]>
+		</vertexShader>
+
+		<fragmentShader>
+		<![CDATA[
+
+			precision mediump float;
+	
+			uniform vec3 color;
+	
+			void main() 
+			{
+				gl_FragColor = vec4(color, 1.0);
+			} 
+	
+		]]>	
+		</fragmentShader>
+	</shader>
+
+</pass>
+
+</technique>

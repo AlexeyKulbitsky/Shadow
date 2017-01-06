@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 class GraphicsWidget;
+class QVBoxLayout;
 
 namespace sh
 {
@@ -11,6 +12,8 @@ namespace sh
 	{
 		class SceneManager;
 	}
+
+	class Entity;
 }
 
 class MainWindow : public QMainWindow
@@ -25,6 +28,7 @@ public slots:
 	void NewFile();
 	void OpenFile();
 	void Update();
+	void SetSelectedEntity(sh::Entity* entity);
 
 private:
 	void CreateActions();
@@ -52,7 +56,9 @@ private:
 	QMenu* contextMenu;
 
 	QDockWidget *assetsWidget;
+
 	QDockWidget *inspectorWidget;
+	QVBoxLayout *inspectorLayout;
 
 	GraphicsWidget* m_graphicsWidget;
 	QTimer *m_timer;

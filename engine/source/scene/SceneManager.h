@@ -11,6 +11,8 @@ namespace sh
 	}
 
 	class System;
+	class Entity;
+	class ComponentsFactory;
 
 	namespace scene
 	{
@@ -33,6 +35,12 @@ namespace sh
 			size_t GetModelsCount() const { return m_models.size(); }
 			Model* GetModel(size_t index) { return m_models[index]; }
 
+			void AddEntity(Entity* entity) { m_entities.push_back(entity); }
+			size_t GetEntitiesCount() const { return m_entities.size(); }
+			Entity* GetEntity(size_t index) { return m_entities[index]; }
+
+			void SetComponentsFactory(ComponentsFactory* factory) { m_componentsFactory = factory; }
+
 			void SetCamera(Camera* camera);
 			Camera* GetCamera() { return m_camera; }
 
@@ -48,7 +56,9 @@ namespace sh
 			Camera* m_camera;
 			std::vector<Model*> m_models;
 
+			ComponentsFactory* m_componentsFactory = nullptr;
 			std::vector<System*> m_systems;
+			std::vector<Entity*> m_entities;
 
 			video::CommandPool* m_commandPool;
 		};

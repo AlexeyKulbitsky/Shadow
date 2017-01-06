@@ -13,12 +13,17 @@
 
 #include "gui\GraphicsWidget.h"
 #include "gui\ExpandableWidget.h"
+#include "gui\decorators\EditorComponentsFactory.h"
+#include "gui\decorators\ComponentDecorator.h"
 #include "gui\decorators\TransformComponentDecorator.h"
 
 #include <Shadow.h>
 #include <scene\Camera.h>
 #include <scene\SceneManager.h>
 #include <scene\ModelLoader\TinyObjModelLoader.h>
+#include <entity\Entity.h>
+
+
 
 MainWindow::MainWindow(QWidget *parent)
 {
@@ -34,6 +39,8 @@ MainWindow::MainWindow(QWidget *parent)
 	m_graphicsWidget->resize(QSize(640, 480));
 	m_splitter->addWidget(m_graphicsWidget);
 	setCentralWidget(m_splitter);
+
+	connect(m_graphicsWidget, SIGNAL(EntitySelected(sh::Entity*)), this, SLOT(SetSelectedEntity(sh::Entity*)));
 
 	InitDevice();
 
@@ -79,6 +86,16 @@ void MainWindow::OpenFile()
 void MainWindow::Update()
 {
 	m_graphicsWidget->Render();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void MainWindow::SetSelectedEntity(sh::Entity* entity)
+{
+	sh::Component* component = entity->GetComponent(sh::Component::Type::TRANSFORM);
+	TransformComponentDecorator* decorator = dynamic_cast<TransformComponentDecorator*>(component);
+	ExpandableWidget* widget = decorator->GetParametersWidget();
+	inspectorLayout->addWidget(widget);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -158,19 +175,18 @@ void MainWindow::CreateInspectorWidget()
 	inspectorWidget->setWidget(inspectorScrollArea);
 	
 	QWidget* inspector = new QWidget(inspectorWidget);
-	QVBoxLayout* inspectorLayout = new QVBoxLayout(inspector);
+	inspectorLayout = new QVBoxLayout(inspector);
 	inspectorLayout->setAlignment(Qt::AlignTop);
 	inspector->setLayout(inspectorLayout);
 	inspectorScrollArea->setWidget(inspector);
 
 
-	TransformComponenetDecorator* testDecorator = new TransformComponenetDecorator();
-	inspectorLayout->addWidget(testDecorator->GetParametersWidget());
+	//TransformComponenetDecorator* testDecorator = new TransformComponenetDecorator();
+	//inspectorLayout->addWidget(testDecorator->GetParametersWidget());
 
-	ExpandableWidget* w1 = new ExpandableWidget("Transform");
-	ExpandableWidget* w2 = new ExpandableWidget("Custom component");
+	
+	ExpandableWidget* w1 = new ExpandableWidget("Custom component");
 	inspectorLayout->addWidget(w1);
-	inspectorLayout->addWidget(w2);
 
 	inspectorScrollArea->setWidgetResizable(true);
 	addDockWidget(Qt::RightDockWidgetArea, inspectorWidget);
@@ -194,6 +210,7 @@ void MainWindow::InitDevice()
 	sh::scene::ModelLoader::SetInstance(modelLoader);
 
 	sh::scene::SceneManager* sceneMgr = new sh::scene::SceneManager();
+	sceneMgr->SetComponentsFactory(new EditorComponentsFactory());
 	device->SetSceneManager(sceneMgr);
 
 	m_sceneManager = sceneMgr;
@@ -207,6 +224,30 @@ void MainWindow::InitDevice()
 		return;
 
 	sceneMgr->LoadScene(finfo.absolutePath.c_str());
+
+	// Decorate all components
+	/*
+	size_t entitiesCount = sceneMgr->GetEntitiesCount();
+	printf("Entities count %d\n", entitiesCount);
+	for (size_t i = 0; i < entitiesCount; ++i)
+	{
+		sh::Entity* entity = sceneMgr->GetEntity(i);
+		size_t componentsCount = static_cast<size_t>(sh::Component::Type::COUNT);
+		for (size_t j = 0; j < componentsCount; ++j)
+		{
+			sh::Component::Type currentType = static_cast<sh::Component::Type>(j);
+			sh::Component* component = entity->GetComponent(currentType);
+			if (component != nullptr)
+			{
+				ComponentDecorator* decorator = ComponentDecorator::Create(component);
+				if (decorator != nullptr)
+				{
+					entity->SetComponent(currentType, decorator);
+				}					
+			}
+		}
+	}
+	*/
 
 	sh::scene::Camera* camera = new sh::scene::Camera();
 	camera->SetProjection(3.1415926535f / 4.0f, 800.0f / 600.0f, 0.1f, 1000.0f);

@@ -26,7 +26,7 @@ namespace sh
 		bool NeedsToRecalculateWorldMatrix() const { return m_needsToRecalculateWorldMatrix; }
 		void SetNeedsToRecalculateWorldMatrix(bool value) { m_needsToRecalculateWorldMatrix = value; }
 
-	private:
+	protected:
 		math::Matrix4f m_worldMatrix;
 
 		math::Vector3f m_position;

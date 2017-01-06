@@ -10,6 +10,7 @@ class ComponentDecorator : public sh::Component
 public:
 	virtual ExpandableWidget* GetParametersWidget() = 0;
 
+
 	virtual Type GetType() const { return sh::Component::Type::COUNT; }
 	virtual void Load(const pugi::xml_node &node) {}
 
