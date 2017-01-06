@@ -12,7 +12,8 @@ namespace sh
 		class GeometryGenerator
 		{
 		public:
-			static Model* GetLineModel();
+			static Model* GetLineModel(const math::Vector3f& start, const math::Vector3f& end);
+			static Model* GetConeModel(const math::Vector3f& start, const math::Vector3f& axis, const math::Vector3f& vtx, const math::Vector3f& vty);
 		};
 	}
 }

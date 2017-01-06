@@ -10,6 +10,7 @@
 #include "../Material.h"
 #include "../GLContext/EGLContextManager.h"
 #include "../../scene/Mesh.h"
+#include "../../scene/Model.h"
 #include "../UniformBuffer.h"
 
 using namespace sh;
@@ -27,7 +28,7 @@ bool GLES20Driver::Init()
 	InitGlobalUniforms();
 
 	glEnable(GL_DEPTH_TEST);
-	glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
+	glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
 	return false; 
 }
 

@@ -9,10 +9,14 @@ namespace sh
 			Init();
 		}
 
+		///////////////////////////////////////////////////////////////
+
 		RenderState::~RenderState()
 		{
 
 		}
+
+		///////////////////////////////////////////////////////////////
 
 		void RenderState::Init()
 		{
@@ -27,6 +31,8 @@ namespace sh
 			EnableCullFace(true);
 			EnableStencilTest(false);
 		}
+
+		///////////////////////////////////////////////////////////////
 
 		void RenderState::Load(const pugi::xml_node &node)
 		{
@@ -155,5 +161,27 @@ namespace sh
 				}
 			}
 		}
+
+		///////////////////////////////////////////////////////////////
+
+		RenderState* RenderState::Clone()
+		{
+			RenderState* renderState = new RenderState();
+
+			renderState->m_frontFace = m_frontFace;
+			renderState->m_cullFace = m_cullFace;
+			renderState->m_polygoneMode = m_polygoneMode;
+			renderState->m_pointSize = m_pointSize;
+			renderState->m_lineWidth = m_lineWidth;
+			renderState->m_enableDepthTest = m_enableDepthTest;
+			renderState->m_enableScissorTest = m_enableScissorTest;
+			renderState->m_enableBlending = m_enableBlending;
+			renderState->m_enableCullFace = m_enableCullFace;
+			renderState->m_enableStencilTest = m_enableStencilTest;
+
+			return renderState;
+		}
+
+		///////////////////////////////////////////////////////////////
 	}
 }

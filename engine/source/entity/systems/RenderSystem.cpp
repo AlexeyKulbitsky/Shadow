@@ -61,7 +61,7 @@ namespace sh
 				renderComponent->GetModel()->SetPosition(transformComponent->GetPosition());
 				renderComponent->GetModel()->SetWorldMatrix(transformComponent->GetWorldMatrix());
 			}			
-			renderComponent->GetModel()->Render();
+			renderComponent->GetModel()->UpdateTransformationUniforms();
 		}
 
 		m_commandPool->Submit();

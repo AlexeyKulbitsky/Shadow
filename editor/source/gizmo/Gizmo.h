@@ -3,6 +3,8 @@
 
 namespace sh
 {
+	class Entity;
+
 	namespace scene
 	{
 		class Model;
@@ -16,7 +18,16 @@ public:
 	virtual ~Gizmo();
 	void Render();
 
-	sh::scene::Model* m_lineModel = nullptr;
+	void SetEntity(sh::Entity* entity) { m_entity = entity; }
+
+	sh::scene::Model* m_lineModelX = nullptr;
+	sh::scene::Model* m_coneModelX = nullptr;
+	sh::scene::Model* m_lineModelY = nullptr;
+	sh::scene::Model* m_coneModelY = nullptr;
+	sh::scene::Model* m_lineModelZ = nullptr;
+	sh::scene::Model* m_coneModelZ = nullptr;
+
+	sh::Entity* m_entity = nullptr;
 };
 
 #endif

@@ -33,6 +33,18 @@ namespace sh
 				w = cosA;
 			}
 
+			void SetFromEuler(const Vector3<T>& angles)
+			{
+				Vector3<T> r(angles * T(0.5));
+				Vector3<T> sr(Sin(r.x), Sin(r.y), Sin(r.z));
+				Vector3<T> cr(Cos(r.x), Cos(r.y), Cos(r.z));
+				
+				x = cr.z * sr.x * cr.y + sr.z * cr.x * sr.y;
+				y = cr.z * cr.x * sr.y - sr.z * sr.x * cr.y;
+				z = sr.z * cr.x * cr.y + cr.z * sr.x * sr.y;
+				w = cr.z * cr.x * cr.y - sr.z * sr.x * sr.y;
+			}
+
 			Quaternion<T>& operator=(const Quaternion<T>& q) { x = q.x; y = q.y; z = q.z; w = q.w; return *this; }
 			Quaternion<T> operator*(const Quaternion<T>& other) const
 			{

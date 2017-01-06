@@ -100,6 +100,7 @@ void GraphicsWidget::mousePressEvent(QMouseEvent * ev)
 		sh::Entity* entity = m_sceneManager->GetEntity(i);
 		if (entity->IntersectsRay(cameraPos, rayWorld))
 		{
+			m_gizmo->SetEntity(entity);
 			emit EntitySelected(entity);
 		}
 	}
@@ -149,7 +150,6 @@ void GraphicsWidget::Init()
 	m_sceneManager = sh::Device::GetInstance()->GetSceneManager();
 
 	m_gizmo = new Gizmo();
-	m_gizmo->m_lineModel->SetPosition(sh::math::Vector3f(0.0f, 0.0f, -3.0f));
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

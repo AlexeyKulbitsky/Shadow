@@ -13,6 +13,7 @@ namespace sh
 	namespace scene
 	{
 		class Mesh;
+		class Model;
 	}
 	namespace video
 	{
@@ -39,6 +40,7 @@ namespace sh
 			virtual void EndRendering() = 0;
 			virtual void DrawMesh(scene::Mesh* mesh) = 0;
 			virtual void Render(RenderCommand* command){}
+			virtual void Render(scene::Model* model);
 			virtual void SetViewport(u32 x, u32 y, u32 width, u32 height) {}
 
 			// Resources creation interface

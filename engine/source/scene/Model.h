@@ -20,15 +20,18 @@ namespace sh
 
 			void SetPosition(const math::Vector3f& pos);
 			const math::Vector3f& GetPosition() const { return m_position; }
-			void SetWorldMatrix(const math::Matrix4f& matrix) { m_worldMatrix = matrix; }
-			void Render();
+			void SetWorldMatrix(const math::Matrix4f& matrix);
+			void UpdateTransformationUniforms();
 			void AddMesh(Mesh* mesh);
 			size_t GetMeshesCount() const;
 			Mesh* GetMesh(size_t index);
 
 		private:
 			std::vector<Mesh*> m_meshes;
+
 			math::Vector3f m_position;
+			math::Quaternionf m_rotation;
+			math::Vector3f m_scale;
 			math::Matrix4f m_worldMatrix;
 		};
 	}

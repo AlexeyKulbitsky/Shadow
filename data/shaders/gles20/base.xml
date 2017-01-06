@@ -3,7 +3,8 @@
 <pass name="firstPass" layer="main">
 
 	<renderstate>
-		<name/>
+		<depthTest val="false"/>
+		<culling val="false"/>
 	</renderstate>
 		
 	<constants>
@@ -40,7 +41,7 @@
 			uniform vec3 color;
 	
 			void main() 
-			{
+			{				
 				gl_FragColor = vec4(color, 1.0);
 			} 
 	

@@ -15,6 +15,7 @@ namespace sh
 			virtual ~GLES20RenderState();
 			//virtual void Load(const pugi::xml_node &node) override;
 			virtual void Apply() override;
+			virtual RenderState* Clone() override;
 
 			virtual void SetFrontFace(FrontFace frontFace) override;
 			virtual void SetCullFace(CullFace cullFace) override;
@@ -66,7 +67,7 @@ namespace sh
 			glFrontFace(m_glFrontFace);
 			glCullFace(m_glCullFace);
 
-			//glLineWidth(m_lineWidth);
+			glLineWidth(m_lineWidth);
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////

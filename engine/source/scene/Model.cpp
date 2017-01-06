@@ -41,12 +41,23 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////////////////
 
-		void Model::Render()
+		void Model::SetWorldMatrix(const math::Matrix4f& matrix) 
+		{ 
+			m_worldMatrix = matrix; 
+			for (auto mesh : m_meshes)
+			{
+				mesh->SetWorldMatrix(m_worldMatrix);
+			}
+		}
+
+		//////////////////////////////////////////////////////////////////////////////
+
+		void Model::UpdateTransformationUniforms()
 		{
 			for (auto mesh : m_meshes)
 			{
 				mesh->SetWorldMatrix(m_worldMatrix);
-				mesh->Render();
+				mesh->UpdateTransformationUniforms();
 			}
 		}
 

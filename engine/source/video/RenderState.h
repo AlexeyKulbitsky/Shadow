@@ -203,7 +203,7 @@ namespace sh
 			virtual void Init();
 			virtual void Load(const pugi::xml_node &node);
 			virtual void Apply(){}
-			virtual RenderState* Clone() { return nullptr; }
+			virtual RenderState* Clone();
 
 			virtual void SetFrontFace(FrontFace frontFace) { m_frontFace = frontFace; }
 			virtual void SetCullFace(CullFace cullFace) { m_cullFace = cullFace; }

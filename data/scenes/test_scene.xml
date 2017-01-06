@@ -8,7 +8,7 @@
 		</component>
 	</entity>
 		
-	<entity name="model_1">
+	<!--entity name="model_1">
 		<component name="render">	
 			<model filename="cube.obj"/>		
 			<material>
@@ -18,7 +18,7 @@
 				</samplers>
 			</material>		
 		</component>
-	</entity>
+	</entity-->
 	
 	<entity name="model_0">
 		<component name="transform">

@@ -35,9 +35,12 @@ namespace sh
 				transformComponent->m_worldMatrix.SetIdentity();
 				math::Vector3f translation = transformComponent->m_position;
 				math::Vector3f scale = transformComponent->m_scale;
+				math::Quaternionf rotation = transformComponent->m_rotation;
 
-				transformComponent->m_worldMatrix.SetScale(scale);
+				transformComponent->m_worldMatrix.SetScale(scale);				
 				transformComponent->m_worldMatrix.SetTranslation(translation);
+
+				transformComponent->m_worldMatrix = transformComponent->m_worldMatrix * rotation.GetAsMatrix4();
 				transformComponent->m_needsToRecalculateWorldMatrix = false;
 			}
 		}

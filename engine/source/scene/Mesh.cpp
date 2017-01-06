@@ -44,7 +44,7 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		void Mesh::Render()
+		void Mesh::UpdateTransformationUniforms()
 		{			
 			Camera* camera = Device::GetInstance()->GetSceneManager()->GetCamera();
 			sh::math::Matrix4f viewMatrix = camera->GetViewMatrix();

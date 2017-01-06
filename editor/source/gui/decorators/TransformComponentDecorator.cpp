@@ -44,8 +44,23 @@ ExpandableWidget* TransformComponentDecorator::GetParametersWidget()
 	QLabel* rotationLabel = new QLabel();
 	rotationLabel->setText("Rotation");
 	QDoubleSpinBox* xRotationSpinBox = new QDoubleSpinBox();
+	xRotationSpinBox->setMinimum(-10000.0);
+	xRotationSpinBox->setMaximum(10000.0);
+	xRotationSpinBox->setValue(m_axisRotations.x);
+	connect(xRotationSpinBox, SIGNAL(valueChanged(double)), this, SLOT(SetRotationXSlot(double)));
+
 	QDoubleSpinBox* yRotationSpinBox = new QDoubleSpinBox();
+	yRotationSpinBox->setMinimum(-10000.0);
+	yRotationSpinBox->setMaximum(10000.0);
+	yRotationSpinBox->setValue(m_axisRotations.y);
+	connect(yRotationSpinBox, SIGNAL(valueChanged(double)), this, SLOT(SetRotationYSlot(double)));
+
 	QDoubleSpinBox* zRotationSpinBox = new QDoubleSpinBox();
+	zRotationSpinBox->setMinimum(-10000.0);
+	zRotationSpinBox->setMaximum(10000.0);
+	zRotationSpinBox->setValue(m_axisRotations.z);
+	connect(zRotationSpinBox, SIGNAL(valueChanged(double)), this, SLOT(SetRotationZSlot(double)));
+
 	rotationLayout->addWidget(rotationLabel);
 	rotationLayout->addWidget(xRotationSpinBox);
 	rotationLayout->addWidget(yRotationSpinBox);
@@ -130,21 +145,42 @@ void TransformComponentDecorator::SetPositionZSlot(double value)
 
 void TransformComponentDecorator::SetRotationXSlot(double value)
 {
-
+	double currentValue = (double)m_axisRotations.x * 180.0 / sh::math::k_pi;
+	if (sh::math::Abs(value - currentValue) > sh::math::k_eps_7)
+	{
+		m_axisRotations.x = (float)value * sh::math::k_pi / 180.0f;
+		sh::math::Quaternionf rot;
+		rot.SetFromEuler(m_axisRotations);
+		SetRotation(rot);
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
 void TransformComponentDecorator::SetRotationYSlot(double value)
 {
-
+	double currentValue = (double)m_axisRotations.y * 180.0 / sh::math::k_pi;
+	if (sh::math::Abs(value - currentValue) > sh::math::k_eps_7)
+	{
+		m_axisRotations.y = (float)value * sh::math::k_pi / 180.0f;
+		sh::math::Quaternionf rot;
+		rot.SetFromEuler(m_axisRotations);
+		SetRotation(rot);
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
 void TransformComponentDecorator::SetRotationZSlot(double value)
 {
-
+	double currentValue = (double)m_axisRotations.z * 180.0 / sh::math::k_pi;
+	if (sh::math::Abs(value - currentValue) > sh::math::k_eps_7)
+	{
+		m_axisRotations.z = (float)value * sh::math::k_pi / 180.0f;
+		sh::math::Quaternionf rot;
+		rot.SetFromEuler(m_axisRotations);
+		SetRotation(rot);
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////

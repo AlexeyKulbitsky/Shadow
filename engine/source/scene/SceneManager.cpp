@@ -133,7 +133,7 @@ namespace sh
 		{
 			for (size_t i = 0, sz = m_models.size(); i < sz; ++i)
 			{
-				m_models[i]->Render();
+				m_models[i]->UpdateTransformationUniforms();
 			}
 
 			m_commandPool->Submit();
