@@ -100,6 +100,7 @@ void GLES20Driver::Render(RenderCommand* command)
 
 void GLES20Driver::SetViewport(u32 x, u32 y, u32 width, u32 height)
 {
+	Driver::SetViewport(x, y, width, height);
 	glViewport((GLint)x, (GLint)y, (GLint)width, (GLint)height);
 }
 
@@ -107,10 +108,8 @@ void GLES20Driver::SetViewport(u32 x, u32 y, u32 width, u32 height)
 
 void GLES20Driver::PrintPixelInfo(u32 x, u32 y, u32 width, u32 height)
 {
-	GLbyte color[4];
-	
+	GLbyte color[4];	
 	glReadPixels(x, height - y - 1, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, color);
-
 	printf("Clicked on pixel %d, %d, color %d %d %d %d\n",
 			x, y, (u8)color[0], (u8)color[1], (u8)color[2], (u8)color[3]);
 }
@@ -120,10 +119,8 @@ void GLES20Driver::PrintPixelInfo(u32 x, u32 y, u32 width, u32 height)
 void GLES20Driver::GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data)
 {
 	GLint viewport[4]; 
-
     glGetIntegerv(GL_VIEWPORT, viewport);
 	glReadPixels(x, viewport[3] - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
-	//glReadPixels(x, height - y - 1, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
 }
 
 ////////////////////////////////////////////////////////////////////////

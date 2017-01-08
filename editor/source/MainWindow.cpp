@@ -10,6 +10,7 @@
 #include <qfilesystemmodel.h>
 #include <qtreeview.h>
 #include <QScrollArea>
+#include <qtoolbar.h>
 
 #include "gui\GraphicsWidget.h"
 #include "gui\ExpandableWidget.h"
@@ -30,11 +31,11 @@ MainWindow::MainWindow(QWidget *parent)
 	resize(QSize(640, 480));
 	CreateActions();
 	CreateMenu();
-	
+	CreateToolBar();
 
 	QSplitter *m_splitter = new QSplitter(Qt::Vertical, this);
 	m_splitter->setObjectName("mainsplitter");
-
+	
 	m_graphicsWidget = new GraphicsWidget(this);	
 	m_graphicsWidget->resize(QSize(640, 480));
 	m_splitter->addWidget(m_graphicsWidget);
@@ -188,16 +189,34 @@ void MainWindow::CreateInspectorWidget()
 	inspector->setLayout(inspectorLayout);
 	inspectorScrollArea->setWidget(inspector);
 
-
-	//TransformComponenetDecorator* testDecorator = new TransformComponenetDecorator();
-	//inspectorLayout->addWidget(testDecorator->GetParametersWidget());
-
-	
-	ExpandableWidget* w1 = new ExpandableWidget("Custom component");
-	inspectorLayout->addWidget(w1);
-
 	inspectorScrollArea->setWidgetResizable(true);
 	addDockWidget(Qt::RightDockWidgetArea, inspectorWidget);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void MainWindow::CreateToolBar()
+{
+	m_mainToolBar = new QToolBar("Main toolbar");
+	addToolBar(m_mainToolBar);
+	QString workingDir = QApplication::applicationDirPath();
+
+	QAction* moveAction = new QAction("Move", this);			
+	moveAction->setIcon(QIcon(workingDir + "/../../../../../data/icons/move.png"));
+	moveAction->setCheckable(true);
+
+	QAction* rotateAction = new QAction("Rotate", this);			
+	rotateAction->setIcon(QIcon(workingDir + "/../../../../../data/icons/rotate.png"));
+	rotateAction->setCheckable(true);
+
+	QAction* scaleAction = new QAction("Scale", this);			
+	scaleAction->setIcon(QIcon(workingDir + "/../../../../../data/icons/scale.png"));
+	scaleAction->setCheckable(true);
+
+	m_mainToolBar->addAction(moveAction);
+	m_mainToolBar->addAction(rotateAction);
+	m_mainToolBar->addAction(scaleAction);
+	m_mainToolBar->addSeparator();
 }
 
 //////////////////////////////////////////////////////////////////////////

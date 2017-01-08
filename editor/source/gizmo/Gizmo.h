@@ -36,25 +36,16 @@ public:
 
 	Gizmo();
 	virtual ~Gizmo();
-	void Render();
+	virtual void Render();
 
 	void SetEnabled(bool enabled) { m_enabled = enabled; }
 	bool IsEnabled() const { return m_enabled; }
 
-	void SetEntity(sh::Entity* entity) { m_entity = entity; }
+	void SetEntity(sh::Entity* entity);
 
 	void Move(Axis::Type axis);
 
-	
-
 	Axis m_axises[3];
-
-	sh::scene::Model* m_lineModelX = nullptr;
-	sh::scene::Model* m_coneModelX = nullptr;
-	sh::scene::Model* m_lineModelY = nullptr;
-	sh::scene::Model* m_coneModelY = nullptr;
-	sh::scene::Model* m_lineModelZ = nullptr;
-	sh::scene::Model* m_coneModelZ = nullptr;
 
 	sh::Entity* m_entity = nullptr;
 	bool m_enabled = false;

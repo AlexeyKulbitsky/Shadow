@@ -20,6 +20,13 @@ namespace sh
 	class Entity;
 }
 
+enum class EditMode
+{
+	MOVE = 0,
+	ROTATE,
+	SCALE
+};
+
 class GraphicsWidget : public QWidget
 {
 	Q_OBJECT;

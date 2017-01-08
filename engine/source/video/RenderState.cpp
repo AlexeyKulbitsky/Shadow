@@ -6,30 +6,12 @@ namespace sh
 	{
 		RenderState::RenderState()
 		{
-			Init();
 		}
 
 		///////////////////////////////////////////////////////////////
 
 		RenderState::~RenderState()
 		{
-
-		}
-
-		///////////////////////////////////////////////////////////////
-
-		void RenderState::Init()
-		{
-			SetFrontFace(FrontFace::COUNTER_CLOCKWISE);
-			SetCullFace(CullFace::BACK);
-			SetPolygonMode(PolygonMode::FILL);
-			SetPointSize(1.0f);
-			SetLineWidth(1.0f);
-			EnableDepthTest(true);
-			EnableScissorTest(false);
-			EnableBlending(false);
-			EnableCullFace(true);
-			EnableStencilTest(false);
 		}
 
 		///////////////////////////////////////////////////////////////
@@ -47,7 +29,7 @@ namespace sh
 				if (valAttr)
 				{
 					bool value = valAttr.as_bool();
-					EnableDepthTest(value);
+					depthStencilState.enableDepthTest = value;
 				}
 			}
 
@@ -61,11 +43,11 @@ namespace sh
 					String value = valAttr.as_string();
 					if (value == "clockWise")
 					{
-						SetFrontFace(FrontFace::CLOCKWISE);
+						rasterizerState.frontFace = FrontFace::CLOCKWISE;
 					}
 					else if (value == "counterClockWise")
 					{
-						SetFrontFace(FrontFace::COUNTER_CLOCKWISE);
+						rasterizerState.frontFace = FrontFace::COUNTER_CLOCKWISE;
 					}
 				}
 			}
@@ -96,8 +78,7 @@ namespace sh
 				valAttr = stateNode.attribute("val");
 				if(valAttr)
 				{
-					float value = valAttr.as_float();
-					SetPointSize(value);
+					float value = valAttr.as_float();	
 				}
 			}
 
@@ -109,7 +90,6 @@ namespace sh
 				if(valAttr)
 				{
 					float value = valAttr.as_float();
-					SetLineWidth(value);
 				}
 			}
 
@@ -121,7 +101,6 @@ namespace sh
 				if (valAttr)
 				{
 					bool value = valAttr.as_bool();
-					EnableScissorTest(value);
 				}
 			}
 
@@ -133,7 +112,6 @@ namespace sh
 				if (valAttr)
 				{
 					bool value = valAttr.as_bool();
-					EnableBlending(value);
 				}
 			}
 
@@ -145,7 +123,6 @@ namespace sh
 				if (valAttr)
 				{
 					bool value = valAttr.as_bool();
-					EnableCullFace(value);
 				}
 			}
 
@@ -157,7 +134,7 @@ namespace sh
 				if (valAttr)
 				{
 					bool value = valAttr.as_bool();
-					EnableStencilTest(value);
+					depthStencilState.enableStencilTest = value;
 				}
 			}
 		}
@@ -168,16 +145,9 @@ namespace sh
 		{
 			RenderState* renderState = new RenderState();
 
-			renderState->m_frontFace = m_frontFace;
-			renderState->m_cullFace = m_cullFace;
-			renderState->m_polygoneMode = m_polygoneMode;
-			renderState->m_pointSize = m_pointSize;
-			renderState->m_lineWidth = m_lineWidth;
-			renderState->m_enableDepthTest = m_enableDepthTest;
-			renderState->m_enableScissorTest = m_enableScissorTest;
-			renderState->m_enableBlending = m_enableBlending;
-			renderState->m_enableCullFace = m_enableCullFace;
-			renderState->m_enableStencilTest = m_enableStencilTest;
+			renderState->depthStencilState = depthStencilState;
+			renderState->rasterizerState = rasterizerState;
+			renderState->blendingState = blendingState;
 
 			return renderState;
 		}

@@ -13,120 +13,67 @@ namespace sh
 		public:
 			GLES20RenderState();
 			virtual ~GLES20RenderState();
-			//virtual void Load(const pugi::xml_node &node) override;
 			virtual void Apply() override;
 			virtual RenderState* Clone() override;
 
-			virtual void SetFrontFace(FrontFace frontFace) override;
-			virtual void SetCullFace(CullFace cullFace) override;
-			virtual void SetPolygonMode(PolygonMode polygonMode) override;
-			virtual void SetPointSize(float pointSize) override;
-			virtual void SetLineWidth(float lineWidth) override;
-
 		private:
-			u32 m_glFrontFace;
-			u32 m_glCullFace;
+			// Maps for converting Shadow's engine state value to GL-specific values
+			static GLenum const s_glFrontFace[];
+			static GLenum const s_glCullFace[];
+			static GLenum const s_glCompareFunction[];
+			static GLenum const s_glStencilOperation[];
+			static GLenum const s_glBlendFactor[];
 		};
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		inline void GLES20RenderState::Apply()
 		{
-			// Depth testing
-			if (m_enableDepthTest)
-				glEnable(GL_DEPTH_TEST);
-			else
-				glDisable(GL_DEPTH_TEST);
-
-			// Blending
-			if (m_enableBlending)
-				glEnable(GL_BLEND);
-			else
-				glDisable(GL_BLEND);
-
-			// Cull face
-			if (m_enableCullFace)
+			glFrontFace(s_glFrontFace[static_cast<size_t>(rasterizerState.frontFace)]);
+			
+			if (rasterizerState.cullFace != CullFace::NONE)
+			{
 				glEnable(GL_CULL_FACE);
+				glCullFace(s_glCullFace[static_cast<size_t>(rasterizerState.cullFace)]);
+			}
 			else
+			{
 				glDisable(GL_CULL_FACE);
+			}
 
-			// Stencil testing
-			if (m_enableStencilTest)
-				glEnable(GL_STENCIL_TEST);
+			
+			// DepthStencil State
+			if (depthStencilState.enableDepthTest)
+			{
+				glEnable(GL_DEPTH_TEST);
+				//glDepthFunc(s_glCompareFunction[static_cast<size_t>(depthStencilState.depthCompareFunction)]);
+			}
 			else
+			{
+				glDisable(GL_DEPTH_TEST);
+			}
+			//glDepthMask(mWriteMask);
+
+			if (depthStencilState.enableStencilTest)
+			{
+				glEnable(GL_STENCIL_TEST);
+
+			}
+			else
+			{
 				glDisable(GL_STENCIL_TEST);
 
-			// Scissor testing]
-			if (m_enableScissorTest)
-				glEnable(GL_SCISSOR_TEST);
-			else
-				glDisable(GL_SCISSOR_TEST);
-
-
-
-			glFrontFace(m_glFrontFace);
-			glCullFace(m_glCullFace);
-
-			glLineWidth(m_lineWidth);
+				//glStencilFuncSeparate(GL_FRONT, mFrontFace.comparison, mReference, mStencilReadMask);				
+				//glStencilMaskSeparate(GL_FRONT, mStencilWriteMask);
+				//glStencilOpSeparate(GL_FRONT, mFrontFace.onFail, mFrontFace.onZFail, mFrontFace.onZPass);
+				//glStencilFuncSeparate(GL_BACK, mBackFace.comparison, mReference, mStencilReadMask);
+				//glStencilMaskSeparate(GL_BACK, mStencilWriteMask);
+				//glStencilOpSeparate(GL_BACK, mBackFace.onFail, mBackFace.onZFail, mBackFace.onZPass);
+			}			
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		inline void GLES20RenderState::SetFrontFace(FrontFace frontFace) 
-		{
-			RenderState::SetFrontFace(frontFace);
-			switch (frontFace)
-			{
-			case FrontFace::CLOCKWISE:
-				m_glFrontFace = GL_CW;
-				break;
-			case FrontFace::COUNTER_CLOCKWISE:
-				m_glFrontFace = GL_CCW;
-				break;
-			}
-		}
-
-		///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		inline void GLES20RenderState::SetCullFace(CullFace cullFace)
-		{ 
-			RenderState::SetCullFace(cullFace);
-			switch (cullFace)
-			{
-			case CullFace::BACK:
-				m_glCullFace = GL_BACK;
-				break;
-			case CullFace::FRONT:
-				m_glCullFace = GL_FRONT;
-				break;
-			case CullFace::FRONT_AND_BACK:
-				m_glCullFace = GL_FRONT_AND_BACK;
-				break;
-			}
-		}
-
-		///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		inline void GLES20RenderState::SetPolygonMode(PolygonMode polygonMode) 
-		{
-			RenderState::SetPolygonMode(polygonMode);
-		}
-
-		///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		inline void GLES20RenderState::SetPointSize(float pointSize) 
-		{ 
-			RenderState::SetPointSize(pointSize);
-		}
-
-		///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		inline void GLES20RenderState::SetLineWidth(float lineWidth) 
-		{
-			RenderState::SetLineWidth(lineWidth);
-		}
-
-		///////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	}
 }
 

@@ -35,6 +35,7 @@ private:
 	void CreateMenu();
 	void CreateAssetsWidget();
 	void CreateInspectorWidget();
+	void CreateToolBar();
 	void InitDevice();
 	void ClearLayout(QLayout *layout);
 
@@ -61,6 +62,7 @@ private:
 	QDockWidget *inspectorWidget;
 	QVBoxLayout *inspectorLayout;
 
+	QToolBar* m_mainToolBar;
 	GraphicsWidget* m_graphicsWidget;
 	QTimer *m_timer;
 

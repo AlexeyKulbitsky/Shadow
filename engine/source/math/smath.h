@@ -6,6 +6,7 @@
 #include "Matrix4.h"
 #include "Quaternion.h"
 #include "Sphere.h"
+#include "Plane.h"
 #include "FunctionsRayIntersect.h"
 
 namespace sh
@@ -53,6 +54,12 @@ namespace sh
 		typedef Sphere<unsigned int> Sphereu;
 		typedef Sphere<float> Spheref;
 		typedef Sphere<double> Sphered;
+
+		typedef Plane<short> Planes;
+		typedef Plane<int> Planei;
+		typedef Plane<unsigned int> Planeu;
+		typedef Plane<float> Planef;
+		typedef Plane<double> Planed;
 	}
 }
 

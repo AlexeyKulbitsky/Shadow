@@ -3,6 +3,7 @@
 #include <scene\Mesh.h>
 #include <scene\Model.h>
 #include <scene\SceneManager.h>
+#include <scene\Camera.h>
 
 #include <video\Material.h>
 #include <video\RenderCommand.h>
@@ -116,13 +117,24 @@ void Gizmo::Render()
 		return;
 
 	sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
-
+	sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
 	if (m_entity)
 	{
 		sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>( m_entity->GetComponent(sh::Component::Type::TRANSFORM) );
 		if (transformComponent)
 		{
-			sh::math::Matrix4f matrix = transformComponent->GetWorldMatrix();
+			//sh::math::Matrix4f matrix = transformComponent->GetWorldMatrix();
+			sh::math::Matrix4f matrix;
+			matrix.SetIdentity();
+
+			sh::math::Vector3f position = transformComponent->GetPosition();
+			sh::math::Quaternionf rotation = transformComponent->GetRotation();
+			sh::f32 scaleFactor = ( camera->GetPosition() - position ).GetLength() / 35.0f;
+			sh::math::Vector3f scale(scaleFactor);
+
+			matrix.SetScale(scale);				
+			matrix.SetTranslation(position);
+			matrix = matrix * rotation.GetAsMatrix4();
 
 			for (size_t i = 0; i < 3; ++i)
 			{
@@ -145,12 +157,29 @@ void Gizmo::Render()
 
 ///////////////////////////////////////////////////////////////////
 
+void Gizmo::SetEntity(sh::Entity* entity)
+{
+	m_entity = entity;
+}
+
+///////////////////////////////////////////////////////////////////
+
 void Gizmo::Move(Axis::Type axis)
 {
-	if (!m_entity || !m_enabled)
+	if (!m_entity)
 		return;
 
+	sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
+	sh::InputManager* inputManager = sh::Device::GetInstance()->GetInputManager();
+	sh::math::Vector2i old = inputManager->GetMousePositionOld();
+	sh::math::Vector2i current = inputManager->GetMousePositionCurrent();
+	sh::math::Vector3f rayOrigin, rayDirOld, rayDirCurrent;
+	camera->BuildRay(old.x, old.y, rayOrigin, rayDirOld);
+	camera->BuildRay(current.x, current.y, rayOrigin, rayDirCurrent);
+	
+
 	sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>( m_entity->GetComponent(sh::Component::Type::TRANSFORM) );
+	sh::math::Vector3f pos = transformComponent->GetPosition();
 	sh::math::Quaternionf rotation = transformComponent->GetRotation();
 	sh::math::Vector3f axisRotations(0.0f);
 	rotation.GetAsEulerXYZ(axisRotations);
@@ -159,24 +188,40 @@ void Gizmo::Move(Axis::Type axis)
 	rotation.SetFromEulerXYZ(axisRotations);
 
 	sh::math::Vector3f axisDir(0.0f);
+	sh::math::Vector3f normalDir(0.0f);
+	
 
 	switch (axis)
 	{
 		case Axis::Type::X_AXIS:
 			axisDir = sh::scene::SceneManager::GetRightVector();
+			normalDir = -sh::scene::SceneManager::GetFrontVector();
 			break;
 		case Axis::Type::Y_AXIS:
 			axisDir = sh::scene::SceneManager::GetUpVector();
+			normalDir = -sh::scene::SceneManager::GetFrontVector();
 			break;
 		case Axis::Type::Z_AXIS:
 			axisDir = -sh::scene::SceneManager::GetFrontVector();
+			normalDir = -sh::scene::SceneManager::GetFrontVector();
 			break;
 	}
 
 	sh::math::Vector3f direction = rotation * axisDir;
-	
-	sh::math::Vector3f pos = transformComponent->GetPosition();
+	sh::math::Vector3f normal = rotation * normalDir;
+	sh::math::Planef plane(pos, normal);
+
+	sh::math::Vector3f intersectionOld(0.0f), intersectionCurrent(0.0f);
+	plane.GetIntersectionWithLine(rayOrigin, rayDirOld, intersectionOld);
+	plane.GetIntersectionWithLine(rayOrigin, rayDirCurrent, intersectionCurrent);
+	sh::math::Vector3f delta = intersectionCurrent - intersectionOld;
+	sh::f32 deltaPart = delta.Dot(direction);
+	direction *= deltaPart;
+
+
 	transformComponent->SetPosition(pos + direction);
+
+	inputManager->SetMousePositionOld(current);
 }
 
 ///////////////////////////////////////////////////////////////////

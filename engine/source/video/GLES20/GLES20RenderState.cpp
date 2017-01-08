@@ -3,40 +3,81 @@
 namespace sh
 {
 	namespace video
-	{
+	{	
+		GLenum const GLES20RenderState::s_glFrontFace[] =
+		{
+			GL_CW,
+			GL_CCW
+		};
+
+		GLenum const GLES20RenderState::s_glCullFace[] =
+		{
+			GL_FRONT,
+			GL_BACK,
+			GL_FRONT_AND_BACK,
+			GL_NONE
+		};
+
+		GLenum const GLES20RenderState::s_glCompareFunction[] =
+		{
+			GL_LESS,
+			GL_LEQUAL,
+			GL_EQUAL,
+			GL_GEQUAL,
+			GL_GREATER,
+			GL_NOTEQUAL,
+			GL_ALWAYS,
+			GL_NEVER
+		};
+
+		GLenum const GLES20RenderState::s_glStencilOperation[] =
+		{
+			GL_KEEP,
+			GL_ZERO,
+			GL_REPLACE,
+			GL_INVERT,
+			GL_INCR,
+			GL_DECR,
+			GL_INCR_WRAP,
+			GL_DECR_WRAP
+		};
+
+		GLenum const GLES20RenderState::s_glBlendFactor[] =
+		{
+			GL_ZERO,
+			GL_ONE,
+			GL_SRC_COLOR,
+			GL_ONE_MINUS_SRC_COLOR,
+			GL_DST_COLOR,
+			GL_ONE_MINUS_DST_COLOR,
+			GL_SRC_ALPHA,
+			GL_ONE_MINUS_SRC_ALPHA,
+			GL_DST_ALPHA,
+			GL_ONE_MINUS_DST_ALPHA,
+			GL_SRC_ALPHA_SATURATE
+		};
+
 		////////////////////////////////////////////////
 
 		GLES20RenderState::GLES20RenderState()
 		{
-			Init();
 		}
 
 		////////////////////////////////////////////////
 
 		GLES20RenderState::~GLES20RenderState()
 		{
-
 		}
 
 		////////////////////////////////////////////////
 
 		RenderState* GLES20RenderState::Clone()
 		{
-			GLES20RenderState* renderState =  new GLES20RenderState();
+			GLES20RenderState* renderState = new GLES20RenderState();
 
-			renderState->m_frontFace = m_frontFace;
-			renderState->m_cullFace = m_cullFace;
-			renderState->m_polygoneMode = m_polygoneMode;
-			renderState->m_pointSize = m_pointSize;
-			renderState->m_lineWidth = m_lineWidth;
-			renderState->m_enableDepthTest = m_enableDepthTest;
-			renderState->m_enableScissorTest = m_enableScissorTest;
-			renderState->m_enableBlending = m_enableBlending;
-			renderState->m_enableCullFace = m_enableCullFace;
-			renderState->m_enableStencilTest = m_enableStencilTest;
-
-			renderState->m_glFrontFace = m_glFrontFace;
-			renderState->m_glCullFace = m_glCullFace;
+			renderState->depthStencilState = depthStencilState;
+			renderState->rasterizerState = rasterizerState;
+			renderState->blendingState = blendingState;
 
 			return renderState;
 		}

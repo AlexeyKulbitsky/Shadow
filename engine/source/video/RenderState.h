@@ -9,52 +9,62 @@ namespace sh
 	{
 		enum class FrontFace
 		{
-			CLOCKWISE,
-			COUNTER_CLOCKWISE
+			CLOCKWISE = 0,
+			COUNTER_CLOCKWISE,
+
+			COUNT
 		};
 
 		enum class CullFace
 		{
-			FRONT,
+			FRONT = 0,
 			BACK,
 			FRONT_AND_BACK,
-			NONE
+			NONE,
+
+			COUNT
 		};
 
 		enum class PolygonMode
 		{
-			FILL,
+			FILL = 0,
 			POINT,
-			LINE
+			LINE,
+
+			COUNT
 		};
 
 		enum class CompareFunction
 		{
-			LESS,
+			LESS = 0,
 			LESS_OR_EQUAL,
 			EQUAL,
 			GREATER_OR_EQUAL,
 			GREATER,
 			NOT_EQUAL,
 			ALWAYS,
-			NEVER
+			NEVER,
+
+			COUNT
 		};
 
 		enum class StencilOperation
 		{
-			KEEP,
+			KEEP = 0,
 			CLEAR,
 			REPLACE,
 			INVERT,
 			INCREMENT,
 			DECREMENT,
 			INCREMENT_WRAP,
-			DECREMENT_WRAP
+			DECREMENT_WRAP,
+
+			COUNT
 		};
 
 		enum class BlendFactor
 		{
-			ZERO,
+			ZERO = 0,
 			ONE,
 			SRC_COLOR,
 			INV_SRC_COLOR,
@@ -64,24 +74,30 @@ namespace sh
 			INV_SRC_ALPHA,
 			DST_ALPHA,
 			INV_DST_ALPHA,
-			SRC_ALPHA_SATURATED
+			SRC_ALPHA_SATURATED,
+
+			COUNT
 		};
 
 		enum class BlendOperation
 		{
-			ADD,
-			SUBSTRACT
+			ADD = 0,
+			SUBSTRACT,
+
+			COUNT
 		};
 
 		enum class BlendCombination
 		{
-			SOLID,
+			SOLID = 0,
 			ALPHA,
 			ADDITIVE,
 			MULTIPLY,
 			BURN,
 			SCREEN,
-			SUBSTRACTIVE
+			SUBSTRACTIVE,
+
+			COUNT
 		};
 
 		////////////////////////////////////////////////////////////////////////////////////
@@ -169,26 +185,28 @@ namespace sh
 		struct RaterizerState
 		{
 			CullFace    cullFace = CullFace::BACK;
-			FrontFace frontFace = FrontFace::COUNTER_CLOCKWISE;
-			bool    polygonOffsetEnabled = false;
-			float   polygonOffsetFactor = 0.0f; //OffsetFactor
-			float   polygonOffsetUnits = 0.0f; //DepthBias
+			FrontFace	frontFace = FrontFace::COUNTER_CLOCKWISE;
+			bool		polygonOffsetEnabled = false;
+			float		polygonOffsetFactor = 0.0f; //OffsetFactor
+			float		polygonOffsetUnits = 0.0f; //DepthBias
 		};
 
 		////////////////////////////////////////////////////////////////////////////////////
 
 		struct DepthStencilState
 		{
-			CompareFunction depthCompareFunction = CompareFunction::LESS_OR_EQUAL;
-			bool        depthWriteEnabled = true;
+			bool				enableDepthTest = true;
+			CompareFunction		depthCompareFunction = CompareFunction::LESS_OR_EQUAL;
+			bool				depthWriteEnabled = true;
 
-			CompareFunction stencilCompareFunction = CompareFunction::ALWAYS;
-			StencilOperation   frontStencilPassOp = StencilOperation::KEEP;
-			StencilOperation   frontStencilsFailOp = StencilOperation::KEEP;
-			StencilOperation   frontStencilzFailOp = StencilOperation::KEEP;
-			StencilOperation   backStencilPassOp = StencilOperation::KEEP;
-			StencilOperation   backStencilsFailOp = StencilOperation::KEEP;
-			StencilOperation   backStencilzFailOp = StencilOperation::KEEP;
+			bool				enableStencilTest = false;
+			CompareFunction		stencilCompareFunction = CompareFunction::ALWAYS;
+			StencilOperation	frontStencilPassOp = StencilOperation::KEEP;
+			StencilOperation	frontStencilsFailOp = StencilOperation::KEEP;
+			StencilOperation	frontStencilzFailOp = StencilOperation::KEEP;
+			StencilOperation	backStencilPassOp = StencilOperation::KEEP;
+			StencilOperation	backStencilsFailOp = StencilOperation::KEEP;
+			StencilOperation	backStencilzFailOp = StencilOperation::KEEP;
 			int32_t				stencilRef = 0;
 			uint32_t			stencilMask = 0;
 		};
@@ -200,40 +218,13 @@ namespace sh
 		public:
 			RenderState();
 			virtual ~RenderState();
-			virtual void Init();
 			virtual void Load(const pugi::xml_node &node);
 			virtual void Apply(){}
 			virtual RenderState* Clone();
 
-			virtual void SetFrontFace(FrontFace frontFace) { m_frontFace = frontFace; }
-			virtual void SetCullFace(CullFace cullFace) { m_cullFace = cullFace; }
-			virtual void SetPolygonMode(PolygonMode polygonMode) { m_polygoneMode = polygonMode; }
-			virtual void SetPointSize(float pointSize) { m_pointSize = pointSize; }
-			virtual void SetLineWidth(float lineWidth) { m_lineWidth = lineWidth; }
-			virtual void EnableDepthTest(bool enable) { m_enableDepthTest = enable; }
-			virtual void EnableScissorTest(bool enable) { m_enableScissorTest = enable; }
-			virtual void EnableBlending(bool enable) { m_enableBlending = enable; }
-			virtual void EnableCullFace(bool enable) { m_enableCullFace = enable; }
-			virtual void EnableStencilTest(bool enable) { m_enableStencilTest = enable; }
-
 			BlendingState blendingState;
 			RaterizerState rasterizerState;
 			DepthStencilState depthStencilState;
-			
-
-			
-
-		protected:
-			FrontFace m_frontFace;
-			CullFace m_cullFace;
-			PolygonMode m_polygoneMode;
-			float m_pointSize;
-			float m_lineWidth;
-			bool m_enableDepthTest;
-			bool m_enableScissorTest;
-			bool m_enableBlending;
-			bool m_enableCullFace;
-			bool m_enableStencilTest;
 		};
 	}
 }

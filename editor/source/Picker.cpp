@@ -95,15 +95,12 @@ void Picker::TryToPick(Gizmo* gizmo, sh::u32 x, sh::u32 y, sh::u32 width, sh::u3
 	unsigned char data[4];
 	driver->GetPixelData(x, y, width, height, data);
 	sh::math::Vector3f color(1.0f, 1.0f, 1.0f);
-	if (data[0] == 255)
+	if (data[0] == 255 && data[1] == 0 && data[2] == 0)
 	{		
 		gizmo->m_axises[Gizmo::Axis::Type::X_AXIS].lineColorUniform->Set(color);
 		gizmo->m_axises[Gizmo::Axis::Type::X_AXIS].coneColorUniform->Set(color);
 		gizmo->m_axises[Gizmo::Axis::Type::X_AXIS].active = true;
 
-
-
-
 		color = sh::math::Vector3f(0.0f, 1.0f, 0.0f);
 		gizmo->m_axises[Gizmo::Axis::Type::Y_AXIS].lineColorUniform->Set(color);
 		gizmo->m_axises[Gizmo::Axis::Type::Y_AXIS].coneColorUniform->Set(color);
@@ -114,14 +111,12 @@ void Picker::TryToPick(Gizmo* gizmo, sh::u32 x, sh::u32 y, sh::u32 width, sh::u3
 		gizmo->m_axises[Gizmo::Axis::Type::Z_AXIS].coneColorUniform->Set(color);
 		gizmo->m_axises[Gizmo::Axis::Type::Z_AXIS].active = false;
 	}
-	else if (data[1] == 255)
+	else if (data[0] == 0 && data[1] == 255 && data[2] == 0)
 	{
 		gizmo->m_axises[Gizmo::Axis::Type::Y_AXIS].lineColorUniform->Set(color);
 		gizmo->m_axises[Gizmo::Axis::Type::Y_AXIS].coneColorUniform->Set(color);
 		gizmo->m_axises[Gizmo::Axis::Type::Y_AXIS].active = true;
 
-
-
 		color = sh::math::Vector3f(1.0f, 0.0f, 0.0f);
 		gizmo->m_axises[Gizmo::Axis::Type::X_AXIS].lineColorUniform->Set(color);
 		gizmo->m_axises[Gizmo::Axis::Type::X_AXIS].coneColorUniform->Set(color);
@@ -132,13 +127,11 @@ void Picker::TryToPick(Gizmo* gizmo, sh::u32 x, sh::u32 y, sh::u32 width, sh::u3
 		gizmo->m_axises[Gizmo::Axis::Type::Z_AXIS].coneColorUniform->Set(color);
 		gizmo->m_axises[Gizmo::Axis::Type::Z_AXIS].active = false;
 	}
-	else if (data[2] == 255)
+	else if (data[0] == 0 && data[1] == 0 && data[2] == 255)
 	{
 		gizmo->m_axises[Gizmo::Axis::Type::Z_AXIS].lineColorUniform->Set(color);
 		gizmo->m_axises[Gizmo::Axis::Type::Z_AXIS].coneColorUniform->Set(color);
 		gizmo->m_axises[Gizmo::Axis::Type::Z_AXIS].active = true;
-
-
 
 		color = sh::math::Vector3f(1.0f, 0.0f, 0.0f);
 		gizmo->m_axises[Gizmo::Axis::Type::X_AXIS].lineColorUniform->Set(color);
@@ -149,6 +142,10 @@ void Picker::TryToPick(Gizmo* gizmo, sh::u32 x, sh::u32 y, sh::u32 width, sh::u3
 		gizmo->m_axises[Gizmo::Axis::Type::Y_AXIS].lineColorUniform->Set(color);
 		gizmo->m_axises[Gizmo::Axis::Type::Y_AXIS].coneColorUniform->Set(color);
 		gizmo->m_axises[Gizmo::Axis::Type::Y_AXIS].active = false;
+	}
+	else if (data[0] == 255 && data[1] == 255 && data[2] == 255)
+	{
+		return;
 	}
 	else
 	{

@@ -41,7 +41,8 @@ namespace sh
 			virtual void DrawMesh(scene::Mesh* mesh) = 0;
 			virtual void Render(RenderCommand* command){}
 			virtual void Render(scene::Model* model);
-			virtual void SetViewport(u32 x, u32 y, u32 width, u32 height) {}
+			virtual void SetViewport(u32 x, u32 y, u32 width, u32 height);
+			virtual const math::Vector4u& GetViewPort() const { return m_viewPort; }
 			virtual void PrintPixelInfo(u32 x, u32 y, u32 width, u32 height) { }
 			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) {}
 
@@ -66,6 +67,7 @@ namespace sh
 
 		protected:
 			Uniform* m_globalUniforms[(size_t)GlobalUniformName::COUNT];
+			math::Vector4u m_viewPort;
 		};
 	}
 }

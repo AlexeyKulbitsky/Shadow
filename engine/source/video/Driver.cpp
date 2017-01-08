@@ -64,5 +64,15 @@ namespace sh
 		}
 
 		/////////////////////////////////////////////////////////////////////////
+		
+		void Driver::SetViewport(u32 x, u32 y, u32 width, u32 height)
+		{
+			m_viewPort.x = x;
+			m_viewPort.y = y;
+			m_viewPort.z = width;
+			m_viewPort.w = height;
+		}
+
+		/////////////////////////////////////////////////////////////////////////
 	}
 }

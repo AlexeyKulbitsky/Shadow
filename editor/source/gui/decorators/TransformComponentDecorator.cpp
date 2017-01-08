@@ -42,7 +42,7 @@ void TransformComponentDecorator::SetScale(const sh::math::Vector3f& scale)
 
 ExpandableWidget* TransformComponentDecorator::GetParametersWidget()
 {
-	m_parametersWidget = new ExpandableWidget("Transform test");
+	m_parametersWidget = new ExpandableWidget("Transform");
 	QVBoxLayout* mainLayout = new QVBoxLayout();
 	
 	// Position

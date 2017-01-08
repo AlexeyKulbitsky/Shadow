@@ -22,6 +22,7 @@ namespace sh
 			const math::Quaternionf& GetRotation() const { return m_rotation; }
 
 			void SetProjection(f32 fov, f32 aspect, f32 nearP, f32 farP);
+			void BuildRay(u32 x, u32 y, math::Vector3f& origin, math::Vector3f& direction);
 
 			f32 GetFov() const { return m_fovy; }
 			f32 GetNearPlane() const { return m_nearDistance; }

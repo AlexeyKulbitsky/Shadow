@@ -1,12 +1,12 @@
 <scene name="test Scene">
 		
-	<entity name="light_0">
+	<!--entity name="light_0">
 		<component name="light">	
 			<type val="directional"/>
 			<direction val="0.0 0.0 -1.0"/>
 			<color val="1.0 0.0 0.0"/>
 		</component>
-	</entity>
+	</entity-->
 		
 	<!--entity name="model_1">
 		<component name="render">	
@@ -20,7 +20,7 @@
 		</component>
 	</entity-->
 	
-	<entity name="model_0">
+	<!--entity name="model_0">
 		<component name="transform">
 			<position val="0.0 0.0 -20.0"/>
 		</component>
@@ -37,7 +37,7 @@
 				</samplers>
 			</material>
 		</component>
-	</entity>
+	</entity-->
 	
 	<!--entity name="model_2">
 		<component name="transform">
@@ -57,4 +57,17 @@
 			</material>
 		</component>
 	</entity-->
+	
+	<entity name="test_cube">
+		<component name="transform">
+			<position val="0.0 0.0 -20.0"/>
+		</component>
+	
+		<component name="render">	
+			<model filename="cube.obj"/>				
+			<material>
+				<technique filename="const_color.xml"/>
+			</material>
+		</component>
+	</entity>
 </scene>
