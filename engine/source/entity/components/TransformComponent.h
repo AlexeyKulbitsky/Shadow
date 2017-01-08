@@ -15,9 +15,9 @@ namespace sh
 	
 		const math::Matrix4f& GetWorldMatrix() const { return m_worldMatrix; }
 
-		void SetPosition(const math::Vector3f& position) { m_position = position; m_needsToRecalculateWorldMatrix = true; }
-		void SetRotation(const math::Quaternionf& rotation) { m_rotation = rotation; m_needsToRecalculateWorldMatrix = true; }
-		void SetScale(const math::Vector3f& scale) { m_scale = scale; m_needsToRecalculateWorldMatrix = true; }
+		virtual void SetPosition(const math::Vector3f& position) { m_position = position; m_needsToRecalculateWorldMatrix = true; }
+		virtual void SetRotation(const math::Quaternionf& rotation) { m_rotation = rotation; m_needsToRecalculateWorldMatrix = true; }
+		virtual void SetScale(const math::Vector3f& scale) { m_scale = scale; m_needsToRecalculateWorldMatrix = true; }
 
 		const math::Vector3f& GetPosition() const { return m_position; }
 		const math::Quaternionf& GetRotation() const { return m_rotation; }
@@ -32,6 +32,10 @@ namespace sh
 		math::Vector3f m_position;
 		math::Quaternionf m_rotation;
 		math::Vector3f m_scale;
+
+		math::Matrix4f m_translateMatrix;
+		math::Matrix4f m_rotationMatrix;
+		math::Matrix4f m_scaleMatrix;
 
 		bool m_needsToRecalculateWorldMatrix;
 

@@ -1,7 +1,3 @@
-// Copyright (C) 2002-2012 Nikolaus Gebhardt
-// This file is part of the "Irrlicht Engine".
-// For conditions of distribution and use, see copyright notice in irrlicht.h
-
 #ifndef SHADOW_TYPES_INCLUDE
 #define SHADOW_TYPES_INCLUDE
 
@@ -183,9 +179,9 @@ namespace sh
 
   //! Defines a deprecated macro which generates a warning at compile time
   /** The usage is simple
-  For typedef:		typedef _IRR_DEPRECATED_ int test1;
-  For classes/structs:	class _IRR_DEPRECATED_ test2 { ... };
-  For methods:		class test3 { _IRR_DEPRECATED_ virtual void foo() {} };
+  For typedef:		typedef SH_DEPRECATED_ int test1;
+  For classes/structs:	class SH_DEPRECATED_ test2 { ... };
+  For methods:		class test3 { SH_DEPRECATED_ virtual void foo() {} };
   For functions:		template<class T> _IRR_DEPRECATED_ void test4(void) {}
   **/
 #if defined(IGNORE_DEPRECATED_WARNING)
@@ -200,7 +196,7 @@ namespace sh
 
   //! Defines an override macro, to protect virtual functions from typos and other mismatches
   /** Usage in a derived class:
-  virtual void somefunc() _IRR_OVERRIDE_;
+  virtual void somefunc() SH_OVERRIDE_;
   */
 #if ( ((__GNUC__ > 4 ) || ((__GNUC__ == 4 ) && (__GNUC_MINOR__ >= 7))) && (defined(__GXX_EXPERIMENTAL_CXX0X) || __cplusplus >= 201103L) )
 #define SH_OVERRIDE_ override

@@ -1559,7 +1559,7 @@ namespace sh
 			}
 
 			SH_ASSERT(0, "failed to find supported format!");	
-			VkFormat format;
+			VkFormat format = VK_FORMAT_UNDEFINED;
 			return format;
 		}
 

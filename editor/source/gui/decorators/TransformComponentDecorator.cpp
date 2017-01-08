@@ -5,7 +5,40 @@
 #include <QVBoxLayout>
 #include <QDoubleSpinBox>
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
+
+void TransformComponentDecorator::SetPosition(const sh::math::Vector3f& position)
+{
+	TransformComponent::SetPosition(position);
+	emit(PositionXChangedSignal((double)position.x));
+	emit(PositionYChangedSignal((double)position.y));
+	emit(PositionZChangedSignal((double)position.z));
+}
+
+////////////////////////////////////////////////////////////////////
+
+void TransformComponentDecorator::SetRotation(const sh::math::Quaternionf& rotation)
+{
+	TransformComponent::SetRotation(rotation);
+	sh::math::Vector3f eulerRot(0.0f);
+	rotation.GetAsEulerXYZ(eulerRot);
+	eulerRot *= 180.0 / sh::math::k_pi;
+	//emit(RotationXChangedSignal((double)eulerRot.x));
+	//emit(RotationYChangedSignal((double)eulerRot.y));
+	//emit(RotationZChangedSignal((double)eulerRot.z));
+}
+
+////////////////////////////////////////////////////////////////////
+
+void TransformComponentDecorator::SetScale(const sh::math::Vector3f& scale)
+{
+	TransformComponent::SetScale(scale);
+	emit(ScaleXChangedSignal((double)scale.x));
+	emit(ScaleYChangedSignal((double)scale.y));
+	emit(ScaleZChangedSignal((double)scale.z));
+}
+
+////////////////////////////////////////////////////////////////////
 
 ExpandableWidget* TransformComponentDecorator::GetParametersWidget()
 {
@@ -21,18 +54,21 @@ ExpandableWidget* TransformComponentDecorator::GetParametersWidget()
 	xPositionSpinBox->setMaximum(1000000.0);
 	xPositionSpinBox->setValue(GetPosition().x);
 	connect(xPositionSpinBox, SIGNAL(valueChanged(double)), this, SLOT(SetPositionXSlot(double)));
+	connect(this, SIGNAL(PositionXChangedSignal(double)), xPositionSpinBox, SLOT(setValue(double)));
 
 	QDoubleSpinBox* yPositionSpinBox = new QDoubleSpinBox();
 	yPositionSpinBox->setMinimum(-1000000.0);
 	yPositionSpinBox->setMaximum(1000000.0);
 	yPositionSpinBox->setValue(GetPosition().y);
 	connect(yPositionSpinBox, SIGNAL(valueChanged(double)), this, SLOT(SetPositionYSlot(double)));
+	connect(this, SIGNAL(PositionYChangedSignal(double)), yPositionSpinBox, SLOT(setValue(double)));
 
 	QDoubleSpinBox* zPositionSpinBox = new QDoubleSpinBox();
 	zPositionSpinBox->setMinimum(-1000000.0);
 	zPositionSpinBox->setMaximum(1000000.0);
 	zPositionSpinBox->setValue(GetPosition().z);
 	connect(zPositionSpinBox, SIGNAL(valueChanged(double)), this, SLOT(SetPositionZSlot(double)));
+	connect(this, SIGNAL(PositionZChangedSignal(double)), zPositionSpinBox, SLOT(setValue(double)));
 
 	positionLayout->addWidget(positionLabel);
 	positionLayout->addWidget(xPositionSpinBox);
@@ -46,20 +82,23 @@ ExpandableWidget* TransformComponentDecorator::GetParametersWidget()
 	QDoubleSpinBox* xRotationSpinBox = new QDoubleSpinBox();
 	xRotationSpinBox->setMinimum(-10000.0);
 	xRotationSpinBox->setMaximum(10000.0);
-	xRotationSpinBox->setValue(m_axisRotations.x);
+	xRotationSpinBox->setValue(m_axisRotations.x * 180.0f / sh::math::k_pi);
 	connect(xRotationSpinBox, SIGNAL(valueChanged(double)), this, SLOT(SetRotationXSlot(double)));
+	connect(this, SIGNAL(RotationXChangedSignal(double)), xRotationSpinBox, SLOT(setValue(double)));
 
 	QDoubleSpinBox* yRotationSpinBox = new QDoubleSpinBox();
 	yRotationSpinBox->setMinimum(-10000.0);
 	yRotationSpinBox->setMaximum(10000.0);
-	yRotationSpinBox->setValue(m_axisRotations.y);
+	yRotationSpinBox->setValue(m_axisRotations.y * 180.0f / sh::math::k_pi);
 	connect(yRotationSpinBox, SIGNAL(valueChanged(double)), this, SLOT(SetRotationYSlot(double)));
+	connect(this, SIGNAL(RotationYChangedSignal(double)), yRotationSpinBox, SLOT(setValue(double)));
 
 	QDoubleSpinBox* zRotationSpinBox = new QDoubleSpinBox();
 	zRotationSpinBox->setMinimum(-10000.0);
 	zRotationSpinBox->setMaximum(10000.0);
-	zRotationSpinBox->setValue(m_axisRotations.z);
+	zRotationSpinBox->setValue(m_axisRotations.z * 180.0f / sh::math::k_pi);
 	connect(zRotationSpinBox, SIGNAL(valueChanged(double)), this, SLOT(SetRotationZSlot(double)));
+	connect(this, SIGNAL(RotationZChangedSignal(double)), zRotationSpinBox, SLOT(setValue(double)));
 
 	rotationLayout->addWidget(rotationLabel);
 	rotationLayout->addWidget(xRotationSpinBox);
@@ -75,18 +114,21 @@ ExpandableWidget* TransformComponentDecorator::GetParametersWidget()
 	xScaleSpinBox->setMaximum(1000000.0);
 	xScaleSpinBox->setValue(GetScale().x);
 	connect(xScaleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(SetScaleXSlot(double)));
+	connect(this, SIGNAL(ScaleXChangedSignal(double)), xScaleSpinBox, SLOT(setValue(double)));
 
 	QDoubleSpinBox* yScaleSpinBox = new QDoubleSpinBox();
 	yScaleSpinBox->setMinimum(0.0);
 	yScaleSpinBox->setMaximum(1000000.0);
 	yScaleSpinBox->setValue(GetScale().y);
 	connect(yScaleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(SetScaleYSlot(double)));
+	connect(this, SIGNAL(ScaleYChangedSignal(double)), yScaleSpinBox, SLOT(setValue(double)));
 
 	QDoubleSpinBox* zScaleSpinBox = new QDoubleSpinBox();
 	zScaleSpinBox->setMinimum(0.0);
 	zScaleSpinBox->setMaximum(1000000.0);
 	zScaleSpinBox->setValue(GetScale().z);
 	connect(zScaleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(SetScaleZSlot(double)));
+	connect(this, SIGNAL(ScaleZChangedSignal(double)), zScaleSpinBox, SLOT(setValue(double)));
 
 	scaleLayout->addWidget(scaleLabel);
 	scaleLayout->addWidget(xScaleSpinBox);
@@ -102,7 +144,7 @@ ExpandableWidget* TransformComponentDecorator::GetParametersWidget()
 	return m_parametersWidget;
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 
 void TransformComponentDecorator::SetPositionXSlot(double value)
 {
@@ -115,7 +157,7 @@ void TransformComponentDecorator::SetPositionXSlot(double value)
 	}
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 
 void TransformComponentDecorator::SetPositionYSlot(double value)
 {
@@ -128,7 +170,7 @@ void TransformComponentDecorator::SetPositionYSlot(double value)
 	}
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 
 void TransformComponentDecorator::SetPositionZSlot(double value)
 {
@@ -141,7 +183,7 @@ void TransformComponentDecorator::SetPositionZSlot(double value)
 	}
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 
 void TransformComponentDecorator::SetRotationXSlot(double value)
 {
@@ -150,12 +192,12 @@ void TransformComponentDecorator::SetRotationXSlot(double value)
 	{
 		m_axisRotations.x = (float)value * sh::math::k_pi / 180.0f;
 		sh::math::Quaternionf rot;
-		rot.SetFromEuler(m_axisRotations);
+		rot.SetFromEulerXYZ(m_axisRotations);
 		SetRotation(rot);
 	}
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 
 void TransformComponentDecorator::SetRotationYSlot(double value)
 {
@@ -164,12 +206,12 @@ void TransformComponentDecorator::SetRotationYSlot(double value)
 	{
 		m_axisRotations.y = (float)value * sh::math::k_pi / 180.0f;
 		sh::math::Quaternionf rot;
-		rot.SetFromEuler(m_axisRotations);
+		rot.SetFromEulerXYZ(m_axisRotations);
 		SetRotation(rot);
 	}
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 
 void TransformComponentDecorator::SetRotationZSlot(double value)
 {
@@ -178,12 +220,12 @@ void TransformComponentDecorator::SetRotationZSlot(double value)
 	{
 		m_axisRotations.z = (float)value * sh::math::k_pi / 180.0f;
 		sh::math::Quaternionf rot;
-		rot.SetFromEuler(m_axisRotations);
+		rot.SetFromEulerXYZ(m_axisRotations);
 		SetRotation(rot);
 	}
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 
 void TransformComponentDecorator::SetScaleXSlot(double value)
 {
@@ -196,7 +238,7 @@ void TransformComponentDecorator::SetScaleXSlot(double value)
 	}
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 
 void TransformComponentDecorator::SetScaleYSlot(double value)
 {
@@ -209,7 +251,7 @@ void TransformComponentDecorator::SetScaleYSlot(double value)
 	}
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 
 void TransformComponentDecorator::SetScaleZSlot(double value)
 {
@@ -222,5 +264,5 @@ void TransformComponentDecorator::SetScaleZSlot(double value)
 	}
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 

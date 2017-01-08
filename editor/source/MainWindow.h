@@ -36,6 +36,7 @@ private:
 	void CreateAssetsWidget();
 	void CreateInspectorWidget();
 	void InitDevice();
+	void ClearLayout(QLayout *layout);
 
 private:
 	QAction* newAction;

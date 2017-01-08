@@ -31,6 +31,22 @@ void GraphicsWidget::resizeEvent(QResizeEvent *e)
 
 void GraphicsWidget::mouseMoveEvent(QMouseEvent * ev)
 {
+	if (m_leftButtonPressed)
+	{
+		if (m_gizmo->m_axises[0].active)
+		{
+			m_gizmo->Move(Gizmo::Axis::Type::X_AXIS);
+		}
+		else if (m_gizmo->m_axises[1].active)
+		{
+			m_gizmo->Move(Gizmo::Axis::Type::Y_AXIS);
+		}
+		else if (m_gizmo->m_axises[2].active)
+		{
+			m_gizmo->Move(Gizmo::Axis::Type::Z_AXIS);
+		}
+	}
+
 	sh::Event e;
 	e.type = sh::EventType::MOUSE_INPUT_EVENT;
 	e.mouseEvent.type = sh::MouseEventType::MOVED;
@@ -39,6 +55,11 @@ void GraphicsWidget::mouseMoveEvent(QMouseEvent * ev)
 	e.mouseEvent.y = ev->y();
 
 	sh::Device::GetInstance()->OnEvent(e);
+
+	if (m_gizmo->IsEnabled())
+	{
+		m_picker->TryToPick(m_gizmo, ev->x(), ev->y(), width(), height());
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -56,6 +77,7 @@ void GraphicsWidget::mousePressEvent(QMouseEvent * ev)
 			break;
 		case Qt::LeftButton:
 			e.mouseEvent.mouseCode = sh::MouseCode::BUTTON_LEFT;
+			m_leftButtonPressed = true;
 			break;
 		case Qt::MiddleButton:
 			e.mouseEvent.mouseCode = sh::MouseCode::BUTTON_WHEEL;
@@ -67,6 +89,20 @@ void GraphicsWidget::mousePressEvent(QMouseEvent * ev)
 	e.mouseEvent.y = ev->y();
 	
 	sh::Device::GetInstance()->OnEvent(e);
+
+
+	if (m_gizmo->IsEnabled())
+	{
+		if (m_gizmo->m_axises[0].active ||
+			m_gizmo->m_axises[1].active ||
+			m_gizmo->m_axises[2].active)
+		{
+			return;
+		}
+	}
+
+
+
 
 
 	sh::math::Matrix4f inverseProjMatrix = m_sceneManager->GetCamera()->GetProjectionMatrix().GetInversed();
@@ -93,18 +129,19 @@ void GraphicsWidget::mousePressEvent(QMouseEvent * ev)
 	rayWorld.Normalize();
 	//printf("x:%f y:%f z:%f\n", rayWorld.x, rayWorld.y, rayWorld.z);
 
-
-	size_t entitiesCount = m_sceneManager->GetEntitiesCount();
-	for (size_t i = 0; i < entitiesCount; ++i)
+	sh::Entity* entity = m_picker->TryToPick(ev->x(), ev->y(), width(), height());
+	m_gizmo->SetEntity(entity);
+	emit EntitySelected(entity);
+	if (entity)
 	{
-		sh::Entity* entity = m_sceneManager->GetEntity(i);
-		if (entity->IntersectsRay(cameraPos, rayWorld))
-		{
-			m_gizmo->SetEntity(entity);
-			emit EntitySelected(entity);
-		}
+		m_gizmo->SetEnabled(true);
 	}
-	
+	else
+	{
+		m_gizmo->SetEnabled(false);
+	}
+		
+	sh::Device::GetInstance()->GetDriver()->PrintPixelInfo(ev->x(), ev->y(), width(), height());	
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -122,6 +159,7 @@ void GraphicsWidget::mouseReleaseEvent(QMouseEvent * ev)
 		break;
 	case Qt::LeftButton:
 		e.mouseEvent.mouseCode = sh::MouseCode::BUTTON_LEFT;
+		m_leftButtonPressed = false;
 		break;
 	case Qt::MiddleButton:
 		e.mouseEvent.mouseCode = sh::MouseCode::BUTTON_WHEEL;
@@ -140,6 +178,7 @@ void GraphicsWidget::mouseReleaseEvent(QMouseEvent * ev)
 GraphicsWidget::~GraphicsWidget()
 {
 	delete m_gizmo;
+	delete m_picker;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -150,6 +189,13 @@ void GraphicsWidget::Init()
 	m_sceneManager = sh::Device::GetInstance()->GetSceneManager();
 
 	m_gizmo = new Gizmo();
+	m_picker = new Picker();
+
+	size_t entitiesCount = m_sceneManager->GetEntitiesCount();
+	for (size_t i = 0; i < entitiesCount; ++i)
+	{
+		m_picker->RegisterEntity(m_sceneManager->GetEntity(i));
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -158,7 +204,6 @@ void GraphicsWidget::Render()
 {
 	m_driver->BeginRendering();
 	m_sceneManager->Update();
-	m_sceneManager->Render();
 
 	m_gizmo->Render();
 

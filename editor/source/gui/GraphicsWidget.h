@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "../gizmo/Gizmo.h"
+#include "../Picker.h"
 
 namespace sh
 {
@@ -42,6 +43,8 @@ private:
 	sh::video::Driver* m_driver = nullptr;
 	sh::scene::SceneManager* m_sceneManager = nullptr;
 	Gizmo* m_gizmo = nullptr;
+	Picker* m_picker = nullptr;
+	bool m_leftButtonPressed = false;
 };
 
 #endif

@@ -92,10 +92,18 @@ void MainWindow::Update()
 
 void MainWindow::SetSelectedEntity(sh::Entity* entity)
 {
-	sh::Component* component = entity->GetComponent(sh::Component::Type::TRANSFORM);
-	TransformComponentDecorator* decorator = dynamic_cast<TransformComponentDecorator*>(component);
-	ExpandableWidget* widget = decorator->GetParametersWidget();
-	inspectorLayout->addWidget(widget);
+	if (entity)
+	{
+		sh::Component* component = entity->GetComponent(sh::Component::Type::TRANSFORM);
+		TransformComponentDecorator* decorator = dynamic_cast<TransformComponentDecorator*>(component);
+		ExpandableWidget* widget = decorator->GetParametersWidget();
+		inspectorLayout->addWidget(widget);
+	}
+	else
+	{
+		ClearLayout(inspectorLayout);
+	}
+	
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -225,33 +233,29 @@ void MainWindow::InitDevice()
 
 	sceneMgr->LoadScene(finfo.absolutePath.c_str());
 
-	// Decorate all components
-	/*
-	size_t entitiesCount = sceneMgr->GetEntitiesCount();
-	printf("Entities count %d\n", entitiesCount);
-	for (size_t i = 0; i < entitiesCount; ++i)
-	{
-		sh::Entity* entity = sceneMgr->GetEntity(i);
-		size_t componentsCount = static_cast<size_t>(sh::Component::Type::COUNT);
-		for (size_t j = 0; j < componentsCount; ++j)
-		{
-			sh::Component::Type currentType = static_cast<sh::Component::Type>(j);
-			sh::Component* component = entity->GetComponent(currentType);
-			if (component != nullptr)
-			{
-				ComponentDecorator* decorator = ComponentDecorator::Create(component);
-				if (decorator != nullptr)
-				{
-					entity->SetComponent(currentType, decorator);
-				}					
-			}
-		}
-	}
-	*/
-
 	sh::scene::Camera* camera = new sh::scene::Camera();
 	camera->SetProjection(3.1415926535f / 4.0f, 800.0f / 600.0f, 0.1f, 1000.0f);
 	camera->SetPosition(sh::math::Vector3f(0.0f));
 	sceneMgr->SetCamera(camera);
-
 }
+
+//////////////////////////////////////////////////////////////////////////
+
+void MainWindow::ClearLayout(QLayout *layout)
+{
+	while(layout->count() > 0)
+    {
+        QLayoutItem *item = layout->takeAt(0);
+        if (item->layout() != NULL)
+        {
+            ClearLayout(item->layout());
+            delete item->layout();
+        }
+        if (item->widget() != NULL)
+        {
+            delete item->widget();
+        }
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////

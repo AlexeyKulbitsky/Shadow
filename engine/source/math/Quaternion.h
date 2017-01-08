@@ -33,7 +33,7 @@ namespace sh
 				w = cosA;
 			}
 
-			void SetFromEuler(const Vector3<T>& angles)
+			void SetFromEulerXYZ(const Vector3<T>& angles)
 			{
 				Vector3<T> r(angles * T(0.5));
 				Vector3<T> sr(Sin(r.x), Sin(r.y), Sin(r.z));
@@ -93,6 +93,33 @@ namespace sh
 				r.m[2][2] = 1.0f - (fTxx + fTyy);
 
 				return r;
+			}
+
+			template <typename T>
+			void GetAsEulerXYZ(Vector3<T>& res) const
+			{
+				const T s = T(2) * (z * x + w * y);
+				if (s < T(0.9999))
+				{
+					if (s > -T(0.9999))
+					{
+						res.y = Asin(s);
+						res.x = Atan2(-T(2) * (z * y - w * x), T(1) - T(2) * (x * x + y * y));
+						res.z = Atan2(-T(2) * (x * y - w * z), T(1) - T(2) * (z * z + y * y));
+					}
+					else
+					{
+						res.y = -(T)k_pi_2;
+						res.x = -Atan2(T(2) * (x * y + w * z), T(1) - T(2) * (z * z + x * x));
+						res.z = 0;
+					}
+				}
+				else
+				{
+					res.y = (T)k_pi_2;
+					res.x = Atan2(T(2) * (x * y + w * z), T(1) - T(2) * (z * z + x * x));
+					res.z = 0;
+				}
 			}
 
 			Quaternion<T>& Invert()

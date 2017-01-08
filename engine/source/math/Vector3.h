@@ -21,7 +21,7 @@ namespace sh
 			Vector3(const Vector2<T>& v, T value) : x(v.x), y(v.y), z(value) {}
 
 			// Operators
-			Vector3<T> operator-() const { return Vector3<T>(-z, -y, -z); }
+			Vector3<T> operator-() const { return Vector3<T>(-x, -y, -z); }
 			Vector3<T>& operator=(const Vector3<T>& v) { x = v.x; y = v.y; z = v.z; return *this; }
 
 			Vector3<T> operator+(T s) const { return Vector3<T>(x + s, y + s, z + s); }

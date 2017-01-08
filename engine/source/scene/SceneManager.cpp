@@ -37,8 +37,6 @@ namespace sh
 
 		SceneManager::SceneManager()
 		{
-			m_commandPool = new video::CommandPool();
-
 			TransformSystem* transformSystem = new TransformSystem();
 			transformSystem->AddComponentType(Component::Type::TRANSFORM);
 			m_systems.push_back(transformSystem);
@@ -125,18 +123,6 @@ namespace sh
 		void SceneManager::SetCamera(Camera* camera)
 		{
 			m_camera = camera;
-		}
-
-		//////////////////////////////////////////////////////////////////////////////////////////////
-
-		void SceneManager::Render()
-		{
-			for (size_t i = 0, sz = m_models.size(); i < sz; ++i)
-			{
-				m_models[i]->UpdateTransformationUniforms();
-			}
-
-			m_commandPool->Submit();
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////

@@ -243,7 +243,7 @@ bool Win32Device::Run()
 	*/
 
 	MSG msg;
-	bool done, result;
+	bool done;
 
 	// Initialize the message structure.
 	ZeroMemory(&msg, sizeof(MSG));

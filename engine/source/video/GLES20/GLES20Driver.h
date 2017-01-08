@@ -23,6 +23,8 @@ namespace sh
 			
 			virtual void Render(RenderCommand* command) override;
 			virtual void SetViewport(u32 x, u32 y, u32 width, u32 height) override;
+			virtual void PrintPixelInfo(u32 x, u32 y, u32 width, u32 height) override;
+			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) override;
 
 			virtual VertexBuffer* CreateVertexBuffer() override;
 			virtual VertexBuffer* CreateVertexBuffer(const void* data, size_t size) override;

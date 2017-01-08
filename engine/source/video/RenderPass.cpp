@@ -62,10 +62,10 @@ namespace sh
 			}
 
 			// Load render state
+			m_renderState = driver->CreateRenderState();
 			pugi::xml_node renderstateNode = node.child("renderstate");
 			if (!renderstateNode.empty())
-			{
-				m_renderState = driver->CreateRenderState();
+			{				
 				m_renderState->Load(renderstateNode);
 			}
 

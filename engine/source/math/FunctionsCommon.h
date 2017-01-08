@@ -33,6 +33,18 @@ namespace sh
 		}
 
 		template<typename T>
+		T Asin(const T& value)
+		{
+			return std::asin(value);
+		}
+
+		template<typename T>
+		T Atan2(const T& y, const T& x)
+		{
+			return std::atan2(y, x);
+		}
+
+		template<typename T>
 		T Radians(const T& degrees)
 		{
 			return (degrees / 180.0f) * k_pi;

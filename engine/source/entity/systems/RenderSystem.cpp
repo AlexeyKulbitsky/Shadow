@@ -5,6 +5,9 @@
 #include "../../scene/Model.h"
 #include "../../video/CommandPool.h"
 
+#include "../../Device.h"
+#include"../../video/Driver.h"
+
 namespace sh
 {
 	RenderSystem::RenderSystem()
@@ -64,7 +67,11 @@ namespace sh
 			renderComponent->GetModel()->UpdateTransformationUniforms();
 		}
 
+		//Device::GetInstance()->GetDriver()->BeginRendering();
+
 		m_commandPool->Submit();
+
+		//Device::GetInstance()->GetDriver()->EndRendering();
 	}
 
 	//////////////////////////////////////////////////////////////////

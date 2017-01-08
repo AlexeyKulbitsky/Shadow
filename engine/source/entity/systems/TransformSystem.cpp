@@ -39,8 +39,8 @@ namespace sh
 
 				transformComponent->m_worldMatrix.SetScale(scale);				
 				transformComponent->m_worldMatrix.SetTranslation(translation);
-
 				transformComponent->m_worldMatrix = transformComponent->m_worldMatrix * rotation.GetAsMatrix4();
+				
 				transformComponent->m_needsToRecalculateWorldMatrix = false;
 			}
 		}

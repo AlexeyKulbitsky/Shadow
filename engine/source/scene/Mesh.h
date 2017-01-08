@@ -29,7 +29,7 @@ namespace sh
 			void SetMaterial(sh::video::Material* material);
 			video::Material* GetMaterial();
 			
-			sh::video::RenderCommand* GetRenderCommand() { return m_renderCommand; }
+			sh::video::RenderCommand* GetRenderCommand(size_t index = 0) { return m_renderCommands[index]; }
 
 		private:
 			Mesh(){}
@@ -39,7 +39,7 @@ namespace sh
 			MeshBase* m_meshBase;
 			math::Matrix4f m_worldMatrix;
 
-			sh::video::RenderCommand* m_renderCommand;
+			std::vector<sh::video::RenderCommand*>  m_renderCommands;
 			sh::video::Material* m_material;
 		};
 	}

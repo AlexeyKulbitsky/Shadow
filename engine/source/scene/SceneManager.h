@@ -44,7 +44,6 @@ namespace sh
 			void SetCamera(Camera* camera);
 			Camera* GetCamera() { return m_camera; }
 
-			void Render();
 			void Update(f32 deltaTime = 0.0f);
 			void OnEvent(const Event& e);
 
@@ -59,8 +58,6 @@ namespace sh
 			ComponentsFactory* m_componentsFactory = nullptr;
 			std::vector<System*> m_systems;
 			std::vector<Entity*> m_entities;
-
-			video::CommandPool* m_commandPool;
 		};
 	}
 }

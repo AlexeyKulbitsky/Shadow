@@ -42,6 +42,8 @@ namespace sh
 			virtual void Render(RenderCommand* command){}
 			virtual void Render(scene::Model* model);
 			virtual void SetViewport(u32 x, u32 y, u32 width, u32 height) {}
+			virtual void PrintPixelInfo(u32 x, u32 y, u32 width, u32 height) { }
+			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) {}
 
 			// Resources creation interface
 			virtual VertexBuffer* CreateVertexBuffer() = 0;

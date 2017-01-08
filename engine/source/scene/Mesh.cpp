@@ -18,19 +18,7 @@ namespace sh
 		Mesh::Mesh(MeshBase* meshBase)
 			: m_meshBase(meshBase)
 		{
-			sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
-			m_renderCommand = driver->CreateRenderCommand();
-			m_renderCommand->SetVertexBuffer(m_meshBase->GetVertexBuffer());
-			if (m_meshBase->IsUseIndices())
-			{
-				m_renderCommand->SetIndexBuffer(m_meshBase->GetIndexBuffer());
-				m_renderCommand->SetUseIndices(true);
-			}
-			else
-			{
-				m_renderCommand->SetUseIndices(false);
-			}
-			m_renderCommand->SetTopology(meshBase->GetTopology());
+			
 
 			m_worldMatrix.SetIdentity();
 		}
@@ -55,19 +43,22 @@ namespace sh
 			wvp.Transpose();
 			//driver->GetGlobalUniform(video::GlobalUniformName::MODEL_WORLD_VIEW_PROJECTION_MATRIX)->Set(wvp);
 
-			size_t uniformsCount = m_renderCommand->GetUniformBuffer()->GetUniformsCount();
-			for (size_t i = 0; i < uniformsCount; ++i)
+			for (auto renderCommand : m_renderCommands)
 			{
-				video::Uniform* uniform = m_renderCommand->GetUniformBuffer()->GetUniform(i);
-				if (uniform->GetGlobalUniformName() == video::GlobalUniformName::MODEL_WORLD_VIEW_PROJECTION_MATRIX)
+				size_t uniformsCount = renderCommand->GetUniformBuffer()->GetUniformsCount();
+				for (size_t i = 0; i < uniformsCount; ++i)
 				{
-					uniform->Set(wvp);
+					video::Uniform* uniform = renderCommand->GetUniformBuffer()->GetUniform(i);
+					if (uniform->GetGlobalUniformName() == video::GlobalUniformName::MODEL_WORLD_VIEW_PROJECTION_MATRIX)
+					{
+						uniform->Set(wvp);
+					}
+					else if (uniform->GetGlobalUniformName() == video::GlobalUniformName::MODEL_WORLD_MATRIX)
+					{
+						uniform->Set(m_worldMatrix);
+					}
 				}
-				else if (uniform->GetGlobalUniformName() == video::GlobalUniformName::MODEL_WORLD_MATRIX)
-				{
-					uniform->Set(m_worldMatrix);
-				}
-			}
+			}		
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -81,15 +72,40 @@ namespace sh
 
 		void Mesh::SetMaterial(sh::video::Material* material)
 		{
-			m_material = material;			
+			m_material = material;	
+			size_t passesSize = material->GetRenderPassesCount();
+			if (m_renderCommands.size() != passesSize)
+			{
+				m_renderCommands.resize(passesSize);
 
-			video::RenderPass* renderPass = m_material->GetRenderPass(0);
-			m_renderCommand->SetUniformBuffer(renderPass->GetUniformBuffer()->Clone());
+				for (size_t i = 0; i < passesSize; ++i)
+				{
+					sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
+					m_renderCommands[i] = driver->CreateRenderCommand();
+					m_renderCommands[i]->SetVertexBuffer(m_meshBase->GetVertexBuffer());
+					if (m_meshBase->IsUseIndices())
+					{
+						m_renderCommands[i]->SetIndexBuffer(m_meshBase->GetIndexBuffer());
+						m_renderCommands[i]->SetUseIndices(true);
+					}
+					else
+					{
+						m_renderCommands[i]->SetUseIndices(false);
+					}
+					m_renderCommands[i]->SetTopology(m_meshBase->GetTopology());
+				}			
+			}
 
-			video::VertexInputDeclaration* inputDeclaration = renderPass->GetVertexInputDeclaration();
-			inputDeclaration->Assemble(*(m_meshBase->GetVertexDeclaration()));
-			m_renderCommand->SetVertexInputDeclaration(inputDeclaration);
 
+			for (size_t i = 0, sz = m_material->GetRenderPassesCount(); i < sz; ++i)
+			{
+				video::RenderPass* renderPass = m_material->GetRenderPass(i);
+				m_renderCommands[i]->SetUniformBuffer(renderPass->GetUniformBuffer()->Clone());
+
+				video::VertexInputDeclaration* inputDeclaration = renderPass->GetVertexInputDeclaration();
+				inputDeclaration->Assemble(*(m_meshBase->GetVertexDeclaration()));
+				m_renderCommands[i]->SetVertexInputDeclaration(inputDeclaration);
+			}			
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
