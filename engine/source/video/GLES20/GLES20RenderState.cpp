@@ -4,6 +4,12 @@ namespace sh
 {
 	namespace video
 	{	
+		GLenum const GLES20RenderState::s_glWriteMask[] =
+		{
+			GL_FALSE,
+			GL_TRUE
+		};
+
 		GLenum const GLES20RenderState::s_glFrontFace[] =
 		{
 			GL_CW,
@@ -14,7 +20,6 @@ namespace sh
 		{
 			GL_FRONT,
 			GL_BACK,
-			GL_FRONT_AND_BACK,
 			GL_NONE
 		};
 
@@ -55,6 +60,15 @@ namespace sh
 			GL_DST_ALPHA,
 			GL_ONE_MINUS_DST_ALPHA,
 			GL_SRC_ALPHA_SATURATE
+		};
+		
+		GLenum const GLES20RenderState::s_gBlendOperation[] =
+		{
+			GL_FUNC_ADD,
+			GL_FUNC_SUBTRACT,
+			GL_FUNC_REVERSE_SUBTRACT,
+			GL_MIN,
+			GL_MAX
 		};
 
 		////////////////////////////////////////////////
