@@ -80,6 +80,7 @@ ExpandableWidget* TransformComponentDecorator::GetParametersWidget()
 	QLabel* rotationLabel = new QLabel();
 	rotationLabel->setText("Rotation");
 	QDoubleSpinBox* xRotationSpinBox = new QDoubleSpinBox();
+	xRotationSpinBox->setSingleStep(10.0);
 	xRotationSpinBox->setMinimum(-10000.0);
 	xRotationSpinBox->setMaximum(10000.0);
 	xRotationSpinBox->setValue(m_axisRotations.x * 180.0f / sh::math::k_pi);
@@ -87,6 +88,7 @@ ExpandableWidget* TransformComponentDecorator::GetParametersWidget()
 	connect(this, SIGNAL(RotationXChangedSignal(double)), xRotationSpinBox, SLOT(setValue(double)));
 
 	QDoubleSpinBox* yRotationSpinBox = new QDoubleSpinBox();
+	yRotationSpinBox->setSingleStep(10.0);
 	yRotationSpinBox->setMinimum(-10000.0);
 	yRotationSpinBox->setMaximum(10000.0);
 	yRotationSpinBox->setValue(m_axisRotations.y * 180.0f / sh::math::k_pi);
@@ -94,6 +96,7 @@ ExpandableWidget* TransformComponentDecorator::GetParametersWidget()
 	connect(this, SIGNAL(RotationYChangedSignal(double)), yRotationSpinBox, SLOT(setValue(double)));
 
 	QDoubleSpinBox* zRotationSpinBox = new QDoubleSpinBox();
+	zRotationSpinBox->setSingleStep(10.0);
 	zRotationSpinBox->setMinimum(-10000.0);
 	zRotationSpinBox->setMaximum(10000.0);
 	zRotationSpinBox->setValue(m_axisRotations.z * 180.0f / sh::math::k_pi);

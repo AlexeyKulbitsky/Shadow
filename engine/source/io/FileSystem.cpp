@@ -37,9 +37,9 @@ namespace sh
 
 			for (auto it : m_fileList)
 			{			
-				printf("File: %s\n", it.name.c_str());
-				printf("Path: %s\n", it.absolutePath.c_str());
-				printf("------------------------------------\n");
+				//printf("File: %s\n", it.name.c_str());
+				//printf("Path: %s\n", it.absolutePath.c_str());
+				//printf("------------------------------------\n");
 			}
 		}
 

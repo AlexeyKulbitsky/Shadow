@@ -145,8 +145,8 @@ namespace sh
 				// nVidia SDK implementation				
 				Vector3<T> uv, uuv;
 				Vector3<T> qvec(x, y, z);
-				uv = v.Cross(qvec);
-				uuv = uv.Cross(qvec);
+				uv = qvec.Cross(v);
+				uuv = qvec.Cross(uv);
 				uv *= (2 * w);
 				uuv *= 2;
 

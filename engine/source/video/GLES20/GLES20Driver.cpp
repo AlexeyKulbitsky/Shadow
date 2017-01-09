@@ -12,7 +12,7 @@
 #include "../../scene/Mesh.h"
 #include "../../scene/Model.h"
 #include "../UniformBuffer.h"
-
+#include <sstream>
 using namespace sh;
 using namespace video;
 
@@ -29,6 +29,32 @@ bool GLES20Driver::Init()
 
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
+
+
+	String vendor = (const char*)glGetString(GL_VENDOR);
+	printf("Vendor: %s\n", vendor.c_str());
+	String renderer = (const char*)glGetString(GL_RENDERER);
+	printf("Renderer: %s\n", renderer.c_str());
+	String version = (const char*)glGetString(GL_VERSION);
+	printf("Version: %s\n", version.c_str());
+	String shadingLanguage = (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION);
+	printf("Shading language: %s\n", shadingLanguage.c_str());
+
+	// Extensions
+	String extensions = (const char*)glGetString(GL_EXTENSIONS);
+	String buf; 
+    std::stringstream ss(extensions); 
+    std::vector<String> extensionsList; 
+    while (ss >> buf)
+        extensionsList.push_back(buf);
+	printf("Enabled extensions:\n");
+	for (auto ext : extensionsList)
+	{
+		printf("%s\n", ext.c_str());
+	}
+
+	
+
 	return false; 
 }
 

@@ -24,7 +24,7 @@
 Gizmo::Gizmo()
 {
 	
-	m_axises[0].lineModel = sh::scene::GeometryGenerator::GetLineModel(sh::math::Vector3f(0.0f), sh::math::Vector3f(5.0f, 0.0f, 0.0f));	
+	m_axises[0].lineModel = sh::scene::GeometryGenerator::GetLineModel(sh::math::Vector3f(1.0f, 0.0f, 0.0f), sh::math::Vector3f(5.0f, 0.0f, 0.0f));	
 	sh::video::UniformBuffer* uniformBuffer = m_axises[0].lineModel->GetMesh(0)->GetRenderCommand()->GetUniformBuffer();
 	m_axises[0].lineColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[0].lineColorUniform)
@@ -48,7 +48,7 @@ Gizmo::Gizmo()
 
 	////////////////////////////////////////////////
 
-	m_axises[1].lineModel = sh::scene::GeometryGenerator::GetLineModel(sh::math::Vector3f(0.0f), sh::math::Vector3f(0.0f, 5.0f, 0.0f));	
+	m_axises[1].lineModel = sh::scene::GeometryGenerator::GetLineModel(sh::math::Vector3f(0.0f, 1.0f, 0.0f), sh::math::Vector3f(0.0f, 5.0f, 0.0f));	
 	uniformBuffer = m_axises[1].lineModel->GetMesh(0)->GetRenderCommand()->GetUniformBuffer();
 	m_axises[1].lineColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[1].lineColorUniform)
@@ -72,7 +72,7 @@ Gizmo::Gizmo()
 
 	/////////////////////////////////////////////////
 
-	m_axises[2].lineModel = sh::scene::GeometryGenerator::GetLineModel(sh::math::Vector3f(0.0f), sh::math::Vector3f(0.0f, 0.0f, 5.0f));	
+	m_axises[2].lineModel = sh::scene::GeometryGenerator::GetLineModel(sh::math::Vector3f(0.0f, 0.0f, 1.0f), sh::math::Vector3f(0.0f, 0.0f, 5.0f));	
 	uniformBuffer = m_axises[2].lineModel->GetMesh(0)->GetRenderCommand()->GetUniformBuffer();
 	m_axises[2].lineColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[2].lineColorUniform)
@@ -180,33 +180,28 @@ void Gizmo::Move(Axis::Type axis)
 
 	sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>( m_entity->GetComponent(sh::Component::Type::TRANSFORM) );
 	sh::math::Vector3f pos = transformComponent->GetPosition();
-	sh::math::Quaternionf rotation = transformComponent->GetRotation();
+	sh::math::Matrix3f rotation = transformComponent->GetRotation().GetAsMatrix3();
 	sh::math::Vector3f axisRotations(0.0f);
-	rotation.GetAsEulerXYZ(axisRotations);
-	axisRotations.z *= -1.0f;
-	axisRotations.x *= -1.0f;
-	rotation.SetFromEulerXYZ(axisRotations);
 
 	sh::math::Vector3f axisDir(0.0f);
 	sh::math::Vector3f normalDir(0.0f);
 	
-
 	switch (axis)
 	{
 		case Axis::Type::X_AXIS:
 			axisDir = sh::scene::SceneManager::GetRightVector();
-			normalDir = -sh::scene::SceneManager::GetFrontVector();
+			normalDir = sh::scene::SceneManager::GetFrontVector();
 			break;
 		case Axis::Type::Y_AXIS:
 			axisDir = sh::scene::SceneManager::GetUpVector();
-			normalDir = -sh::scene::SceneManager::GetFrontVector();
+			normalDir = sh::scene::SceneManager::GetRightVector();
 			break;
 		case Axis::Type::Z_AXIS:
 			axisDir = -sh::scene::SceneManager::GetFrontVector();
-			normalDir = -sh::scene::SceneManager::GetFrontVector();
+			normalDir = sh::scene::SceneManager::GetUpVector();
 			break;
 	}
-
+	
 	sh::math::Vector3f direction = rotation * axisDir;
 	sh::math::Vector3f normal = rotation * normalDir;
 	sh::math::Planef plane(pos, normal);
@@ -217,7 +212,6 @@ void Gizmo::Move(Axis::Type axis)
 	sh::math::Vector3f delta = intersectionCurrent - intersectionOld;
 	sh::f32 deltaPart = delta.Dot(direction);
 	direction *= deltaPart;
-
 
 	transformComponent->SetPosition(pos + direction);
 
