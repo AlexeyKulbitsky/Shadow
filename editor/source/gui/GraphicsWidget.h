@@ -3,6 +3,9 @@
 
 #include <QWidget>
 #include "../gizmo/Gizmo.h"
+#include "../gizmo/MoveGizmo.h"
+#include "../gizmo/RotateGizmo.h"
+#include "../gizmo/ScaleGizmo.h"
 #include "../Picker.h"
 
 namespace sh
@@ -49,7 +52,13 @@ protected:
 private:
 	sh::video::Driver* m_driver = nullptr;
 	sh::scene::SceneManager* m_sceneManager = nullptr;
+
 	Gizmo* m_gizmo = nullptr;
+
+	MoveGizmo* m_moveGizmo = nullptr;
+	RotateGizmo* m_rotateGizmo = nullptr;
+	ScaleGizmo* m_scaleGizmo = nullptr;
+
 	Picker* m_picker = nullptr;
 	bool m_leftButtonPressed = false;
 };

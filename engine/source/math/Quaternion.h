@@ -43,6 +43,11 @@ namespace sh
 				y = cr.z * cr.x * sr.y - sr.z * sr.x * cr.y;
 				z = sr.z * cr.x * cr.y + cr.z * sr.x * sr.y;
 				w = cr.z * cr.x * cr.y - sr.z * sr.x * sr.y;
+				
+				//x = sr.x * cr.y * cr.z - cr.x * sr.y * sr.z;
+				//y = cr.x * sr.y * cr.z + sr.x * cr.y * sr.z;
+				//z = cr.x * cr.y * sr.z - sr.x * sr.y * cr.z;
+				//w = cr.x * cr.y * cr.z + sr.x * sr.y * sr.z;			
 			}
 
 			Quaternion<T>& operator=(const Quaternion<T>& q) { x = q.x; y = q.y; z = q.z; w = q.w; return *this; }

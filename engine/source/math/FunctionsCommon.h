@@ -39,6 +39,12 @@ namespace sh
 		}
 
 		template<typename T>
+		T Acos(const T& value)
+		{
+			return std::acos(value);
+		}
+
+		template<typename T>
 		T Atan2(const T& y, const T& x)
 		{
 			return std::atan2(y, x);

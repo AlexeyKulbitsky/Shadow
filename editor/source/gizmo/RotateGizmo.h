@@ -1,9 +1,9 @@
-#ifndef SHADOW_MOVE_GIZMO_INCLUDE
-#define SHADOW_MOVE_GIZMO_INCLUDE
+#ifndef SHADOW_ROTATE_GIZMO_INCLUDE
+#define SHADOW_ROTATE_GIZMO_INCLUDE
 
 #include "Gizmo.h"
 
-class MoveGizmo : public Gizmo
+class RotateGizmo : public Gizmo
 {
 public:
 	struct Axis
@@ -17,15 +17,13 @@ public:
 			COUNT
 		};
 
-		sh::scene::Model* lineModel = nullptr;
-		sh::video::Uniform* lineColorUniform = nullptr;
-		sh::scene::Model* coneModel = nullptr;
-		sh::video::Uniform* coneColorUniform = nullptr;
+		sh::scene::Model* circleModel = nullptr;
+		sh::video::Uniform* circleColorUniform = nullptr;
 		bool active = false;
 	};
 
-	MoveGizmo();
-	virtual ~MoveGizmo();
+	RotateGizmo();
+	virtual ~RotateGizmo();
 	virtual void Render() override;
 	virtual void Process() override;
 	virtual void OnMousePressed(sh::u32 x, sh::u32 y) override;
@@ -34,9 +32,8 @@ public:
 	virtual void TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height) override;
 	virtual bool IsActive() const override;
 
-
 private:
-	void Move(Axis::Type axis);
+	void Rotate(Axis::Type axis);
 
 private:
 	Axis m_axises[3];

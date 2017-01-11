@@ -38,30 +38,15 @@ void GraphicsWidget::mouseMoveEvent(QMouseEvent * ev)
 	e.mouseEvent.y = ev->y();
 	sh::Device::GetInstance()->OnEvent(e);
 
-
 	if (m_leftButtonPressed)
 	{
-		if (m_gizmo->m_axises[0].active)
-		{
-			m_gizmo->Move(Gizmo::Axis::Type::X_AXIS);
-			return;
-		}
-		else if (m_gizmo->m_axises[1].active)
-		{
-			m_gizmo->Move(Gizmo::Axis::Type::Y_AXIS);
-			return;
-		}
-		else if (m_gizmo->m_axises[2].active)
-		{
-			m_gizmo->Move(Gizmo::Axis::Type::Z_AXIS);
-			return;
-		}
+		m_gizmo->OnMouseMoved(ev->x(), ev->y());
+		return;
 	}
-
 
 	if (m_gizmo->IsEnabled())
 	{
-		m_picker->TryToPick(m_gizmo, ev->x(), ev->y(), width(), height());
+		m_gizmo->TryToSelect(ev->x(), ev->y(), width(), height());
 	}
 }
 
@@ -92,18 +77,11 @@ void GraphicsWidget::mousePressEvent(QMouseEvent * ev)
 	e.mouseEvent.y = ev->y();	
 	sh::Device::GetInstance()->OnEvent(e);	
 	
-
-
-	if (m_gizmo->IsEnabled())
+	m_gizmo->OnMousePressed(ev->x(), ev->y());
+	if (m_gizmo->IsActive())
 	{
-		if (m_gizmo->m_axises[0].active ||
-			m_gizmo->m_axises[1].active ||
-			m_gizmo->m_axises[2].active)
-		{
-			return;
-		}
+		return;
 	}
-
 	
 	if (ev->button() == Qt::LeftButton)
 	{
@@ -149,13 +127,15 @@ void GraphicsWidget::mouseReleaseEvent(QMouseEvent * ev)
 	e.mouseEvent.x = ev->x();
 	e.mouseEvent.y = ev->y();
 	sh::Device::GetInstance()->OnEvent(e);
+
+	m_gizmo->OnMouseReleased(ev->x(), ev->y());
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 GraphicsWidget::~GraphicsWidget()
 {
-	delete m_gizmo;
+	//delete m_gizmo;
 	delete m_picker;
 }
 
@@ -166,7 +146,14 @@ void GraphicsWidget::Init()
 	m_driver = sh::Device::GetInstance()->GetDriver();
 	m_sceneManager = sh::Device::GetInstance()->GetSceneManager();
 
-	m_gizmo = new Gizmo();
+	// Create all gizmos
+	m_moveGizmo = new MoveGizmo();
+	m_rotateGizmo = new RotateGizmo();
+	//m_scaleGizmo = new ScaleGizmo();
+
+	// Set Move gizmo as current
+	m_gizmo = m_rotateGizmo;
+	//m_gizmo = m_moveGizmo;
 	m_picker = new Picker();
 
 	size_t entitiesCount = m_sceneManager->GetEntitiesCount();

@@ -123,6 +123,7 @@ namespace sh
 				if (valAttr)
 				{
 					bool value = valAttr.as_bool();
+					rasterizerState.cullFace = CullFace::NONE;
 				}
 			}
 

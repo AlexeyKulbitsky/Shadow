@@ -70,13 +70,10 @@ sh::Entity* Picker::TryToPick(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 heigh
 			mesh->GetMaterial()->GetRenderPass(1)->GetShaderProgram()->UnbindProgram();
 		}			
 	}
-	
-	
-
+		
 	unsigned char data[4];
 	driver->GetPixelData(x, y, width, height, data);
 
-	//driver->EndRendering();
 	int pickedID = data[0] + data[1] * 256 + data[2] * 256*256;
 	if (pickedID >= 0 && (size_t)pickedID < m_entities.size())
 	{
@@ -90,6 +87,7 @@ sh::Entity* Picker::TryToPick(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 heigh
 
 void Picker::TryToPick(Gizmo* gizmo, sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
 {
+	/*x
 	sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
 
 	unsigned char data[4];
@@ -164,6 +162,7 @@ void Picker::TryToPick(Gizmo* gizmo, sh::u32 x, sh::u32 y, sh::u32 width, sh::u3
 		gizmo->m_axises[Gizmo::Axis::Type::Z_AXIS].coneColorUniform->Set(color);
 		gizmo->m_axises[Gizmo::Axis::Type::Z_AXIS].active = false;
 	}
+	*/
 }
 
 /////////////////////////////////////////////////////////
