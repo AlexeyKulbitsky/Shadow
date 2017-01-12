@@ -73,6 +73,11 @@ namespace sh
 			{
 				return Vector3<T>(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
 			}
+
+			bool Equals(const Vector3<T>& other, const T& eps)
+			{
+				return (std::abs(x - other.x) < eps) && (std::abs(y - other.y) < eps) && (std::abs(z - other.z) < eps);
+			}
 		};
 
 	} 

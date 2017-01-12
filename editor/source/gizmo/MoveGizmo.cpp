@@ -22,7 +22,13 @@
 
 MoveGizmo::MoveGizmo()
 {
-	m_axises[0].lineModel = sh::scene::GeometryGenerator::GetLineModel(sh::math::Vector3f(1.0f, 0.0f, 0.0f), sh::math::Vector3f(5.0f, 0.0f, 0.0f));
+	//m_axises[0].lineModel = sh::scene::GeometryGenerator::GetLineModel(sh::math::Vector3f(1.0f, 0.0f, 0.0f), sh::math::Vector3f(5.0f, 0.0f, 0.0f));
+	m_axises[0].lineModel = sh::scene::GeometryGenerator::GetCylinderModel(
+		sh::math::Vector3f(1.0f, 0.0f, 0.0f),
+		0.1f,
+		sh::math::Vector3f(4.0f, 0.0f, 0.0f),
+		sh::math::Vector3f(0.0f, 1.0f, 0.0f),
+		sh::math::Vector3f(0.0f, 0.0f, 1.0f));
 	sh::video::UniformBuffer* uniformBuffer = m_axises[0].lineModel->GetMesh(0)->GetRenderCommand()->GetUniformBuffer();
 	m_axises[0].lineColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[0].lineColorUniform)
@@ -46,7 +52,13 @@ MoveGizmo::MoveGizmo()
 
 	////////////////////////////////////////////////
 
-	m_axises[1].lineModel = sh::scene::GeometryGenerator::GetLineModel(sh::math::Vector3f(0.0f, 1.0f, 0.0f), sh::math::Vector3f(0.0f, 5.0f, 0.0f));
+	//m_axises[1].lineModel = sh::scene::GeometryGenerator::GetLineModel(sh::math::Vector3f(0.0f, 1.0f, 0.0f), sh::math::Vector3f(0.0f, 5.0f, 0.0f));	
+	m_axises[1].lineModel = sh::scene::GeometryGenerator::GetCylinderModel(
+		sh::math::Vector3f(0.0f, 1.0f, 0.0f),
+		0.1f,
+		sh::math::Vector3f(0.0f, 4.0f, 0.0f),
+		sh::math::Vector3f(1.0f, 0.0f, 0.0f),
+		sh::math::Vector3f(0.0f, 0.0f, 1.0f));	
 	uniformBuffer = m_axises[1].lineModel->GetMesh(0)->GetRenderCommand()->GetUniformBuffer();
 	m_axises[1].lineColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[1].lineColorUniform)
@@ -70,7 +82,13 @@ MoveGizmo::MoveGizmo()
 
 	/////////////////////////////////////////////////
 
-	m_axises[2].lineModel = sh::scene::GeometryGenerator::GetLineModel(sh::math::Vector3f(0.0f, 0.0f, 1.0f), sh::math::Vector3f(0.0f, 0.0f, 5.0f));
+	//m_axises[2].lineModel = sh::scene::GeometryGenerator::GetLineModel(sh::math::Vector3f(0.0f, 0.0f, 1.0f), sh::math::Vector3f(0.0f, 0.0f, 5.0f));
+	m_axises[2].lineModel = sh::scene::GeometryGenerator::GetCylinderModel(
+		sh::math::Vector3f(0.0f, 0.0f, 1.0f),
+		0.1f,
+		sh::math::Vector3f(0.0f, 0.0f, 4.0f),
+		sh::math::Vector3f(1.0f, 0.0f, 0.0f),
+		sh::math::Vector3f(0.0f, 1.0f, 0.0f));
 	uniformBuffer = m_axises[2].lineModel->GetMesh(0)->GetRenderCommand()->GetUniformBuffer();
 	m_axises[2].lineColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[2].lineColorUniform)
@@ -211,27 +229,27 @@ void MoveGizmo::Move(Axis::Type axis)
 	sh::math::Vector3f axisRotations(0.0f);
 
 	sh::math::Vector3f axisDir(0.0f);
-	sh::math::Vector3f normalDir(0.0f);
+	sh::math::Vector3f orthoVector(camera->GetUpVector());
 
 	switch (axis)
 	{
 	case Axis::Type::X_AXIS:
 		axisDir = sh::scene::SceneManager::GetRightVector();
-		normalDir = sh::scene::SceneManager::GetFrontVector();
 		break;
 	case Axis::Type::Y_AXIS:
 		axisDir = sh::scene::SceneManager::GetUpVector();
-		normalDir = sh::scene::SceneManager::GetRightVector();
 		break;
 	case Axis::Type::Z_AXIS:
 		axisDir = -sh::scene::SceneManager::GetFrontVector();
-		normalDir = sh::scene::SceneManager::GetUpVector();
 		break;
 	}
-
+	
 	sh::math::Vector3f direction = rotation * axisDir;
-	sh::math::Vector3f normal = rotation * normalDir;
-	sh::math::Planef plane(pos, normal);
+	if (orthoVector.Equals(direction, sh::math::k_eps_5) || (orthoVector + direction).GetLength() < sh::math::k_eps_5)
+	{
+		orthoVector = camera->GetRightVector();
+	}
+	sh::math::Planef plane(pos, pos + orthoVector, pos + direction);
 
 	sh::math::Vector3f intersectionOld(0.0f), intersectionCurrent(0.0f);
 	plane.GetIntersectionWithLine(rayOrigin, rayDirOld, intersectionOld);
