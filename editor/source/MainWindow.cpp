@@ -11,6 +11,7 @@
 #include <qtreeview.h>
 #include <QScrollArea>
 #include <qtoolbar.h>
+#include <QActionGroup>
 
 #include "gui\GraphicsWidget.h"
 #include "gui\ExpandableWidget.h"
@@ -31,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
 	resize(QSize(640, 480));
 	CreateActions();
 	CreateMenu();
-	CreateToolBar();
+	
 
 	QSplitter *m_splitter = new QSplitter(Qt::Vertical, this);
 	m_splitter->setObjectName("mainsplitter");
@@ -42,7 +43,7 @@ MainWindow::MainWindow(QWidget *parent)
 	setCentralWidget(m_splitter);
 
 	connect(m_graphicsWidget, SIGNAL(EntitySelected(sh::Entity*)), this, SLOT(SetSelectedEntity(sh::Entity*)));
-
+	CreateToolBar();
 	InitDevice();
 
 	m_graphicsWidget->Init();
@@ -201,6 +202,8 @@ void MainWindow::CreateToolBar()
 	addToolBar(m_mainToolBar);
 	QString workingDir = QApplication::applicationDirPath();
 
+	
+
 	QAction* moveAction = new QAction("Move", this);			
 	moveAction->setIcon(QIcon(workingDir + "/../../../../../data/icons/move.png"));
 	moveAction->setCheckable(true);
@@ -213,9 +216,17 @@ void MainWindow::CreateToolBar()
 	scaleAction->setIcon(QIcon(workingDir + "/../../../../../data/icons/scale.png"));
 	scaleAction->setCheckable(true);
 
+	QActionGroup* transformGroup = new QActionGroup(this);
+	transformGroup->addAction(moveAction);
+	transformGroup->addAction(rotateAction);
+	transformGroup->addAction(scaleAction);
+
+	connect(transformGroup, SIGNAL(triggered(QAction*)), m_graphicsWidget, SLOT(TransformActionChanged(QAction*)));
+
 	m_mainToolBar->addAction(moveAction);
 	m_mainToolBar->addAction(rotateAction);
 	m_mainToolBar->addAction(scaleAction);
+	
 	m_mainToolBar->addSeparator();
 }
 

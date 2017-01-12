@@ -287,6 +287,21 @@ namespace sh
 			u32 numVerticesPerRow = sides + 1;
 			u32 numVerticesPerColumn = rings + 1;
 
+			math::Vector3f vtz = vtx.Cross(vty);
+			math::Matrix3f rotationMatrix;
+			rotationMatrix.SetIdentity();
+			rotationMatrix.m[2][0] = vtz.x;
+			rotationMatrix.m[2][1] = vtz.y;
+			rotationMatrix.m[2][2] = vtz.z;
+
+			rotationMatrix.m[0][0] = vtx.x;
+			rotationMatrix.m[0][1] = vtx.y;
+			rotationMatrix.m[0][2] = vtx.z;
+
+			rotationMatrix.m[1][0] = vty.x;
+			rotationMatrix.m[1][1] = vty.y;
+			rotationMatrix.m[1][2] = vty.z;
+
 			std::vector<f32> vertexArray;
 			for (int verticalIt = 0; verticalIt < numVerticesPerColumn; verticalIt++)
 			{
@@ -301,22 +316,10 @@ namespace sh
 					float y = math::Sin(theta) * (radius + ringRadius * math::Cos(phi));
 					float z = ringRadius * math::Sin(phi);
 
-					/*
-					math::Vector3f vt;
-					vt = vtx * sh::math::Cos(theta) * (radius + ringRadius * math::Cos(phi));
-					vt += vty * sh::math::Sin(theta) * (radius + ringRadius * math::Cos(phi));
-					vt.z += ringRadius * math::Sin(phi);
-					vt += start;
-
-					vertexArray.push_back(vt.x);
-					vertexArray.push_back(vt.y);
-					vertexArray.push_back(vt.z);
-					*/
+					
 					math::Vector3f vt(x, y, z);
-					sh::math::Vector3f axis(0.0f, 1.0f, 0.0f);
-					sh::math::Quaternionf rot;
-					rot.SetFromAxisAngle(axis, sh::math::k_pi_2);
-					vt = rot * vt;
+					
+					vt = rotationMatrix * vt;
 
 					vertexArray.push_back(vt.x);
 					vertexArray.push_back(vt.y);

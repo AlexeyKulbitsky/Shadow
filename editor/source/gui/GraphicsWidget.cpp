@@ -1,6 +1,7 @@
 #include "GraphicsWidget.h"
 
 #include <QResizeEvent>
+#include <QAction>
 
 #include <Shadow.h>
 #include <scene\SceneManager.h>
@@ -176,3 +177,25 @@ void GraphicsWidget::Render()
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
+
+void GraphicsWidget::TransformActionChanged(QAction* action)
+{
+	QString text = action->text();
+	if (text == "Move")
+	{
+		printf("Move\n");
+		//m_gizmo = m_moveGizmo;
+	}
+	else if (text == "Rotate")
+	{
+		printf("Rotate\n");
+		//m_gizmo = m_rotateGizmo;
+	}
+	else if (text == "Scale")
+	{
+		printf("Scale\n");
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+

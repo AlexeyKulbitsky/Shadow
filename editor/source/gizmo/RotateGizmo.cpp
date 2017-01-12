@@ -25,12 +25,12 @@ RotateGizmo::RotateGizmo()
 	//m_axises[0].circleModel = sh::scene::GeometryGenerator::GetCircleModel(sh::math::Vector3f(0.0f), 5.0f, sh::math::Vector3f(0.0f, 0.0f, 1.0f), sh::math::Vector3f(0.0f, 1.0f, 0.0f));
 	m_axises[0].circleModel = sh::scene::GeometryGenerator::GetTorusModel(
 		sh::math::Vector3f(0.0f), 
-		8.0f, 
-		1.0f,
+		5.0f, 
+		0.2f,
 		8, 
 		32, 
-		sh::math::Vector3f(0.0f, 1.0f, 0.0f), 
-		sh::math::Vector3f(0.0f, 0.0f, 1.0f));
+		sh::math::Vector3f(0.0f, 0.0f, 1.0f), 
+		sh::math::Vector3f(0.0f, 1.0f, 0.0f));
 	sh::video::UniformBuffer* uniformBuffer = m_axises[0].circleModel->GetMesh(0)->GetRenderCommand()->GetUniformBuffer();
 	m_axises[0].circleColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[0].circleColorUniform)
@@ -41,7 +41,15 @@ RotateGizmo::RotateGizmo()
 
 	////////////////////////////////////////////////
 
-	m_axises[1].circleModel = sh::scene::GeometryGenerator::GetCircleModel(sh::math::Vector3f(0.0f), 5.0f, sh::math::Vector3f(1.0f, 0.0f, 0.0f), sh::math::Vector3f(0.0f, 0.0f, 1.0f));
+	//m_axises[1].circleModel = sh::scene::GeometryGenerator::GetCircleModel(sh::math::Vector3f(0.0f), 5.0f, sh::math::Vector3f(1.0f, 0.0f, 0.0f), sh::math::Vector3f(0.0f, 0.0f, 1.0f));
+	m_axises[1].circleModel = sh::scene::GeometryGenerator::GetTorusModel(
+		sh::math::Vector3f(0.0f), 
+		5.0f, 
+		0.2f,
+		8, 
+		32, 
+		sh::math::Vector3f(1.0f, 0.0f, 0.0f), 
+		sh::math::Vector3f(0.0f, 0.0f, 1.0f));
 	uniformBuffer = m_axises[1].circleModel->GetMesh(0)->GetRenderCommand()->GetUniformBuffer();
 	m_axises[1].circleColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[1].circleColorUniform)
@@ -52,7 +60,15 @@ RotateGizmo::RotateGizmo()
 
 	/////////////////////////////////////////////////
 
-	m_axises[2].circleModel = sh::scene::GeometryGenerator::GetCircleModel(sh::math::Vector3f(0.0f), 5.0f, sh::math::Vector3f(1.0f, 0.0f, 0.0f), sh::math::Vector3f(0.0f, 1.0f, 0.0f));
+	//m_axises[2].circleModel = sh::scene::GeometryGenerator::GetCircleModel(sh::math::Vector3f(0.0f), 5.0f, sh::math::Vector3f(1.0f, 0.0f, 0.0f), sh::math::Vector3f(0.0f, 1.0f, 0.0f));
+	m_axises[2].circleModel = sh::scene::GeometryGenerator::GetTorusModel(
+		sh::math::Vector3f(0.0f), 
+		5.0f, 
+		0.2f,
+		8, 
+		32, 
+		sh::math::Vector3f(1.0f, 0.0f, 0.0f), 
+		sh::math::Vector3f(0.0f, 1.0f, 0.0f));
 	uniformBuffer = m_axises[2].circleModel->GetMesh(0)->GetRenderCommand()->GetUniformBuffer();
 	m_axises[2].circleColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[2].circleColorUniform)

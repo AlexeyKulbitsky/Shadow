@@ -40,6 +40,9 @@ public:
 	void Init();
 	void Render();
 
+public slots:
+	void TransformActionChanged(QAction* action);
+
 signals:
 	void EntitySelected(sh::Entity* entity);
 
