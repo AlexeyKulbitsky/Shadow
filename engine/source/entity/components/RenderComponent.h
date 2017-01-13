@@ -19,7 +19,7 @@ namespace sh
 		void SetModel(scene::Model* model) { m_model = model; }
 		scene::Model* GetModel() { return m_model; }
 
-	private:
+	protected:
 		scene::Model* m_model;
 	};
 }

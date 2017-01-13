@@ -261,7 +261,6 @@ void RotateGizmo::Rotate(Axis::Type axis)
 	camera->BuildRay(old.x, old.y, rayOrigin, rayDirOld);
 	camera->BuildRay(current.x, current.y, rayOrigin, rayDirCurrent);
 
-
 	sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_entity->GetComponent(sh::Component::Type::TRANSFORM));
 	sh::math::Vector3f pos = transformComponent->GetPosition();
 	sh::math::Matrix3f rotation = transformComponent->GetRotation().GetAsMatrix3();
@@ -284,23 +283,20 @@ void RotateGizmo::Rotate(Axis::Type axis)
 	}
 
 	sh::math::Vector3f normal = rotation * normalDir;
-	printf("NORMAL %f %f %f\n", normal.x, normal.y, normal.z);
 	sh::math::Planef plane(pos, normal);
 
 	sh::math::Vector3f intersectionOld(0.0f), intersectionCurrent(0.0f);
 	plane.GetIntersectionWithLine(rayOrigin, rayDirOld, intersectionOld);
 	plane.GetIntersectionWithLine(rayOrigin, rayDirCurrent, intersectionCurrent);
-	//printf("Intersection CURRENT %f %f %f\n", intersectionCurrent.x, intersectionCurrent.y, intersectionCurrent.z);
 	
 	sh::math::Vector3f vec1 = (intersectionOld - pos).Normalize();
 	sh::math::Vector3f vec2 = (intersectionCurrent - pos).Normalize();
 	sh::f32 angle = sh::math::Acos(vec1.Dot(vec2));
 
-	sh::math::Quaternionf deltaRotation;
-	deltaRotation.SetFromAxisAngle(normal.GetNormalized(), angle);
+	sh::math::Quaternionf rot;
+	rot.RotationFromTo(vec1, vec2);
 
-	sh::math::Quaternionf finalRotation =  transformComponent->GetRotation() * deltaRotation;
-	
+	sh::math::Quaternionf finalRotation =  transformComponent->GetRotation() * rot;
 
 	transformComponent->SetRotation(finalRotation);
 

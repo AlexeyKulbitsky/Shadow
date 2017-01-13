@@ -1,5 +1,6 @@
 #include "EditorComponentsFactory.h"
 #include "TransformComponentDecorator.h"
+#include "RenderComponentDecorator.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -21,6 +22,12 @@ sh::Component* EditorComponentsFactory::CreateComponent(sh::Component::Type type
 		m_components.push_back(component);
 		return component;
 	}			
+	case sh::Component::Type::RENDER:
+	{
+		component = new RenderComponentDecorator();
+		m_components.push_back(component);
+		return component;
+	}
 	}
 	return sh::ComponentsFactory::CreateComponent(type);
 }

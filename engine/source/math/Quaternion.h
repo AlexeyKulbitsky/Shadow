@@ -60,8 +60,55 @@ namespace sh
 				result.w = (other.w * w) - (other.x * x) - (other.y * y) - (other.z * z);
 				return result;
 			}
+			Quaternion<T>& operator*=(T s)
+			{
+				x *= s;
+				y *= s;
+				z *= s;
+				w *= s;
+				return *this;
+			}
+
 			Quaternion<T> operator/(T s) const { return Quaternion<T>(x / s, y / s, z / s, w / s); }
-			
+						
+			void Normalize()
+			{
+				T n = x*x + y*y + z*z + w*w;
+				assert(n != 0);
+				n = 1 / (T)math::Sqrt(n);
+				*this *= n;
+			}
+
+			void RotationFromTo(const Vector3<T>& a, const Vector3<T>& b)
+			{
+				Vector3<T> axis = a.Cross(b);
+				T dot = a.Dot(b);
+				if (dot < (T)(-1.0) + std::numeric_limits<T>::epsilon())// vectors are parallel and facing in the opposite direction
+				{
+					// Try crossing with x axis.
+					Vector3<T> t = a.Cross(Vector3<T>(1, 0, 0));
+					// If not ok, cross with y axis.
+					if (t.GetLength() == 0)
+					{
+						t = a.Cross(Vector3<T>(0, 1, 0));
+					}
+
+					t.Normalize();
+					x = t.x;
+					y = t.y;
+					z = t.z;
+					w = 0;
+				}
+
+				// if vectors are parallel and are facing in the same direction
+				//	the axis is zero and quaternion is the identity
+				Quaternion<T> result(axis.x * 0.5f, axis.y * 0.5f, axis.z * 0.5f, (dot + 1.0f) * 0.5f);
+				x = axis.x * 0.5f;
+				y = axis.y * 0.5f;
+				z = axis.z * 0.5f;
+				w = (dot + 1.0f) * 0.5f;
+				Normalize();
+			}
 
 			Matrix4<T> GetAsMatrix4() const
 			{

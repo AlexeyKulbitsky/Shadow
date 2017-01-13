@@ -18,6 +18,7 @@
 #include "gui\decorators\EditorComponentsFactory.h"
 #include "gui\decorators\ComponentDecorator.h"
 #include "gui\decorators\TransformComponentDecorator.h"
+#include "gui\decorators\RenderComponentDecorator.h"
 
 #include <Shadow.h>
 #include <scene\Camera.h>
@@ -97,9 +98,19 @@ void MainWindow::SetSelectedEntity(sh::Entity* entity)
 	if (entity)
 	{
 		sh::Component* component = entity->GetComponent(sh::Component::Type::TRANSFORM);
-		TransformComponentDecorator* decorator = dynamic_cast<TransformComponentDecorator*>(component);
-		ExpandableWidget* widget = decorator->GetParametersWidget();
-		inspectorLayout->addWidget(widget);
+		if (component)
+		{
+			TransformComponentDecorator* decorator = dynamic_cast<TransformComponentDecorator*>(component);
+			ExpandableWidget* widget = decorator->GetParametersWidget();
+			inspectorLayout->addWidget(widget);
+		}
+		component = entity->GetComponent(sh::Component::Type::RENDER);
+		if (component)
+		{
+			RenderComponentDecorator* decorator = dynamic_cast<RenderComponentDecorator*>(component);
+			ExpandableWidget* widget = decorator->GetParametersWidget();
+			inspectorLayout->addWidget(widget);
+		}
 	}
 	else
 	{
