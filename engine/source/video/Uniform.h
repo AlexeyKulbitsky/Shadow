@@ -59,6 +59,7 @@ namespace sh
 
 		class Uniform
 		{
+			public:	
 			/*
 			Base implementation used just for holding values
 			More specific type of Uniform that includes renderindg system
@@ -75,8 +76,7 @@ namespace sh
 				VEC3_ARRAY,
 				UNKNOWN
 			};
-
-		public:	
+		
 			enum class Usage
 			{
 				UNKNOWN
@@ -107,6 +107,7 @@ namespace sh
 			Usage GetUsage() const { return m_usage; }
 			void SetGlobalUniformName(GlobalUniformName name) { m_globalName = name; }
 			GlobalUniformName GetGlobalUniformName() const { return m_globalName; }
+			Type GetType() const { return m_type; }
 
 			virtual void Load() {}
 			virtual void Init() {}

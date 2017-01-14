@@ -4,6 +4,7 @@
 	<constants>
 		<uniforms>
 			<uniform name="matMVP" type="mat4" val="model.worldViewProjectionMatrix"/>
+			<uniform name="color" type="float" val="1.0"/>
 		</uniforms>
 	</constants>
 	
@@ -30,10 +31,10 @@
 		<![CDATA[
 
 			precision mediump float;
-	
+			uniform float color;
 			void main() 
 			{				
-				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+				gl_FragColor = vec4(color, 0.0, 0.0, 1.0);
 			} 
 	
 		]]>	

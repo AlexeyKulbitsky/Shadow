@@ -19,6 +19,7 @@ public:
 
 		sh::scene::Model* circleModel = nullptr;
 		sh::video::Uniform* circleColorUniform = nullptr;
+		sh::math::Vector3f localUp;
 		bool active = false;
 	};
 
@@ -36,7 +37,7 @@ private:
 	void Rotate(Axis::Type axis);
 
 private:
-	Axis m_axises[3];
+	Axis m_axises[4];
 };
 
 #endif

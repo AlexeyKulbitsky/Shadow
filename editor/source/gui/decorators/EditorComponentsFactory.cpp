@@ -1,6 +1,6 @@
 #include "EditorComponentsFactory.h"
-#include "TransformComponentDecorator.h"
-#include "RenderComponentDecorator.h"
+#include "TransformComponent/TransformComponentDecorator.h"
+#include "RenderComponent/RenderComponentDecorator.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 

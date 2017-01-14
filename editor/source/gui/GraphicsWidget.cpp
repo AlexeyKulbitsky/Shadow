@@ -39,13 +39,13 @@ void GraphicsWidget::mouseMoveEvent(QMouseEvent * ev)
 	e.mouseEvent.y = ev->y();
 	sh::Device::GetInstance()->OnEvent(e);
 
-	if (m_leftButtonPressed)
+	if (m_gizmo && m_leftButtonPressed)
 	{
 		m_gizmo->OnMouseMoved(ev->x(), ev->y());
 		return;
 	}
 
-	if (m_gizmo->IsEnabled())
+	if (m_gizmo && m_gizmo->IsEnabled())
 	{
 		m_gizmo->TryToSelect(ev->x(), ev->y(), width(), height());
 	}
@@ -78,26 +78,34 @@ void GraphicsWidget::mousePressEvent(QMouseEvent * ev)
 	e.mouseEvent.y = ev->y();	
 	sh::Device::GetInstance()->OnEvent(e);	
 	
-	m_gizmo->OnMousePressed(ev->x(), ev->y());
-	if (m_gizmo->IsActive())
+	if (m_gizmo)
 	{
-		return;
+		m_gizmo->OnMousePressed(ev->x(), ev->y());
+		if (m_gizmo->IsActive())
+		{
+			return;
+		}
 	}
+	
 	
 	if (ev->button() == Qt::LeftButton)
 	{
 		sh::Entity* entity = m_picker->TryToPick(ev->x(), ev->y(), width(), height());
-
-		m_gizmo->SetEntity(entity);
+	
 		emit EntitySelected(entity);
-		if (entity)
+		if (m_gizmo)
 		{
-			m_gizmo->SetEnabled(true);
+			m_gizmo->SetEntity(entity);
+			if (entity)
+			{
+				m_gizmo->SetEnabled(true);
+			}
+			else
+			{
+				m_gizmo->SetEnabled(false);
+			}
 		}
-		else
-		{
-			m_gizmo->SetEnabled(false);
-		}
+		
 	}
 		
 }
@@ -129,7 +137,8 @@ void GraphicsWidget::mouseReleaseEvent(QMouseEvent * ev)
 	e.mouseEvent.y = ev->y();
 	sh::Device::GetInstance()->OnEvent(e);
 
-	m_gizmo->OnMouseReleased(ev->x(), ev->y());
+	if (m_gizmo)
+		m_gizmo->OnMouseReleased(ev->x(), ev->y());
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -153,8 +162,9 @@ void GraphicsWidget::Init()
 	//m_scaleGizmo = new ScaleGizmo();
 
 	// Set Move gizmo as current
-	m_gizmo = m_rotateGizmo;
+	//m_gizmo = m_rotateGizmo;
 	//m_gizmo = m_moveGizmo;
+	m_gizmo = nullptr;
 	m_picker = new Picker();
 
 	size_t entitiesCount = m_sceneManager->GetEntitiesCount();
@@ -171,8 +181,11 @@ void GraphicsWidget::Render()
 	m_driver->BeginRendering();
 	m_sceneManager->Update();
 
-	m_gizmo->Render();
-
+	if (m_gizmo)
+	{
+		m_gizmo->Render();
+	}
+	
 	m_driver->EndRendering();
 }
 
@@ -183,17 +196,20 @@ void GraphicsWidget::TransformActionChanged(QAction* action)
 	QString text = action->text();
 	if (text == "Move")
 	{
-		printf("Move\n");
-		//m_gizmo = m_moveGizmo;
+		m_gizmo = m_moveGizmo;
 	}
 	else if (text == "Rotate")
 	{
-		printf("Rotate\n");
-		//m_gizmo = m_rotateGizmo;
+		m_gizmo = m_rotateGizmo;
 	}
 	else if (text == "Scale")
 	{
 		printf("Scale\n");
+		m_gizmo = nullptr;
+	}
+	else
+	{
+		m_gizmo = nullptr;
 	}
 }
 

@@ -100,7 +100,7 @@ namespace sh
 			for (size_t i = 0, sz = m_material->GetRenderPassesCount(); i < sz; ++i)
 			{
 				video::RenderPass* renderPass = m_material->GetRenderPass(i);
-				m_renderCommands[i]->SetUniformBuffer(renderPass->GetUniformBuffer()->Clone());
+				m_renderCommands[i]->SetUniformBuffer(renderPass->GetUniformBuffer());
 
 				video::VertexInputDeclaration* inputDeclaration = renderPass->GetVertexInputDeclaration();
 				inputDeclaration->Assemble(*(m_meshBase->GetVertexDeclaration()));

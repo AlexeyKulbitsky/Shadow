@@ -13,6 +13,20 @@
 
 namespace sh
 {
+	RenderComponent::RenderComponent()
+	{
+
+	}
+
+	////////////////////////////////////////////////////////////////
+
+	RenderComponent::~RenderComponent()
+	{
+
+	}
+
+	////////////////////////////////////////////////////////////////
+
 	void RenderComponent::Load(const pugi::xml_node &node)
 	{
 		ResourceManager* resourceManager = Device::GetInstance()->GetResourceManager();

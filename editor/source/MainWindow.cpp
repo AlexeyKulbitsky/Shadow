@@ -17,8 +17,8 @@
 #include "gui\ExpandableWidget.h"
 #include "gui\decorators\EditorComponentsFactory.h"
 #include "gui\decorators\ComponentDecorator.h"
-#include "gui\decorators\TransformComponentDecorator.h"
-#include "gui\decorators\RenderComponentDecorator.h"
+#include "gui\decorators\TransformComponent\TransformComponentDecorator.h"
+#include "gui\decorators\RenderComponent\RenderComponentDecorator.h"
 
 #include <Shadow.h>
 #include <scene\Camera.h>
@@ -213,7 +213,9 @@ void MainWindow::CreateToolBar()
 	addToolBar(m_mainToolBar);
 	QString workingDir = QApplication::applicationDirPath();
 
-	
+	QAction* selectAction = new QAction("Select", this);	
+	selectAction->setIcon(QIcon(workingDir + "/../../../../../data/icons/select.png"));
+	selectAction->setCheckable(true);
 
 	QAction* moveAction = new QAction("Move", this);			
 	moveAction->setIcon(QIcon(workingDir + "/../../../../../data/icons/move.png"));
@@ -227,17 +229,21 @@ void MainWindow::CreateToolBar()
 	scaleAction->setIcon(QIcon(workingDir + "/../../../../../data/icons/scale.png"));
 	scaleAction->setCheckable(true);
 
-	QActionGroup* transformGroup = new QActionGroup(this);
+	QActionGroup* transformGroup = new QActionGroup(this);	
+	transformGroup->addAction(selectAction);
 	transformGroup->addAction(moveAction);
 	transformGroup->addAction(rotateAction);
 	transformGroup->addAction(scaleAction);
 
 	connect(transformGroup, SIGNAL(triggered(QAction*)), m_graphicsWidget, SLOT(TransformActionChanged(QAction*)));
 
+	m_mainToolBar->addAction(selectAction);
 	m_mainToolBar->addAction(moveAction);
 	m_mainToolBar->addAction(rotateAction);
 	m_mainToolBar->addAction(scaleAction);
 	
+	selectAction->setChecked(true);
+
 	m_mainToolBar->addSeparator();
 }
 

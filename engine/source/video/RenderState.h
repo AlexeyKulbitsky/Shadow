@@ -9,28 +9,69 @@ namespace sh
 	{
 		enum class SHADOW_API WriteMask
 		{
-			ZERO,
-			ALL
+			ZERO = 0,
+			ALL,
+
+			COUNT
 		};
+
+		static const char* const g_writeMaskMap[] = 
+		{
+			"Zero",
+			"All"
+		};
+
+		////////////////////////////////////////////////////////////
 
 		enum class SHADOW_API FrontFace
 		{
 			CLOCKWISE = 0,
-			COUNTER_CLOCKWISE
+			COUNTER_CLOCKWISE,
+
+			COUNT
 		};
+
+		static const char* const g_frontFaceMap[] = 
+		{
+			"ClockWise",
+			"CounterClockWise"
+		};
+
+		////////////////////////////////////////////////////////////
 
 		enum class SHADOW_API CullFace
 		{
 			FRONT = 0,
 			BACK,
-			NONE
+			NONE,
+
+			COUNT
 		};
+
+		static const char* const g_cullFaceMap[] = 
+		{
+			"Front",
+			"Back",
+			"None"
+		};
+
+		////////////////////////////////////////////////////////////
 
 		enum class SHADOW_API FillMode
 		{
 			SOLID = 0,
-			WIREFRAME
+			WIREFRAME,
+
+			COUNT
 		};
+
+		static const char* const g_fillModeMap[] = 
+		{
+			"Solid",
+			"WireFrame"
+		};
+
+		////////////////////////////////////////////////////////////
 
 		enum class SHADOW_API CompareFunction
 		{
@@ -41,8 +82,24 @@ namespace sh
 			GREATER,
 			NOT_EQUAL,
 			ALWAYS,
-			NEVER
+			NEVER,
+
+			COUNT
 		};
+
+		static const char* const g_compareFunctionMap[] = 
+		{
+			"Less",
+			"LessOrEqual",
+			"Equal",
+			"GreaterOrEqual",
+			"Greater",
+			"NotEqual",
+			"Always",
+			"Never"
+		};
+
+		////////////////////////////////////////////////////////////
 
 		enum class SHADOW_API StencilOperation
 		{
@@ -53,8 +110,24 @@ namespace sh
 			INCREMENT,
 			DECREMENT,
 			INCREMENT_WRAP,
-			DECREMENT_WRAP
+			DECREMENT_WRAP,
+
+			COUNT
 		};
+
+		static const char* const g_stencilOperationMap[] = 
+		{
+			"Keep",
+			"Clear",
+			"Replace",
+			"Invert",
+			"Increment",
+			"Decrement",
+			"IncrementWrap",
+			"DecrementWrap"
+		};
+
+		////////////////////////////////////////////////////////////
 
 		enum class SHADOW_API BlendFactor
 		{
@@ -68,8 +141,27 @@ namespace sh
 			INV_SRC_ALPHA,
 			DST_ALPHA,
 			INV_DST_ALPHA,
-			SRC_ALPHA_SATURATED
+			SRC_ALPHA_SATURATED,
+
+			COUNT
 		};
+
+		static const char* const g_blendFactorMap[] = 
+		{
+			"Zero",
+			"One",
+			"SrcColor",
+			"InvSrcColor",
+			"DstColor",
+			"InvDstColor",
+			"SrcAlpha",
+			"InvSrcAlpha",
+			"DstAlpha",
+			"InvDstAlpha",
+			"SrcAlphaSturated"
+		};
+
+		////////////////////////////////////////////////////////////
 
 		enum class SHADOW_API BlendOperation
 		{
@@ -77,8 +169,21 @@ namespace sh
 			SUBSTRACT,
 			REVERSE_SUBSTRACT,
 			MIN,
-			MAX
+			MAX,
+
+			COUNT
 		};
+
+		static const char* const g_blendOperationMap[] = 
+		{
+			"Add",
+			"Substract",
+			"ReverseSubstract",
+			"Min",
+			"Max"
+		};
+
+		////////////////////////////////////////////////////////////
 
 		enum class SHADOW_API BlendCombination
 		{
@@ -88,7 +193,20 @@ namespace sh
 			MULTIPLY,
 			BURN,
 			SCREEN,
-			SUBSTRACTIVE
+			SUBSTRACTIVE,
+
+			COUNT
+		};
+
+		static const char* const g_blendCombinationMap[] = 
+		{
+			"Solid",
+			"Alpha",
+			"Additive",
+			"Multiply",
+			"Burn",
+			"Screen",
+			"Substractive"
 		};
 
 		////////////////////////////////////////////////////////////////////////////////////

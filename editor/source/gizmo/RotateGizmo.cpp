@@ -23,10 +23,10 @@
 RotateGizmo::RotateGizmo()
 {
 	//m_axises[0].circleModel = sh::scene::GeometryGenerator::GetCircleModel(sh::math::Vector3f(0.0f), 5.0f, sh::math::Vector3f(0.0f, 0.0f, 1.0f), sh::math::Vector3f(0.0f, 1.0f, 0.0f));
-	m_axises[0].circleModel = sh::scene::GeometryGenerator::GetTorusModel(
+	m_axises[0].circleModel = sh::scene::GeometryGenerator::GetHalfTorusModel(
 		sh::math::Vector3f(0.0f), 
 		5.0f, 
-		0.2f,
+		0.1f,
 		8, 
 		32, 
 		sh::math::Vector3f(0.0f, 0.0f, 1.0f), 
@@ -39,13 +39,15 @@ RotateGizmo::RotateGizmo()
 		m_axises[0].circleColorUniform->Set(color);
 	}
 
+	m_axises[0].localUp = sh::math::Vector3f(0.0f, 1.0f, 0.0f);
+
 	////////////////////////////////////////////////
 
 	//m_axises[1].circleModel = sh::scene::GeometryGenerator::GetCircleModel(sh::math::Vector3f(0.0f), 5.0f, sh::math::Vector3f(1.0f, 0.0f, 0.0f), sh::math::Vector3f(0.0f, 0.0f, 1.0f));
-	m_axises[1].circleModel = sh::scene::GeometryGenerator::GetTorusModel(
+	m_axises[1].circleModel = sh::scene::GeometryGenerator::GetHalfTorusModel(
 		sh::math::Vector3f(0.0f), 
 		5.0f, 
-		0.2f,
+		0.1f,
 		8, 
 		32, 
 		sh::math::Vector3f(1.0f, 0.0f, 0.0f), 
@@ -61,10 +63,10 @@ RotateGizmo::RotateGizmo()
 	/////////////////////////////////////////////////
 
 	//m_axises[2].circleModel = sh::scene::GeometryGenerator::GetCircleModel(sh::math::Vector3f(0.0f), 5.0f, sh::math::Vector3f(1.0f, 0.0f, 0.0f), sh::math::Vector3f(0.0f, 1.0f, 0.0f));
-	m_axises[2].circleModel = sh::scene::GeometryGenerator::GetTorusModel(
+	m_axises[2].circleModel = sh::scene::GeometryGenerator::GetHalfTorusModel(
 		sh::math::Vector3f(0.0f), 
 		5.0f, 
-		0.2f,
+		0.1f,
 		8, 
 		32, 
 		sh::math::Vector3f(1.0f, 0.0f, 0.0f), 
@@ -76,13 +78,31 @@ RotateGizmo::RotateGizmo()
 		sh::math::Vector3f color(0.0f, 0.0f, 1.0f);
 		m_axises[2].circleColorUniform->Set(color);
 	}
+
+	////////////////////////////////////////////////////////////////////////
+
+	m_axises[3].circleModel = sh::scene::GeometryGenerator::GetTorusModel(
+		sh::math::Vector3f(0.0f), 
+		5.0f, 
+		0.05f,
+		8, 
+		32, 
+		sh::math::Vector3f(1.0f, 0.0f, 0.0f), 
+		sh::math::Vector3f(0.0f, 1.0f, 0.0f));
+	uniformBuffer = m_axises[3].circleModel->GetMesh(0)->GetRenderCommand()->GetUniformBuffer();
+	m_axises[3].circleColorUniform = uniformBuffer->GetUniform(sh::String("color"));
+	if (m_axises[3].circleColorUniform)
+	{
+		sh::math::Vector3f color(0.5f, 0.5f, 0.5f);
+		m_axises[3].circleColorUniform->Set(color);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 RotateGizmo::~RotateGizmo()
 {
-	for (size_t i = 0; i < 3; ++i)
+	for (size_t i = 0; i < 4; ++i)
 	{
 		delete m_axises[i].circleModel;
 	}
@@ -114,6 +134,7 @@ void RotateGizmo::Render()
 
 			matrix.SetScale(scale);
 			matrix.SetTranslation(position);
+
 			matrix = matrix * rotation.GetAsMatrix4();
 
 			for (size_t i = 0; i < 3; ++i)
@@ -121,9 +142,17 @@ void RotateGizmo::Render()
 				m_axises[i].circleModel->SetWorldMatrix(matrix);
 				m_axises[i].circleModel->UpdateTransformationUniforms();
 			}
+
+			matrix.SetIdentity();
+			matrix.SetScale(scale);
+			matrix.SetTranslation(position);
+			matrix = matrix * camera->GetRotation().GetAsMatrix4();
+			m_axises[3].circleModel->SetWorldMatrix(matrix);
+			m_axises[3].circleModel->UpdateTransformationUniforms();
 		}
 	}
 
+	driver->Render(m_axises[3].circleModel);
 
 	for (size_t i = 0; i < 3; ++i)
 	{
