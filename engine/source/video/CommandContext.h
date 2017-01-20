@@ -2,6 +2,7 @@
 #define SHADOW_COMMAND_CONTEXT_INCLUDE
 
 #include "../Globals.h"
+#include "RenderCommand.h"
 
 namespace sh
 {
@@ -25,10 +26,10 @@ namespace sh
 			virtual void SetShaderParameter(u32 bufferIndex, u32 baseIndex, u32 bytesCount, const void* data) = 0;
 
 			// Draw primitives without indices
-			virtual void DrawPrimitives(u32 primitiveType, u32 baseVertexIndex, u32 primitivesCount, u32 instancesCount) = 0;
+			virtual void DrawPrimitives(Topology topology, u32 baseVertexIndex, u32 primitivesCount, u32 instancesCount) = 0;
 
 			// Draw primitives indexed
-			virtual void DrawIndexedPrimitives(/*IndexBuffer* indexbuffer,*/ u32 primitiveType, u32 primitivesCount) = 0;
+			virtual void DrawIndexedPrimitives(/*IndexBuffer* indexbuffer,*/ Topology topology, u32 primitivesCount) = 0;
 
 			// Enable/disable depth testing
 			virtual void EnableDepthTest(bool enable, f32 minDepth, f32 maxDepth) = 0;

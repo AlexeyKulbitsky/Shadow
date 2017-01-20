@@ -56,7 +56,7 @@ namespace sh
 
 			static void ExecuteAndDestruct(CommandListBase& commandList, CommandBase* command)
 			{
-				CommandType* executableCommand = (CommandType*)command;
+				CommandType* executableCommand = static_cast<CommandType*>(command);
 				executableCommand->Execute(CmdList);
 				executableCommand->~();
 			}
