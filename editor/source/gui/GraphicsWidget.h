@@ -58,6 +58,7 @@ private:
 
 	Gizmo* m_gizmo = nullptr;
 
+	Gizmo* m_defaultGizmo = nullptr;
 	MoveGizmo* m_moveGizmo = nullptr;
 	RotateGizmo* m_rotateGizmo = nullptr;
 	ScaleGizmo* m_scaleGizmo = nullptr;

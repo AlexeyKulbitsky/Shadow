@@ -303,11 +303,11 @@ namespace sh
 			rotationMatrix.m[1][2] = vty.z;
 
 			std::vector<f32> vertexArray;
-			for (int verticalIt = 0; verticalIt < numVerticesPerColumn; verticalIt++)
+			for (u32 verticalIt = 0; verticalIt < numVerticesPerColumn; verticalIt++)
 			{
 				float theta = verticalAngularStride * verticalIt;
 
-				for (int horizontalIt = 0; horizontalIt < numVerticesPerRow; horizontalIt++)
+				for (u32 horizontalIt = 0; horizontalIt < numVerticesPerRow; horizontalIt++)
 				{
 					float phi = horizontalAngularStride * horizontalIt;
 
@@ -336,9 +336,9 @@ namespace sh
 			std::vector<u32> indexArray;		
 			size_t indicesCount = sides * rings * 6;
 
-			for (int verticalIt = 0; verticalIt < rings; verticalIt++)
+			for (u32 verticalIt = 0; verticalIt < rings; verticalIt++)
 			{
-				for (int horizontalIt = 0; horizontalIt < sides; horizontalIt++)
+				for (u32 horizontalIt = 0; horizontalIt < sides; horizontalIt++)
 				{
 					short lt = (short)(horizontalIt + verticalIt * (numVerticesPerRow));
 					short rt = (short)((horizontalIt + 1) + verticalIt * (numVerticesPerRow));
@@ -430,11 +430,11 @@ namespace sh
 			rotationMatrix.m[1][2] = vty.z;
 
 			std::vector<f32> vertexArray;
-			for (int verticalIt = 0; verticalIt < numVerticesPerColumn; verticalIt++)
+			for (u32 verticalIt = 0; verticalIt < numVerticesPerColumn; verticalIt++)
 			{
 				float theta = verticalAngularStride * verticalIt;
 
-				for (int horizontalIt = 0; horizontalIt < numVerticesPerRow; horizontalIt++)
+				for (u32 horizontalIt = 0; horizontalIt < numVerticesPerRow; horizontalIt++)
 				{
 					float phi = horizontalAngularStride * horizontalIt;
 
@@ -463,9 +463,9 @@ namespace sh
 			std::vector<u32> indexArray;		
 			size_t indicesCount = sides * rings * 6;
 
-			for (int verticalIt = 0; verticalIt < rings; verticalIt++)
+			for (u32 verticalIt = 0; verticalIt < rings; verticalIt++)
 			{
-				for (int horizontalIt = 0; horizontalIt < sides; horizontalIt++)
+				for (u32 horizontalIt = 0; horizontalIt < sides; horizontalIt++)
 				{
 					short lt = (short)(horizontalIt + verticalIt * (numVerticesPerRow));
 					short rt = (short)((horizontalIt + 1) + verticalIt * (numVerticesPerRow));

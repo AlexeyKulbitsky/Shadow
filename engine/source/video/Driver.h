@@ -2,7 +2,6 @@
 #define SHADOW_DRIVER_INCLUDE
 
 #include "../Globals.h"
-#include "HardwareBuffer.h"
 #include "RenderCommand.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
@@ -17,10 +16,11 @@ namespace sh
 	}
 	namespace video
 	{
-		struct HardwareBuffer;
 		class RenderCommand;
 		class ShaderProgram;
 		class Texture;
+		struct DepthStencilState;
+		struct RasterizationState;
 
 		enum class DriverType
 		{
@@ -41,9 +41,32 @@ namespace sh
 			virtual void DrawMesh(scene::Mesh* mesh) = 0;
 			virtual void Render(RenderCommand* command){}
 			virtual void Render(scene::Model* model);
+
+			// Viewport management
 			virtual void SetViewport(u32 x, u32 y, u32 width, u32 height);
 			virtual const math::Vector4u& GetViewPort() const { return m_viewPort; }
-			virtual void PrintPixelInfo(u32 x, u32 y, u32 width, u32 height) { }
+			virtual void SetDepthRange(f32 zMin, f32 zMax);
+			virtual const math::Vector2f& GetDepthRange() const { return m_depthRange; }
+			
+			// Buffers clearing
+			void SetClearColor(const math::Vector4f& clearColor) { m_clearColor = clearColor; }
+			void SetClearDepth(f32 clearDepth) { m_clearDepth = clearDepth; }
+			void SetClearStencil(u32 clearStencil) { m_clearStencil = clearStencil; }
+			const math::Vector4f& GetClearColor() const { return m_clearColor; }
+			f32 GetClearDepth() const { return m_clearDepth; }
+			u32 GetClearStencil() const { return m_clearStencil; }
+
+			virtual void ClearColorBuffer() { }
+			virtual void ClearDepthBuffer() { }
+			virtual void ClearStencilBuffer() { }
+			virtual void ClearBuffers() { }
+
+			// State management 
+			virtual void SetDepthStencilState(DepthStencilState* depthStencilState) { }
+			virtual void SetRasterizationState(RasterizationState* rasterizationState) { }
+			virtual void SetBlendingState() { }
+
+
 			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) {}
 
 			// Resources creation interface
@@ -68,6 +91,12 @@ namespace sh
 		protected:
 			Uniform* m_globalUniforms[(size_t)GlobalUniformName::COUNT];
 			math::Vector4u m_viewPort;
+			math::Vector2f m_depthRange;
+			
+			// Clear values
+			math::Vector4f m_clearColor;
+			f32 m_clearDepth;
+			u32 m_clearStencil;
 		};
 	}
 }

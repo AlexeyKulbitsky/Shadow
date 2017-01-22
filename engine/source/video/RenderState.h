@@ -2,133 +2,14 @@
 #define SHADOW_RENDER_STATE_INCLUDE
 
 #include "../Globals.h"
+#include "DepthStencilState.h"
+#include "RasterizationState.h"
 
 namespace sh
 {
 	namespace video
 	{
-		enum class SHADOW_API WriteMask
-		{
-			ZERO = 0,
-			ALL,
-
-			COUNT
-		};
-
-		static const char* const g_writeMaskMap[] = 
-		{
-			"Zero",
-			"All"
-		};
-
-		////////////////////////////////////////////////////////////
-
-		enum class SHADOW_API FrontFace
-		{
-			CLOCKWISE = 0,
-			COUNTER_CLOCKWISE,
-
-			COUNT
-		};
-
-		static const char* const g_frontFaceMap[] = 
-		{
-			"ClockWise",
-			"CounterClockWise"
-		};
-
-		////////////////////////////////////////////////////////////
-
-		enum class SHADOW_API CullFace
-		{
-			FRONT = 0,
-			BACK,
-			NONE,
-
-			COUNT
-		};
-
-		static const char* const g_cullFaceMap[] = 
-		{
-			"Front",
-			"Back",
-			"None"
-		};
-
-		////////////////////////////////////////////////////////////
-
-		enum class SHADOW_API FillMode
-		{
-			SOLID = 0,
-			WIREFRAME,
-
-			COUNT
-		};
-
-		static const char* const g_fillModeMap[] = 
-		{
-			"Solid",
-			"WireFrame"
-		};
-
-		////////////////////////////////////////////////////////////
-
-		enum class SHADOW_API CompareFunction
-		{
-			LESS = 0,
-			LESS_OR_EQUAL,
-			EQUAL,
-			GREATER_OR_EQUAL,
-			GREATER,
-			NOT_EQUAL,
-			ALWAYS,
-			NEVER,
-
-			COUNT
-		};
-
-		static const char* const g_compareFunctionMap[] = 
-		{
-			"Less",
-			"LessOrEqual",
-			"Equal",
-			"GreaterOrEqual",
-			"Greater",
-			"NotEqual",
-			"Always",
-			"Never"
-		};
-
-		////////////////////////////////////////////////////////////
-
-		enum class SHADOW_API StencilOperation
-		{
-			KEEP = 0,
-			CLEAR,
-			REPLACE,
-			INVERT,
-			INCREMENT,
-			DECREMENT,
-			INCREMENT_WRAP,
-			DECREMENT_WRAP,
-
-			COUNT
-		};
-
-		static const char* const g_stencilOperationMap[] = 
-		{
-			"Keep",
-			"Clear",
-			"Replace",
-			"Invert",
-			"Increment",
-			"Decrement",
-			"IncrementWrap",
-			"DecrementWrap"
-		};
-
-		////////////////////////////////////////////////////////////
-
+		
 		enum class SHADOW_API BlendFactor
 		{
 			ZERO = 0,
@@ -321,41 +202,13 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////////////////
 
-		struct SHADOW_API RaterizerState
-		{
-			CullFace    cullFace = CullFace::BACK;
-			FrontFace	frontFace = FrontFace::COUNTER_CLOCKWISE;
-			FillMode    fillMode = FillMode::SOLID;
-			bool		polygonOffsetEnabled = false;
-			float		polygonOffsetFactor = 0.0f; //OffsetFactor
-			float		polygonOffsetUnits = 0.0f; //DepthBias
-		};
+		
 
 		////////////////////////////////////////////////////////////////////////////////////
 
-		struct SHADOW_API Face
-		{
-			StencilOperation fail = StencilOperation::KEEP;
-			StencilOperation depthFail = StencilOperation::KEEP;
-			StencilOperation pass = StencilOperation::KEEP;
-			CompareFunction compare = CompareFunction::ALWAYS;
-		};
+		
 
-		struct SHADOW_API DepthStencilState
-		{
-			// Depth part
-			bool				enableDepthTest = true;
-			CompareFunction		depthCompareFunction = CompareFunction::LESS_OR_EQUAL;
-			WriteMask			depthWriteMask = WriteMask::ALL;
-
-			// Stencil part
-			bool				enableStencilTest = false;
-			u8					stencilReadMask = 0xFF;
-			u8					stencilWriteMask = 0xFF;
-			Face				frontFace;
-			Face				backFace;
-			u32					reference = 0;
-		};
+		
 
 		////////////////////////////////////////////////////////////////////////////////////
 
@@ -369,7 +222,7 @@ namespace sh
 			virtual RenderState* Clone();
 
 			BlendingState blendingState;
-			RaterizerState rasterizerState;
+			RasterizationState rasterizerState;
 			DepthStencilState depthStencilState;
 		};
 	}

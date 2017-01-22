@@ -2,7 +2,6 @@
 #define SHADOW_MESH_INCLUDE
 
 #include <vector>
-#include "../video/HardwareBuffer.h"
 #include "../video/VertexBuffer.h"
 #include "../video/IndexBuffer.h"
 #include "../Types.h"

@@ -58,8 +58,7 @@ namespace sh
 				RenderCommand* renderCommand = mesh->GetRenderCommand();
 
 				Render(renderCommand);
-				renderPass->GetShaderProgram()->UnbindProgram();
-		
+				renderPass->GetShaderProgram()->UnbindProgram();	
 			}
 		}
 
@@ -71,6 +70,14 @@ namespace sh
 			m_viewPort.y = y;
 			m_viewPort.z = width;
 			m_viewPort.w = height;
+		}
+
+		/////////////////////////////////////////////////////////////////////////
+	
+		void Driver::SetDepthRange(f32 zMin, f32 zMax)
+		{
+			m_depthRange.x = zMin;
+			m_depthRange.y = zMax;
 		}
 
 		/////////////////////////////////////////////////////////////////////////

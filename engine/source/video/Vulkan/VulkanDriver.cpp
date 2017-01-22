@@ -1,5 +1,4 @@
 #include "VulkanDriver.h"
-#include "../HardwareBuffer.h"
 #include "../../scene/Mesh.h"
 
 #include "VulkanVertexBuffer.h"
@@ -150,12 +149,12 @@ namespace sh
 		void VulkanDriver::DrawMesh(scene::Mesh* mesh)
 		{
 			updateUniformBuffer();
-			DrawHardwareBuffer(nullptr);
+			DrawBuffer();
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		void VulkanDriver::DrawHardwareBuffer(HardwareBuffer *buffer) const
+		void VulkanDriver::DrawBuffer()
 		{						
 			uint32_t imageIndex;
 			vkAcquireNextImageKHR(m_device, m_swapChain, 500000/*std::numeric_limits<uint64_t>::max()*/, m_imageAvailableSemaphore, VK_NULL_HANDLE, &imageIndex);
@@ -194,20 +193,6 @@ namespace sh
 			presentInfo.pImageIndices = &imageIndex;
 
 			vkQueuePresentKHR(m_presentQueue, &presentInfo);
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		HardwareBuffer* VulkanDriver::CreateHardwareBuffer(const HardwareBuffer::CreateInfo& info) const
-		{
-			return nullptr;
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		void VulkanDriver::InitHardwareBuffer(HardwareBuffer *buffer, const void* verticesPointer, u32 verticesSize, const void* indicesPointer, u32 indicesSize) const
-		{
-
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////

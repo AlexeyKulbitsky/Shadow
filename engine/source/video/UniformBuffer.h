@@ -8,12 +8,11 @@
 namespace sh
 {
 	namespace video
-	{
-		// TODO : implement ShaderData
+	{		
 		//class Uniform;
 		//class Sampler;
 		class ShaderProgram;
-
+		// TODO : implement ShaderData
 		class UniformBuffer
 		{
 		public:

@@ -22,8 +22,21 @@ namespace sh
 			virtual void DrawMesh(scene::Mesh* mesh) override;
 			
 			virtual void Render(RenderCommand* command) override;
+
+			// Viewport management
 			virtual void SetViewport(u32 x, u32 y, u32 width, u32 height) override;
-			virtual void PrintPixelInfo(u32 x, u32 y, u32 width, u32 height) override;
+			virtual void SetDepthRange(f32 zMin, f32 zMax) override;
+			
+			virtual void ClearColorBuffer() override;
+			virtual void ClearDepthBuffer() override;
+			virtual void ClearStencilBuffer() override;
+			virtual void ClearBuffers() override;
+
+			// State management 
+			virtual void SetDepthStencilState(DepthStencilState* depthStencilState) override;
+			virtual void SetRasterizationState(RasterizationState* rasterizationState) override;
+			virtual void SetBlendingState() override;
+			
 			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) override;
 
 			virtual VertexBuffer* CreateVertexBuffer() override;

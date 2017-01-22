@@ -90,20 +90,22 @@ void GraphicsWidget::mousePressEvent(QMouseEvent * ev)
 	
 	if (ev->button() == Qt::LeftButton)
 	{
-		sh::Entity* entity = m_picker->TryToPick(ev->x(), ev->y(), width(), height());
-	
-		emit EntitySelected(entity);
-		if (m_gizmo)
+		sh::Entity* entity = m_picker->TryToPick(ev->x(), ev->y(), width(), height());	
+		
+		if (!entity || entity != m_gizmo->GetEntity())
 		{
-			m_gizmo->SetEntity(entity);
-			if (entity)
-			{
-				m_gizmo->SetEnabled(true);
-			}
-			else
-			{
-				m_gizmo->SetEnabled(false);
-			}
+			emit EntitySelected(entity);
+		}
+		
+		m_gizmo->SetEntity(entity);
+		
+		if (entity)
+		{
+			m_gizmo->SetEnabled(true);
+		}
+		else
+		{
+			m_gizmo->SetEnabled(false);
 		}
 		
 	}
@@ -137,7 +139,7 @@ void GraphicsWidget::mouseReleaseEvent(QMouseEvent * ev)
 	e.mouseEvent.y = ev->y();
 	sh::Device::GetInstance()->OnEvent(e);
 
-	if (m_gizmo)
+	if (m_gizmo->IsEnabled())
 		m_gizmo->OnMouseReleased(ev->x(), ev->y());
 }
 
@@ -157,14 +159,13 @@ void GraphicsWidget::Init()
 	m_sceneManager = sh::Device::GetInstance()->GetSceneManager();
 
 	// Create all gizmos
+	m_defaultGizmo = new Gizmo();
 	m_moveGizmo = new MoveGizmo();
 	m_rotateGizmo = new RotateGizmo();
 	//m_scaleGizmo = new ScaleGizmo();
 
-	// Set Move gizmo as current
-	//m_gizmo = m_rotateGizmo;
-	//m_gizmo = m_moveGizmo;
-	m_gizmo = nullptr;
+	// Set default gizmo as current
+	m_gizmo = m_defaultGizmo;
 	m_picker = new Picker();
 
 	size_t entitiesCount = m_sceneManager->GetEntitiesCount();
@@ -194,12 +195,28 @@ void GraphicsWidget::Render()
 void GraphicsWidget::TransformActionChanged(QAction* action)
 {
 	QString text = action->text();
-	if (text == "Move")
+	if (text == "Select")
 	{
+		m_defaultGizmo->SetEntity(m_gizmo->GetEntity());
+		m_defaultGizmo->SetEnabled(m_gizmo->IsEnabled());
+		m_gizmo->SetEntity(nullptr);
+		m_gizmo->SetEnabled(false);
+		m_gizmo = m_defaultGizmo;
+	}
+	else if (text == "Move")
+	{
+		m_moveGizmo->SetEntity(m_gizmo->GetEntity());
+		m_moveGizmo->SetEnabled(m_gizmo->IsEnabled());
+		m_gizmo->SetEntity(nullptr);
+		m_gizmo->SetEnabled(false);
 		m_gizmo = m_moveGizmo;
 	}
 	else if (text == "Rotate")
 	{
+		m_rotateGizmo->SetEntity(m_gizmo->GetEntity());
+		m_rotateGizmo->SetEnabled(m_gizmo->IsEnabled());
+		m_gizmo->SetEntity(nullptr);
+		m_gizmo->SetEnabled(false);
 		m_gizmo = m_rotateGizmo;
 	}
 	else if (text == "Scale")

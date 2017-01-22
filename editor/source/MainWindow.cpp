@@ -228,6 +228,7 @@ void MainWindow::CreateToolBar()
 	QAction* scaleAction = new QAction("Scale", this);			
 	scaleAction->setIcon(QIcon(workingDir + "/../../../../../data/icons/scale.png"));
 	scaleAction->setCheckable(true);
+	scaleAction->setEnabled(false);
 
 	QActionGroup* transformGroup = new QActionGroup(this);	
 	transformGroup->addAction(selectAction);
