@@ -2,6 +2,9 @@
 #include "ShaderProgram.h"
 #include "UniformBuffer.h"
 #include "RenderState.h"
+#include "DepthStencilState.h"
+#include "RasterizationState.h"
+#include "DepthStencilState.h"
 #include "../Device.h"
 
 namespace sh
@@ -27,6 +30,9 @@ namespace sh
 			result->m_shaderProgram = m_shaderProgram;
 			result->m_uniformBuffer = m_uniformBuffer->Clone();
 			result->m_renderState = m_renderState->Clone();
+			result->m_depthStencilState = m_depthStencilState->Clone();
+			result->m_blendingState = m_blendingState->Clone();
+			result->m_rasterizationState = m_rasterizationState->Clone();
 			result->m_vertexInputDeclaration = m_vertexInputDeclaration->Clone();
 			result->m_name = m_name;
 			result->m_layer = m_layer;
@@ -67,6 +73,30 @@ namespace sh
 			if (!renderstateNode.empty())
 			{				
 				m_renderState->Load(renderstateNode);
+			}
+
+			// Load depth/stencil state
+			m_depthStencilState = new DepthStencilState();
+			pugi::xml_node depthStencilStateNode = node.child("depthstencilstate");
+			if (!depthStencilStateNode.empty())
+			{
+				m_depthStencilState->Load(depthStencilStateNode);
+			}
+
+			// Load rasterization state
+			m_rasterizationState = new RasterizationState();
+			pugi::xml_node rasterizationStateNode = node.child("rasterizationstate");
+			if (!rasterizationStateNode.empty())
+			{
+				m_rasterizationState->Load(rasterizationStateNode);
+			}
+
+			// Load blending state
+			m_blendingState = new BlendingState();
+			pugi::xml_node blendingStateNode = node.child("blendingstate");
+			if (!blendingStateNode.empty())
+			{
+				m_blendingState->Load(blendingStateNode);
 			}
 
 			// Load shader program

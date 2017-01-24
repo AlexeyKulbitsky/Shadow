@@ -31,7 +31,7 @@ namespace sh
 				m_name = nameAttr.as_string();
 			}
 
-			pugi::xml_node renderPassNode = techniqueNode.child("pass");
+			pugi::xml_node renderPassNode = techniqueNode.child("pipeline");
 			while (renderPassNode)
 			{
 				RenderPass* renderPass = new RenderPass();

@@ -91,6 +91,8 @@ namespace sh
 
 		struct SHADOW_API DepthStencilState
 		{
+			DepthStencilState* Clone();
+
 			// Depth part
 			bool				enableDepthTest = true;
 			CompareFunction		depthCompareFunction = CompareFunction::LESS_OR_EQUAL;
@@ -104,42 +106,17 @@ namespace sh
 			Face				backFace;
 			u32					reference = 0;
 
-			//virtual void Load(const pugi::xml_node &node);
+			void Load(const pugi::xml_node &node);
 		};
 
 		////////////////////////////////////////////////////////////
 
-		/*
-		void DepthStencilState::Load(const pugi::xml_node &node)
+		inline DepthStencilState* DepthStencilState::Clone()
 		{
-			pugi::xml_node stateNode;
-			pugi::xml_attribute valAttr;
-
-			// Depth test			
-			stateNode = node.child("depthTest");
-			if (!stateNode.empty())
-			{
-				valAttr = stateNode.attribute("val");
-				if (valAttr)
-				{
-					bool value = valAttr.as_bool();
-					enableDepthTest = value;
-				}
-			}
-
-			// Stencil test
-			stateNode = node.child("stencilTest");
-			if (!stateNode.empty())
-			{
-				valAttr = stateNode.attribute("val");
-				if (valAttr)
-				{
-					bool value = valAttr.as_bool();
-					enableStencilTest = value;
-				}
-			}
+			DepthStencilState* result = new DepthStencilState();
+			(*result) = (*this);
+			return result;
 		}
-		*/
 	}
 }
 

@@ -1,6 +1,6 @@
 <technique name="firstTechnique">
 
-<pass name="firstPass" layer="main">
+<pipeline name="firstPass" layer="main">
 	<renderstate>
 		<name/>
 	</renderstate>
@@ -80,9 +80,9 @@
 		</fragmentShader>
 	</shader>
 
-</pass>
+</pipeline>
 	
-<pass name="tecnicalPass" layer="main">
+<pipeline name="tecnicalPass" layer="main">
 	<renderstate>
 		<name/>
 	</renderstate>
@@ -128,6 +128,6 @@
 		]]>	
 		</fragmentShader>
 	</shader>
-</pass>
+</pipeline>
 
 </technique>

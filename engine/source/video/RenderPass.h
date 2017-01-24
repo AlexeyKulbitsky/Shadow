@@ -10,6 +10,9 @@ namespace sh
 		class ShaderProgram;
 		class UniformBuffer;
 		class RenderState;
+		struct DepthStencilState;
+		struct RasterizationState;
+		struct BlendingState;
 		class VertexInputDeclaration;
 
 		class RenderPass
@@ -34,6 +37,9 @@ namespace sh
 			VertexInputDeclaration* GetVertexInputDeclaration() const { return m_vertexInputDeclaration; }
 			UniformBuffer* GetUniformBuffer() const { return m_uniformBuffer; }
 			RenderState* GetRenderState() const { return m_renderState; }
+			DepthStencilState* GetDepthStencilState() const { return m_depthStencilState; }
+			RasterizationState* GetRasterizationState() const { return m_rasterizationState; }
+			BlendingState* GetBlendingState() const { return m_blendingState; }
 			Layer GetLayer() const { return m_layer; }
 
 		protected:
@@ -42,6 +48,11 @@ namespace sh
 			VertexInputDeclaration* m_vertexInputDeclaration;
 			UniformBuffer* m_uniformBuffer;
 			RenderState* m_renderState;
+
+			DepthStencilState* m_depthStencilState;
+			RasterizationState* m_rasterizationState;
+			BlendingState* m_blendingState;
+
 			Layer m_layer;
 		};
 	}

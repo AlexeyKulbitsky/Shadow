@@ -1,6 +1,6 @@
 <technique name="ConstantColor">
 
-<pass name="firstPass" layer="main">
+<pipeline name="firstPass" layer="main">
 	<constants>
 		<uniforms>
 			<uniform name="matMVP" type="mat4" val="model.worldViewProjectionMatrix"/>
@@ -41,9 +41,9 @@
 		</fragmentShader>
 	</shader>
 
-</pass>
+</pipeline>
 
-<pass name="tecnicalPass" layer="main">	
+<pipeline name="tecnicalPass" layer="main">	
 	<constants>
 		<uniforms>
 			<uniform name="color" type="vec4"/>
@@ -85,6 +85,6 @@
 		]]>	
 		</fragmentShader>
 	</shader>
-</pass>
+</pipeline>
 
 </technique>
