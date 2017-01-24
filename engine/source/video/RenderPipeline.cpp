@@ -1,4 +1,4 @@
-#include "RenderPass.h"
+#include "RenderPipeline.h"
 #include "ShaderProgram.h"
 #include "UniformBuffer.h"
 #include "RenderState.h"
@@ -11,7 +11,7 @@ namespace sh
 {
 	namespace video
 	{
-		RenderPass::RenderPass()
+		RenderPipeline::RenderPipeline()
 			: m_layer(Layer::MAIN)
 		{
 
@@ -19,17 +19,16 @@ namespace sh
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 
-		RenderPass::~RenderPass()
+		RenderPipeline::~RenderPipeline()
 		{
 
 		}
 
-		RenderPass* RenderPass::Clone()
+		RenderPipeline* RenderPipeline::Clone()
 		{
-			RenderPass* result = new RenderPass();
+			RenderPipeline* result = new RenderPipeline();
 			result->m_shaderProgram = m_shaderProgram;
 			result->m_uniformBuffer = m_uniformBuffer->Clone();
-			result->m_renderState = m_renderState->Clone();
 			result->m_depthStencilState = m_depthStencilState->Clone();
 			result->m_blendingState = m_blendingState->Clone();
 			result->m_rasterizationState = m_rasterizationState->Clone();
@@ -41,7 +40,7 @@ namespace sh
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 
-		void RenderPass::Load(const pugi::xml_node &node)
+		void RenderPipeline::Load(const pugi::xml_node &node)
 		{
 			Driver* driver = Device::GetInstance()->GetDriver();
 
@@ -66,15 +65,7 @@ namespace sh
 					m_layer = Layer::BACKGROUND;
 				}
 			}
-
-			// Load render state
-			m_renderState = driver->CreateRenderState();
-			pugi::xml_node renderstateNode = node.child("renderstate");
-			if (!renderstateNode.empty())
-			{				
-				m_renderState->Load(renderstateNode);
-			}
-
+			
 			// Load depth/stencil state
 			m_depthStencilState = new DepthStencilState();
 			pugi::xml_node depthStencilStateNode = node.child("depthstencilstate");

@@ -1,6 +1,6 @@
 #include "Material.h"
 #include "RenderTechnique.h"
-#include "RenderPass.h"
+#include "RenderPipeline.h"
 
 namespace sh
 {
@@ -13,8 +13,8 @@ namespace sh
 
 			for (size_t i = 0, sz = technique->GetRenderPassesCount(); i < sz; ++i)
 			{
-				RenderPass* pass = technique->GetRenderPass(i);
-				m_renderPasses[i] = pass->Clone();
+				RenderPipeline* pipeline = technique->GetRenderPipeline(i);
+				m_renderPasses[i] = pipeline->Clone();
 			}
 		}
 	}

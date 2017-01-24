@@ -9,9 +9,23 @@ namespace sh
 {
 	namespace video
 	{
-		void RenderBatch::SetRenderState(RenderState* renderState)
+		void RenderBatch::SetDepthStencilState(DepthStencilState* depthStencilState)
 		{
-			m_state = renderState;
+			m_depthStencilState = depthStencilState;
+		}
+
+		//////////////////////////////////////////////////////////////////////////
+
+		void RenderBatch::SetRasterizationState(RasterizationState* rasterizationState)
+		{
+			m_rasterizationState = rasterizationState;
+		}
+
+		//////////////////////////////////////////////////////////////////////////
+
+		void RenderBatch::SetBlendingState(BlendingState* blendingState)
+		{
+			m_blendingState = blendingState;
 		}
 
 		//////////////////////////////////////////////////////////////////////////
@@ -41,7 +55,9 @@ namespace sh
 		{
 			Driver* driver = Device::GetInstance()->GetDriver();
 
-			m_state->Apply();
+			driver->SetDepthStencilState(m_depthStencilState);
+			driver->SetBlendingState(m_blendingState);
+			driver->SetRasterizationState(m_rasterizationState);
 			m_program->BindProgram();
 
 			for (auto command : m_commands)

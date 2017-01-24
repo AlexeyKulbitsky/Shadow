@@ -2,7 +2,7 @@
 #include "../resources/ResourceManager.h"
 #include "../Device.h"
 #include "../video/Driver.h"
-#include "../video/RenderPass.h"
+#include "../video/RenderPipeline.h"
 #include "../video/ShaderProgram.h"
 #include "../video/UniformBuffer.h"
 #include "../video/Uniform.h"

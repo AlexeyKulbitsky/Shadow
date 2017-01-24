@@ -4,7 +4,7 @@
 #include "../video/Material.h"
 #include "../video/RenderTechnique.h"
 #include "../video/ShaderProgram.h"
-#include "../video/RenderPass.h"
+#include "../video/RenderPipeline.h"
 #include "../video/RenderCommand.h"
 #include "../video/UniformBuffer.h"
 #include "../video/Uniform.h"
@@ -99,10 +99,10 @@ namespace sh
 
 			for (size_t i = 0, sz = m_material->GetRenderPassesCount(); i < sz; ++i)
 			{
-				video::RenderPass* renderPass = m_material->GetRenderPass(i);
-				m_renderCommands[i]->SetUniformBuffer(renderPass->GetUniformBuffer());
+				video::RenderPipeline* renderPipeline = m_material->GetRenderPipeline(i);
+				m_renderCommands[i]->SetUniformBuffer(renderPipeline->GetUniformBuffer());
 
-				video::VertexInputDeclaration* inputDeclaration = renderPass->GetVertexInputDeclaration();
+				video::VertexInputDeclaration* inputDeclaration = renderPipeline->GetVertexInputDeclaration();
 				inputDeclaration->Assemble(*(m_meshBase->GetVertexDeclaration()));
 				m_renderCommands[i]->SetVertexInputDeclaration(inputDeclaration);
 			}			

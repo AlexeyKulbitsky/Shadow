@@ -35,7 +35,7 @@ namespace sh
 			// State management 
 			virtual void SetDepthStencilState(DepthStencilState* depthStencilState) override;
 			virtual void SetRasterizationState(RasterizationState* rasterizationState) override;
-			virtual void SetBlendingState() override;
+			virtual void SetBlendingState(BlendingState* blendingState) override;
 			
 			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) override;
 

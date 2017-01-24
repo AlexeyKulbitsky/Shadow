@@ -10,7 +10,7 @@
 #include <video\RenderTechnique.h>
 #include <video\RenderState.h>
 #include <video\ShaderProgram.h>
-#include <video\RenderPass.h>
+#include <video\RenderPipeline.h>
 #include <video\UniformBuffer.h>
 #include <resources\ResourceManager.h>
 
@@ -60,14 +60,14 @@ sh::Entity* Picker::TryToPick(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 heigh
 		for (size_t j = 0; j < meshesCount; ++j)
 		{
 			sh::scene::Mesh* mesh = model->GetMesh(j);
-			mesh->GetMaterial()->GetRenderPass(1)->GetShaderProgram()->BindProgram();
+			mesh->GetMaterial()->GetRenderPipeline(1)->GetShaderProgram()->BindProgram();
 			sh::video::Uniform* uniform = mesh->GetRenderCommand(1)->GetUniformBuffer()->GetUniform("color");
 			if (uniform)
 			{
 				uniform->Set(color);
 			}
 			driver->Render(mesh->GetRenderCommand(1));
-			mesh->GetMaterial()->GetRenderPass(1)->GetShaderProgram()->UnbindProgram();
+			mesh->GetMaterial()->GetRenderPipeline(1)->GetShaderProgram()->UnbindProgram();
 		}			
 	}
 		

@@ -305,7 +305,7 @@ void GLES20Driver::SetRasterizationState(RasterizationState* rasterizationState)
 
 ////////////////////////////////////////////////////////////////////////
 
-void GLES20Driver::SetBlendingState()
+void GLES20Driver::SetBlendingState(BlendingState*)
 {
 
 }

@@ -6,7 +6,7 @@
 #include "../../scene/Model.h"
 #include "../../scene/Mesh.h"
 #include "../../video/Material.h"
-#include "../../video/RenderPass.h"
+#include "../../video/RenderPipeline.h"
 #include "../../video/UniformBuffer.h"
 #include "../../scene/SceneManager.h"
 
@@ -58,7 +58,7 @@ namespace sh
 			material->SetRenderTechnique(rt);
 
 			// Read uniforms
-			sh::video::UniformBuffer* uniformBuffer = material->GetRenderPass(0)->GetUniformBuffer();
+			sh::video::UniformBuffer* uniformBuffer = material->GetRenderPipeline(0)->GetUniformBuffer();
 
 			pugi::xml_node uniformsNode = materialNode.child("uniforms");
 			if (uniformsNode)

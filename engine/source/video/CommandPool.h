@@ -2,7 +2,7 @@
 #define SHADOW_COMMAND_POOL_INCLUDE
 
 #include "../Globals.h"
-#include "RenderPass.h"
+#include "RenderPipeline.h"
 
 namespace sh
 {
@@ -24,7 +24,7 @@ namespace sh
 		protected:
 			typedef HashMap<String, RenderBatch*> PerTechniqueRenderBatchesMap;
 
-			PerTechniqueRenderBatchesMap m_renderBatches[(size_t)RenderPass::Layer::COUNT];
+			PerTechniqueRenderBatchesMap m_renderBatches[(size_t)RenderPipeline::Layer::COUNT];
 		};
 	}
 }

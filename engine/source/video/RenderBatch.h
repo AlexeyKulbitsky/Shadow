@@ -10,6 +10,9 @@ namespace sh
 		class RenderCommand;
 		class RenderState;
 		class ShaderProgram;
+		struct DepthStencilState;
+		struct RasterizationState;
+		struct BlendingState;
 
 		class RenderBatch
 		{
@@ -19,7 +22,9 @@ namespace sh
 			*/
 			RenderBatch() {}
 			~RenderBatch() {}
-			virtual void SetRenderState(RenderState* renderState);
+			virtual void SetDepthStencilState(DepthStencilState* renderState);
+			virtual void SetRasterizationState(RasterizationState* renderState);
+			virtual void SetBlendingState(BlendingState* renderState);
 			virtual void SetShaderProgram(ShaderProgram* shaderProgram);
 			virtual void AddCommand(RenderCommand* renderCommand);
 			virtual void RemoveCommand(RenderCommand* renderCommand);
@@ -31,7 +36,9 @@ namespace sh
 		protected:
 			String m_techniqueName;
 			ShaderProgram* m_program;
-			RenderState* m_state;
+			BlendingState* m_blendingState;
+			DepthStencilState* m_depthStencilState;
+			RasterizationState* m_rasterizationState;
 			std::vector<RenderCommand*> m_commands;
 		};
 	}

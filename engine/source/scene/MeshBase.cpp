@@ -3,7 +3,7 @@
 #include "../video/Material.h"
 #include "../video/RenderTechnique.h"
 #include "../video/ShaderProgram.h"
-#include "../video/RenderPass.h"
+#include "../video/RenderPipeline.h"
 #include "../video/RenderCommand.h"
 #include "../video/UniformBuffer.h"
 #include "../video/Uniform.h"

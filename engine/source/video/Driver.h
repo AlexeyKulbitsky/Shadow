@@ -21,6 +21,7 @@ namespace sh
 		class Texture;
 		struct DepthStencilState;
 		struct RasterizationState;
+		struct BlendingState;
 
 		enum class DriverType
 		{
@@ -64,7 +65,7 @@ namespace sh
 			// State management 
 			virtual void SetDepthStencilState(DepthStencilState* depthStencilState) { }
 			virtual void SetRasterizationState(RasterizationState* rasterizationState) { }
-			virtual void SetBlendingState() { }
+			virtual void SetBlendingState(BlendingState* blendingState) { }
 
 
 			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) {}

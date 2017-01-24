@@ -1,5 +1,5 @@
 #include "RenderTechnique.h"
-#include "RenderPass.h"
+#include "RenderPipeline.h"
 #include <pugixml.hpp>
 
 namespace sh
@@ -34,7 +34,7 @@ namespace sh
 			pugi::xml_node renderPassNode = techniqueNode.child("pipeline");
 			while (renderPassNode)
 			{
-				RenderPass* renderPass = new RenderPass();
+				RenderPipeline* renderPass = new RenderPipeline();
 				renderPass->Load(renderPassNode);
 
 				m_renderPasses.push_back(renderPass);

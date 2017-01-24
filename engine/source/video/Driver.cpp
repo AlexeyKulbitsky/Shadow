@@ -1,7 +1,9 @@
 #include "Driver.h"
 #include "Material.h"
-#include "RenderPass.h"
-#include "RenderState.h"
+#include "RenderPipeline.h"
+#include "DepthStencilState.h"
+#include "RasterizationState.h"
+#include "BlendingState.h"
 #include "ShaderProgram.h"
 
 #include "../scene/Mesh.h"
@@ -49,16 +51,18 @@ namespace sh
 				sh::scene::Mesh* mesh = model->GetMesh(i);
 
 				Material* material = mesh->GetMaterial();
-				RenderPass* renderPass = material->GetRenderPass(0);
+				RenderPipeline* renderPipeline = material->GetRenderPipeline(0);
 
-				RenderState* renderState = renderPass->GetRenderState();
-				renderState->Apply();
-				renderPass->GetShaderProgram()->BindProgram();
+				
+				SetDepthStencilState(renderPipeline->GetDepthStencilState());
+				SetRasterizationState(renderPipeline->GetRasterizationState());
+				SetBlendingState(renderPipeline->GetBlendingState());
+				renderPipeline->GetShaderProgram()->BindProgram();
 		
 				RenderCommand* renderCommand = mesh->GetRenderCommand();
 
 				Render(renderCommand);
-				renderPass->GetShaderProgram()->UnbindProgram();	
+				renderPipeline->GetShaderProgram()->UnbindProgram();	
 			}
 		}
 

@@ -5,8 +5,10 @@
 
 #include <video\Material.h>
 #include <video\RenderTechnique.h>
-#include <video\RenderPass.h>
-#include <video\RenderState.h>
+#include <video\RenderPipeline.h>
+#include <video\DepthStencilState.h>
+#include <video\RasterizationState.h>
+#include <video\BlendingState.h>
 #include <video\UniformBuffer.h>
 #include <video\Uniform.h>
 
@@ -318,8 +320,8 @@ void RenderComponentTreeModel::SetupModelData(sh::scene::Model* model, RenderCom
 		{
 			RenderComponentTreeItem * techniqueParent = parent->GetChild(parent->childCount() - 1);
 			
-			sh::video::RenderPass* pass = mat->GetRenderPass(passIndex);
-			QVariant passName(pass->GetName().c_str());
+			sh::video::RenderPipeline* pipeline = mat->GetRenderPipeline(passIndex);
+			QVariant passName(pipeline->GetName().c_str());
 
 			techniqueParent->InsertChildren(techniqueParent->childCount(), 1, 2);
 
@@ -328,7 +330,9 @@ void RenderComponentTreeModel::SetupModelData(sh::scene::Model* model, RenderCom
 
 
 			RenderComponentTreeItem * passParent = techniqueParent->GetChild(techniqueParent->childCount() - 1);
-			sh::video::RenderState* renderState = pass->GetRenderState();
+			sh::video::DepthStencilState* depthStencilState = pipeline->GetDepthStencilState();
+			sh::video::RasterizationState* rasterizationState = pipeline->GetRasterizationState();
+			sh::video::BlendingState* blendingState = pipeline->GetBlendingState();
 
 			// Depthstencil state
 			passParent->InsertChildren(passParent->childCount(), 1, 1);
@@ -338,20 +342,20 @@ void RenderComponentTreeModel::SetupModelData(sh::scene::Model* model, RenderCom
 			depthStencilParent->InsertChildren(depthStencilParent->childCount(), 1, 2);
 			RenderComponentTreeItem * tempChild = depthStencilParent->GetChild(depthStencilParent->childCount() - 1);
 			tempChild->SetData(0, QVariant("Depth Test"));
-			tempChild->SetData(1, renderState->depthStencilState.enableDepthTest ? QVariant("On") : QVariant("Off"));
+			tempChild->SetData(1, depthStencilState->enableDepthTest ? QVariant("On") : QVariant("Off"));
 
 			depthStencilParent->InsertChildren(depthStencilParent->childCount(), 1, 2);
 			tempChild = depthStencilParent->GetChild(depthStencilParent->childCount() - 1);
 			tempChild->SetType(RenderComponentTreeItem::Type::LIST);
 			tempChild->SetData(0, QVariant("Depth Compare Func"));
-			tempChild->SetData(1, sh::video::g_compareFunctionMap[(size_t)renderState->depthStencilState.depthCompareFunction]);
-			tempChild->SetUserPointer((void*)(&(renderState->depthStencilState.depthCompareFunction)));
+			tempChild->SetData(1, sh::video::g_compareFunctionMap[(size_t)depthStencilState->depthCompareFunction]);
+			tempChild->SetUserPointer((void*)(&(depthStencilState->depthCompareFunction)));
 			
 			depthStencilParent->InsertChildren(depthStencilParent->childCount(), 1, 2);
 			tempChild = depthStencilParent->GetChild(depthStencilParent->childCount() - 1);
 			tempChild->SetType(RenderComponentTreeItem::Type::LIST);
 			tempChild->SetData(0, QVariant("Depth Write Mask"));
-			tempChild->SetData(1, sh::video::g_writeMaskMap[(size_t)renderState->depthStencilState.depthWriteMask]);		
+			tempChild->SetData(1, sh::video::g_writeMaskMap[(size_t)depthStencilState->depthWriteMask]);		
 
 
 
@@ -363,24 +367,24 @@ void RenderComponentTreeModel::SetupModelData(sh::scene::Model* model, RenderCom
 			rasterizerParent->InsertChildren(rasterizerParent->childCount(), 1, 2);
 			tempChild = rasterizerParent->GetChild(rasterizerParent->childCount() - 1);
 			tempChild->SetData(0, QVariant("Cull Face"));
-			tempChild->SetData(1, sh::video::g_cullFaceMap[(size_t)renderState->rasterizerState.cullFace]);
+			tempChild->SetData(1, sh::video::g_cullFaceMap[(size_t)rasterizationState->cullFace]);
 
 			rasterizerParent->InsertChildren(rasterizerParent->childCount(), 1, 2);
 			tempChild = rasterizerParent->GetChild(rasterizerParent->childCount() - 1);
 			tempChild->SetData(0, QVariant("Front Face"));
-			tempChild->SetData(1, sh::video::g_frontFaceMap[(size_t)renderState->rasterizerState.frontFace]);
+			tempChild->SetData(1, sh::video::g_frontFaceMap[(size_t)rasterizationState->frontFace]);
 			
 			rasterizerParent->InsertChildren(rasterizerParent->childCount(), 1, 2);
 			tempChild = rasterizerParent->GetChild(rasterizerParent->childCount() - 1);
 			tempChild->SetData(0, QVariant("Fill Mode"));
-			tempChild->SetData(1, sh::video::g_fillModeMap[(size_t)renderState->rasterizerState.fillMode]);
+			tempChild->SetData(1, sh::video::g_fillModeMap[(size_t)rasterizationState->fillMode]);
 			
 			// Uniforms
 			passParent->InsertChildren(passParent->childCount(), 1, 1);
 			passParent->GetChild(passParent->childCount() - 1)->SetData(0, QVariant("Uniforms"));
 			RenderComponentTreeItem * uniformParent = passParent->GetChild(passParent->childCount() - 1);
 
-			sh::video::UniformBuffer* uniformBuffer = pass->GetUniformBuffer();
+			sh::video::UniformBuffer* uniformBuffer = pipeline->GetUniformBuffer();
 			size_t uniformsCount = uniformBuffer->GetUniformsCount();
 			for (size_t uniformIdx = 0; uniformIdx < uniformsCount; ++uniformIdx)
 			{

@@ -2,7 +2,7 @@
 #include "RenderBatch.h"
 #include "Material.h"
 #include "RenderTechnique.h"
-#include "RenderPass.h"
+#include "RenderPipeline.h"
 #include "RenderState.h"
 #include "ShaderProgram.h"
 #include "../scene/Mesh.h"
@@ -15,16 +15,18 @@ namespace sh
 		{
 			Material* material = mesh->GetMaterial();
 			String techniqueName = material->GetRenderTechnique()->GetName();
-			RenderPass::Layer layer = material->GetRenderPass(0)->GetLayer();
+			RenderPipeline::Layer layer = material->GetRenderPipeline(0)->GetLayer();
 			size_t layerIndex = (size_t)layer;
 
 			if (m_renderBatches[layerIndex].find(techniqueName) == m_renderBatches[layerIndex].end())
 			{
 				RenderBatch* renderBatch = new RenderBatch();
-				ShaderProgram* shader = material->GetRenderTechnique()->GetRenderPass(0)->GetShaderProgram();
-				RenderState* renderState = material->GetRenderTechnique()->GetRenderPass(0)->GetRenderState();
+				RenderPipeline* renderPipeline = material->GetRenderTechnique()->GetRenderPipeline(0);
+				ShaderProgram* shader = renderPipeline->GetShaderProgram();
 				renderBatch->SetShaderProgram(shader);
-				renderBatch->SetRenderState(renderState);
+				renderBatch->SetDepthStencilState(renderPipeline->GetDepthStencilState());
+				renderBatch->SetRasterizationState(renderPipeline->GetRasterizationState());
+				renderBatch->SetBlendingState(renderPipeline->GetBlendingState());
 				renderBatch->SetTechniqueName(techniqueName);
 
 				m_renderBatches[layerIndex][techniqueName] = renderBatch;
@@ -37,7 +39,7 @@ namespace sh
 
 		void CommandPool::Submit()
 		{
-			for (size_t i = 0; i < (size_t)RenderPass::Layer::COUNT; ++i)
+			for (size_t i = 0; i < (size_t)RenderPipeline::Layer::COUNT; ++i)
 			{
 				for (auto renderBatch : m_renderBatches[i])
 				{

@@ -8,7 +8,7 @@ namespace sh
 	namespace video
 	{
 		class RenderTechnique;
-		class RenderPass;
+		class RenderPipeline;
 
 		class Material
 		{
@@ -19,11 +19,11 @@ namespace sh
 			RenderTechnique* GetRenderTechnique() { return m_renderTechnique; }
 
 			size_t GetRenderPassesCount() const { return m_renderPasses.size(); }
-			RenderPass* GetRenderPass(size_t index) { return m_renderPasses[index]; }
+			RenderPipeline* GetRenderPipeline(size_t index) { return m_renderPasses[index]; }
 			
 		private:
 			RenderTechnique* m_renderTechnique = nullptr;
-			std::vector<RenderPass*> m_renderPasses;
+			std::vector<RenderPipeline*> m_renderPasses;
 		};
 	}
 }

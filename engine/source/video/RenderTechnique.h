@@ -9,7 +9,7 @@ namespace sh
 {
 	namespace video
 	{
-		class RenderPass;
+		class RenderPipeline;
 
 		class RenderTechnique : public Resource
 		{
@@ -22,10 +22,10 @@ namespace sh
 
 			const String& GetName() const { return m_name; }
 			size_t GetRenderPassesCount() const { return m_renderPasses.size(); }
-			RenderPass* GetRenderPass(size_t index) { return m_renderPasses[index]; }
+			RenderPipeline* GetRenderPipeline(size_t index) { return m_renderPasses[index]; }
 
 		protected:
-			std::vector<RenderPass*> m_renderPasses;
+			std::vector<RenderPipeline*> m_renderPasses;
 			String m_name;
 		};
 	}
