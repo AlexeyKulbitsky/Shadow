@@ -261,7 +261,7 @@ void MainWindow::InitDevice()
 	params.WinId = (void*)hwnd;
 	params.driverType = sh::video::DriverType::OPENGL_ES_2_0;
 	sh::Device* device = sh::CreateDevice(params);
-
+	
 	sh::scene::ModelLoader* modelLoader = new sh::scene::TinyObjModelLoader();
 	sh::scene::ModelLoader::SetInstance(modelLoader);
 

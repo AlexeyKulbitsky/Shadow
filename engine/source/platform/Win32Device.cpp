@@ -8,7 +8,39 @@
 using namespace sh;
 using namespace video;
 
+pempek::assert::implementation::AssertAction::AssertAction _testHandler(const char* file,
+                                          int line,
+                                          const char* function,
+                                          const char* expression,
+                                          int level,
+                                          const char* message)
+  {
+    
+	int msgboxID = MessageBox(
+        NULL,
+        "Resource not available\nDo you want to try again?",
+        "Account Details",
+		MB_ICONWARNING | MB_ABORTRETRYIGNORE | MB_DEFBUTTON2 | MB_SYSTEMMODAL
+    );
+	pempek::assert::implementation::AssertAction::AssertAction res = pempek::assert::implementation::AssertAction::AssertAction::None;
+    switch (msgboxID)
+    {
+    case IDCANCEL:
+        // TODO: add code
+		res = pempek::assert::implementation::AssertAction::AssertAction::Abort;
+        break;
+    case IDTRYAGAIN:
+        // TODO: add code
+		res = pempek::assert::implementation::AssertAction::AssertAction::Ignore;
+        break;
+    case IDCONTINUE:
+        // TODO: add code
+		res = pempek::assert::implementation::AssertAction::AssertAction::IgnoreAll;
+        break;
+    }
 
+    return res;
+  }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -126,6 +158,8 @@ Win32Device::Win32Device()
 Win32Device::Win32Device(const CreationParameters &parameters)
 	:Device(parameters)
 {
+	pempek::assert::implementation::setAssertHandler(_testHandler);
+
 	// get handle to exe file
 	HINSTANCE hInstance = GetModuleHandle(0);
 

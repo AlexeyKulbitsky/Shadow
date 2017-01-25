@@ -9,12 +9,14 @@ namespace sh
 	{
 		enum class AttributeSemantic
 		{
-			POSITION,
+			POSITION = 0,
 			COLOR,
 			UV,
 			NORMAL,
 			BINORMAL,
-			TANGENT
+			TANGENT,
+
+			COUNT
 		};
 
 		enum class AttributeType
@@ -28,6 +30,12 @@ namespace sh
 
 		struct Attribute
 		{
+			Attribute()
+				: semantic(AttributeSemantic::POSITION)
+				, type(AttributeType::FLOAT)
+				, componentsCount(3)
+			{}
+
 			Attribute(AttributeSemantic _semantic, AttributeType _type, size_t _componentsCount)
 				: semantic(_semantic)
 				, type(_type)
@@ -91,6 +99,7 @@ namespace sh
 
 		private:
 			std::vector<Attribute> m_attributes;
+			Attribute m_attribs[(size_t)AttributeSemantic::COUNT];
 			size_t m_stride = 0U;
 		};
 
