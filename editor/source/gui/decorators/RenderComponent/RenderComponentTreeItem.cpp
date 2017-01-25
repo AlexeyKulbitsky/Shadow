@@ -1,7 +1,9 @@
 #include "RenderComponentTreeItem.h"
 
 #include <QStringList>
-#include <video\RenderState.h>
+#include <video\BlendingState.h>
+#include <video\DepthStencilState.h>
+#include <video\RasterizationState.h>
 #include <video\Uniform.h>
 
 

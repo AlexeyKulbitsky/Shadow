@@ -61,7 +61,7 @@ namespace sh
 		{
 			RasterizationState* Clone();
 
-			CullFace    cullFace = CullFace::BACK;
+			CullFace    cullFace = CullFace::NONE;
 			FrontFace	frontFace = FrontFace::COUNTER_CLOCKWISE;
 			FillMode    fillMode = FillMode::SOLID;
 			bool		polygonOffsetEnabled = false;

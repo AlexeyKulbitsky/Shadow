@@ -10,7 +10,6 @@
 #include <video\RenderCommand.h>
 #include <video\RenderPipeline.h>
 #include <video\Driver.h>
-#include <video\RenderState.h>
 #include <video\ShaderProgram.h>
 #include <video\RenderTechnique.h>
 #include <video\UniformBuffer.h>

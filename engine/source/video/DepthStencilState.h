@@ -94,7 +94,7 @@ namespace sh
 			DepthStencilState* Clone();
 
 			// Depth part
-			bool				enableDepthTest = true;
+			bool				enableDepthTest = false;
 			CompareFunction		depthCompareFunction = CompareFunction::LESS_OR_EQUAL;
 			WriteMask			depthWriteMask = WriteMask::ALL;
 

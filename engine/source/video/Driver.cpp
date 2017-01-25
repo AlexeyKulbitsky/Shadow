@@ -52,8 +52,7 @@ namespace sh
 
 				Material* material = mesh->GetMaterial();
 				RenderPipeline* renderPipeline = material->GetRenderPipeline(0);
-
-				
+			
 				SetDepthStencilState(renderPipeline->GetDepthStencilState());
 				SetRasterizationState(renderPipeline->GetRasterizationState());
 				SetBlendingState(renderPipeline->GetBlendingState());

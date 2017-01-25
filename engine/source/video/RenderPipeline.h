@@ -36,7 +36,6 @@ namespace sh
 			ShaderProgram* GetShaderProgram() const { return m_shaderProgram; }
 			VertexInputDeclaration* GetVertexInputDeclaration() const { return m_vertexInputDeclaration; }
 			UniformBuffer* GetUniformBuffer() const { return m_uniformBuffer; }
-			//RenderState* GetRenderState() const { return m_renderState; }
 			DepthStencilState* GetDepthStencilState() const { return m_depthStencilState; }
 			RasterizationState* GetRasterizationState() const { return m_rasterizationState; }
 			BlendingState* GetBlendingState() const { return m_blendingState; }
@@ -47,7 +46,6 @@ namespace sh
 			ShaderProgram* m_shaderProgram;
 			VertexInputDeclaration* m_vertexInputDeclaration;
 			UniformBuffer* m_uniformBuffer;
-			//RenderState* m_renderState;
 
 			DepthStencilState* m_depthStencilState;
 			RasterizationState* m_rasterizationState;

@@ -48,7 +48,6 @@ namespace sh
 			virtual ShaderProgram* CreateShaderProgram() override;
 			virtual Texture* CreateTexture() override;
 			virtual VertexInputDeclaration* CreateVertexInputDeclaration() override;
-			virtual RenderState* CreateRenderState() override;
 
 		private:
 			EGLContextManager* m_contextManager = nullptr;

@@ -1,10 +1,9 @@
 #include "RenderPipeline.h"
 #include "ShaderProgram.h"
 #include "UniformBuffer.h"
-#include "RenderState.h"
 #include "DepthStencilState.h"
 #include "RasterizationState.h"
-#include "DepthStencilState.h"
+#include "BlendingState.h"
 #include "../Device.h"
 
 namespace sh

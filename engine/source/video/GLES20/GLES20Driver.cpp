@@ -248,23 +248,18 @@ void GLES20Driver::SetDepthStencilState(DepthStencilState* depthStencilState)
 	if (depthStencilState->enableDepthTest)
 	{
 		glEnable(GL_DEPTH_TEST);
-		glDepthFunc(s_glCompareFunction[static_cast<size_t>(depthStencilState->depthCompareFunction)]);
+		//glDepthFunc(s_glCompareFunction[static_cast<size_t>(depthStencilState->depthCompareFunction)]);
 	}
 	else
 	{
 		glDisable(GL_DEPTH_TEST);
 	}
-	glDepthMask(s_glWriteMask[static_cast<size_t>(depthStencilState->depthWriteMask)]);
+	//glDepthMask(s_glWriteMask[static_cast<size_t>(depthStencilState->depthWriteMask)]);
 
 	// Stencil part
 	if (depthStencilState->enableStencilTest)
 	{
 		glEnable(GL_STENCIL_TEST);
-	}
-	else
-	{
-		glDisable(GL_STENCIL_TEST);
-
 		glStencilFuncSeparate(GL_FRONT,
 			s_glCompareFunction[static_cast<size_t>(depthStencilState->frontFace.compare)],
 			depthStencilState->reference,
@@ -284,6 +279,10 @@ void GLES20Driver::SetDepthStencilState(DepthStencilState* depthStencilState)
 			s_glStencilOperation[static_cast<size_t>(depthStencilState->backFace.fail)],
 			s_glStencilOperation[static_cast<size_t>(depthStencilState->backFace.depthFail)],
 			s_glStencilOperation[static_cast<size_t>(depthStencilState->backFace.pass)]);
+	}
+	else
+	{
+		glDisable(GL_STENCIL_TEST);
 	}	
 }
 
@@ -380,13 +379,6 @@ Texture* GLES20Driver::CreateTexture()
 VertexInputDeclaration* GLES20Driver::CreateVertexInputDeclaration()
 {
 	return new GLES20VertexDeclaration();
-}
-
-////////////////////////////////////////////////////////////////////////
-
-RenderState* GLES20Driver::CreateRenderState()
-{
-	return new GLES20RenderState();
 }
 
 ////////////////////////////////////////////////////////////////////////

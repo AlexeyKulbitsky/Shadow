@@ -1,5 +1,4 @@
 #include "RenderBatch.h"
-#include "RenderState.h"
 #include "ShaderProgram.h"
 #include "Driver.h"
 #include "../Device.h"

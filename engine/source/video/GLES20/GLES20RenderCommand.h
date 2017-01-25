@@ -4,7 +4,6 @@
 #include "../RenderCommand.h"
 #include "GLES20VertexBuffer.h"
 #include "GLES20IndexBuffer.h"
-#include "GLES20RenderState.h"
 #include "GLES20ShaderProgram.h"
 #include "GLES20VertexDeclaration.h"
 #include "GLES20UniformBuffer.h"

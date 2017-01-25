@@ -3,7 +3,6 @@
 #include "Material.h"
 #include "RenderTechnique.h"
 #include "RenderPipeline.h"
-#include "RenderState.h"
 #include "ShaderProgram.h"
 #include "../scene/Mesh.h"
 
