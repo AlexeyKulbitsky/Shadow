@@ -21,7 +21,7 @@ namespace sh
 			This class is used to hold render commands with the same material
 			*/
 			RenderBatch() {}
-			~RenderBatch() {}
+			virtual ~RenderBatch() {}
 			virtual void SetDepthStencilState(DepthStencilState* renderState);
 			virtual void SetRasterizationState(RasterizationState* renderState);
 			virtual void SetBlendingState(BlendingState* renderState);
