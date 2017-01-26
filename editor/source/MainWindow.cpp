@@ -46,7 +46,7 @@ MainWindow::MainWindow(QWidget *parent)
 	connect(m_graphicsWidget, SIGNAL(EntitySelected(sh::Entity*)), this, SLOT(SetSelectedEntity(sh::Entity*)));
 	CreateToolBar();
 	InitDevice();
-
+	SH_ASSERT(5 < 4, "4 can not be more than 5");
 	m_graphicsWidget->Init();
 
 	//CreateAssetsWidget();
