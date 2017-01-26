@@ -9,6 +9,7 @@
 #include <OpenGLES/ES3/gl.h>
 #else
 #include <GLES3/gl3.h>
+#include <GLES2/gl2ext.h>
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
 #endif

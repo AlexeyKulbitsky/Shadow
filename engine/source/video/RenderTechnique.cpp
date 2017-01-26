@@ -31,15 +31,15 @@ namespace sh
 				m_name = nameAttr.as_string();
 			}
 
-			pugi::xml_node renderPassNode = techniqueNode.child("pipeline");
-			while (renderPassNode)
+			pugi::xml_node renderPipelineNode = techniqueNode.child("pipeline");
+			while (renderPipelineNode)
 			{
-				RenderPipeline* renderPass = new RenderPipeline();
-				renderPass->Load(renderPassNode);
+				RenderPipeline* renderPipeline = new RenderPipeline();
+				renderPipeline->Load(renderPipelineNode);
 
-				m_renderPasses.push_back(renderPass);
+				m_renderPipelines.push_back(renderPipeline);
 				
-				renderPassNode = renderPassNode.next_sibling();
+				renderPipelineNode = renderPipelineNode.next_sibling();
 			}
 			
 		}
@@ -48,7 +48,13 @@ namespace sh
 
 		void RenderTechnique::Unload()
 		{
-
+			for (size_t i = 0; i < m_renderPipelines.size(); ++i)
+			{
+				m_renderPipelines[i]->Unload();
+				delete m_renderPipelines[i];
+				m_renderPipelines[i] = nullptr;
+			}
+			m_renderPipelines.clear();
 		}
 	}
 }

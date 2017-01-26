@@ -121,6 +121,25 @@ bool GLES20Driver::Init()
 		printf("%s\n", ext.c_str());
 	}
 
+	GLint value;
+	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &value);
+	m_maxTextureUnits = (u32)value;
+
+	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &value);
+	m_maxTextureSize = (u32)value;
+
+	glGetIntegerv(GL_MAX_CUBE_MAP_TEXTURE_SIZE, &value);
+	m_maxCubeTextureSize = (u32)value;
+
+	
+	glGetIntegerv(GL_NUM_COMPRESSED_TEXTURE_FORMATS, &value);
+	GLint *valuePtr = new GLint[value];
+	glGetIntegerv(GL_COMPRESSED_TEXTURE_FORMATS, valuePtr);
+	for (int i = 0; i < value; ++i)
+	{
+		Texture::Format format = GLES20Texture::GetFormatFromGL(valuePtr[i]);
+	}
+	delete[] valuePtr;
 	
 
 	return false; 

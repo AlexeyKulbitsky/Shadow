@@ -315,7 +315,7 @@ void RenderComponentTreeModel::SetupModelData(sh::scene::Model* model, RenderCom
 		parent->GetChild(parent->childCount() - 1)->SetData(0, QVariant("RenderTechnique"));
 		parent->GetChild(parent->childCount() - 1)->SetData(1, data);
 
-		size_t passesCount = mat->GetRenderPassesCount();
+		size_t passesCount = mat->GetRenderPipelinesCount();
 		for (size_t passIndex = 0; passIndex < passesCount; ++passIndex)
 		{
 			RenderComponentTreeItem * techniqueParent = parent->GetChild(parent->childCount() - 1);

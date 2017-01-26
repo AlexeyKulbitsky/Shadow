@@ -45,6 +45,13 @@ namespace sh
 
 				COUNT = 6
 			};
+
+			enum class Format
+			{
+				UNDEFINED,
+				DXT1_RGB,
+				DXT1_RGBA
+			};
 			
 			Texture(){}
 			virtual ~Texture(){}

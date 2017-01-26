@@ -17,7 +17,7 @@ namespace sh
 			template <>
 			struct GLES20UniformLoader<f32>
 			{
-				static void Load(const s32 location, const f32& value)
+				static void Upload(const s32 location, const f32& value)
 				{
 					glUniform1f(location, value);
 				}
@@ -26,7 +26,7 @@ namespace sh
 			template <>
 			struct GLES20UniformLoader<s32>
 			{
-				static void Load(const s32 location, const s32& value)
+				static void Upload(const s32 location, const s32& value)
 				{
 					glUniform1i(location, value);
 				}
@@ -35,7 +35,7 @@ namespace sh
 			template <>
 			struct GLES20UniformLoader<math::Vector2f>
 			{
-				static void Load(const s32 location, const math::Vector2f& value)
+				static void Upload(const s32 location, const math::Vector2f& value)
 				{
 					glUniform2f(location, value.x, value.y);
 				}
@@ -44,7 +44,7 @@ namespace sh
 			template <>
 			struct GLES20UniformLoader<math::Vector3f>
 			{
-				static void Load(const s32 location, const math::Vector3f& value)
+				static void Upload(const s32 location, const math::Vector3f& value)
 				{
 					glUniform3f(location, value.x, value.y, value.z);
 				}
@@ -53,7 +53,7 @@ namespace sh
 			template <>
 			struct GLES20UniformLoader<math::Vector4f>
 			{
-				static void Load(const s32 location, const math::Vector4f& value)
+				static void Upload(const s32 location, const math::Vector4f& value)
 				{
 					glUniform4f(location, value.x, value.y, value.z, value.w);
 				}
@@ -62,7 +62,7 @@ namespace sh
 			template <>
 			struct GLES20UniformLoader<math::Matrix4f>
 			{
-				static void Load(const s32 location, const math::Matrix4f& value)
+				static void Upload(const s32 location, const math::Matrix4f& value)
 				{
 					glUniformMatrix4fv(location, 1, GL_FALSE, &value._m[0]);
 				}
@@ -71,7 +71,7 @@ namespace sh
 			template <>
 			struct GLES20UniformLoader<std::vector<math::Vector3f> >
 			{
-				static void Load(const s32 location, const std::vector<math::Vector3f>& value)
+				static void Upload(const s32 location, const std::vector<math::Vector3f>& value)
 				{
 					glUniform3fv(location, value.size(), &value[0].x);
 				}
@@ -86,7 +86,7 @@ namespace sh
 		public:			
 			GLES20Uniform(const T& value) : Uniform(value), m_shaderProgramId(0) {}
 			GLES20Uniform(const std::string& name, unsigned int shaderProgramId) : Uniform(name), m_shaderProgramId(shaderProgramId) {}
-			virtual void Load() override;
+			virtual void Upload() override;
 			virtual void Init() override;
 			virtual Uniform* Clone() override;
 
@@ -101,9 +101,9 @@ namespace sh
 		/////////////////////////////////////////////////////////////////////////////////
 
 		template <typename T>
-		inline void GLES20Uniform<T>::Load()
+		inline void GLES20Uniform<T>::Upload()
 		{
-			GLES20Private::GLES20UniformLoader<T>::Load(m_glID, Get<T>());
+			GLES20Private::GLES20UniformLoader<T>::Upload(m_glID, Get<T>());
 		}
 
 		template <typename T>

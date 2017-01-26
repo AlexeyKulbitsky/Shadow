@@ -70,6 +70,10 @@ namespace sh
 
 			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) {}
 
+			u32 GetMaxTextureUnits() const { return m_maxTextureUnits; }
+			u32 GetMaxTextureSize() const { return m_maxTextureSize; }
+			u32 GetMaxCubeTextureSize() const { return m_maxCubeTextureSize; }
+
 			// Resources creation interface
 			virtual VertexBuffer* CreateVertexBuffer() = 0;
 			virtual VertexBuffer* CreateVertexBuffer(const void* data, size_t size) = 0;		
@@ -98,6 +102,11 @@ namespace sh
 			math::Vector4f m_clearColor;
 			f32 m_clearDepth;
 			u32 m_clearStencil;
+
+			// Global info
+			u32 m_maxTextureUnits;
+			u32 m_maxTextureSize;
+			u32 m_maxCubeTextureSize;
 		};
 	}
 }

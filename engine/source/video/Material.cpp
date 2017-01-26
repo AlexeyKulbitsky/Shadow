@@ -9,12 +9,13 @@ namespace sh
 		void Material::SetRenderTechnique(RenderTechnique* technique) 
 		{ 
 			m_renderTechnique = technique; 
-			m_renderPasses.resize(technique->GetRenderPassesCount());
+			u32 pipelinesCount = technique->GetRenderPipelinesCount();
+			m_renderPipelines.resize(pipelinesCount);
 
-			for (size_t i = 0, sz = technique->GetRenderPassesCount(); i < sz; ++i)
+			for (size_t i = 0; i < pipelinesCount; ++i)
 			{
 				RenderPipeline* pipeline = technique->GetRenderPipeline(i);
-				m_renderPasses[i] = pipeline->Clone();
+				m_renderPipelines[i] = pipeline->Clone();
 			}
 		}
 	}

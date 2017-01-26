@@ -18,12 +18,12 @@ namespace sh
 
 			RenderTechnique* GetRenderTechnique() { return m_renderTechnique; }
 
-			size_t GetRenderPassesCount() const { return m_renderPasses.size(); }
-			RenderPipeline* GetRenderPipeline(size_t index) { return m_renderPasses[index]; }
+			size_t GetRenderPipelinesCount() const { return m_renderPipelines.size(); }
+			RenderPipeline* GetRenderPipeline(size_t index) { return m_renderPipelines[index]; }
 			
 		private:
 			RenderTechnique* m_renderTechnique = nullptr;
-			std::vector<RenderPipeline*> m_renderPasses;
+			std::vector<RenderPipeline*> m_renderPipelines;
 		};
 	}
 }

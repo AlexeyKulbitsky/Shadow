@@ -31,6 +31,8 @@ namespace sh
 			u32 GetGLId() const { return m_glID; }
 			u32 GetGLType() const { return m_glType; }
 
+			static Format GetFormatFromGL(GLenum glFormat);
+
 		private:
 			u32 m_glID = 0U;
 			u32 m_glType = GL_TEXTURE_2D;

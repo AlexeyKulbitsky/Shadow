@@ -119,5 +119,28 @@ namespace sh
 		}		
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+		void RenderPipeline::Unload()
+		{
+			m_shaderProgram->Unload();
+			delete m_shaderProgram;
+			m_shaderProgram = nullptr;
+
+			delete m_vertexInputDeclaration;
+			m_vertexInputDeclaration = nullptr;
+
+			m_uniformBuffer->Unload();
+			delete m_uniformBuffer;
+			m_uniformBuffer = nullptr;
+
+			delete m_depthStencilState;
+			m_depthStencilState = nullptr;
+			delete m_rasterizationState;
+			m_rasterizationState = nullptr;
+			delete m_blendingState;
+			m_blendingState = nullptr;
+		}
+
+		///////////////////////////////////////////////////////////////////////////////////////////////////
 	}
 }

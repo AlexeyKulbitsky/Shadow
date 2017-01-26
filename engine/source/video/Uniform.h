@@ -109,7 +109,7 @@ namespace sh
 			GlobalUniformName GetGlobalUniformName() const { return m_globalName; }
 			Type GetType() const { return m_type; }
 
-			virtual void Load() {}
+			virtual void Upload() {}
 			virtual void Init() {}
 			virtual Uniform* Clone() { return nullptr; }
 

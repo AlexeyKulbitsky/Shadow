@@ -41,21 +41,24 @@ namespace sh
 			video::Driver* driver = Device::GetInstance()->GetDriver();
 			math::Matrix4f wvp = projectionMatrix * viewMatrix * m_worldMatrix;
 			wvp.Transpose();
-			//driver->GetGlobalUniform(video::GlobalUniformName::MODEL_WORLD_VIEW_PROJECTION_MATRIX)->Set(wvp);
 
 			for (auto renderCommand : m_renderCommands)
 			{
-				size_t uniformsCount = renderCommand->GetUniformBuffer()->GetUniformsCount();
-				for (size_t i = 0; i < uniformsCount; ++i)
+				size_t autoUniformsCount = renderCommand->GetUniformBuffer()->GetAutoUniformsCount();
+								
+				for (size_t i = 0; i < autoUniformsCount; ++i)
 				{
-					video::Uniform* uniform = renderCommand->GetUniformBuffer()->GetUniform(i);
-					if (uniform->GetGlobalUniformName() == video::GlobalUniformName::MODEL_WORLD_VIEW_PROJECTION_MATRIX)
+					video::Uniform* uniform = renderCommand->GetUniformBuffer()->GetAutoUniform(i);
+					switch (uniform->GetGlobalUniformName())
 					{
-						uniform->Set(wvp);
-					}
-					else if (uniform->GetGlobalUniformName() == video::GlobalUniformName::MODEL_WORLD_MATRIX)
-					{
-						uniform->Set(m_worldMatrix);
+						case video::GlobalUniformName::MODEL_WORLD_VIEW_PROJECTION_MATRIX:
+							uniform->Set(wvp);
+							break;
+						case video::GlobalUniformName::MODEL_WORLD_MATRIX:
+							uniform->Set(m_worldMatrix);
+							break;
+						default:
+							break;
 					}
 				}
 			}		
@@ -73,7 +76,7 @@ namespace sh
 		void Mesh::SetMaterial(sh::video::Material* material)
 		{
 			m_material = material;	
-			size_t passesSize = material->GetRenderPassesCount();
+			size_t passesSize = material->GetRenderPipelinesCount();
 			if (m_renderCommands.size() != passesSize)
 			{
 				m_renderCommands.resize(passesSize);
@@ -97,7 +100,7 @@ namespace sh
 			}
 
 
-			for (size_t i = 0, sz = m_material->GetRenderPassesCount(); i < sz; ++i)
+			for (size_t i = 0, sz = m_material->GetRenderPipelinesCount(); i < sz; ++i)
 			{
 				video::RenderPipeline* renderPipeline = m_material->GetRenderPipeline(i);
 				m_renderCommands[i]->SetUniformBuffer(renderPipeline->GetUniformBuffer());

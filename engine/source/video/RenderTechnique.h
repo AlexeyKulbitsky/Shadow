@@ -21,11 +21,11 @@ namespace sh
 			virtual void Unload() override;
 
 			const String& GetName() const { return m_name; }
-			size_t GetRenderPassesCount() const { return m_renderPasses.size(); }
-			RenderPipeline* GetRenderPipeline(size_t index) { return m_renderPasses[index]; }
+			size_t GetRenderPipelinesCount() const { return m_renderPipelines.size(); }
+			RenderPipeline* GetRenderPipeline(size_t index) { return m_renderPipelines[index]; }
 
 		protected:
-			std::vector<RenderPipeline*> m_renderPasses;
+			std::vector<RenderPipeline*> m_renderPipelines;
 			String m_name;
 		};
 	}

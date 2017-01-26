@@ -196,5 +196,23 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////
 
+		Texture::Format GLES20Texture::GetFormatFromGL(GLenum glFormat)
+		{
+			Format result = Format::UNDEFINED;
+
+			switch (glFormat)
+			{
+			case GL_COMPRESSED_RGB_S3TC_DXT1_EXT:
+				result = Format::DXT1_RGB;
+				break;
+			case GL_COMPRESSED_RGBA_S3TC_DXT1_EXT:
+				result = Format::DXT1_RGBA;
+				break;
+			default:
+				break;
+			}
+			
+			return result;
+		}
 	}
 }

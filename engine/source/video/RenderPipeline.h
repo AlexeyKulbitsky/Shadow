@@ -31,6 +31,7 @@ namespace sh
 			RenderPipeline* Clone();
 
 			void Load(const pugi::xml_node &node);
+			void Unload();
 
 			const String& GetName() const { return m_name; }
 			ShaderProgram* GetShaderProgram() const { return m_shaderProgram; }
