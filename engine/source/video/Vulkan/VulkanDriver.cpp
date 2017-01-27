@@ -146,7 +146,7 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		void VulkanDriver::DrawMesh(scene::Mesh* mesh)
+		void VulkanDriver::Render(scene::Mesh* mesh)
 		{
 			updateUniformBuffer();
 			DrawBuffer();

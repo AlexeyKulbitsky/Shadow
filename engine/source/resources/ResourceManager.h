@@ -25,6 +25,7 @@ namespace sh
 		ResourceManager();
 		~ResourceManager();
 		void Init();
+		void Unload();
 
 		video::Texture* GetTexture(const String& fileName);
 		video::Texture* GetCubeTexture(const std::vector<String>& faces);

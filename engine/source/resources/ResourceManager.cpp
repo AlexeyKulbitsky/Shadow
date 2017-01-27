@@ -30,6 +30,30 @@ namespace sh
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	void ResourceManager::Unload()
+	{
+		for (size_t i = 0; i < m_renderTechniques.size(); ++i)
+		{
+			m_renderTechniques[i]->Unload();
+			delete m_renderTechniques[i];
+			m_renderTechniques[i] = nullptr;
+		}
+		for (size_t i = 0; i < m_textures.size(); ++i)
+		{
+			m_textures[i]->Unload();
+			delete m_textures[i];
+			m_textures[i] = nullptr;
+		}
+		for (size_t i = 0; i < m_models.size(); ++i)
+		{
+			m_models[i]->Unload();
+			delete m_models[i];
+			m_models[i] = nullptr;
+		}
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	video::Texture* ResourceManager::GetTexture(const String& fileName)
 	{
 		// Check if Texture already exists in textures pool

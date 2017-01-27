@@ -39,9 +39,10 @@ namespace sh
 			virtual bool Init() = 0;
 			virtual void BeginRendering() = 0;
 			virtual void EndRendering() = 0;
-			virtual void DrawMesh(scene::Mesh* mesh) = 0;
-			virtual void Render(RenderCommand* command){}
+			
 			virtual void Render(scene::Model* model);
+			virtual void Render(scene::Mesh* mesh);
+			virtual void Render(RenderCommand* command) {}
 
 			// Viewport management
 			virtual void SetViewport(u32 x, u32 y, u32 width, u32 height);

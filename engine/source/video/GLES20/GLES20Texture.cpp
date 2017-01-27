@@ -15,7 +15,7 @@ namespace sh
 
 		GLES20Texture::~GLES20Texture()
 		{
-			glDeleteTextures(1, &m_glID);
+			
 		}
 
 		////////////////////////////////////////////////////////////////////
@@ -34,7 +34,7 @@ namespace sh
 
 		void GLES20Texture::Unload()
 		{
-
+			glDeleteTextures(1, &m_glID);
 		}
 
 		////////////////////////////////////////////////////////////////////

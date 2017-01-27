@@ -1,4 +1,5 @@
 #include "ModelBase.h"
+#include "MeshBase.h"
 
 namespace sh
 {
@@ -14,6 +15,20 @@ namespace sh
 		ModelBase::~ModelBase()
 		{
 
+		}
+
+		//////////////////////////////////////////////////////////////////////////////
+
+		void ModelBase::Unload()
+		{
+			for (size_t i = 0; i < m_meshes.size(); ++i)
+			{
+				m_meshes[i]->Unload();
+				delete m_meshes[i];
+				m_meshes[i] = nullptr;
+			}
+
+			m_meshes.clear();
 		}
 
 		//////////////////////////////////////////////////////////////////////////////

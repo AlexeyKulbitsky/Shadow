@@ -41,7 +41,7 @@ namespace sh
 			virtual bool Init() override;
 			virtual void BeginRendering() override;
 			virtual void EndRendering() override;
-			virtual void DrawMesh(scene::Mesh* mesh) override;
+			virtual void Render(scene::Mesh* mesh) override;
 
 			void DrawBuffer();
 

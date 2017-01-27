@@ -16,7 +16,7 @@ namespace sh
 
 			virtual void Bind() {}
 			virtual void Unbind() {}
-
+			virtual void Unload() {}
 			// Set data for buffer
 			void SetVerticesData(const std::vector<float>& data);
 			// Set vertices count

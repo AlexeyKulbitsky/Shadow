@@ -18,9 +18,7 @@ namespace sh
 
 			virtual bool Init() override;
 			virtual void BeginRendering() override;
-			virtual void EndRendering() override;
-			virtual void DrawMesh(scene::Mesh* mesh) override;
-			
+			virtual void EndRendering() override;			
 			virtual void Render(RenderCommand* command) override;
 
 			// Viewport management

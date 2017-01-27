@@ -23,6 +23,7 @@ namespace sh
 		public:
 			MeshBase();
 			~MeshBase();
+			void Unload();
 
 			bool IsUseIndices() { return m_useIndices; }
 

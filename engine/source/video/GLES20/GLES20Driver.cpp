@@ -162,13 +162,6 @@ void GLES20Driver::EndRendering()
 
 ////////////////////////////////////////////////////////////////////////
 
-void GLES20Driver::DrawMesh(scene::Mesh* mesh)
-{
-}
-
-////////////////////////////////////////////////////////////////////////
-
-
 void GLES20Driver::Render(RenderCommand* command)
 {
 	GLES20RenderCommand* glesRenderCommand = static_cast<GLES20RenderCommand*>(command);

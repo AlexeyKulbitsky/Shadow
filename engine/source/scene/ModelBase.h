@@ -15,7 +15,8 @@ namespace sh
 		public:
 			ModelBase();
 			~ModelBase();
-			
+			virtual void Unload() override;
+
 			void AddMesh(MeshBase* mesh);
 			size_t GetMeshesCount() const;
 			MeshBase* GetMesh(size_t index);

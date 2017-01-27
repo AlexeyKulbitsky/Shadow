@@ -27,6 +27,31 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
+		void MeshBase::Unload()
+		{
+			m_vertexBuffer->Unload();
+			delete m_vertexBuffer;
+
+			m_indexBuffer->Unload();
+			delete m_indexBuffer;
+
+			delete m_vertexDeclaration;
+
+			for (size_t i = 0; i < m_uniforms.size(); ++i)
+			{
+				delete m_uniforms[i];
+				m_uniforms[i] = nullptr;
+			}
+
+			for (size_t i = 0; i < m_samplers.size(); ++i)
+			{
+				delete m_samplers[i];
+				m_samplers[i] = nullptr;
+			}
+		}
+
+		/////////////////////////////////////////////////////////////////////////////////////
+
 		void MeshBase::SetVertexDeclaration(sh::video::VertexDeclaration* vertexDeclaration)
 		{
 			m_vertexDeclaration = vertexDeclaration;

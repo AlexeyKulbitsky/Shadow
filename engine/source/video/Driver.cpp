@@ -49,20 +49,26 @@ namespace sh
 			for (size_t i = 0; i < meshesCount; ++i)
 			{
 				sh::scene::Mesh* mesh = model->GetMesh(i);
-
-				Material* material = mesh->GetMaterial();
-				RenderPipeline* renderPipeline = material->GetRenderPipeline(0);
-			
-				SetDepthStencilState(renderPipeline->GetDepthStencilState());
-				SetRasterizationState(renderPipeline->GetRasterizationState());
-				SetBlendingState(renderPipeline->GetBlendingState());
-				renderPipeline->GetShaderProgram()->BindProgram();
-		
-				RenderCommand* renderCommand = mesh->GetRenderCommand();
-
-				Render(renderCommand);
-				renderPipeline->GetShaderProgram()->UnbindProgram();	
+				Render(mesh);
 			}
+		}
+
+		/////////////////////////////////////////////////////////////////////////
+
+		void Driver::Render(scene::Mesh* mesh)
+		{
+			Material* material = mesh->GetMaterial();
+			RenderPipeline* renderPipeline = material->GetRenderPipeline(0);
+
+			SetDepthStencilState(renderPipeline->GetDepthStencilState());
+			SetRasterizationState(renderPipeline->GetRasterizationState());
+			SetBlendingState(renderPipeline->GetBlendingState());
+			renderPipeline->GetShaderProgram()->BindProgram();
+
+			RenderCommand* renderCommand = mesh->GetRenderCommand();
+
+			Render(renderCommand);
+			renderPipeline->GetShaderProgram()->UnbindProgram();
 		}
 
 		/////////////////////////////////////////////////////////////////////////

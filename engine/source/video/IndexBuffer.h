@@ -22,6 +22,7 @@ namespace sh
 
 			virtual void Bind() {}
 			virtual void Unbind() {}
+			virtual void Unload() {}
 
 			virtual void SetIndexType(IndexType indexType) { m_indexType = indexType; }
 			// Set data for buffer
