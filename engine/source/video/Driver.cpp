@@ -48,8 +48,8 @@ namespace sh
 			size_t meshesCount = model->GetMeshesCount();
 			for (size_t i = 0; i < meshesCount; ++i)
 			{
-				sh::scene::Mesh* mesh = model->GetMesh(i);
-				Render(mesh);
+				sh::scene::MeshPtr mesh = model->GetMesh(i);
+				Render(mesh.get());
 			}
 		}
 

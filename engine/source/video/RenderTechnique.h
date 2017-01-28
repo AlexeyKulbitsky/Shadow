@@ -1,7 +1,6 @@
 #ifndef SHADOW_RENDER_TECHNIQUE_INLCLUDE
 #define SHADOW_RENDER_TECHNIQUE_INLCLUDE
 
-#include <vector>
 #include "../resources/Resource.h"
 #include "../Globals.h"
 
@@ -9,8 +8,6 @@ namespace sh
 {
 	namespace video
 	{
-		class RenderPipeline;
-
 		class RenderTechnique : public Resource
 		{
 		public:
@@ -22,10 +19,10 @@ namespace sh
 
 			const String& GetName() const { return m_name; }
 			size_t GetRenderPipelinesCount() const { return m_renderPipelines.size(); }
-			RenderPipeline* GetRenderPipeline(size_t index) { return m_renderPipelines[index]; }
+			RenderPipelinePtr GetRenderPipeline(size_t index) { return m_renderPipelines[index]; }
 
 		protected:
-			std::vector<RenderPipeline*> m_renderPipelines;
+			std::vector<RenderPipelinePtr> m_renderPipelines;
 			String m_name;
 		};
 	}

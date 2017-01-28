@@ -20,12 +20,6 @@
 #include "gui\decorators\TransformComponent\TransformComponentDecorator.h"
 #include "gui\decorators\RenderComponent\RenderComponentDecorator.h"
 
-#include <Shadow.h>
-#include <scene\Camera.h>
-#include <scene\SceneManager.h>
-#include <scene\ModelLoader\TinyObjModelLoader.h>
-#include <entity\Entity.h>
-
 
 
 MainWindow::MainWindow(QWidget *parent)

@@ -2,16 +2,7 @@
 #define SHADOW_RENDER_COMPONENT_DECORATOR
 
 #include "ComponentDecorator.h"
-#include <entity\components\RenderComponent.h>
-
-namespace sh
-{
-	namespace video
-	{
-		class Material;
-	}
-}
-
+#include <Shadow.h>
 
 class RenderComponentDecorator : public QObject, public sh::RenderComponent
 {

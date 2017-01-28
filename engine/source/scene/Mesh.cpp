@@ -5,7 +5,8 @@
 #include "../video/RenderTechnique.h"
 #include "../video/ShaderProgram.h"
 #include "../video/RenderPipeline.h"
-#include "../video/RenderCommand.h"
+#include "../video/RenderPipeline.h"
+#include "../video/VertexDeclaration.h"
 #include "../video/UniformBuffer.h"
 #include "../video/Uniform.h"
 #include "../scene/SceneManager.h"
@@ -15,11 +16,9 @@ namespace sh
 {
 	namespace scene
 	{
-		Mesh::Mesh(MeshBase* meshBase)
+		Mesh::Mesh(MeshBasePtr meshBase)
 			: m_meshBase(meshBase)
 		{
-			
-
 			m_worldMatrix.SetIdentity();
 		}
 

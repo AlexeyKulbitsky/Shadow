@@ -6,7 +6,7 @@ namespace sh
 {
 	namespace video
 	{
-		void Material::SetRenderTechnique(RenderTechnique* technique) 
+		void Material::SetRenderTechnique(RenderTechniquePtr technique) 
 		{ 
 			m_renderTechnique = technique; 
 			u32 pipelinesCount = technique->GetRenderPipelinesCount();
@@ -14,7 +14,7 @@ namespace sh
 
 			for (size_t i = 0; i < pipelinesCount; ++i)
 			{
-				RenderPipeline* pipeline = technique->GetRenderPipeline(i);
+				RenderPipeline* pipeline = technique->GetRenderPipeline(i).get();
 				m_renderPipelines[i] = pipeline->Clone();
 			}
 		}

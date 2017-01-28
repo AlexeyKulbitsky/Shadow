@@ -57,8 +57,9 @@ namespace sh
 
 		////////////////////////////////////////////////////////////
 
-		struct SHADOW_API RasterizationState
+		class SHADOW_API RasterizationState
 		{
+		public:
 			RasterizationState* Clone();
 
 			CullFace    cullFace = CullFace::NONE;

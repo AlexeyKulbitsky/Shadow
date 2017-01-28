@@ -1,8 +1,8 @@
 #ifndef SHADOW_SAMPLER_INCLUDE
 #define SHADOW_SAMPLER_INCLUDE
 
+#include "../Globals.h"
 #include "Texture.h"
-#include <string>
 
 namespace sh
 {
@@ -25,7 +25,7 @@ namespace sh
 			Sampler(Texture* texture){}
 			virtual ~Sampler(){}
 
-			virtual void Set(Texture* texture){}
+			virtual void Set(TexturePtr texture){}
 			virtual void Load(int textureChannel){}
 			virtual void Init(){}
 			virtual Sampler* Clone(){ return nullptr; }

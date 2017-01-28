@@ -2,7 +2,7 @@
 #define SHADOW_TRANSFORM_COMPONENT_DECORATOR_INCLUDE
 
 #include "ComponentDecorator.h"
-#include <entity\components\TransformComponent.h>
+#include <Shadow.h>
 
 
 class TransformComponentDecorator : public QObject, public sh::TransformComponent

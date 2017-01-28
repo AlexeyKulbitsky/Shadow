@@ -1,23 +1,5 @@
 #include "RotateGizmo.h"
 
-#include <scene\GeometryGenerator.h>
-#include <scene\Mesh.h>
-#include <scene\Model.h>
-#include <scene\SceneManager.h>
-#include <scene\Camera.h>
-
-#include <video\Material.h>
-#include <video\RenderCommand.h>
-#include <video\RenderPipeline.h>
-#include <video\Driver.h>
-#include <video\ShaderProgram.h>
-#include <video\RenderTechnique.h>
-#include <video\UniformBuffer.h>
-#include <video\Uniform.h>
-#include <Device.h>
-
-#include <entity\Entity.h>
-#include <entity\components\TransformComponent.h>
 
 RotateGizmo::RotateGizmo()
 {
@@ -101,10 +83,6 @@ RotateGizmo::RotateGizmo()
 
 RotateGizmo::~RotateGizmo()
 {
-	for (size_t i = 0; i < 4; ++i)
-	{
-		delete m_axises[i].circleModel;
-	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -151,11 +129,11 @@ void RotateGizmo::Render()
 		}
 	}
 
-	driver->Render(m_axises[3].circleModel);
+	driver->Render(m_axises[3].circleModel.get());
 
 	for (size_t i = 0; i < 3; ++i)
 	{
-		driver->Render(m_axises[i].circleModel);
+		driver->Render(m_axises[i].circleModel.get());
 	}
 }
 

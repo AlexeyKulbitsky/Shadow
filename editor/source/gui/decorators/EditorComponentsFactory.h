@@ -1,7 +1,7 @@
 #ifndef SHADOW_EDITOR_COMPONENTS_FACTORY_INCLUDE
 #define SHADOW_EDITOR_COMPONENTS_FACTORY_INCLUDE
 
-#include <entity\ComponentsFactory.h>
+#include <Shadow.h>
 
 class EditorComponentsFactory : public sh::ComponentsFactory
 {

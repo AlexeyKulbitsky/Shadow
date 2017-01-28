@@ -2,22 +2,12 @@
 #define SHADOW_MESH_BASE_INCLUDE
 
 #include "../Globals.h"
-#include "../video/VertexBuffer.h"
-#include "../video/IndexBuffer.h"
 #include "../video/RenderCommand.h"
 
 namespace sh
 {
-	namespace video
-	{
-		class Uniform;
-		class Sampler;
-	}
-
 	namespace scene
 	{
-		
-
 		class MeshBase
 		{
 		public:
@@ -27,10 +17,10 @@ namespace sh
 
 			bool IsUseIndices() { return m_useIndices; }
 
-			void SetVertexDeclaration(sh::video::VertexDeclaration* vertexDeclaration);
+			void SetVertexDeclaration(sh::video::VertexDeclarationPtr vertexDeclaration);
 			void SetTopology(sh::video::Topology topology);
-			void SetVertexBuffer(video::VertexBuffer* vertexBuffer);
-			void SetIndexBuffer(video::IndexBuffer* indexBuffer);
+			void SetVertexBuffer(video::VertexBufferPtr vertexBuffer);
+			void SetIndexBuffer(video::IndexBufferPtr indexBuffer);
 
 			void AddUniform(video::Uniform* uniform);
 			void AddSampler(video::Sampler* sampler);
@@ -46,9 +36,9 @@ namespace sh
 			sh::video::Topology GetTopology();
 
 		private:
-			video::VertexBuffer* m_vertexBuffer;
-			video::IndexBuffer* m_indexBuffer;
-			video::VertexDeclaration* m_vertexDeclaration;
+			video::VertexBufferPtr m_vertexBuffer;
+			video::IndexBufferPtr m_indexBuffer;
+			video::VertexDeclarationPtr m_vertexDeclaration;
 			sh::video::Topology m_topology;
 			bool m_useIndices;
 

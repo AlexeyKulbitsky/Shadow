@@ -1,14 +1,7 @@
 #ifndef SHADOW_PICKER_INCLUDE
 #define SHADOW_PICKER_INCLUDE
 
-#include <entity\Entity.h>
-namespace sh
-{
-	namespace video
-	{
-		class RenderTechnique;
-	}
-}
+#include <Shadow.h>
 
 class Gizmo;
 
@@ -23,7 +16,7 @@ public:
 
 private:
 	std::vector<sh::Entity*> m_entities;
-	sh::video::RenderTechnique* m_renderTechnique = nullptr;
+	sh::video::RenderTechniquePtr m_renderTechnique = nullptr;
 };
 
 #endif

@@ -17,9 +17,9 @@ public:
 			COUNT
 		};
 
-		sh::scene::Model* lineModel = nullptr;
+		sh::scene::ModelPtr lineModel = nullptr;
 		sh::video::Uniform* lineColorUniform = nullptr;
-		sh::scene::Model* coneModel = nullptr;
+		sh::scene::ModelPtr coneModel = nullptr;
 		sh::video::Uniform* coneColorUniform = nullptr;
 		bool active = false;
 	};

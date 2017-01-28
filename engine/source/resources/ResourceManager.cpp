@@ -35,26 +35,20 @@ namespace sh
 		for (size_t i = 0; i < m_renderTechniques.size(); ++i)
 		{
 			m_renderTechniques[i]->Unload();
-			delete m_renderTechniques[i];
-			m_renderTechniques[i] = nullptr;
 		}
 		for (size_t i = 0; i < m_textures.size(); ++i)
 		{
 			m_textures[i]->Unload();
-			delete m_textures[i];
-			m_textures[i] = nullptr;
 		}
 		for (size_t i = 0; i < m_models.size(); ++i)
 		{
 			m_models[i]->Unload();
-			delete m_models[i];
-			m_models[i] = nullptr;
 		}
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	video::Texture* ResourceManager::GetTexture(const String& fileName)
+	video::TexturePtr ResourceManager::GetTexture(const String& fileName)
 	{
 		// Check if Texture already exists in textures pool
 		for (size_t i = 0, sz = m_textures.size(); i < sz; ++i)
@@ -70,7 +64,7 @@ namespace sh
 		// If file exists in file system then load
 		if (textureFileInfo.name != "")
 		{
-			video::Texture* texture = m_textureLoader->Load(textureFileInfo.absolutePath);
+			video::TexturePtr texture = m_textureLoader->Load(textureFileInfo.absolutePath);
 			texture->SetFileName(textureFileInfo.name);
 			m_textures.push_back(texture);
 
@@ -80,7 +74,7 @@ namespace sh
 		return nullptr;
 	}
 
-	video::Texture* ResourceManager::GetCubeTexture(const std::vector<String>& faces)
+	video::TexturePtr ResourceManager::GetCubeTexture(const std::vector<String>& faces)
 	{
 		io::FileSystem* fs = Device::GetInstance()->GetFileSystem();
 		
@@ -93,14 +87,14 @@ namespace sh
 				facesPathes.push_back(textureFileInfo.absolutePath);
 			}
 		}
-		video::Texture* texture = m_textureLoader->LoadCube(facesPathes);
+		video::TexturePtr texture = m_textureLoader->LoadCube(facesPathes);
 		
 		return texture;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	video::RenderTechnique* ResourceManager::GetRenderTechnique(const String& fileName)
+	video::RenderTechniquePtr ResourceManager::GetRenderTechnique(const String& fileName)
 	{
 		// Check if RenderTechnique already exists in techniques pool
 		for (size_t i = 0, sz = m_renderTechniques.size(); i < sz; ++i)
@@ -116,7 +110,7 @@ namespace sh
 		// If file exists in file system then load
 		if (rtFileInfo.name != "")
 		{
-			video::RenderTechnique* rt = new video::RenderTechnique();
+			video::RenderTechniquePtr rt(new video::RenderTechnique());
 			rt->Load(rtFileInfo.absolutePath);
 			rt->SetFileName(rtFileInfo.name);
 			m_renderTechniques.push_back(rt);
@@ -128,7 +122,7 @@ namespace sh
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	scene::ModelBase* ResourceManager::GetModelBase(const String& fileName)
+	scene::ModelBasePtr ResourceManager::GetModelBase(const String& fileName)
 	{
 		// Check if Modell already exists in models pool
 		for (size_t i = 0, sz = m_models.size(); i < sz; ++i)
@@ -144,7 +138,7 @@ namespace sh
 		// If file exists in file system then load
 		if (modelFileInfo.name != "")
 		{
-			scene::ModelBase* model = scene::ModelLoader::GetInstance()->Load(modelFileInfo.absolutePath);
+			scene::ModelBasePtr model = scene::ModelLoader::GetInstance()->Load(modelFileInfo.absolutePath);
 			model->SetFileName(modelFileInfo.name);
 			m_models.push_back(model);
 			return model;

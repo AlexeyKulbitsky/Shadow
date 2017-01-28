@@ -17,7 +17,7 @@ public:
 			COUNT
 		};
 
-		sh::scene::Model* circleModel = nullptr;
+		sh::scene::ModelPtr circleModel = nullptr;
 		sh::video::Uniform* circleColorUniform = nullptr;
 		sh::math::Vector3f localUp;
 		bool active = false;

@@ -7,14 +7,6 @@ namespace sh
 {
 	namespace video
 	{
-		class ShaderProgram;
-		class UniformBuffer;
-		class RenderState;
-		struct DepthStencilState;
-		struct RasterizationState;
-		struct BlendingState;
-		class VertexInputDeclaration;
-
 		class RenderPipeline
 		{
 		public:
@@ -34,23 +26,23 @@ namespace sh
 			void Unload();
 
 			const String& GetName() const { return m_name; }
-			ShaderProgram* GetShaderProgram() const { return m_shaderProgram; }
+			ShaderProgram* GetShaderProgram() const { return m_shaderProgram.get(); }
 			VertexInputDeclaration* GetVertexInputDeclaration() const { return m_vertexInputDeclaration; }
-			UniformBuffer* GetUniformBuffer() const { return m_uniformBuffer; }
-			DepthStencilState* GetDepthStencilState() const { return m_depthStencilState; }
-			RasterizationState* GetRasterizationState() const { return m_rasterizationState; }
-			BlendingState* GetBlendingState() const { return m_blendingState; }
+			UniformBuffer* GetUniformBuffer() const { return m_uniformBuffer.get(); }
+			DepthStencilState* GetDepthStencilState() const { return m_depthStencilState.get(); }
+			RasterizationState* GetRasterizationState() const { return m_rasterizationState.get(); }
+			BlendingState* GetBlendingState() const { return m_blendingState.get(); }
 			Layer GetLayer() const { return m_layer; }
 
 		protected:
 			String m_name;
-			ShaderProgram* m_shaderProgram;
+			ShaderProgramPtr m_shaderProgram;
 			VertexInputDeclaration* m_vertexInputDeclaration;
-			UniformBuffer* m_uniformBuffer;
+			UniformBufferPtr m_uniformBuffer;
 
-			DepthStencilState* m_depthStencilState;
-			RasterizationState* m_rasterizationState;
-			BlendingState* m_blendingState;
+			DepthStencilStatePtr m_depthStencilState;
+			RasterizationStatePtr m_rasterizationState;
+			BlendingStatePtr m_blendingState;
 
 			Layer m_layer;
 		};

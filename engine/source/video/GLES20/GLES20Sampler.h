@@ -12,7 +12,7 @@ namespace sh
 		{
 		public:
 			GLES20Sampler(unsigned int shaderProgramId) : m_shaderProgramId(shaderProgramId) {}
-			virtual void Set(Texture* texture) override;
+			virtual void Set(TexturePtr texture) override;
 			virtual void Load(int textureChannel) override;
 			virtual void Init() override;
 			virtual Sampler* Clone() override;

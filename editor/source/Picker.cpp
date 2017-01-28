@@ -1,18 +1,4 @@
 #include "Picker.h"
-
-#include <entity\components\RenderComponent.h>
-#include <scene\Model.h>
-#include <scene\Mesh.h>
-#include <Device.h>
-#include <video\Driver.h>
-#include <video\Material.h>
-#include <video\RenderBatch.h>
-#include <video\RenderTechnique.h>
-#include <video\ShaderProgram.h>
-#include <video\RenderPipeline.h>
-#include <video\UniformBuffer.h>
-#include <resources\ResourceManager.h>
-
 #include "gizmo\Gizmo.h"
 
 Picker::Picker()
@@ -58,7 +44,7 @@ sh::Entity* Picker::TryToPick(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 heigh
 		size_t meshesCount = model->GetMeshesCount();
 		for (size_t j = 0; j < meshesCount; ++j)
 		{
-			sh::scene::Mesh* mesh = model->GetMesh(j);
+			sh::scene::MeshPtr mesh = model->GetMesh(j);
 			mesh->GetMaterial()->GetRenderPipeline(1)->GetShaderProgram()->BindProgram();
 			sh::video::Uniform* uniform = mesh->GetRenderCommand(1)->GetUniformBuffer()->GetUniform("color");
 			if (uniform)

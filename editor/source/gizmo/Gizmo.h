@@ -1,17 +1,7 @@
 #ifndef SHADOW_GIZMO_INCLUDE
 #define SHADOW_GIZMO_INCLUDE
 
-#include <video\Uniform.h>
-
-namespace sh
-{
-	class Entity;
-
-	namespace scene
-	{
-		class Model;
-	}
-}
+#include <Shadow.h>
 
 class Gizmo
 {
@@ -27,7 +17,7 @@ public:
 			COUNT
 		};
 
-		sh::scene::Model* lineModel = nullptr;
+		sh::scene::ModelPtr lineModel = nullptr;
 		sh::video::Uniform* lineColorUniform = nullptr;
 		bool active = false;
 	};

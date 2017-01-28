@@ -7,13 +7,7 @@
 
 class RenderComponentTreeItem;
 
-namespace sh
-{
-	namespace scene
-	{
-		class Model;
-	}
-}
+#include <Shadow.h>
 
 class RenderComponentTreeModel : public QAbstractItemModel
 {

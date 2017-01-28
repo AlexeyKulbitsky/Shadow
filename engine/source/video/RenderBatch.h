@@ -7,13 +7,6 @@ namespace sh
 {
 	namespace video
 	{
-		class RenderCommand;
-		class RenderState;
-		class ShaderProgram;
-		struct DepthStencilState;
-		struct RasterizationState;
-		struct BlendingState;
-
 		class RenderBatch
 		{
 		public:

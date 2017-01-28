@@ -2,19 +2,10 @@
 #define SHADOW_EDITOR_MAIN_WINDOW
 
 #include <QMainWindow>
+#include <Shadow.h>
 
 class GraphicsWidget;
 class QVBoxLayout;
-
-namespace sh
-{
-	namespace scene
-	{
-		class SceneManager;
-	}
-
-	class Entity;
-}
 
 class MainWindow : public QMainWindow
 {

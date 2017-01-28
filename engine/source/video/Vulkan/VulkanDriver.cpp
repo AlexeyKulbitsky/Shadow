@@ -197,14 +197,16 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		VertexBuffer* VulkanDriver::CreateVertexBuffer()
+		VertexBufferPtr VulkanDriver::CreateVertexBuffer()
 		{
-			return new VulkanVertexBuffer();
+			VertexBufferPtr result = nullptr;
+			result.reset(new VulkanVertexBuffer());
+			return result;
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		VertexBuffer* VulkanDriver::CreateVertexBuffer(const void* data, size_t size)
+		VertexBufferPtr VulkanDriver::CreateVertexBuffer(const void* data, size_t size)
 		{
 			return nullptr;
 		}
@@ -212,14 +214,16 @@ namespace sh
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		
-		IndexBuffer* VulkanDriver::CreateIndexBuffer()
+		IndexBufferPtr VulkanDriver::CreateIndexBuffer()
 		{
-			return new VulkanIndexBuffer();
+			IndexBufferPtr result = nullptr;
+			result.reset(new VulkanIndexBuffer());
+			return result;
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		IndexBuffer* VulkanDriver::CreateIndexBuffer(const void* data, size_t size)
+		IndexBufferPtr VulkanDriver::CreateIndexBuffer(const void* data, size_t size)
 		{
 			return nullptr;
 		}
@@ -233,7 +237,7 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		ShaderProgram* VulkanDriver::CreateShaderProgram()
+		ShaderProgramPtr VulkanDriver::CreateShaderProgram()
 		{
 			return nullptr;
 		}

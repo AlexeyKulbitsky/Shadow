@@ -332,37 +332,43 @@ void GLES20Driver::GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data)
 
 ////////////////////////////////////////////////////////////////////////
 
-VertexBuffer* GLES20Driver::CreateVertexBuffer()
+VertexBufferPtr GLES20Driver::CreateVertexBuffer()
 {
 	return nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-VertexBuffer* GLES20Driver::CreateVertexBuffer(const void* data, size_t size)
+VertexBufferPtr GLES20Driver::CreateVertexBuffer(const void* data, size_t size)
 {
-	return new GLES20VertexBuffer(data, size);
+	VertexBufferPtr result = nullptr;
+	result.reset(new GLES20VertexBuffer(data, size));
+	return result;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-IndexBuffer* GLES20Driver::CreateIndexBuffer()
+IndexBufferPtr GLES20Driver::CreateIndexBuffer()
 {
 	return nullptr;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-IndexBuffer* GLES20Driver::CreateIndexBuffer(const void* data, size_t size)
+IndexBufferPtr GLES20Driver::CreateIndexBuffer(const void* data, size_t size)
 {
-	return new GLES20IndexBuffer(data, size);
+	IndexBufferPtr result = nullptr;
+	result.reset(new GLES20IndexBuffer(data, size));
+	return result;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-UniformBuffer* GLES20Driver::CreateUniformBuffer()
+UniformBufferPtr GLES20Driver::CreateUniformBuffer()
 {
-	return new GLES20UniformBuffer();
+	UniformBufferPtr result = nullptr;
+	result.reset(new GLES20UniformBuffer());
+	return result;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -374,16 +380,20 @@ RenderCommand* GLES20Driver::CreateRenderCommand()
 
 ////////////////////////////////////////////////////////////////////////
 
-ShaderProgram* GLES20Driver::CreateShaderProgram()
+ShaderProgramPtr GLES20Driver::CreateShaderProgram()
 {
-	return new GLES20ShaderProgram();
+	ShaderProgramPtr result = nullptr;
+	result.reset(new GLES20ShaderProgram());
+	return result;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-Texture* GLES20Driver::CreateTexture()
+TexturePtr GLES20Driver::CreateTexture()
 {
-	return new GLES20Texture();
+	TexturePtr result = nullptr;
+	result.reset(new GLES20Texture());
+	return result;
 }
 
 ////////////////////////////////////////////////////////////////////////

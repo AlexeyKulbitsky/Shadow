@@ -68,7 +68,7 @@ namespace sh
 			bool HasMipMaps() const { return m_hasMipMaps; }
 
 		protected:
-			bool m_hasMipMaps = false;
+			bool m_hasMipMaps = false; 
 		};
 	}
 }

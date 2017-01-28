@@ -4,6 +4,7 @@
 #include "DepthStencilState.h"
 #include "RasterizationState.h"
 #include "BlendingState.h"
+#include "VertexDeclaration.h"
 #include "../Device.h"
 
 namespace sh
@@ -27,10 +28,10 @@ namespace sh
 		{
 			RenderPipeline* result = new RenderPipeline();
 			result->m_shaderProgram = m_shaderProgram;
-			result->m_uniformBuffer = m_uniformBuffer->Clone();
-			result->m_depthStencilState = m_depthStencilState->Clone();
-			result->m_blendingState = m_blendingState->Clone();
-			result->m_rasterizationState = m_rasterizationState->Clone();
+			result->m_uniformBuffer = UniformBufferPtr(m_uniformBuffer->Clone());
+			result->m_depthStencilState = DepthStencilStatePtr(m_depthStencilState->Clone());
+			result->m_blendingState = BlendingStatePtr(m_blendingState->Clone());
+			result->m_rasterizationState = RasterizationStatePtr(m_rasterizationState->Clone());
 			result->m_vertexInputDeclaration = m_vertexInputDeclaration->Clone();
 			result->m_name = m_name;
 			result->m_layer = m_layer;
@@ -66,7 +67,7 @@ namespace sh
 			}
 			
 			// Load depth/stencil state
-			m_depthStencilState = new DepthStencilState();
+			m_depthStencilState.reset(new DepthStencilState());
 			pugi::xml_node depthStencilStateNode = node.child("depthstencilstate");
 			if (!depthStencilStateNode.empty())
 			{
@@ -74,7 +75,7 @@ namespace sh
 			}
 
 			// Load rasterization state
-			m_rasterizationState = new RasterizationState();
+			m_rasterizationState.reset(new RasterizationState());
 			pugi::xml_node rasterizationStateNode = node.child("rasterizationstate");
 			if (!rasterizationStateNode.empty())
 			{
@@ -82,7 +83,7 @@ namespace sh
 			}
 
 			// Load blending state
-			m_blendingState = new BlendingState();
+			m_blendingState.reset(new BlendingState());
 			pugi::xml_node blendingStateNode = node.child("blendingstate");
 			if (!blendingStateNode.empty())
 			{
@@ -102,7 +103,7 @@ namespace sh
 			if (!attributesNode.empty())
 			{
 				m_vertexInputDeclaration = driver->CreateVertexInputDeclaration();
-				m_vertexInputDeclaration->SetShaderProgram(m_shaderProgram);
+				m_vertexInputDeclaration->SetShaderProgram(m_shaderProgram.get());
 				m_vertexInputDeclaration->Load(attributesNode);
 				m_vertexInputDeclaration->Init();
 			}
@@ -112,7 +113,7 @@ namespace sh
 			if (!uniformsNode.empty())
 			{
 				m_uniformBuffer = driver->CreateUniformBuffer();
-				m_uniformBuffer->SetShaderProgram(m_shaderProgram);
+				m_uniformBuffer->SetShaderProgram(m_shaderProgram.get());
 				m_uniformBuffer->Load(uniformsNode);
 				m_uniformBuffer->Init();
 			}
@@ -123,22 +124,12 @@ namespace sh
 		void RenderPipeline::Unload()
 		{
 			m_shaderProgram->Unload();
-			delete m_shaderProgram;
-			m_shaderProgram = nullptr;
 
 			delete m_vertexInputDeclaration;
 			m_vertexInputDeclaration = nullptr;
 
 			m_uniformBuffer->Unload();
-			delete m_uniformBuffer;
-			m_uniformBuffer = nullptr;
 
-			delete m_depthStencilState;
-			m_depthStencilState = nullptr;
-			delete m_rasterizationState;
-			m_rasterizationState = nullptr;
-			delete m_blendingState;
-			m_blendingState = nullptr;
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////

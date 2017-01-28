@@ -1,8 +1,6 @@
 #ifndef SHADOW_UNIFORM_INCLUDE
 #define SHADOW_UNIFORM_INCLUDE
 
-#include <string>
-#include "../pempek_assert.h"
 #include "../Globals.h"
 
 namespace sh

@@ -88,8 +88,9 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////////////////
 
-		struct SHADOW_API BlendingState
+		class SHADOW_API BlendingState
 		{
+		public:
 			BlendingState();
 			BlendingState(BlendCombination combination);
 			BlendingState(BlendFactor srcColor, BlendFactor srcAlpha, BlendFactor dstColor, BlendFactor dstAlpha);

@@ -21,8 +21,6 @@ namespace sh
 		class SceneManager;
 	}
 
-	class System;
-
 	class Device
 	{
 	public:

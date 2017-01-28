@@ -3,11 +3,6 @@
 #include <QResizeEvent>
 #include <QAction>
 
-#include <Shadow.h>
-#include <scene\SceneManager.h>
-#include <scene\Camera.h>
-#include <scene\Model.h>
-#include <entity\Entity.h>
 
 
 GraphicsWidget::GraphicsWidget(QWidget* parent) : QWidget(parent)

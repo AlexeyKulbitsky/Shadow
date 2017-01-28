@@ -2,8 +2,7 @@
 #include <QTreeView>
 #include "RenderComponentTreeModel.h"
 #include "RenderComponentTreeItemDelegate.h"
-#include <scene/Model.h>
-#include <video/Material.h>
+
 
 RenderComponentDecorator::RenderComponentDecorator()
 {

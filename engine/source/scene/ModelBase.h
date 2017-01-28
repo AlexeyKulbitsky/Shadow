@@ -8,8 +8,6 @@ namespace sh
 {
 	namespace scene
 	{
-		class MeshBase;
-
 		class ModelBase : public Resource
 		{
 		public:
@@ -17,12 +15,12 @@ namespace sh
 			~ModelBase();
 			virtual void Unload() override;
 
-			void AddMesh(MeshBase* mesh);
+			void AddMesh(MeshBasePtr mesh);
 			size_t GetMeshesCount() const;
-			MeshBase* GetMesh(size_t index);
+			MeshBasePtr GetMesh(size_t index);
 
 		private:
-			std::vector<MeshBase*> m_meshes;
+			std::vector<MeshBasePtr> m_meshes;
 		};
 	}
 }

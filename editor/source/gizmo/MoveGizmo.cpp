@@ -1,23 +1,5 @@
 #include "MoveGizmo.h"
 
-#include <scene\GeometryGenerator.h>
-#include <scene\Mesh.h>
-#include <scene\Model.h>
-#include <scene\SceneManager.h>
-#include <scene\Camera.h>
-
-#include <video\Material.h>
-#include <video\RenderCommand.h>
-#include <video\RenderPipeline.h>
-#include <video\Driver.h>
-#include <video\ShaderProgram.h>
-#include <video\RenderTechnique.h>
-#include <video\UniformBuffer.h>
-#include <video\Uniform.h>
-#include <Device.h>
-
-#include <entity\Entity.h>
-#include <entity\components\TransformComponent.h>
 
 MoveGizmo::MoveGizmo()
 {
@@ -114,11 +96,6 @@ MoveGizmo::MoveGizmo()
 
 MoveGizmo::~MoveGizmo()
 {
-	for (size_t i = 0; i < 3; ++i)
-	{
-		delete m_axises[i].lineModel;
-		delete m_axises[i].coneModel;
-	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -164,8 +141,8 @@ void MoveGizmo::Render()
 
 	for (size_t i = 0; i < 3; ++i)
 	{
-		driver->Render(m_axises[i].lineModel);
-		driver->Render(m_axises[i].coneModel);
+		driver->Render(m_axises[i].lineModel.get());
+		driver->Render(m_axises[i].coneModel.get());
 	}
 }
 

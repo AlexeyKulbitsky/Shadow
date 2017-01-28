@@ -1,8 +1,7 @@
 #ifndef SHADOW_VERTEX_BUFFER_INCLUDE
 #define SHADOW_VERTEX_BUFFER_INCLUDE
 
-#include <vector>
-#include "VertexDeclaration.h"
+#include "../Globals.h"
 
 namespace sh
 {

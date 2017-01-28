@@ -8,26 +8,23 @@ namespace sh
 {
 	namespace scene
 	{
-		class Mesh;
-		class ModelBase;
-
 		class Model : public Resource
 		{
 		public:
 			Model();
-			Model(ModelBase* modelBase);
+			Model(ModelBasePtr modelBase);
 			~Model();
 
 			void SetPosition(const math::Vector3f& pos);
 			const math::Vector3f& GetPosition() const { return m_position; }
 			void SetWorldMatrix(const math::Matrix4f& matrix);
 			void UpdateTransformationUniforms();
-			void AddMesh(Mesh* mesh);
+			void AddMesh(MeshPtr mesh);
 			size_t GetMeshesCount() const;
-			Mesh* GetMesh(size_t index);
+			MeshPtr GetMesh(size_t index);
 
 		private:
-			std::vector<Mesh*> m_meshes;
+			std::vector<MeshPtr> m_meshes;
 
 			math::Vector3f m_position;
 			math::Quaternionf m_rotation;

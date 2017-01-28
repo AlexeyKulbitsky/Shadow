@@ -1,8 +1,7 @@
 #ifndef SHADOW_SHADER_PROGRAM_INCLUDE
 #define SHADOW_SHADER_PROGRAM_INCLUDE
 
-#include "../Types.h"
-#include <pugixml.hpp>
+#include "../Globals.h"
 
 namespace sh
 {
@@ -14,9 +13,7 @@ namespace sh
 			FRAGMENT,
 			NONE
 		};
-
-		class UniformBuffer;
-
+		
 		class ShaderProgram
 		{
 		public:

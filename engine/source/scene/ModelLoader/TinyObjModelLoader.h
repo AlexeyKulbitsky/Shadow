@@ -13,8 +13,8 @@ namespace sh
 			TinyObjModelLoader();
 			virtual ~TinyObjModelLoader();
 
-			virtual ModelBase* Load(const char* path) override;
-			virtual ModelBase* Load(const std::string &path) override;
+			virtual ModelBasePtr Load(const char* path) override;
+			virtual ModelBasePtr Load(const std::string &path) override;
 		};
 	}
 }

@@ -1,7 +1,7 @@
 #ifndef SHADOW_INDEX_BUFFER_INCLUDE
 #define SHADOW_INDEX_BUFFER_INCLUDE
 
-#include <vector>
+#include "../Globals.h"
 
 namespace sh
 {

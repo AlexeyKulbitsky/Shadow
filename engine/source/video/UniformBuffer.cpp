@@ -1,6 +1,4 @@
 #include "UniformBuffer.h"
-#include "Uniform.h"
-#include "Sampler.h"
 #include "Driver.h"
 #include "../Device.h"
 

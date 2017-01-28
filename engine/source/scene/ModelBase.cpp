@@ -24,8 +24,6 @@ namespace sh
 			for (size_t i = 0; i < m_meshes.size(); ++i)
 			{
 				m_meshes[i]->Unload();
-				delete m_meshes[i];
-				m_meshes[i] = nullptr;
 			}
 
 			m_meshes.clear();
@@ -33,7 +31,7 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////////////////
 
-		void ModelBase::AddMesh(MeshBase* mesh)
+		void ModelBase::AddMesh(MeshBasePtr mesh)
 		{
 			m_meshes.push_back(mesh);
 		}
@@ -47,7 +45,7 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////////////////
 
-		MeshBase* ModelBase::GetMesh(size_t index)
+		MeshBasePtr ModelBase::GetMesh(size_t index)
 		{
 			return m_meshes[index];
 		}

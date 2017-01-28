@@ -6,9 +6,9 @@ namespace sh
 {
 	namespace video
 	{
-		void GLES20Sampler::Set(Texture* texture)
+		void GLES20Sampler::Set(TexturePtr texture)
 		{
-			GLES20Texture* glesTexture = static_cast<GLES20Texture*>(texture);
+			GLES20Texture* glesTexture = static_cast<GLES20Texture*>(texture.get());
 			m_glID = glesTexture->GetGLId();
 			m_glType = glesTexture->GetGLType();
 			m_hasMipMaps = glesTexture->HasMipMaps();

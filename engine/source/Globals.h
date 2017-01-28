@@ -11,6 +11,8 @@
 #include "Types.h"
 #include "math\smath.h"
 #include "Event.h"
+#include "pempek_assert.h"
+#include "Forward.h"
 
 namespace sh
 {

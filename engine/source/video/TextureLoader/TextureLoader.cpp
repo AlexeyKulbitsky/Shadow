@@ -27,7 +27,7 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////
 
-		Texture* TextureLoader::Load(const String& path)
+		TexturePtr TextureLoader::Load(const String& path)
 		{			
 			// Check file extension
 			String::size_type pos = String(path).find_last_of(".");
@@ -46,17 +46,17 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////
 
-		Texture* TextureLoader::LoadCube(const std::vector<String>& faces)
+		TexturePtr TextureLoader::LoadCube(const std::vector<String>& faces)
 		{
 			return LoadSTBCube(faces);
 		}
 
 		//////////////////////////////////////////////////////////////
 
-		Texture* TextureLoader::LoadSTB(const String& path)
+		TexturePtr TextureLoader::LoadSTB(const String& path)
 		{
 			Driver* driver = Device::GetInstance()->GetDriver();
-			Texture* texture = driver->CreateTexture();
+			TexturePtr texture = driver->CreateTexture();
 			texture->SetType(Texture::Type::TEXTURE_2D);
 
 			int texWidth, texHeight, texChannels;
@@ -77,10 +77,10 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////
 
-		Texture* TextureLoader::LoadSTBCube(const std::vector<String>& faces)
+		TexturePtr TextureLoader::LoadSTBCube(const std::vector<String>& faces)
 		{
 			Driver* driver = Device::GetInstance()->GetDriver();
-			Texture* texture = driver->CreateTexture();
+			TexturePtr texture = driver->CreateTexture();
 			texture->SetType(Texture::Type::TEXTURE_CUBE);
 
 			texture->Bind();

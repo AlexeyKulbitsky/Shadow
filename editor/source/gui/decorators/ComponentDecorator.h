@@ -1,7 +1,7 @@
 #ifndef SHADOW_EDITOR_COMPONENT_DECORATOR_INCLUDE
 #define SHADOW_EDITOR_COMPONENT_DECORATOR_INCLUDE
 
-#include <entity/Component.h>
+#include <Shadow.h>
 
 #include "../ExpandableWidget.h"
 

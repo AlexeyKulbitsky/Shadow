@@ -7,20 +7,18 @@ namespace sh
 {
 	namespace video
 	{
-		class Texture;
-
 		class TextureLoader
 		{
 		public:
 			TextureLoader();
 			~TextureLoader();
 
-			Texture* Load(const String& path);
-			Texture* LoadCube(const std::vector<String>& faces);
+			TexturePtr Load(const String& path);
+			TexturePtr LoadCube(const std::vector<String>& faces);
 
 		private:
-			Texture* LoadSTB(const String& path);
-			Texture* LoadSTBCube(const std::vector<String>& faces);
+			TexturePtr LoadSTB(const String& path);
+			TexturePtr LoadSTBCube(const std::vector<String>& faces);
 		};
 	}
 }

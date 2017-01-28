@@ -34,7 +34,7 @@ namespace sh
 			pugi::xml_node renderPipelineNode = techniqueNode.child("pipeline");
 			while (renderPipelineNode)
 			{
-				RenderPipeline* renderPipeline = new RenderPipeline();
+				RenderPipelinePtr renderPipeline = RenderPipelinePtr(new RenderPipeline());
 				renderPipeline->Load(renderPipelineNode);
 
 				m_renderPipelines.push_back(renderPipeline);
@@ -51,8 +51,6 @@ namespace sh
 			for (size_t i = 0; i < m_renderPipelines.size(); ++i)
 			{
 				m_renderPipelines[i]->Unload();
-				delete m_renderPipelines[i];
-				m_renderPipelines[i] = nullptr;
 			}
 			m_renderPipelines.clear();
 		}

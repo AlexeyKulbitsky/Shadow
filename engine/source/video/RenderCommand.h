@@ -1,6 +1,8 @@
 #ifndef SHADOW_RENDER_COMMAND_INCLUDE
 #define SHADOW_RENDER_COMMAND_INCLUDE
 
+#include "../Globals.h"
+
 namespace sh
 {
 	namespace video
@@ -15,13 +17,8 @@ namespace sh
 			TRIANGLE_FAN
 		};
 
-		class VertexBuffer;
-		class IndexBuffer;
 		class VertexDeclaration;
 		class VertexInputDeclaration;
-		class RenderState;
-		class ShaderProgram;
-		class UniformBuffer;
 
 		class RenderCommand
 		{

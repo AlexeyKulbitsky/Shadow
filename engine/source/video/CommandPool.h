@@ -6,15 +6,8 @@
 
 namespace sh
 {
-	namespace scene
-	{
-		class Mesh;
-	}
-
 	namespace video
 	{
-		class RenderBatch;
-
 		class CommandPool
 		{
 		public:

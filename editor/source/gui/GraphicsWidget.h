@@ -2,26 +2,13 @@
 #define SHADOW_EDITOR_GRAPHICS_WIDGET_INCLUDE
 
 #include <QWidget>
+#include <Shadow.h>
 #include "../gizmo/Gizmo.h"
 #include "../gizmo/MoveGizmo.h"
 #include "../gizmo/RotateGizmo.h"
 #include "../gizmo/ScaleGizmo.h"
 #include "../Picker.h"
 
-namespace sh
-{
-	namespace video
-	{
-		class Driver;
-	}
-
-	namespace scene
-	{
-		class SceneManager;
-	}
-
-	class Entity;
-}
 
 enum class EditMode
 {

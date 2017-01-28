@@ -1,16 +1,5 @@
 #include <QtWidgets>
 
-#include <scene\Model.h>
-#include <scene\Mesh.h>
-
-#include <video\Material.h>
-#include <video\RenderTechnique.h>
-#include <video\RenderPipeline.h>
-#include <video\DepthStencilState.h>
-#include <video\RasterizationState.h>
-#include <video\BlendingState.h>
-#include <video\UniformBuffer.h>
-#include <video\Uniform.h>
 
 #include "RenderComponentTreeItem.h"
 #include "RenderComponentTreeModel.h"
@@ -304,7 +293,7 @@ void RenderComponentTreeModel::SetupModelData(sh::scene::Model* model, RenderCom
 
 	for (size_t i = 0; i < meshesCount; ++i)
 	{
-		sh::scene::Mesh* mesh = model->GetMesh(i);
+		sh::scene::MeshPtr mesh = model->GetMesh(i);
 		sh::video::Material* mat = mesh->GetMaterial();
 		sh::video::RenderTechnique* rt = mat->GetRenderTechnique();
 		QVariant data(rt->GetName().c_str());

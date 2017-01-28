@@ -33,7 +33,7 @@ namespace sh
 
 		// Read model
 		sh::scene::Model* model = nullptr;
-		sh::scene::ModelBase* modelBase = nullptr;
+		sh::scene::ModelBasePtr modelBase = nullptr;
 		pugi::xml_node modelNode = node.child("model");
 		if (modelNode)
 		{
@@ -53,7 +53,7 @@ namespace sh
 			pugi::xml_attribute fileName = techniqueNode.attribute("filename");
 			String techniqueFileName = fileName.as_string();
 
-			sh::video::RenderTechnique* rt = resourceManager->GetRenderTechnique(techniqueFileName);
+			sh::video::RenderTechniquePtr rt = resourceManager->GetRenderTechnique(techniqueFileName);
 
 			material->SetRenderTechnique(rt);
 
@@ -106,7 +106,7 @@ namespace sh
 					std::string name = nameAttr.as_string();
 
 					sh::video::Sampler* sampler = uniformBuffer->GetSampler(name);
-					sh::video::Texture* texture = nullptr;
+					sh::video::TexturePtr texture = nullptr;
 					if (typeName == "2D")
 					{
 						pugi::xml_attribute fileNameAttr = samplNode.attribute("filename");
@@ -144,7 +144,7 @@ namespace sh
 			// Init model with material
 			for (size_t i = 0, sz = model->GetMeshesCount(); i < sz; ++i)
 			{
-				sh::scene::Mesh* mesh = model->GetMesh(i);
+				sh::scene::MeshPtr mesh = model->GetMesh(i);
 				mesh->SetMaterial(material);
 			}		
 
@@ -152,8 +152,8 @@ namespace sh
 			{
 				for (size_t i = 0; i < modelBase->GetMeshesCount(); ++i)
 				{
-					scene::MeshBase* meshBase = modelBase->GetMesh(i);
-					scene::Mesh* mesh = model->GetMesh(i);
+					scene::MeshBasePtr meshBase = modelBase->GetMesh(i);
+					scene::MeshPtr mesh = model->GetMesh(i);
 					video::UniformBuffer* meshUniformBuffer = mesh->GetRenderCommand()->GetUniformBuffer();
 
 					for (size_t j = 0; j < meshBase->GetSamplersCount(); ++j)
@@ -162,7 +162,7 @@ namespace sh
 						video::Sampler* sampler = meshUniformBuffer->GetSampler(baseSampler->GetUsage());
 						if (sampler)
 						{
-							sh::video::Texture* texture = resourceManager->GetTexture(baseSampler->GetTextureName());
+							sh::video::TexturePtr texture = resourceManager->GetTexture(baseSampler->GetTextureName());
 							sampler->Set(texture);
 						}
 					}

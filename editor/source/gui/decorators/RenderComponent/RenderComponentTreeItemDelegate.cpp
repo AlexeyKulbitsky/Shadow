@@ -6,10 +6,7 @@
 #include <QComboBox>
 #include <QDoublespinbox>
 
-#include <video\Uniform.h>
-#include <video\BlendingState.h>
-#include <video\DepthStencilState.h>
-#include <video\RasterizationState.h>
+#include <Shadow.h>
 
 RenderComponentTreeItemDelegate::RenderComponentTreeItemDelegate(QObject *parent)
 	: QItemDelegate(parent)

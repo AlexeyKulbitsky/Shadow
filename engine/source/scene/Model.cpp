@@ -13,13 +13,13 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////////////////
 
-		Model::Model(ModelBase* modelBase)
+		Model::Model(ModelBasePtr modelBase)
 		{
 			size_t meshesCount = modelBase->GetMeshesCount();
 			m_meshes.resize(meshesCount);
 			for (size_t i = 0; i < meshesCount; ++i)
 			{
-				m_meshes[i] = new Mesh(modelBase->GetMesh(i));
+				m_meshes[i] = MeshPtr(new Mesh(modelBase->GetMesh(i)));
 			}
 		}
 
@@ -63,7 +63,7 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////////////////
 
-		void Model::AddMesh(Mesh* mesh)
+		void Model::AddMesh(MeshPtr mesh)
 		{
 			m_meshes.push_back(mesh);
 		}
@@ -77,7 +77,7 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////////////////
 
-		Mesh* Model::GetMesh(size_t index)
+		MeshPtr Model::GetMesh(size_t index)
 		{
 			return m_meshes[index];
 		}

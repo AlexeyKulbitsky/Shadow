@@ -103,7 +103,6 @@ namespace sh
 			size_t m_stride = 0U;
 		};
 
-		class ShaderProgram;
 
 		class VertexInputDeclaration
 		{

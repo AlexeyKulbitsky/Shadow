@@ -4,9 +4,12 @@
 #include "../video/RenderTechnique.h"
 #include "../video/ShaderProgram.h"
 #include "../video/RenderPipeline.h"
+#include "../video/VertexBuffer.h"
+#include "../video/IndexBuffer.h"
 #include "../video/RenderCommand.h"
 #include "../video/UniformBuffer.h"
 #include "../video/Uniform.h"
+#include "../video/VertexDeclaration.h"
 #include "../scene/SceneManager.h"
 #include "../scene/Camera.h"
 
@@ -30,12 +33,8 @@ namespace sh
 		void MeshBase::Unload()
 		{
 			m_vertexBuffer->Unload();
-			delete m_vertexBuffer;
-
 			m_indexBuffer->Unload();
-			delete m_indexBuffer;
 
-			delete m_vertexDeclaration;
 
 			for (size_t i = 0; i < m_uniforms.size(); ++i)
 			{
@@ -52,7 +51,7 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		void MeshBase::SetVertexDeclaration(sh::video::VertexDeclaration* vertexDeclaration)
+		void MeshBase::SetVertexDeclaration(sh::video::VertexDeclarationPtr vertexDeclaration)
 		{
 			m_vertexDeclaration = vertexDeclaration;
 		}
@@ -66,14 +65,14 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		void MeshBase::SetVertexBuffer(video::VertexBuffer* vertexBuffer)
+		void MeshBase::SetVertexBuffer(video::VertexBufferPtr vertexBuffer)
 		{
 			m_vertexBuffer = vertexBuffer;
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		void MeshBase::SetIndexBuffer(video::IndexBuffer* indexBuffer)
+		void MeshBase::SetIndexBuffer(video::IndexBufferPtr indexBuffer)
 		{
 			m_indexBuffer = indexBuffer;
 			m_useIndices = true;
@@ -123,21 +122,21 @@ namespace sh
 
 		video::VertexBuffer* MeshBase::GetVertexBuffer()
 		{
-			return m_vertexBuffer;
+			return m_vertexBuffer.get();
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
 		video::IndexBuffer* MeshBase::GetIndexBuffer()
 		{
-			return m_indexBuffer;
+			return m_indexBuffer.get();
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
 		video::VertexDeclaration* MeshBase::GetVertexDeclaration()
 		{
-			return m_vertexDeclaration;
+			return m_vertexDeclaration.get();
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////

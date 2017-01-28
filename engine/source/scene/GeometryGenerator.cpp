@@ -1,6 +1,7 @@
 #include "GeometryGenerator.h"
 #include "../video/VertexDeclaration.h"
 #include "../video/VertexBuffer.h"
+#include "../video/IndexBuffer.h"
 #include "../Device.h"
 #include "../scene/MeshBase.h"
 #include "../scene/ModelBase.h"
@@ -13,7 +14,7 @@ namespace sh
 {
 	namespace scene
 	{
-		Model* GeometryGenerator::GetLineModel(const math::Vector3f& start, const math::Vector3f& end)
+		ModelPtr GeometryGenerator::GetLineModel(const math::Vector3f& start, const math::Vector3f& end)
 		{
 			// Set vertex data
 			std::vector<float> vertexArray;
@@ -28,31 +29,31 @@ namespace sh
 			vertexArray[5] = end.z;
 
 			// Create vertex declaration
-			sh::video::VertexDeclaration* vertexDeclaration = new sh::video::VertexDeclaration();
+			sh::video::VertexDeclarationPtr vertexDeclaration = sh::video::VertexDeclarationPtr(new sh::video::VertexDeclaration());
 			sh::video::Attribute positionAttribute(sh::video::AttributeSemantic::POSITION, sh::video::AttributeType::FLOAT, 3U);
 			vertexDeclaration->AddAttribute(positionAttribute);
 
 			// Create vertex buffer
 			const void* verticesPointer = vertexArray.data();
 			size_t verticesDataSize = vertexArray.size() * sizeof(float);
-			sh::video::VertexBuffer* vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer(verticesPointer, verticesDataSize);
+			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer(verticesPointer, verticesDataSize);
 			vertexBuffer->SetVerticesData(vertexArray);
 			vertexBuffer->SetVerticesCount(verticesCount / 3);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
 
-			sh::scene::MeshBase* mesh = new sh::scene::MeshBase();
+			sh::scene::MeshBasePtr mesh(new sh::scene::MeshBase());
 
 			mesh->SetVertexBuffer(vertexBuffer);
 			mesh->SetVertexDeclaration(vertexDeclaration);
 			mesh->SetTopology(sh::video::Topology::LINE_LIST);
 
-			sh::scene::ModelBase* model = new sh::scene::ModelBase();
+			sh::scene::ModelBasePtr model(new sh::scene::ModelBase());
 			model->AddMesh(mesh);
 
-			sh::scene::Model* resultModel = new sh::scene::Model(model);
+			sh::scene::ModelPtr resultModel(new sh::scene::Model(model));
 
 			sh::video::Material* material = new sh::video::Material();			
-			sh::video::RenderTechnique* rt = Device::GetInstance()->GetResourceManager()->GetRenderTechnique("base.xml");			
+			sh::video::RenderTechniquePtr rt = Device::GetInstance()->GetResourceManager()->GetRenderTechnique("base.xml");			
 			material->SetRenderTechnique(rt);
 
 			size_t meshesCount = resultModel->GetMeshesCount();
@@ -66,7 +67,7 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////
 
-		Model* GeometryGenerator::GetConeModel(const math::Vector3f& start, const math::Vector3f& axis, const math::Vector3f& vtx, const math::Vector3f& vty)
+		ModelPtr GeometryGenerator::GetConeModel(const math::Vector3f& start, const math::Vector3f& axis, const math::Vector3f& vtx, const math::Vector3f& vty)
 		{
 			float r = 0.25f;
 			float height = 1.0f;
@@ -99,31 +100,31 @@ namespace sh
 			size_t verticesCount = vertexArray.size() / 3;
 
 			// Create vertex declaration
-			sh::video::VertexDeclaration* vertexDeclaration = new sh::video::VertexDeclaration();
+			sh::video::VertexDeclarationPtr vertexDeclaration = sh::video::VertexDeclarationPtr(new sh::video::VertexDeclaration());
 			sh::video::Attribute positionAttribute(sh::video::AttributeSemantic::POSITION, sh::video::AttributeType::FLOAT, 3U);
 			vertexDeclaration->AddAttribute(positionAttribute);
 
 			// Create vertex buffer
 			const void* verticesPointer = vertexArray.data();
 			size_t verticesDataSize = vertexArray.size() * sizeof(float);
-			sh::video::VertexBuffer* vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer(verticesPointer, verticesDataSize);
+			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer(verticesPointer, verticesDataSize);
 			vertexBuffer->SetVerticesData(vertexArray);
 			vertexBuffer->SetVerticesCount(verticesCount);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
 
-			sh::scene::MeshBase* mesh = new sh::scene::MeshBase();
+			sh::scene::MeshBasePtr mesh(new sh::scene::MeshBase());
 
 			mesh->SetVertexBuffer(vertexBuffer);
 			mesh->SetVertexDeclaration(vertexDeclaration);
 			mesh->SetTopology(sh::video::Topology::TRIANGLE_LIST);
 
-			sh::scene::ModelBase* model = new sh::scene::ModelBase();
+			sh::scene::ModelBasePtr model(new sh::scene::ModelBase());
 			model->AddMesh(mesh);
 
-			sh::scene::Model* resultModel = new sh::scene::Model(model);
+			sh::scene::ModelPtr resultModel(new sh::scene::Model(model));
 
 			sh::video::Material* material = new sh::video::Material();			
-			sh::video::RenderTechnique* rt = Device::GetInstance()->GetResourceManager()->GetRenderTechnique("base.xml");			
+			sh::video::RenderTechniquePtr rt = Device::GetInstance()->GetResourceManager()->GetRenderTechnique("base.xml");			
 			material->SetRenderTechnique(rt);
 
 			size_t meshesCount = resultModel->GetMeshesCount();
@@ -137,7 +138,7 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////
 
-		Model* GeometryGenerator::GetCircleModel(const math::Vector3f& centre, const f32 radius, const math::Vector3f& vtx, const math::Vector3f& vty)
+		ModelPtr GeometryGenerator::GetCircleModel(const math::Vector3f& centre, const f32 radius, const math::Vector3f& vtx, const math::Vector3f& vty)
 		{
 			std::vector<float> vertexArray;
 
@@ -156,31 +157,31 @@ namespace sh
 			size_t verticesCount = vertexArray.size();
 
 			// Create vertex declaration
-			sh::video::VertexDeclaration* vertexDeclaration = new sh::video::VertexDeclaration();
+			sh::video::VertexDeclarationPtr vertexDeclaration = sh::video::VertexDeclarationPtr(new sh::video::VertexDeclaration());
 			sh::video::Attribute positionAttribute(sh::video::AttributeSemantic::POSITION, sh::video::AttributeType::FLOAT, 3U);
 			vertexDeclaration->AddAttribute(positionAttribute);
 
 			// Create vertex buffer
 			const void* verticesPointer = vertexArray.data();
 			size_t verticesDataSize = vertexArray.size() * sizeof(float);
-			sh::video::VertexBuffer* vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer(verticesPointer, verticesDataSize);
+			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer(verticesPointer, verticesDataSize);
 			vertexBuffer->SetVerticesData(vertexArray);
 			vertexBuffer->SetVerticesCount(verticesCount / 3);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
 
-			sh::scene::MeshBase* mesh = new sh::scene::MeshBase();
+			sh::scene::MeshBasePtr mesh(new sh::scene::MeshBase());
 
 			mesh->SetVertexBuffer(vertexBuffer);
 			mesh->SetVertexDeclaration(vertexDeclaration);
 			mesh->SetTopology(sh::video::Topology::LINE_LOOP);
 
-			sh::scene::ModelBase* model = new sh::scene::ModelBase();
+			sh::scene::ModelBasePtr model(new sh::scene::ModelBase());
 			model->AddMesh(mesh);
 
-			sh::scene::Model* resultModel = new sh::scene::Model(model);
+			sh::scene::ModelPtr resultModel(new sh::scene::Model(model));
 
 			sh::video::Material* material = new sh::video::Material();
-			sh::video::RenderTechnique* rt = Device::GetInstance()->GetResourceManager()->GetRenderTechnique("base.xml");
+			sh::video::RenderTechniquePtr rt = Device::GetInstance()->GetResourceManager()->GetRenderTechnique("base.xml");
 			material->SetRenderTechnique(rt);
 
 			size_t meshesCount = resultModel->GetMeshesCount();
@@ -194,7 +195,7 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////
 
-		Model* GeometryGenerator::GetCylinderModel(const math::Vector3f& start, const f32 radius, const math::Vector3f& direction, const math::Vector3f& vtx, const math::Vector3f& vty)
+		ModelPtr GeometryGenerator::GetCylinderModel(const math::Vector3f& start, const f32 radius, const math::Vector3f& direction, const math::Vector3f& vtx, const math::Vector3f& vty)
 		{
 			std::vector<float> vertexArray;
 
@@ -232,14 +233,14 @@ namespace sh
 			size_t indicesCount = indexArray.size();
 
 			// Create vertex declaration
-			sh::video::VertexDeclaration* vertexDeclaration = new sh::video::VertexDeclaration();
+			sh::video::VertexDeclarationPtr vertexDeclaration = sh::video::VertexDeclarationPtr(new sh::video::VertexDeclaration());
 			sh::video::Attribute positionAttribute(sh::video::AttributeSemantic::POSITION, sh::video::AttributeType::FLOAT, 3U);
 			vertexDeclaration->AddAttribute(positionAttribute);
 
 			// Create vertex buffer
 			const void* verticesPointer = vertexArray.data();
 			size_t verticesDataSize = vertexArray.size() * sizeof(float);
-			sh::video::VertexBuffer* vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer(verticesPointer, verticesDataSize);
+			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer(verticesPointer, verticesDataSize);
 			vertexBuffer->SetVerticesData(vertexArray);
 			vertexBuffer->SetVerticesCount(verticesCount / 3);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
@@ -247,25 +248,25 @@ namespace sh
 			// Create index buffer
 			const void* indicesPointer = indexArray.data();
 			size_t indicesDataSize = indexArray.size() * sizeof(unsigned int);
-			sh::video::IndexBuffer* indexBuffer = Device::GetInstance()->GetDriver()->CreateIndexBuffer(indicesPointer, indicesDataSize);
+			sh::video::IndexBufferPtr indexBuffer = Device::GetInstance()->GetDriver()->CreateIndexBuffer(indicesPointer, indicesDataSize);
 			indexBuffer->SetIndicesData(indexArray);
 			indexBuffer->SetIndexType(sh::video::IndexBuffer::IndexType::UNSIGNED_32_BIT);
 			indexBuffer->SetIndicesCount(indexArray.size());
 
-			sh::scene::MeshBase* mesh = new sh::scene::MeshBase();
+			sh::scene::MeshBasePtr mesh(new sh::scene::MeshBase());
 
 			mesh->SetVertexBuffer(vertexBuffer);
 			mesh->SetIndexBuffer(indexBuffer);
 			mesh->SetVertexDeclaration(vertexDeclaration);
 			mesh->SetTopology(sh::video::Topology::TRIANGLE_LIST);
 
-			sh::scene::ModelBase* model = new sh::scene::ModelBase();
+			sh::scene::ModelBasePtr model(new sh::scene::ModelBase());
 			model->AddMesh(mesh);
 
-			sh::scene::Model* resultModel = new sh::scene::Model(model);
+			sh::scene::ModelPtr resultModel(new sh::scene::Model(model));
 
 			sh::video::Material* material = new sh::video::Material();
-			sh::video::RenderTechnique* rt = Device::GetInstance()->GetResourceManager()->GetRenderTechnique("base.xml");
+			sh::video::RenderTechniquePtr rt = Device::GetInstance()->GetResourceManager()->GetRenderTechnique("base.xml");
 			material->SetRenderTechnique(rt);
 
 			size_t meshesCount = resultModel->GetMeshesCount();
@@ -279,7 +280,7 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////
 
-		Model* GeometryGenerator::GetTorusModel(const math::Vector3f& start, const f32 radius, const f32 ringRadius, u32 sides, u32 rings, const math::Vector3f& vtx, const math::Vector3f& vty)
+		ModelPtr GeometryGenerator::GetTorusModel(const math::Vector3f& start, const f32 radius, const f32 ringRadius, u32 sides, u32 rings, const math::Vector3f& vtx, const math::Vector3f& vty)
 		{
 			float verticalAngularStride = (math::k_pi * 2.0f) / (float)rings;
 			float horizontalAngularStride = (math::k_pi * 2.0f) / (float)sides;
@@ -359,14 +360,14 @@ namespace sh
 
 
 			// Create vertex declaration
-			sh::video::VertexDeclaration* vertexDeclaration = new sh::video::VertexDeclaration();
+			sh::video::VertexDeclarationPtr vertexDeclaration = sh::video::VertexDeclarationPtr(new sh::video::VertexDeclaration());
 			sh::video::Attribute positionAttribute(sh::video::AttributeSemantic::POSITION, sh::video::AttributeType::FLOAT, 3U);
 			vertexDeclaration->AddAttribute(positionAttribute);
 
 			// Create vertex buffer
 			const void* verticesPointer = vertexArray.data();
 			size_t verticesDataSize = vertexArray.size() * sizeof(float);
-			sh::video::VertexBuffer* vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer(verticesPointer, verticesDataSize);
+			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer(verticesPointer, verticesDataSize);
 			vertexBuffer->SetVerticesData(vertexArray);
 			vertexBuffer->SetVerticesCount(verticesCount / 3);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
@@ -374,25 +375,25 @@ namespace sh
 			// Create index buffer
 			const void* indicesPointer = indexArray.data();
 			size_t indicesDataSize = indexArray.size() * sizeof(unsigned int);
-			sh::video::IndexBuffer* indexBuffer = Device::GetInstance()->GetDriver()->CreateIndexBuffer(indicesPointer, indicesDataSize);
+			sh::video::IndexBufferPtr indexBuffer = Device::GetInstance()->GetDriver()->CreateIndexBuffer(indicesPointer, indicesDataSize);
 			indexBuffer->SetIndicesData(indexArray);
 			indexBuffer->SetIndexType(sh::video::IndexBuffer::IndexType::UNSIGNED_32_BIT);
 			indexBuffer->SetIndicesCount(indexArray.size());
 
-			sh::scene::MeshBase* mesh = new sh::scene::MeshBase();
+			sh::scene::MeshBasePtr mesh(new sh::scene::MeshBase());
 
 			mesh->SetVertexBuffer(vertexBuffer);
 			mesh->SetIndexBuffer(indexBuffer);
 			mesh->SetVertexDeclaration(vertexDeclaration);
 			mesh->SetTopology(sh::video::Topology::TRIANGLE_LIST);
 
-			sh::scene::ModelBase* model = new sh::scene::ModelBase();
+			sh::scene::ModelBasePtr model(new sh::scene::ModelBase());
 			model->AddMesh(mesh);
 
-			sh::scene::Model* resultModel = new sh::scene::Model(model);
+			sh::scene::ModelPtr resultModel(new sh::scene::Model(model));
 
 			sh::video::Material* material = new sh::video::Material();
-			sh::video::RenderTechnique* rt = Device::GetInstance()->GetResourceManager()->GetRenderTechnique("base.xml");
+			sh::video::RenderTechniquePtr rt = Device::GetInstance()->GetResourceManager()->GetRenderTechnique("base.xml");
 			material->SetRenderTechnique(rt);
 
 			size_t meshesCount = resultModel->GetMeshesCount();
@@ -406,7 +407,7 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////
 
-		Model* GeometryGenerator::GetHalfTorusModel(const math::Vector3f& start, const f32 radius, const f32 ringRadius, u32 sides, u32 rings, const math::Vector3f& vtx, const math::Vector3f& vty)
+		ModelPtr GeometryGenerator::GetHalfTorusModel(const math::Vector3f& start, const f32 radius, const f32 ringRadius, u32 sides, u32 rings, const math::Vector3f& vtx, const math::Vector3f& vty)
 		{
 			float verticalAngularStride = (math::k_pi) / (float)rings;
 			float horizontalAngularStride = (math::k_pi) / (float)sides;
@@ -486,14 +487,14 @@ namespace sh
 
 
 			// Create vertex declaration
-			sh::video::VertexDeclaration* vertexDeclaration = new sh::video::VertexDeclaration();
+			sh::video::VertexDeclarationPtr vertexDeclaration = sh::video::VertexDeclarationPtr(new sh::video::VertexDeclaration());
 			sh::video::Attribute positionAttribute(sh::video::AttributeSemantic::POSITION, sh::video::AttributeType::FLOAT, 3U);
 			vertexDeclaration->AddAttribute(positionAttribute);
 
 			// Create vertex buffer
 			const void* verticesPointer = vertexArray.data();
 			size_t verticesDataSize = vertexArray.size() * sizeof(float);
-			sh::video::VertexBuffer* vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer(verticesPointer, verticesDataSize);
+			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer(verticesPointer, verticesDataSize);
 			vertexBuffer->SetVerticesData(vertexArray);
 			vertexBuffer->SetVerticesCount(verticesCount / 3);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
@@ -501,25 +502,25 @@ namespace sh
 			// Create index buffer
 			const void* indicesPointer = indexArray.data();
 			size_t indicesDataSize = indexArray.size() * sizeof(unsigned int);
-			sh::video::IndexBuffer* indexBuffer = Device::GetInstance()->GetDriver()->CreateIndexBuffer(indicesPointer, indicesDataSize);
+			sh::video::IndexBufferPtr indexBuffer = Device::GetInstance()->GetDriver()->CreateIndexBuffer(indicesPointer, indicesDataSize);
 			indexBuffer->SetIndicesData(indexArray);
 			indexBuffer->SetIndexType(sh::video::IndexBuffer::IndexType::UNSIGNED_32_BIT);
 			indexBuffer->SetIndicesCount(indexArray.size());
 
-			sh::scene::MeshBase* mesh = new sh::scene::MeshBase();
+			sh::scene::MeshBasePtr mesh(new sh::scene::MeshBase());
 
 			mesh->SetVertexBuffer(vertexBuffer);
 			mesh->SetIndexBuffer(indexBuffer);
 			mesh->SetVertexDeclaration(vertexDeclaration);
 			mesh->SetTopology(sh::video::Topology::TRIANGLE_LIST);
 
-			sh::scene::ModelBase* model = new sh::scene::ModelBase();
+			sh::scene::ModelBasePtr model(new sh::scene::ModelBase());
 			model->AddMesh(mesh);
 
-			sh::scene::Model* resultModel = new sh::scene::Model(model);
+			sh::scene::ModelPtr resultModel(new sh::scene::Model(model));
 
 			sh::video::Material* material = new sh::video::Material();
-			sh::video::RenderTechnique* rt = Device::GetInstance()->GetResourceManager()->GetRenderTechnique("base.xml");
+			sh::video::RenderTechniquePtr rt = Device::GetInstance()->GetResourceManager()->GetRenderTechnique("base.xml");
 			material->SetRenderTechnique(rt);
 
 			size_t meshesCount = resultModel->GetMeshesCount();

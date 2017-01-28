@@ -20,7 +20,7 @@ namespace sh
 			if (m_renderBatches[layerIndex].find(techniqueName) == m_renderBatches[layerIndex].end())
 			{
 				RenderBatch* renderBatch = new RenderBatch();
-				RenderPipeline* renderPipeline = material->GetRenderTechnique()->GetRenderPipeline(0);
+				RenderPipeline* renderPipeline = material->GetRenderTechnique()->GetRenderPipeline(0).get();
 				ShaderProgram* shader = renderPipeline->GetShaderProgram();
 				renderBatch->SetShaderProgram(shader);
 				renderBatch->SetDepthStencilState(renderPipeline->GetDepthStencilState());

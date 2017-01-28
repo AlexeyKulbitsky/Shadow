@@ -1,10 +1,7 @@
 #include "RenderComponentTreeItem.h"
 
 #include <QStringList>
-#include <video\BlendingState.h>
-#include <video\DepthStencilState.h>
-#include <video\RasterizationState.h>
-#include <video\Uniform.h>
+#include <Shadow.h>
 
 
 RenderComponentTreeItem::RenderComponentTreeItem(const QVector<QVariant> &data, RenderComponentTreeItem *parent)

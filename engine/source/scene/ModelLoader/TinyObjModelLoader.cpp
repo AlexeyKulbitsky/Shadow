@@ -1,6 +1,8 @@
 #include "TinyObjModelLoader.h"
 #include "../ModelBase.h"
 #include "../MeshBase.h"
+#include "../../video/VertexBuffer.h"
+#include "../../video/IndexBuffer.h"
 #include "../../video/VertexDeclaration.h"
 #include "../../Device.h"
 #include "../../video/Sampler.h"
@@ -23,7 +25,7 @@ namespace sh
 
 		}
 
-		ModelBase* TinyObjModelLoader::Load(const char* path)
+		ModelBasePtr TinyObjModelLoader::Load(const char* path)
 		{
 			tinyobj::attrib_t attrib;
 			std::vector<tinyobj::shape_t> shapes;
@@ -39,13 +41,13 @@ namespace sh
 				throw std::runtime_error(err);
 			}
 
-			ModelBase* model = new ModelBase();
+			ModelBasePtr model(new ModelBase());
 
 			for (const auto& shape : shapes)
 			{
 				std::vector<float> vertexArray;
 				std::vector<unsigned int> indexArray;
-				sh::video::VertexDeclaration* vertexDeclaration = new sh::video::VertexDeclaration();
+				sh::video::VertexDeclarationPtr vertexDeclaration = sh::video::VertexDeclarationPtr(new sh::video::VertexDeclaration());
 				size_t verticesCount = 0;
 
 				
@@ -84,14 +86,14 @@ namespace sh
 				vertexDeclaration->AddAttribute(colorAttribute);
 				vertexDeclaration->AddAttribute(uvAttribute);
 
-				MeshBase* mesh = new MeshBase();
+				MeshBasePtr mesh(new MeshBase());
 
 				sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
 
 				// Create vertex buffer
 				const void* verticesPointer = vertexArray.data();
 				size_t verticesDataSize = vertexArray.size() * sizeof(float);
-				sh::video::VertexBuffer* vertexBuffer = driver->CreateVertexBuffer(verticesPointer, verticesDataSize);
+				sh::video::VertexBufferPtr vertexBuffer = driver->CreateVertexBuffer(verticesPointer, verticesDataSize);
 				vertexBuffer->SetVerticesData(vertexArray);
 				vertexBuffer->SetVerticesCount(verticesCount);
 				vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
@@ -99,7 +101,7 @@ namespace sh
 				// Create index buffer
 				const void* indicesPointer = indexArray.data();
 				size_t indicesDataSize = indexArray.size() * sizeof(unsigned int);
-				sh::video::IndexBuffer* indexBuffer = driver->CreateIndexBuffer(indicesPointer, indicesDataSize);
+				sh::video::IndexBufferPtr indexBuffer = driver->CreateIndexBuffer(indicesPointer, indicesDataSize);
 				indexBuffer->SetIndicesData(indexArray);
 				indexBuffer->SetIndexType(sh::video::IndexBuffer::IndexType::UNSIGNED_32_BIT);
 				indexBuffer->SetIndicesCount(indexArray.size());
@@ -128,7 +130,7 @@ namespace sh
 			return model;
 		}
 
-		ModelBase* TinyObjModelLoader::Load(const std::string &path)
+		ModelBasePtr TinyObjModelLoader::Load(const std::string &path)
 		{
 			return Load(path.c_str());
 		}

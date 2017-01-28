@@ -89,8 +89,9 @@ namespace sh
 
 		////////////////////////////////////////////////////////////
 
-		struct SHADOW_API DepthStencilState
+		class SHADOW_API DepthStencilState
 		{
+		public:
 			DepthStencilState* Clone();
 
 			// Depth part
