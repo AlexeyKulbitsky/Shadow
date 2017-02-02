@@ -25,6 +25,11 @@ namespace sh
 			virtual void SetViewport(u32 x, u32 y, u32 width, u32 height) override;
 			virtual void SetDepthRange(f32 zMin, f32 zMax) override;
 			
+			// Buffers clearing
+			virtual void SetClearColor(const math::Vector4f& clearColor) override;
+			virtual void SetClearDepth(f32 clearDepth) override;
+			virtual void SetClearStencil(u32 clearStencil) override;
+
 			virtual void ClearColorBuffer() override;
 			virtual void ClearDepthBuffer() override;
 			virtual void ClearStencilBuffer() override;

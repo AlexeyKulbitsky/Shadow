@@ -1,7 +1,12 @@
 #include "Shadow.h"
 #include "Device.h"
 #include "CreationParameters.h"
-#include "platform/Win32Device.h"
+
+#if defined SHADOW_WINDOWS
+#include "platform/win32/Win32Device.h"
+#elif defined SHADOW_ANDROID
+#include "platform/android/AndroidDevice.h"
+#endif
 
 namespace sh
 {
@@ -29,9 +34,12 @@ namespace sh
 
 #if defined SHADOW_WINDOWS
 		device = new Win32Device(parameters);
+#elif defined SHADOW_ANDROID
+		device = new AndroidDevice(parameters);
 #endif
 		Device::SetInstance(device);
 
 		return device;
 	}
+
 }

@@ -83,7 +83,8 @@ namespace sh
 			{
 				Vector3<T> axis = a.Cross(b);
 				T dot = a.Dot(b);
-				if (dot < (T)(-1.0) + std::numeric_limits<T>::epsilon())// vectors are parallel and facing in the opposite direction
+				//if (dot < (T)(-1.0) + std::numeric_limits<T>::epsilon())// vectors are parallel and facing in the opposite direction
+				if (dot < (T)(-1.0) + (T)0.00001)
 				{
 					// Try crossing with x axis.
 					Vector3<T> t = a.Cross(Vector3<T>(1, 0, 0));
@@ -147,7 +148,6 @@ namespace sh
 				return r;
 			}
 
-			template <typename T>
 			void GetAsEulerXYZ(Vector3<T>& res) const
 			{
 				const T s = T(2) * (z * x + w * y);

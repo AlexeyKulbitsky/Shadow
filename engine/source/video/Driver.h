@@ -36,9 +36,9 @@ namespace sh
 			virtual const math::Vector2f& GetDepthRange() const { return m_depthRange; }
 			
 			// Buffers clearing
-			void SetClearColor(const math::Vector4f& clearColor) { m_clearColor = clearColor; }
-			void SetClearDepth(f32 clearDepth) { m_clearDepth = clearDepth; }
-			void SetClearStencil(u32 clearStencil) { m_clearStencil = clearStencil; }
+			virtual void SetClearColor(const math::Vector4f& clearColor) { m_clearColor = clearColor; }
+			virtual void SetClearDepth(f32 clearDepth) { m_clearDepth = clearDepth; }
+			virtual void SetClearStencil(u32 clearStencil) { m_clearStencil = clearStencil; }
 			const math::Vector4f& GetClearColor() const { return m_clearColor; }
 			f32 GetClearDepth() const { return m_clearDepth; }
 			u32 GetClearStencil() const { return m_clearStencil; }

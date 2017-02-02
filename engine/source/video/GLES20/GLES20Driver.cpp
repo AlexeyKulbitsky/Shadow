@@ -96,7 +96,7 @@ bool GLES20Driver::Init()
 	InitGlobalUniforms();
 
 	glEnable(GL_DEPTH_TEST);
-	glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
+	glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
 
 
 	String vendor = (const char*)glGetString(GL_VENDOR);
@@ -149,6 +149,7 @@ bool GLES20Driver::Init()
 
 void GLES20Driver::BeginRendering()
 {
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -221,9 +222,32 @@ void GLES20Driver::SetDepthRange(f32 zMin, f32 zMax)
 
 ////////////////////////////////////////////////////////////////////////
 
+void GLES20Driver::SetClearColor(const math::Vector4f& clearColor)
+{
+	Driver::SetClearColor(clearColor);
+	glClearColor(m_clearColor.x, m_clearColor.y, m_clearColor.z, m_clearColor.w);
+}
+
+////////////////////////////////////////////////////////////////////////
+
+void GLES20Driver::SetClearDepth(f32 clearDepth)
+{
+	Driver::SetClearDepth(clearDepth);
+	glClearDepthf(m_clearDepth);
+}
+
+////////////////////////////////////////////////////////////////////////
+
+void GLES20Driver::SetClearStencil(u32 clearStencil)
+{
+	Driver::SetClearStencil(clearStencil);
+	glClearStencil(static_cast<GLint>(m_clearStencil));
+}
+
+////////////////////////////////////////////////////////////////////////
+
 void GLES20Driver::ClearColorBuffer()
 {
-	glClearColor(m_clearColor.x, m_clearColor.y, m_clearColor.z, m_clearColor.w);
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
@@ -231,7 +255,6 @@ void GLES20Driver::ClearColorBuffer()
 
 void GLES20Driver::ClearDepthBuffer()
 {
-	glClearDepthf(m_clearDepth);
     glClear(GL_DEPTH_BUFFER_BIT);
 }
 
@@ -239,7 +262,6 @@ void GLES20Driver::ClearDepthBuffer()
 
 void GLES20Driver::ClearStencilBuffer()
 {
-	glClearStencil(static_cast<GLint>(m_clearStencil));
     glClear(GL_STENCIL_BUFFER_BIT);
 }
 

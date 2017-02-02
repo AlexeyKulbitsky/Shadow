@@ -16,6 +16,8 @@
 #include "entity/systems/RenderSystem.h"
 #include "entity/systems/TransformSystem.h"
 
+#include "math/smath.h"
+
 #include "resources/Resource.h"
 #include "resources/ResourceManager.h"
 
@@ -30,6 +32,7 @@
 #include "scene/ModelLoader/ModelLoader.h"
 #include "scene/ModelLoader/TinyObjModelLoader.h"
 
+#include "video/GLContext/GLContextManager.h"
 #include "video/Driver.h"
 #include "video/BlendingState.h"
 #include "video/CommandPool.h"
@@ -53,14 +56,14 @@
 namespace sh
 {
 	// Create usual device
-	SHADOW_API Device* SH_CALLCONV CreateDevice
+	/*SHADOW_API*/ Device* /*SH_CALLCONV*/ CreateDevice
 	(
 		video::DriverType driverType = video::DriverType::OPENGL_ES_2_0,
 		u32 width = 800, u32 height = 600
 	);
 
 	// Create device with more extended configuration
-	SHADOW_API Device* SH_CALLCONV CreateDevice(const CreationParameters& parameters);
+	/*SHADOW_API*/ Device* /*SH_CALLCONV*/ CreateDevice(const CreationParameters& parameters);
 }
 
 #endif

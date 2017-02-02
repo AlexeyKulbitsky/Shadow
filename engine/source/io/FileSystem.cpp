@@ -1,5 +1,5 @@
 #include "FileSystem.h"
-#include <windows.h>
+//#include <windows.h>
 
 namespace sh
 {
@@ -22,12 +22,12 @@ namespace sh
 		void FileSystem::Init()
 		{
 			// Get working directory path
-			char buffer[MAX_PATH];
-			GetModuleFileName(NULL, buffer, MAX_PATH);
-			String::size_type pos = String(buffer).find_last_of("\\/");
-			m_workingDirectoryPath = String(buffer).substr(0, pos) + "/";
+			//char buffer[MAX_PATH];
+			//GetModuleFileName(NULL, buffer, MAX_PATH);
+			//String::size_type pos = String(buffer).find_last_of("\\/");
+			//m_workingDirectoryPath = String(buffer).substr(0, pos) + "/";
 
-			printf("Working dir: %s\n", m_workingDirectoryPath.c_str());
+			//printf("Working dir: %s\n", m_workingDirectoryPath.c_str());
 
 			for (auto it : m_folders)
 			{
@@ -74,6 +74,7 @@ namespace sh
 
 		void FileSystem::CollectFilesFromFolder(const String& folder, bool recursive)
 		{
+			/*
 			WIN32_FIND_DATA FindFileData;
 			HANDLE hFind;
 
@@ -85,15 +86,12 @@ namespace sh
 			{
 				do
 				{
-					// read all (real) files in current folder
-					// , delete '!' read other 2 default folder . and ..
 					if (!(FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
 					{
 						FileInfo info;
 						info.name = FindFileData.cFileName;
 						info.absolutePath = originalPath + info.name;
 						m_fileList.insert(info);
-						//printf("File: %s\n", FindFileData.cFileName);
 					}
 					else
 					{
@@ -101,7 +99,6 @@ namespace sh
 							strcmp("..", FindFileData.cFileName) &&
 							recursive)
 						{
-							//printf("Folder: %s\n", FindFileData.cFileName);
 							String chilfFolderAbsolutePath = originalPath + FindFileData.cFileName;
 							CollectFilesFromFolder(chilfFolderAbsolutePath, true);
 						}
@@ -110,6 +107,8 @@ namespace sh
 				while (FindNextFile(hFind, &FindFileData));
 				FindClose(hFind);
 			}
+			*/
 		}
+
 	}
 }

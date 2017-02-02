@@ -30,6 +30,11 @@ namespace sh
 			virtual ~EGLContextManager();
 
 			virtual bool InitContext(const CreationParameters &parameters) override;
+			virtual bool AttachWindow(void* window) override;
+			virtual bool CreateDisplay() override;
+			virtual bool DestroyDisplay() override;
+			virtual bool CreateContext(bool createDisplay) override;
+			virtual bool DestroyContext(bool destroyDisplay) override;
 			virtual bool SwapBuffers() override;
 
 		private:
@@ -38,6 +43,10 @@ namespace sh
 		private:
 			GLint       m_width;
 			GLint       m_height;
+			s32			m_glesApiVersion = 0U;
+			s32			m_glesContextVersion = 0U;
+			EGLConfig	m_config;
+			bool		m_displayEmpty = true;
 
 #if !defined SHADOW_APPLE
 			EGLNativeDisplayType	m_eglNativeDisplay;

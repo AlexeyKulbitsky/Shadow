@@ -6,7 +6,7 @@
 #include <mmsystem.h> // For JOYCAPS
 #include <windowsx.h>
 
-#include "../Device.h"
+#include "../../Device.h"
 
 namespace sh
 {

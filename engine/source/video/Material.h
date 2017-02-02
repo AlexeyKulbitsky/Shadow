@@ -1,5 +1,5 @@
 #ifndef SHADOW_MATERIAL_INCLUDE
-#define SHADWO_MATERIAL_INCLUDE
+#define SHADOW_MATERIAL_INCLUDE
 
 #include "../Globals.h"
 

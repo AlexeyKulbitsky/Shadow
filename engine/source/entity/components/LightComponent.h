@@ -13,7 +13,7 @@ namespace sh
 	class LightComponent : public Component
 	{
 	public:
-		virtual Type GetType() const { return Component::Type::LIGHT; }
+		virtual Component::Type GetType() const override { return Component::Type::LIGHT; }
 		virtual void Load(const pugi::xml_node &node) override;
 		bool NeedsToRecalculate() const { return m_needsToRecalculate; }		
 

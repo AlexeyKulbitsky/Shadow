@@ -25,4 +25,9 @@ namespace sh
 	Device::~Device()
 	{
 	}
+
+	void Device::SetWindow(void* window)
+	{
+		m_creationParameters.WinId = window;
+	}
 }
