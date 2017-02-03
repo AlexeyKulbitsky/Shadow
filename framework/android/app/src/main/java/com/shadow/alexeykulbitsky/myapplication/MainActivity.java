@@ -65,19 +65,21 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback
     @Override
     public void surfaceCreated(SurfaceHolder holder)
     {
-        Log.d("SHADOW", "--------SURFACE CREATED");
+        Log.d("---SHADOW", "SURFACE CREATED");
+        ShadowJNI.SurfaceCreated(holder.getSurface());
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder)
     {
-        ShadowJNI.SurfaceChanged(null, 0, 0);
+        Log.d("---SHADOW", "SURFACE DESTROYED");
+        ShadowJNI.SurfaceDestroyed();
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h)
     {
-        Log.d("SHADOW", "--------SURFACE CHANGED");
+        Log.d("---SHADOW", "SURFACE CHANGED");
         ShadowJNI.SurfaceChanged(holder.getSurface(), w, h);
     }
 }

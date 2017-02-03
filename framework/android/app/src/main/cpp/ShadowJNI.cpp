@@ -10,6 +10,7 @@ enum RenderThreadMessage
 {
     MSG_NONE = 0,
     MSG_WINDOW_SET,
+    MSG_WINDOW_RELEASE,
     MSG_RENDER_LOOP_EXIT,
     MSG_RENDER_LOOP
 };
@@ -35,6 +36,7 @@ void* Main(void *myself)
                 device->Init();
                 _msg = MSG_RENDER_LOOP;
                 break;
+
 
             case MSG_RENDER_LOOP_EXIT:
                 renderingEnabled = false;
@@ -92,10 +94,23 @@ void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_OnStop(JNIEnv *env,
     device = 0;
 }
 
+void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_SurfaceCreated(JNIEnv *env, jclass type, jobject surface)
+{
+    window = ANativeWindow_fromSurface(env, surface);
+
+    pthread_mutex_lock(&_mutex);
+    _msg = MSG_WINDOW_SET;
+    device->SetWindow(window);
+    pthread_mutex_unlock(&_mutex);
+}
+
 void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_SurfaceChanged(JNIEnv *env, jclass type, jobject surface, jint width, jint height)
 {
-    if (surface != 0)
+    /*
+    static bool first = true;
+    if (surface != 0 && first)
     {
+        first = false;
         window = ANativeWindow_fromSurface(env, surface);
 
         pthread_mutex_lock(&_mutex);
@@ -107,11 +122,18 @@ void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_SurfaceChanged(JNIE
     {
         ANativeWindow_release(window);
     }
+    */
 
+    pthread_mutex_lock(&_mutex);
+    device->GetDriver()->SetViewport(0, 0, width, height);
+    pthread_mutex_unlock(&_mutex);
 }
 
 void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_SurfaceDestroyed(JNIEnv *env, jclass type)
 {
+    //pthread_mutex_lock(&_mutex);
+    //_msg = MSG_WINDOW_RELEASE;
+    //pthread_mutex_unlock(&_mutex);
 }
 
 }
