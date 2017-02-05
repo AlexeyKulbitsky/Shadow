@@ -2,10 +2,13 @@
 
 <pipeline name="firstPass" layer="main">
 
-	<renderstate>
-		<depthTest val="false"/>
-		<culling val="false"/>
-	</renderstate>
+	<depthstencilstate>
+		<depthTest val="false"/>		
+	</depthstencilstate>
+
+	<rasterizationstate>
+		<cullFace val="none"/>
+	</rasterizationstate>
 		
 	<constants>
 		<uniforms>

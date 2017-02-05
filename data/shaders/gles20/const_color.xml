@@ -3,13 +3,16 @@
 <pipeline name="firstPass" layer="main">
 	<constants>
 		<uniforms>
+			<uniform name="matWorld" type="mat4" val="model.worldMatrix"/>
 			<uniform name="matMVP" type="mat4" val="model.worldViewProjectionMatrix"/>
+			<uniform name="lightDirection" type="vec3Array" val="light.directional.direction"/>
 			<uniform name="color" type="float" val="1.0"/>
 		</uniforms>
 	</constants>
 	
 	<attributes>
 		<position 	type="vec3" name="aPosition"/>
+		<normal		type="vec3" name="aNormal"/>
 	</attributes>
 	
 	<shader language="GLSL" api="GLES20">
@@ -17,11 +20,16 @@
 		<![CDATA[
 
 			attribute vec3 aPosition;
+			attribute vec3 aNormal;
 			uniform mat4 matMVP;
+			uniform mat4 matWorld;
+			
+			varying vec3 vNormal;
 			
 			void main() 
 			{
 				gl_Position = matMVP * vec4(aPosition, 1.0);
+				vNormal = (matWorld * vec4(aNormal, 0.0)).xyz;
 			}
 			
 		]]>
@@ -32,9 +40,18 @@
 
 			precision mediump float;
 			uniform float color;
+			uniform vec3 lightDirection[8];
+
+			varying vec3 vNormal;
+
 			void main() 
 			{				
-				gl_FragColor = vec4(color, 0.0, 0.0, 1.0);
+				vec3 N = normalize(vNormal);
+				vec3 L = normalize(lightDirection[0]);
+				float NdotL = dot(N, L);
+				vec3 light = NdotL * vec3(1.0);
+				light = light * vec3(color);
+				gl_FragColor = vec4(light, 1.0);
 			} 
 	
 		]]>	

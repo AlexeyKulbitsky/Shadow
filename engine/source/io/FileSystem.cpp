@@ -1,5 +1,5 @@
 #include "FileSystem.h"
-//#include <windows.h>
+#include <windows.h>
 
 namespace sh
 {
@@ -22,10 +22,10 @@ namespace sh
 		void FileSystem::Init()
 		{
 			// Get working directory path
-			//char buffer[MAX_PATH];
-			//GetModuleFileName(NULL, buffer, MAX_PATH);
-			//String::size_type pos = String(buffer).find_last_of("\\/");
-			//m_workingDirectoryPath = String(buffer).substr(0, pos) + "/";
+			char buffer[MAX_PATH];
+			GetModuleFileName(NULL, buffer, MAX_PATH);
+			String::size_type pos = String(buffer).find_last_of("\\/");
+			m_workingDirectoryPath = String(buffer).substr(0, pos) + "/";
 
 			//printf("Working dir: %s\n", m_workingDirectoryPath.c_str());
 
@@ -74,7 +74,7 @@ namespace sh
 
 		void FileSystem::CollectFilesFromFolder(const String& folder, bool recursive)
 		{
-			/*
+			
 			WIN32_FIND_DATA FindFileData;
 			HANDLE hFind;
 
@@ -107,7 +107,7 @@ namespace sh
 				while (FindNextFile(hFind, &FindFileData));
 				FindClose(hFind);
 			}
-			*/
+			
 		}
 
 	}

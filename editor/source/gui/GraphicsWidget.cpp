@@ -140,6 +140,15 @@ void GraphicsWidget::mouseReleaseEvent(QMouseEvent * ev)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
+void GraphicsWidget::wheelEvent(QWheelEvent * e)
+{
+	float delta = (float)e->delta() * 0.1f;
+	sh::scene::Camera* camera = m_sceneManager->GetCamera();
+	camera->SetPosition(camera->GetPosition() + camera->GetFrontVector() * delta);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 GraphicsWidget::~GraphicsWidget()
 {
 	//delete m_gizmo;

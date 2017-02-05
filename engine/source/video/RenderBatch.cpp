@@ -55,7 +55,7 @@ namespace sh
 			Driver* driver = Device::GetInstance()->GetDriver();
 
 			driver->SetDepthStencilState(m_depthStencilState);
-			driver->SetBlendingState(m_blendingState);
+			//driver->SetBlendingState(m_blendingState);
 			driver->SetRasterizationState(m_rasterizationState);
 			m_program->BindProgram();
 

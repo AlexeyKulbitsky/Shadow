@@ -108,7 +108,10 @@ namespace sh
 					}
 						break;
 					case Uniform::Type::VEC3_ARRAY:
-						SH_ASSERT(0, "VEC3_ARRAY uniform unimplemented yet");
+					{
+						const std::vector<math::Vector3f>& value = globalUniform->Get<std::vector<math::Vector3f>>();
+						m_globalUniforms[i]->Set(value);
+					}
 						break;
 					case Uniform::Type::UNKNOWN:
 						SH_ASSERT(0, "Unknown uniform type");
@@ -118,7 +121,7 @@ namespace sh
 						break;
 
 				}			
-				m_uniforms[i]->Upload();
+				m_globalUniforms[i]->Upload();
 			}
 
 			int textureChannel = 0;

@@ -244,6 +244,8 @@ void MoveGizmo::Move(Axis::Type axis)
 void MoveGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
 {
 	sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
+	driver->ClearBuffers();
+	Render();
 
 	unsigned char data[4];
 	driver->GetPixelData(x, y, width, height, data);
@@ -317,6 +319,7 @@ void MoveGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
 		m_axises[Axis::Type::Z_AXIS].coneColorUniform->Set(color);
 		m_axises[Axis::Type::Z_AXIS].active = false;
 	}
+	driver->ClearBuffers();
 }
 
 //////////////////////////////////////////////////////////////////////////

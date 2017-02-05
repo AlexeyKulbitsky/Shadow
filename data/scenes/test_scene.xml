@@ -1,12 +1,12 @@
 <scene name="test Scene">
 		
-	<!--entity name="light_0">
+	<entity name="light_0">
 		<component name="light">	
 			<type val="directional"/>
-			<direction val="0.0 0.0 -1.0"/>
+			<direction val="0.0 0.0 1.0"/>
 			<color val="1.0 0.0 0.0"/>
 		</component>
-	</entity-->
+	</entity>
 		
 	<!--entity name="model_1">
 		<component name="render">	
@@ -64,7 +64,7 @@
 		</component>
 	
 		<component name="render">	
-			<model filename="cube.obj"/>				
+			<model filename="nanosuit.obj"/>				
 			<material>
 				<technique filename="const_color.xml"/>
 			</material>
