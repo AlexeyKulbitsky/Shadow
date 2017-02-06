@@ -64,7 +64,7 @@
 		</component>
 	
 		<component name="render">	
-			<model filename="nanosuit.obj"/>				
+			<model filename="monkey.obj"/>				
 			<material>
 				<technique filename="const_color.xml"/>
 			</material>

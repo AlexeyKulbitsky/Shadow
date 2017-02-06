@@ -92,6 +92,7 @@ namespace sh
 		class SHADOW_API DepthStencilState
 		{
 		public:
+			DepthStencilState();
 			DepthStencilState* Clone();
 
 			// Depth part
@@ -109,6 +110,20 @@ namespace sh
 
 			void Load(const pugi::xml_node &node);
 		};
+
+		////////////////////////////////////////////////////////////
+
+		inline DepthStencilState::DepthStencilState()
+			: enableDepthTest(true)
+			, depthCompareFunction(CompareFunction::LESS_OR_EQUAL)
+			, depthWriteMask(WriteMask::ALL)
+			, enableStencilTest(false)
+			, stencilReadMask(0xFF)
+			, stencilWriteMask(0xFF)
+			, reference(0)
+		{
+
+		}
 
 		////////////////////////////////////////////////////////////
 

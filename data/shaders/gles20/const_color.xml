@@ -29,7 +29,8 @@
 			void main() 
 			{
 				gl_Position = matMVP * vec4(aPosition, 1.0);
-				vNormal = (matWorld * vec4(aNormal, 0.0)).xyz;
+				//vNormal = (matWorld * vec4(aNormal, 0.0)).xyz;
+				vNormal = mat3(matWorld) * aNormal;
 			}
 			
 		]]>
