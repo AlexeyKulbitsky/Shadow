@@ -112,11 +112,28 @@ void RotateGizmo::Render()
 			matrix.SetScale(scale);
 			matrix.SetTranslation(position);
 
-			matrix = matrix * rotation.GetAsMatrix4();
+			//matrix = matrix * rotation.GetAsMatrix4();
 
 			for (size_t i = 0; i < 3; ++i)
 			{
-				m_axises[i].circleModel->SetWorldMatrix(matrix);
+				sh::math::Quaternionf r = rotation;
+
+				switch (i)
+				{
+				case 0:
+					r.SetFromAxisAngle(r * sh::scene::SceneManager::GetRightVector(), 0.0f);
+					break;
+				case 1:
+					r.SetFromAxisAngle(r * sh::scene::SceneManager::GetUpVector(), 0.0f);
+					break;
+				case 2:
+					r.SetFromAxisAngle(r * sh::scene::SceneManager::GetFrontVector(), 0.0f);
+					break;
+				}
+
+
+				sh::math::Matrix4f m = matrix * r.GetAsMatrix4();
+				m_axises[i].circleModel->SetWorldMatrix(m);
 				m_axises[i].circleModel->UpdateTransformationUniforms();
 			}
 

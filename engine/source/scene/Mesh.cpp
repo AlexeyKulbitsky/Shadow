@@ -54,7 +54,7 @@ namespace sh
 							uniform->Set(wvp);
 							break;
 						case video::GlobalUniformName::MODEL_WORLD_MATRIX:
-							uniform->Set(m_worldMatrix);
+							uniform->Set(m_worldMatrix.GetTransposed());
 							break;
 						default:
 							break;
