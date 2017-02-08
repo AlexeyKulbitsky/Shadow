@@ -39,6 +39,7 @@
 #include "video/DepthStencilState.h"
 #include "video/IndexBuffer.h"
 #include "video/Material.h"
+#include "video/Painter.h"
 #include "video/RasterizationState.h"
 #include "video/RenderBatch.h"
 #include "video/RenderCommand.h"

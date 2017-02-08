@@ -17,6 +17,7 @@ namespace sh
 		DEFINE_CLASS_PTR(DepthStencilState)
 		DEFINE_CLASS_PTR(IndexBuffer)
 		DEFINE_CLASS_PTR(Material)
+		DEFINE_CLASS_PTR(Painter)
 		DEFINE_CLASS_PTR(RasterizationState)
 		DEFINE_CLASS_PTR(RenderBatch)
 		DEFINE_CLASS_PTR(RenderCommand)
