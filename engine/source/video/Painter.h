@@ -11,9 +11,9 @@ namespace sh
 		{
 		public:
 			void SetMaterial(const MaterialPtr& material);
-			void SetCamera(scene::CameraPtr& camera);
+			void SetCamera(const scene::CameraPtr& camera);
 
-			void DrawLine();
+			void DrawLine(const math::Vector3f& a, const math::Vector3f& b);
 			void DrawRect();
 			void DrawQuad();
 			void DrawCircle();

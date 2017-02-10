@@ -11,14 +11,14 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////////////////////
 		
-		void Painter::SetCamera(scene::CameraPtr& camera)
+		void Painter::SetCamera(const scene::CameraPtr& camera)
 		{
 			m_camera = camera;
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		void Painter::DrawLine()
+		void Painter::DrawLine(const math::Vector3f& a, const math::Vector3f& b)
 		{
 
 		}
