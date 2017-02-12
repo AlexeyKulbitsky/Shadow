@@ -36,8 +36,8 @@ namespace sh
 			// Create vertex buffer
 			const void* verticesPointer = vertexArray.data();
 			size_t verticesDataSize = vertexArray.size() * sizeof(float);
-			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer(verticesPointer, verticesDataSize);
-			vertexBuffer->SetVerticesData(vertexArray);
+			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer();
+			vertexBuffer->SetVerticesData(verticesPointer, verticesDataSize);
 			vertexBuffer->SetVerticesCount(verticesCount / 3);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
 
@@ -107,8 +107,8 @@ namespace sh
 			// Create vertex buffer
 			const void* verticesPointer = vertexArray.data();
 			size_t verticesDataSize = vertexArray.size() * sizeof(float);
-			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer(verticesPointer, verticesDataSize);
-			vertexBuffer->SetVerticesData(vertexArray);
+			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer();
+			vertexBuffer->SetVerticesData(verticesPointer, verticesDataSize);
 			vertexBuffer->SetVerticesCount(verticesCount);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
 
@@ -164,8 +164,8 @@ namespace sh
 			// Create vertex buffer
 			const void* verticesPointer = vertexArray.data();
 			size_t verticesDataSize = vertexArray.size() * sizeof(float);
-			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer(verticesPointer, verticesDataSize);
-			vertexBuffer->SetVerticesData(vertexArray);
+			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer();
+			vertexBuffer->SetVerticesData(verticesPointer, verticesDataSize);
 			vertexBuffer->SetVerticesCount(verticesCount / 3);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
 
@@ -240,16 +240,16 @@ namespace sh
 			// Create vertex buffer
 			const void* verticesPointer = vertexArray.data();
 			size_t verticesDataSize = vertexArray.size() * sizeof(float);
-			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer(verticesPointer, verticesDataSize);
-			vertexBuffer->SetVerticesData(vertexArray);
+			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer();
+			vertexBuffer->SetVerticesData(verticesPointer, verticesDataSize);
 			vertexBuffer->SetVerticesCount(verticesCount / 3);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
 
 			// Create index buffer
 			const void* indicesPointer = indexArray.data();
 			size_t indicesDataSize = indexArray.size() * sizeof(unsigned int);
-			sh::video::IndexBufferPtr indexBuffer = Device::GetInstance()->GetDriver()->CreateIndexBuffer(indicesPointer, indicesDataSize);
-			indexBuffer->SetIndicesData(indexArray);
+			sh::video::IndexBufferPtr indexBuffer = Device::GetInstance()->GetDriver()->CreateIndexBuffer();
+			indexBuffer->SetIndicesData(indicesPointer, indicesDataSize);
 			indexBuffer->SetIndexType(sh::video::IndexBuffer::IndexType::UNSIGNED_32_BIT);
 			indexBuffer->SetIndicesCount(indexArray.size());
 
@@ -367,16 +367,16 @@ namespace sh
 			// Create vertex buffer
 			const void* verticesPointer = vertexArray.data();
 			size_t verticesDataSize = vertexArray.size() * sizeof(float);
-			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer(verticesPointer, verticesDataSize);
-			vertexBuffer->SetVerticesData(vertexArray);
+			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer();
+			vertexBuffer->SetVerticesData(verticesPointer, verticesDataSize);
 			vertexBuffer->SetVerticesCount(verticesCount / 3);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
 
 			// Create index buffer
 			const void* indicesPointer = indexArray.data();
 			size_t indicesDataSize = indexArray.size() * sizeof(unsigned int);
-			sh::video::IndexBufferPtr indexBuffer = Device::GetInstance()->GetDriver()->CreateIndexBuffer(indicesPointer, indicesDataSize);
-			indexBuffer->SetIndicesData(indexArray);
+			sh::video::IndexBufferPtr indexBuffer = Device::GetInstance()->GetDriver()->CreateIndexBuffer();
+			indexBuffer->SetIndicesData(indicesPointer, indicesDataSize);
 			indexBuffer->SetIndexType(sh::video::IndexBuffer::IndexType::UNSIGNED_32_BIT);
 			indexBuffer->SetIndicesCount(indexArray.size());
 
@@ -494,16 +494,16 @@ namespace sh
 			// Create vertex buffer
 			const void* verticesPointer = vertexArray.data();
 			size_t verticesDataSize = vertexArray.size() * sizeof(float);
-			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer(verticesPointer, verticesDataSize);
-			vertexBuffer->SetVerticesData(vertexArray);
+			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer();
+			vertexBuffer->SetVerticesData(verticesPointer, verticesDataSize);
 			vertexBuffer->SetVerticesCount(verticesCount / 3);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
 
 			// Create index buffer
 			const void* indicesPointer = indexArray.data();
 			size_t indicesDataSize = indexArray.size() * sizeof(unsigned int);
-			sh::video::IndexBufferPtr indexBuffer = Device::GetInstance()->GetDriver()->CreateIndexBuffer(indicesPointer, indicesDataSize);
-			indexBuffer->SetIndicesData(indexArray);
+			sh::video::IndexBufferPtr indexBuffer = Device::GetInstance()->GetDriver()->CreateIndexBuffer();
+			indexBuffer->SetIndicesData(indicesPointer, indicesDataSize);
 			indexBuffer->SetIndexType(sh::video::IndexBuffer::IndexType::UNSIGNED_32_BIT);
 			indexBuffer->SetIndicesCount(indexArray.size());
 
@@ -530,6 +530,48 @@ namespace sh
 			}
 
 			return resultModel;
+		}
+
+		//////////////////////////////////////////////////////////////////
+
+		ModelPtr GeometryGenerator::GetCylinder(f32 height, f32 radius, u32 numberOfSides)
+		{
+			std::vector<float> vertexArray;
+
+			for (int i = 0; i < numberOfSides; i++)
+			{
+				math::Vector3f vt;
+				vt.x = sh::math::Cos((2 * math::k_pi / numberOfSides) * i) * radius;
+				vt.z = sh::math::Sin((2 * math::k_pi / numberOfSides) * i) * radius;
+				vt.y = 0.0f;
+
+				vertexArray.push_back(vt.x);
+				vertexArray.push_back(vt.y);
+				vertexArray.push_back(vt.z);
+
+				vt.y += height;
+				vertexArray.push_back(vt.x);
+				vertexArray.push_back(vt.y);
+				vertexArray.push_back(vt.z);
+			}
+
+			std::vector<u32> indexArray;
+
+			for (int i = 0; i < 100; i += 2)
+			{
+				indexArray.push_back(i);
+				indexArray.push_back(i + 2);
+				indexArray.push_back(i + 1);
+
+				indexArray.push_back(i + 2);
+				indexArray.push_back(i + 3);
+				indexArray.push_back(i + 1);
+			}
+
+			size_t verticesCount = vertexArray.size() / 3;
+			size_t indicesCount = indexArray.size();
+
+			return nullptr;
 		}
 
 		//////////////////////////////////////////////////////////////////

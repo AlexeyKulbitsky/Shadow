@@ -18,7 +18,7 @@ namespace sh
 
 			virtual void Bind() override { glBindBuffer(GL_ARRAY_BUFFER, m_glID); }
 			virtual void Unbind() override { glBindBuffer(GL_ARRAY_BUFFER, 0); }
-
+			virtual void SetVerticesData(const void* data, size_t size) override;
 			unsigned int GetGLId() const { return m_glID; }
 		private:
 			u32 m_glID = 0U;

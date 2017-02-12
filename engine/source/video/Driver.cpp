@@ -62,7 +62,7 @@ namespace sh
 
 			SetDepthStencilState(renderPipeline->GetDepthStencilState());
 			SetRasterizationState(renderPipeline->GetRasterizationState());
-			//SetBlendingState(renderPipeline->GetBlendingState());
+			SetBlendingState(renderPipeline->GetBlendingState());
 			renderPipeline->GetShaderProgram()->BindProgram();
 
 			RenderCommand* renderCommand = mesh->GetRenderCommand();

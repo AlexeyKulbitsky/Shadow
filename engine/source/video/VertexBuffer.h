@@ -17,7 +17,8 @@ namespace sh
 			virtual void Unbind() {}
 			virtual void Unload() {}
 			// Set data for buffer
-			void SetVerticesData(const std::vector<float>& data);
+			virtual void SetVerticesData(const std::vector<float>& data);
+			virtual void SetVerticesData(const void* data, size_t size) { }
 			// Set vertices count
 			void SetVerticesCount(size_t count) { m_verticesCount = count; }
 			// Get vertices count
@@ -27,17 +28,17 @@ namespace sh
 			// Set the size of vertex (in bytes)
 			size_t GetVertexSize() const { return m_vertexSize; }
 			// Get pointer to vertex data
-			const void* GetVerticesPointer() const { return m_vertices.data(); }
+			//const void* GetVerticesPointer() const { return m_vertices.data(); }
 
 		private:
 			size_t m_verticesCount;
 			size_t m_vertexSize;
-			std::vector<float> m_vertices;
+			//std::vector<float> m_vertices;
 		};
 
 		inline void VertexBuffer::SetVerticesData(const std::vector<float>& data)
 		{
-			m_vertices = data;
+			SetVerticesData(data.data(), sizeof(float) * data.size());
 		}
 	}
 }

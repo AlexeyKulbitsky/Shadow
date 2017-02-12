@@ -46,9 +46,7 @@ namespace sh
 			void DrawBuffer();
 
 			virtual VertexBufferPtr CreateVertexBuffer() override;
-			virtual VertexBufferPtr CreateVertexBuffer(const void* data, size_t size) override;
 			virtual IndexBufferPtr CreateIndexBuffer() override;
-			virtual IndexBufferPtr CreateIndexBuffer(const void* data, size_t size) override;
 			virtual RenderCommand* CreateRenderCommand() override;
 			virtual ShaderProgramPtr CreateShaderProgram() override;
 

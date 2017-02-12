@@ -62,9 +62,7 @@ namespace sh
 
 			// Resources creation interface
 			virtual VertexBufferPtr CreateVertexBuffer() = 0;
-			virtual VertexBufferPtr CreateVertexBuffer(const void* data, size_t size) = 0;		
 			virtual IndexBufferPtr CreateIndexBuffer() = 0;
-			virtual IndexBufferPtr CreateIndexBuffer(const void* data, size_t size) = 0;
 			virtual UniformBufferPtr CreateUniformBuffer() { return nullptr; }
 			virtual RenderCommand* CreateRenderCommand() = 0;
 			virtual ShaderProgramPtr CreateShaderProgram() = 0;

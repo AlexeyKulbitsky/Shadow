@@ -10,6 +10,7 @@ namespace sh
 		class Painter
 		{
 		public:
+			Painter();
 			void SetMaterial(const MaterialPtr& material);
 			void SetCamera(const scene::CameraPtr& camera);
 
@@ -21,9 +22,15 @@ namespace sh
 			void DrawBox();
 			void DrawText();
 
+			void Flush();
+
 		private:
 			MaterialPtr m_material;
 			scene::CameraPtr m_camera;
+
+			std::vector<float> m_linesVertexArray;
+			VertexBufferPtr m_linesBuffer;
+			RenderCommandPtr m_linesRenderCommand;
 		};
 	}
 }

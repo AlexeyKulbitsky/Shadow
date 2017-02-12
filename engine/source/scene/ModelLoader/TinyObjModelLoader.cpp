@@ -95,16 +95,16 @@ namespace sh
 				// Create vertex buffer
 				const void* verticesPointer = vertexArray.data();
 				size_t verticesDataSize = vertexArray.size() * sizeof(float);
-				sh::video::VertexBufferPtr vertexBuffer = driver->CreateVertexBuffer(verticesPointer, verticesDataSize);
-				vertexBuffer->SetVerticesData(vertexArray);
+				sh::video::VertexBufferPtr vertexBuffer = driver->CreateVertexBuffer();
+				vertexBuffer->SetVerticesData(verticesPointer, verticesDataSize);
 				vertexBuffer->SetVerticesCount(verticesCount);
 				vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
 
 				// Create index buffer
 				const void* indicesPointer = indexArray.data();
 				size_t indicesDataSize = indexArray.size() * sizeof(unsigned int);
-				sh::video::IndexBufferPtr indexBuffer = driver->CreateIndexBuffer(indicesPointer, indicesDataSize);
-				indexBuffer->SetIndicesData(indexArray);
+				sh::video::IndexBufferPtr indexBuffer = driver->CreateIndexBuffer();
+				indexBuffer->SetIndicesData(indicesPointer, indicesDataSize);
 				indexBuffer->SetIndexType(sh::video::IndexBuffer::IndexType::UNSIGNED_32_BIT);
 				indexBuffer->SetIndicesCount(indexArray.size());
 				

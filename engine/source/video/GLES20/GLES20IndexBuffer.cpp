@@ -7,7 +7,7 @@ namespace sh
 	{
 		GLES20IndexBuffer::GLES20IndexBuffer()
 		{
-
+			glGenBuffers(1, &m_glID);
 		}
 
 		////////////////////////////////////////////////////////////////////////
@@ -44,5 +44,16 @@ namespace sh
 		}
 
 		////////////////////////////////////////////////////////////////////////
+
+		void GLES20IndexBuffer::SetIndicesData(const void* data, size_t size)
+		{
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_glID);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0U);
+		}
+
+		////////////////////////////////////////////////////////////////////////
+
+
 	}
 }

@@ -20,6 +20,7 @@ namespace sh
 			virtual void Unbind() override { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); }
 
 			virtual void SetIndexType(IndexType indexType) override;
+			virtual void SetIndicesData(const void* data, size_t size) override;
 
 			u32 GetGLId() const { return m_glID; }
 			u32 GetGLIndexType() const { return m_glIndexType; }

@@ -26,7 +26,8 @@ namespace sh
 
 			virtual void SetIndexType(IndexType indexType) { m_indexType = indexType; }
 			// Set data for buffer
-			void SetIndicesData(const std::vector<unsigned int>& data);
+			virtual void SetIndicesData(const std::vector<unsigned int>& data);
+			virtual void SetIndicesData(const void* data, size_t size) { }
 			// Get the type of index
 			IndexType GetIndexType() const { return m_indexType; }
 			void SetIndicesCount(size_t count) { m_indicesCount = count; }
@@ -34,19 +35,16 @@ namespace sh
 			size_t GetIndicesCount() const { return m_indicesCount; }
 			// Get the size of index (in bytes)
 			size_t GetIndexSize() const { return m_indexSize; }
-			// Get pointer to index data
-			const void* GetIndicesPointer() const { return m_indices.data(); }
 
 		protected:
 			IndexType m_indexType;
 			size_t m_indicesCount;
-			size_t m_indexSize;
-			std::vector<unsigned int> m_indices;
+			size_t m_indexSize = 4U;
 		};
 
 		inline void IndexBuffer::SetIndicesData(const std::vector<unsigned int>& data)
 		{
-			m_indices = data;
+			SetIndicesData(data.data(), data.size() * m_indexSize);
 		}
 	}
 }
