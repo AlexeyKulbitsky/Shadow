@@ -37,7 +37,7 @@ namespace sh
 			const void* verticesPointer = vertexArray.data();
 			size_t verticesDataSize = vertexArray.size() * sizeof(float);
 			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer();
-			vertexBuffer->SetVerticesData(verticesPointer, verticesDataSize);
+			vertexBuffer->SetData(0, verticesDataSize, verticesPointer);
 			vertexBuffer->SetVerticesCount(verticesCount / 3);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
 
@@ -108,7 +108,7 @@ namespace sh
 			const void* verticesPointer = vertexArray.data();
 			size_t verticesDataSize = vertexArray.size() * sizeof(float);
 			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer();
-			vertexBuffer->SetVerticesData(verticesPointer, verticesDataSize);
+			vertexBuffer->SetData(0, verticesDataSize, verticesPointer);
 			vertexBuffer->SetVerticesCount(verticesCount);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
 
@@ -165,7 +165,7 @@ namespace sh
 			const void* verticesPointer = vertexArray.data();
 			size_t verticesDataSize = vertexArray.size() * sizeof(float);
 			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer();
-			vertexBuffer->SetVerticesData(verticesPointer, verticesDataSize);
+			vertexBuffer->SetData(0, verticesDataSize, verticesPointer);
 			vertexBuffer->SetVerticesCount(verticesCount / 3);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
 
@@ -241,7 +241,7 @@ namespace sh
 			const void* verticesPointer = vertexArray.data();
 			size_t verticesDataSize = vertexArray.size() * sizeof(float);
 			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer();
-			vertexBuffer->SetVerticesData(verticesPointer, verticesDataSize);
+			vertexBuffer->SetData(0, verticesDataSize, verticesPointer);
 			vertexBuffer->SetVerticesCount(verticesCount / 3);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
 
@@ -249,7 +249,7 @@ namespace sh
 			const void* indicesPointer = indexArray.data();
 			size_t indicesDataSize = indexArray.size() * sizeof(unsigned int);
 			sh::video::IndexBufferPtr indexBuffer = Device::GetInstance()->GetDriver()->CreateIndexBuffer();
-			indexBuffer->SetIndicesData(indicesPointer, indicesDataSize);
+			indexBuffer->SetData(0, indicesDataSize, indicesPointer);
 			indexBuffer->SetIndexType(sh::video::IndexBuffer::IndexType::UNSIGNED_32_BIT);
 			indexBuffer->SetIndicesCount(indexArray.size());
 
@@ -368,7 +368,7 @@ namespace sh
 			const void* verticesPointer = vertexArray.data();
 			size_t verticesDataSize = vertexArray.size() * sizeof(float);
 			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer();
-			vertexBuffer->SetVerticesData(verticesPointer, verticesDataSize);
+			vertexBuffer->SetData(0, verticesDataSize, verticesPointer);
 			vertexBuffer->SetVerticesCount(verticesCount / 3);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
 
@@ -376,7 +376,7 @@ namespace sh
 			const void* indicesPointer = indexArray.data();
 			size_t indicesDataSize = indexArray.size() * sizeof(unsigned int);
 			sh::video::IndexBufferPtr indexBuffer = Device::GetInstance()->GetDriver()->CreateIndexBuffer();
-			indexBuffer->SetIndicesData(indicesPointer, indicesDataSize);
+			indexBuffer->SetData(0, indicesDataSize, indicesPointer);
 			indexBuffer->SetIndexType(sh::video::IndexBuffer::IndexType::UNSIGNED_32_BIT);
 			indexBuffer->SetIndicesCount(indexArray.size());
 
@@ -495,7 +495,7 @@ namespace sh
 			const void* verticesPointer = vertexArray.data();
 			size_t verticesDataSize = vertexArray.size() * sizeof(float);
 			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer();
-			vertexBuffer->SetVerticesData(verticesPointer, verticesDataSize);
+			vertexBuffer->SetData(0, verticesDataSize, verticesPointer);
 			vertexBuffer->SetVerticesCount(verticesCount / 3);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
 
@@ -503,7 +503,7 @@ namespace sh
 			const void* indicesPointer = indexArray.data();
 			size_t indicesDataSize = indexArray.size() * sizeof(unsigned int);
 			sh::video::IndexBufferPtr indexBuffer = Device::GetInstance()->GetDriver()->CreateIndexBuffer();
-			indexBuffer->SetIndicesData(indicesPointer, indicesDataSize);
+			indexBuffer->SetData(0, indicesDataSize, indicesPointer);
 			indexBuffer->SetIndexType(sh::video::IndexBuffer::IndexType::UNSIGNED_32_BIT);
 			indexBuffer->SetIndicesCount(indexArray.size());
 

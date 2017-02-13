@@ -11,8 +11,11 @@ namespace sh
 		class VulkanVertexBuffer : public VertexBuffer
 		{
 		public:
-			VulkanVertexBuffer();
+			VulkanVertexBuffer(Usage usage);
 			virtual ~VulkanVertexBuffer();
+
+			virtual void SetData(size_t offset, size_t length, const void* data) {}
+			virtual void GetData(size_t offset, size_t length, const void* data) {}
 
 		private:
 			void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory);

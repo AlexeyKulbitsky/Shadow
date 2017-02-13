@@ -200,7 +200,7 @@ namespace sh
 		VertexBufferPtr VulkanDriver::CreateVertexBuffer()
 		{
 			VertexBufferPtr result = nullptr;
-			result.reset(new VulkanVertexBuffer());
+			result.reset(new VulkanVertexBuffer(HardwareBuffer::STATIC));
 			return result;
 		}
 
@@ -209,7 +209,7 @@ namespace sh
 		IndexBufferPtr VulkanDriver::CreateIndexBuffer()
 		{
 			IndexBufferPtr result = nullptr;
-			result.reset(new VulkanIndexBuffer());
+			result.reset(new VulkanIndexBuffer(HardwareBuffer::STATIC));
 			return result;
 		}
 

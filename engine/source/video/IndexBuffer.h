@@ -2,12 +2,13 @@
 #define SHADOW_INDEX_BUFFER_INCLUDE
 
 #include "../Globals.h"
+#include "HardwareBuffer.h"
 
 namespace sh
 {
 	namespace video
 	{
-		class IndexBuffer
+		class IndexBuffer : public HardwareBuffer
 		{
 		public:
 			enum class IndexType
@@ -17,7 +18,7 @@ namespace sh
 			};
 
 		public:
-			IndexBuffer() {}
+			IndexBuffer(Usage usage) : HardwareBuffer(usage) {}
 			virtual ~IndexBuffer() {}
 
 			virtual void Bind() {}
@@ -25,9 +26,6 @@ namespace sh
 			virtual void Unload() {}
 
 			virtual void SetIndexType(IndexType indexType) { m_indexType = indexType; }
-			// Set data for buffer
-			virtual void SetIndicesData(const std::vector<unsigned int>& data);
-			virtual void SetIndicesData(const void* data, size_t size) { }
 			// Get the type of index
 			IndexType GetIndexType() const { return m_indexType; }
 			void SetIndicesCount(size_t count) { m_indicesCount = count; }
@@ -41,11 +39,6 @@ namespace sh
 			size_t m_indicesCount;
 			size_t m_indexSize = 4U;
 		};
-
-		inline void IndexBuffer::SetIndicesData(const std::vector<unsigned int>& data)
-		{
-			SetIndicesData(data.data(), data.size() * m_indexSize);
-		}
 	}
 }
 #endif // !SHADOW_INDEX_BUFFER_INCLUDE

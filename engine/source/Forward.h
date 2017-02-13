@@ -15,6 +15,7 @@ namespace sh
 	{
 		DEFINE_CLASS_PTR(BlendingState)
 		DEFINE_CLASS_PTR(DepthStencilState)
+		DEFINE_CLASS_PTR(HardwareBuffer)
 		DEFINE_CLASS_PTR(IndexBuffer)
 		DEFINE_CLASS_PTR(Material)
 		DEFINE_CLASS_PTR(Painter)

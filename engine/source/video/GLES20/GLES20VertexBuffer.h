@@ -12,13 +12,14 @@ namespace sh
 		{
 			friend class GLES20Driver;
 		public:
-			GLES20VertexBuffer();
-			GLES20VertexBuffer(const void* data, size_t size);
+			GLES20VertexBuffer(Usage usage);
 			virtual ~GLES20VertexBuffer();
+
+			virtual void SetData(size_t offset, size_t length, const void* data) override;
+			virtual void GetData(size_t offset, size_t length, const void* data) override;
 
 			virtual void Bind() override { glBindBuffer(GL_ARRAY_BUFFER, m_glID); }
 			virtual void Unbind() override { glBindBuffer(GL_ARRAY_BUFFER, 0); }
-			virtual void SetVerticesData(const void* data, size_t size) override;
 			unsigned int GetGLId() const { return m_glID; }
 		private:
 			u32 m_glID = 0U;

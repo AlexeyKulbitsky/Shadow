@@ -5,19 +5,9 @@ namespace sh
 {
 	namespace video
 	{
-		GLES20VertexBuffer::GLES20VertexBuffer()
+		GLES20VertexBuffer::GLES20VertexBuffer(Usage usage) : VertexBuffer(usage)
 		{
 			glGenBuffers(1, &m_glID);
-		}
-
-		////////////////////////////////////////////////////////////////////////
-
-		GLES20VertexBuffer::GLES20VertexBuffer(const void* data, size_t size)
-		{
-			glGenBuffers(1, &m_glID);
-			glBindBuffer(GL_ARRAY_BUFFER, m_glID);
-			glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
-			glBindBuffer(GL_ARRAY_BUFFER, 0U);
 		}
 
 		////////////////////////////////////////////////////////////////////////
@@ -29,11 +19,43 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////
 
-		void GLES20VertexBuffer::SetVerticesData(const void* data, size_t size)
+		void GLES20VertexBuffer::SetData(size_t offset, size_t length, const void* data)
 		{
-			glBindBuffer(GL_ARRAY_BUFFER, m_glID);
-			glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
-			glBindBuffer(GL_ARRAY_BUFFER, 0U);
+			Bind();
+
+			GLenum usage;
+			switch (m_usage)
+			{
+			case STATIC:
+				usage = GL_STATIC_DRAW;
+				break;
+			case DYNAMIC:
+				usage = GL_DYNAMIC_DRAW;
+				break;
+			default:
+				SH_ASSERT(0, "Unknown hardware buffer usage in OpenGL ES 2.0 API");
+				break;
+			}
+
+			if (offset == 0 && (length == m_size || m_size == 0))
+			{
+				m_size = length;
+				glBufferData(GL_ARRAY_BUFFER, m_size, data, usage);
+			}
+			else
+			{
+				glBufferSubData(GL_ARRAY_BUFFER, offset, length, data);
+				m_size = offset + length;
+			}
+
+			Unbind();
+		}
+
+		////////////////////////////////////////////////////////////////////////
+
+		void GLES20VertexBuffer::GetData(size_t offset, size_t length, const void* data)
+		{
+			SH_ASSERT(0, "Unimplemented yet!");
 		}
 
 		////////////////////////////////////////////////////////////////////////

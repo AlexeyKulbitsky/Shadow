@@ -4,7 +4,7 @@ namespace sh
 {
 	namespace video
 	{
-		VulkanIndexBuffer::VulkanIndexBuffer()
+		VulkanIndexBuffer::VulkanIndexBuffer(Usage usage) : IndexBuffer(usage)
 		{
 
 		}

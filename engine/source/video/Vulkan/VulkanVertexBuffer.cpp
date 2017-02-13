@@ -4,7 +4,7 @@ namespace sh
 {
 	namespace video
 	{
-		VulkanVertexBuffer::VulkanVertexBuffer()
+		VulkanVertexBuffer::VulkanVertexBuffer(Usage usage) : VertexBuffer(usage)
 		{
 
 		}

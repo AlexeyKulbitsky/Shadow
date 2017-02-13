@@ -11,8 +11,11 @@ namespace sh
 		class VulkanIndexBuffer : public IndexBuffer
 		{
 		public:
-			VulkanIndexBuffer();
+			VulkanIndexBuffer(Usage usage);
 			virtual ~VulkanIndexBuffer();
+
+			virtual void SetData(size_t offset, size_t length, const void* data) {}
+			virtual void GetData(size_t offset, size_t length, const void* data) {}
 
 		private:
 			VkDevice m_device = VK_NULL_HANDLE;
