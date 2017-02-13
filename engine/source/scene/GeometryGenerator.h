@@ -17,6 +17,9 @@ namespace sh
 			static ModelPtr GetTorusModel(const math::Vector3f& start, const f32 radius, const f32 ringRadius, u32 sides, u32 rings, const math::Vector3f& vtx, const math::Vector3f& vty);
 			static ModelPtr GetHalfTorusModel(const math::Vector3f& start, const f32 radius, const f32 ringRadius, u32 sides, u32 rings, const math::Vector3f& vtx, const math::Vector3f& vty);
 			static ModelPtr GetCylinder(f32 height, f32 radius, u32 numberOfSides);
+
+		private:
+			static ModelPtr CreateModel(const std::vector<float>& vertexArray, const std::vector<u32>& indexArray);
 		};
 	}
 }

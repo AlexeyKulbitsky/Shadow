@@ -3,6 +3,7 @@
 
 #include "../Globals.h"
 #include "Uniform.h"
+#include "HardwareBuffer.h"
 
 namespace sh
 {
@@ -61,8 +62,8 @@ namespace sh
 			u32 GetMaxCubeTextureSize() const { return m_maxCubeTextureSize; }
 
 			// Resources creation interface
-			virtual VertexBufferPtr CreateVertexBuffer() = 0;
-			virtual IndexBufferPtr CreateIndexBuffer() = 0;
+			virtual VertexBufferPtr CreateVertexBuffer(HardwareBuffer::Usage usage) = 0;
+			virtual IndexBufferPtr CreateIndexBuffer(HardwareBuffer::Usage usage) = 0;
 			virtual UniformBufferPtr CreateUniformBuffer() { return nullptr; }
 			virtual RenderCommand* CreateRenderCommand() = 0;
 			virtual ShaderProgramPtr CreateShaderProgram() = 0;

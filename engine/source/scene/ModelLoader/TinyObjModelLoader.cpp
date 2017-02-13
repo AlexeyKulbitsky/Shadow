@@ -95,7 +95,7 @@ namespace sh
 				// Create vertex buffer
 				const void* verticesPointer = vertexArray.data();
 				size_t verticesDataSize = vertexArray.size() * sizeof(float);
-				sh::video::VertexBufferPtr vertexBuffer = driver->CreateVertexBuffer();
+				sh::video::VertexBufferPtr vertexBuffer = driver->CreateVertexBuffer(video::HardwareBuffer::STATIC);
 				vertexBuffer->SetData(0, verticesDataSize, verticesPointer);
 				vertexBuffer->SetVerticesCount(verticesCount);
 				vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
@@ -103,7 +103,7 @@ namespace sh
 				// Create index buffer
 				const void* indicesPointer = indexArray.data();
 				size_t indicesDataSize = indexArray.size() * sizeof(unsigned int);
-				sh::video::IndexBufferPtr indexBuffer = driver->CreateIndexBuffer();
+				sh::video::IndexBufferPtr indexBuffer = driver->CreateIndexBuffer(video::HardwareBuffer::STATIC);
 				indexBuffer->SetData(0, indicesDataSize, indicesPointer);
 				indexBuffer->SetIndexType(sh::video::IndexBuffer::IndexType::UNSIGNED_32_BIT);
 				indexBuffer->SetIndicesCount(indexArray.size());

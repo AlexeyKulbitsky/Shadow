@@ -351,19 +351,19 @@ void GLES20Driver::GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data)
 
 ////////////////////////////////////////////////////////////////////////
 
-VertexBufferPtr GLES20Driver::CreateVertexBuffer()
+VertexBufferPtr GLES20Driver::CreateVertexBuffer(HardwareBuffer::Usage usage)
 {
 	VertexBufferPtr result = nullptr;
-	result.reset(new GLES20VertexBuffer(HardwareBuffer::Usage::STATIC));
+	result.reset(new GLES20VertexBuffer(usage));
 	return result;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-IndexBufferPtr GLES20Driver::CreateIndexBuffer()
+IndexBufferPtr GLES20Driver::CreateIndexBuffer(HardwareBuffer::Usage usage)
 {
 	IndexBufferPtr result = nullptr;
-	result.reset(new GLES20IndexBuffer(HardwareBuffer::Usage::STATIC));
+	result.reset(new GLES20IndexBuffer(usage));
 	return result;
 }
 

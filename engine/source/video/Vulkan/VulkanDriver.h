@@ -45,8 +45,8 @@ namespace sh
 
 			void DrawBuffer();
 
-			virtual VertexBufferPtr CreateVertexBuffer() override;
-			virtual IndexBufferPtr CreateIndexBuffer() override;
+			virtual VertexBufferPtr CreateVertexBuffer(HardwareBuffer::Usage usage) override;
+			virtual IndexBufferPtr CreateIndexBuffer(HardwareBuffer::Usage usage) override;
 			virtual RenderCommand* CreateRenderCommand() override;
 			virtual ShaderProgramPtr CreateShaderProgram() override;
 

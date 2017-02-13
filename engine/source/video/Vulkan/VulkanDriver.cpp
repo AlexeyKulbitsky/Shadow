@@ -197,19 +197,19 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		VertexBufferPtr VulkanDriver::CreateVertexBuffer()
+		VertexBufferPtr VulkanDriver::CreateVertexBuffer(HardwareBuffer::Usage usage)
 		{
 			VertexBufferPtr result = nullptr;
-			result.reset(new VulkanVertexBuffer(HardwareBuffer::STATIC));
+			result.reset(new VulkanVertexBuffer(usage));
 			return result;
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		IndexBufferPtr VulkanDriver::CreateIndexBuffer()
+		IndexBufferPtr VulkanDriver::CreateIndexBuffer(HardwareBuffer::Usage usage)
 		{
 			IndexBufferPtr result = nullptr;
-			result.reset(new VulkanIndexBuffer(HardwareBuffer::STATIC));
+			result.reset(new VulkanIndexBuffer(usage));
 			return result;
 		}
 
