@@ -202,8 +202,8 @@ namespace sh
 			for (int i = 0; i < 100; i++)
 			{
 				math::Vector3f vt;
-				vt = vtx * sh::math::Cos((2 * math::k_pi / 100) * i) * radius;
-				vt += vty * sh::math::Sin((2 * math::k_pi / 100) * i) * radius;
+				vt = vtx * sh::math::Cos((4 * math::k_pi / 100) * i) * radius;
+				vt += vty * sh::math::Sin((4 * math::k_pi / 100) * i) * radius;
 				vt += start;
 
 				vertexArray.push_back(vt.x);
@@ -534,30 +534,34 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////
 
-		ModelPtr GeometryGenerator::GetCylinder(f32 height, f32 radius, u32 numberOfSides)
+		ModelPtr GeometryGenerator::GetCylinder(f32 height, f32 radius, u32 numberOfSides, math::Matrix4f transform)
 		{
 			std::vector<float> vertexArray;
 
-			for (int i = 0; i < numberOfSides; i++)
+			math::Vector3f srcVertex(0.0f);
+			math::Vector3f resultVertex(0.0f);
+			for (u32 i = 0; i < numberOfSides; i++)
 			{
-				math::Vector3f vt;
-				vt.x = sh::math::Cos((2 * math::k_pi / numberOfSides) * i) * radius;
-				vt.z = sh::math::Sin((2 * math::k_pi / numberOfSides) * i) * radius;
-				vt.y = -height / 2.0f;
+				srcVertex.x = sh::math::Cos((4 * math::k_pi / numberOfSides) * i) * radius;
+				srcVertex.z = sh::math::Sin((4 * math::k_pi / numberOfSides) * i) * radius;
+				srcVertex.y = -height / 2.0f;
+				resultVertex = transform * srcVertex;
 
-				vertexArray.push_back(vt.x);
-				vertexArray.push_back(vt.y);
-				vertexArray.push_back(vt.z);
+				vertexArray.push_back(resultVertex.x);
+				vertexArray.push_back(resultVertex.y);
+				vertexArray.push_back(resultVertex.z);
 
-				vt.y += height;
-				vertexArray.push_back(vt.x);
-				vertexArray.push_back(vt.y);
-				vertexArray.push_back(vt.z);
+				srcVertex.y += height;
+				resultVertex = transform * srcVertex;
+
+				vertexArray.push_back(resultVertex.x);
+				vertexArray.push_back(resultVertex.y);
+				vertexArray.push_back(resultVertex.z);
 			}
 
 			std::vector<u32> indexArray;
 
-			for (int i = 0; i < numberOfSides; i += 2)
+			for (u32 i = 0; i < numberOfSides; i += 2)
 			{
 				indexArray.push_back(i);
 				indexArray.push_back(i + 2);
@@ -568,20 +572,21 @@ namespace sh
 				indexArray.push_back(i + 1);
 			}
 
-			return CreateModel(vertexArray, indexArray);
-		}
-
-		//////////////////////////////////////////////////////////////////
-
-		ModelPtr GeometryGenerator::CreateModel(const std::vector<float>& vertexArray, const std::vector<u32>& indexArray)
-		{
 			// Create vertex declaration
 			sh::video::VertexDeclarationPtr vertexDeclaration = sh::video::VertexDeclarationPtr(new sh::video::VertexDeclaration());
 			sh::video::Attribute positionAttribute(sh::video::AttributeSemantic::POSITION, sh::video::AttributeType::FLOAT, 3U);
 			vertexDeclaration->AddAttribute(positionAttribute);
 
-			size_t verticesCount = vertexArray.size() / vertexDeclaration->GetStride();
+			return CreateModel(vertexArray, indexArray, vertexDeclaration, video::Topology::TRIANGLE_LIST);
+		}
+
+		//////////////////////////////////////////////////////////////////
+
+		ModelPtr GeometryGenerator::CreateModel(const std::vector<float>& vertexArray, const std::vector<u32>& indexArray, 
+			const video::VertexDeclarationPtr& vertexDeclaration, video::Topology topology)
+		{
 			// Create vertex buffer
+			size_t verticesCount = vertexArray.size() / vertexDeclaration->GetStride();
 			const void* verticesPointer = vertexArray.data();
 			size_t verticesDataSize = vertexArray.size() * sizeof(float);
 			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer(video::HardwareBuffer::STATIC);
@@ -602,7 +607,7 @@ namespace sh
 			mesh->SetVertexBuffer(vertexBuffer);
 			mesh->SetIndexBuffer(indexBuffer);
 			mesh->SetVertexDeclaration(vertexDeclaration);
-			mesh->SetTopology(sh::video::Topology::TRIANGLE_LIST);
+			mesh->SetTopology(topology);
 
 			sh::scene::ModelBasePtr model(new sh::scene::ModelBase());
 			model->AddMesh(mesh);

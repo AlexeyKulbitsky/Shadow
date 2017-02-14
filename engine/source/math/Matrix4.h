@@ -65,6 +65,16 @@ namespace sh
 				m[3][3] = m33;
 			}
 
+			static const Matrix4<T>& Identity()
+			{
+				static Matrix4<T> result(
+					1.0f, 0.0f, 0.0f, 0.0f,
+					0.0f, 1.0f, 0.0f, 0.0f,
+					0.0f, 0.0f, 1.0f, 0.0f,
+					0.0f, 0.0f, 0.0f, 1.0f);
+				return result;
+			}
+
 			Matrix4<T>& operator=(const Matrix4<T>& m2)
 			{
 				m[0][0] = m2.m[0][0];

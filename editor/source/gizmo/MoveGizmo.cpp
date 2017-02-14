@@ -3,13 +3,22 @@
 
 MoveGizmo::MoveGizmo()
 {
-	//m_axises[0].lineModel = sh::scene::GeometryGenerator::GetLineModel(sh::math::Vector3f(1.0f, 0.0f, 0.0f), sh::math::Vector3f(5.0f, 0.0f, 0.0f));
-	m_axises[0].lineModel = sh::scene::GeometryGenerator::GetCylinderModel(
-		sh::math::Vector3f(1.0f, 0.0f, 0.0f),
-		0.1f,
-		sh::math::Vector3f(4.0f, 0.0f, 0.0f),
-		sh::math::Vector3f(0.0f, 1.0f, 0.0f),
-		sh::math::Vector3f(0.0f, 0.0f, 1.0f));
+	float radius = 0.1f;
+	float height = 4.0f;
+	sh::u32 numberOfSides = 100U;
+	
+	sh::math::Vector3f translation(0.0f);
+	sh::math::Quaternionf rotation;	
+	sh::math::Matrix4f transform;
+	transform.SetIdentity();
+
+	rotation.SetFromAxisAngle(sh::scene::SceneManager::GetFrontVector(), sh::math::k_pi_2);
+	translation = sh::math::Vector3f(3.0f, 0.0f, 0.0f);
+	transform.SetTranslation(translation);
+	transform = transform * rotation.GetAsMatrix4();
+
+	m_axises[0].lineModel = sh::scene::GeometryGenerator::GetCylinder(height, radius, numberOfSides, transform);
+	
 	sh::video::UniformBuffer* uniformBuffer = m_axises[0].lineModel->GetMesh(0)->GetRenderCommand()->GetUniformBuffer();
 	m_axises[0].lineColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[0].lineColorUniform)
@@ -33,13 +42,11 @@ MoveGizmo::MoveGizmo()
 
 	////////////////////////////////////////////////
 
-	//m_axises[1].lineModel = sh::scene::GeometryGenerator::GetLineModel(sh::math::Vector3f(0.0f, 1.0f, 0.0f), sh::math::Vector3f(0.0f, 5.0f, 0.0f));	
-	m_axises[1].lineModel = sh::scene::GeometryGenerator::GetCylinderModel(
-		sh::math::Vector3f(0.0f, 1.0f, 0.0f),
-		0.1f,
-		sh::math::Vector3f(0.0f, 4.0f, 0.0f),
-		sh::math::Vector3f(1.0f, 0.0f, 0.0f),
-		sh::math::Vector3f(0.0f, 0.0f, 1.0f));	
+	translation = sh::math::Vector3f(0.0f, 3.0f, 0.0f);
+	transform.SetIdentity();
+	transform.SetTranslation(translation);
+	m_axises[1].lineModel = sh::scene::GeometryGenerator::GetCylinder(height, radius, numberOfSides, transform);
+
 	uniformBuffer = m_axises[1].lineModel->GetMesh(0)->GetRenderCommand()->GetUniformBuffer();
 	m_axises[1].lineColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[1].lineColorUniform)
@@ -63,13 +70,13 @@ MoveGizmo::MoveGizmo()
 
 	/////////////////////////////////////////////////
 
-	//m_axises[2].lineModel = sh::scene::GeometryGenerator::GetLineModel(sh::math::Vector3f(0.0f, 0.0f, 1.0f), sh::math::Vector3f(0.0f, 0.0f, 5.0f));
-	m_axises[2].lineModel = sh::scene::GeometryGenerator::GetCylinderModel(
-		sh::math::Vector3f(0.0f, 0.0f, 1.0f),
-		0.1f,
-		sh::math::Vector3f(0.0f, 0.0f, 4.0f),
-		sh::math::Vector3f(1.0f, 0.0f, 0.0f),
-		sh::math::Vector3f(0.0f, 1.0f, 0.0f));
+	rotation.SetFromAxisAngle(sh::scene::SceneManager::GetRightVector(), sh::math::k_pi_2);
+	translation = sh::math::Vector3f(0.0f, 0.0f, 3.0f);
+	transform.SetIdentity();
+	transform.SetTranslation(translation);
+	transform = transform * rotation.GetAsMatrix4();
+	m_axises[2].lineModel = sh::scene::GeometryGenerator::GetCylinder(height, radius, numberOfSides, transform);
+
 	uniformBuffer = m_axises[2].lineModel->GetMesh(0)->GetRenderCommand()->GetUniformBuffer();
 	m_axises[2].lineColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[2].lineColorUniform)
