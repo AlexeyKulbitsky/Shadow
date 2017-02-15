@@ -57,7 +57,7 @@ namespace sh
 
 		void Driver::Render(scene::Mesh* mesh)
 		{
-			Material* material = mesh->GetMaterial();
+			const MaterialPtr& material = mesh->GetMaterial();
 			RenderPipeline* renderPipeline = material->GetRenderPipeline(0);
 
 			SetDepthStencilState(renderPipeline->GetDepthStencilState());
@@ -65,7 +65,7 @@ namespace sh
 			SetBlendingState(renderPipeline->GetBlendingState());
 			renderPipeline->GetShaderProgram()->BindProgram();
 
-			RenderCommand* renderCommand = mesh->GetRenderCommand();
+			const RenderCommandPtr& renderCommand = mesh->GetRenderCommand();
 
 			Render(renderCommand);
 			renderPipeline->GetShaderProgram()->UnbindProgram();

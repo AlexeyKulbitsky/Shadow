@@ -8,42 +8,42 @@ namespace sh
 {
 	namespace video
 	{
-		void RenderBatch::SetDepthStencilState(DepthStencilState* depthStencilState)
+		void RenderBatch::SetDepthStencilState(const DepthStencilStatePtr& depthStencilState)
 		{
 			m_depthStencilState = depthStencilState;
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 
-		void RenderBatch::SetRasterizationState(RasterizationState* rasterizationState)
+		void RenderBatch::SetRasterizationState(const RasterizationStatePtr& rasterizationState)
 		{
 			m_rasterizationState = rasterizationState;
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 
-		void RenderBatch::SetBlendingState(BlendingState* blendingState)
+		void RenderBatch::SetBlendingState(const BlendingStatePtr& blendingState)
 		{
 			m_blendingState = blendingState;
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 
-		void RenderBatch::SetShaderProgram(ShaderProgram* shaderProgram)
+		void RenderBatch::SetShaderProgram(const ShaderProgramPtr& shaderProgram)
 		{
 			m_program = shaderProgram;
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 
-		void RenderBatch::AddCommand(RenderCommand* renderCommand)
+		void RenderBatch::AddCommand(const RenderCommandPtr& renderCommand)
 		{
 			m_commands.push_back(renderCommand);
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 
-		void RenderBatch::RemoveCommand(RenderCommand* renderCommand)
+		void RenderBatch::RemoveCommand(const RenderCommandPtr& renderCommand)
 		{
 
 		}
@@ -55,7 +55,7 @@ namespace sh
 			Driver* driver = Device::GetInstance()->GetDriver();
 
 			driver->SetDepthStencilState(m_depthStencilState);
-			//driver->SetBlendingState(m_blendingState);
+			driver->SetBlendingState(m_blendingState);
 			driver->SetRasterizationState(m_rasterizationState);
 			m_program->BindProgram();
 

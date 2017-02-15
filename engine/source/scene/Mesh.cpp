@@ -72,7 +72,7 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		void Mesh::SetMaterial(sh::video::Material* material)
+		void Mesh::SetMaterial(const sh::video::MaterialPtr& material)
 		{
 			m_material = material;	
 			size_t passesSize = material->GetRenderPipelinesCount();
@@ -102,7 +102,7 @@ namespace sh
 			for (size_t i = 0, sz = m_material->GetRenderPipelinesCount(); i < sz; ++i)
 			{
 				video::RenderPipeline* renderPipeline = m_material->GetRenderPipeline(i);
-				m_renderCommands[i]->SetUniformBuffer(renderPipeline->GetUniformBuffer());
+				m_renderCommands[i]->SetUniformBuffer(renderPipeline->GetUniformBuffer().get());
 
 				video::VertexInputDeclaration* inputDeclaration = renderPipeline->GetVertexInputDeclaration();
 				inputDeclaration->Assemble(*(m_meshBase->GetVertexDeclaration()));
@@ -112,7 +112,7 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////////////////////
 				
-		video::Material* Mesh::GetMaterial()
+		const video::MaterialPtr& Mesh::GetMaterial()
 		{
 			return m_material;
 		}

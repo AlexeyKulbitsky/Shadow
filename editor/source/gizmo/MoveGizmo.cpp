@@ -17,7 +17,7 @@ MoveGizmo::MoveGizmo()
 	transform.SetTranslation(translation);
 	transform = transform * rotation.GetAsMatrix4();
 
-	m_axises[0].lineModel = sh::scene::GeometryGenerator::GetCylinder(height, radius, numberOfSides, transform);
+	m_axises[0].lineModel = sh::scene::GeometryGenerator::GetCylinderModel(height, radius, numberOfSides, transform);
 	
 	sh::video::UniformBuffer* uniformBuffer = m_axises[0].lineModel->GetMesh(0)->GetRenderCommand()->GetUniformBuffer();
 	m_axises[0].lineColorUniform = uniformBuffer->GetUniform(sh::String("color"));
@@ -45,7 +45,7 @@ MoveGizmo::MoveGizmo()
 	translation = sh::math::Vector3f(0.0f, 3.0f, 0.0f);
 	transform.SetIdentity();
 	transform.SetTranslation(translation);
-	m_axises[1].lineModel = sh::scene::GeometryGenerator::GetCylinder(height, radius, numberOfSides, transform);
+	m_axises[1].lineModel = sh::scene::GeometryGenerator::GetCylinderModel(height, radius, numberOfSides, transform);
 
 	uniformBuffer = m_axises[1].lineModel->GetMesh(0)->GetRenderCommand()->GetUniformBuffer();
 	m_axises[1].lineColorUniform = uniformBuffer->GetUniform(sh::String("color"));
@@ -75,7 +75,7 @@ MoveGizmo::MoveGizmo()
 	transform.SetIdentity();
 	transform.SetTranslation(translation);
 	transform = transform * rotation.GetAsMatrix4();
-	m_axises[2].lineModel = sh::scene::GeometryGenerator::GetCylinder(height, radius, numberOfSides, transform);
+	m_axises[2].lineModel = sh::scene::GeometryGenerator::GetCylinderModel(height, radius, numberOfSides, transform);
 
 	uniformBuffer = m_axises[2].lineModel->GetMesh(0)->GetRenderCommand()->GetUniformBuffer();
 	m_axises[2].lineColorUniform = uniformBuffer->GetUniform(sh::String("color"));

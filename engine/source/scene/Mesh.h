@@ -14,10 +14,10 @@ namespace sh
 			~Mesh();	
 			void UpdateTransformationUniforms();
 			void SetWorldMatrix(const math::Matrix4f& matrix);
-			void SetMaterial(sh::video::Material* material);
-			video::Material* GetMaterial();
+			void SetMaterial(const sh::video::MaterialPtr& material);
+			const video::MaterialPtr& GetMaterial();
 			
-			sh::video::RenderCommand* GetRenderCommand(size_t index = 0) { return m_renderCommands[index]; }
+			const sh::video::RenderCommandPtr& GetRenderCommand(size_t index = 0) { return m_renderCommands[index]; }
 
 		private:
 			Mesh(){}
@@ -27,8 +27,8 @@ namespace sh
 			MeshBasePtr m_meshBase;
 			math::Matrix4f m_worldMatrix;
 
-			std::vector<sh::video::RenderCommand*>  m_renderCommands;
-			sh::video::Material* m_material;
+			std::vector<sh::video::RenderCommandPtr>  m_renderCommands;
+			sh::video::MaterialPtr m_material;
 		};
 	}
 }

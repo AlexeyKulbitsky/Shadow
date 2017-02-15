@@ -15,12 +15,12 @@ namespace sh
 			*/
 			RenderBatch() {}
 			virtual ~RenderBatch() {}
-			virtual void SetDepthStencilState(DepthStencilState* renderState);
-			virtual void SetRasterizationState(RasterizationState* renderState);
-			virtual void SetBlendingState(BlendingState* renderState);
-			virtual void SetShaderProgram(ShaderProgram* shaderProgram);
-			virtual void AddCommand(RenderCommand* renderCommand);
-			virtual void RemoveCommand(RenderCommand* renderCommand);
+			virtual void SetDepthStencilState(const DepthStencilStatePtr& renderState);
+			virtual void SetRasterizationState(const RasterizationStatePtr& renderState);
+			virtual void SetBlendingState(const BlendingStatePtr& renderState);
+			virtual void SetShaderProgram(const ShaderProgramPtr& shaderProgram);
+			virtual void AddCommand(const RenderCommandPtr& renderCommand);
+			virtual void RemoveCommand(const RenderCommandPtr& renderCommand);
 			virtual void Submit();
 
 			void SetTechniqueName(const String& name) { m_techniqueName = name; }
@@ -28,11 +28,11 @@ namespace sh
 
 		protected:
 			String m_techniqueName;
-			ShaderProgram* m_program;
-			BlendingState* m_blendingState;
-			DepthStencilState* m_depthStencilState;
-			RasterizationState* m_rasterizationState;
-			std::vector<RenderCommand*> m_commands;
+			ShaderProgramPtr m_program;
+			BlendingStatePtr m_blendingState;
+			DepthStencilStatePtr m_depthStencilState;
+			RasterizationStatePtr m_rasterizationState;
+			std::vector<RenderCommandPtr> m_commands;
 		};
 	}
 }

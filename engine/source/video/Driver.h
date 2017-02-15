@@ -28,7 +28,7 @@ namespace sh
 			
 			virtual void Render(scene::Model* model);
 			virtual void Render(scene::Mesh* mesh);
-			virtual void Render(RenderCommand* command) {}
+			virtual void Render(const RenderCommandPtr& command) {}
 
 			// Viewport management
 			virtual void SetViewport(u32 x, u32 y, u32 width, u32 height);
@@ -50,9 +50,9 @@ namespace sh
 			virtual void ClearBuffers() { }
 
 			// State management 
-			virtual void SetDepthStencilState(DepthStencilState* depthStencilState) { }
-			virtual void SetRasterizationState(RasterizationState* rasterizationState) { }
-			virtual void SetBlendingState(BlendingState* blendingState) { }
+			virtual void SetDepthStencilState(const DepthStencilStatePtr& depthStencilState) { }
+			virtual void SetRasterizationState(const RasterizationStatePtr& rasterizationState) { }
+			virtual void SetBlendingState(const BlendingStatePtr& blendingState) { }
 
 
 			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) {}
@@ -65,7 +65,7 @@ namespace sh
 			virtual VertexBufferPtr CreateVertexBuffer(HardwareBuffer::Usage usage) = 0;
 			virtual IndexBufferPtr CreateIndexBuffer(HardwareBuffer::Usage usage) = 0;
 			virtual UniformBufferPtr CreateUniformBuffer() { return nullptr; }
-			virtual RenderCommand* CreateRenderCommand() = 0;
+			virtual RenderCommandPtr CreateRenderCommand() = 0;
 			virtual ShaderProgramPtr CreateShaderProgram() = 0;
 			virtual TexturePtr CreateTexture() { return nullptr; }
 			virtual VertexInputDeclaration* CreateVertexInputDeclaration() { return nullptr; }

@@ -163,9 +163,9 @@ void GLES20Driver::EndRendering()
 
 ////////////////////////////////////////////////////////////////////////
 
-void GLES20Driver::Render(RenderCommand* command)
+void GLES20Driver::Render(const RenderCommandPtr& command)
 {
-	GLES20RenderCommand* glesRenderCommand = static_cast<GLES20RenderCommand*>(command);
+	GLES20RenderCommand* glesRenderCommand = static_cast<GLES20RenderCommand*>(command.get());
 	GLES20VertexBuffer* vertexBuffer = glesRenderCommand->GetGLVertexBuffer();
 	GLES20IndexBuffer* indexBuffer = glesRenderCommand->GetGLIndexBuffer();
 	GLES20VertexDeclaration* vertexDeclaration = glesRenderCommand->GetGLVertexInputDeclaration();
@@ -274,7 +274,7 @@ void GLES20Driver::ClearBuffers()
 
 ////////////////////////////////////////////////////////////////////////
 
-void GLES20Driver::SetDepthStencilState(DepthStencilState* depthStencilState)
+void GLES20Driver::SetDepthStencilState(const DepthStencilStatePtr& depthStencilState)
 {
 	if (depthStencilState->enableDepthTest)
 	{
@@ -319,7 +319,7 @@ void GLES20Driver::SetDepthStencilState(DepthStencilState* depthStencilState)
 
 ////////////////////////////////////////////////////////////////////////
 
-void GLES20Driver::SetRasterizationState(RasterizationState* rasterizationState)
+void GLES20Driver::SetRasterizationState(const RasterizationStatePtr& rasterizationState)
 {
 	if (rasterizationState->cullFace != CullFace::NONE)
 	{
@@ -335,7 +335,7 @@ void GLES20Driver::SetRasterizationState(RasterizationState* rasterizationState)
 
 ////////////////////////////////////////////////////////////////////////
 
-void GLES20Driver::SetBlendingState(BlendingState*)
+void GLES20Driver::SetBlendingState(const BlendingStatePtr&)
 {
 
 }
@@ -378,9 +378,11 @@ UniformBufferPtr GLES20Driver::CreateUniformBuffer()
 
 ////////////////////////////////////////////////////////////////////////
 
-RenderCommand* GLES20Driver::CreateRenderCommand()
+RenderCommandPtr GLES20Driver::CreateRenderCommand()
 {
-	return new GLES20RenderCommand();
+	RenderCommandPtr result = nullptr;
+	result.reset(new GLES20RenderCommand());
+	return result;
 }
 
 ////////////////////////////////////////////////////////////////////////

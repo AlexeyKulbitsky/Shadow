@@ -215,7 +215,7 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		RenderCommand* VulkanDriver::CreateRenderCommand()
+		RenderCommandPtr VulkanDriver::CreateRenderCommand()
 		{
 			return nullptr;
 		}

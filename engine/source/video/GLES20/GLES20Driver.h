@@ -19,7 +19,7 @@ namespace sh
 			virtual bool Init() override;
 			virtual void BeginRendering() override;
 			virtual void EndRendering() override;			
-			virtual void Render(RenderCommand* command) override;
+			virtual void Render(const RenderCommandPtr& command) override;
 
 			// Viewport management
 			virtual void SetViewport(u32 x, u32 y, u32 width, u32 height) override;
@@ -36,16 +36,16 @@ namespace sh
 			virtual void ClearBuffers() override;
 
 			// State management 
-			virtual void SetDepthStencilState(DepthStencilState* depthStencilState) override;
-			virtual void SetRasterizationState(RasterizationState* rasterizationState) override;
-			virtual void SetBlendingState(BlendingState* blendingState) override;
+			virtual void SetDepthStencilState(const DepthStencilStatePtr& depthStencilState) override;
+			virtual void SetRasterizationState(const RasterizationStatePtr& rasterizationState) override;
+			virtual void SetBlendingState(const BlendingStatePtr& blendingState) override;
 			
 			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) override;
 
 			virtual VertexBufferPtr CreateVertexBuffer(HardwareBuffer::Usage usage) override;
 			virtual IndexBufferPtr CreateIndexBuffer(HardwareBuffer::Usage usage) override;
 			virtual UniformBufferPtr CreateUniformBuffer() override;
-			virtual RenderCommand* CreateRenderCommand() override;
+			virtual RenderCommandPtr CreateRenderCommand() override;
 			virtual ShaderProgramPtr CreateShaderProgram() override;
 			virtual TexturePtr CreateTexture() override;
 			virtual VertexInputDeclaration* CreateVertexInputDeclaration() override;

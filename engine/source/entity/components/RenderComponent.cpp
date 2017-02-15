@@ -47,7 +47,7 @@ namespace sh
 		pugi::xml_node materialNode = node.child("material");
 		if (materialNode)
 		{
-			sh::video::Material* material = new sh::video::Material();
+			sh::video::MaterialPtr material(new sh::video::Material());
 
 			pugi::xml_node techniqueNode = materialNode.child("technique");
 			pugi::xml_attribute fileName = techniqueNode.attribute("filename");
@@ -58,7 +58,7 @@ namespace sh
 			material->SetRenderTechnique(rt);
 
 			// Read uniforms
-			sh::video::UniformBuffer* uniformBuffer = material->GetRenderPipeline(0)->GetUniformBuffer();
+			const sh::video::UniformBufferPtr& uniformBuffer = material->GetRenderPipeline(0)->GetUniformBuffer();
 
 			pugi::xml_node uniformsNode = materialNode.child("uniforms");
 			if (uniformsNode)

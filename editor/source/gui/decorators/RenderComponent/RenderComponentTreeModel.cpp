@@ -294,7 +294,7 @@ void RenderComponentTreeModel::SetupModelData(sh::scene::Model* model, RenderCom
 	for (size_t i = 0; i < meshesCount; ++i)
 	{
 		sh::scene::MeshPtr mesh = model->GetMesh(i);
-		sh::video::Material* mat = mesh->GetMaterial();
+		const sh::video::MaterialPtr& mat = mesh->GetMaterial();
 		sh::video::RenderTechnique* rt = mat->GetRenderTechnique();
 		QVariant data(rt->GetName().c_str());
 
@@ -319,9 +319,9 @@ void RenderComponentTreeModel::SetupModelData(sh::scene::Model* model, RenderCom
 
 
 			RenderComponentTreeItem * passParent = techniqueParent->GetChild(techniqueParent->childCount() - 1);
-			sh::video::DepthStencilState* depthStencilState = pipeline->GetDepthStencilState();
-			sh::video::RasterizationState* rasterizationState = pipeline->GetRasterizationState();
-			sh::video::BlendingState* blendingState = pipeline->GetBlendingState();
+			const sh::video::DepthStencilStatePtr& depthStencilState = pipeline->GetDepthStencilState();
+			const sh::video::RasterizationStatePtr& rasterizationState = pipeline->GetRasterizationState();
+			const sh::video::BlendingStatePtr& blendingState = pipeline->GetBlendingState();
 
 			// Depthstencil state
 			passParent->InsertChildren(passParent->childCount(), 1, 1);
@@ -373,7 +373,7 @@ void RenderComponentTreeModel::SetupModelData(sh::scene::Model* model, RenderCom
 			passParent->GetChild(passParent->childCount() - 1)->SetData(0, QVariant("Uniforms"));
 			RenderComponentTreeItem * uniformParent = passParent->GetChild(passParent->childCount() - 1);
 
-			sh::video::UniformBuffer* uniformBuffer = pipeline->GetUniformBuffer();
+			const sh::video::UniformBufferPtr& uniformBuffer = pipeline->GetUniformBuffer();
 			size_t uniformsCount = uniformBuffer->GetUniformsCount();
 			for (size_t uniformIdx = 0; uniformIdx < uniformsCount; ++uniformIdx)
 			{

@@ -14,7 +14,7 @@ namespace sh
 		{
 			m_linesVertexArray.reserve(5000);
 			Driver* driver = Device::GetInstance()->GetDriver();
-			m_linesRenderCommand.reset(driver->CreateRenderCommand());
+			m_linesRenderCommand = driver->CreateRenderCommand();
 			m_linesRenderCommand->SetVertexBuffer(m_linesBuffer.get());
 			m_linesRenderCommand->SetTopology(Topology::LINE_LIST);
 			m_linesRenderCommand->SetUseIndices(false);
@@ -28,8 +28,8 @@ namespace sh
 
 			RenderPipeline* renderPipeline = m_material->GetRenderPipeline(0);
 
-			UniformBuffer* uniformBuffer = renderPipeline->GetUniformBuffer();
-			m_linesRenderCommand->SetUniformBuffer(uniformBuffer);
+			const UniformBufferPtr& uniformBuffer = renderPipeline->GetUniformBuffer();
+			m_linesRenderCommand->SetUniformBuffer(uniformBuffer.get());
 
 			VertexDeclaration vertexDeclaration;
 			Attribute positionAttribute(AttributeSemantic::POSITION, AttributeType::FLOAT, 3U);
@@ -115,7 +115,7 @@ namespace sh
 
 			renderPipeline->GetShaderProgram()->BindProgram();
 
-			driver->Render(m_linesRenderCommand.get());
+			driver->Render(m_linesRenderCommand);
 
 			renderPipeline->GetShaderProgram()->UnbindProgram();
 

@@ -52,7 +52,7 @@ namespace sh
 
 			sh::scene::ModelPtr resultModel(new sh::scene::Model(model));
 
-			sh::video::Material* material = new sh::video::Material();			
+			sh::video::MaterialPtr material(new sh::video::Material());			
 			sh::video::RenderTechniquePtr rt = Device::GetInstance()->GetResourceManager()->GetRenderTechnique("base.xml");			
 			material->SetRenderTechnique(rt);
 
@@ -123,7 +123,7 @@ namespace sh
 
 			sh::scene::ModelPtr resultModel(new sh::scene::Model(model));
 
-			sh::video::Material* material = new sh::video::Material();			
+			sh::video::MaterialPtr material(new sh::video::Material());
 			sh::video::RenderTechniquePtr rt = Device::GetInstance()->GetResourceManager()->GetRenderTechnique("base.xml");			
 			material->SetRenderTechnique(rt);
 
@@ -180,92 +180,7 @@ namespace sh
 
 			sh::scene::ModelPtr resultModel(new sh::scene::Model(model));
 
-			sh::video::Material* material = new sh::video::Material();
-			sh::video::RenderTechniquePtr rt = Device::GetInstance()->GetResourceManager()->GetRenderTechnique("base.xml");
-			material->SetRenderTechnique(rt);
-
-			size_t meshesCount = resultModel->GetMeshesCount();
-			for (size_t i = 0; i < meshesCount; ++i)
-			{
-				resultModel->GetMesh(i)->SetMaterial(material);
-			}
-
-			return resultModel;
-		}
-
-		//////////////////////////////////////////////////////////////////
-
-		ModelPtr GeometryGenerator::GetCylinderModel(const math::Vector3f& start, const f32 radius, const math::Vector3f& direction, const math::Vector3f& vtx, const math::Vector3f& vty)
-		{
-			std::vector<float> vertexArray;
-
-			for (int i = 0; i < 100; i++)
-			{
-				math::Vector3f vt;
-				vt = vtx * sh::math::Cos((4 * math::k_pi / 100) * i) * radius;
-				vt += vty * sh::math::Sin((4 * math::k_pi / 100) * i) * radius;
-				vt += start;
-
-				vertexArray.push_back(vt.x);
-				vertexArray.push_back(vt.y);
-				vertexArray.push_back(vt.z);
-
-				vt += direction;
-				vertexArray.push_back(vt.x);
-				vertexArray.push_back(vt.y);
-				vertexArray.push_back(vt.z);
-			}
-
-			std::vector<u32> indexArray;
-
-			for (int i = 0; i < 100; i += 2)
-			{
-				indexArray.push_back(i);
-				indexArray.push_back(i + 2);
-				indexArray.push_back(i + 1);
-
-				indexArray.push_back(i + 2);
-				indexArray.push_back(i + 3);
-				indexArray.push_back(i + 1);
-			}
-
-			size_t verticesCount = vertexArray.size() / 3;
-			size_t indicesCount = indexArray.size();
-
-			// Create vertex declaration
-			sh::video::VertexDeclarationPtr vertexDeclaration = sh::video::VertexDeclarationPtr(new sh::video::VertexDeclaration());
-			sh::video::Attribute positionAttribute(sh::video::AttributeSemantic::POSITION, sh::video::AttributeType::FLOAT, 3U);
-			vertexDeclaration->AddAttribute(positionAttribute);
-
-			// Create vertex buffer
-			const void* verticesPointer = vertexArray.data();
-			size_t verticesDataSize = vertexArray.size() * sizeof(float);
-			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer(video::HardwareBuffer::STATIC);
-			vertexBuffer->SetData(0, verticesDataSize, verticesPointer);
-			vertexBuffer->SetVerticesCount(verticesCount / 3);
-			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
-
-			// Create index buffer
-			const void* indicesPointer = indexArray.data();
-			size_t indicesDataSize = indexArray.size() * sizeof(unsigned int);
-			sh::video::IndexBufferPtr indexBuffer = Device::GetInstance()->GetDriver()->CreateIndexBuffer(video::HardwareBuffer::STATIC);
-			indexBuffer->SetData(0, indicesDataSize, indicesPointer);
-			indexBuffer->SetIndexType(sh::video::IndexBuffer::IndexType::UNSIGNED_32_BIT);
-			indexBuffer->SetIndicesCount(indexArray.size());
-
-			sh::scene::MeshBasePtr mesh(new sh::scene::MeshBase());
-
-			mesh->SetVertexBuffer(vertexBuffer);
-			mesh->SetIndexBuffer(indexBuffer);
-			mesh->SetVertexDeclaration(vertexDeclaration);
-			mesh->SetTopology(sh::video::Topology::TRIANGLE_LIST);
-
-			sh::scene::ModelBasePtr model(new sh::scene::ModelBase());
-			model->AddMesh(mesh);
-
-			sh::scene::ModelPtr resultModel(new sh::scene::Model(model));
-
-			sh::video::Material* material = new sh::video::Material();
+			sh::video::MaterialPtr material(new sh::video::Material());
 			sh::video::RenderTechniquePtr rt = Device::GetInstance()->GetResourceManager()->GetRenderTechnique("base.xml");
 			material->SetRenderTechnique(rt);
 
@@ -392,7 +307,7 @@ namespace sh
 
 			sh::scene::ModelPtr resultModel(new sh::scene::Model(model));
 
-			sh::video::Material* material = new sh::video::Material();
+			sh::video::MaterialPtr material(new sh::video::Material());
 			sh::video::RenderTechniquePtr rt = Device::GetInstance()->GetResourceManager()->GetRenderTechnique("base.xml");
 			material->SetRenderTechnique(rt);
 
@@ -519,7 +434,7 @@ namespace sh
 
 			sh::scene::ModelPtr resultModel(new sh::scene::Model(model));
 
-			sh::video::Material* material = new sh::video::Material();
+			sh::video::MaterialPtr material(new sh::video::Material());
 			sh::video::RenderTechniquePtr rt = Device::GetInstance()->GetResourceManager()->GetRenderTechnique("base.xml");
 			material->SetRenderTechnique(rt);
 
@@ -534,7 +449,7 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////
 
-		ModelPtr GeometryGenerator::GetCylinder(f32 height, f32 radius, u32 numberOfSides, math::Matrix4f transform)
+		ModelPtr GeometryGenerator::GetCylinderModel(f32 height, f32 radius, u32 numberOfSides, math::Matrix4f transform)
 		{
 			std::vector<float> vertexArray;
 
@@ -614,7 +529,7 @@ namespace sh
 
 			sh::scene::ModelPtr resultModel(new sh::scene::Model(model));
 
-			sh::video::Material* material = new sh::video::Material();
+			sh::video::MaterialPtr material(new sh::video::Material());
 			sh::video::RenderTechniquePtr rt = Device::GetInstance()->GetResourceManager()->GetRenderTechnique("base.xml");
 			material->SetRenderTechnique(rt);
 

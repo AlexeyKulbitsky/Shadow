@@ -47,7 +47,7 @@ namespace sh
 
 			virtual VertexBufferPtr CreateVertexBuffer(HardwareBuffer::Usage usage) override;
 			virtual IndexBufferPtr CreateIndexBuffer(HardwareBuffer::Usage usage) override;
-			virtual RenderCommand* CreateRenderCommand() override;
+			virtual RenderCommandPtr CreateRenderCommand() override;
 			virtual ShaderProgramPtr CreateShaderProgram() override;
 
 		private:

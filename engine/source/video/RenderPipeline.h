@@ -26,12 +26,12 @@ namespace sh
 			void Unload();
 
 			const String& GetName() const { return m_name; }
-			ShaderProgram* GetShaderProgram() const { return m_shaderProgram.get(); }
+			const ShaderProgramPtr& GetShaderProgram() const { return m_shaderProgram; }
 			VertexInputDeclaration* GetVertexInputDeclaration() const { return m_vertexInputDeclaration; }
-			UniformBuffer* GetUniformBuffer() const { return m_uniformBuffer.get(); }
-			DepthStencilState* GetDepthStencilState() const { return m_depthStencilState.get(); }
-			RasterizationState* GetRasterizationState() const { return m_rasterizationState.get(); }
-			BlendingState* GetBlendingState() const { return m_blendingState.get(); }
+			const UniformBufferPtr& GetUniformBuffer() const { return m_uniformBuffer; }
+			const DepthStencilStatePtr& GetDepthStencilState() const { return m_depthStencilState; }
+			const RasterizationStatePtr& GetRasterizationState() const { return m_rasterizationState; }
+			const BlendingStatePtr& GetBlendingState() const { return m_blendingState; }
 			Layer GetLayer() const { return m_layer; }
 
 		protected:
