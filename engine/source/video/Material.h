@@ -11,7 +11,7 @@ namespace sh
 		{
 		public:
 			Material() {}
-			void SetRenderTechnique(RenderTechniquePtr technique);
+			void SetRenderTechnique(const RenderTechniquePtr& technique);
 
 			RenderTechnique* GetRenderTechnique() { return m_renderTechnique.get(); }
 

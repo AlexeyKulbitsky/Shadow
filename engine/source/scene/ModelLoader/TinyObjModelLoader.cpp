@@ -99,6 +99,7 @@ namespace sh
 				vertexBuffer->SetData(0, verticesDataSize, verticesPointer);
 				vertexBuffer->SetVerticesCount(verticesCount);
 				vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
+				vertexBuffer->SetVertexDeclaration(vertexDeclaration);
 
 				// Create index buffer
 				const void* indicesPointer = indexArray.data();
@@ -110,7 +111,7 @@ namespace sh
 				
 				mesh->SetVertexBuffer(vertexBuffer);
 				mesh->SetIndexBuffer(indexBuffer);
-				mesh->SetVertexDeclaration(vertexDeclaration);
+				//mesh->SetVertexDeclaration(vertexDeclaration);
 				mesh->SetTopology(sh::video::Topology::TRIANGLE_LIST);
 
 				// Set base material

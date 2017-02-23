@@ -17,7 +17,6 @@ namespace sh
 
 			bool IsUseIndices() { return m_useIndices; }
 
-			void SetVertexDeclaration(sh::video::VertexDeclarationPtr vertexDeclaration);
 			void SetTopology(sh::video::Topology topology);
 			void SetVertexBuffer(video::VertexBufferPtr vertexBuffer);
 			void SetIndexBuffer(video::IndexBufferPtr indexBuffer);
@@ -32,13 +31,11 @@ namespace sh
 
 			video::VertexBuffer* GetVertexBuffer();
 			video::IndexBuffer* GetIndexBuffer();
-			video::VertexDeclaration* GetVertexDeclaration();
 			sh::video::Topology GetTopology();
 
 		private:
 			video::VertexBufferPtr m_vertexBuffer;
 			video::IndexBufferPtr m_indexBuffer;
-			video::VertexDeclarationPtr m_vertexDeclaration;
 			sh::video::Topology m_topology;
 			bool m_useIndices;
 

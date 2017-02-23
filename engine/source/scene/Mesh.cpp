@@ -8,6 +8,7 @@
 #include "../video/RenderPipeline.h"
 #include "../video/VertexDeclaration.h"
 #include "../video/UniformBuffer.h"
+#include "../video/VertexBuffer.h"
 #include "../video/Uniform.h"
 #include "../scene/SceneManager.h"
 #include "../scene/Camera.h"
@@ -105,7 +106,7 @@ namespace sh
 				m_renderCommands[i]->SetUniformBuffer(renderPipeline->GetUniformBuffer().get());
 
 				video::VertexInputDeclaration* inputDeclaration = renderPipeline->GetVertexInputDeclaration();
-				inputDeclaration->Assemble(*(m_meshBase->GetVertexDeclaration()));
+				inputDeclaration->Assemble(*(m_renderCommands[i]->GetVertexBuffer()->GetVertexDeclaration()));
 				m_renderCommands[i]->SetVertexInputDeclaration(inputDeclaration);
 			}			
 		}

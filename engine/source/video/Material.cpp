@@ -6,7 +6,7 @@ namespace sh
 {
 	namespace video
 	{
-		void Material::SetRenderTechnique(RenderTechniquePtr technique) 
+		void Material::SetRenderTechnique(const RenderTechniquePtr& technique) 
 		{ 
 			m_renderTechnique = technique; 
 			u32 pipelinesCount = technique->GetRenderPipelinesCount();

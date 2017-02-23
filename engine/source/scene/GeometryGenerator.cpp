@@ -40,11 +40,11 @@ namespace sh
 			vertexBuffer->SetData(0, verticesDataSize, verticesPointer);
 			vertexBuffer->SetVerticesCount(verticesCount / 3);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
+			vertexBuffer->SetVertexDeclaration(vertexDeclaration);
 
 			sh::scene::MeshBasePtr mesh(new sh::scene::MeshBase());
 
 			mesh->SetVertexBuffer(vertexBuffer);
-			mesh->SetVertexDeclaration(vertexDeclaration);
 			mesh->SetTopology(sh::video::Topology::LINE_LIST);
 
 			sh::scene::ModelBasePtr model(new sh::scene::ModelBase());
@@ -111,11 +111,12 @@ namespace sh
 			vertexBuffer->SetData(0, verticesDataSize, verticesPointer);
 			vertexBuffer->SetVerticesCount(verticesCount);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
+			vertexBuffer->SetVertexDeclaration(vertexDeclaration);
 
 			sh::scene::MeshBasePtr mesh(new sh::scene::MeshBase());
 
 			mesh->SetVertexBuffer(vertexBuffer);
-			mesh->SetVertexDeclaration(vertexDeclaration);
+			//mesh->SetVertexDeclaration(vertexDeclaration);
 			mesh->SetTopology(sh::video::Topology::TRIANGLE_LIST);
 
 			sh::scene::ModelBasePtr model(new sh::scene::ModelBase());
@@ -168,11 +169,11 @@ namespace sh
 			vertexBuffer->SetData(0, verticesDataSize, verticesPointer);
 			vertexBuffer->SetVerticesCount(verticesCount / 3);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
+			vertexBuffer->SetVertexDeclaration(vertexDeclaration);
 
 			sh::scene::MeshBasePtr mesh(new sh::scene::MeshBase());
 
 			mesh->SetVertexBuffer(vertexBuffer);
-			mesh->SetVertexDeclaration(vertexDeclaration);
 			mesh->SetTopology(sh::video::Topology::LINE_LOOP);
 
 			sh::scene::ModelBasePtr model(new sh::scene::ModelBase());
@@ -286,6 +287,7 @@ namespace sh
 			vertexBuffer->SetData(0, verticesDataSize, verticesPointer);
 			vertexBuffer->SetVerticesCount(verticesCount / 3);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
+			vertexBuffer->SetVertexDeclaration(vertexDeclaration);
 
 			// Create index buffer
 			const void* indicesPointer = indexArray.data();
@@ -299,7 +301,6 @@ namespace sh
 
 			mesh->SetVertexBuffer(vertexBuffer);
 			mesh->SetIndexBuffer(indexBuffer);
-			mesh->SetVertexDeclaration(vertexDeclaration);
 			mesh->SetTopology(sh::video::Topology::TRIANGLE_LIST);
 
 			sh::scene::ModelBasePtr model(new sh::scene::ModelBase());
@@ -413,6 +414,7 @@ namespace sh
 			vertexBuffer->SetData(0, verticesDataSize, verticesPointer);
 			vertexBuffer->SetVerticesCount(verticesCount / 3);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
+			vertexBuffer->SetVertexDeclaration(vertexDeclaration);
 
 			// Create index buffer
 			const void* indicesPointer = indexArray.data();
@@ -426,7 +428,6 @@ namespace sh
 
 			mesh->SetVertexBuffer(vertexBuffer);
 			mesh->SetIndexBuffer(indexBuffer);
-			mesh->SetVertexDeclaration(vertexDeclaration);
 			mesh->SetTopology(sh::video::Topology::TRIANGLE_LIST);
 
 			sh::scene::ModelBasePtr model(new sh::scene::ModelBase());
@@ -508,6 +509,7 @@ namespace sh
 			vertexBuffer->SetData(0, verticesDataSize, verticesPointer);
 			vertexBuffer->SetVerticesCount(verticesCount);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
+			vertexBuffer->SetVertexDeclaration(vertexDeclaration);
 
 			// Create index buffer
 			const void* indicesPointer = indexArray.data();
@@ -521,7 +523,6 @@ namespace sh
 
 			mesh->SetVertexBuffer(vertexBuffer);
 			mesh->SetIndexBuffer(indexBuffer);
-			mesh->SetVertexDeclaration(vertexDeclaration);
 			mesh->SetTopology(topology);
 
 			sh::scene::ModelBasePtr model(new sh::scene::ModelBase());
