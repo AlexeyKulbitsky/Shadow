@@ -295,7 +295,7 @@ void RenderComponentTreeModel::SetupModelData(sh::scene::Model* model, RenderCom
 	{
 		sh::scene::MeshPtr mesh = model->GetMesh(i);
 		const sh::video::MaterialPtr& mat = mesh->GetMaterial();
-		sh::video::RenderTechnique* rt = mat->GetRenderTechnique();
+		const sh::video::RenderTechniquePtr& rt = mat->GetRenderTechnique();
 		QVariant data(rt->GetName().c_str());
 
 		RenderComponentTreeItem *parent = parents.last();
@@ -309,7 +309,7 @@ void RenderComponentTreeModel::SetupModelData(sh::scene::Model* model, RenderCom
 		{
 			RenderComponentTreeItem * techniqueParent = parent->GetChild(parent->childCount() - 1);
 			
-			sh::video::RenderPipeline* pipeline = mat->GetRenderPipeline(passIndex);
+			const sh::video::RenderPipelinePtr& pipeline = mat->GetRenderPipeline(passIndex);
 			QVariant passName(pipeline->GetName().c_str());
 
 			techniqueParent->InsertChildren(techniqueParent->childCount(), 1, 2);

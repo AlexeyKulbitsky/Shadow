@@ -41,6 +41,11 @@ namespace sh
 			Sampler* GetSampler(const std::string& name);
 			Sampler* GetSampler(Sampler::Usage usage);
 
+			const std::vector<Uniform*>& GetUniforms() const { return m_uniforms; }
+			const std::vector<Uniform*>& GetGlobalUniforms() const { return m_globalUniforms; }
+			const std::vector<Uniform*>& GetAutoUniforms() const { return m_autoUniforms; }
+			const std::vector<Sampler*>& GetSamplers() const { return m_samplers; }
+
 		private:
 			std::vector<Uniform*> m_uniforms;
 			std::vector<Uniform*> m_globalUniforms;

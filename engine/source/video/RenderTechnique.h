@@ -19,7 +19,7 @@ namespace sh
 
 			const String& GetName() const { return m_name; }
 			size_t GetRenderPipelinesCount() const { return m_renderPipelines.size(); }
-			RenderPipelinePtr GetRenderPipeline(size_t index) { return m_renderPipelines[index]; }
+			const RenderPipelinePtr& GetRenderPipeline(size_t index) { return m_renderPipelines[index]; }
 
 		protected:
 			std::vector<RenderPipelinePtr> m_renderPipelines;

@@ -58,9 +58,139 @@
 		</component>
 	</entity-->
 	
-	<entity name="test_cube">
+	<entity name="test_mokey_0">
 		<component name="transform">
 			<position val="0.0 0.0 -20.0"/>
+		</component>
+	
+		<component name="render">	
+			<model filename="monkey.obj"/>				
+			<material>
+				<technique filename="const_color.xml"/>
+			</material>
+		</component>
+	</entity>
+	
+	<entity name="test_mokey_1">
+		<component name="transform">
+			<position val="1.0 0.0 -20.0"/>
+		</component>
+	
+		<component name="render">	
+			<model filename="monkey.obj"/>				
+			<material>
+				<technique filename="const_color.xml"/>
+			</material>
+		</component>
+	</entity>
+	
+	<entity name="test_mokey_2">
+		<component name="transform">
+			<position val="2.0 0.0 -20.0"/>
+		</component>
+	
+		<component name="render">	
+			<model filename="monkey.obj"/>				
+			<material>
+				<technique filename="const_color.xml"/>
+			</material>
+		</component>
+	</entity>
+	
+	<entity name="test_mokey_3">
+		<component name="transform">
+			<position val="3.0 0.0 -20.0"/>
+		</component>
+	
+		<component name="render">	
+			<model filename="monkey.obj"/>				
+			<material>
+				<technique filename="const_color.xml"/>
+			</material>
+		</component>
+	</entity>
+	
+	<entity name="test_mokey_4">
+		<component name="transform">
+			<position val="4.0 0.0 -20.0"/>
+		</component>
+	
+		<component name="render">	
+			<model filename="monkey.obj"/>				
+			<material>
+				<technique filename="const_color.xml"/>
+			</material>
+		</component>
+	</entity>
+	
+	<entity name="test_mokey_5">
+		<component name="transform">
+			<position val="0.0 1.0 -20.0"/>
+		</component>
+	
+		<component name="render">	
+			<model filename="monkey.obj"/>				
+			<material>
+				<technique filename="const_color.xml"/>
+			</material>
+		</component>
+	</entity>
+	
+	<entity name="test_mokey_6">
+		<component name="transform">
+			<position val="0.0 2.0 -20.0"/>
+		</component>
+	
+		<component name="render">	
+			<model filename="monkey.obj"/>				
+			<material>
+				<technique filename="const_color.xml"/>
+			</material>
+		</component>
+	</entity>
+	
+	<entity name="test_mokey_7">
+		<component name="transform">
+			<position val="0.0 3.0 -20.0"/>
+		</component>
+	
+		<component name="render">	
+			<model filename="monkey.obj"/>				
+			<material>
+				<technique filename="const_color.xml"/>
+			</material>
+		</component>
+	</entity>
+	
+	<entity name="test_mokey_8">
+		<component name="transform">
+			<position val="0.0 4.0 -20.0"/>
+		</component>
+	
+		<component name="render">	
+			<model filename="monkey.obj"/>				
+			<material>
+				<technique filename="const_color.xml"/>
+			</material>
+		</component>
+	</entity>
+	
+	<entity name="test_mokey_9">
+		<component name="transform">
+			<position val="0.0 5.0 -20.0"/>
+		</component>
+	
+		<component name="render">	
+			<model filename="monkey.obj"/>				
+			<material>
+				<technique filename="const_color.xml"/>
+			</material>
+		</component>
+	</entity>
+	
+	<entity name="test_mokey_10">
+		<component name="transform">
+			<position val="3.0 3.0 -20.0"/>
 		</component>
 	
 		<component name="render">	

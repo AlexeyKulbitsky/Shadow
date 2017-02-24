@@ -154,7 +154,7 @@ namespace sh
 				{
 					scene::MeshBasePtr meshBase = modelBase->GetMesh(i);
 					scene::MeshPtr mesh = model->GetMesh(i);
-					video::UniformBuffer* meshUniformBuffer = mesh->GetRenderCommand()->GetUniformBuffer();
+					const video::UniformBufferPtr& meshUniformBuffer = mesh->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
 
 					for (size_t j = 0; j < meshBase->GetSamplersCount(); ++j)
 					{

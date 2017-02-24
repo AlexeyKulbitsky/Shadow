@@ -20,7 +20,7 @@ namespace sh
 			RenderPipeline();			
 			~RenderPipeline();
 
-			RenderPipeline* Clone();
+			RenderPipelinePtr Clone();
 
 			void Load(const pugi::xml_node &node);
 			void Unload();

@@ -169,10 +169,6 @@ void GLES20Driver::Render(const RenderCommandPtr& command)
 	GLES20VertexBuffer* vertexBuffer = glesRenderCommand->GetGLVertexBuffer();
 	GLES20IndexBuffer* indexBuffer = glesRenderCommand->GetGLIndexBuffer();
 	GLES20VertexDeclaration* vertexDeclaration = glesRenderCommand->GetGLVertexInputDeclaration();
-	UniformBuffer* uniformBuffer = glesRenderCommand->GetUniformBuffer();
-
-	// Send uniforms to shader
-	uniformBuffer->Upload();
 
 	// Bind vertex buffer
 	vertexBuffer->Bind();

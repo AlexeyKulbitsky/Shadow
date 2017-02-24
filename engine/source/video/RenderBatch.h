@@ -19,6 +19,7 @@ namespace sh
 			virtual void SetRasterizationState(const RasterizationStatePtr& renderState);
 			virtual void SetBlendingState(const BlendingStatePtr& renderState);
 			virtual void SetShaderProgram(const ShaderProgramPtr& shaderProgram);
+			virtual void SetUniformBuffer(const UniformBufferPtr& uniformBuffer);
 			virtual void AddCommand(const RenderCommandPtr& renderCommand);
 			virtual void RemoveCommand(const RenderCommandPtr& renderCommand);
 			virtual void Submit();
@@ -32,6 +33,7 @@ namespace sh
 			BlendingStatePtr m_blendingState;
 			DepthStencilStatePtr m_depthStencilState;
 			RasterizationStatePtr m_rasterizationState;
+			UniformBufferPtr m_uniformBuffer;
 			std::vector<RenderCommandPtr> m_commands;
 		};
 	}

@@ -5,6 +5,7 @@
 #include "RasterizationState.h"
 #include "BlendingState.h"
 #include "ShaderProgram.h"
+#include "UniformBuffer.h"
 
 #include "../scene/Mesh.h"
 #include "../scene/Model.h"
@@ -58,12 +59,14 @@ namespace sh
 		void Driver::Render(scene::Mesh* mesh)
 		{
 			const MaterialPtr& material = mesh->GetMaterial();
-			RenderPipeline* renderPipeline = material->GetRenderPipeline(0);
+			const RenderPipelinePtr& renderPipeline = material->GetRenderPipeline(0);
 
 			SetDepthStencilState(renderPipeline->GetDepthStencilState());
 			SetRasterizationState(renderPipeline->GetRasterizationState());
 			SetBlendingState(renderPipeline->GetBlendingState());
 			renderPipeline->GetShaderProgram()->BindProgram();
+			renderPipeline->GetUniformBuffer()->Upload();
+
 
 			const RenderCommandPtr& renderCommand = mesh->GetRenderCommand();
 

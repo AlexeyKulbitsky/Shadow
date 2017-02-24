@@ -19,7 +19,7 @@ MoveGizmo::MoveGizmo()
 
 	m_axises[0].lineModel = sh::scene::GeometryGenerator::GetCylinderModel(height, radius, numberOfSides, transform);
 	
-	sh::video::UniformBuffer* uniformBuffer = m_axises[0].lineModel->GetMesh(0)->GetRenderCommand()->GetUniformBuffer();
+	sh::video::UniformBufferPtr uniformBuffer = m_axises[0].lineModel->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
 	m_axises[0].lineColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[0].lineColorUniform)
 	{
@@ -32,7 +32,7 @@ MoveGizmo::MoveGizmo()
 		sh::math::Vector3f(1.0f, 0.0f, 0.0f),
 		sh::math::Vector3f(0.0f, 1.0f, 0.0f),
 		sh::math::Vector3f(0.0f, 0.0f, 1.0f));
-	uniformBuffer = m_axises[0].coneModel->GetMesh(0)->GetRenderCommand()->GetUniformBuffer();
+	uniformBuffer = m_axises[0].coneModel->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
 	m_axises[0].coneColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[0].coneColorUniform)
 	{
@@ -47,7 +47,7 @@ MoveGizmo::MoveGizmo()
 	transform.SetTranslation(translation);
 	m_axises[1].lineModel = sh::scene::GeometryGenerator::GetCylinderModel(height, radius, numberOfSides, transform);
 
-	uniformBuffer = m_axises[1].lineModel->GetMesh(0)->GetRenderCommand()->GetUniformBuffer();
+	uniformBuffer = m_axises[1].lineModel->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
 	m_axises[1].lineColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[1].lineColorUniform)
 	{
@@ -60,7 +60,7 @@ MoveGizmo::MoveGizmo()
 		sh::math::Vector3f(0.0f, 1.0f, 0.0f),
 		sh::math::Vector3f(1.0f, 0.0f, 0.0f),
 		sh::math::Vector3f(0.0f, 0.0f, 1.0f));
-	uniformBuffer = m_axises[1].coneModel->GetMesh(0)->GetRenderCommand()->GetUniformBuffer();
+	uniformBuffer = m_axises[1].coneModel->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
 	m_axises[1].coneColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[1].coneColorUniform)
 	{
@@ -77,7 +77,7 @@ MoveGizmo::MoveGizmo()
 	transform = transform * rotation.GetAsMatrix4();
 	m_axises[2].lineModel = sh::scene::GeometryGenerator::GetCylinderModel(height, radius, numberOfSides, transform);
 
-	uniformBuffer = m_axises[2].lineModel->GetMesh(0)->GetRenderCommand()->GetUniformBuffer();
+	uniformBuffer = m_axises[2].lineModel->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
 	m_axises[2].lineColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[2].lineColorUniform)
 	{
@@ -90,7 +90,7 @@ MoveGizmo::MoveGizmo()
 		sh::math::Vector3f(0.0f, 0.0f, 1.0f),
 		sh::math::Vector3f(1.0f, 0.0f, 0.0f),
 		sh::math::Vector3f(0.0f, 1.0f, 0.0f));
-	uniformBuffer = m_axises[2].coneModel->GetMesh(0)->GetRenderCommand()->GetUniformBuffer();
+	uniformBuffer = m_axises[2].coneModel->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
 	m_axises[2].coneColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[2].coneColorUniform)
 	{

@@ -26,10 +26,7 @@ namespace sh
 		{
 			m_material = material;
 
-			RenderPipeline* renderPipeline = m_material->GetRenderPipeline(0);
-
-			const UniformBufferPtr& uniformBuffer = renderPipeline->GetUniformBuffer();
-			m_linesRenderCommand->SetUniformBuffer(uniformBuffer.get());
+			const RenderPipelinePtr& renderPipeline = m_material->GetRenderPipeline(0);
 
 			VertexDeclaration vertexDeclaration;
 			Attribute positionAttribute(AttributeSemantic::POSITION, AttributeType::FLOAT, 3U);
@@ -107,7 +104,7 @@ namespace sh
 		void Painter::Flush()
 		{
 			Driver* driver = Device::GetInstance()->GetDriver();
-			RenderPipeline* renderPipeline = m_material->GetRenderPipeline(0);
+			const RenderPipelinePtr& renderPipeline = m_material->GetRenderPipeline(0);
 
 			driver->SetDepthStencilState(renderPipeline->GetDepthStencilState());
 			driver->SetBlendingState(renderPipeline->GetBlendingState());

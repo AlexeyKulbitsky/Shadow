@@ -24,9 +24,11 @@ namespace sh
 
 		}
 
-		RenderPipeline* RenderPipeline::Clone()
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+
+		RenderPipelinePtr RenderPipeline::Clone()
 		{
-			RenderPipeline* result = new RenderPipeline();
+			RenderPipelinePtr result(new RenderPipeline());
 			result->m_shaderProgram = m_shaderProgram;
 			result->m_uniformBuffer = UniformBufferPtr(m_uniformBuffer->Clone());
 			result->m_depthStencilState = DepthStencilStatePtr(m_depthStencilState->Clone());

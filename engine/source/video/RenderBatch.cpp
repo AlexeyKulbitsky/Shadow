@@ -1,5 +1,6 @@
 #include "RenderBatch.h"
 #include "ShaderProgram.h"
+#include "UniformBuffer.h"
 #include "Driver.h"
 #include "../Device.h"
 
@@ -36,6 +37,13 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////////////
 
+		void RenderBatch::SetUniformBuffer(const UniformBufferPtr& uniformBuffer)
+		{
+			m_uniformBuffer = uniformBuffer;
+		}
+
+		//////////////////////////////////////////////////////////////////////////
+
 		void RenderBatch::AddCommand(const RenderCommandPtr& renderCommand)
 		{
 			m_commands.push_back(renderCommand);
@@ -58,6 +66,8 @@ namespace sh
 			driver->SetBlendingState(m_blendingState);
 			driver->SetRasterizationState(m_rasterizationState);
 			m_program->BindProgram();
+
+			m_uniformBuffer->Upload();
 
 			for (auto command : m_commands)
 			{

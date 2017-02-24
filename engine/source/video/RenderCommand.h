@@ -31,14 +31,12 @@ namespace sh
 			virtual void SetUseIndices(bool useIndices) = 0;
 			virtual void SetVertexBuffer(VertexBuffer* vertexBuffer) = 0;
 			virtual void SetIndexBuffer(IndexBuffer* indexBuffer) = 0;
-			virtual void SetUniformBuffer(UniformBuffer* uniformBuffer) = 0;
 			virtual void SetTopology(Topology topology) = 0;
 			virtual void SetVertexInputDeclaration(VertexInputDeclaration* declaration) = 0;
 
 			virtual bool IsUseIndices() const = 0;
 			virtual VertexBuffer* GetVertexBuffer() = 0;
 			virtual IndexBuffer* GetIndexBuffer() = 0;
-			virtual UniformBuffer* GetUniformBuffer() = 0;
 			virtual Topology GetTopology() const = 0;
 			virtual VertexInputDeclaration* GetVertexInputDeclaration() const = 0;
 		};

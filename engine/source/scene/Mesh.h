@@ -17,7 +17,7 @@ namespace sh
 			void SetMaterial(const sh::video::MaterialPtr& material);
 			const video::MaterialPtr& GetMaterial();
 			
-			const sh::video::RenderCommandPtr& GetRenderCommand(size_t index = 0) { return m_renderCommands[index]; }
+			const sh::video::RenderCommandPtr& GetRenderCommand(size_t index = 0U) { return m_renderCommands[index]; }
 
 		private:
 			Mesh(){}

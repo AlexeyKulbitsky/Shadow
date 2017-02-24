@@ -28,11 +28,6 @@ namespace sh
 			m_indexBuffer = static_cast<GLES20IndexBuffer*>(indexBuffer);
 		}
 
-		void GLES20RenderCommand::SetUniformBuffer(UniformBuffer* uniformBuffer)
-		{
-			m_uniformBuffer = static_cast<GLES20UniformBuffer*>(uniformBuffer);
-		}
-
 		void GLES20RenderCommand::SetTopology(Topology topology)
 		{
 			m_topology = topology;

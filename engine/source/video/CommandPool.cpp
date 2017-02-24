@@ -20,12 +20,13 @@ namespace sh
 			if (m_renderBatches[layerIndex].find(techniqueName) == m_renderBatches[layerIndex].end())
 			{
 				RenderBatch* renderBatch = new RenderBatch();
-				const RenderPipelinePtr& renderPipeline = material->GetRenderTechnique()->GetRenderPipeline(0);
+				const RenderPipelinePtr& renderPipeline = material->GetRenderPipeline(0);
 				const ShaderProgramPtr& shader = renderPipeline->GetShaderProgram();
 				renderBatch->SetShaderProgram(shader);
 				renderBatch->SetDepthStencilState(renderPipeline->GetDepthStencilState());
 				renderBatch->SetRasterizationState(renderPipeline->GetRasterizationState());
 				renderBatch->SetBlendingState(renderPipeline->GetBlendingState());
+				renderBatch->SetUniformBuffer(renderPipeline->GetUniformBuffer());
 				renderBatch->SetTechniqueName(techniqueName);
 
 				m_renderBatches[layerIndex][techniqueName] = renderBatch;

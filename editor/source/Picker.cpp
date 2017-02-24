@@ -46,11 +46,14 @@ sh::Entity* Picker::TryToPick(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 heigh
 		{
 			sh::scene::MeshPtr mesh = model->GetMesh(j);
 			mesh->GetMaterial()->GetRenderPipeline(1)->GetShaderProgram()->BindProgram();
-			sh::video::Uniform* uniform = mesh->GetRenderCommand(1)->GetUniformBuffer()->GetUniform("color");
+			//sh::video::Uniform* uniform = mesh->GetRenderCommand(1)->GetUniformBuffer()->GetUniform("color");
+			const sh::video::UniformBufferPtr& uniformBuffer = mesh->GetMaterial()->GetRenderPipeline(1)->GetUniformBuffer();
+			sh::video::Uniform* uniform = uniformBuffer->GetUniform("color");
 			if (uniform)
 			{
 				uniform->Set(color);
 			}
+			uniformBuffer->Upload();
 			driver->Render(mesh->GetRenderCommand(1));
 			mesh->GetMaterial()->GetRenderPipeline(1)->GetShaderProgram()->UnbindProgram();
 		}			
