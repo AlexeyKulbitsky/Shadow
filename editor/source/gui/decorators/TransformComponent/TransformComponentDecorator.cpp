@@ -7,6 +7,13 @@
 
 ////////////////////////////////////////////////////////////////////
 
+TransformComponentDecorator::~TransformComponentDecorator()
+{
+
+}
+
+////////////////////////////////////////////////////////////////////
+
 void TransformComponentDecorator::SetPosition(const sh::math::Vector3f& position)
 {
 	TransformComponent::SetPosition(position);

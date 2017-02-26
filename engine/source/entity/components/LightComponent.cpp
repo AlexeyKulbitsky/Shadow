@@ -1,9 +1,29 @@
 #include "LightComponent.h"
 #include "../../scene/Light.h"
+#include "../../video/Uniform.h"
+#include "../../video/Driver.h"
 #include "../../Device.h"
 
 namespace sh
 {
+	LightComponent::~LightComponent()
+	{
+		if (m_light)
+		{
+			if (m_light->GetType() == sh::scene::Light::Type::DIRECTIONAL)
+			{
+				sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
+				sh::video::Uniform* uniform = driver->GetGlobalUniform(video::GlobalUniformName::LIGHT_DIRECTIONAL_DIRECTION);
+				std::vector<math::Vector3f> value;
+				uniform->Set(value);
+			}
+			delete m_light;
+			m_light = nullptr;
+		}
+	}
+
+	//////////////////////////////////////////////////////////
+
 	void LightComponent::Load(const pugi::xml_node &node)
 	{
 		// Type
@@ -40,7 +60,7 @@ namespace sh
 					std::vector<math::Vector3f> value;
 					value.push_back(direction);
 					uniform->Set(value);
-						
+					m_light->SetType(lightType);
 				}
 			}
 
@@ -64,6 +84,38 @@ namespace sh
 			}
 
 		}
+	}
+
+	//////////////////////////////////////////////////////////
+
+	void LightComponent::Save(pugi::xml_node &parent)
+	{
+		pugi::xml_node componentNode = parent.append_child("component");
+		componentNode.append_attribute("name").set_value("light");
+
+		pugi::xml_node typeNode = componentNode.append_child("type");
+		sh::scene::Light::Type type = m_light->GetType();
+		switch (type)
+		{
+			case sh::scene::Light::Type::DIRECTIONAL:
+			{
+				typeNode.append_attribute("val").set_value("directional");
+				pugi::xml_node directionNode = componentNode.append_child("direction");
+				const sh::math::Vector3f& dir = m_light->GetDirection();
+				std::ostringstream out;
+				out << dir.x << " " << dir.y << " " << dir.z;
+				directionNode.append_attribute("val").set_value(out.str().c_str());
+			}
+			break;
+			default:
+			break;
+		}
+
+		const sh::math::Vector3f& color = m_light->GetColor();
+		std::ostringstream out;
+		out << color.x << " " << color.y << " " << color.z;
+		pugi::xml_node colorNode = componentNode.append_child("color");
+		colorNode.append_attribute("val").set_value(out.str().c_str());
 	}
 
 	//////////////////////////////////////////////////////////

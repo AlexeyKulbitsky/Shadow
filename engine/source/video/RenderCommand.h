@@ -33,12 +33,17 @@ namespace sh
 			virtual void SetIndexBuffer(IndexBuffer* indexBuffer) = 0;
 			virtual void SetTopology(Topology topology) = 0;
 			virtual void SetVertexInputDeclaration(VertexInputDeclaration* declaration) = 0;
+			void SetAutoUniformsBatch(const UniformsBatchPtr& unifomsBatch) { m_autoUniformsBatch = unifomsBatch; }
 
 			virtual bool IsUseIndices() const = 0;
 			virtual VertexBuffer* GetVertexBuffer() = 0;
 			virtual IndexBuffer* GetIndexBuffer() = 0;
 			virtual Topology GetTopology() const = 0;
 			virtual VertexInputDeclaration* GetVertexInputDeclaration() const = 0;
+			const UniformsBatchPtr& GetAutoUniformsBatch() const { return m_autoUniformsBatch; }
+
+		protected:
+			UniformsBatchPtr m_autoUniformsBatch;
 		};
 	}
 }

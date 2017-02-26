@@ -29,6 +29,7 @@ namespace sh
 		DEFINE_CLASS_PTR(ShaderProgram)
 		DEFINE_CLASS_PTR(Texture)
 		DEFINE_CLASS_PTR(Uniform)
+		DEFINE_CLASS_PTR(UniformsBatch)
 		DEFINE_CLASS_PTR(UniformBuffer)
 		DEFINE_CLASS_PTR(VertexBuffer)
 		DEFINE_CLASS_PTR(VertexDeclaration)
@@ -45,6 +46,7 @@ namespace sh
 		DEFINE_CLASS_PTR(Model)
 		DEFINE_CLASS_PTR(ModelBase)
 		DEFINE_CLASS_PTR(ModelLoader)
+		DEFINE_CLASS_PTR(Picker)
 		DEFINE_CLASS_PTR(SceneManager)
 		DEFINE_CLASS_PTR(TinyObjModelLoader)
 	}

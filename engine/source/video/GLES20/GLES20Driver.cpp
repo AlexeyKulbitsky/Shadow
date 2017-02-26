@@ -6,6 +6,7 @@
 #include "GLES20UniformBuffer.h"
 #include "GLES20RenderCommand.h"
 #include "GLES20Texture.h"
+#include "GLES20RenderTarget.h"
 #include "../Material.h"
 #include "../GLContext/EGLContextManager.h"
 #include "../../scene/Mesh.h"
@@ -169,6 +170,11 @@ void GLES20Driver::Render(const RenderCommandPtr& command)
 	GLES20VertexBuffer* vertexBuffer = glesRenderCommand->GetGLVertexBuffer();
 	GLES20IndexBuffer* indexBuffer = glesRenderCommand->GetGLIndexBuffer();
 	GLES20VertexDeclaration* vertexDeclaration = glesRenderCommand->GetGLVertexInputDeclaration();
+
+	for (auto uniform : command->GetAutoUniformsBatch()->m_uniforms)
+	{
+		uniform->Upload();
+	}
 
 	// Bind vertex buffer
 	vertexBuffer->Bind();
@@ -347,7 +353,7 @@ void GLES20Driver::GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data)
 
 ////////////////////////////////////////////////////////////////////////
 
-VertexBufferPtr GLES20Driver::CreateVertexBuffer(HardwareBuffer::Usage usage)
+VertexBufferPtr GLES20Driver::CreateVertexBuffer(HardwareBuffer::Usage usage) const
 {
 	VertexBufferPtr result = nullptr;
 	result.reset(new GLES20VertexBuffer(usage));
@@ -356,7 +362,7 @@ VertexBufferPtr GLES20Driver::CreateVertexBuffer(HardwareBuffer::Usage usage)
 
 ////////////////////////////////////////////////////////////////////////
 
-IndexBufferPtr GLES20Driver::CreateIndexBuffer(HardwareBuffer::Usage usage)
+IndexBufferPtr GLES20Driver::CreateIndexBuffer(HardwareBuffer::Usage usage) const
 {
 	IndexBufferPtr result = nullptr;
 	result.reset(new GLES20IndexBuffer(usage));
@@ -365,7 +371,7 @@ IndexBufferPtr GLES20Driver::CreateIndexBuffer(HardwareBuffer::Usage usage)
 
 ////////////////////////////////////////////////////////////////////////
 
-UniformBufferPtr GLES20Driver::CreateUniformBuffer()
+UniformBufferPtr GLES20Driver::CreateUniformBuffer() const
 {
 	UniformBufferPtr result = nullptr;
 	result.reset(new GLES20UniformBuffer());
@@ -374,7 +380,7 @@ UniformBufferPtr GLES20Driver::CreateUniformBuffer()
 
 ////////////////////////////////////////////////////////////////////////
 
-RenderCommandPtr GLES20Driver::CreateRenderCommand()
+RenderCommandPtr GLES20Driver::CreateRenderCommand() const
 {
 	RenderCommandPtr result = nullptr;
 	result.reset(new GLES20RenderCommand());
@@ -383,7 +389,7 @@ RenderCommandPtr GLES20Driver::CreateRenderCommand()
 
 ////////////////////////////////////////////////////////////////////////
 
-ShaderProgramPtr GLES20Driver::CreateShaderProgram()
+ShaderProgramPtr GLES20Driver::CreateShaderProgram() const
 {
 	ShaderProgramPtr result = nullptr;
 	result.reset(new GLES20ShaderProgram());
@@ -392,7 +398,7 @@ ShaderProgramPtr GLES20Driver::CreateShaderProgram()
 
 ////////////////////////////////////////////////////////////////////////
 
-TexturePtr GLES20Driver::CreateTexture()
+TexturePtr GLES20Driver::CreateTexture() const
 {
 	TexturePtr result = nullptr;
 	result.reset(new GLES20Texture());
@@ -401,9 +407,18 @@ TexturePtr GLES20Driver::CreateTexture()
 
 ////////////////////////////////////////////////////////////////////////
 
-VertexInputDeclaration* GLES20Driver::CreateVertexInputDeclaration()
+VertexInputDeclaration* GLES20Driver::CreateVertexInputDeclaration() const
 {
 	return new GLES20VertexDeclaration();
+}
+
+////////////////////////////////////////////////////////////////////////
+
+RenderTargetPtr GLES20Driver::CreateRenderTarget() const
+{
+	RenderTargetPtr result = nullptr;
+	result.reset(new GLES20RenderTarget());
+	return result;
 }
 
 ////////////////////////////////////////////////////////////////////////

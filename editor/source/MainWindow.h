@@ -18,8 +18,15 @@ public:
 public slots:
 	void NewFile();
 	void OpenFile();
+	void SaveFile();
+	void SaveAsFile();
 	void Update();
 	void SetSelectedEntity(sh::Entity* entity);
+
+protected:
+	virtual void keyPressEvent(QKeyEvent * e);
+	virtual void keyReleaseEvent(QKeyEvent * e);
+	virtual void closeEvent(QCloseEvent *e);
 
 private:
 	void CreateActions();

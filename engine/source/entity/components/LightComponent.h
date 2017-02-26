@@ -13,8 +13,11 @@ namespace sh
 	class LightComponent : public Component
 	{
 	public:
+		virtual ~LightComponent();
 		virtual Component::Type GetType() const override { return Component::Type::LIGHT; }
 		virtual void Load(const pugi::xml_node &node) override;
+		virtual void Save(pugi::xml_node &parent) override;
+
 		bool NeedsToRecalculate() const { return m_needsToRecalculate; }		
 
 		void SetPosition(const math::Vector3f& position);

@@ -12,6 +12,7 @@ namespace sh
 		virtual ~TransformComponent();
 		virtual Component::Type GetType() const override { return Component::Type::TRANSFORM; }
 		virtual void Load(const pugi::xml_node &node) override;
+		virtual void Save(pugi::xml_node &parent) override;
 	
 		const math::Matrix4f& GetWorldMatrix() const { return m_worldMatrix; }
 

@@ -1,6 +1,8 @@
 #ifndef SHADOW_RENDER_TARGET_INCLUDE
 #define SHADOW_RENDER_TARGET_INCLUDE
 
+#include "../Globals.h"
+
 namespace sh
 {
 	namespace video
@@ -8,8 +10,12 @@ namespace sh
 		class RenderTarget
 		{
 		public:
-			virtual void Bind();
-			virtual void Unbind();
+			virtual ~RenderTarget() { }
+			virtual void AddColorTexture(const TexturePtr& texture) = 0;
+			virtual void AddDepthTexture(const TexturePtr& texture) = 0;
+			virtual void Init() = 0;
+			virtual void Bind() = 0;
+			virtual void Unbind() = 0;
 		};
 	}
 }

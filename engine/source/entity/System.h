@@ -16,6 +16,7 @@ namespace sh
 		virtual void RemoveEntity(Entity* entity);
 		virtual void Update(f32 deltaTime);
 		virtual void AddComponentType(Component::Type type);
+		virtual void Clear();
 	
 	protected:
 		std::vector<Component::Type> m_componentTypes;

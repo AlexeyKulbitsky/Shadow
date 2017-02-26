@@ -20,9 +20,10 @@ namespace sh
 		};
 
 		static Component* Create(Type type);
-
+		virtual ~Component() {}
 		virtual Type GetType() const = 0;
 		virtual void Load(const pugi::xml_node &node) = 0;
+		virtual void Save(pugi::xml_node &parent) = 0;
 
 		void SetParentEntity(Entity* entity) { m_parentEntity = entity; }
 		Entity* GetParentEntity() const { return m_parentEntity; }

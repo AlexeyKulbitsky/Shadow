@@ -6,6 +6,7 @@
 #include "../../scene/Model.h"
 #include "../../scene/Mesh.h"
 #include "../../video/Material.h"
+#include "../../video/RenderTechnique.h"
 #include "../../video/RenderPipeline.h"
 #include "../../video/UniformBuffer.h"
 #include "../../scene/SceneManager.h"
@@ -172,6 +173,25 @@ namespace sh
 			m_model = model;
 			Device::GetInstance()->GetSceneManager()->AddModel(m_model);
 		}
+	}
+
+	////////////////////////////////////////////////////////////////
+
+	void RenderComponent::Save(pugi::xml_node &parent)
+	{
+		pugi::xml_node componentNode = parent.append_child("component");
+		componentNode.append_attribute("name").set_value("render");
+
+		// Save model
+		pugi::xml_node modelNode = componentNode.append_child("model");
+		modelNode.append_attribute("filename").set_value(m_model->GetFileName().c_str());
+		
+		// Save material
+		pugi::xml_node materialNode = componentNode.append_child("material");
+		pugi::xml_node techniqueNode = materialNode.append_child("technique");
+
+		const sh::video::MaterialPtr& material = m_model->GetMesh(0)->GetMaterial();
+		techniqueNode.append_attribute("filename").set_value(material->GetRenderTechnique()->GetFileName().c_str());
 	}
 
 	////////////////////////////////////////////////////////////////

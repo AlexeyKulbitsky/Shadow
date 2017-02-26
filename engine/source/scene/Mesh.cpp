@@ -45,12 +45,10 @@ namespace sh
 			size_t pipelinesCount = m_material->GetRenderPipelinesCount();
 			for (size_t i = 0U; i < pipelinesCount; ++i)
 			{
-				const sh::video::UniformBufferPtr& uniformBuffer = m_material->GetRenderPipeline(i)->GetUniformBuffer();
-				size_t autoUniformsCount = uniformBuffer->GetAutoUniformsCount();
-								
-				for (size_t i = 0; i < autoUniformsCount; ++i)
+				size_t autoUniformsCount = m_renderCommands[i]->GetAutoUniformsBatch()->m_uniforms.size();
+				for (size_t uniIdx = 0; uniIdx < autoUniformsCount; ++uniIdx)
 				{
-					video::Uniform* uniform = uniformBuffer->GetAutoUniform(i);
+					video::Uniform* uniform = m_renderCommands[i]->GetAutoUniformsBatch()->m_uniforms[uniIdx];
 					switch (uniform->GetGlobalUniformName())
 					{
 						case video::GlobalUniformName::MODEL_WORLD_VIEW_PROJECTION_MATRIX:
@@ -111,6 +109,8 @@ namespace sh
 				video::VertexInputDeclaration* inputDeclaration = renderPipeline->GetVertexInputDeclaration();
 				inputDeclaration->Assemble(*(m_renderCommands[i]->GetVertexBuffer()->GetVertexDeclaration()));
 				m_renderCommands[i]->SetVertexInputDeclaration(inputDeclaration);
+				const video::UniformsBatchPtr& uniformsBatch = renderPipeline->GetUniformBuffer()->GetAutoUniformsBatch()->Clone();
+				m_renderCommands[i]->SetAutoUniformsBatch(uniformsBatch);
 			}			
 		}
 

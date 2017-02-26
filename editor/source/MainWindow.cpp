@@ -12,6 +12,8 @@
 #include <QScrollArea>
 #include <qtoolbar.h>
 #include <QActionGroup>
+#include <qevent.h>
+#include <qmessagebox.h>
 
 #include "gui\GraphicsWidget.h"
 #include "gui\ExpandableWidget.h"
@@ -61,19 +63,53 @@ MainWindow::~MainWindow()
 
 void MainWindow::NewFile()
 {
-
+	int result = QMessageBox::warning(this, tr("Spreadsheet"),
+                                     tr("Do you want to save changes?"),
+                                     QMessageBox::Yes | QMessageBox::No|
+                                     QMessageBox::Cancel);
+	if (result == QMessageBox::Yes)
+	{
+		SaveAsFile();
+	}
+	sh::scene::SceneManager* sceneMgr = sh::Device::GetInstance()->GetSceneManager();		
+	sceneMgr->ClearScene();
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void MainWindow::OpenFile()
 {
-	QString fileName = QFileDialog::getOpenFileName(this, tr("0pen Spreadsheet"), QApplication::applicationDirPath(),
-		tr("Spreadsheet files (*.xml)"));
+	QString fileName = QFileDialog::getOpenFileName(this, 
+													tr("0pen Spreadsheet"), 
+													QApplication::applicationDirPath(),
+													tr("Spreadsheet files (*.xml)"));
 
 	if (!fileName.isEmpty())
 	{
-		sh::Device::GetInstance()->GetSceneManager()->LoadScene(fileName.toStdString().c_str());
+		sh::scene::SceneManager* sceneMgr = sh::Device::GetInstance()->GetSceneManager();		
+		sceneMgr->LoadScene(fileName.toLocal8Bit().data());
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void MainWindow::SaveFile()
+{
+
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void MainWindow::SaveAsFile()
+{
+	QString fileName = QFileDialog::getSaveFileName(this, 
+													tr("Save Document"), 
+													QApplication::applicationDirPath(),
+													tr("Spreadsheet files (*.xml)") );
+	if (!fileName.isEmpty())
+	{
+		sh::scene::SceneManager* sceneMgr = sh::Device::GetInstance()->GetSceneManager();		
+		sceneMgr->SaveScene(fileName.toLocal8Bit().data());
 	}
 }
 
@@ -81,6 +117,7 @@ void MainWindow::OpenFile()
 
 void MainWindow::Update()
 {
+	m_graphicsWidget->Update();
 	m_graphicsWidget->Render();
 }
 
@@ -114,6 +151,45 @@ void MainWindow::SetSelectedEntity(sh::Entity* entity)
 
 //////////////////////////////////////////////////////////////////////////
 
+void MainWindow::keyPressEvent(QKeyEvent * ev)
+{
+	sh::Event e;
+	e.type = sh::EventType::KEYBOARD_INPUT_EVENT;
+	int key = ev->nativeVirtualKey();
+	e.keyboardEvent.keyCode = (sh::KeyCode)key; 
+	e.keyboardEvent.type = sh::KeyboardEventType::KEY_PRESEED;
+	sh::Device::GetInstance()->OnEvent(e);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void MainWindow::keyReleaseEvent(QKeyEvent * ev)
+{
+	sh::Event e;
+	e.type = sh::EventType::KEYBOARD_INPUT_EVENT;
+	int key = ev->nativeVirtualKey();
+	e.keyboardEvent.keyCode = (sh::KeyCode)key; 
+	e.keyboardEvent.type = sh::KeyboardEventType::KEY_RELEASED;
+	sh::Device::GetInstance()->OnEvent(e);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void MainWindow::closeEvent(QCloseEvent *e)
+{
+	QMessageBox::StandardButton resBtn = QMessageBox::question( this, tr("Save changes"),
+                                                                tr("Save changes before closing?"),
+                                                                QMessageBox::Cancel | QMessageBox::No | QMessageBox::Yes,
+                                                                QMessageBox::Yes);
+    if (resBtn == QMessageBox::Yes) 
+	{
+        SaveAsFile();
+    } 
+	e->accept();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
 void MainWindow::CreateActions()
 {
 	newAction = new QAction(tr("&New"), this);	
@@ -129,12 +205,12 @@ void MainWindow::CreateActions()
 	saveAction = new QAction(tr("&Save"), this);
 	saveAction->setShortcut(QKeySequence::Save);
 	saveAction->setStatusTip(tr("Save project"));
-	//connect(saveAction, SIGNAL(triggered()), this, SLOT(saveFile()));
+	connect(saveAction, SIGNAL(triggered()), this, SLOT(SaveFile()));
 
 	saveAsAction = new QAction(tr("&Save as..."), this);
 	saveAsAction->setShortcut(QKeySequence::SaveAs);
 	saveAsAction->setStatusTip(tr("Save project as..."));
-	//connect(saveAsAction, SIGNAL(triggered()), this, SLOT(saveAsFile()));
+	connect(saveAsAction, SIGNAL(triggered()), this, SLOT(SaveAsFile()));
 
 	exitAction = new QAction(tr("Quit"), this);
 	exitAction->setShortcut(tr("Ctrl+Q"));
@@ -268,11 +344,11 @@ void MainWindow::InitDevice()
 	fs->AddFolder(sh::String("../../../../../data"));
 	fs->Init();
 
-	sh::io::FileInfo finfo = fs->FindFile(sh::String("test_scene.xml"));
-	if (finfo.name == "")
-		return;
+	//sh::io::FileInfo finfo = fs->FindFile(sh::String("test_scene.xml"));
+	//if (finfo.name == "")
+	//	return;
 
-	sceneMgr->LoadScene(finfo.absolutePath.c_str());
+	//sceneMgr->LoadScene(finfo.absolutePath.c_str());
 
 	sh::scene::Camera* camera = new sh::scene::Camera();
 	camera->SetProjection(3.1415926535f / 4.0f, 800.0f / 600.0f, 0.1f, 1000.0f);

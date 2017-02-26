@@ -95,7 +95,7 @@ namespace sh
 				break;
 			}
 
-			glBindTexture(m_glType, m_glID);
+			//glBindTexture(m_glType, m_glID);
 
 			glTexParameteri(m_glType, GL_TEXTURE_WRAP_S, textureTilingU);
 			glTexParameteri(m_glType, GL_TEXTURE_WRAP_T, textureTilingV);
@@ -104,7 +104,7 @@ namespace sh
 				//glTexParameteri(m_glType, GL_TEXTURE_WRAP_R, textureTiling);
 			}
 
-			glBindTexture(m_glType, 0U);
+			//glBindTexture(m_glType, 0U);
 		}
 
 		////////////////////////////////////////////////////////////////////
@@ -114,6 +114,9 @@ namespace sh
 			GLint filter;
 			switch (filtering)
 			{
+			case sh::video::Texture::Filtering::NEAREST:
+				filter = GL_NEAREST;
+				break;
 			case sh::video::Texture::Filtering::LINEAR:
 				filter = GL_NEAREST_MIPMAP_NEAREST;
 				break;

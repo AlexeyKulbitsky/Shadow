@@ -88,4 +88,27 @@ namespace sh
 
 	/////////////////////////////////////////////////////////////////
 
+	void TransformComponent::Save(pugi::xml_node &parent)
+	{
+		pugi::xml_node componentNode = parent.append_child("component");
+		componentNode.append_attribute("name").set_value("transform");
+
+		pugi::xml_node posNode = componentNode.append_child("position");
+		std::ostringstream outPos;
+		outPos << m_position.x << " " << m_position.y << " " << m_position.z;		
+		posNode.append_attribute("val").set_value(outPos.str().c_str());
+
+		pugi::xml_node rotNode = componentNode.append_child("rotation");
+		std::ostringstream outRot;
+		outRot << m_rotation.x << " " << m_rotation.y << " " << m_rotation.z << " " << m_rotation.w;		
+		rotNode.append_attribute("val").set_value(outRot.str().c_str());
+
+		pugi::xml_node scaleNode = componentNode.append_child("scale");
+		std::ostringstream outScale;
+		outScale << m_scale.x << " " << m_scale.y << " " << m_scale.z;		
+		scaleNode.append_attribute("val").set_value(outScale.str().c_str());
+	}
+
+	/////////////////////////////////////////////////////////////////
+
 }

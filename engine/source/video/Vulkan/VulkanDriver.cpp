@@ -197,7 +197,7 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		VertexBufferPtr VulkanDriver::CreateVertexBuffer(HardwareBuffer::Usage usage)
+		VertexBufferPtr VulkanDriver::CreateVertexBuffer(HardwareBuffer::Usage usage) const
 		{
 			VertexBufferPtr result = nullptr;
 			result.reset(new VulkanVertexBuffer(usage));
@@ -206,7 +206,7 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		IndexBufferPtr VulkanDriver::CreateIndexBuffer(HardwareBuffer::Usage usage)
+		IndexBufferPtr VulkanDriver::CreateIndexBuffer(HardwareBuffer::Usage usage) const
 		{
 			IndexBufferPtr result = nullptr;
 			result.reset(new VulkanIndexBuffer(usage));
@@ -215,14 +215,14 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		RenderCommandPtr VulkanDriver::CreateRenderCommand()
+		RenderCommandPtr VulkanDriver::CreateRenderCommand() const
 		{
 			return nullptr;
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		ShaderProgramPtr VulkanDriver::CreateShaderProgram()
+		ShaderProgramPtr VulkanDriver::CreateShaderProgram() const
 		{
 			return nullptr;
 		}

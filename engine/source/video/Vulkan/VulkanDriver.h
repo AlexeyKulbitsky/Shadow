@@ -45,10 +45,10 @@ namespace sh
 
 			void DrawBuffer();
 
-			virtual VertexBufferPtr CreateVertexBuffer(HardwareBuffer::Usage usage) override;
-			virtual IndexBufferPtr CreateIndexBuffer(HardwareBuffer::Usage usage) override;
-			virtual RenderCommandPtr CreateRenderCommand() override;
-			virtual ShaderProgramPtr CreateShaderProgram() override;
+			virtual VertexBufferPtr CreateVertexBuffer(HardwareBuffer::Usage usage) const override;
+			virtual IndexBufferPtr CreateIndexBuffer(HardwareBuffer::Usage usage) const override;
+			virtual RenderCommandPtr CreateRenderCommand() const override;
+			virtual ShaderProgramPtr CreateShaderProgram() const override;
 
 		private:
 			struct QueueFamilyIndices 

@@ -1,5 +1,5 @@
 #include "GraphicsWidget.h"
-
+#include "decorators\TransformComponent\TransformComponentDecorator.h"
 #include <QResizeEvent>
 #include <QAction>
 
@@ -44,6 +44,10 @@ void GraphicsWidget::mouseMoveEvent(QMouseEvent * ev)
 	{
 		m_gizmo->TryToSelect(ev->x(), ev->y(), width(), height());
 	}
+	else
+	{
+		
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -82,10 +86,10 @@ void GraphicsWidget::mousePressEvent(QMouseEvent * ev)
 		}
 	}
 	
-	
+	const sh::scene::PickerPtr& picker = sh::Device::GetInstance()->GetSceneManager()->GetPicker();
 	if (ev->button() == Qt::LeftButton)
 	{
-		sh::Entity* entity = m_picker->TryToPick(ev->x(), ev->y(), width(), height());	
+		sh::Entity* entity = picker->TryToPick(ev->x(), ev->y(), width(), height());	
 		
 		if (!entity || entity != m_gizmo->GetEntity())
 		{
@@ -103,6 +107,10 @@ void GraphicsWidget::mousePressEvent(QMouseEvent * ev)
 			m_gizmo->SetEnabled(false);
 		}
 		
+	}
+	else if (ev->button() == Qt::MiddleButton)
+	{
+		m_cameraTargetEntity = picker->TryToPick(ev->x(), ev->y(), width(), height());	
 	}
 		
 }
@@ -149,10 +157,29 @@ void GraphicsWidget::wheelEvent(QWheelEvent * e)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
+void GraphicsWidget::keyPressEvent(QKeyEvent * ev)
+{
+	sh::Event e;
+	e.type = sh::EventType::KEYBOARD_INPUT_EVENT;
+	e.keyboardEvent.keyCode = (sh::KeyCode)ev->key(); 
+	e.keyboardEvent.type = sh::KeyboardEventType::KEY_PRESEED;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void GraphicsWidget::keyReleaseEvent(QKeyEvent * ev)
+{
+	sh::Event e;
+	e.type = sh::EventType::KEYBOARD_INPUT_EVENT;
+	e.keyboardEvent.keyCode = (sh::KeyCode)ev->key();
+	e.keyboardEvent.type = sh::KeyboardEventType::KEY_RELEASED;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 GraphicsWidget::~GraphicsWidget()
 {
 	//delete m_gizmo;
-	delete m_picker;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -170,13 +197,59 @@ void GraphicsWidget::Init()
 
 	// Set default gizmo as current
 	m_gizmo = m_defaultGizmo;
-	m_picker = new Picker();
+}
 
-	size_t entitiesCount = m_sceneManager->GetEntitiesCount();
-	for (size_t i = 0; i < entitiesCount; ++i)
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+void GraphicsWidget::Update()
+{
+	sh::Device* device = sh::Device::GetInstance();
+	sh::InputManager* inputManager = device->GetInputManager();
+	sh::math::Vector2i old = inputManager->GetMousePositionOld();
+	sh::math::Vector2i current = inputManager->GetMousePositionCurrent();
+	sh::scene::Camera* camera = device->GetSceneManager()->GetCamera();
+
+	if (inputManager->IsMouseButtonPressed(sh::MouseCode::BUTTON_WHEEL))
 	{
-		m_picker->RegisterEntity(m_sceneManager->GetEntity(i));
+		if (inputManager->IsKeyPressed(sh::KeyCode::KEY_MENU))
+		{
+			const sh::math::Vector4u& viewport = device->GetDriver()->GetViewPort();
+			sh::math::Vector3f targetPos(0.0f);
+			if (m_cameraTargetEntity)
+			{
+				sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_cameraTargetEntity->GetComponent(sh::Component::Type::TRANSFORM));
+				targetPos = transformComponent->GetPosition();
+			}
+			
+			sh::math::Vector2i delta = current - old;
+			float xAngle = (float)delta.x * 0.01f;
+			float yAngle = -(float)delta.y * 0.01f;
+
+			sh::math::Quaternionf xRot;
+			xRot.SetFromAxisAngle(sh::scene::SceneManager::GetUpVector(), xAngle);
+			sh::math::Quaternionf yRot;
+			yRot.SetFromAxisAngle(camera->GetRightVector(), yAngle);
+			sh::math::Quaternionf deltaRot = xRot * yRot;
+			sh::math::Vector3f targetVec = camera->GetPosition() - targetPos;
+			targetVec = deltaRot * targetVec;
+			//camera->SetRotation(deltaRot * camera->GetRotation());
+			camera->SetPosition(targetPos + targetVec);
+			sh::math::Vector3f dir = targetPos - camera->GetPosition();
+			dir.Normalize();
+			sh::math::Quaternionf finalCamRot;
+			finalCamRot.RotationFromTo(sh::scene::SceneManager::GetFrontVector(), dir);
+			camera->SetRotation(finalCamRot);
+		}
+		else
+		{
+			sh::math::Vector2i delta = current - old;
+			sh::math::Vector3f cameraUpMove = camera->GetUpVector() * delta.y * 0.1f;
+			sh::math::Vector3f cameraRightMove = camera->GetRightVector() * (-delta.x) * 0.1f;
+			sh::math::Vector3f cameraDeltaMove = cameraUpMove + cameraRightMove;
+			camera->SetPosition(camera->GetPosition() + cameraDeltaMove);
+		}		
 	}
+	inputManager->SetMousePositionOld(current);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

@@ -9,6 +9,7 @@ class TransformComponentDecorator : public QObject, public sh::TransformComponen
 {
 	Q_OBJECT
 public:
+	virtual ~TransformComponentDecorator();
 	virtual void SetPosition(const sh::math::Vector3f& position) override;
 	virtual void SetRotation(const sh::math::Quaternionf& rotation) override;
 	virtual void SetScale(const sh::math::Vector3f& scale) override;

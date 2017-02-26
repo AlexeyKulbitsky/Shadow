@@ -6,6 +6,35 @@ namespace sh
 {
 	namespace video
 	{
+		UniformsBatch::~UniformsBatch()
+		{
+			for (size_t i = 0U; i < m_uniforms.size(); ++i)
+			{
+				delete m_uniforms[i];
+			}
+		}
+
+		void UniformsBatch::AddUniform(Uniform* uniform)
+		{ 
+			m_uniforms.push_back(uniform); 
+		}
+
+		UniformsBatchPtr UniformsBatch::Clone() const
+		{
+			UniformsBatchPtr result(new UniformsBatch());
+			
+			size_t size = m_uniforms.size();
+			result->m_uniforms.resize(size);
+			for (size_t i = 0U; i < size; ++i)
+			{
+				result->m_uniforms[i] = m_uniforms[i]->Clone();
+			}
+
+			return result;
+		}
+
+		///////////////////////////////////////////////////////////////
+
 		void UniformBuffer::Unload()
 		{
 			for (size_t i = 0; i < m_uniforms.size(); ++i)
@@ -38,10 +67,15 @@ namespace sh
 			{
 				m_uniforms[i]->Init();
 			}
+			m_autoUniformsBatch.reset(new UniformsBatch());
+			m_autoUniformsBatch->m_uniforms.resize(m_autoUniforms.size());
 			for (size_t i = 0; i < m_autoUniforms.size(); ++i)
 			{
 				m_autoUniforms[i]->Init();
+				m_autoUniformsBatch->m_uniforms[i] = m_autoUniforms[i]->Clone();
 			}
+			
+
 			for (size_t i = 0; i < m_globalUniforms.size(); ++i)
 			{
 				m_globalUniforms[i]->Init();
@@ -53,11 +87,6 @@ namespace sh
 		void UniformBuffer::Upload()
 		{
 			Driver* driver = Device::GetInstance()->GetDriver();
-
-			for (size_t i = 0; i < m_autoUniforms.size(); ++i)
-			{
-				m_autoUniforms[i]->Upload();
-			}
 
 			for (size_t i = 0; i < m_uniforms.size(); ++i)
 			{
@@ -147,6 +176,7 @@ namespace sh
 			{
 				result->m_autoUniforms[i] = m_autoUniforms[i]->Clone();
 			}
+			result->m_autoUniformsBatch = m_autoUniformsBatch->Clone();
 			for (size_t i = 0, sz = m_globalUniforms.size(); i < sz; ++i)
 			{
 				result->m_globalUniforms[i] = m_globalUniforms[i]->Clone();

@@ -28,6 +28,7 @@
 #include "scene/MeshBase.h"
 #include "scene/Model.h"
 #include "scene/ModelBase.h"
+#include "scene/Picker.h"
 #include "scene/SceneManager.h"
 #include "scene/ModelLoader/ModelLoader.h"
 #include "scene/ModelLoader/TinyObjModelLoader.h"

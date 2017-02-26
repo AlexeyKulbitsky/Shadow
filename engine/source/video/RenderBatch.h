@@ -23,6 +23,7 @@ namespace sh
 			virtual void AddCommand(const RenderCommandPtr& renderCommand);
 			virtual void RemoveCommand(const RenderCommandPtr& renderCommand);
 			virtual void Submit();
+			virtual void Clear();
 
 			void SetTechniqueName(const String& name) { m_techniqueName = name; }
 			const String& GetTechniqueName() const { return m_techniqueName; }

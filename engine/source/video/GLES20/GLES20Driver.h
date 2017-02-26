@@ -42,13 +42,14 @@ namespace sh
 			
 			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) override;
 
-			virtual VertexBufferPtr CreateVertexBuffer(HardwareBuffer::Usage usage) override;
-			virtual IndexBufferPtr CreateIndexBuffer(HardwareBuffer::Usage usage) override;
-			virtual UniformBufferPtr CreateUniformBuffer() override;
-			virtual RenderCommandPtr CreateRenderCommand() override;
-			virtual ShaderProgramPtr CreateShaderProgram() override;
-			virtual TexturePtr CreateTexture() override;
-			virtual VertexInputDeclaration* CreateVertexInputDeclaration() override;
+			virtual VertexBufferPtr CreateVertexBuffer(HardwareBuffer::Usage usage) const override;
+			virtual IndexBufferPtr CreateIndexBuffer(HardwareBuffer::Usage usage) const override;
+			virtual UniformBufferPtr CreateUniformBuffer() const override;
+			virtual RenderCommandPtr CreateRenderCommand() const override;
+			virtual ShaderProgramPtr CreateShaderProgram() const override;
+			virtual TexturePtr CreateTexture() const override;
+			virtual VertexInputDeclaration* CreateVertexInputDeclaration() const override;
+			virtual RenderTargetPtr CreateRenderTarget() const override;
 
 		private:
 			EGLContextManager* m_contextManager = nullptr;

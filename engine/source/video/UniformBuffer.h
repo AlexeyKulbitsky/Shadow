@@ -9,6 +9,15 @@ namespace sh
 {
 	namespace video
 	{		
+		class UniformsBatch
+		{
+		public:
+			~UniformsBatch();
+			void AddUniform(Uniform* uniform);
+			UniformsBatchPtr Clone() const;
+			std::vector<Uniform*> m_uniforms;
+		};
+
 		// TODO : implement ShaderData
 		class UniformBuffer
 		{
@@ -46,10 +55,13 @@ namespace sh
 			const std::vector<Uniform*>& GetAutoUniforms() const { return m_autoUniforms; }
 			const std::vector<Sampler*>& GetSamplers() const { return m_samplers; }
 
+			const UniformsBatchPtr& GetAutoUniformsBatch() const { return m_autoUniformsBatch; }
+
 		private:
 			std::vector<Uniform*> m_uniforms;
 			std::vector<Uniform*> m_globalUniforms;
 			std::vector<Uniform*> m_autoUniforms;
+			UniformsBatchPtr m_autoUniformsBatch;
 			std::vector<Sampler*> m_samplers;
 		};
 	}

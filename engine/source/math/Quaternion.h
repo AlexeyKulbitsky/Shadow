@@ -111,6 +111,19 @@ namespace sh
 				Normalize();
 			}
 
+			void LookAt(const Vector3<T>& direction, const Vector3<T>& up)
+			{
+				Vector3<T> forward = direction.GetNormalized();
+				Vector3<T> right = up.Cross(forward);
+
+				Quaternion<T> ret;
+				w = Sqrt(1.0f + right.x + up.y + forward.z) * 0.5f;
+				T w4_recip = 1.0f / (4.0f * w);
+				x = (forward.y - up.z) * w4_recip;
+				y = (right.z - forward.x) * w4_recip;
+				z = (up.x - right.y) * w4_recip;
+			}
+
 			Matrix4<T> GetAsMatrix4() const
 			{
 				Matrix4<T> m(GetAsMatrix3());

@@ -19,7 +19,7 @@ namespace sh
 
 	RenderSystem::~RenderSystem()
 	{
-
+		delete m_commandPool;
 	}
 
 	//////////////////////////////////////////////////////////////////
@@ -75,4 +75,10 @@ namespace sh
 	}
 
 	//////////////////////////////////////////////////////////////////
+
+	void RenderSystem::Clear()
+	{
+		m_commandPool->Clear();
+		m_entities.clear();
+	}
 }

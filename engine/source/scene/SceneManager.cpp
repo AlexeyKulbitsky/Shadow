@@ -16,6 +16,7 @@
 #include "Mesh.h"
 #include "MeshBase.h"
 #include "Camera.h"
+#include "Picker.h"
 #include "../entity/System.h"
 #include "../entity/systems/RenderSystem.h"
 #include "../entity/systems/TransformSystem.h"
@@ -48,6 +49,8 @@ namespace sh
 			LightSystem* lightSystem = new LightSystem();
 			lightSystem->AddComponentType(Component::Type::LIGHT);
 			m_systems.push_back(lightSystem);
+
+			m_picker.reset(new Picker());
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
@@ -61,6 +64,8 @@ namespace sh
 
 		void SceneManager::LoadScene(const char* filename)
 		{
+			ClearScene();
+
 			ResourceManager* resourceManager = Device::GetInstance()->GetResourceManager();
 
 			pugi::xml_document doc;
@@ -76,7 +81,9 @@ namespace sh
 				pugi::xml_attribute nameAttribute = entityNode.attribute("name");
 				if (nameAttribute)
 				{
-					printf("Entity %s", nameAttribute.as_string());
+					String name = nameAttribute.as_string();
+					printf("Entity %s", name.c_str());					
+					entity->SetName(name);
 				}
 
 				pugi::xml_node componentNode = entityNode.child("component");
@@ -117,7 +124,48 @@ namespace sh
 				// Read next object
 				entityNode = entityNode.next_sibling();
 			}
+
+			size_t entitiesCount = m_entities.size();
+			for (size_t i = 0; i < entitiesCount; ++i)
+			{
+				m_picker->RegisterEntity(m_entities[i]);
+			}
 		}
+
+		//////////////////////////////////////////////////////////////////////////////////////////////
+
+		void SceneManager::SaveScene(const char* filename)
+		{
+			pugi::xml_document doc;
+
+			pugi::xml_node sceneNode = doc.append_child("scene");
+
+			for (size_t i = 0U, sz = m_entities.size(); i < sz; ++i)
+			{
+				m_entities[i]->Save(sceneNode);
+			}
+
+			doc.save_file(filename);
+		}
+
+		//////////////////////////////////////////////////////////////////////////////////////////////
+
+		void SceneManager::ClearScene()
+		{
+			for (auto system : m_systems)
+			{
+				system->Clear();
+			}
+
+			for (size_t i = 0, sz = m_entities.size(); i < sz; ++i)
+			{
+				delete m_entities[i];
+			}
+			m_entities.clear();
+
+			m_picker->Clear();
+		}
+
 		//////////////////////////////////////////////////////////////////////////////////////////////
 
 		void SceneManager::SetCamera(Camera* camera)

@@ -30,6 +30,9 @@ namespace sh
 			~SceneManager();
 
 			void LoadScene(const char* filename);
+			void SaveScene(const char* filename);
+
+			void ClearScene();
 
 			void AddModel(Model* model) { m_models.push_back(model); }
 			size_t GetModelsCount() const { return m_models.size(); }
@@ -44,6 +47,7 @@ namespace sh
 			void SetCamera(Camera* camera);
 			Camera* GetCamera() { return m_camera; }
 
+			const PickerPtr& GetPicker() const { return m_picker; }
 			void Update(f32 deltaTime = 0.0f);
 			void OnEvent(const Event& e);
 
@@ -58,6 +62,8 @@ namespace sh
 			ComponentsFactory* m_componentsFactory = nullptr;
 			std::vector<System*> m_systems;
 			std::vector<Entity*> m_entities;
+
+			PickerPtr m_picker;
 		};
 	}
 }

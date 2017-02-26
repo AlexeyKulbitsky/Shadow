@@ -17,7 +17,31 @@ namespace sh
 
 	Entity::~Entity()
 	{
+		for (size_t i = 0, sz = static_cast<size_t>( Component::Type::COUNT ); i < sz; ++i)
+		{
+			Component* component = m_components[i];
+			if (component)
+			{
+				delete m_components[i];
+			}
+		}
+	}
 
+	//////////////////////////////////////////////////////////////
+
+	void Entity::Save(pugi::xml_node& parent)
+	{
+		pugi::xml_node entityNode = parent.append_child("entity");
+		entityNode.append_attribute("name").set_value(m_name.c_str());
+
+		for (size_t i = 0, sz = static_cast<size_t>( Component::Type::COUNT ); i < sz; ++i)
+		{
+			Component* component = m_components[i];
+			if (component)
+			{
+				component->Save(entityNode);
+			}
+		}
 	}
 
 	//////////////////////////////////////////////////////////////

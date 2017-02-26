@@ -19,7 +19,7 @@ namespace sh
 
 			if (m_renderBatches[layerIndex].find(techniqueName) == m_renderBatches[layerIndex].end())
 			{
-				RenderBatch* renderBatch = new RenderBatch();
+				RenderBatchPtr renderBatch(new RenderBatch());
 				const RenderPipelinePtr& renderPipeline = material->GetRenderPipeline(0);
 				const ShaderProgramPtr& shader = renderPipeline->GetShaderProgram();
 				renderBatch->SetShaderProgram(shader);
@@ -47,6 +47,16 @@ namespace sh
 				}
 			}
 			
+		}
+
+		///////////////////////////////////////////////////////////////////
+
+		void CommandPool::Clear()
+		{
+			for (size_t i = 0; i < (size_t)RenderPipeline::Layer::COUNT; ++i)
+			{
+				m_renderBatches[i].clear();
+			}
 		}
 
 		///////////////////////////////////////////////////////////////////

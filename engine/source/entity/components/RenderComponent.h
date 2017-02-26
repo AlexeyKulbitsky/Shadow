@@ -17,6 +17,7 @@ namespace sh
 		virtual ~RenderComponent();
 		virtual Type GetType() const override { return Type::RENDER;}
 		virtual void Load(const pugi::xml_node &node) override;
+		virtual void Save(pugi::xml_node &parent) override;
 
 		void SetModel(scene::Model* model) { m_model = model; }
 		scene::Model* GetModel() { return m_model; }

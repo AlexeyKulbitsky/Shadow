@@ -19,6 +19,7 @@ namespace sh
 		virtual void AddEntity(Entity* entity) override;
 		virtual void RemoveEntity(Entity* entity) override;
 		virtual void Update(f32 deltaTime) override;
+		virtual void Clear() override;
 
 	private:
 		std::vector<Entity*> m_entities;

@@ -7,7 +7,6 @@
 #include "../gizmo/MoveGizmo.h"
 #include "../gizmo/RotateGizmo.h"
 #include "../gizmo/ScaleGizmo.h"
-#include "../Picker.h"
 
 
 enum class EditMode
@@ -25,6 +24,7 @@ public:
 	~GraphicsWidget();
 
 	void Init();
+	void Update();
 	void Render();
 
 public slots:
@@ -39,6 +39,8 @@ protected:
 	virtual void mousePressEvent(QMouseEvent * e);
 	virtual void mouseReleaseEvent(QMouseEvent * e);
 	virtual void wheelEvent(QWheelEvent * e);
+	virtual void keyPressEvent(QKeyEvent * e);
+	virtual void keyReleaseEvent(QKeyEvent * e);
 
 private:
 	sh::video::Driver* m_driver = nullptr;
@@ -51,7 +53,7 @@ private:
 	RotateGizmo* m_rotateGizmo = nullptr;
 	ScaleGizmo* m_scaleGizmo = nullptr;
 
-	Picker* m_picker = nullptr;
+	sh::Entity* m_cameraTargetEntity = nullptr;
 	bool m_leftButtonPressed = false;
 };
 

@@ -62,13 +62,14 @@ namespace sh
 			u32 GetMaxCubeTextureSize() const { return m_maxCubeTextureSize; }
 
 			// Resources creation interface
-			virtual VertexBufferPtr CreateVertexBuffer(HardwareBuffer::Usage usage) = 0;
-			virtual IndexBufferPtr CreateIndexBuffer(HardwareBuffer::Usage usage) = 0;
-			virtual UniformBufferPtr CreateUniformBuffer() { return nullptr; }
-			virtual RenderCommandPtr CreateRenderCommand() = 0;
-			virtual ShaderProgramPtr CreateShaderProgram() = 0;
-			virtual TexturePtr CreateTexture() { return nullptr; }
-			virtual VertexInputDeclaration* CreateVertexInputDeclaration() { return nullptr; }
+			virtual VertexBufferPtr CreateVertexBuffer(HardwareBuffer::Usage usage) const = 0;
+			virtual IndexBufferPtr CreateIndexBuffer(HardwareBuffer::Usage usage) const = 0;
+			virtual UniformBufferPtr CreateUniformBuffer() const { return nullptr; }
+			virtual RenderCommandPtr CreateRenderCommand() const = 0;
+			virtual ShaderProgramPtr CreateShaderProgram() const = 0;
+			virtual TexturePtr CreateTexture() const { return nullptr; }
+			virtual VertexInputDeclaration* CreateVertexInputDeclaration() const { return nullptr; }
+			virtual RenderTargetPtr CreateRenderTarget() const { return nullptr; }
 			
 
 			template<typename T>

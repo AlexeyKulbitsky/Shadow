@@ -41,4 +41,8 @@ namespace sh
 
 		m_componentTypes.push_back(type);
 	}
+
+	void System::Clear()
+	{
+	}
 }

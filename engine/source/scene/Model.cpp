@@ -21,6 +21,8 @@ namespace sh
 			{
 				m_meshes[i] = MeshPtr(new Mesh(modelBase->GetMesh(i)));
 			}
+
+			SetFileName(modelBase->GetFileName());
 		}
 
 		//////////////////////////////////////////////////////////////////////////////

@@ -12,6 +12,9 @@ namespace sh
 		Entity();
 		~Entity();
 
+		void Save(pugi::xml_node& parent);
+		const String& GetName() const { return m_name; }
+		void SetName(const String& name) { m_name = name; }
 		void AddComponent(Component* component);
 		void SetComponent(Component::Type type, Component* component);
 		Component* GetComponent(Component::Type type);
@@ -20,6 +23,7 @@ namespace sh
 
 	private:	
 		Component* m_components[static_cast<size_t>(Component::Type::COUNT)];
+		String m_name = "unnamed";
 	};
 }
 
