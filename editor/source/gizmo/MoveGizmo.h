@@ -14,6 +14,10 @@ public:
 			Y_AXIS,
 			Z_AXIS,
 
+			XY_PLANE,
+			XZ_PLANE,
+			ZY_PLANE,
+
 			COUNT
 		};
 
@@ -39,7 +43,7 @@ private:
 	void Move(Axis::Type axis);
 
 private:
-	Axis m_axises[3];
+	Axis m_axises[static_cast<sh::u32>(Axis::Type::COUNT)];
 };
 
 #endif

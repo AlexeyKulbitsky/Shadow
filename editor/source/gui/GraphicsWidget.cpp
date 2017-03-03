@@ -226,27 +226,44 @@ void GraphicsWidget::Update()
 			float yAngle = -(float)delta.y * 0.01f;
 
 			sh::math::Quaternionf xRot;
-			xRot.SetFromAxisAngle(sh::scene::SceneManager::GetUpVector(), xAngle);
+			xRot.SetFromAxisAngle(sh::scene::SceneManager::GetUpVector(), -xAngle);
 			sh::math::Quaternionf yRot;
 			yRot.SetFromAxisAngle(camera->GetRightVector(), yAngle);
 			sh::math::Quaternionf deltaRot = xRot * yRot;
-			sh::math::Vector3f targetVec = camera->GetPosition() - targetPos;
-			targetVec = deltaRot * targetVec;
-			//camera->SetRotation(deltaRot * camera->GetRotation());
+			sh::math::Vector3f baseVec = camera->GetPosition() - targetPos;
+			sh::math::Vector3f targetVec = deltaRot * baseVec;
 			camera->SetPosition(targetPos + targetVec);
-			sh::math::Vector3f dir = targetPos - camera->GetPosition();
+			sh::math::Vector3f dir = camera->GetFrontVector();
 			dir.Normalize();
-			sh::math::Quaternionf finalCamRot;
-			finalCamRot.RotationFromTo(sh::scene::SceneManager::GetFrontVector(), dir);
+			sh::math::Quaternionf finalCamRot =  camera->GetRotation() * deltaRot;
 			camera->SetRotation(finalCamRot);
 		}
 		else
 		{
-			sh::math::Vector2i delta = current - old;
-			sh::math::Vector3f cameraUpMove = camera->GetUpVector() * delta.y * 0.1f;
-			sh::math::Vector3f cameraRightMove = camera->GetRightVector() * (-delta.x) * 0.1f;
-			sh::math::Vector3f cameraDeltaMove = cameraUpMove + cameraRightMove;
-			camera->SetPosition(camera->GetPosition() + cameraDeltaMove);
+			sh::math::Vector3f targetPos(0.0f);
+			if (m_cameraTargetEntity)
+			{
+				sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_cameraTargetEntity->GetComponent(sh::Component::Type::TRANSFORM));
+				targetPos = transformComponent->GetPosition();
+				sh::math::Planef plane(targetPos, camera->GetFrontVector() * (-1.0f));
+
+				sh::math::Vector3f rayOrigin, rayDirOld, rayDirCurrent;
+				camera->BuildRay(old.x, old.y, rayOrigin, rayDirOld);
+				camera->BuildRay(current.x, current.y, rayOrigin, rayDirCurrent);
+				sh::math::Vector3f intersectionOld(0.0f), intersectionCurrent(0.0f);
+				plane.GetIntersectionWithLine(rayOrigin, rayDirOld, intersectionOld);
+				plane.GetIntersectionWithLine(rayOrigin, rayDirCurrent, intersectionCurrent);
+				sh::math::Vector3f delta = intersectionCurrent - intersectionOld;
+				camera->SetPosition(camera->GetPosition() - delta);
+			}
+			else
+			{
+				sh::math::Vector2i delta = current - old;
+				sh::math::Vector3f cameraUpMove = camera->GetUpVector() * delta.y * 0.1f;
+				sh::math::Vector3f cameraRightMove = camera->GetRightVector() * (-delta.x) * 0.1f;
+				sh::math::Vector3f cameraDeltaMove = cameraUpMove + cameraRightMove;
+				camera->SetPosition(camera->GetPosition() + cameraDeltaMove);
+			}		
 		}		
 	}
 	inputManager->SetMousePositionOld(current);

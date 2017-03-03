@@ -72,14 +72,14 @@ solution "Shadow Editor"
 			flags { "Symbols" }
 			
 		filter "platforms:Win32"
-			libdirs { "../libs/egl/lib", "../libs/vulkan/bin" }
+			libdirs { "../libs/egl/lib/release", "../libs/vulkan/bin" }
 			links { "libEGL", "libGLESv2", "vulkan-1", "Shadow" }
 			characterset ("MBCS") -- Multi-byte Character Set; currently Visual Studio only
---			characterset ("Default") --the default encoding for the toolset; usually Unicode
---			characterset ("MBCS") --Unicode: Unicode character encoding
+			characterset ("Default") --the default encoding for the toolset; usually Unicode
+			characterset ("MBCS") --Unicode: Unicode character encoding
 
 			postbuildcommands {
-				"{COPY} ../../libs/egl/lib/libEGL.dll ../prj/bin/%{cfg.platform}/%{cfg.buildcfg}/",
-				"{COPY} ../../libs/egl/lib/libGLESv2.dll ../prj/bin/%{cfg.platform}/%{cfg.buildcfg}/",
+				"{COPY} ../../libs/egl/bin/release/libEGL.dll ../prj/bin/%{cfg.platform}/%{cfg.buildcfg}/",
+				"{COPY} ../../libs/egl/bin/release/libGLESv2.dll ../prj/bin/%{cfg.platform}/%{cfg.buildcfg}/",
 				"{COPY} ../../libs/vulkan/bin/vulkan-1.dll ../prj/bin/%{cfg.platform}/%{cfg.buildcfg}/",
 			}

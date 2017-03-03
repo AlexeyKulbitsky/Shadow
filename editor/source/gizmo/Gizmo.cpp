@@ -59,6 +59,18 @@ Gizmo::Gizmo()
 		sh::math::Vector3f color(0.0f, 0.0f, 1.0f);
 		m_axises[2].lineColorUniform->Set(color);
 	}
+
+	
+	sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
+	sh::video::RenderTargetPtr rt = driver->CreateRenderTarget();
+	sh::video::TexturePtr colorTex = driver->CreateTexture();
+	sh::video::TexturePtr depthTex = driver->CreateTexture();
+
+	rt->AddColorTexture(colorTex);
+	rt->AddDepthTexture(depthTex);
+
+	rt->Init();
+	
 }
 
 ///////////////////////////////////////////////////////////////////

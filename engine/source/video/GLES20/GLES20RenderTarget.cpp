@@ -62,7 +62,7 @@ namespace sh
 			{
 				depthTexture->SetType(Texture::Type::TEXTURE_2D);
 				depthTexture->Bind();
-				glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, width, height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, NULL);
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_SHORT, NULL);
 				depthTexture->SetFiltering(Texture::Filtering::NEAREST);
 				depthTexture->SetTiling(Texture::Tiling::CLAMP_TO_EDGE, Texture::Tiling::CLAMP_TO_EDGE);
 				depthTexture->Unbind();			

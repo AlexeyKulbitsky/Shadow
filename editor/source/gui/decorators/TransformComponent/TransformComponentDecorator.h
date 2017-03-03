@@ -46,6 +46,7 @@ public slots:
 private:
 	ExpandableWidget* m_parametersWidget = nullptr;
 	sh::math::Vector3f m_axisRotations;
+	bool m_expandedLastTime = false;
 };
 
 #endif

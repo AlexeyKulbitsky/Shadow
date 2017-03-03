@@ -97,6 +97,21 @@ MoveGizmo::MoveGizmo()
 		sh::math::Vector3f color(0.0f, 0.0f, 1.0f);
 		m_axises[2].coneColorUniform->Set(color);
 	}
+
+	/////////////////////////////////////////////////
+
+	translation = sh::math::Vector3f(2.0f, 2.0f, 0.0f);
+	transform.SetIdentity();
+	transform.SetTranslation(translation);
+	m_axises[3].lineModel = sh::scene::GeometryGenerator::GetCylinderModel(height, radius, numberOfSides, transform);
+	uniformBuffer = m_axises[3].lineModel->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
+	m_axises[3].lineColorUniform = uniformBuffer->GetUniform(sh::String("color"));
+	if (m_axises[3].lineColorUniform)
+	{
+		sh::math::Vector3f color(1.0f, 0.0f, 0.0f);
+		m_axises[3].lineColorUniform->Set(color);
+	}
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -142,6 +157,14 @@ void MoveGizmo::Render()
 				m_axises[i].coneModel->SetWorldMatrix(matrix);
 				m_axises[i].coneModel->UpdateTransformationUniforms();
 			}
+
+			////////////////////////////////////////////////////
+
+			m_axises[3].lineModel->SetWorldMatrix(matrix);
+			m_axises[3].lineModel->UpdateTransformationUniforms();
+			driver->Render(m_axises[3].lineModel.get());
+
+			////////////////////////////////////////////////////
 		}
 	}
 
@@ -151,6 +174,8 @@ void MoveGizmo::Render()
 		driver->Render(m_axises[i].lineModel.get());
 		driver->Render(m_axises[i].coneModel.get());
 	}
+
+	
 }
 
 //////////////////////////////////////////////////////////////////////////

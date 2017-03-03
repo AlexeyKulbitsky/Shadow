@@ -53,7 +53,7 @@ bool EGLContextManager::InitContext(const CreationParameters &parameters)
 #endif
 
 #if defined SHADOW_WINDOWS
-	m_eglDisplay = eglGetDisplay(m_eglNativeDisplay);
+	m_eglDisplay = eglGetDisplay(EGL_DEFAULT_DISPLAY);
 #else
 	m_eglDisplay = eglGetDisplay(EGL_DEFAULT_DISPLAY);
 #endif
@@ -81,6 +81,23 @@ bool EGLContextManager::InitContext(const CreationParameters &parameters)
 
 	{
 		EGLint numConfigs = 0;
+#if 0
+		EGLint attribList[] =
+		{
+			EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
+			EGL_RENDERABLE_TYPE, m_glesContextVersion,
+			EGL_RED_SIZE,       8,
+			EGL_GREEN_SIZE,     8,
+			EGL_BLUE_SIZE,      8,
+			EGL_ALPHA_SIZE,     8,
+			EGL_DEPTH_SIZE,		8,
+			EGL_STENCIL_SIZE,   8,
+			//EGL_SAMPLE_BUFFERS, 1,
+			//EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
+			//EGL_RENDERABLE_TYPE, glesContextVersion,
+			EGL_NONE
+		};
+#endif
 		EGLint attribList[] =
 		{
 			EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
@@ -90,8 +107,8 @@ bool EGLContextManager::InitContext(const CreationParameters &parameters)
 			EGL_BLUE_SIZE,      8,
 			EGL_ALPHA_SIZE,     8,
 			EGL_DEPTH_SIZE,		16,
-			EGL_STENCIL_SIZE,   8,
-			//EGL_SAMPLE_BUFFERS, 0,
+			//EGL_STENCIL_SIZE,   8,
+			//EGL_SAMPLE_BUFFERS, 1,
 			//EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
 			//EGL_RENDERABLE_TYPE, glesContextVersion,
 			EGL_NONE

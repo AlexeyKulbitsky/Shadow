@@ -132,6 +132,9 @@ bool GLES20Driver::Init()
 	glGetIntegerv(GL_MAX_CUBE_MAP_TEXTURE_SIZE, &value);
 	m_maxCubeTextureSize = (u32)value;
 
+	int depthBits;
+	glGetIntegerv(GL_DEPTH_BITS, &depthBits);
+
 	
 	glGetIntegerv(GL_NUM_COMPRESSED_TEXTURE_FORMATS, &value);
 	GLint *valuePtr = new GLint[value];

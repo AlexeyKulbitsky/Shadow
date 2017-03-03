@@ -153,24 +153,24 @@ void MainWindow::SetSelectedEntity(sh::Entity* entity)
 
 void MainWindow::keyPressEvent(QKeyEvent * ev)
 {
-	sh::Event e;
-	e.type = sh::EventType::KEYBOARD_INPUT_EVENT;
+	sh::Event pressEvent;
+	pressEvent.type = sh::EventType::KEYBOARD_INPUT_EVENT;
 	int key = ev->nativeVirtualKey();
-	e.keyboardEvent.keyCode = (sh::KeyCode)key; 
-	e.keyboardEvent.type = sh::KeyboardEventType::KEY_PRESEED;
-	sh::Device::GetInstance()->OnEvent(e);
+	pressEvent.keyboardEvent.keyCode = (sh::KeyCode)key;
+	pressEvent.keyboardEvent.type = sh::KeyboardEventType::KEY_PRESEED;
+	sh::Device::GetInstance()->OnEvent(pressEvent);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void MainWindow::keyReleaseEvent(QKeyEvent * ev)
 {
-	sh::Event e;
-	e.type = sh::EventType::KEYBOARD_INPUT_EVENT;
+	sh::Event releaseEvent;
+	releaseEvent.type = sh::EventType::KEYBOARD_INPUT_EVENT;
 	int key = ev->nativeVirtualKey();
-	e.keyboardEvent.keyCode = (sh::KeyCode)key; 
-	e.keyboardEvent.type = sh::KeyboardEventType::KEY_RELEASED;
-	sh::Device::GetInstance()->OnEvent(e);
+	releaseEvent.keyboardEvent.keyCode = (sh::KeyCode)key;
+	releaseEvent.keyboardEvent.type = sh::KeyboardEventType::KEY_RELEASED;
+	sh::Device::GetInstance()->OnEvent(releaseEvent);
 }
 
 //////////////////////////////////////////////////////////////////////////

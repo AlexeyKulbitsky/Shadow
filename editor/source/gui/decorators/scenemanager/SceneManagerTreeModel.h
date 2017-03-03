@@ -1,6 +1,8 @@
 #ifndef SCENE_MANAGER_TREEMODEL_H
 #define SCENE_MANAGER_TREEMODEL_H
 
+#if 0
+
 #include <QAbstractItemModel>
 #include <QModelIndex>
 #include <QVariant>
@@ -45,5 +47,7 @@ public:
 
     SceneManagerTreeItem *m_rootItem;
 };
+
+#endif
 
 #endif
