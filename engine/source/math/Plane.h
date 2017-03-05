@@ -43,6 +43,7 @@ namespace sh
 			// operators
 			//inline bool operator==(const Plane<T>& other) const { return (equals(D, other.D) && Normal==other.Normal);}
 
+			Plane<T>& operator=(const Plane<T>& p) { normal = p.normal; d = p.d; return *this; }
 			////////////////////////////////////////////////////////
 
 			//inline bool operator!=(const Plane<T>& other) const { return !(*this == other);}

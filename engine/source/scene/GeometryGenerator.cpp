@@ -67,78 +67,6 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////
 
-		ModelPtr GeometryGenerator::GetConeModel(const math::Vector3f& start, const math::Vector3f& axis, const math::Vector3f& vtx, const math::Vector3f& vty)
-		{
-			float r = 0.25f;
-			float height = 1.0f;
-			std::vector<float> vertexArray;
-			
-			for (size_t i = 0; i <= 30; ++i)
-			{
-				math::Vector3f pt;
-				pt = vtx * sh::math::Cos(((2 * sh::math::k_pi) / 30.0f) * i) * r;
-				pt += vty * sh::math::Sin(((2 * sh::math::k_pi) / 30.0f) * i) * r;
-				//pt += axis * height;
-				pt += start;
-				vertexArray.push_back(pt.x);
-				vertexArray.push_back(pt.y);
-				vertexArray.push_back(pt.z);
-
-				pt = vtx * sh::math::Cos(((2 * sh::math::k_pi) / 30.0f) * (i + 1)) * r;
-				pt += vty * sh::math::Sin(((2 * sh::math::k_pi) / 30.0f) * (i + 1)) * r;
-				//pt += axis * height;
-				pt += start;
-				vertexArray.push_back(pt.x);
-				vertexArray.push_back(pt.y);
-				vertexArray.push_back(pt.z);
-
-				vertexArray.push_back(start.x + axis.x * height);
-				vertexArray.push_back(start.y + axis.y * height);
-				vertexArray.push_back(start.z + axis.z * height);
-			}
-
-			size_t verticesCount = vertexArray.size() / 3;
-
-			// Create vertex declaration
-			sh::video::VertexDeclarationPtr vertexDeclaration = sh::video::VertexDeclarationPtr(new sh::video::VertexDeclaration());
-			sh::video::Attribute positionAttribute(sh::video::AttributeSemantic::POSITION, sh::video::AttributeType::FLOAT, 3U);
-			vertexDeclaration->AddAttribute(positionAttribute);
-
-			// Create vertex buffer
-			const void* verticesPointer = vertexArray.data();
-			size_t verticesDataSize = vertexArray.size() * sizeof(float);
-			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer(video::HardwareBuffer::STATIC);
-			vertexBuffer->SetData(0, verticesDataSize, verticesPointer);
-			vertexBuffer->SetVerticesCount(verticesCount);
-			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
-			vertexBuffer->SetVertexDeclaration(vertexDeclaration);
-
-			sh::scene::MeshBasePtr mesh(new sh::scene::MeshBase());
-
-			mesh->SetVertexBuffer(vertexBuffer);
-			//mesh->SetVertexDeclaration(vertexDeclaration);
-			mesh->SetTopology(sh::video::Topology::TRIANGLE_LIST);
-
-			sh::scene::ModelBasePtr model(new sh::scene::ModelBase());
-			model->AddMesh(mesh);
-
-			sh::scene::ModelPtr resultModel(new sh::scene::Model(model));
-
-			sh::video::MaterialPtr material(new sh::video::Material());
-			sh::video::RenderTechniquePtr rt = Device::GetInstance()->GetResourceManager()->GetRenderTechnique("base.xml");			
-			material->SetRenderTechnique(rt);
-
-			size_t meshesCount = resultModel->GetMeshesCount();
-			for (size_t i = 0; i < meshesCount; ++i)
-			{
-				resultModel->GetMesh(i)->SetMaterial(material);
-			}
-
-			return resultModel;
-		}
-
-		//////////////////////////////////////////////////////////////////
-
 		ModelPtr GeometryGenerator::GetCircleModel(const math::Vector3f& centre, const f32 radius, const math::Vector3f& vtx, const math::Vector3f& vty)
 		{
 			std::vector<float> vertexArray;
@@ -498,11 +426,103 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////
 
+		ModelPtr GeometryGenerator::GetConeModel(f32 radius, f32 height, math::Matrix4f transform)
+		{
+			std::vector<float> vertexArray;
+			u32 numberOfSides = 30U;
+			math::Vector3f srcVertex(0.0f);
+			math::Vector3f resultVertex(0.0f);
+
+			srcVertex.x = 0.0f;
+			srcVertex.z = 0.0f;
+			srcVertex.y = height;
+			resultVertex = transform * srcVertex;
+
+			vertexArray.push_back(resultVertex.x);
+			vertexArray.push_back(resultVertex.y);
+			vertexArray.push_back(resultVertex.z);
+
+			for (size_t i = 0; i <= numberOfSides; ++i)
+			{
+				math::Vector3f pt;
+				srcVertex.x = sh::math::Cos(((2 * sh::math::k_pi) / numberOfSides) * i) * radius;
+				srcVertex.z = sh::math::Sin(((2 * sh::math::k_pi) / numberOfSides) * i) * radius;
+				srcVertex.y = 0.0f;
+				
+				resultVertex = transform * srcVertex;
+				vertexArray.push_back(resultVertex.x);
+				vertexArray.push_back(resultVertex.y);
+				vertexArray.push_back(resultVertex.z);
+			}
+
+			// Create vertex declaration
+			sh::video::VertexDeclarationPtr vertexDeclaration = sh::video::VertexDeclarationPtr(new sh::video::VertexDeclaration());
+			sh::video::Attribute positionAttribute(sh::video::AttributeSemantic::POSITION, sh::video::AttributeType::FLOAT, 3U);
+			vertexDeclaration->AddAttribute(positionAttribute);
+
+			return CreateModel(vertexArray, std::vector<u32>(), vertexDeclaration, video::Topology::TRIANGLE_FAN);
+		}
+
+		//////////////////////////////////////////////////////////////////
+
+		ModelPtr GeometryGenerator::GetPlaneModel(f32 width, f32 height, math::Matrix4f transform)
+		{
+			math::Vector3f srcVertex(0.0f);
+			math::Vector3f resultVertex(0.0f);
+
+			std::vector<float> vertexArray;
+
+			srcVertex = sh::math::Vector3f(-width / 2.0f, -height / 2.0f, 0.0f);
+			resultVertex = transform * srcVertex;
+			vertexArray.push_back(resultVertex.x);
+			vertexArray.push_back(resultVertex.y);
+			vertexArray.push_back(resultVertex.z); 
+
+			srcVertex = sh::math::Vector3f(width / 2.0f, -height / 2.0f, 0.0f);
+			resultVertex = transform * srcVertex;
+			vertexArray.push_back(resultVertex.x);
+			vertexArray.push_back(resultVertex.y);
+			vertexArray.push_back(resultVertex.z); 
+
+			srcVertex = sh::math::Vector3f(width / 2.0f, height / 2.0f, 0.0f);
+			resultVertex = transform * srcVertex;
+			vertexArray.push_back(resultVertex.x);
+			vertexArray.push_back(resultVertex.y);
+			vertexArray.push_back(resultVertex.z); 
+
+			srcVertex = sh::math::Vector3f(-width / 2.0f, height / 2.0f, 0.0f);
+			resultVertex = transform * srcVertex;
+			vertexArray.push_back(resultVertex.x);
+			vertexArray.push_back(resultVertex.y);
+			vertexArray.push_back(resultVertex.z); 
+
+			std::vector<u32> indexArray;
+
+			indexArray.push_back(0);
+			indexArray.push_back(1);
+			indexArray.push_back(2);
+
+			indexArray.push_back(0);
+			indexArray.push_back(2);
+			indexArray.push_back(3);
+
+			// Create vertex declaration
+			sh::video::VertexDeclarationPtr vertexDeclaration = sh::video::VertexDeclarationPtr(new sh::video::VertexDeclaration());
+			sh::video::Attribute positionAttribute(sh::video::AttributeSemantic::POSITION, sh::video::AttributeType::FLOAT, 3U);
+			vertexDeclaration->AddAttribute(positionAttribute);
+
+			return CreateModel(vertexArray, indexArray, vertexDeclaration, video::Topology::TRIANGLE_LIST);
+		}
+
+		//////////////////////////////////////////////////////////////////
+
 		ModelPtr GeometryGenerator::CreateModel(const std::vector<float>& vertexArray, const std::vector<u32>& indexArray, 
 			const video::VertexDeclarationPtr& vertexDeclaration, video::Topology topology)
 		{
+			sh::scene::MeshBasePtr mesh(new sh::scene::MeshBase());
+
 			// Create vertex buffer
-			size_t verticesCount = vertexArray.size() / vertexDeclaration->GetStride();
+			size_t verticesCount = vertexArray.size() * sizeof(f32) / vertexDeclaration->GetStride();
 			const void* verticesPointer = vertexArray.data();
 			size_t verticesDataSize = vertexArray.size() * sizeof(float);
 			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer(video::HardwareBuffer::STATIC);
@@ -510,19 +530,21 @@ namespace sh
 			vertexBuffer->SetVerticesCount(verticesCount);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
 			vertexBuffer->SetVertexDeclaration(vertexDeclaration);
+			mesh->SetVertexBuffer(vertexBuffer);
 
 			// Create index buffer
-			const void* indicesPointer = indexArray.data();
-			size_t indicesDataSize = indexArray.size() * sizeof(u32);
-			sh::video::IndexBufferPtr indexBuffer = Device::GetInstance()->GetDriver()->CreateIndexBuffer(video::HardwareBuffer::STATIC);
-			indexBuffer->SetData(0, indicesDataSize, indicesPointer);
-			indexBuffer->SetIndexType(sh::video::IndexBuffer::IndexType::UNSIGNED_32_BIT);
-			indexBuffer->SetIndicesCount(indexArray.size());
-
-			sh::scene::MeshBasePtr mesh(new sh::scene::MeshBase());
-
-			mesh->SetVertexBuffer(vertexBuffer);
-			mesh->SetIndexBuffer(indexBuffer);
+			if (indexArray.size() != 0)
+			{
+				const void* indicesPointer = indexArray.data();
+				size_t indicesDataSize = indexArray.size() * sizeof(u32);
+				sh::video::IndexBufferPtr indexBuffer = Device::GetInstance()->GetDriver()->CreateIndexBuffer(video::HardwareBuffer::STATIC);
+				indexBuffer->SetData(0, indicesDataSize, indicesPointer);
+				indexBuffer->SetIndexType(sh::video::IndexBuffer::IndexType::UNSIGNED_32_BIT);
+				indexBuffer->SetIndicesCount(indexArray.size());
+				mesh->SetIndexBuffer(indexBuffer);
+			}
+			
+					
 			mesh->SetTopology(topology);
 
 			sh::scene::ModelBasePtr model(new sh::scene::ModelBase());

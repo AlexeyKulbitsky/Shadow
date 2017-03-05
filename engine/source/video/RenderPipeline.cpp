@@ -88,8 +88,9 @@ namespace sh
 			m_blendingState.reset(new BlendingState());
 			pugi::xml_node blendingStateNode = node.child("blendingstate");
 			if (!blendingStateNode.empty())
-			{
+			{			
 				m_blendingState->Load(blendingStateNode);
+				m_blendingState->enabled = true;
 			}
 
 			// Load shader program

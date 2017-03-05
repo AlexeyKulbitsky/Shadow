@@ -9,10 +9,16 @@
 	<rasterizationstate>
 		<cullFace val="none"/>
 	</rasterizationstate>
+
+	<blendingstate>
+		<srcFactor val="SrcAlpha"/>
+		<dstFactor val="InvSrcAlpha"/>
+		<operation val="Add"/>
+	</blendingstate>
 		
 	<constants>
 		<uniforms>
-			<uniform name="color" type="vec3"/>
+			<uniform name="color" type="vec4"/>
 			<uniform name="matMVP" type="mat4" val="model.worldViewProjectionMatrix"/>
 		</uniforms>
 	</constants>
@@ -41,11 +47,11 @@
 
 			precision mediump float;
 	
-			uniform vec3 color;
+			uniform vec4 color;
 	
 			void main() 
 			{				
-				gl_FragColor = vec4(color, 1.0);
+				gl_FragColor = color;
 			} 
 	
 		]]>	

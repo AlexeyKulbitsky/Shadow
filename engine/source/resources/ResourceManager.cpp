@@ -1,6 +1,7 @@
 #include "ResourceManager.h"
 #include "../Device.h"
 #include "../video/RenderTechnique.h"
+#include "../video/Material.h"
 #include "../video/Texture.h"
 #include "../video/TextureLoader/TextureLoader.h"
 #include "../scene/ModelBase.h"
@@ -117,6 +118,34 @@ namespace sh
 			return rt;
 		}
 
+		return nullptr;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	void ResourceManager::AddMaterial(const video::MaterialPtr& material)
+	{
+		for (size_t i = 0U, sz = m_materials.size(); i < sz; ++i)
+		{
+			if (m_materials[i]->GetName() == material->GetName())
+			{
+				return;
+			}
+		}
+		m_materials.push_back(material);
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	video::MaterialPtr ResourceManager::GetMaterial(const String& materialName)
+	{
+		for (size_t i = 0U, sz = m_materials.size(); i < sz; ++i)
+		{
+			if (m_materials[i]->GetName() == materialName)
+			{
+				return m_materials[i];
+			}
+		}
 		return nullptr;
 	}
 

@@ -14,6 +14,7 @@
 #include "../UniformBuffer.h"
 #include "../DepthStencilState.h"
 #include "../RasterizationState.h"
+#include "../BlendingState.h"
 #include <sstream>
 using namespace sh;
 using namespace video;
@@ -76,7 +77,7 @@ static GLenum const s_glBlendFactor[] =
 	GL_SRC_ALPHA_SATURATE
 };
 		
-static GLenum const s_gBlendOperation[] =
+static GLenum const s_glBlendOperation[] =
 {
 	GL_FUNC_ADD,
 	GL_FUNC_SUBTRACT,
@@ -97,6 +98,8 @@ bool GLES20Driver::Init()
 	InitGlobalUniforms();
 
 	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
 
 
@@ -340,9 +343,31 @@ void GLES20Driver::SetRasterizationState(const RasterizationStatePtr& rasterizat
 
 ////////////////////////////////////////////////////////////////////////
 
-void GLES20Driver::SetBlendingState(const BlendingStatePtr&)
+void GLES20Driver::SetBlendingState(const BlendingStatePtr& blendingState)
 {
+	if (blendingState->enabled)
+	{
+		glEnable(GL_BLEND);
+		glBlendFunc(s_glBlendFactor[static_cast<size_t>(blendingState->srcAlpha)], 
+					s_glBlendFactor[static_cast<size_t>(blendingState->dstAlpha)]);
+		glBlendEquation(s_glBlendOperation[static_cast<size_t>(blendingState->operationAlpha)]);
 
+		/*
+		glBlendFuncSeparate(s_glBlendFactor[static_cast<size_t>(blendingState->srcColor)],
+							s_glBlendFactor[static_cast<size_t>(blendingState->dstColor)],
+							s_glBlendFactor[static_cast<size_t>(blendingState->srcAlpha)],
+							s_glBlendFactor[static_cast<size_t>(blendingState->dstAlpha)]);
+
+		glBlendEquationSeparate(s_glBlendOperation[static_cast<size_t>(blendingState->operationColor)],
+								s_glBlendOperation[static_cast<size_t>(blendingState->operationAlpha)]);
+
+		glBlendColor(float, float, float, float);
+		*/
+	}
+	else
+	{
+		glDisable(GL_BLEND);
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////

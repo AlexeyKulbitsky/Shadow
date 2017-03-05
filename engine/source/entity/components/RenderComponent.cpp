@@ -48,100 +48,14 @@ namespace sh
 		pugi::xml_node materialNode = node.child("material");
 		if (materialNode)
 		{
-			sh::video::MaterialPtr material(new sh::video::Material());
+			pugi::xml_attribute nameAttribute = materialNode.attribute("name");
+			SH_ASSERT(nameAttribute);
 
-			pugi::xml_node techniqueNode = materialNode.child("technique");
-			pugi::xml_attribute fileName = techniqueNode.attribute("filename");
-			String techniqueFileName = fileName.as_string();
+			String materialName(nameAttribute.as_string());
 
-			sh::video::RenderTechniquePtr rt = resourceManager->GetRenderTechnique(techniqueFileName);
-
-			material->SetRenderTechnique(rt);
-
-			// Read uniforms
-			const sh::video::UniformBufferPtr& uniformBuffer = material->GetRenderPipeline(0)->GetUniformBuffer();
-
-			pugi::xml_node uniformsNode = materialNode.child("uniforms");
-			if (uniformsNode)
-			{
-				pugi::xml_node uniNode = uniformsNode.first_child();
-						
-				while (!uniNode.empty())
-				{
-					pugi::xml_attribute nameAttr = uniNode.attribute("name");
-					pugi::xml_attribute typeAttr = uniNode.attribute("type");
-					pugi::xml_attribute valAttr = uniNode.attribute("val");
-
-					std::string name = nameAttr.as_string();
-					std::string typeName = typeAttr.as_string();
-
-							
-					sh::video::Uniform* uniform = uniformBuffer->GetUniform(name);
-					if (typeName == "float")
-					{
-						float value = valAttr.as_float();							
-						uniform->Set(value);
-
-					}
-					else if (typeName == "int")
-					{
-						int value = valAttr.as_int();
-						uniform->Set(value);
-					}
-					uniNode = uniNode.next_sibling();
-				}
-			}
-
-			// Read samplers
-			pugi::xml_node samplersNode = materialNode.child("samplers");
-			if (samplersNode)
-			{
-				pugi::xml_node samplNode = samplersNode.first_child();
-
-				while (!samplNode.empty())
-				{
-					pugi::xml_attribute typeAttr = samplNode.attribute("type");
-					String typeName = typeAttr.as_string();
-
-					pugi::xml_attribute nameAttr = samplNode.attribute("name");
-					std::string name = nameAttr.as_string();
-
-					sh::video::Sampler* sampler = uniformBuffer->GetSampler(name);
-					sh::video::TexturePtr texture = nullptr;
-					if (typeName == "2D")
-					{
-						pugi::xml_attribute fileNameAttr = samplNode.attribute("filename");
-						std::string fileName = fileNameAttr.as_string();
-						texture = resourceManager->GetTexture(fileName);
-					}
-					else if (typeName == "cube")
-					{
-						pugi::xml_attribute right = samplNode.attribute("right");
-						pugi::xml_attribute left = samplNode.attribute("left");
-						pugi::xml_attribute top = samplNode.attribute("top");
-						pugi::xml_attribute bottom = samplNode.attribute("bottom");
-						pugi::xml_attribute back = samplNode.attribute("back");
-						pugi::xml_attribute front = samplNode.attribute("front");
-
-						std::vector<String> faces;
-						faces.push_back(right.as_string());
-						faces.push_back(left.as_string());
-						faces.push_back(top.as_string());
-						faces.push_back(bottom.as_string());
-						faces.push_back(back.as_string());
-						faces.push_back(front.as_string());
-
-						texture = resourceManager->GetCubeTexture(faces);
-					}
-													
-
-					sampler->Set(texture);
-
-					samplNode = samplNode.next_sibling();
-				}
-			}
-
-					
+			const sh::video::MaterialPtr& material = resourceManager->GetMaterial(materialName);
+			SH_ASSERT(material);
+				
 			// Init model with material
 			for (size_t i = 0, sz = model->GetMeshesCount(); i < sz; ++i)
 			{
@@ -187,11 +101,9 @@ namespace sh
 		modelNode.append_attribute("filename").set_value(m_model->GetFileName().c_str());
 		
 		// Save material
-		pugi::xml_node materialNode = componentNode.append_child("material");
-		pugi::xml_node techniqueNode = materialNode.append_child("technique");
-
 		const sh::video::MaterialPtr& material = m_model->GetMesh(0)->GetMaterial();
-		techniqueNode.append_attribute("filename").set_value(material->GetRenderTechnique()->GetFileName().c_str());
+		pugi::xml_node materialNode = componentNode.append_child("material");
+		materialNode.append_attribute("name").set_value(material->GetName().c_str());
 	}
 
 	////////////////////////////////////////////////////////////////

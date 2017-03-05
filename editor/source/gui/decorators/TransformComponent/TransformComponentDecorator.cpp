@@ -150,7 +150,7 @@ ExpandableWidget* TransformComponentDecorator::GetParametersWidget()
 	mainLayout->addLayout(scaleLayout);
 	
 	m_parametersWidget->setContentLayout(*mainLayout);
-
+	
 	return m_parametersWidget;
 }
 

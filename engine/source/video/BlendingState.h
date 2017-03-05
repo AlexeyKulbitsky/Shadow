@@ -102,6 +102,8 @@ namespace sh
 			BlendingState* Clone();
 			void Load(const pugi::xml_node &node);
 
+			bool enabled = false;
+
 			BlendFactor srcColor = BlendFactor::ONE;
 			BlendFactor dstColor = BlendFactor::ZERO;
 			BlendOperation operationColor = BlendOperation::ADD;

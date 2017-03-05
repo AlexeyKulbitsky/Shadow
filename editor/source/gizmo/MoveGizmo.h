@@ -16,15 +16,19 @@ public:
 
 			XY_PLANE,
 			XZ_PLANE,
-			ZY_PLANE,
+			YZ_PLANE,
 
 			COUNT
 		};
 
-		sh::scene::ModelPtr lineModel = nullptr;
-		sh::video::Uniform* lineColorUniform = nullptr;
-		sh::scene::ModelPtr coneModel = nullptr;
-		sh::video::Uniform* coneColorUniform = nullptr;
+		struct ModelInfo
+		{
+			sh::scene::ModelPtr model = nullptr;
+			sh::video::Uniform* uniform = nullptr;
+			sh::math::Vector4f color;
+		};
+
+		std::vector<ModelInfo> models;
 		bool active = false;
 	};
 
@@ -40,6 +44,8 @@ public:
 
 
 private:
+	void CreateArrow(Axis::Type type);
+	void CreatePlane(Axis::Type type);
 	void Move(Axis::Type axis);
 
 private:

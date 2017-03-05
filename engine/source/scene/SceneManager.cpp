@@ -70,60 +70,79 @@ namespace sh
 
 			pugi::xml_document doc;
 			pugi::xml_parse_result result = doc.load_file(filename);
-			pugi::xml_node firstChild = doc.first_child();
-
-			pugi::xml_node entityNode = firstChild.child("entity");
-			while (entityNode)
+			
+			// Read materials
+			pugi::xml_node materialsNode = doc.child("materials");
+			pugi::xml_node materialNode = materialsNode.first_child();
+			while (materialNode)
 			{
-				sh::Entity* entity = new sh::Entity();
+				video::MaterialPtr material(new video::Material());
+				material->Load(materialNode);
+				resourceManager->AddMaterial(material);
+				materialNode = materialNode.next_sibling();
+			}
 
-				// Read name
-				pugi::xml_attribute nameAttribute = entityNode.attribute("name");
-				if (nameAttribute)
+			// Read scene
+			pugi::xml_node scene = doc.child("scene");
+			pugi::xml_node sceneNode = scene.first_child();					
+			while (sceneNode)
+			{ 
+				String sceneNodeName = sceneNode.name();
+
+				// Read entities
+				if (sceneNodeName == "entity")
 				{
-					String name = nameAttribute.as_string();
-					printf("Entity %s", name.c_str());					
-					entity->SetName(name);
-				}
+					sh::Entity* entity = new sh::Entity();
 
-				pugi::xml_node componentNode = entityNode.child("component");
-
-				while (componentNode)
-				{
-					pugi::xml_attribute componentName = componentNode.attribute("name");
-					String nameStr = componentName.as_string();
-					Component::Type componentType;
-					Component* component = nullptr;
-
-					if (nameStr == "transform")
-						componentType = Component::Type::TRANSFORM;
-					else if (nameStr == "render")
-						componentType = Component::Type::RENDER;
-					else if (nameStr == "light")
-						componentType = Component::Type::LIGHT;
-					else
-						componentNode = componentNode.next_sibling();
-
-					//component = Component::Create(componentType);
-					component = m_componentsFactory->CreateComponent(componentType);
-					component->Load(componentNode);
-
-					entity->AddComponent(component);
-
-					for (auto system : m_systems)
+					// Read name
+					pugi::xml_attribute nameAttribute = sceneNode.attribute("name");
+					if (nameAttribute)
 					{
-						system->RegisterEntity(entity);
-					}					
+						String name = nameAttribute.as_string();
+						printf("Entity %s", name.c_str());					
+						entity->SetName(name);
+					}
 
-					componentNode = componentNode.next_sibling();
+					pugi::xml_node componentNode = sceneNode.child("component");
+
+					while (componentNode)
+					{
+						pugi::xml_attribute componentName = componentNode.attribute("name");
+						String nameStr = componentName.as_string();
+						Component::Type componentType;
+						Component* component = nullptr;
+
+						if (nameStr == "transform")
+							componentType = Component::Type::TRANSFORM;
+						else if (nameStr == "render")
+							componentType = Component::Type::RENDER;
+						else if (nameStr == "light")
+							componentType = Component::Type::LIGHT;
+						else
+							componentNode = componentNode.next_sibling();
+
+						//component = Component::Create(componentType);
+						component = m_componentsFactory->CreateComponent(componentType);
+						component->Load(componentNode);
+
+						entity->AddComponent(component);
+
+						for (auto system : m_systems)
+						{
+							system->RegisterEntity(entity);
+						}					
+
+						componentNode = componentNode.next_sibling();
+					}
+
+					// Add entity to entities list
+					AddEntity(entity);
 				}
-
-				// Add entity to entities list
-				AddEntity(entity);
 
 				// Read next object
-				entityNode = entityNode.next_sibling();
+				sceneNode = sceneNode.next_sibling();
 			}
+			
 
 			size_t entitiesCount = m_entities.size();
 			for (size_t i = 0; i < entitiesCount; ++i)
@@ -138,8 +157,17 @@ namespace sh
 		{
 			pugi::xml_document doc;
 
-			pugi::xml_node sceneNode = doc.append_child("scene");
+			// Save materials
+			ResourceManager* resourceManager = Device::GetInstance()->GetResourceManager();			
+			size_t materialsCount = resourceManager->GetMaterialsCount();
+			pugi::xml_node materialsNode = doc.append_child("materials");
+			for (size_t i = 0U; i < materialsCount; ++i)
+			{
+				resourceManager->GetMaterial(i)->Save(materialsNode);
+			}
 
+			// Save scene
+			pugi::xml_node sceneNode = doc.append_child("scene");
 			for (size_t i = 0U, sz = m_entities.size(); i < sz; ++i)
 			{
 				m_entities[i]->Save(sceneNode);

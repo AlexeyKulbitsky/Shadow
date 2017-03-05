@@ -24,7 +24,7 @@ Gizmo::Gizmo()
 	m_axises[0].lineColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[0].lineColorUniform)
 	{
-		sh::math::Vector3f color(1.0f, 0.0f, 0.0f);
+		sh::math::Vector4f color(1.0f, 0.0f, 0.0f, 1.0f);
 		m_axises[0].lineColorUniform->Set(color);
 	}
 
@@ -39,7 +39,7 @@ Gizmo::Gizmo()
 	m_axises[1].lineColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[1].lineColorUniform)
 	{
-		sh::math::Vector3f color(0.0f, 1.0f, 0.0f);
+		sh::math::Vector4f color(0.0f, 1.0f, 0.0f, 1.0f);
 		m_axises[1].lineColorUniform->Set(color);
 	}
 
@@ -56,11 +56,11 @@ Gizmo::Gizmo()
 	m_axises[2].lineColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[2].lineColorUniform)
 	{
-		sh::math::Vector3f color(0.0f, 0.0f, 1.0f);
+		sh::math::Vector4f color(0.0f, 0.0f, 1.0f, 1.0f);
 		m_axises[2].lineColorUniform->Set(color);
 	}
 
-	
+	/*
 	sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
 	sh::video::RenderTargetPtr rt = driver->CreateRenderTarget();
 	sh::video::TexturePtr colorTex = driver->CreateTexture();
@@ -70,7 +70,7 @@ Gizmo::Gizmo()
 	rt->AddDepthTexture(depthTex);
 
 	rt->Init();
-	
+	*/
 }
 
 ///////////////////////////////////////////////////////////////////

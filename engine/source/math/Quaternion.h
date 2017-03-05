@@ -218,6 +218,13 @@ namespace sh
 				return v + uv + uuv;
 			}
 
+			Vector3<T> Rotate(const Vector3<T>& v) const
+			{
+				Quaternion<T> q = GetInverted() / Norm();
+				Quaternion<T> qres = ( *this ) * Quaternion<T>(v.x, v.y, v.z, T(0)) * q;
+				return Vector3<T>(qres.x, qres.y, qres.z);
+			}
+
 			Quaternion<T>& SetIndentity()
 			{
 				x = (T)0;

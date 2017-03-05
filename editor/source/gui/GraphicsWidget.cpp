@@ -93,6 +93,7 @@ void GraphicsWidget::mousePressEvent(QMouseEvent * ev)
 		
 		if (!entity || entity != m_gizmo->GetEntity())
 		{
+			emit EntitySelected(nullptr);
 			emit EntitySelected(entity);
 		}
 		

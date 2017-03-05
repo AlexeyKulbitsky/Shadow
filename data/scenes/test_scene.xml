@@ -1,5 +1,9 @@
 <?xml version="1.0"?>
 <scene>
+	<material name="testMaterial">
+		<technique filename="const_color.xml" />
+	</material>
+
 	<entity name="light_0">
 		<component name="light">
 			<type val="directional" />
@@ -15,9 +19,7 @@
 		</component>
 		<component name="render">
 			<model filename="monkey.obj" />
-			<material>
-				<technique filename="const_color.xml" />
-			</material>
+			<material name="testMaterial"/>
 		</component>
 	</entity>
 	<entity name="test_mokey_1">
@@ -28,9 +30,7 @@
 		</component>
 		<component name="render">
 			<model filename="monkey.obj" />
-			<material>
-				<technique filename="const_color.xml" />
-			</material>
+			<material name="testMaterial"/>
 		</component>
 	</entity>
 	<entity name="test_mokey_2">
@@ -41,9 +41,7 @@
 		</component>
 		<component name="render">
 			<model filename="monkey.obj" />
-			<material>
-				<technique filename="const_color.xml" />
-			</material>
+			<material name="testMaterial"/>
 		</component>
 	</entity>
 	<entity name="test_mokey_3">
@@ -54,9 +52,7 @@
 		</component>
 		<component name="render">
 			<model filename="monkey.obj" />
-			<material>
-				<technique filename="const_color.xml" />
-			</material>
+			<material name="testMaterial"/>
 		</component>
 	</entity>
 	<entity name="test_mokey_4">
@@ -67,9 +63,7 @@
 		</component>
 		<component name="render">
 			<model filename="monkey.obj" />
-			<material>
-				<technique filename="const_color.xml" />
-			</material>
+			<material name="testMaterial"/>
 		</component>
 	</entity>
 	<entity name="test_mokey_5">
@@ -80,9 +74,7 @@
 		</component>
 		<component name="render">
 			<model filename="monkey.obj" />
-			<material>
-				<technique filename="const_color.xml" />
-			</material>
+			<material name="testMaterial"/>
 		</component>
 	</entity>
 	<entity name="test_mokey_6">
@@ -93,9 +85,7 @@
 		</component>
 		<component name="render">
 			<model filename="monkey.obj" />
-			<material>
-				<technique filename="const_color.xml" />
-			</material>
+			<material name="testMaterial"/>
 		</component>
 	</entity>
 	<entity name="test_mokey_7">
@@ -106,9 +96,7 @@
 		</component>
 		<component name="render">
 			<model filename="monkey.obj" />
-			<material>
-				<technique filename="const_color.xml" />
-			</material>
+			<material name="testMaterial"/>
 		</component>
 	</entity>
 	<entity name="test_mokey_8">
@@ -119,9 +107,7 @@
 		</component>
 		<component name="render">
 			<model filename="monkey.obj" />
-			<material>
-				<technique filename="const_color.xml" />
-			</material>
+			<material name="testMaterial"/>
 		</component>
 	</entity>
 	<entity name="test_mokey_9">
@@ -132,9 +118,7 @@
 		</component>
 		<component name="render">
 			<model filename="monkey.obj" />
-			<material>
-				<technique filename="const_color.xml" />
-			</material>
+			<material name="testMaterial"/>
 		</component>
 	</entity>
 	<entity name="test_mokey_10">
@@ -145,9 +129,7 @@
 		</component>
 		<component name="render">
 			<model filename="monkey.obj" />
-			<material>
-				<technique filename="const_color.xml" />
-			</material>
+			<material name="testMaterial"/>
 		</component>
 	</entity>
 </scene>

@@ -16,7 +16,7 @@ RotateGizmo::RotateGizmo()
 	m_axises[0].circleColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[0].circleColorUniform)
 	{
-		sh::math::Vector3f color(1.0f, 0.0f, 0.0f);
+		sh::math::Vector4f color(1.0f, 0.0f, 0.0f, 1.0f);
 		m_axises[0].circleColorUniform->Set(color);
 	}
 
@@ -37,7 +37,7 @@ RotateGizmo::RotateGizmo()
 	m_axises[1].circleColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[1].circleColorUniform)
 	{
-		sh::math::Vector3f color(0.0f, 1.0f, 0.0f);
+		sh::math::Vector4f color(0.0f, 1.0f, 0.0f, 1.0f);
 		m_axises[1].circleColorUniform->Set(color);
 	}
 
@@ -56,7 +56,7 @@ RotateGizmo::RotateGizmo()
 	m_axises[2].circleColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[2].circleColorUniform)
 	{
-		sh::math::Vector3f color(0.0f, 0.0f, 1.0f);
+		sh::math::Vector4f color(0.0f, 0.0f, 1.0f, 1.0f);
 		m_axises[2].circleColorUniform->Set(color);
 	}
 
@@ -74,7 +74,7 @@ RotateGizmo::RotateGizmo()
 	m_axises[3].circleColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[3].circleColorUniform)
 	{
-		sh::math::Vector3f color(0.5f, 0.5f, 0.5f);
+		sh::math::Vector4f color(0.5f, 0.5f, 0.5f, 1.0f);
 		m_axises[3].circleColorUniform->Set(color);
 	}
 }
@@ -113,26 +113,62 @@ void RotateGizmo::Render()
 			matrix.SetTranslation(position);
 
 			//matrix = matrix * rotation.GetAsMatrix4();
+			sh::math::Vector3f axisZ = rotation.Rotate(sh::scene::SceneManager::GetFrontVector());
+			sh::math::Vector3f axisY = rotation.Rotate(sh::scene::SceneManager::GetUpVector());
+			sh::math::Vector3f axisX = rotation.Rotate(sh::scene::SceneManager::GetRightVector());
+
+			sh::math::Vector3f right = axisX; 
+			sh::math::Vector3f up = axisY; 
+			sh::math::Vector3f front = axisZ;
 
 			for (size_t i = 0; i < 3; ++i)
 			{
 				sh::math::Quaternionf r = rotation;
 
+				sh::math::Vector3f eulerAngles(0.0f);
+				rotation.GetAsEulerXYZ(eulerAngles);
+
 				switch (i)
 				{
 				case 0:
-					r.SetFromAxisAngle(r * sh::scene::SceneManager::GetRightVector(), 0.0f);
+				{
+					//up = camera->GetFrontVector().Cross(axisX);
+					//front = up.Cross(axisX);
+					//right = up.Cross(front);
+				}
 					break;
 				case 1:
-					r.SetFromAxisAngle(r * sh::scene::SceneManager::GetUpVector(), 0.0f);
+				{
+					//right = camera->GetFrontVector().Cross(axisY);
+					//front = right.Cross(axisY);
+					//up = right.Cross(front);
+				}
 					break;
 				case 2:
-					r.SetFromAxisAngle(r * sh::scene::SceneManager::GetFrontVector(), 0.0f);
+				{
+					//right = camera->GetUpVector().Cross(axisZ);
+					//up = right.Cross(axisZ);
+					//front = right.Cross(front);
+				}
 					break;
 				}
+				
 
+				sh::math::Matrix4f mat = sh::math::Matrix4f::Identity();
+				mat.m[2][0] = front.x;
+				mat.m[2][1] = front.y;
+				mat.m[2][2] = front.z;
 
-				sh::math::Matrix4f m = matrix * r.GetAsMatrix4();
+				mat.m[0][0] = right.x;
+				mat.m[0][1] = right.y;
+				mat.m[0][2] = right.z;
+
+				mat.m[1][0] = up.x;
+				mat.m[1][1] = up.y;
+				mat.m[1][2] = up.z;
+
+				sh::math::Matrix4f m = matrix * mat;
+				sh::math::Matrix4f test = rotation.GetAsMatrix4();
 				m_axises[i].circleModel->SetWorldMatrix(m);
 				m_axises[i].circleModel->UpdateTransformationUniforms();
 			}
@@ -201,17 +237,17 @@ void RotateGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 heigh
 
 	unsigned char data[4];
 	driver->GetPixelData(x, y, width, height, data);
-	sh::math::Vector3f color(1.0f, 1.0f, 1.0f);
+	sh::math::Vector4f color(1.0f, 1.0f, 1.0f, 1.0f);
 	if (data[0] == 255 && data[1] == 0 && data[2] == 0)
 	{
 		m_axises[Axis::Type::X_AXIS].circleColorUniform->Set(color);
 		m_axises[Axis::Type::X_AXIS].active = true;
 
-		color = sh::math::Vector3f(0.0f, 1.0f, 0.0f);
+		color = sh::math::Vector4f(0.0f, 1.0f, 0.0f, 1.0f);
 		m_axises[Axis::Type::Y_AXIS].circleColorUniform->Set(color);
 		m_axises[Axis::Type::Y_AXIS].active = false;
 
-		color = sh::math::Vector3f(0.0f, 0.0f, 1.0f);
+		color = sh::math::Vector4f(0.0f, 0.0f, 1.0f, 1.0f);
 		m_axises[Axis::Type::Z_AXIS].circleColorUniform->Set(color);
 		m_axises[Axis::Type::Z_AXIS].active = false;
 	}
@@ -220,11 +256,11 @@ void RotateGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 heigh
 		m_axises[Axis::Type::Y_AXIS].circleColorUniform->Set(color);
 		m_axises[Axis::Type::Y_AXIS].active = true;
 
-		color = sh::math::Vector3f(1.0f, 0.0f, 0.0f);
+		color = sh::math::Vector4f(1.0f, 0.0f, 0.0f, 1.0f);
 		m_axises[Axis::Type::X_AXIS].circleColorUniform->Set(color);
 		m_axises[Axis::Type::X_AXIS].active = false;
 
-		color = sh::math::Vector3f(0.0f, 0.0f, 1.0f);
+		color = sh::math::Vector4f(0.0f, 0.0f, 1.0f, 1.0f);
 		m_axises[Axis::Type::Z_AXIS].circleColorUniform->Set(color);
 		m_axises[Axis::Type::Z_AXIS].active = false;
 	}
@@ -233,11 +269,11 @@ void RotateGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 heigh
 		m_axises[Axis::Type::Z_AXIS].circleColorUniform->Set(color);
 		m_axises[Axis::Type::Z_AXIS].active = true;
 
-		color = sh::math::Vector3f(1.0f, 0.0f, 0.0f);
+		color = sh::math::Vector4f(1.0f, 0.0f, 0.0f, 1.0f);
 		m_axises[Axis::Type::X_AXIS].circleColorUniform->Set(color);
 		m_axises[Axis::Type::X_AXIS].active = false;
 
-		color = sh::math::Vector3f(0.0f, 1.0f, 0.0f);
+		color = sh::math::Vector4f(0.0f, 1.0f, 0.0f, 1.0f);
 		m_axises[Axis::Type::Y_AXIS].circleColorUniform->Set(color);
 		m_axises[Axis::Type::Y_AXIS].active = false;
 	}
@@ -247,15 +283,15 @@ void RotateGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 heigh
 	}
 	else
 	{
-		color = sh::math::Vector3f(1.0f, 0.0f, 0.0f);
+		color = sh::math::Vector4f(1.0f, 0.0f, 0.0f, 1.0f);
 		m_axises[Axis::Type::X_AXIS].circleColorUniform->Set(color);
 		m_axises[Axis::Type::X_AXIS].active = false;
 
-		color = sh::math::Vector3f(0.0f, 1.0f, 0.0f);
+		color = sh::math::Vector4f(0.0f, 1.0f, 0.0f, 1.0f);
 		m_axises[Axis::Type::Y_AXIS].circleColorUniform->Set(color);
 		m_axises[Axis::Type::Y_AXIS].active = false;
 
-		color = sh::math::Vector3f(0.0f, 0.0f, 1.0f);
+		color = sh::math::Vector4f(0.0f, 0.0f, 1.0f, 1.0f);
 		m_axises[Axis::Type::Z_AXIS].circleColorUniform->Set(color);
 		m_axises[Axis::Type::Z_AXIS].active = false;
 	}
