@@ -1,5 +1,7 @@
 #include "RenderTechnique.h"
 #include "RenderPipeline.h"
+#include "Driver.h"
+#include "../Device.h"
 #include <pugixml.hpp>
 
 namespace sh
@@ -33,8 +35,9 @@ namespace sh
 
 			pugi::xml_node renderPipelineNode = techniqueNode.child("pipeline");
 			while (renderPipelineNode)
-			{
-				RenderPipelinePtr renderPipeline = RenderPipelinePtr(new RenderPipeline());
+			{		
+				RenderPipelinePtr renderPipeline = Device::GetInstance()->GetDriver()->CreateRenderPipeline();
+				//RenderPipelinePtr renderPipeline = RenderPipelinePtr(new RenderPipeline());
 				renderPipeline->Load(renderPipelineNode);
 
 				m_renderPipelines.push_back(renderPipeline);

@@ -4,6 +4,9 @@
 #include "VulkanVertexBuffer.h"
 #include "VulkanIndexBuffer.h"
 #include "VulkanVertexInput.h"
+#include "VulkanRenderPipeline.h"
+#include "VulkanShaderProgram.h"
+#include "VulkanUniformBuffer.h"
 
 //#ifndef STB_IMAGE_IMPLEMENTATION
 //#define STB_IMAGE_IMPLEMENTATION
@@ -107,16 +110,21 @@ namespace sh
 
 		bool VulkanDriver::Init()
 		{
-			SetupLayersAndExtensions();
-			CreateInstance();
-			CreateSurface();
-			PickPhysicalDevice();
-			CreateLogicalDevice();
-			CreateSwapChain();
+			InitGlobalUniforms();
+
+			SetupLayersAndExtensions();			
+			CreateInstance();		
+			CreateSurface();			
+			PickPhysicalDevice();		
+			CreateLogicalDevice();		
+			CreateSwapChain();		
 			CreateImageViews();
+			/*
 			CreateRenderPass();
+			
 			CreateDescriptorSetLayout();
-			CreateGraphicsPipeline();		
+			CreateGraphicsPipeline();	
+			
 			CreateCommandPool();
 			CreateDepthResources();
 			CreateFramebuffers();
@@ -131,7 +139,7 @@ namespace sh
 			CreateDescriptorSet();
 			CreateCommandBuffers();
 			CreateSemaphores();
-
+			*/
 			return true;
 		}
 
@@ -215,6 +223,15 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+		UniformBufferPtr VulkanDriver::CreateUniformBuffer() const
+		{
+			UniformBufferPtr result = nullptr;
+			result.reset(new VulkanUniformBuffer());
+			return result;
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		RenderCommandPtr VulkanDriver::CreateRenderCommand() const
 		{
 			return nullptr;
@@ -224,7 +241,25 @@ namespace sh
 
 		ShaderProgramPtr VulkanDriver::CreateShaderProgram() const
 		{
-			return nullptr;
+			ShaderProgramPtr result = nullptr;
+			result.reset(new VulkanShaderProgram(m_device));
+			return result;
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		VertexInputDeclaration* VulkanDriver::CreateVertexInputDeclaration() const
+		{
+			return new VKVertexDeclaration();
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		RenderPipelinePtr VulkanDriver::CreateRenderPipeline() const
+		{
+			RenderPipelinePtr result = nullptr;
+			result.reset(new VulkanRenderPipeline());
+			return result;
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -243,12 +278,11 @@ namespace sh
 			{
 				std::cout << "\t" << extension.extensionName << std::endl;
 			}
-
+			// Needed for surface to draw on
 			m_instanceExtensionsList.push_back(VK_KHR_SURFACE_EXTENSION_NAME);
-
 			// Needed for platform-specific surface creation
 			m_instanceExtensionsList.push_back(VK_KHR_WIN32_SURFACE_EXTENSION_NAME);
-
+			// Neede for swapping buffer and picture presentation
 			m_deviceExtensionsList.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
 
 			uint32_t layerCount;
@@ -363,12 +397,16 @@ namespace sh
 
 		void VulkanDriver::CreateSurface()
 		{
+#if defined SHADOW_WINDOWS
 			VkWin32SurfaceCreateInfoKHR createInfo{};
 			createInfo.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
 			createInfo.hinstance = GetModuleHandle(nullptr);
 			createInfo.hwnd = static_cast<HWND>(m_parameters.WinId);
 			SH_ASSERT(vkCreateWin32SurfaceKHR(m_instance, &createInfo, nullptr, m_surface.Replace()) == VK_SUCCESS,
 				"failed to create window surface!");
+#else
+			SH_ASSERT(0, "Unimplemented for non-Windows platform");
+#endif
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////

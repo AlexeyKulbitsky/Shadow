@@ -26,6 +26,7 @@ namespace sh
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 
+		/*
 		RenderPipelinePtr RenderPipeline::Clone()
 		{
 			RenderPipelinePtr result(new RenderPipeline());
@@ -39,11 +40,13 @@ namespace sh
 			result->m_layer = m_layer;
 			return result;
 		}
+		*/
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 
 		void RenderPipeline::Load(const pugi::xml_node &node)
 		{
+#if 0
 			Driver* driver = Device::GetInstance()->GetDriver();
 
 			// Read name
@@ -120,19 +123,51 @@ namespace sh
 				m_uniformBuffer->Load(uniformsNode);
 				m_uniformBuffer->Init();
 			}
+#endif
 		}		
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 	
 		void RenderPipeline::Unload()
 		{
+			/*
 			m_shaderProgram->Unload();
 
 			delete m_vertexInputDeclaration;
 			m_vertexInputDeclaration = nullptr;
 
 			m_uniformBuffer->Unload();
+			*/
+		}
 
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+
+		void RenderPipeline::LoadStates(const pugi::xml_node& node)
+		{
+			// Load depth/stencil state
+			m_depthStencilState.reset(new DepthStencilState());
+			pugi::xml_node depthStencilStateNode = node.child("depthstencilstate");
+			if (!depthStencilStateNode.empty())
+			{
+				m_depthStencilState->Load(depthStencilStateNode);
+			}
+
+			// Load rasterization state
+			m_rasterizationState.reset(new RasterizationState());
+			pugi::xml_node rasterizationStateNode = node.child("rasterizationstate");
+			if (!rasterizationStateNode.empty())
+			{
+				m_rasterizationState->Load(rasterizationStateNode);
+			}
+
+			// Load blending state
+			m_blendingState.reset(new BlendingState());
+			pugi::xml_node blendingStateNode = node.child("blendingstate");
+			if (!blendingStateNode.empty())
+			{
+				m_blendingState->Load(blendingStateNode);
+				m_blendingState->enabled = true;
+			}
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////

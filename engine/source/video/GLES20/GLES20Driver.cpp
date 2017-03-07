@@ -7,6 +7,7 @@
 #include "GLES20RenderCommand.h"
 #include "GLES20Texture.h"
 #include "GLES20RenderTarget.h"
+#include "GLES20RenderPIpeline.h"
 #include "../Material.h"
 #include "../GLContext/EGLContextManager.h"
 #include "../../scene/Mesh.h"
@@ -446,6 +447,15 @@ RenderTargetPtr GLES20Driver::CreateRenderTarget() const
 {
 	RenderTargetPtr result = nullptr;
 	result.reset(new GLES20RenderTarget());
+	return result;
+}
+
+////////////////////////////////////////////////////////////////////////
+
+RenderPipelinePtr GLES20Driver::CreateRenderPipeline() const
+{
+	RenderPipelinePtr result = nullptr;
+	result.reset(new GLES20RenderPipeline());
 	return result;
 }
 

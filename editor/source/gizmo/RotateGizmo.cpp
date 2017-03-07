@@ -113,9 +113,9 @@ void RotateGizmo::Render()
 			matrix.SetTranslation(position);
 
 			//matrix = matrix * rotation.GetAsMatrix4();
-			sh::math::Vector3f axisZ = rotation.Rotate(sh::scene::SceneManager::GetFrontVector());
-			sh::math::Vector3f axisY = rotation.Rotate(sh::scene::SceneManager::GetUpVector());
-			sh::math::Vector3f axisX = rotation.Rotate(sh::scene::SceneManager::GetRightVector());
+			sh::math::Vector3f axisZ = rotation * sh::scene::SceneManager::GetFrontVector();
+			sh::math::Vector3f axisY = rotation * sh::scene::SceneManager::GetUpVector();
+			sh::math::Vector3f axisX = rotation * sh::scene::SceneManager::GetRightVector();
 
 			sh::math::Vector3f right = axisX; 
 			sh::math::Vector3f up = axisY; 

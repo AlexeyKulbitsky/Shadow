@@ -3,7 +3,6 @@
 
 #include "../ShaderProgram.h"
 #include "VulkanVertexDeclaration.h"
-#include <pugixml.hpp>
 
 namespace sh
 {
@@ -22,6 +21,7 @@ namespace sh
 			virtual ~VulkanShaderProgram();
 
 			virtual void Load(const char* filename) override;
+			virtual void Load(const pugi::xml_node &node) override;
 			virtual ShaderProgram* Clone() override;
 			virtual void Unload() override;
 			virtual void BindProgram() override;

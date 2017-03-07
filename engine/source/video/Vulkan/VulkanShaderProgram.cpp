@@ -1,5 +1,5 @@
 #include "VulkanShaderProgram.h"
-#include "../../pempek_assert.h"
+#include "../../Device.h"
 
 #include <fstream>
 
@@ -62,7 +62,7 @@ namespace sh
 				vertShaderStageInfo.pName = "main";
 
 				m_shaderStages.push_back(vertShaderStageInfo);
-			} 
+			}
 
 			// Load fragment shader data
 			pugi::xml_node fragmentShaderSrcNode = shaderProgramNode.child("fragmentShader");
@@ -72,6 +72,69 @@ namespace sh
 				std::string path = generatedPathNode.attribute("path").as_string();
 
 				std::vector<char> fragmentShaderCode = ReadFile(path);
+
+				VulkanShader fragmentShader;
+				fragmentShader.type = ShaderType::FRAGMENT;
+				CompileShader(fragmentShaderCode, fragmentShader.shaderModule);
+				m_shaders.push_back(fragmentShader);
+
+				VkPipelineShaderStageCreateInfo fragmentShaderStageInfo = {};
+				fragmentShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+				fragmentShaderStageInfo.stage = VK_SHADER_STAGE_VERTEX_BIT;
+				fragmentShaderStageInfo.module = fragmentShader.shaderModule;
+				fragmentShaderStageInfo.pName = "main";
+
+				m_shaderStages.push_back(fragmentShaderStageInfo);
+			}
+		}
+
+		///////////////////////////////////////////////////////////////////////
+
+		void VulkanShaderProgram::Load(const pugi::xml_node &node)
+		{
+			// Load vertex shader data
+			pugi::xml_node vertexShaderSrcNode = node.child("vertexShader");
+			if (vertexShaderSrcNode)
+			{
+				pugi::xml_node sourceNode = vertexShaderSrcNode.child("source");
+				String path = sourceNode.attribute("val").as_string();
+
+				const sh::io::FileInfo& info = Device::GetInstance()->GetFileSystem()->FindFile(path);
+				if (info.absolutePath == "")
+				{
+					SH_ASSERT(0, "Can not find shader file %s in file system!!!", path.c_str());
+				}
+
+				std::vector<char> vertShaderCode = ReadFile(info.absolutePath);
+
+				VulkanShader vertexShader;
+				vertexShader.type = ShaderType::VERTEX;
+				CompileShader(vertShaderCode, vertexShader.shaderModule);
+				m_shaders.push_back(vertexShader);
+
+				VkPipelineShaderStageCreateInfo vertShaderStageInfo = {};
+				vertShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+				vertShaderStageInfo.stage = VK_SHADER_STAGE_VERTEX_BIT;
+				vertShaderStageInfo.module = vertexShader.shaderModule;
+				vertShaderStageInfo.pName = "main";
+
+				m_shaderStages.push_back(vertShaderStageInfo);
+			}
+
+			// Load fragment shader data
+			pugi::xml_node fragmentShaderSrcNode = node.child("fragmentShader");
+			if (fragmentShaderSrcNode)
+			{
+				pugi::xml_node sourceNode = fragmentShaderSrcNode.child("source");
+				String path = sourceNode.attribute("val").as_string();
+
+				const sh::io::FileInfo& info = Device::GetInstance()->GetFileSystem()->FindFile(path);
+				if (info.absolutePath == "")
+				{
+					SH_ASSERT(0, "Can not find shader file %s in file system!!!", path.c_str());
+				}
+
+				std::vector<char> fragmentShaderCode = ReadFile(info.absolutePath);			
 
 				VulkanShader fragmentShader;
 				fragmentShader.type = ShaderType::FRAGMENT;

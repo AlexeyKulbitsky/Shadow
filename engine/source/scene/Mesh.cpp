@@ -41,7 +41,8 @@ namespace sh
 			video::Driver* driver = Device::GetInstance()->GetDriver();
 			math::Matrix4f wvp = projectionMatrix * viewMatrix * m_worldMatrix;
 			wvp.Transpose();
-
+			//math::Matrix4f wvp = m_worldMatrix * viewMatrix * projectionMatrix.GetTransposed();
+			
 			size_t pipelinesCount = m_material->GetRenderPipelinesCount();
 			for (size_t i = 0U; i < pipelinesCount; ++i)
 			{
@@ -55,6 +56,7 @@ namespace sh
 							uniform->Set(wvp);
 							break;
 						case video::GlobalUniformName::MODEL_WORLD_MATRIX:
+							//uniform->Set(m_worldMatrix.GetTransposed());
 							uniform->Set(m_worldMatrix.GetTransposed());
 							break;
 						default:

@@ -64,12 +64,13 @@ namespace sh
 			// Resources creation interface
 			virtual VertexBufferPtr CreateVertexBuffer(HardwareBuffer::Usage usage) const = 0;
 			virtual IndexBufferPtr CreateIndexBuffer(HardwareBuffer::Usage usage) const = 0;
-			virtual UniformBufferPtr CreateUniformBuffer() const { return nullptr; }
+			virtual UniformBufferPtr CreateUniformBuffer() const = 0;
 			virtual RenderCommandPtr CreateRenderCommand() const = 0;
 			virtual ShaderProgramPtr CreateShaderProgram() const = 0;
 			virtual TexturePtr CreateTexture() const { return nullptr; }
-			virtual VertexInputDeclaration* CreateVertexInputDeclaration() const { return nullptr; }
+			virtual VertexInputDeclaration* CreateVertexInputDeclaration() const = 0;
 			virtual RenderTargetPtr CreateRenderTarget() const { return nullptr; }
+			virtual RenderPipelinePtr CreateRenderPipeline() const = 0;
 			
 
 			template<typename T>

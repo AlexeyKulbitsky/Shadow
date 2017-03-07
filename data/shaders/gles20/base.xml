@@ -24,9 +24,10 @@
 	</constants>
 	
 	<attributes>
-		<position 	type="vec3" name="aPosition"/>
+		<position location="0" type="vec3" name="aPosition"/>
 	</attributes>
 	
+	<!-- GLES 20 SHADER /-->
 	<shader language="GLSL" api="GLES20">
 		<vertexShader>
 		<![CDATA[
@@ -56,6 +57,19 @@
 	
 		]]>	
 		</fragmentShader>
+	</shader>
+	
+	
+	<!-- VULKAN SHADER/-->
+	<shader language="SPIR-V" api="Vulkan">
+		<vertexShader>
+			<source val="vert.spv"/>
+		</vertexShader>
+		
+		<fragmentShader>
+			<source val="frag.spv"/>
+		</fragmentShader>
+	
 	</shader>
 
 </pipeline>

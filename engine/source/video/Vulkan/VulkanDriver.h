@@ -47,8 +47,11 @@ namespace sh
 
 			virtual VertexBufferPtr CreateVertexBuffer(HardwareBuffer::Usage usage) const override;
 			virtual IndexBufferPtr CreateIndexBuffer(HardwareBuffer::Usage usage) const override;
+			virtual UniformBufferPtr CreateUniformBuffer() const override;
 			virtual RenderCommandPtr CreateRenderCommand() const override;
 			virtual ShaderProgramPtr CreateShaderProgram() const override;
+			virtual VertexInputDeclaration* CreateVertexInputDeclaration() const override;
+			virtual RenderPipelinePtr CreateRenderPipeline() const override;
 
 		private:
 			struct QueueFamilyIndices 

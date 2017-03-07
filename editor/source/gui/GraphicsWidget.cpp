@@ -234,9 +234,8 @@ void GraphicsWidget::Update()
 			sh::math::Vector3f baseVec = camera->GetPosition() - targetPos;
 			sh::math::Vector3f targetVec = deltaRot * baseVec;
 			camera->SetPosition(targetPos + targetVec);
-			sh::math::Vector3f dir = camera->GetFrontVector();
-			dir.Normalize();
-			sh::math::Quaternionf finalCamRot =  camera->GetRotation() * deltaRot;
+			
+			sh::math::Quaternionf finalCamRot = camera->GetRotation() * deltaRot;
 			camera->SetRotation(finalCamRot);
 		}
 		else

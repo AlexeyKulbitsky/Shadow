@@ -16,7 +16,7 @@ namespace sh
 			std::string name;
 		};
 
-		class VKVertexDeclaration
+		class VKVertexDeclaration : public VertexInputDeclaration
 		{			
 		public:
 			// Add attribute to engines structure
@@ -30,24 +30,13 @@ namespace sh
 			const VkVertexInputAttributeDescription* GetVulkanAttributesPointer() const { return m_vulkanAttributes.data(); }
 			size_t GetVulkanAttributesCount() const { return m_vulkanAttributes.size(); }
 
-			// Connect mesh attributes with vulkan attributes presentation
-			void Assemble(VertexDeclaration declaration)
-			{
-				m_descriptor.binding = 0U;
-				m_descriptor.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
-				m_descriptor.stride = declaration.GetStride();
+			VKVertexDeclaration& operator=(const VKVertexDeclaration& other);
 
-				m_vulkanAttributes.clear();
-				size_t attrCount = m_attributes.size();
-				for (size_t i = 0; i < attrCount; ++i)
-				{					
-					Attribute* attribute = declaration.GetAttribute(m_attributes[i].semantic);
-					m_attributes[i].vulkanAttribute.offset = attribute->offset;
-					m_attributes[i].vulkanAttribute.binding = m_descriptor.binding;
-
-					m_vulkanAttributes.push_back(m_attributes[i].vulkanAttribute);
-				}			
-			}
+			virtual void Load(const pugi::xml_node &node) override;
+			virtual void SetShaderProgram(ShaderProgram* shaderProgram) override;
+			virtual void Init() override;
+			virtual VertexInputDeclaration* Clone() override;
+			virtual void Assemble(VertexDeclaration& declaration) override;
 
 		private:
 			VkVertexInputBindingDescription m_descriptor;

@@ -8,6 +8,7 @@ namespace sh
 {
 	namespace video
 	{
+		
 		struct VulkanVertexDeclaration
 		{
 			struct Vertex
@@ -48,6 +49,7 @@ namespace sh
 				return attributeDescriptions;
 			}
 		};
+		
 	}
 }
 

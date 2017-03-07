@@ -50,6 +50,7 @@ namespace sh
 			virtual TexturePtr CreateTexture() const override;
 			virtual VertexInputDeclaration* CreateVertexInputDeclaration() const override;
 			virtual RenderTargetPtr CreateRenderTarget() const override;
+			virtual RenderPipelinePtr CreateRenderPipeline() const override;
 
 		private:
 			EGLContextManager* m_contextManager = nullptr;
