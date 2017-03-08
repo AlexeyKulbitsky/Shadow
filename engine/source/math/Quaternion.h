@@ -54,9 +54,9 @@ namespace sh
 			Quaternion<T> operator*(const Quaternion<T>& other) const
 			{
 				Quaternion<T> result;
-				result.x = (other.w * x) + (other.x * w) + (other.y * z) - (other.z * y);
-				result.y = (other.w * y) + (other.y * w) + (other.z * x) - (other.x * z);
-				result.z = (other.w * z) + (other.z * w) + (other.x * y) - (other.y * x);
+				result.x = (other.w * x) + (other.x * w) + (other.y * z) - (other.y * z);
+				result.y = (other.w * y) + (other.y * w) + (other.z * x) - (other.z * x);
+				result.z = (other.w * z) + (other.z * w) + (other.x * y) - (other.x * y);
 				result.w = (other.w * w) - (other.x * x) - (other.y * y) - (other.z * z);
 				return result;
 			}
@@ -132,7 +132,8 @@ namespace sh
 			}
 
 			Matrix3<T> GetAsMatrix3() const
-			{				
+			{		
+				/*
 				const T fTx = x + x;
 				const T fTy = y + y;
 				const T fTz = z + z;
@@ -157,6 +158,38 @@ namespace sh
 				r.m[2][0] = fTxz - fTwy;
 				r.m[2][1] = fTyz + fTwx;
 				r.m[2][2] = 1.0f - (fTxx + fTyy);
+
+				return r;
+				*/
+
+
+
+
+
+				// Calculate coefficients
+				const T x2 = x + x;
+				const T y2 = y + y; 
+				const T z2 = z + z;
+				const T xx = x * x2;  
+				const T xy = x * y2;  
+				const T xz = x * z2;
+				const T yy = y * y2;  
+				const T yz = y * z2;  
+				const T zz = z * z2;
+				const T wx = w * x2;  
+				const T wy = w * y2;  
+				const T wz = w * z2;
+
+				Matrix3<T> r;
+
+				r.m[0][0] = 1 - (yy + zz);  r.m[1][0] = xy - wz;	
+				r.m[2][0] = xz + wy;        
+				r.m[0][1] = xy + wz;        r.m[1][1] = 1 - (xx + zz);
+				r.m[2][1] = yz - wx;        
+				r.m[0][2] = xz - wy;        r.m[1][2] = yz + wx;
+				r.m[2][2] = 1 - (xx + yy);  
+				              
+				             
 
 				return r;
 			}

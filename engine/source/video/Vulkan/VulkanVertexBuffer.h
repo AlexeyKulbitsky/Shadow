@@ -14,15 +14,17 @@ namespace sh
 			VulkanVertexBuffer(Usage usage);
 			virtual ~VulkanVertexBuffer();
 
-			virtual void SetData(size_t offset, size_t length, const void* data) {}
-			virtual void GetData(size_t offset, size_t length, const void* data) {}
+			virtual void SetData(size_t offset, size_t length, const void* data) override;
+			virtual void GetData(size_t offset, size_t length, const void* data) override;
+
+			VkBuffer GetVulkanId() const { return m_vertexBuffer; }
 
 		private:
 			void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory);
+			void copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
 			uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
 
 		private:
-			VkDevice m_device = VK_NULL_HANDLE;
 			VkBuffer m_vertexBuffer = VK_NULL_HANDLE;
 			VkDeviceMemory m_vertexBufferMemory = VK_NULL_HANDLE;
 		};

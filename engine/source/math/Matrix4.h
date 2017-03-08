@@ -8,6 +8,7 @@ namespace sh
 {
 	namespace math
 	{
+		// Column major order for OpenGL: m[column][row]
 		template<typename T>
 		struct Matrix4
 		{
@@ -68,10 +69,10 @@ namespace sh
 			static const Matrix4<T>& Identity()
 			{
 				static Matrix4<T> result(
-					1.0f, 0.0f, 0.0f, 0.0f,
-					0.0f, 1.0f, 0.0f, 0.0f,
-					0.0f, 0.0f, 1.0f, 0.0f,
-					0.0f, 0.0f, 0.0f, 1.0f);
+					1, 0, 0, 0,
+					0, 1, 0, 0,
+					0, 0, 1, 0,
+					0, 0, 0, 1);
 				return result;
 			}
 
@@ -127,8 +128,10 @@ namespace sh
 
 			Matrix4<T> operator*(const Matrix4<T>& m2) const
 			{
+				/*
 				Matrix4<T> r;
 
+				
 				r.m[0][0] = m[0][0] * m2.m[0][0] + m[0][1] * m2.m[1][0] + m[0][2] * m2.m[2][0] + m[0][3] * m2.m[3][0];
 				r.m[0][1] = m[0][0] * m2.m[0][1] + m[0][1] * m2.m[1][1] + m[0][2] * m2.m[2][1] + m[0][3] * m2.m[3][1];
 				r.m[0][2] = m[0][0] * m2.m[0][2] + m[0][1] * m2.m[1][2] + m[0][2] * m2.m[2][2] + m[0][3] * m2.m[3][2];
@@ -150,17 +153,41 @@ namespace sh
 				r.m[3][3] = m[3][0] * m2.m[0][3] + m[3][1] * m2.m[1][3] + m[3][2] * m2.m[2][3] + m[3][3] * m2.m[3][3];
 
 				return r;
+				*/
+
+				Matrix4<T> r;
+				r._m[0] = _m[0] * m2._m[0] + _m[4] * m2._m[1] + _m[8] * m2._m[2] + _m[12] * m2._m[3];
+				r._m[1] = _m[1] * m2._m[0] + _m[5] * m2._m[1] + _m[9] * m2._m[2] + _m[13] * m2._m[3];
+				r._m[2] = _m[2] * m2._m[0] + _m[6] * m2._m[1] + _m[10] * m2._m[2] + _m[14] * m2._m[3];
+				r._m[3] = _m[3] * m2._m[0] + _m[7] * m2._m[1] + _m[11] * m2._m[2] + _m[15] * m2._m[3];
+
+				r._m[4] = _m[0] * m2._m[4] + _m[4] * m2._m[5] + _m[8] * m2._m[6] + _m[12] * m2._m[7];
+				r._m[5] = _m[1] * m2._m[4] + _m[5] * m2._m[5] + _m[9] * m2._m[6] + _m[13] * m2._m[7];
+				r._m[6] = _m[2] * m2._m[4] + _m[6] * m2._m[5] + _m[10] * m2._m[6] + _m[14] * m2._m[7];
+				r._m[7] = _m[3] * m2._m[4] + _m[7] * m2._m[5] + _m[11] * m2._m[6] + _m[15] * m2._m[7];
+
+				r._m[8] = _m[0] * m2._m[8] + _m[4] * m2._m[9] + _m[8] * m2._m[10] + _m[12] * m2._m[11];
+				r._m[9] = _m[1] * m2._m[8] + _m[5] * m2._m[9] + _m[9] * m2._m[10] + _m[13] * m2._m[11];
+				r._m[10] = _m[2] * m2._m[8] + _m[6] * m2._m[9] + _m[10] * m2._m[10] + _m[14] * m2._m[11];
+				r._m[11] = _m[3] * m2._m[8] + _m[7] * m2._m[9] + _m[11] * m2._m[10] + _m[15] * m2._m[11];
+
+				r._m[12] = _m[0] * m2._m[12] + _m[4] * m2._m[13] + _m[8] * m2._m[14] + _m[12] * m2._m[15];
+				r._m[13] = _m[1] * m2._m[12] + _m[5] * m2._m[13] + _m[9] * m2._m[14] + _m[13] * m2._m[15];
+				r._m[14] = _m[2] * m2._m[12] + _m[6] * m2._m[13] + _m[10] * m2._m[14] + _m[14] * m2._m[15];
+				r._m[15] = _m[3] * m2._m[12] + _m[7] * m2._m[13] + _m[11] * m2._m[14] + _m[15] * m2._m[15];
+				
+				return r;
 			}
 
 			Vector3<T> operator*(const Vector3<T> &v) const
 			{
 				Vector3<T> r;
 
-				T fInvW = 1.0f / (m[3][0] * v.x + m[3][1] * v.y + m[3][2] * v.z + m[3][3]);
+				T fInvW = 1.0f / (m[0][3] * v.x + m[1][3] * v.y + m[2][3] * v.z + m[3][3]);
 
-				r.x = (m[0][0] * v.x + m[0][1] * v.y + m[0][2] * v.z + m[0][3]) * fInvW;
-				r.y = (m[1][0] * v.x + m[1][1] * v.y + m[1][2] * v.z + m[1][3]) * fInvW;
-				r.z = (m[2][0] * v.x + m[2][1] * v.y + m[2][2] * v.z + m[2][3]) * fInvW;
+				r.x = (m[0][0] * v.x + m[1][0] * v.y + m[2][0] * v.z + m[3][0]) * fInvW;
+				r.y = (m[0][1] * v.x + m[1][1] * v.y + m[2][1] * v.z + m[3][1]) * fInvW;
+				r.z = (m[0][2] * v.x + m[1][2] * v.y + m[2][2] * v.z + m[3][2]) * fInvW;
 
 				return r;
 			}
@@ -168,10 +195,10 @@ namespace sh
 			Vector4<T> operator*(const Vector4<T>& v) const
 			{
 				return Vector4<T>(
-					m[0][0] * v.x + m[0][1] * v.y + m[0][2] * v.z + m[0][3] * v.w,
-					m[1][0] * v.x + m[1][1] * v.y + m[1][2] * v.z + m[1][3] * v.w,
-					m[2][0] * v.x + m[2][1] * v.y + m[2][2] * v.z + m[2][3] * v.w,
-					m[3][0] * v.x + m[3][1] * v.y + m[3][2] * v.z + m[3][3] * v.w
+					m[0][0] * v.x + m[1][0] * v.y + m[2][0] * v.z + m[3][0] * v.w,
+					m[0][1] * v.x + m[1][1] * v.y + m[2][1] * v.z + m[3][1] * v.w,
+					m[0][2] * v.x + m[1][2] * v.y + m[2][2] * v.z + m[3][2] * v.w,
+					m[0][3] * v.x + m[1][3] * v.y + m[2][3] * v.z + m[3][3] * v.w
 					);
 			}
 			
@@ -271,9 +298,9 @@ namespace sh
 
 			void SetTranslation(const Vector3<T>& translation)
 			{
-				m[0][3] = translation.x;
-				m[1][3] = translation.y;
-				m[2][3] = translation.z;
+				m[3][0] = translation.x;
+				m[3][1] = translation.y;
+				m[3][2] = translation.z;
 			}
 
 			Vector3<T> GetTranslation() const
@@ -281,8 +308,9 @@ namespace sh
 				return Vector3<T>(m[0][3], m[1][3], m[2][3]);
 			}			
 
-			void SetPerspective(T fovy, T aspect, T zNear, T zFar)
+			void SetPerspective(T fovy, T aspect, T near, T far)
 			{
+				/*
 				const T tanFov = Tan(fovy / static_cast<T>(2));
 
 				m[0][0] = 1 / (aspect * tanFov);
@@ -304,32 +332,58 @@ namespace sh
 				m[3][1] = 0;
 				m[3][2] = -1;
 				m[3][3] = 0;
+				*/
+
+				const T top = near * Tan(fovy / static_cast<T>(2));
+				const T bottom = -top;
+				const T right = top * aspect;
+				const T left = -right;
+
+				m[0][0] = (2 * near) / (right - left);
+				m[0][1] = 0;
+				m[0][2] = 0;
+				m[0][3] = 0;
+
+				m[1][0] = 0;
+				m[1][1] = (2 * near) / (top - bottom);
+				m[1][2] = 0;
+				m[1][3] = 0;
+
+				m[2][0] = ( right + left ) / (right - left );
+				m[2][1] = (top + bottom ) / (top - bottom);
+				m[2][2] = -( far + near ) / (far - near);
+				m[2][3] = -1;
+
+				m[3][0] = 0;
+				m[3][1] = 0;
+				m[3][2] = ( -2 * far * near ) / (far - near );
+				m[3][3] = 0;
 			}
 
-			/*
-			void SetOrtho(T leftP, T rightP, T bottomP, T topP, T nearP, T farP)
+			
+			void SetOrtho(T left, T right, T bottom, T top, T near, T far)
 			{
-				m.m[0] = 2 / (rightP - leftP);
-				m.m[1] = 0;
-				m.m[2] = 0;
-				m.m[3] = (-1) * (rightP + leftP) / (rightP - leftP);
+				m[0][0] = 2 / (right - left);
+				m[0][1] = 0;
+				m[0][2] = 0;
+				m[0][3] = 0;
 
-				m.m[4] = 0;
-				m.m[5] = 2 / (topP - bottomP);
-				m.m[6] = 0;
-				m.m[7] = (-1) * (topP + bottomP) / (topP - bottomP);
+				m[1][0] = 0;
+				m[1][1] = 2 / (top - bottom);
+				m[1][2] = 0;
+				m[1][3] = 0;
 
-				m.m[8] = 0;
-				m.m[9] = 0;
-				m.m[10] = -2 / (farP - nearP);
-				m.m[11] = (-1) * (farP + nearP) / (farP - nearP);
+				m[2][0] = 0;
+				m[2][1] = 0;
+				m[2][2] = -2 / (far - near);
+				m[2][3] = 0;
 
-				m.m[12] = 0;
-				m.m[13] = 0;
-				m.m[14] = 0;
-				m.m[15] = 1;
+				m[3][0] = -( right + left ) / (right - left);
+				m[3][1] = -( top + bottom ) / (top - bottom);
+				m[3][2] = -( far + near ) / (far - near);
+				m[3][3] = 1;
 			}
-			*/
+			
 
 			Matrix4<T> GetInversed() const
 			{

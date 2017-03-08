@@ -196,25 +196,13 @@ namespace sh
 		{
 			// Update rotation part
 			m_rotationMatrix.SetIdentity();
-			m_rotationMatrix.m[2][0] = -m_frontVector.x;
-			m_rotationMatrix.m[2][1] = -m_frontVector.y;
-			m_rotationMatrix.m[2][2] = -m_frontVector.z;
-
-			m_rotationMatrix.m[0][0] = m_rightVector.x;
-			m_rotationMatrix.m[0][1] = m_rightVector.y;
-			m_rotationMatrix.m[0][2] = m_rightVector.z;
-
-			m_rotationMatrix.m[1][0] = m_upVector.x;
-			m_rotationMatrix.m[1][1] = m_upVector.y;
-			m_rotationMatrix.m[1][2] = m_upVector.z;
+			m_rotationMatrix = m_rotation.GetAsMatrix4();
 
 			// Update translation part
 			m_translationMatrix.SetIdentity();
-			m_translationMatrix.m[0][3] = -m_position.x;
-			m_translationMatrix.m[1][3] = -m_position.y;
-			m_translationMatrix.m[2][3] = -m_position.z;
+			m_translationMatrix.SetTranslation(-m_position);
 
-			m_viewMatrix = m_rotationMatrix * m_translationMatrix;
+			m_viewMatrix =  m_rotationMatrix * m_translationMatrix;
 		}
 
 		/////////////////////////////////////////////////////////////////////

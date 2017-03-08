@@ -235,7 +235,7 @@ void GraphicsWidget::Update()
 			sh::math::Vector3f targetVec = deltaRot * baseVec;
 			camera->SetPosition(targetPos + targetVec);
 			
-			sh::math::Quaternionf finalCamRot = camera->GetRotation() * deltaRot;
+			sh::math::Quaternionf finalCamRot = deltaRot * camera->GetRotation();
 			camera->SetRotation(finalCamRot);
 		}
 		else

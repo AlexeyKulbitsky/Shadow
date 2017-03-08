@@ -9,6 +9,37 @@ namespace sh
 {
 	namespace video
 	{
+		static VkPolygonMode const s_vkPolygoneMode[] =
+		{
+			VK_POLYGON_MODE_FILL,
+			VK_POLYGON_MODE_LINE
+		};
+		
+		static VkFrontFace const s_vkFrontFace[] =
+		{
+			VK_FRONT_FACE_CLOCKWISE,
+			VK_FRONT_FACE_COUNTER_CLOCKWISE			
+		};
+
+		static VkCullModeFlagBits const s_vkCullFace[] =
+		{		
+			VK_CULL_MODE_FRONT_BIT,
+			VK_CULL_MODE_BACK_BIT,
+			VK_CULL_MODE_NONE
+		};
+
+		static VkCompareOp const s_vkCompareFunction[] =
+		{
+			VK_COMPARE_OP_LESS,
+			VK_COMPARE_OP_LESS_OR_EQUAL,
+			VK_COMPARE_OP_EQUAL,
+			VK_COMPARE_OP_GREATER_OR_EQUAL,
+			VK_COMPARE_OP_GREATER,
+			VK_COMPARE_OP_NOT_EQUAL,
+			VK_COMPARE_OP_ALWAYS,
+			VK_COMPARE_OP_NEVER
+		};
+
 		VkResult CreateDebugReportCallbackEXT(VkInstance instance, const VkDebugReportCallbackCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugReportCallbackEXT* pCallback);
 // 		{
 // 			auto func = (PFN_vkCreateDebugReportCallbackEXT)vkGetInstanceProcAddr(instance, "vkCreateDebugReportCallbackEXT");
@@ -53,6 +84,14 @@ namespace sh
 			virtual VertexInputDeclaration* CreateVertexInputDeclaration() const override;
 			virtual RenderPipelinePtr CreateRenderPipeline() const override;
 
+			// Vulkan-specific interface
+			VkDevice GetVulkanDevice() const { return m_device; }
+			VkPhysicalDevice GetVulkanPhysicalDevice() const { return m_physicalDevice; }
+			VkDescriptorPool GetDescriptorPool() const { return m_descriptorPool; }
+			VkFormat GetSwapChainImageFormat() const { return m_swapChainImageFormat; }
+			VkCommandPool GetCommandPool() const { return m_commandPool; }
+			const std::vector<VulkanDeleter<VkFramebuffer>>& GetSwapChainFramebuffers() const { return m_swapChainFramebuffers; }
+		
 		private:
 			struct QueueFamilyIndices 
 			{
@@ -106,7 +145,9 @@ namespace sh
 			VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
 			static std::vector<char> readFile(const std::string& filename);
 			void createShaderModule(const std::vector<char>& code, VulkanDeleter<VkShaderModule>& shaderModule);
+		public:
 			uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
+		private:	
 			void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VulkanDeleter<VkBuffer>& buffer, VulkanDeleter<VkDeviceMemory>& bufferMemory);
 			void copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
 			void updateUniformBuffer();
@@ -116,16 +157,22 @@ namespace sh
 				VkImageTiling tiling,
 				VkImageUsageFlags usage,
 				VkMemoryPropertyFlags properties,
-				VulkanDeleter<VkImage>& image,
+				VulkanDeleter<VkImage>& image,		
 				VulkanDeleter<VkDeviceMemory>& imageMemory);
 
+			// Working command for immediate execution (buffer creation)
+		public:
 			VkCommandBuffer beginSingleTimeCommands();
 			void endSingleTimeCommands(VkCommandBuffer commandBuffer);
+
+		private:
 			void transitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout);
 			void copyImage(VkImage srcImage, VkImage dstImage, uint32_t width, uint32_t height);
 			void createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags, VulkanDeleter<VkImageView>& imageView);
 			VkFormat findSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features);
+		public:
 			VkFormat findDepthFormat();
+		private:
 			bool hasStencilComponent(VkFormat format) 
 			{
 				return format == VK_FORMAT_D32_SFLOAT_S8_UINT || format == VK_FORMAT_D24_UNORM_S8_UINT;

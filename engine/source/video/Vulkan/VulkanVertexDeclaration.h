@@ -26,6 +26,7 @@ namespace sh
 			}
 
 			// Get Vulkan Internal attributes
+			const VkVertexInputBindingDescription& GetBindingDescription() const { return m_descriptor; }
 			const std::vector<VkVertexInputAttributeDescription>& GetVulkanAttributes() const { return m_vulkanAttributes; }
 			const VkVertexInputAttributeDescription* GetVulkanAttributesPointer() const { return m_vulkanAttributes.data(); }
 			size_t GetVulkanAttributesCount() const { return m_vulkanAttributes.size(); }
