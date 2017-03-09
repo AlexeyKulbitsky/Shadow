@@ -17,6 +17,7 @@ namespace sh
 			virtual void Load(const pugi::xml_node &node) override;
 			virtual void Init() override;
 			virtual void Upload() override;
+			virtual UniformBuffer* Clone() override;
 			virtual void SetShaderProgram(ShaderProgram* shaderProgram) override;
 
 			// Vulkan-specific inteface

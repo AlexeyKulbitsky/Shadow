@@ -32,7 +32,10 @@ namespace sh
 			virtual VertexInputDeclaration* GetVertexInputDeclaration() const override { return m_inputDeclaration; }
 			const UniformsBatchPtr& GetAutoUniformsBatch() const { return m_autoUniformsBatch; }
 
+			// Vulkan-specific interface
 			void SetPipeline(VulkanRenderPipeline* pipeline) { m_pipeline = pipeline; }
+			VkCommandBuffer GetCommandBuffer(uint32_t index) { return m_commandBuffers[index]; }
+
 		protected:
 			bool m_useIndices;
 			VulkanVertexBuffer* m_vertexBuffer;

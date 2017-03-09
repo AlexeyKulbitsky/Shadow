@@ -28,7 +28,7 @@ namespace sh
 			
 			virtual void Render(scene::Model* model);
 			virtual void Render(scene::Mesh* mesh);
-			virtual void Render(const RenderCommandPtr& command) {}
+			virtual void Render(const RenderCommandPtr& command) = 0;
 
 			// Viewport management
 			virtual void SetViewport(u32 x, u32 y, u32 width, u32 height);

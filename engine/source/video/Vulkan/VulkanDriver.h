@@ -73,6 +73,7 @@ namespace sh
 			virtual void BeginRendering() override;
 			virtual void EndRendering() override;
 			virtual void Render(scene::Mesh* mesh) override;
+			virtual void Render(const RenderCommandPtr& command) override;
 
 			void DrawBuffer();
 
@@ -91,7 +92,8 @@ namespace sh
 			VkFormat GetSwapChainImageFormat() const { return m_swapChainImageFormat; }
 			VkCommandPool GetCommandPool() const { return m_commandPool; }
 			const std::vector<VulkanDeleter<VkFramebuffer>>& GetSwapChainFramebuffers() const { return m_swapChainFramebuffers; }
-		
+			VkRenderPass GetRenderPass() const { return m_renderPass; }
+
 		private:
 			struct QueueFamilyIndices 
 			{
@@ -231,6 +233,10 @@ namespace sh
 			std::vector<const char*> m_instanceExtensionsList;
 			std::vector<const char*> m_deviceLayersList;
 			std::vector<const char*> m_deviceExtensionsList;
+
+			//////////////////////////////////////////////////////////////
+
+			uint32_t m_currentImageIndex;
 		};
 	}
 }

@@ -27,10 +27,8 @@ namespace sh
 			void Init();
 
 			VkPipeline GetVulkanId() const { return m_graphicsPipeline; }
-			VkRenderPass GetRenderPass() const { return m_renderPass; }
 
 		private:
-			void createRenderPass();
 
 		protected:
 			ShaderProgramPtr m_shaderProgram;
@@ -38,7 +36,6 @@ namespace sh
 			UniformBufferPtr m_uniformBuffer;
 			UniformBufferPtr m_transformUniformBuffer;
 
-			VkRenderPass m_renderPass;
 			VkPipeline m_graphicsPipeline;		
 		};
 	}

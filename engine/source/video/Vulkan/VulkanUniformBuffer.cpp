@@ -8,10 +8,9 @@ namespace sh
 	{
 		VulkanUniformBuffer::VulkanUniformBuffer()
 		{
-			createDecriptorPool();
-			createDescriptorSet();
+			
 
-			VkDeviceSize bufferSize = 0U;//sizeof(UniformBufferObject);
+			VkDeviceSize bufferSize = sizeof(sh::math::Matrix4f);//sizeof(UniformBufferObject);
 
 			createBuffer(bufferSize, 
 						 VK_BUFFER_USAGE_TRANSFER_SRC_BIT, 
@@ -61,7 +60,22 @@ namespace sh
 
 		void VulkanUniformBuffer::Init()
 		{
+			m_autoUniformsBatch.reset(new UniformsBatch());
+
 			createDescriptorSetLayout();
+			createDecriptorPool();
+			createDescriptorSet();
+
+			m_autoUniformsBatch.reset(new UniformsBatch());
+			m_autoUniformsBatch->m_uniforms.resize(1);
+			for (size_t i = 0; i < 1; ++i)
+			{
+				math::Matrix4f mat;
+				Uniform* uniform = new Uniform(mat);
+				uniform->SetGlobalUniformName(GlobalUniformName::MODEL_WORLD_VIEW_PROJECTION_MATRIX);
+				//m_autoUniforms[i]->Init();
+				m_autoUniformsBatch->m_uniforms[i] = uniform;
+			}
 		}
 
 		/////////////////////////////////////////////////////////////////////////
@@ -71,8 +85,9 @@ namespace sh
 			VulkanDriver* driver = static_cast<VulkanDriver*>(Device::GetInstance()->GetDriver());
 			VkDevice device = driver->GetVulkanDevice();
 
-			struct UniformBufferObject {};
-			UniformBufferObject ubo = {};
+			sh::math::Matrix4f mat = m_autoUniformsBatch->m_uniforms[0]->Get<sh::math::Matrix4f>();
+			//sh::math::Matrix4f mat = sh::math::Matrix4f::Identity();
+			//mat.SetScale(sh::math::Vector3f(1.0f));
 
 			/*
 			ubo.model.setIdentity();
@@ -86,11 +101,33 @@ namespace sh
 			ubo.proj = math::perspective(math::radians(45.0f), 800.0f / 600.0f, 0.1f, 1000.0f);
 			*/
 			void* data;
-			vkMapMemory(device, m_uniformStagingBufferMemory, 0, sizeof(ubo), 0, &data);
-			memcpy(data, &ubo, sizeof(ubo));
+			vkMapMemory(device, m_uniformStagingBufferMemory, 0, sizeof(mat), 0, &data);
+			memcpy(data, &(mat._m[0]), sizeof(mat));
 			vkUnmapMemory(device, m_uniformStagingBufferMemory);
 
-			copyBuffer(m_uniformStagingBuffer, m_uniformBuffer, sizeof(ubo));
+			copyBuffer(m_uniformStagingBuffer, m_uniformBuffer, sizeof(mat));
+		}
+
+		/////////////////////////////////////////////////////////////////////////
+
+		UniformBuffer* VulkanUniformBuffer::Clone()
+		{
+			VulkanUniformBuffer* buffer = new VulkanUniformBuffer();
+			buffer->m_autoUniformsBatch = m_autoUniformsBatch->Clone();
+
+
+			buffer->m_descriptorPool = m_descriptorPool;
+			buffer->m_descriptorSet = m_descriptorSet;
+			buffer->m_descriptorSetLayout = m_descriptorSetLayout;
+			buffer->m_pipelineLayout = m_pipelineLayout;
+
+			buffer->m_uniformStagingBuffer = m_uniformStagingBuffer;
+			buffer->m_uniformStagingBufferMemory = m_uniformStagingBufferMemory;
+			buffer->m_uniformBuffer = m_uniformBuffer;
+			buffer->m_uniformBufferMemory = m_uniformBufferMemory;
+
+			UniformBuffer* result = buffer;
+			return result;
 		}
 
 		/////////////////////////////////////////////////////////////////////////

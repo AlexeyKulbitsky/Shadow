@@ -10,24 +10,26 @@ namespace sh
 		class GLES20RenderPipeline : public RenderPipeline
 		{
 		public:
-			GLES20RenderPipeline();			
+			GLES20RenderPipeline();
 			virtual ~GLES20RenderPipeline();
 
 			virtual RenderPipelinePtr Clone() override;
 
-			virtual void Load(const pugi::xml_node &node);
-			virtual void Unload();		
+			virtual void Load(const pugi::xml_node &node) override;
+			virtual void Unload() override;
 			
-			virtual const ShaderProgramPtr& GetShaderProgram() const { return m_shaderProgram; }
-			virtual VertexInputDeclaration* GetVertexInputDeclaration() const { return m_vertexInputDeclaration; }
-			virtual const UniformBufferPtr& GetUniformBuffer() const { return m_uniformBuffer; }
-			virtual const UniformBufferPtr& GetTransformUniformBuffer() const { return m_transformUniformBuffer; }
-			
-		protected:		
+			virtual const ShaderProgramPtr& GetShaderProgram() const override;
+			virtual VertexInputDeclaration* GetVertexInputDeclaration() const override;
+			virtual const UniformBufferPtr& GetUniformBuffer() const override;
+			virtual const UniformBufferPtr& GetTransformUniformBuffer() const override;
+
+		protected:			
 			ShaderProgramPtr m_shaderProgram;
 			VertexInputDeclaration* m_vertexInputDeclaration;
 			UniformBufferPtr m_uniformBuffer;
-			UniformBufferPtr m_transformUniformBuffer;		
+			UniformBufferPtr m_transformUniformBuffer;
+
+			
 		};
 	}
 }

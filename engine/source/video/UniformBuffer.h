@@ -57,7 +57,7 @@ namespace sh
 
 			const UniformsBatchPtr& GetAutoUniformsBatch() const { return m_autoUniformsBatch; }
 
-		private:
+		protected:
 			std::vector<Uniform*> m_uniforms;
 			std::vector<Uniform*> m_globalUniforms;
 			std::vector<Uniform*> m_autoUniforms;

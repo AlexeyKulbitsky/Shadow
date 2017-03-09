@@ -13,6 +13,9 @@
 #include "../scene/SceneManager.h"
 #include "../scene/Camera.h"
 
+#include "../video/Vulkan/VulkanRenderCommand.h"
+#include "../video/Vulkan/VulkanRenderPipeline.h"
+
 namespace sh
 {
 	namespace scene
@@ -37,7 +40,7 @@ namespace sh
 			Camera* camera = Device::GetInstance()->GetSceneManager()->GetCamera();
 			sh::math::Matrix4f viewMatrix = camera->GetViewMatrix();
 			sh::math::Matrix4f projectionMatrix = camera->GetProjectionMatrix();
-
+			projectionMatrix.m[1][1] *= -1;
 			video::Driver* driver = Device::GetInstance()->GetDriver();
 			math::Matrix4f wvp = projectionMatrix * viewMatrix * m_worldMatrix;
 			//wvp.Transpose();
@@ -109,10 +112,20 @@ namespace sh
 				const video::RenderPipelinePtr& renderPipeline = m_material->GetRenderPipeline(i);
 
 				video::VertexInputDeclaration* inputDeclaration = renderPipeline->GetVertexInputDeclaration();
-				inputDeclaration->Assemble(*(m_renderCommands[i]->GetVertexBuffer()->GetVertexDeclaration()));
+				inputDeclaration->Assemble(*(m_renderCommands[i]->GetVertexBuffer()->GetVertexDeclaration().get()));
 				m_renderCommands[i]->SetVertexInputDeclaration(inputDeclaration);
 				const video::UniformsBatchPtr& uniformsBatch = renderPipeline->GetUniformBuffer()->GetAutoUniformsBatch()->Clone();
 				m_renderCommands[i]->SetAutoUniformsBatch(uniformsBatch);
+
+				sh::video::VulkanRenderCommand* rc = dynamic_cast<sh::video::VulkanRenderCommand*>(m_renderCommands[i].get());
+				if (rc)
+				{
+					sh::video::VulkanRenderPipeline* rp = dynamic_cast<sh::video::VulkanRenderPipeline*>(renderPipeline.get());
+					rp->Init();
+					rc->SetPipeline(rp);
+				}
+
+				m_renderCommands[i]->Init();
 			}			
 		}
 

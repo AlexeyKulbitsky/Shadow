@@ -1,0 +1,74 @@
+<technique name="firstTechnique">
+
+<pipeline name="firstPass" layer="main">
+
+	<depthstencilstate>
+		<depthTest val="false"/>		
+	</depthstencilstate>
+
+	<rasterizationstate>
+		<cullFace val="none"/>
+	</rasterizationstate>
+
+	<blendingstate>
+		<srcFactor val="SrcAlpha"/>
+		<dstFactor val="InvSrcAlpha"/>
+		<operation val="Add"/>
+	</blendingstate>
+		
+	<constants>
+		<uniforms>
+			<uniform name="matMVP" type="mat4" val="model.worldViewProjectionMatrix"/>
+		</uniforms>
+	</constants>
+	
+	<attributes>
+		<position location="0" type="vec3" name="aPosition"/>
+	</attributes>
+	
+	<!-- GLES 20 SHADER /-->
+	<shader language="GLSL" api="GLES20">
+		<vertexShader>
+		<![CDATA[
+
+			attribute vec3 aPosition;
+			uniform mat4 matMVP;
+			
+			void main() 
+			{
+				gl_Position = matMVP * vec4(aPosition, 1.0);
+			}
+			
+		]]>
+		</vertexShader>
+
+		<fragmentShader>
+		<![CDATA[
+
+			precision mediump float;
+	
+			void main() 
+			{				
+				gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
+			} 
+	
+		]]>	
+		</fragmentShader>
+	</shader>
+	
+	
+	<!-- VULKAN SHADER/-->
+	<shader language="SPIR-V" api="Vulkan">
+		<vertexShader>
+			<source val="vert.spv"/>
+		</vertexShader>
+		
+		<fragmentShader>
+			<source val="frag.spv"/>
+		</fragmentShader>
+	
+	</shader>
+
+</pipeline>
+
+</technique>

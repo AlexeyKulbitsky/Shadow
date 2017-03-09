@@ -27,7 +27,7 @@ namespace sh
 			result->m_uniforms.resize(size);
 			for (size_t i = 0U; i < size; ++i)
 			{
-				result->m_uniforms[i] = m_uniforms[i]->Clone();
+				result->m_uniforms[i] = m_uniforms[i];
 			}
 
 			return result;

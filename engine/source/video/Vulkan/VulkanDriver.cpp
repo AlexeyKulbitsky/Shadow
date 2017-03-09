@@ -7,6 +7,7 @@
 #include "VulkanRenderPipeline.h"
 #include "VulkanShaderProgram.h"
 #include "VulkanUniformBuffer.h"
+#include "VulkanRenderCommand.h"
 
 //#ifndef STB_IMAGE_IMPLEMENTATION
 //#define STB_IMAGE_IMPLEMENTATION
@@ -119,13 +120,18 @@ namespace sh
 			CreateLogicalDevice();		
 			CreateSwapChain();		
 			CreateImageViews();
-			/*
 			CreateRenderPass();
+			CreateCommandPool();
+			CreateDepthResources();
+			CreateFramebuffers();
+			CreateSemaphores();
+			/*
+			
 			
 			CreateDescriptorSetLayout();
 			CreateGraphicsPipeline();	
 			
-			CreateCommandPool();
+			
 			CreateDepthResources();
 			CreateFramebuffers();
 			CreateTextureImage();
@@ -135,17 +141,14 @@ namespace sh
 			createVertexBuffer();
 			createIndexBuffer();
 			createUniformBuffer();
-			CreateDescriptorPool();
-			CreateDescriptorSet();
-			CreateCommandBuffers();
-			CreateSemaphores();
+			
 			*/
 			return true;
 		}
 
 		void VulkanDriver::BeginRendering()
 		{
-
+			
 		}
 		void VulkanDriver::EndRendering()
 		{
@@ -158,6 +161,52 @@ namespace sh
 		{
 			updateUniformBuffer();
 			DrawBuffer();
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		void VulkanDriver::Render(const RenderCommandPtr& command)
+		{
+			VulkanRenderCommand* vulkanRenderCommand = static_cast<VulkanRenderCommand*>(command.get());
+			
+			vkAcquireNextImageKHR(m_device, m_swapChain, 500000/*std::numeric_limits<uint64_t>::max()*/, m_imageAvailableSemaphore, VK_NULL_HANDLE, &m_currentImageIndex);
+			
+			VkCommandBuffer commandBuffer = vulkanRenderCommand->GetCommandBuffer(m_currentImageIndex);
+		
+			VkSubmitInfo submitInfo = {};
+			submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+
+			VkSemaphore waitSemaphores[] = { m_imageAvailableSemaphore };
+			VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
+			submitInfo.waitSemaphoreCount = 1;
+			submitInfo.pWaitSemaphores = waitSemaphores;
+			submitInfo.pWaitDstStageMask = waitStages;
+
+			submitInfo.commandBufferCount = 1;
+			submitInfo.pCommandBuffers = &commandBuffer;
+
+			VkSemaphore signalSemaphores[] = { m_renderFinishedSemaphore };
+			submitInfo.signalSemaphoreCount = 1;
+			submitInfo.pSignalSemaphores = signalSemaphores;
+
+			VkResult res = vkQueueSubmit(m_graphicsQueue, 1, &submitInfo, VK_NULL_HANDLE);
+			SH_ASSERT(res == VK_SUCCESS, "failed to submit draw command buffer!");
+
+
+			VkPresentInfoKHR presentInfo = {};
+			presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+
+			presentInfo.waitSemaphoreCount = 1;
+			presentInfo.pWaitSemaphores = signalSemaphores;
+
+			VkSwapchainKHR swapChains[] = { m_swapChain };
+			presentInfo.swapchainCount = 1;
+			presentInfo.pSwapchains = swapChains;
+
+			presentInfo.pImageIndices = &m_currentImageIndex;
+
+			vkQueuePresentKHR(m_presentQueue, &presentInfo);
+		
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -234,7 +283,9 @@ namespace sh
 
 		RenderCommandPtr VulkanDriver::CreateRenderCommand() const
 		{
-			return nullptr;
+			RenderCommandPtr result = nullptr;
+			result.reset(new VulkanRenderCommand());
+			return result;
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////

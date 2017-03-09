@@ -27,6 +27,7 @@ namespace sh
 		{
 			VulkanDriver* driver = static_cast<VulkanDriver*>(Device::GetInstance()->GetDriver());
 			VkDevice device = driver->GetVulkanDevice();
+			VkRenderPass renderPass = driver->GetRenderPass();
 			VkCommandPool commandPool = driver->GetCommandPool();
 			const std::vector<VulkanDeleter<VkFramebuffer>>& framBuffers = driver->GetSwapChainFramebuffers();
 			math::Vector4u vp = driver->GetViewPort();
@@ -56,16 +57,16 @@ namespace sh
 
 				VkRenderPassBeginInfo renderPassInfo = {};
 				renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-				renderPassInfo.renderPass = m_pipeline->GetRenderPass();
+				renderPassInfo.renderPass = renderPass;
 				renderPassInfo.framebuffer = framBuffers[i];
 				renderPassInfo.renderArea.offset = { 0, 0 };
 				renderPassInfo.renderArea.extent.width = vp.z;
 				renderPassInfo.renderArea.extent.height = vp.w;
 
 				std::array<VkClearValue, 2> clearValues = {};
-				clearValues[0].color.float32[0] = 0.0f;
-				clearValues[0].color.float32[1] = 0.0f;
-				clearValues[0].color.float32[2] = 0.0f;
+				clearValues[0].color.float32[0] = 0.7f;
+				clearValues[0].color.float32[1] = 0.7f;
+				clearValues[0].color.float32[2] = 0.7f;
 				clearValues[0].color.float32[3] = 1.0f;
 				clearValues[1].depthStencil.depth = 1.0f;
 				clearValues[1].depthStencil.stencil = 0;
@@ -93,8 +94,8 @@ namespace sh
 
 				vkCmdEndRenderPass(m_commandBuffers[i]);
 
-				SH_ASSERT(vkEndCommandBuffer(m_commandBuffers[i]) == VK_SUCCESS,
-					"failed to record command buffer!");			
+				VkResult res = vkEndCommandBuffer(m_commandBuffers[i]);
+				SH_ASSERT(res == VK_SUCCESS, "failed to record command buffer!");			
 			}
 		}
 
@@ -102,35 +103,35 @@ namespace sh
 
 		void VulkanRenderCommand::SetUseIndices(bool useIndices)
 		{
-
+			m_useIndices = useIndices;
 		}
 
 		/////////////////////////////////////////////////////////////////////////
 
 		void VulkanRenderCommand::SetVertexBuffer(VertexBuffer* vertexBuffer)
 		{
-
+			m_vertexBuffer = static_cast<VulkanVertexBuffer*>(vertexBuffer);
 		}
 
 		/////////////////////////////////////////////////////////////////////////
 
 		void VulkanRenderCommand::SetIndexBuffer(IndexBuffer* indexBuffer)
 		{
-
+			m_indexBuffer = static_cast<VulkanIndexBuffer*>(indexBuffer);
 		}
 
 		/////////////////////////////////////////////////////////////////////////
 
 		void VulkanRenderCommand::SetTopology(Topology topology)
 		{
-
+			m_topology = topology;
 		}
 
 		/////////////////////////////////////////////////////////////////////////
 
 		void VulkanRenderCommand::SetVertexInputDeclaration(VertexInputDeclaration* declaration)
 		{
-
+			m_inputDeclaration = static_cast<VKVertexDeclaration*>(declaration);
 		}
 
 		/////////////////////////////////////////////////////////////////////////

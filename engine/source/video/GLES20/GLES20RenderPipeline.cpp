@@ -1,12 +1,12 @@
-#include "GLES20RenderPipeline.h"
-
-#include "../ShaderProgram.h"
+#include "GLES20RenderPIpeline.h"
+#include "../../Device.h"
+#include "../Driver.h"
 #include "../UniformBuffer.h"
 #include "../DepthStencilState.h"
-#include "../RasterizationState.h"
 #include "../BlendingState.h"
+#include "../RasterizationState.h"
 #include "../VertexDeclaration.h"
-#include "../../Device.h"
+#include "../ShaderProgram.h"
 
 namespace sh
 {
@@ -14,40 +14,15 @@ namespace sh
 	{
 		GLES20RenderPipeline::GLES20RenderPipeline()
 		{
-
 		}
 
-		///////////////////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////
 
 		GLES20RenderPipeline::~GLES20RenderPipeline()
 		{
-
 		}
 
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-
-		
-		RenderPipelinePtr GLES20RenderPipeline::Clone()
-		{
-			RenderPipelinePtr result;
-
-			GLES20RenderPipeline* pipeline = new GLES20RenderPipeline();
-
-			pipeline->m_shaderProgram = m_shaderProgram;
-			pipeline->m_uniformBuffer = UniformBufferPtr(m_uniformBuffer->Clone());
-			pipeline->m_depthStencilState = DepthStencilStatePtr(m_depthStencilState->Clone());
-			pipeline->m_blendingState = BlendingStatePtr(m_blendingState->Clone());
-			pipeline->m_rasterizationState = RasterizationStatePtr(m_rasterizationState->Clone());
-			pipeline->m_vertexInputDeclaration = m_vertexInputDeclaration->Clone();
-			pipeline->m_name = m_name;
-			pipeline->m_layer = m_layer;
-
-			result.reset(pipeline);
-			return result;
-		}
-		
-
-		///////////////////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////
 
 		void GLES20RenderPipeline::Load(const pugi::xml_node &node)
 		{
@@ -76,7 +51,7 @@ namespace sh
 					m_layer = Layer::BACKGROUND;
 				}
 			}
-			
+
 			// Load depth/stencil state
 			m_depthStencilState.reset(new DepthStencilState());
 			pugi::xml_node depthStencilStateNode = node.child("depthstencilstate");
@@ -97,7 +72,7 @@ namespace sh
 			m_blendingState.reset(new BlendingState());
 			pugi::xml_node blendingStateNode = node.child("blendingstate");
 			if (!blendingStateNode.empty())
-			{			
+			{
 				m_blendingState->Load(blendingStateNode);
 				m_blendingState->enabled = true;
 			}
@@ -108,7 +83,7 @@ namespace sh
 			{
 				m_shaderProgram = driver->CreateShaderProgram();
 				m_shaderProgram->Load(shaderProgramNode);
-			}			
+			}
 
 			// Load attributes
 			pugi::xml_node attributesNode = node.child("attributes");
@@ -129,23 +104,54 @@ namespace sh
 				m_uniformBuffer->Load(uniformsNode);
 				m_uniformBuffer->Init();
 			}
+		}
 
-		}		
+		///////////////////////////////////////////////////////////////////////////////////
 
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-	
+		RenderPipelinePtr GLES20RenderPipeline::Clone()
+		{
+			RenderPipelinePtr result;
+
+			GLES20RenderPipeline* pipeline = new GLES20RenderPipeline();
+			pipeline->m_shaderProgram = m_shaderProgram;
+			pipeline->m_uniformBuffer = UniformBufferPtr(m_uniformBuffer->Clone());
+			pipeline->m_depthStencilState = DepthStencilStatePtr(m_depthStencilState->Clone());
+			pipeline->m_blendingState = BlendingStatePtr(m_blendingState->Clone());
+			pipeline->m_rasterizationState = RasterizationStatePtr(m_rasterizationState->Clone());
+			pipeline->m_vertexInputDeclaration = m_vertexInputDeclaration->Clone();
+			pipeline->m_name = m_name;
+			pipeline->m_layer = m_layer;
+
+			result.reset(pipeline);
+			return result;
+		}
+
+		///////////////////////////////////////////////////////////////////////////////////
+		
 		void GLES20RenderPipeline::Unload()
 		{
-			
-			m_shaderProgram->Unload();
-
 			delete m_vertexInputDeclaration;
 			m_vertexInputDeclaration = nullptr;
 
 			m_uniformBuffer->Unload();
-			
 		}
 
-		///////////////////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////
+
+		const ShaderProgramPtr& GLES20RenderPipeline::GetShaderProgram() const { return m_shaderProgram; }
+
+		///////////////////////////////////////////////////////////////////////////////////
+
+		VertexInputDeclaration* GLES20RenderPipeline::GetVertexInputDeclaration() const { return m_vertexInputDeclaration; }
+		
+		///////////////////////////////////////////////////////////////////////////////////
+		
+		const UniformBufferPtr& GLES20RenderPipeline::GetUniformBuffer() const { return m_uniformBuffer; }
+		
+		///////////////////////////////////////////////////////////////////////////////////
+
+		const UniformBufferPtr& GLES20RenderPipeline::GetTransformUniformBuffer() const { return m_transformUniformBuffer; }
+		
+		///////////////////////////////////////////////////////////////////////////////////
 	}
 }
