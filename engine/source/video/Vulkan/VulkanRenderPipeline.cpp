@@ -115,7 +115,7 @@ namespace sh
 
 			
 
-			VKVertexDeclaration* vertexDeclaration = static_cast<VKVertexDeclaration*>(m_vertexInputDeclaration);
+			VulkanVertexDeclaration* vertexDeclaration = static_cast<VulkanVertexDeclaration*>(m_vertexInputDeclaration);
 			const auto& inputAttributeDescriptions = vertexDeclaration->GetVulkanAttributes();
 			const auto& inputBindingDescription = vertexDeclaration->GetBindingDescription();
 

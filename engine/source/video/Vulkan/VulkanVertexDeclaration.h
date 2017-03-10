@@ -16,7 +16,7 @@ namespace sh
 			std::string name;
 		};
 
-		class VKVertexDeclaration : public VertexInputDeclaration
+		class VulkanVertexDeclaration : public VertexInputDeclaration
 		{			
 		public:
 			// Add attribute to engines structure
@@ -31,7 +31,7 @@ namespace sh
 			const VkVertexInputAttributeDescription* GetVulkanAttributesPointer() const { return m_vulkanAttributes.data(); }
 			size_t GetVulkanAttributesCount() const { return m_vulkanAttributes.size(); }
 
-			VKVertexDeclaration& operator=(const VKVertexDeclaration& other);
+			VulkanVertexDeclaration& operator=(const VulkanVertexDeclaration& other);
 
 			virtual void Load(const pugi::xml_node &node) override;
 			virtual void SetShaderProgram(ShaderProgram* shaderProgram) override;

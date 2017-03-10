@@ -131,7 +131,7 @@ namespace sh
 
 		void VulkanRenderCommand::SetVertexInputDeclaration(VertexInputDeclaration* declaration)
 		{
-			m_inputDeclaration = static_cast<VKVertexDeclaration*>(declaration);
+			m_inputDeclaration = static_cast<VulkanVertexDeclaration*>(declaration);
 		}
 
 		/////////////////////////////////////////////////////////////////////////

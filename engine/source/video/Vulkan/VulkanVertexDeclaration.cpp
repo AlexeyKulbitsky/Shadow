@@ -5,7 +5,7 @@ namespace sh
 	namespace video
 	{
 
-		VKVertexDeclaration& VKVertexDeclaration::operator=(const VKVertexDeclaration& other)
+		VulkanVertexDeclaration& VulkanVertexDeclaration::operator=(const VulkanVertexDeclaration& other)
 		{
 			m_descriptor = other.m_descriptor;
 			m_vulkanAttributes = other.m_vulkanAttributes;
@@ -15,7 +15,7 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////////////////
 
-		void VKVertexDeclaration::Load(const pugi::xml_node &node)
+		void VulkanVertexDeclaration::Load(const pugi::xml_node &node)
 		{
 			if (node.empty())
 				return;
@@ -77,28 +77,28 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////////////////
 
-		void VKVertexDeclaration::SetShaderProgram(ShaderProgram*)
+		void VulkanVertexDeclaration::SetShaderProgram(ShaderProgram*)
 		{
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////
 
-		void VKVertexDeclaration::Init()
+		void VulkanVertexDeclaration::Init()
 		{
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////
 
-		VertexInputDeclaration* VKVertexDeclaration::Clone()
+		VertexInputDeclaration* VulkanVertexDeclaration::Clone()
 		{
-			VKVertexDeclaration* result = new VKVertexDeclaration();
+			VulkanVertexDeclaration* result = new VulkanVertexDeclaration();
 			(*result) = (*this);
 			return result;
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////
 
-		void VKVertexDeclaration::Assemble(VertexDeclaration& declaration)
+		void VulkanVertexDeclaration::Assemble(VertexDeclaration& declaration)
 		{
 			// Init descriptor telling Vulkan what package of attributes to use
 			m_descriptor.binding = 0U;

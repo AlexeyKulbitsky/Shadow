@@ -40,7 +40,7 @@ namespace sh
 
 		private:
 			VkDevice m_device = VK_NULL_HANDLE;
-			VKVertexDeclaration m_vertexDeclaration;
+			VulkanVertexDeclaration m_vertexDeclaration;
 			std::vector<VulkanShader> m_shaders;
 			std::vector<VkPipelineShaderStageCreateInfo> m_shaderStages;
 			

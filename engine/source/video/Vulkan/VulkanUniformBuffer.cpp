@@ -86,20 +86,7 @@ namespace sh
 			VkDevice device = driver->GetVulkanDevice();
 
 			sh::math::Matrix4f mat = m_autoUniformsBatch->m_uniforms[0]->Get<sh::math::Matrix4f>();
-			//sh::math::Matrix4f mat = sh::math::Matrix4f::Identity();
-			//mat.SetScale(sh::math::Vector3f(1.0f));
 
-			/*
-			ubo.model.setIdentity();
-			math::quatf rr = math::quatf().setFromAngleAxis(-math::k_pi2, math::vec3f(1.0f, 0.0f, 0.0f));
-			math::quatf r = math::quatf().setFromAngleAxis(rot, math::vec3f(0.0f, 0.0f, 1.0f));
-			ubo.model.setRotation((rr * r).getAsMat3());
-
-			ubo.view.setIdentity();
-			ubo.view.setTranslation(math::vec3f(0.0f, 0.5f, -3.0f));
-			
-			ubo.proj = math::perspective(math::radians(45.0f), 800.0f / 600.0f, 0.1f, 1000.0f);
-			*/
 			void* data;
 			vkMapMemory(device, m_uniformStagingBufferMemory, 0, sizeof(mat), 0, &data);
 			memcpy(data, &(mat._m[0]), sizeof(mat));
@@ -140,7 +127,6 @@ namespace sh
 
 		void VulkanUniformBuffer::LoadUniforms(const pugi::xml_node &node)
 		{
-#if 0
 			if (node.empty())
 				return;
 
@@ -161,34 +147,34 @@ namespace sh
 				printf("Type: %s ", typeName.c_str());
 				if (typeName == "float")
 				{
-					GLES20UniformFloat* glesUniform = new GLES20UniformFloat(0.0f);
-					glesUniform->SetGLId(m_shaderProgram->GetGLId());
-					uniform = glesUniform;
+					//GLES20UniformFloat* glesUniform = new GLES20UniformFloat(0.0f);
+					//glesUniform->SetGLId(m_shaderProgram->GetGLId());
+					//uniform = glesUniform;
 					if (valAttr)
 					{
 						float value = valAttr.as_float();
 						printf("Value: %f", value);
-						uniform->Set(value);
+						//uniform->Set(value);
 					}
 
 				}
 				else if (typeName == "int")
 				{
-					GLES20UniformInt *glesUniform = new GLES20UniformInt(0);
-					glesUniform->SetGLId(m_shaderProgram->GetGLId());
-					uniform = glesUniform;
+					//GLES20UniformInt *glesUniform = new GLES20UniformInt(0);
+					//glesUniform->SetGLId(m_shaderProgram->GetGLId());
+					//uniform = glesUniform;
 					if (valAttr)
 					{
 						int value = valAttr.as_int();
 						printf("Value: %d", value);
-						uniform->Set(value);
+						//uniform->Set(value);
 					}
 				}
 				else if (typeName == "vec2")
 				{
-					GLES20UniformVector2f *glesUniform = new GLES20UniformVector2f(sh::math::Vector2f(0.0f));
-					glesUniform->SetGLId(m_shaderProgram->GetGLId());
-					uniform = glesUniform;
+					//GLES20UniformVector2f *glesUniform = new GLES20UniformVector2f(sh::math::Vector2f(0.0f));
+					//glesUniform->SetGLId(m_shaderProgram->GetGLId());
+					//uniform = glesUniform;
 					if (valAttr)
 					{
 
@@ -196,18 +182,18 @@ namespace sh
 				}
 				else if (typeName == "vec3")
 				{
-					GLES20UniformVector3f *glesUniform = new GLES20UniformVector3f(sh::math::Vector3f(0.0f));
-					glesUniform->SetGLId(m_shaderProgram->GetGLId());
-					uniform = glesUniform;
+					//GLES20UniformVector3f *glesUniform = new GLES20UniformVector3f(sh::math::Vector3f(0.0f));
+					//glesUniform->SetGLId(m_shaderProgram->GetGLId());
+					//uniform = glesUniform;
 					if (valAttr)
 					{
 					}
 				}
 				else if (typeName == "vec4")
 				{
-					GLES20UniformVector4f *glesUniform = new GLES20UniformVector4f(sh::math::Vector4f(0.0f));
-					glesUniform->SetGLId(m_shaderProgram->GetGLId());
-					uniform = glesUniform;
+					//GLES20UniformVector4f *glesUniform = new GLES20UniformVector4f(sh::math::Vector4f(0.0f));
+					//glesUniform->SetGLId(m_shaderProgram->GetGLId());
+					//uniform = glesUniform;
 					if (valAttr)
 					{
 
@@ -215,52 +201,52 @@ namespace sh
 				}
 				else if (typeName == "mat4")
 				{
-					GLES20UniformMatrix4f *glesUniform = new GLES20UniformMatrix4f(sh::math::Matrix4f());
-					glesUniform->SetGLId(m_shaderProgram->GetGLId());
-					uniform = glesUniform;
+					//GLES20UniformMatrix4f *glesUniform = new GLES20UniformMatrix4f(sh::math::Matrix4f());
+					//glesUniform->SetGLId(m_shaderProgram->GetGLId());
+					//uniform = glesUniform;
 					if (valAttr)
 					{
 						String value = valAttr.as_string();
 						if (value == "model.worldMatrix")
 						{
-							glesUniform->SetGlobalUniformName(GlobalUniformName::MODEL_WORLD_MATRIX);
+							//glesUniform->SetGlobalUniformName(GlobalUniformName::MODEL_WORLD_MATRIX);
 						}
 						else if (value == "model.worldViewProjectionMatrix")
 						{
-							glesUniform->SetGlobalUniformName(GlobalUniformName::MODEL_WORLD_VIEW_PROJECTION_MATRIX);
+							//glesUniform->SetGlobalUniformName(GlobalUniformName::MODEL_WORLD_VIEW_PROJECTION_MATRIX);
 						}
 						else if (value == "camera.viewProjectionMatrix")
 						{
-							glesUniform->SetGlobalUniformName(GlobalUniformName::CAMERA_VIEW_PROJECTION_MATRIX);
+							//glesUniform->SetGlobalUniformName(GlobalUniformName::CAMERA_VIEW_PROJECTION_MATRIX);
 						}
 						else if (value == "camera.viewRotationProjectionMatrix")
 						{
-							glesUniform->SetGlobalUniformName(GlobalUniformName::CAMERA_VIEW_ROTATION_PROJECTION_MATRIX);
+							//glesUniform->SetGlobalUniformName(GlobalUniformName::CAMERA_VIEW_ROTATION_PROJECTION_MATRIX);
 						}
 					}
 				}
 				else if (typeName == "vec3Array")
 				{
-					GLES20UniformVector3fArray* glesUniform = new GLES20UniformVector3fArray(std::vector<math::Vector3f>(0.0f));
-					glesUniform->SetGLId(m_shaderProgram->GetGLId());
-					uniform = glesUniform;
+					//GLES20UniformVector3fArray* glesUniform = new GLES20UniformVector3fArray(std::vector<math::Vector3f>(0.0f));
+					//glesUniform->SetGLId(m_shaderProgram->GetGLId());
+					//uniform = glesUniform;
 					String value = valAttr.as_string();
 					if (value == "light.directional.direction")
 					{
-						glesUniform->SetGlobalUniformName(GlobalUniformName::LIGHT_DIRECTIONAL_DIRECTION);
+						//glesUniform->SetGlobalUniformName(GlobalUniformName::LIGHT_DIRECTIONAL_DIRECTION);
 					}
 				}
 
 				printf("\n");
 
-				uniform->SetName(name);
+				//uniform->SetName(name);
 
-				AddUniform(uniform);
+				//AddUniform(uniform);
 				uniform = nullptr;
 
 				uniformNode = uniformNode.next_sibling();
 			}
-#endif
+
 		}
 
 		/////////////////////////////////////////////////////////////////////////

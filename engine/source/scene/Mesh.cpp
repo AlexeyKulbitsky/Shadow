@@ -40,7 +40,7 @@ namespace sh
 			Camera* camera = Device::GetInstance()->GetSceneManager()->GetCamera();
 			sh::math::Matrix4f viewMatrix = camera->GetViewMatrix();
 			sh::math::Matrix4f projectionMatrix = camera->GetProjectionMatrix();
-			projectionMatrix.m[1][1] *= -1;
+			
 			video::Driver* driver = Device::GetInstance()->GetDriver();
 			math::Matrix4f wvp = projectionMatrix * viewMatrix * m_worldMatrix;
 			//wvp.Transpose();

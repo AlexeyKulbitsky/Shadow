@@ -40,7 +40,7 @@ namespace sh
 			bool m_useIndices;
 			VulkanVertexBuffer* m_vertexBuffer;
 			VulkanIndexBuffer* m_indexBuffer;
-			VKVertexDeclaration* m_inputDeclaration;
+			VulkanVertexDeclaration* m_inputDeclaration;
 			VulkanRenderPipeline* m_pipeline;
 			Topology m_topology;
 			u32 m_glTopology;

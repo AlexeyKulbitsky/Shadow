@@ -75,7 +75,6 @@ namespace sh
 			virtual void Render(scene::Mesh* mesh) override;
 			virtual void Render(const RenderCommandPtr& command) override;
 
-			void DrawBuffer();
 
 			virtual VertexBufferPtr CreateVertexBuffer(HardwareBuffer::Usage usage) const override;
 			virtual IndexBufferPtr CreateIndexBuffer(HardwareBuffer::Usage usage) const override;
@@ -120,23 +119,16 @@ namespace sh
 			void CreateSurface();
 			void CreateSwapChain();
 			void CreateImageViews();
-			void CreateGraphicsPipeline();
+			
 			void CreateRenderPass();
 			void CreateFramebuffers();
 			void CreateCommandPool();
 			void CreateDepthResources();
-			void CreateCommandBuffers();
 			void CreateSemaphores();
-			void createVertexBuffer();
-			void createIndexBuffer();
-			void createUniformBuffer();
 			void CreateDescriptorPool();
-			void CreateDescriptorSetLayout();
-			void CreateDescriptorSet();
 			void CreateTextureImage();
 			void CreateTextureImageView();
 			void CreateTextureSampler();
-			void LoadModel();
 
 			bool isDeviceSuitable(VkPhysicalDevice device);
 			QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
@@ -145,14 +137,10 @@ namespace sh
 			VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
 			VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR> availablePresentModes);
 			VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
-			static std::vector<char> readFile(const std::string& filename);
-			void createShaderModule(const std::vector<char>& code, VulkanDeleter<VkShaderModule>& shaderModule);
+
 		public:
 			uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
 		private:	
-			void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VulkanDeleter<VkBuffer>& buffer, VulkanDeleter<VkDeviceMemory>& bufferMemory);
-			void copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
-			void updateUniformBuffer();
 			void createImage(
 				uint32_t width, uint32_t height,
 				VkFormat format,
@@ -172,6 +160,7 @@ namespace sh
 			void copyImage(VkImage srcImage, VkImage dstImage, uint32_t width, uint32_t height);
 			void createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags, VulkanDeleter<VkImageView>& imageView);
 			VkFormat findSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features);
+
 		public:
 			VkFormat findDepthFormat();
 		private:
@@ -195,39 +184,23 @@ namespace sh
 			std::vector<VulkanDeleter<VkImageView>> m_swapChainImageViews;
 			std::vector<VulkanDeleter<VkFramebuffer>> m_swapChainFramebuffers;
 			
-
 			VulkanDeleter<VkRenderPass> m_renderPass{ m_device, vkDestroyRenderPass };
-			VulkanDeleter<VkDescriptorSetLayout> m_descriptorSetLayout{ m_device, vkDestroyDescriptorSetLayout };
 			VulkanDeleter<VkPipelineLayout> m_pipelineLayout{ m_device, vkDestroyPipelineLayout };
-			VulkanDeleter<VkPipeline> m_graphicsPipeline{ m_device, vkDestroyPipeline };
 			VulkanDeleter<VkCommandPool> m_commandPool{ m_device, vkDestroyCommandPool };
 
 			VulkanDeleter<VkImage> m_textureImage{ m_device, vkDestroyImage };
 			VulkanDeleter<VkDeviceMemory> m_textureImageMemory{ m_device, vkFreeMemory };
 
-			VulkanDeleter<VkBuffer> m_vertexBuffer{ m_device, vkDestroyBuffer };
-			VulkanDeleter<VkDeviceMemory> m_vertexBufferMemory{ m_device, vkFreeMemory };
-			VulkanDeleter<VkBuffer> m_indexBuffer{ m_device, vkDestroyBuffer };
-			VulkanDeleter<VkDeviceMemory> m_indexBufferMemory{ m_device, vkFreeMemory };
-
-			VulkanDeleter<VkBuffer> m_uniformStagingBuffer{ m_device, vkDestroyBuffer };
-			VulkanDeleter<VkDeviceMemory> m_uniformStagingBufferMemory{ m_device, vkFreeMemory };
-			VulkanDeleter<VkBuffer> m_uniformBuffer{ m_device, vkDestroyBuffer };
-			VulkanDeleter<VkDeviceMemory> m_uniformBufferMemory{ m_device, vkFreeMemory };
-
-			std::vector<VkCommandBuffer> m_commandBuffers;
 			VulkanDeleter<VkSemaphore> m_imageAvailableSemaphore{ m_device, vkDestroySemaphore };
 			VulkanDeleter<VkSemaphore> m_renderFinishedSemaphore{ m_device, vkDestroySemaphore };
 
 			VulkanDeleter<VkDescriptorPool> m_descriptorPool{ m_device, vkDestroyDescriptorPool };
-			VkDescriptorSet m_descriptorSet;
 			VulkanDeleter<VkImageView> m_textureImageView{ m_device, vkDestroyImageView };
 			VulkanDeleter<VkSampler> m_textureSampler{ m_device, vkDestroySampler };
 
 			VulkanDeleter<VkImage> m_depthImage{ m_device, vkDestroyImage };
 			VulkanDeleter<VkDeviceMemory> m_depthImageMemory{ m_device, vkFreeMemory };
 			VulkanDeleter<VkImageView> m_depthImageView{ m_device, vkDestroyImageView };
-
 
 			std::vector<const char*> m_instanceLayersList;
 			std::vector<const char*> m_instanceExtensionsList;
