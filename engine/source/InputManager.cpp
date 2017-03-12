@@ -43,6 +43,7 @@ namespace sh
 			default:
 				break;
 			}
+			SetMousePositionCurrent(math::Vector2i(e.mouseEvent.x, e.mouseEvent.y));
 		}
 			break;
 		default:

@@ -153,6 +153,7 @@ void GraphicsWidget::wheelEvent(QWheelEvent * e)
 {
 	float delta = (float)e->delta() * 0.1f;
 	sh::scene::Camera* camera = m_sceneManager->GetCamera();
+	const sh::math::Vector3f& front = camera->GetFrontVector(); 
 	camera->SetPosition(camera->GetPosition() + camera->GetFrontVector() * delta);
 }
 
@@ -191,14 +192,14 @@ void GraphicsWidget::Init()
 	m_sceneManager = sh::Device::GetInstance()->GetSceneManager();
 
 	// Create all gizmos
-	//m_defaultGizmo = new Gizmo();
-	//m_moveGizmo = new MoveGizmo();
-	//m_rotateGizmo = new RotateGizmo();
+	m_defaultGizmo = new Gizmo();
+	m_moveGizmo = new MoveGizmo();
+	m_rotateGizmo = new RotateGizmo();
 	//m_scaleGizmo = new ScaleGizmo();
 
 	// Set default gizmo as current
-	//m_gizmo = m_defaultGizmo;
-	m_gizmo = nullptr;
+	m_gizmo = m_defaultGizmo;
+	//m_gizmo = nullptr;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -224,8 +225,8 @@ void GraphicsWidget::Update()
 			}
 			
 			sh::math::Vector2i delta = current - old;
-			float xAngle = (float)delta.x * 0.01f;
-			float yAngle = -(float)delta.y * 0.01f;
+			float xAngle = -(float)delta.x * 0.01f;
+			float yAngle = (float)delta.y * 0.01f;
 
 			sh::math::Quaternionf xRot;
 			xRot.SetFromAxisAngle(sh::scene::SceneManager::GetUpVector(), -xAngle);
@@ -233,10 +234,12 @@ void GraphicsWidget::Update()
 			yRot.SetFromAxisAngle(camera->GetRightVector(), yAngle);
 			sh::math::Quaternionf deltaRot = xRot * yRot;
 			sh::math::Vector3f baseVec = camera->GetPosition() - targetPos;
+			//float length = baseVec.GetLength();
+			//baseVec.Normalize();
 			sh::math::Vector3f targetVec = deltaRot * baseVec;
-			camera->SetPosition(targetPos + targetVec);
+			//camera->SetPosition(targetPos + targetVec);
 			
-			sh::math::Quaternionf finalCamRot = deltaRot * camera->GetRotation();
+			sh::math::Quaternionf finalCamRot = camera->GetRotation() * deltaRot;
 			camera->SetRotation(finalCamRot);
 		}
 		else

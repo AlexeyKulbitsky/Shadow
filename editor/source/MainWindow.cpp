@@ -328,8 +328,8 @@ void MainWindow::InitDevice()
 	params.width = width();
 	params.height = height();
 	params.WinId = (void*)hwnd;
-	//params.driverType = sh::video::DriverType::OPENGL_ES_2_0;
-	params.driverType = sh::video::DriverType::VULKAN;
+	params.driverType = sh::video::DriverType::OPENGL_ES_2_0;
+	//params.driverType = sh::video::DriverType::VULKAN;
 	sh::Device* device = sh::CreateDevice(params);
 	
 	sh::scene::ModelLoader* modelLoader = new sh::scene::TinyObjModelLoader();

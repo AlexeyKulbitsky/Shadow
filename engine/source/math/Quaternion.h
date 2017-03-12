@@ -14,7 +14,7 @@ namespace sh
 			T x, y, z, w;
 
 			Quaternion() : x(0), y(0), z(0), w(1) {}
-			Quaternion(T _x, T _y, T _z, T _w) : x(_x), y(_x), z(_x), w(_w) {}
+			Quaternion(T _x, T _y, T _z, T _w) : x(_x), y(_y), z(_z), w(_w) {}
 			explicit Quaternion(T s) : x(s), y(s), z(s), w(s) {}
 			Quaternion(const Quaternion<T>& v) : x(v.x), y(v.y), z(v.z), w(v.w) {}
 			Quaternion(const Vector3<T>& axis, T angle)
@@ -132,41 +132,8 @@ namespace sh
 			}
 
 			Matrix3<T> GetAsMatrix3() const
-			{		
-				/*
-				const T fTx = x + x;
-				const T fTy = y + y;
-				const T fTz = z + z;
-				const T fTwx = fTx*w;
-				const T fTwy = fTy*w;
-				const T fTwz = fTz*w;
-				const T fTxx = fTx*x;
-				const T fTxy = fTy*x;
-				const T fTxz = fTz*x;
-				const T fTyy = fTy*y;
-				const T fTyz = fTz*y;
-				const T fTzz = fTz*z;
-
-				Matrix3<T> r;
-
-				r.m[0][0] = 1.0f - (fTyy + fTzz);
-				r.m[0][1] = fTxy - fTwz;
-				r.m[0][2] = fTxz + fTwy;
-				r.m[1][0] = fTxy + fTwz;
-				r.m[1][1] = 1.0f - (fTxx + fTzz);
-				r.m[1][2] = fTyz - fTwx;
-				r.m[2][0] = fTxz - fTwy;
-				r.m[2][1] = fTyz + fTwx;
-				r.m[2][2] = 1.0f - (fTxx + fTyy);
-
-				return r;
-				*/
-
-
-
-
-
-				// Calculate coefficients
+			{	
+				// Calculate coefficients				
 				const T x2 = x + x;
 				const T y2 = y + y; 
 				const T z2 = z + z;
@@ -188,10 +155,8 @@ namespace sh
 				r.m[2][1] = yz - wx;        
 				r.m[0][2] = xz - wy;        r.m[1][2] = yz + wx;
 				r.m[2][2] = 1 - (xx + yy);  
-				              
-				             
-
-				return r;
+				              			             
+				return r;				
 			}
 
 			void GetAsEulerXYZ(Vector3<T>& res) const
@@ -240,6 +205,7 @@ namespace sh
 
 			Vector3<T> operator*(const Vector3<T>& v) const
 			{
+				//return Rotate(v);
 				// nVidia SDK implementation				
 				Vector3<T> uv, uuv;
 				Vector3<T> qvec(x, y, z);
@@ -253,9 +219,8 @@ namespace sh
 
 			Vector3<T> Rotate(const Vector3<T>& v) const
 			{
-				Quaternion<T> q = GetInverted() / Norm();
-				Quaternion<T> qres = ( *this ) * Quaternion<T>(v.x, v.y, v.z, T(0)) * q;
-				return Vector3<T>(qres.x, qres.y, qres.z);
+				Quaternion<T> q = ( *this ) * Quaternion<T>(v.x, v.y, v.z, T(0)) * GetInverted();
+				return Vector3<T>(q.x, q.y, q.z);
 			}
 
 			Quaternion<T>& SetIndentity()
