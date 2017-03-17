@@ -27,6 +27,7 @@ namespace sh
 			void Init();
 
 			VkPipeline GetVulkanId() const { return m_graphicsPipeline; }
+			VkPipelineLayout GetVulkanPipelineLayout() const { return m_pipelineLayout; }
 
 		private:
 
@@ -37,6 +38,7 @@ namespace sh
 			UniformBufferPtr m_transformUniformBuffer;
 
 			VkPipeline m_graphicsPipeline;		
+			VkPipelineLayout m_pipelineLayout;
 		};
 	}
 }

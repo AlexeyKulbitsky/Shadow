@@ -39,7 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
 	m_splitter->addWidget(m_graphicsWidget);
 	setCentralWidget(m_splitter);
 
-	connect(m_graphicsWidget, SIGNAL(EntitySelected(sh::Entity*)), this, SLOT(SetSelectedEntity(sh::Entity*)));
+	connect(m_graphicsWidget, SIGNAL(EntitySelected(sh::Entity*)), this, SLOT(SetSelecte dEntity(sh::Entity*)));
 	CreateToolBar();
 	InitDevice();
 	m_graphicsWidget->Init();
@@ -56,7 +56,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-
+	sh::Device* device = sh::Device::GetInstance();
+	delete device;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -328,8 +329,8 @@ void MainWindow::InitDevice()
 	params.width = width();
 	params.height = height();
 	params.WinId = (void*)hwnd;
-	params.driverType = sh::video::DriverType::OPENGL_ES_2_0;
-	//params.driverType = sh::video::DriverType::VULKAN;
+	//params.driverType = sh::video::DriverType::OPENGL_ES_2_0;
+	params.driverType = sh::video::DriverType::VULKAN;
 	sh::Device* device = sh::CreateDevice(params);
 	
 	sh::scene::ModelLoader* modelLoader = new sh::scene::TinyObjModelLoader();

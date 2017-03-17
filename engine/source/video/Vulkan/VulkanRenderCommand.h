@@ -35,6 +35,7 @@ namespace sh
 			// Vulkan-specific interface
 			void SetPipeline(VulkanRenderPipeline* pipeline) { m_pipeline = pipeline; }
 			VkCommandBuffer GetCommandBuffer(uint32_t index) { return m_commandBuffers[index]; }
+			void Update(const VkCommandBufferInheritanceInfo& inheritanceInfo);
 
 		protected:
 			bool m_useIndices;

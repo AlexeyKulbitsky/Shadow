@@ -10,27 +10,29 @@ namespace sh
 		class UniformBufferObject
 		{
 		public:
-			class Attribute
+			class Element
 			{
 			public:
-				Uniform::Type type;
-				String name;
-				u32 size;
-				u32 offset;
+				Uniform::Type type = Uniform::Type::UNKNOWN;
+				String name = "noname";
+				u32 size = 0U;
+				u32 offset = 0U;
+				GlobalUniformName globalName = GlobalUniformName::NONE;
 			};
 
 			
 			~UniformBufferObject();
-			void AddAttribute(const Attribute& attribute);
-			void Init();
+			virtual void AddElement(const Element& element);
+			virtual void Init();
+			virtual UniformBufferObject* Clone();
 
 			u32 GetSize() const { return m_size; }
-			u8* GetData() const { return m_data; }
+			//u8* GetData() const { return m_data; }
 
-		private:
-			std::vector<Attribute> m_attributes;
+		protected:
+			std::vector<Element> m_elements;
 			u32 m_size = 0U;
-			u8* m_data = nullptr;
+			//u8* m_data = nullptr;
 		};
 	}
 }

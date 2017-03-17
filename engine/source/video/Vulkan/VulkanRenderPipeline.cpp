@@ -192,15 +192,22 @@ namespace sh
 
 			VulkanUniformBuffer* uniformBuffer = static_cast<VulkanUniformBuffer*>(m_uniformBuffer.get());
 			
-			VkDescriptorSetLayout setLayouts[] = { uniformBuffer->m_descriptorSetLayout };
+			//VkDescriptorSetLayout setLayouts[] = { uniformBuffer->m_descriptorSetLayout };
 			VkPipelineLayoutCreateInfo pipelineLayoutInfo = {};
 			pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-			pipelineLayoutInfo.setLayoutCount = 1;
-			pipelineLayoutInfo.pSetLayouts = setLayouts;
-			pipelineLayoutInfo.pushConstantRangeCount = 0;
+			//pipelineLayoutInfo.setLayoutCount = 1;
+			//pipelineLayoutInfo.pSetLayouts = setLayouts;
+			//pipelineLayoutInfo.pushConstantRangeCount = 0;
+			VkPushConstantRange pushConstantRange = {};
+			pushConstantRange.offset = 0;
+			pushConstantRange.size = sizeof(math::Matrix4f);
+			pushConstantRange.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+			pipelineLayoutInfo.pushConstantRangeCount = 1;
+			pipelineLayoutInfo.pPushConstantRanges = &pushConstantRange;
 			
-			SH_ASSERT(vkCreatePipelineLayout(device, &pipelineLayoutInfo, nullptr, &(uniformBuffer->m_pipelineLayout)) == VK_SUCCESS,
-				"failed to create pipeline layout!");
+			VkResult res = vkCreatePipelineLayout(device, &pipelineLayoutInfo, nullptr, &m_pipelineLayout);
+			SH_ASSERT(res == VK_SUCCESS, "Failed to create pipeline layout!");
+			uniformBuffer->m_pipelineLayout = m_pipelineLayout;
 
 			VkGraphicsPipelineCreateInfo pipelineInfo = {};
 			pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
@@ -218,8 +225,8 @@ namespace sh
 			pipelineInfo.subpass = 0;
 			pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
 
-			VkResult res = vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &m_graphicsPipeline);
-			SH_ASSERT(res == VK_SUCCESS, "failed to create graphics pipeline!");
+			res = vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &m_graphicsPipeline);
+			SH_ASSERT(res == VK_SUCCESS, "Failed to create graphics pipeline!");
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////

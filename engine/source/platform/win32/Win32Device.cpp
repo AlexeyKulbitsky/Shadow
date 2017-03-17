@@ -537,7 +537,40 @@ Win32Device::Win32Device(const CreationParameters &parameters)
 
 Win32Device::~Win32Device()
 {
+	if (!!m_resourceManager)
+	{
+		//m_resourceManager->Unload();
+		delete m_resourceManager;
+		m_resourceManager = nullptr;
+	}
 
+	if (!!m_GLContextManager)
+	{
+		delete m_GLContextManager;
+		m_GLContextManager = nullptr;
+	}
+	if (!!m_driver)
+	{
+		delete m_driver;
+		m_driver = nullptr;
+	}
+	
+	if (!!m_sceneManager)
+	{
+		delete m_sceneManager;
+		m_sceneManager = nullptr;
+	}
+	if (!!m_inputManager)
+	{
+		delete m_inputManager;
+		m_inputManager = nullptr;
+	}
+	
+	if (!!m_fileSystem)
+	{
+		delete m_fileSystem;
+		m_fileSystem = nullptr;
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////

@@ -3,6 +3,7 @@
 
 #include "../Globals.h"
 #include "Uniform.h"
+#include "UniformBufferObject.h"
 #include "Sampler.h"
 
 namespace sh
@@ -14,8 +15,10 @@ namespace sh
 		public:
 			~UniformsBatch();
 			void AddUniform(Uniform* uniform);
+			u32 GetSize() const { return m_size; }
 			UniformsBatchPtr Clone() const;
 			std::vector<Uniform*> m_uniforms;
+			u32 m_size = 0U;
 		};
 
 		// TODO : implement ShaderData

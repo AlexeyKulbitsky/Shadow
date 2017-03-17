@@ -60,22 +60,12 @@ namespace sh
 
 		void VulkanUniformBuffer::Init()
 		{
-			m_autoUniformsBatch.reset(new UniformsBatch());
+			UniformBuffer::Init();
 
 			createDescriptorSetLayout();
 			createDecriptorPool();
 			createDescriptorSet();
 
-			m_autoUniformsBatch.reset(new UniformsBatch());
-			m_autoUniformsBatch->m_uniforms.resize(1);
-			for (size_t i = 0; i < 1; ++i)
-			{
-				math::Matrix4f mat;
-				Uniform* uniform = new Uniform(mat);
-				uniform->SetGlobalUniformName(GlobalUniformName::MODEL_WORLD_VIEW_PROJECTION_MATRIX);
-				//m_autoUniforms[i]->Init();
-				m_autoUniformsBatch->m_uniforms[i] = uniform;
-			}
 		}
 
 		/////////////////////////////////////////////////////////////////////////
@@ -85,14 +75,22 @@ namespace sh
 			VulkanDriver* driver = static_cast<VulkanDriver*>(Device::GetInstance()->GetDriver());
 			VkDevice device = driver->GetVulkanDevice();
 
+			void* data;
+			vkMapMemory(device, m_uniformStagingBufferMemory, 0, m_autoUniformsBatch->GetSize(), 0, &data);
+
 			sh::math::Matrix4f mat = m_autoUniformsBatch->m_uniforms[0]->Get<sh::math::Matrix4f>();
 
-			void* data;
-			vkMapMemory(device, m_uniformStagingBufferMemory, 0, sizeof(mat), 0, &data);
-			memcpy(data, &(mat._m[0]), sizeof(mat));
+			u32 pointer = 0U;
+			for (size_t i = 0, sz = m_autoUniformsBatch->m_uniforms.size(); i < sz; ++i)
+			{
+				Uniform* uniform = m_autoUniformsBatch->m_uniforms[i];
+				data = static_cast<char*>(data) + pointer;
+				memcpy(data, uniform->GetData(), uniform->GetSize());
+			}
+			
 			vkUnmapMemory(device, m_uniformStagingBufferMemory);
 
-			copyBuffer(m_uniformStagingBuffer, m_uniformBuffer, sizeof(mat));
+			copyBuffer(m_uniformStagingBuffer, m_uniformBuffer, m_autoUniformsBatch->GetSize());
 		}
 
 		/////////////////////////////////////////////////////////////////////////
@@ -138,6 +136,7 @@ namespace sh
 				pugi::xml_attribute nameAttr = uniformNode.attribute("name");
 				pugi::xml_attribute typeAttr = uniformNode.attribute("type");
 				pugi::xml_attribute valAttr = uniformNode.attribute("val");
+				
 
 				printf("Uniform:\n");
 				std::string name = nameAttr.as_string();
@@ -147,34 +146,27 @@ namespace sh
 				printf("Type: %s ", typeName.c_str());
 				if (typeName == "float")
 				{
-					//GLES20UniformFloat* glesUniform = new GLES20UniformFloat(0.0f);
-					//glesUniform->SetGLId(m_shaderProgram->GetGLId());
-					//uniform = glesUniform;
+					
 					if (valAttr)
 					{
 						float value = valAttr.as_float();
+						uniform = new Uniform(value);
 						printf("Value: %f", value);
-						//uniform->Set(value);
 					}
 
 				}
 				else if (typeName == "int")
 				{
-					//GLES20UniformInt *glesUniform = new GLES20UniformInt(0);
-					//glesUniform->SetGLId(m_shaderProgram->GetGLId());
-					//uniform = glesUniform;
 					if (valAttr)
 					{
 						int value = valAttr.as_int();
+						uniform = new Uniform(value);
 						printf("Value: %d", value);
-						//uniform->Set(value);
 					}
 				}
 				else if (typeName == "vec2")
 				{
-					//GLES20UniformVector2f *glesUniform = new GLES20UniformVector2f(sh::math::Vector2f(0.0f));
-					//glesUniform->SetGLId(m_shaderProgram->GetGLId());
-					//uniform = glesUniform;
+					SH_ASSERT(0, "Unsupported uniform type");
 					if (valAttr)
 					{
 
@@ -182,18 +174,14 @@ namespace sh
 				}
 				else if (typeName == "vec3")
 				{
-					//GLES20UniformVector3f *glesUniform = new GLES20UniformVector3f(sh::math::Vector3f(0.0f));
-					//glesUniform->SetGLId(m_shaderProgram->GetGLId());
-					//uniform = glesUniform;
+					SH_ASSERT(0, "Unsupported uniform type");
 					if (valAttr)
 					{
 					}
 				}
 				else if (typeName == "vec4")
 				{
-					//GLES20UniformVector4f *glesUniform = new GLES20UniformVector4f(sh::math::Vector4f(0.0f));
-					//glesUniform->SetGLId(m_shaderProgram->GetGLId());
-					//uniform = glesUniform;
+					SH_ASSERT(0, "Unsupported uniform type");
 					if (valAttr)
 					{
 
@@ -201,52 +189,45 @@ namespace sh
 				}
 				else if (typeName == "mat4")
 				{
-					//GLES20UniformMatrix4f *glesUniform = new GLES20UniformMatrix4f(sh::math::Matrix4f());
-					//glesUniform->SetGLId(m_shaderProgram->GetGLId());
-					//uniform = glesUniform;
+					uniform = new Uniform(sh::math::Matrix4f::Identity());
 					if (valAttr)
 					{
 						String value = valAttr.as_string();
 						if (value == "model.worldMatrix")
-						{
-							//glesUniform->SetGlobalUniformName(GlobalUniformName::MODEL_WORLD_MATRIX);
+						{						
+							uniform->SetGlobalUniformName(GlobalUniformName::MODEL_WORLD_MATRIX);
 						}
 						else if (value == "model.worldViewProjectionMatrix")
 						{
-							//glesUniform->SetGlobalUniformName(GlobalUniformName::MODEL_WORLD_VIEW_PROJECTION_MATRIX);
+							uniform->SetGlobalUniformName(GlobalUniformName::MODEL_WORLD_VIEW_PROJECTION_MATRIX);
 						}
 						else if (value == "camera.viewProjectionMatrix")
 						{
-							//glesUniform->SetGlobalUniformName(GlobalUniformName::CAMERA_VIEW_PROJECTION_MATRIX);
+							uniform->SetGlobalUniformName(GlobalUniformName::CAMERA_VIEW_PROJECTION_MATRIX);
 						}
 						else if (value == "camera.viewRotationProjectionMatrix")
 						{
-							//glesUniform->SetGlobalUniformName(GlobalUniformName::CAMERA_VIEW_ROTATION_PROJECTION_MATRIX);
+							uniform->SetGlobalUniformName(GlobalUniformName::CAMERA_VIEW_ROTATION_PROJECTION_MATRIX);
 						}
 					}
 				}
 				else if (typeName == "vec3Array")
-				{
-					//GLES20UniformVector3fArray* glesUniform = new GLES20UniformVector3fArray(std::vector<math::Vector3f>(0.0f));
-					//glesUniform->SetGLId(m_shaderProgram->GetGLId());
-					//uniform = glesUniform;
+				{				
+					SH_ASSERT(0, "Unsupported uniform type");
 					String value = valAttr.as_string();
 					if (value == "light.directional.direction")
 					{
-						//glesUniform->SetGlobalUniformName(GlobalUniformName::LIGHT_DIRECTIONAL_DIRECTION);
+						//element.globalName = GlobalUniformName::LIGHT_DIRECTIONAL_DIRECTION;
 					}
 				}
 
 				printf("\n");
 
-				//uniform->SetName(name);
-
-				//AddUniform(uniform);
-				uniform = nullptr;
+				uniform->SetName(name);
+				AddUniform(uniform);
 
 				uniformNode = uniformNode.next_sibling();
 			}
-
 		}
 
 		/////////////////////////////////////////////////////////////////////////
@@ -373,11 +354,11 @@ namespace sh
 			VulkanDriver* driver = static_cast<VulkanDriver*>(Device::GetInstance()->GetDriver());
 			VkDevice device = driver->GetVulkanDevice();
 
-			std::array<VkDescriptorPoolSize, 2> poolSizes = {};
+			std::array<VkDescriptorPoolSize, 1> poolSizes = {};
 			poolSizes[0].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
 			poolSizes[0].descriptorCount = 1;
-			poolSizes[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-			poolSizes[1].descriptorCount = 1;
+			//poolSizes[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+			//poolSizes[1].descriptorCount = 1;
 
 			VkDescriptorPoolCreateInfo poolInfo = {};
 			poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
@@ -385,8 +366,8 @@ namespace sh
 			poolInfo.pPoolSizes = poolSizes.data();
 			poolInfo.maxSets = 1;
 
-			SH_ASSERT(vkCreateDescriptorPool(device, &poolInfo, nullptr, &m_descriptorPool) == VK_SUCCESS,
-				"failed to create descriptor pool!");
+			VkResult res = vkCreateDescriptorPool(device, &poolInfo, nullptr, &m_descriptorPool);
+			SH_ASSERT(res == VK_SUCCESS, "Failed to create descriptor pool!");
 		}
 
 		/////////////////////////////////////////////////////////////////////////
@@ -410,8 +391,8 @@ namespace sh
 			layoutInfo.bindingCount = bindings.size();
 			layoutInfo.pBindings = bindings.data();
 
-			SH_ASSERT(vkCreateDescriptorSetLayout(device, &layoutInfo, nullptr, &m_descriptorSetLayout) == VK_SUCCESS,
-				"failed to create descriptor set layout!");
+			VkResult res = vkCreateDescriptorSetLayout(device, &layoutInfo, nullptr, &m_descriptorSetLayout);
+			SH_ASSERT(res == VK_SUCCESS, "Failed to create descriptor set layout!");
 		}
 
 		/////////////////////////////////////////////////////////////////////////
@@ -434,7 +415,7 @@ namespace sh
 			VkDescriptorBufferInfo bufferInfo = {};
 			bufferInfo.buffer = m_uniformBuffer;
 			bufferInfo.offset = 0;
-			//bufferInfo.range = sizeof(UniformBufferObject);
+			bufferInfo.range = m_autoUniformsBatch->GetSize();
 
 			std::array<VkWriteDescriptorSet, 1> descriptorWrites = {};
 

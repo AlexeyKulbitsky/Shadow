@@ -40,28 +40,19 @@ namespace sh
 			VK_COMPARE_OP_NEVER
 		};
 
-		VkResult CreateDebugReportCallbackEXT(VkInstance instance, const VkDebugReportCallbackCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugReportCallbackEXT* pCallback);
-// 		{
-// 			auto func = (PFN_vkCreateDebugReportCallbackEXT)vkGetInstanceProcAddr(instance, "vkCreateDebugReportCallbackEXT");
-// 			if (func != nullptr) 
-// 			{
-// 				return func(instance, pCreateInfo, pAllocator, pCallback);
-// 			}
-// 			else 
-// 			{
-// 				return VK_ERROR_EXTENSION_NOT_PRESENT;
-// 			}
-// 		}
+		VkResult CreateDebugReportCallbackEXT(
+			VkInstance instance, 
+			const VkDebugReportCallbackCreateInfoEXT* pCreateInfo, 
+			const VkAllocationCallbacks* pAllocator, 
+			VkDebugReportCallbackEXT* pCallback);
 
-		void DestroyDebugReportCallbackEXT(VkInstance instance, VkDebugReportCallbackEXT callback, const VkAllocationCallbacks* pAllocator);
-// 		{
-// 			auto func = (PFN_vkDestroyDebugReportCallbackEXT)vkGetInstanceProcAddr(instance, "vkDestroyDebugReportCallbackEXT");
-// 			if (func != nullptr) 
-// 			{
-// 				func(instance, callback, pAllocator);
-// 			}
-// 		}
+		void DestroyDebugReportCallbackEXT(
+			VkInstance instance, 
+			VkDebugReportCallbackEXT callback, 
+			const VkAllocationCallbacks* pAllocator);
+		
 
+		////////////////////////////////////////////////////////////////////////////////////////////////
 
 		class VulkanDriver : public Driver 
 		{
@@ -83,6 +74,8 @@ namespace sh
 			virtual ShaderProgramPtr CreateShaderProgram() const override;
 			virtual VertexInputDeclaration* CreateVertexInputDeclaration() const override;
 			virtual RenderPipelinePtr CreateRenderPipeline() const override;
+
+			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) override;
 
 			// Vulkan-specific interface
 			VkDevice GetVulkanDevice() const { return m_device; }
@@ -130,6 +123,8 @@ namespace sh
 			void CreateTextureImageView();
 			void CreateTextureSampler();
 
+			void CreateDefaultCommadBuffers();
+
 			bool isDeviceSuitable(VkPhysicalDevice device);
 			QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
 			bool checkDeviceExtensionSupport(VkPhysicalDevice device);
@@ -137,6 +132,8 @@ namespace sh
 			VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
 			VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR> availablePresentModes);
 			VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
+			bool chechValidationLayers();
+			void setupDebugCallback();
 
 		public:
 			uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
@@ -154,6 +151,12 @@ namespace sh
 		public:
 			VkCommandBuffer beginSingleTimeCommands();
 			void endSingleTimeCommands(VkCommandBuffer commandBuffer);
+			void createBuffer(
+				VkDeviceSize size, 
+				VkBufferUsageFlags usage, 
+				VkMemoryPropertyFlags properties, 
+				VkBuffer& buffer, VkDeviceMemory& 
+				bufferMemory);
 
 		private:
 			void transitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout);
@@ -202,14 +205,20 @@ namespace sh
 			VulkanDeleter<VkDeviceMemory> m_depthImageMemory{ m_device, vkFreeMemory };
 			VulkanDeleter<VkImageView> m_depthImageView{ m_device, vkDestroyImageView };
 
+			VulkanDeleter<VkDebugReportCallbackEXT> m_callback{ m_instance, DestroyDebugReportCallbackEXT };
+
 			std::vector<const char*> m_instanceLayersList;
 			std::vector<const char*> m_instanceExtensionsList;
 			std::vector<const char*> m_deviceLayersList;
 			std::vector<const char*> m_deviceExtensionsList;
 
+			std::vector<VkCommandBuffer> m_commandBuffers;
+
 			//////////////////////////////////////////////////////////////
 
 			uint32_t m_currentImageIndex;
+			std::vector<VkCommandBuffer> m_executableCommandBuffers;
+			VkCommandBufferInheritanceInfo m_inheritanceInfo;
 		};
 	}
 }

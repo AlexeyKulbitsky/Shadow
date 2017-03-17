@@ -42,7 +42,7 @@ namespace sh
 		sh::Entity* Picker::TryToPick(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
 		{
 			sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
-
+			/*
 			driver->BeginRendering();
 
 			for (size_t i = 0, sz = m_entities.size(); i < sz; ++i)
@@ -72,7 +72,7 @@ namespace sh
 					mesh->GetMaterial()->GetRenderPipeline(1)->GetShaderProgram()->UnbindProgram();
 				}			
 			}
-		
+			*/
 			unsigned char data[4];
 			driver->GetPixelData(x, y, width, height, data);
 

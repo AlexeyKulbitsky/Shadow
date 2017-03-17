@@ -192,14 +192,14 @@ void GraphicsWidget::Init()
 	m_sceneManager = sh::Device::GetInstance()->GetSceneManager();
 
 	// Create all gizmos
-	m_defaultGizmo = new Gizmo();
-	m_moveGizmo = new MoveGizmo();
-	m_rotateGizmo = new RotateGizmo();
+	//m_defaultGizmo = new Gizmo();
+	//m_moveGizmo = new MoveGizmo();
+	//m_rotateGizmo = new RotateGizmo();
 	//m_scaleGizmo = new ScaleGizmo();
 
 	// Set default gizmo as current
-	m_gizmo = m_defaultGizmo;
-	//m_gizmo = nullptr;
+	//m_gizmo = m_defaultGizmo;
+	m_gizmo = nullptr;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

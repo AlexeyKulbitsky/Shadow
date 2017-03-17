@@ -24,8 +24,14 @@ namespace sh
 	namespace video
 	{
 
-		std::vector<uint32_t> indices;
+		const std::vector<const char*> validationLayers = 
+		{
+			"VK_LAYER_LUNARG_standard_validation"
+		};
 
+
+		//std::vector<uint32_t> indices;
+		
 		VkResult CreateDebugReportCallbackEXT(VkInstance instance, const VkDebugReportCallbackCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugReportCallbackEXT* pCallback)
 		{
 			auto func = (PFN_vkCreateDebugReportCallbackEXT)vkGetInstanceProcAddr(instance, "vkCreateDebugReportCallbackEXT");
@@ -47,13 +53,37 @@ namespace sh
 				func(instance, callback, pAllocator);
 			}
 		}
-
-		static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType, uint64_t obj, size_t location, int32_t code, const char* layerPrefix, const char* msg, void* userData) 
-		{
-			std::cerr << "validation layer: " << msg << std::endl;
-
+		
+		static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
+			VkDebugReportFlagsEXT flags, 
+			VkDebugReportObjectTypeEXT objType, 
+			uint64_t obj,
+			size_t location,
+			int32_t code, 
+			const char* layerPrefix, 
+			const char* msg, 
+			void* userData) 
+		{					
+			if (flags & VK_DEBUG_REPORT_ERROR_BIT_EXT)
+			{
+				std::cout << "ERROR: " << "[" << layerPrefix << "] Code " << code << " : " << msg << "\n";
+			}
+			else if (flags & VK_DEBUG_REPORT_WARNING_BIT_EXT)
+			{				
+				std::cout << "WARNING: " << "[" << layerPrefix << "] Code " << code << " : " << msg << "\n";
+			}
+			else
+			{
+				return false;
+			}
+			
 			return VK_FALSE;
 		}
+
+		
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		VulkanDriver::VulkanDriver()
 		{
@@ -75,7 +105,8 @@ namespace sh
 			InitGlobalUniforms();
 
 			SetupLayersAndExtensions();			
-			CreateInstance();		
+			CreateInstance();
+			setupDebugCallback();
 			CreateSurface();			
 			PickPhysicalDevice();		
 			CreateLogicalDevice();		
@@ -86,6 +117,12 @@ namespace sh
 			CreateDepthResources();
 			CreateFramebuffers();
 			CreateSemaphores();
+
+			CreateDefaultCommadBuffers();
+
+			m_executableCommandBuffers.reserve(100);
+
+			
 
 			/*			
 			CreateDepthResources();
@@ -99,11 +136,150 @@ namespace sh
 
 		void VulkanDriver::BeginRendering()
 		{
+			vkAcquireNextImageKHR(m_device, m_swapChain, 500000/*std::numeric_limits<uint64_t>::max()*/, m_imageAvailableSemaphore, VK_NULL_HANDLE, &m_currentImageIndex);
 			
+			VkFramebuffer framebuffer = m_swapChainFramebuffers[m_currentImageIndex];
+
+			VkCommandBuffer primaryCommandBuffer = m_commandBuffers[0];
+			VkCommandBufferBeginInfo beginInfo = {};
+			beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+			
+
+			std::array<VkClearValue, 2> clearValues = {};
+			clearValues[0].color.float32[0] = 0.7f;
+			clearValues[0].color.float32[1] = 0.7f;
+			clearValues[0].color.float32[2] = 0.7f;
+			clearValues[0].color.float32[3] = 1.0f;
+			clearValues[1].depthStencil.depth = 1.0f;
+			clearValues[1].depthStencil.stencil = 0;
+
+			VkRenderPassBeginInfo renderPassInfo = {};
+			renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+			renderPassInfo.renderPass = m_renderPass;
+			renderPassInfo.framebuffer = framebuffer;
+			renderPassInfo.renderArea.offset = { 0, 0 };
+			renderPassInfo.renderArea.extent.width = m_viewPort.z;
+			renderPassInfo.renderArea.extent.height = m_viewPort.w;
+			renderPassInfo.clearValueCount = clearValues.size();
+			renderPassInfo.pClearValues = clearValues.data();
+
+			vkBeginCommandBuffer(primaryCommandBuffer, &beginInfo);
+
+			// The primary command buffer does not contain any rendering commands
+			// These are stored (and retrieved) from the secondary command buffers
+			vkCmdBeginRenderPass(primaryCommandBuffer, &renderPassInfo, VK_SUBPASS_CONTENTS_SECONDARY_COMMAND_BUFFERS);
+
+			m_inheritanceInfo = VkCommandBufferInheritanceInfo();
+			m_inheritanceInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_INHERITANCE_INFO;
+			m_inheritanceInfo.renderPass = m_renderPass;
+			m_inheritanceInfo.framebuffer = framebuffer;
+
+
+
+
+
+
+			
+
+
+
+
 		}
 		void VulkanDriver::EndRendering()
 		{
+			/*
+			VkSubmitInfo submitInfo = {};
+			submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+			VkSemaphore waitSemaphores[] = { m_imageAvailableSemaphore };
+			VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
+			submitInfo.waitSemaphoreCount = 1;
+			submitInfo.pWaitSemaphores = waitSemaphores;
+			submitInfo.pWaitDstStageMask = waitStages;
+			submitInfo.commandBufferCount = m_executableCommandBuffers.size();
+			submitInfo.pCommandBuffers = m_executableCommandBuffers.data();
+			VkSemaphore signalSemaphores[] = { m_renderFinishedSemaphore };
+			submitInfo.signalSemaphoreCount = 1;
+			submitInfo.pSignalSemaphores = signalSemaphores;
+			VkResult res = vkQueueSubmit(m_graphicsQueue, 1, &submitInfo, VK_NULL_HANDLE);
+			SH_ASSERT(res == VK_SUCCESS, "Failed to submit draw command buffer!");
 
+
+			VkPresentInfoKHR presentInfo = {};
+			presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+			presentInfo.waitSemaphoreCount = 1;
+			presentInfo.pWaitSemaphores = signalSemaphores;
+			VkSwapchainKHR swapChains[] = { m_swapChain };
+			presentInfo.swapchainCount = 1;
+			presentInfo.pSwapchains = swapChains;
+			presentInfo.pImageIndices = &m_currentImageIndex;
+			res = vkQueuePresentKHR(m_presentQueue, &presentInfo);
+			SH_ASSERT(res == VK_SUCCESS, "Failed to present render result!");
+			
+			m_executableCommandBuffers.clear();
+
+
+			*/
+
+			VkCommandBuffer primaryCommandBuffer = m_commandBuffers[0];
+
+			if (m_executableCommandBuffers.size() > 0)
+			{
+				vkCmdExecuteCommands(primaryCommandBuffer, m_executableCommandBuffers.size(), m_executableCommandBuffers.data());
+			}
+
+			vkCmdEndRenderPass(primaryCommandBuffer);
+
+			VkResult res = vkEndCommandBuffer(primaryCommandBuffer);
+			SH_ASSERT(res == VK_SUCCESS, "failed to record command buffer!");
+
+
+
+			// Submitting
+			VkSubmitInfo submitInfo = {};
+			submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+			VkSemaphore waitSemaphores[] = { m_imageAvailableSemaphore };
+			VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
+			submitInfo.waitSemaphoreCount = 1;
+			submitInfo.pWaitSemaphores = waitSemaphores;
+			submitInfo.pWaitDstStageMask = waitStages;
+			submitInfo.commandBufferCount = 1;
+			submitInfo.pCommandBuffers = &primaryCommandBuffer;
+			VkSemaphore signalSemaphores[] = { m_renderFinishedSemaphore };
+			submitInfo.signalSemaphoreCount = 1;
+			submitInfo.pSignalSemaphores = signalSemaphores;
+
+			VkFence renderFence = {};
+			VkFenceCreateInfo fenceCreateInfo = {};
+			fenceCreateInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+			fenceCreateInfo.flags = 0;
+			vkCreateFence(m_device, &fenceCreateInfo, nullptr, &renderFence);
+			res = vkQueueSubmit(m_graphicsQueue, 1, &submitInfo, renderFence);
+			SH_ASSERT(res == VK_SUCCESS, "Failed to submit draw command buffer!");
+
+			// Wait for fence to signal that all command buffers are ready
+			do
+			{
+				res = vkWaitForFences(m_device, 1, &renderFence, VK_TRUE, 100000000);
+			} while (res == VK_TIMEOUT);
+
+			VkPresentInfoKHR presentInfo = {};
+			presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+			presentInfo.waitSemaphoreCount = 1;
+			presentInfo.pWaitSemaphores = signalSemaphores;
+			VkSwapchainKHR swapChains[] = { m_swapChain };
+			presentInfo.swapchainCount = 1;
+			presentInfo.pSwapchains = swapChains;
+			presentInfo.pImageIndices = &m_currentImageIndex;
+			res = vkQueuePresentKHR(m_presentQueue, &presentInfo);
+			SH_ASSERT(res == VK_SUCCESS, "Failed to present render result!");
+
+
+
+			vkDestroyFence(m_device, renderFence, nullptr);
+			res = vkQueueWaitIdle(m_presentQueue);
+			SH_ASSERT(res == VK_SUCCESS, "Failed waiting!");
+
+			m_executableCommandBuffers.clear();
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -117,45 +293,40 @@ namespace sh
 		void VulkanDriver::Render(const RenderCommandPtr& command)
 		{
 			VulkanRenderCommand* vulkanRenderCommand = static_cast<VulkanRenderCommand*>(command.get());
+			vulkanRenderCommand->Update(m_inheritanceInfo);
+			//vkAcquireNextImageKHR(m_device, m_swapChain, 500000/*std::numeric_limits<uint64_t>::max()*/, m_imageAvailableSemaphore, VK_NULL_HANDLE, &m_currentImageIndex);
 			
-			vkAcquireNextImageKHR(m_device, m_swapChain, 500000/*std::numeric_limits<uint64_t>::max()*/, m_imageAvailableSemaphore, VK_NULL_HANDLE, &m_currentImageIndex);
+			VkCommandBuffer commandBuffer = vulkanRenderCommand->GetCommandBuffer(0);
 			
-			VkCommandBuffer commandBuffer = vulkanRenderCommand->GetCommandBuffer(m_currentImageIndex);
-		
+			m_executableCommandBuffers.push_back(commandBuffer);
+			/*
 			VkSubmitInfo submitInfo = {};
 			submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-
 			VkSemaphore waitSemaphores[] = { m_imageAvailableSemaphore };
 			VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
 			submitInfo.waitSemaphoreCount = 1;
 			submitInfo.pWaitSemaphores = waitSemaphores;
 			submitInfo.pWaitDstStageMask = waitStages;
-
 			submitInfo.commandBufferCount = 1;
 			submitInfo.pCommandBuffers = &commandBuffer;
-
 			VkSemaphore signalSemaphores[] = { m_renderFinishedSemaphore };
 			submitInfo.signalSemaphoreCount = 1;
 			submitInfo.pSignalSemaphores = signalSemaphores;
-
 			VkResult res = vkQueueSubmit(m_graphicsQueue, 1, &submitInfo, VK_NULL_HANDLE);
-			SH_ASSERT(res == VK_SUCCESS, "failed to submit draw command buffer!");
+			SH_ASSERT(res == VK_SUCCESS, "Failed to submit draw command buffer!");
 
 
 			VkPresentInfoKHR presentInfo = {};
 			presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
-
 			presentInfo.waitSemaphoreCount = 1;
 			presentInfo.pWaitSemaphores = signalSemaphores;
-
 			VkSwapchainKHR swapChains[] = { m_swapChain };
 			presentInfo.swapchainCount = 1;
 			presentInfo.pSwapchains = swapChains;
-
 			presentInfo.pImageIndices = &m_currentImageIndex;
-
-			vkQueuePresentKHR(m_presentQueue, &presentInfo);
-		
+			res = vkQueuePresentKHR(m_presentQueue, &presentInfo);
+			SH_ASSERT(res == VK_SUCCESS, "Failed to present render result!");
+			*/
 		}
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -221,6 +392,78 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+		void VulkanDriver::GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data)
+		{
+			// Create temporary buffer
+			VkDeviceSize bufferSize = width * height * 4 * 4 * 2;
+			VkBuffer stagingBuffer;
+			VkDeviceMemory stagingBufferMemory;
+			createBuffer(
+				bufferSize,
+				VK_BUFFER_USAGE_TRANSFER_DST_BIT,
+				VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+				stagingBuffer,
+				stagingBufferMemory);
+
+
+			VkCommandBuffer commandBuffer = beginSingleTimeCommands();
+
+			VkImage srcImage = m_swapChainImages[m_currentImageIndex];
+
+			VkBufferImageCopy imageCopyRegion = {};
+			imageCopyRegion.bufferOffset = 0;
+			imageCopyRegion.bufferRowLength = 0;
+			imageCopyRegion.bufferImageHeight = 0;
+			imageCopyRegion.imageExtent.width = width;
+			imageCopyRegion.imageExtent.height = height;
+			imageCopyRegion.imageExtent.depth = 1;
+
+			imageCopyRegion.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+			imageCopyRegion.imageSubresource.baseArrayLayer = 0;
+			imageCopyRegion.imageSubresource.layerCount = 1;
+			imageCopyRegion.imageSubresource.mipLevel = 0;
+			VkImageLayout srcImageLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+
+
+			
+
+
+			// Fill temporary buffer with data
+			//void* bufferData;
+			//vkMapMemory(device, stagingBufferMemory, 0, bufferSize, 0, &bufferData);
+			//memcpy(bufferData, data, (size_t)bufferSize);
+			//vkUnmapMemory(device, stagingBufferMemory);
+
+			// Create fina buffer
+			//createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, m_buffer, m_bufferMemory);
+			// Copy data from temporary buffer to final buffer
+			//copyBuffer(stagingBuffer, m_buffer, bufferSize);
+
+			// Free temporary buffer
+			
+
+			vkCmdCopyImageToBuffer(commandBuffer, srcImage, srcImageLayout, stagingBuffer, 1, &imageCopyRegion);
+
+			void* bufferData;
+			vkMapMemory(m_device, stagingBufferMemory, 0, bufferSize, 0, &bufferData);
+			memcpy(data, bufferData, 4);
+			vkUnmapMemory(m_device, stagingBufferMemory);
+
+			
+
+			endSingleTimeCommands(commandBuffer);
+
+
+			vkFreeMemory(m_device, stagingBufferMemory, nullptr);
+			vkDestroyBuffer(m_device, stagingBuffer, nullptr);
+
+			int r = data[0];
+			int g = data[1];
+			int b = data[2];
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		void VulkanDriver::SetupLayersAndExtensions()
 		{
 			uint32_t extensionCount = 0;
@@ -235,6 +478,8 @@ namespace sh
 			{
 				std::cout << "\t" << extension.extensionName << std::endl;
 			}
+			// Needs for debug message handling
+			m_instanceExtensionsList.push_back(VK_EXT_DEBUG_REPORT_EXTENSION_NAME);
 			// Needed for surface to draw on
 			m_instanceExtensionsList.push_back(VK_KHR_SURFACE_EXTENSION_NAME);
 			// Needed for platform-specific surface creation
@@ -260,6 +505,9 @@ namespace sh
 		// Main entry to Vulkan API
 		void VulkanDriver::CreateInstance()
 		{
+			SH_ASSERT(chechValidationLayers(), "Can not create Vulkan instance! Not all the validation layers are supported!");
+
+
 			VkApplicationInfo appInfo = {};
 			appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
 			appInfo.pApplicationName = "Test application";
@@ -273,6 +521,9 @@ namespace sh
 			createInfo.pApplicationInfo = &appInfo;
 			createInfo.enabledExtensionCount = m_instanceExtensionsList.size();
 			createInfo.ppEnabledExtensionNames = m_instanceExtensionsList.data();
+
+			createInfo.enabledLayerCount = validationLayers.size();
+			createInfo.ppEnabledLayerNames = validationLayers.data();
 
 			SH_ASSERT(vkCreateInstance(&createInfo, nullptr, m_instance.Replace()) == VK_SUCCESS, "failed to create instance!");		
 		}
@@ -391,7 +642,7 @@ namespace sh
 			createInfo.imageColorSpace = surfaceFormat.colorSpace;
 			createInfo.imageExtent = extent;
 			createInfo.imageArrayLayers = 1;
-			createInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+			createInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT;			
 
 			QueueFamilyIndices indices = findQueueFamilies(m_physicalDevice);
 			uint32_t queueFamilyIndices[] = { (uint32_t)indices.graphicsFamily, (uint32_t)indices.presentFamily };
@@ -474,7 +725,7 @@ namespace sh
 			VkCommandPoolCreateInfo poolInfo = {};
 			poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
 			poolInfo.queueFamilyIndex = queueFamilyIndices.graphicsFamily;
-			//poolInfo.flags = 0; // Optional
+			poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT; // Optional
 
 			SH_ASSERT(vkCreateCommandPool(m_device, &poolInfo, nullptr, m_commandPool.Replace()) == VK_SUCCESS,
 				"failed to create command pool!");
@@ -555,6 +806,57 @@ namespace sh
 				"failed to create texture sampler!");
 		
 		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		void VulkanDriver::CreateDefaultCommadBuffers()
+		{
+			m_commandBuffers.resize(1);
+			VkCommandBufferAllocateInfo allocInfo = {};
+			allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+			allocInfo.commandPool = m_commandPool;
+			allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+			allocInfo.commandBufferCount = 1;
+
+			VkResult res = vkAllocateCommandBuffers(m_device, &allocInfo, m_commandBuffers.data());
+			SH_ASSERT(res == VK_SUCCESS, "Failed to allocate command buffers!");
+
+			/*
+			for (size_t i = 0; i < m_commandBuffers.size(); i++)
+			{
+				VkCommandBufferBeginInfo beginInfo = {};
+				beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+				beginInfo.flags = VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT;
+
+				vkBeginCommandBuffer(m_commandBuffers[i], &beginInfo);
+
+				VkRenderPassBeginInfo renderPassInfo = {};
+				renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+				renderPassInfo.renderPass = m_renderPass;
+				renderPassInfo.framebuffer = m_swapChainFramebuffers[i];
+				renderPassInfo.renderArea.offset = { 0, 0 };
+				renderPassInfo.renderArea.extent.width = m_viewPort.z;
+				renderPassInfo.renderArea.extent.height = m_viewPort.w;
+
+				std::array<VkClearValue, 2> clearValues = {};
+				clearValues[0].color.float32[0] = 0.7f;
+				clearValues[0].color.float32[1] = 0.7f;
+				clearValues[0].color.float32[2] = 0.7f;
+				clearValues[0].color.float32[3] = 1.0f;
+				clearValues[1].depthStencil.depth = 1.0f;
+				clearValues[1].depthStencil.stencil = 0;
+
+				renderPassInfo.clearValueCount = clearValues.size();
+				renderPassInfo.pClearValues = clearValues.data();
+
+				vkCmdBeginRenderPass(m_commandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
+				vkCmdEndRenderPass(m_commandBuffers[i]);
+
+				VkResult res = vkEndCommandBuffer(m_commandBuffers[i]);
+				SH_ASSERT(res == VK_SUCCESS, "failed to record command buffer!");
+			}
+			*/
+		}
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -603,6 +905,7 @@ namespace sh
 			colorAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
 			colorAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
 			colorAttachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+			
 
 			VkAttachmentDescription depthAttachment = {};
 			depthAttachment.format = findDepthFormat();
@@ -646,8 +949,8 @@ namespace sh
 			renderPassInfo.dependencyCount = 1;
 			renderPassInfo.pDependencies = &dependency;
 
-			SH_ASSERT(vkCreateRenderPass(m_device, &renderPassInfo, nullptr, m_renderPass.Replace()) == VK_SUCCESS,
-				"failed to create render pass!");
+			VkResult res = vkCreateRenderPass(m_device, &renderPassInfo, nullptr, m_renderPass.Replace());
+			SH_ASSERT(res == VK_SUCCESS, "Failed to create render pass!");
 			
 		}
 
@@ -810,6 +1113,53 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+		bool VulkanDriver::chechValidationLayers()
+		{
+			uint32_t layerCount;
+			vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
+
+			std::vector<VkLayerProperties> availableLayers(layerCount);
+			vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
+
+			for (const char* layerName : validationLayers) 
+			{
+				bool layerFound = false;
+
+				for (const auto& layerProperties : availableLayers) 
+				{
+					if (strcmp(layerName, layerProperties.layerName) == 0) 
+					{
+						layerFound = true;
+						break;
+					}
+				}
+
+				if (!layerFound) 
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		void VulkanDriver::setupDebugCallback()
+		{
+
+			VkDebugReportCallbackCreateInfoEXT createInfo = {};
+			createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT;
+			createInfo.flags = VK_DEBUG_REPORT_ERROR_BIT_EXT | VK_DEBUG_REPORT_WARNING_BIT_EXT;
+			createInfo.pfnCallback = debugCallback;
+
+			VkResult res = CreateDebugReportCallbackEXT(m_instance, &createInfo, nullptr, m_callback.Replace());
+			SH_ASSERT(res == VK_SUCCESS, "Failed to set up debug callback!");
+			
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		uint32_t VulkanDriver::findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties)
 		{
 			VkPhysicalDeviceMemoryProperties memProperties;
@@ -912,6 +1262,31 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+		void VulkanDriver::createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory)
+		{
+			VkBufferCreateInfo bufferInfo = {};
+			bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+			bufferInfo.size = size;
+			bufferInfo.usage = usage;
+			bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+
+			SH_ASSERT(vkCreateBuffer(m_device, &bufferInfo, nullptr, &buffer) == VK_SUCCESS, "failed to create buffer!");
+
+			VkMemoryRequirements memRequirements;
+			vkGetBufferMemoryRequirements(m_device, buffer, &memRequirements);
+
+			VkMemoryAllocateInfo allocInfo = {};
+			allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+			allocInfo.allocationSize = memRequirements.size;
+			allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits, properties);
+
+			SH_ASSERT(vkAllocateMemory(m_device, &allocInfo, nullptr, &bufferMemory) == VK_SUCCESS, "failed to allocate vertex buffer memory!");
+
+			vkBindBufferMemory(m_device, buffer, bufferMemory, 0);
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		void VulkanDriver::transitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout) 
 		{
 			VkCommandBuffer commandBuffer = beginSingleTimeCommands();
@@ -988,7 +1363,7 @@ namespace sh
 			region.srcSubresource = subResource;
 			region.dstSubresource = subResource;
 			region.srcOffset = { 0, 0, 0 };
-			region.dstOffset = { 0, 0, 0 };
+			region.dstOffset = { 0, 0, 0 }; 
 			region.extent.width = width;
 			region.extent.height = height;
 			region.extent.depth = 1;
@@ -1011,24 +1386,25 @@ namespace sh
 			VkImageViewCreateInfo viewInfo = {};
 			viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
 			viewInfo.image = image;
-			viewInfo.subresourceRange.aspectMask = aspectFlags;
 			viewInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
 			viewInfo.format = format;
-			viewInfo.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+			viewInfo.subresourceRange.aspectMask = aspectFlags;
 			viewInfo.subresourceRange.baseMipLevel = 0;
 			viewInfo.subresourceRange.levelCount = 1;
 			viewInfo.subresourceRange.baseArrayLayer = 0;
 			viewInfo.subresourceRange.layerCount = 1;
+			viewInfo.flags = 0;
 
-			SH_ASSERT(vkCreateImageView(m_device, &viewInfo, nullptr, imageView.Replace()) == VK_SUCCESS,
-				"failed to create texture image view!");			
+			VkResult res = vkCreateImageView(m_device, &viewInfo, nullptr, imageView.Replace());
+			SH_ASSERT(res == VK_SUCCESS, "Failed to create texture image view!");			
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		VkFormat VulkanDriver::findSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features)
 		{
-			for (VkFormat format : candidates) {
+			for (VkFormat format : candidates)
+			{
 				VkFormatProperties props;
 				vkGetPhysicalDeviceFormatProperties(m_physicalDevice, format, &props);
 

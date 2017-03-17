@@ -106,10 +106,12 @@ namespace sh
 			void SetGlobalUniformName(GlobalUniformName name) { m_globalName = name; }
 			GlobalUniformName GetGlobalUniformName() const { return m_globalName; }
 			Type GetType() const { return m_type; }
+			u32 GetSize() const { return m_size; }
+			const void* GetData() const { return m_placeHolder->GetData(); }
 
 			virtual void Upload() {}
 			virtual void Init() {}
-			virtual Uniform* Clone() { return nullptr; }
+			virtual Uniform* Clone();
 
 		private:
 			class UniformPlaceHolder
@@ -117,6 +119,7 @@ namespace sh
 			public:
 				virtual ~UniformPlaceHolder() {}
 				virtual const std::type_info& GetTypeInfo() const = 0;
+				virtual const void* GetData() const = 0;
 			};
 
 			template <typename T>
@@ -126,6 +129,7 @@ namespace sh
 				UniformHolder() {}
 				UniformHolder(const T& value) : m_value(value) {}
 				virtual const std::type_info& GetTypeInfo() const override { return typeid(m_value); }
+				virtual const void* GetData() const override { return &m_value; }
 				void SetValue(const T& value) { m_value = value; }
 				const T& GetValue() const { return m_value; }
 			public:
@@ -138,6 +142,7 @@ namespace sh
 			GlobalUniformName m_globalName = GlobalUniformName::NONE;
 			std::string m_name;
 			UniformPlaceHolder* m_placeHolder;
+			u32 m_size;
 		};
 
 		/////////////////////////////////////////////////////////////////////////////////
@@ -147,6 +152,7 @@ namespace sh
 		inline Uniform::Uniform(const T& value)
 			: m_placeHolder(new UniformHolder<T>(value))
 			, m_type(Type::UNKNOWN)
+			, m_size(0U)
 		{
 		}
 
@@ -154,6 +160,7 @@ namespace sh
 		inline Uniform::Uniform(const float& value)
 			: m_placeHolder(new UniformHolder<float>(value))
 			, m_type(Type::FLOAT)
+			, m_size(sizeof(float))
 		{
 		}
 
@@ -161,6 +168,7 @@ namespace sh
 		inline Uniform::Uniform(const int& value)
 			: m_placeHolder(new UniformHolder<int>(value))
 			, m_type(Type::INT)
+			, m_size(sizeof(int))
 		{
 		}
 
@@ -168,6 +176,7 @@ namespace sh
 		inline Uniform::Uniform(const math::Vector2f& value)
 			: m_placeHolder(new UniformHolder<math::Vector2f>(value))
 			, m_type(Type::VEC2)
+			, m_size(sizeof(math::Vector2f))
 		{
 		}
 
@@ -175,6 +184,7 @@ namespace sh
 		inline Uniform::Uniform(const math::Vector3f& value)
 			: m_placeHolder(new UniformHolder<math::Vector3f>(value))
 			, m_type(Type::VEC3)
+			, m_size(sizeof(math::Vector3f))
 		{
 		}
 
@@ -182,6 +192,7 @@ namespace sh
 		inline Uniform::Uniform(const math::Vector4f& value)
 			: m_placeHolder(new UniformHolder<math::Vector4f>(value))
 			, m_type(Type::VEC4)
+			, m_size(sizeof(math::Vector4f))
 		{
 		}
 
@@ -189,6 +200,7 @@ namespace sh
 		inline Uniform::Uniform(const math::Matrix4f& value)
 			: m_placeHolder(new UniformHolder<math::Matrix4f>(value))
 			, m_type(Type::MAT4)
+			, m_size(sizeof(math::Matrix4f))
 		{
 		}
 
@@ -197,6 +209,58 @@ namespace sh
 			: m_placeHolder(new UniformHolder<std::vector<math::Vector3f> >(value))
 			, m_type(Type::VEC3_ARRAY)
 		{
+		}
+
+		inline Uniform* Uniform::Clone()
+		{
+			Uniform* res = nullptr;
+
+			switch(m_type)
+			{
+			case Type::INT:
+			{
+				int value = Get<int>();
+				res = new Uniform(value);
+			}
+				break;
+			case Type::FLOAT:
+			{
+				float value = Get<float>();
+				res = new Uniform(value);
+			}
+				break;				
+			case Type::VEC2:
+			{
+				const math::Vector2f& value = Get<math::Vector2f>();
+				res = new Uniform(value);
+			}
+				break;
+			case Type::VEC3:
+			{
+				const math::Vector3f& value = Get<math::Vector3f>();
+				res = new Uniform(value);
+			}
+				break;
+			case Type::VEC4:
+			{
+				const math::Vector4f& value = Get<math::Vector4f>();
+				res = new Uniform(value);
+			}
+				break;
+			case Type::MAT4:
+			{
+				const math::Matrix4f& value = Get<math::Matrix4f>();
+				res = new Uniform(value);
+			}
+				break;
+			default:
+				break;
+			}
+			res->m_usage = m_usage;
+			res->m_globalName = m_globalName;
+			res->m_name = m_name;
+
+			return res;
 		}
 	}
 }

@@ -32,6 +32,17 @@ namespace sh
 			const std::vector<VulkanDeleter<VkFramebuffer>>& framBuffers = driver->GetSwapChainFramebuffers();
 			math::Vector4u vp = driver->GetViewPort();
 
+			// Allocate command buffer
+			m_commandBuffers.resize(1);
+			VkCommandBufferAllocateInfo allocInfo = {};
+			allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+			allocInfo.commandPool = commandPool;
+			allocInfo.level = VK_COMMAND_BUFFER_LEVEL_SECONDARY;
+			allocInfo.commandBufferCount = 1;
+			VkResult res = vkAllocateCommandBuffers(device, &allocInfo, m_commandBuffers.data());
+			SH_ASSERT(res == VK_SUCCESS, "Failed to allocate command buffers!");
+
+			/*
 			if (m_commandBuffers.size() > 0) 
 			{
 				vkFreeCommandBuffers(device, commandPool, m_commandBuffers.size(), m_commandBuffers.data());
@@ -44,8 +55,8 @@ namespace sh
 			allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
 			allocInfo.commandBufferCount = (uint32_t)m_commandBuffers.size();
 
-			SH_ASSERT(vkAllocateCommandBuffers(device, &allocInfo, m_commandBuffers.data()) == VK_SUCCESS,
-				"failed to allocate command buffers!");
+			VkResult res = vkAllocateCommandBuffers(device, &allocInfo, m_commandBuffers.data());
+			SH_ASSERT(res == VK_SUCCESS, "Failed to allocate command buffers!");
 
 			for (size_t i = 0; i < m_commandBuffers.size(); i++) 
 			{
@@ -63,6 +74,7 @@ namespace sh
 				renderPassInfo.renderArea.extent.width = vp.z;
 				renderPassInfo.renderArea.extent.height = vp.w;
 
+				
 				std::array<VkClearValue, 2> clearValues = {};
 				clearValues[0].color.float32[0] = 0.7f;
 				clearValues[0].color.float32[1] = 0.7f;
@@ -73,6 +85,8 @@ namespace sh
 
 				renderPassInfo.clearValueCount = clearValues.size();
 				renderPassInfo.pClearValues = clearValues.data();
+				
+			
 
 				vkCmdBeginRenderPass(m_commandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 				
@@ -97,6 +111,7 @@ namespace sh
 				VkResult res = vkEndCommandBuffer(m_commandBuffers[i]);
 				SH_ASSERT(res == VK_SUCCESS, "failed to record command buffer!");			
 			}
+			*/
 		}
 
 		/////////////////////////////////////////////////////////////////////////
@@ -132,6 +147,57 @@ namespace sh
 		void VulkanRenderCommand::SetVertexInputDeclaration(VertexInputDeclaration* declaration)
 		{
 			m_inputDeclaration = static_cast<VulkanVertexDeclaration*>(declaration);
+		}
+
+		/////////////////////////////////////////////////////////////////////////
+
+		void VulkanRenderCommand::Update(const VkCommandBufferInheritanceInfo& inheritanceInfo)
+		{
+			VulkanDriver* driver = static_cast<VulkanDriver*>(Device::GetInstance()->GetDriver());
+			math::Vector4u vp = driver->GetViewPort();
+
+			VkCommandBuffer commandBuffer = m_commandBuffers[0];
+
+			VkCommandBufferBeginInfo beginInfo = {};
+			beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+			beginInfo.flags = VK_COMMAND_BUFFER_USAGE_RENDER_PASS_CONTINUE_BIT;
+			beginInfo.pInheritanceInfo = &inheritanceInfo;
+			vkBeginCommandBuffer(commandBuffer, &beginInfo);
+
+			VkViewport viewport = {};
+			viewport.width = vp.z;
+			viewport.height = vp.w;
+			viewport.minDepth = 0.0f;
+			viewport.maxDepth = 1.0f;
+			vkCmdSetViewport(commandBuffer, 0, 1, &viewport);
+
+			VkRect2D scissor = {};
+			scissor.extent.width = vp.z;
+			scissor.extent.height = vp.w;
+			scissor.offset.x = 0;
+			scissor.offset.y = 0;
+			vkCmdSetScissor(commandBuffer, 0, 1, &scissor);
+
+			vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_pipeline->GetVulkanId());
+
+			math::Matrix4f mat = m_autoUniformsBatch->m_uniforms[0]->Get<math::Matrix4f>();
+			vkCmdPushConstants(
+				commandBuffer, 
+				m_pipeline->GetVulkanPipelineLayout(), 
+				VK_SHADER_STAGE_VERTEX_BIT, 
+				0, 
+				sizeof(math::Matrix4f), 
+				m_autoUniformsBatch->m_uniforms[0]->GetData());
+
+			VkDeviceSize offsets[1] = { 0 };
+			VkBuffer vertexBuffer = m_vertexBuffer->GetVulkanId();
+			vkCmdBindVertexBuffers(commandBuffer, 0, 1, &vertexBuffer, offsets);
+			VkBuffer indexBuffer = m_indexBuffer->GetVulkanId();
+			vkCmdBindIndexBuffer(commandBuffer, indexBuffer, 0, VK_INDEX_TYPE_UINT32);
+			vkCmdDrawIndexed(commandBuffer, m_indexBuffer->GetIndicesCount(), 1, 0, 0, 0);
+
+			VkResult res = vkEndCommandBuffer(commandBuffer);
+			SH_ASSERT(res == VK_SUCCESS, "failed to record command buffer!");
 		}
 
 		/////////////////////////////////////////////////////////////////////////

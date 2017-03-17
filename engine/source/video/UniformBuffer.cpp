@@ -17,6 +17,7 @@ namespace sh
 		void UniformsBatch::AddUniform(Uniform* uniform)
 		{ 
 			m_uniforms.push_back(uniform); 
+			m_size += uniform->GetSize();
 		}
 
 		UniformsBatchPtr UniformsBatch::Clone() const
@@ -27,9 +28,9 @@ namespace sh
 			result->m_uniforms.resize(size);
 			for (size_t i = 0U; i < size; ++i)
 			{
-				result->m_uniforms[i] = m_uniforms[i];
+				result->m_uniforms[i] = m_uniforms[i]->Clone();
 			}
-
+			result->m_size = m_size;
 			return result;
 		}
 
@@ -68,13 +69,14 @@ namespace sh
 				m_uniforms[i]->Init();
 			}
 			m_autoUniformsBatch.reset(new UniformsBatch());
-			m_autoUniformsBatch->m_uniforms.resize(m_autoUniforms.size());
+			//m_autoUniformsBatch->m_uniforms.resize(m_autoUniforms.size());			
+			m_autoUniformsBatch->m_uniforms.reserve(m_autoUniforms.size());
 			for (size_t i = 0; i < m_autoUniforms.size(); ++i)
 			{
 				m_autoUniforms[i]->Init();
-				m_autoUniformsBatch->m_uniforms[i] = m_autoUniforms[i]->Clone();
+				//m_autoUniformsBatch->m_uniforms[i] = m_autoUniforms[i]->Clone();
+				m_autoUniformsBatch->AddUniform(m_autoUniforms[i]->Clone());
 			}
-			
 
 			for (size_t i = 0; i < m_globalUniforms.size(); ++i)
 			{
