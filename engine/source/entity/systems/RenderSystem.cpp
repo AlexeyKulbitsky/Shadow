@@ -29,7 +29,7 @@ namespace sh
 		m_entities.push_back(entity);
 
 		RenderComponent* renderComponent = static_cast<RenderComponent*>( entity->GetComponent(Component::Type::RENDER) );
-		scene::Model* model = renderComponent->GetModel();
+		const scene::ModelPtr& model = renderComponent->GetModel();
 
 		for (size_t i = 0, sz = model->GetMeshesCount(); i < sz; ++i)
 		{

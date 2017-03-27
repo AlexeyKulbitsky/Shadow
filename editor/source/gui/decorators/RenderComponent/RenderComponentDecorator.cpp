@@ -24,7 +24,7 @@ ExpandableWidget* RenderComponentDecorator::GetParametersWidget()
     headers << tr("Title") << tr("Description");
 
 	//TreeModel* model = new TreeModel(headers, QString());
-	RenderComponentTreeModel* model = new RenderComponentTreeModel(headers, m_model);
+	RenderComponentTreeModel* model = new RenderComponentTreeModel(headers, m_model.get());
 	QTreeView* view = new QTreeView();
 	view->setModel(model);
 	RenderComponentTreeItemDelegate* itemDelegate = new RenderComponentTreeItemDelegate(view);

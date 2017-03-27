@@ -10,13 +10,6 @@ namespace sh
 	{
 		if (m_light)
 		{
-			if (m_light->GetType() == sh::scene::Light::Type::DIRECTIONAL)
-			{
-				sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
-				sh::video::Uniform* uniform = driver->GetGlobalUniform(video::GlobalUniformName::LIGHT_DIRECTIONAL_DIRECTION);
-				std::vector<math::Vector3f> value;
-				uniform->Set(value);
-			}
 			delete m_light;
 			m_light = nullptr;
 		}

@@ -53,7 +53,15 @@ namespace sh
 			virtual void SetDepthStencilState(const DepthStencilStatePtr& depthStencilState) { }
 			virtual void SetRasterizationState(const RasterizationStatePtr& rasterizationState) { }
 			virtual void SetBlendingState(const BlendingStatePtr& blendingState) { }
+			virtual void SetRenderPipeline(const RenderPipelinePtr& pipeline) { }
+			virtual void SetComputePipeline() { }
 
+			// Rendering
+			virtual void SetVertexDeclaration(const VertexInputDeclarationPtr& declaration) { }
+			virtual void SetVertexBuffer(const VertexBufferPtr& buffer) { }
+			virtual void SetIndexBuffer(const IndexBufferPtr& buffer) { }
+			virtual void Draw(u32 offset, u32 verticesCount, u32 instancesCount = 1U) { }
+			virtual void DrawIndexed(u32 offset, u32 indicesCount, u32 instancesCount = 1U) { }
 
 			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) {}
 

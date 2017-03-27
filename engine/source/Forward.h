@@ -4,9 +4,10 @@
 #include <memory>
 
 
-#define DEFINE_CLASS_PTR(C)			\
-class C;							\
-typedef std::shared_ptr<C> C##Ptr;				
+#define DEFINE_CLASS_PTR(C)					\
+class C;									\
+typedef std::shared_ptr<C> C##Ptr;			\
+typedef std::unique_ptr<C> C##UPtr;		
 
 
 namespace sh
@@ -67,6 +68,7 @@ namespace sh
 	DEFINE_CLASS_PTR(RenderSystem)
 	DEFINE_CLASS_PTR(TransformSystem)
 
+	DEFINE_CLASS_PTR(InputManager)
 	DEFINE_CLASS_PTR(Resource)
 	DEFINE_CLASS_PTR(ResourceManager)
 }

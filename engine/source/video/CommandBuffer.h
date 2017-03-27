@@ -7,10 +7,6 @@ namespace sh
 {
 	namespace video
 	{
-		class RenderCommand;
-		class RenderState;
-		class ShaderProgram;
-
 		class CommandBuffer
 		{
 		public:

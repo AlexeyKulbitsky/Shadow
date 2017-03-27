@@ -57,7 +57,17 @@ namespace sh
 
 		SceneManager::~SceneManager()
 		{
+			delete m_camera;
+			delete m_componentsFactory;
+			for (size_t i = 0; i < m_systems.size(); ++i)
+			{
+				delete m_systems[i];
+			}
 
+			for (size_t i = 0; i < m_entities.size(); ++i)
+			{
+				delete m_entities[i];
+			}
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////

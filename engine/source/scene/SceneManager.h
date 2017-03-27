@@ -34,9 +34,9 @@ namespace sh
 
 			void ClearScene();
 
-			void AddModel(Model* model) { m_models.push_back(model); }
-			size_t GetModelsCount() const { return m_models.size(); }
-			Model* GetModel(size_t index) { return m_models[index]; }
+			//void AddModel(ModelPtr model) { m_models.push_back(model); }
+			//size_t GetModelsCount() const { return m_models.size(); }
+			//const ModelPtr GetModel(size_t index) { return m_models[index]; }
 
 			void AddEntity(Entity* entity) { m_entities.push_back(entity); }
 			size_t GetEntitiesCount() const { return m_entities.size(); }
@@ -57,7 +57,7 @@ namespace sh
 			static math::Vector3f	s_rightVector;
 
 			Camera* m_camera;
-			std::vector<Model*> m_models;
+			//std::vector<Model*> m_models;
 
 			ComponentsFactory* m_componentsFactory = nullptr;
 			std::vector<System*> m_systems;

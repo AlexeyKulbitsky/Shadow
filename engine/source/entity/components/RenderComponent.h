@@ -19,11 +19,11 @@ namespace sh
 		virtual void Load(const pugi::xml_node &node) override;
 		virtual void Save(pugi::xml_node &parent) override;
 
-		void SetModel(scene::Model* model) { m_model = model; }
-		scene::Model* GetModel() { return m_model; }
+		void SetModel(scene::ModelPtr model) { m_model = model; }
+		const scene::ModelPtr& GetModel() { return m_model; }
 
 	protected:
-		scene::Model* m_model;
+		scene::ModelPtr m_model;
 	};
 }
 

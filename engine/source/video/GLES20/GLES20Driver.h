@@ -39,7 +39,16 @@ namespace sh
 			virtual void SetDepthStencilState(const DepthStencilStatePtr& depthStencilState) override;
 			virtual void SetRasterizationState(const RasterizationStatePtr& rasterizationState) override;
 			virtual void SetBlendingState(const BlendingStatePtr& blendingState) override;
-			
+			virtual void SetRenderPipeline(const RenderPipelinePtr& pipeline) override;
+			virtual void SetComputePipeline() override;
+
+			// Rendering
+			virtual void SetVertexDeclaration(const VertexInputDeclarationPtr& declaration) override;
+			virtual void SetVertexBuffer(const VertexBufferPtr& buffer)override;
+			virtual void SetIndexBuffer(const IndexBufferPtr& buffer) override;
+			virtual void Draw(u32 offset, u32 verticesCount, u32 instancesCount = 1U) override;
+			virtual void DrawIndexed(u32 offset, u32 indicesCount, u32 instancesCount = 1U) override;
+
 			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) override;
 
 			virtual VertexBufferPtr CreateVertexBuffer(HardwareBuffer::Usage usage) const override;

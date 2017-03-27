@@ -537,13 +537,6 @@ Win32Device::Win32Device(const CreationParameters &parameters)
 
 Win32Device::~Win32Device()
 {
-	if (!!m_resourceManager)
-	{
-		//m_resourceManager->Unload();
-		delete m_resourceManager;
-		m_resourceManager = nullptr;
-	}
-
 	if (!!m_GLContextManager)
 	{
 		delete m_GLContextManager;
@@ -559,11 +552,6 @@ Win32Device::~Win32Device()
 	{
 		delete m_sceneManager;
 		m_sceneManager = nullptr;
-	}
-	if (!!m_inputManager)
-	{
-		delete m_inputManager;
-		m_inputManager = nullptr;
 	}
 	
 	if (!!m_fileSystem)

@@ -17,14 +17,6 @@ namespace sh
 
 	Entity::~Entity()
 	{
-		for (size_t i = 0, sz = static_cast<size_t>( Component::Type::COUNT ); i < sz; ++i)
-		{
-			Component* component = m_components[i];
-			if (component)
-			{
-				delete m_components[i];
-			}
-		}
 	}
 
 	//////////////////////////////////////////////////////////////

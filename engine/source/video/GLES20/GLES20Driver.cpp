@@ -373,6 +373,62 @@ void GLES20Driver::SetBlendingState(const BlendingStatePtr& blendingState)
 
 ////////////////////////////////////////////////////////////////////////
 
+void GLES20Driver::SetRenderPipeline(const RenderPipelinePtr& pipeline)
+{
+	SetBlendingState(pipeline->GetBlendingState());
+	SetRasterizationState(pipeline->GetRasterizationState());
+	SetDepthStencilState(pipeline->GetDepthStencilState());
+}
+
+////////////////////////////////////////////////////////////////////////
+
+void GLES20Driver::SetComputePipeline()
+{
+
+}
+
+////////////////////////////////////////////////////////////////////////
+
+void GLES20Driver::SetVertexDeclaration(const VertexInputDeclarationPtr& declaration)
+{
+	GLES20VertexDeclaration* vertexDeclaration = static_cast<GLES20VertexDeclaration*>(declaration.get());	
+	for (auto attribute : vertexDeclaration->GetAttributes())
+	{
+		glEnableVertexAttribArray(attribute.index);
+		glVertexAttribPointer(attribute.index, attribute.size, attribute.type, false, vertexDeclaration->GetStride(), attribute.pointer);
+	}
+}
+
+////////////////////////////////////////////////////////////////////////
+
+void GLES20Driver::SetVertexBuffer(const VertexBufferPtr& buffer)
+{
+	buffer->Bind();
+}
+
+////////////////////////////////////////////////////////////////////////
+
+void GLES20Driver::SetIndexBuffer(const IndexBufferPtr& buffer)
+{
+	buffer->Bind();
+}
+
+////////////////////////////////////////////////////////////////////////
+
+void GLES20Driver::Draw(u32 offset, u32 verticesCount, u32 instancesCount)
+{
+
+}
+
+////////////////////////////////////////////////////////////////////////
+
+void GLES20Driver::DrawIndexed(u32 offset, u32 indicesCount, u32 instancesCount)
+{
+
+}
+
+////////////////////////////////////////////////////////////////////////
+
 void GLES20Driver::GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data)
 {
 	GLint viewport[4]; 

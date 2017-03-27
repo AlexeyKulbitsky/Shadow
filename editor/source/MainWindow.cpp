@@ -56,8 +56,10 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+	disconnect(m_timer, 0, 0, 0);
+	//disconnect(m_timer, SIGNAL(timeout()), this, SLOT(Update()), Qt::QueuedConnection);
 	sh::Device* device = sh::Device::GetInstance();
-	delete device;
+	sh::Device::Destroy();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -329,8 +331,8 @@ void MainWindow::InitDevice()
 	params.width = width();
 	params.height = height();
 	params.WinId = (void*)hwnd;
-	//params.driverType = sh::video::DriverType::OPENGL_ES_2_0;
-	params.driverType = sh::video::DriverType::VULKAN;
+	params.driverType = sh::video::DriverType::OPENGL_ES_2_0;
+	//params.driverType = sh::video::DriverType::VULKAN;
 	sh::Device* device = sh::CreateDevice(params);
 	
 	sh::scene::ModelLoader* modelLoader = new sh::scene::TinyObjModelLoader();

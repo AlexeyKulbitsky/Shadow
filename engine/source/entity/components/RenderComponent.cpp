@@ -33,7 +33,7 @@ namespace sh
 		ResourceManager* resourceManager = Device::GetInstance()->GetResourceManager();
 
 		// Read model
-		sh::scene::Model* model = nullptr;
+		sh::scene::ModelPtr model = nullptr;
 		sh::scene::ModelBasePtr modelBase = nullptr;
 		pugi::xml_node modelNode = node.child("model");
 		if (modelNode)
@@ -41,7 +41,7 @@ namespace sh
 			pugi::xml_attribute attr = modelNode.attribute("filename");
 			String modelFileName = attr.as_string();
 			modelBase = resourceManager->GetModelBase(modelFileName);
-			model = new scene::Model(modelBase);
+			model.reset(new scene::Model(modelBase));
 		}
 
 		// Read material
@@ -85,7 +85,6 @@ namespace sh
 			}
 
 			m_model = model;
-			Device::GetInstance()->GetSceneManager()->AddModel(m_model);
 		}
 	}
 

@@ -38,26 +38,29 @@ namespace sh
 		virtual SHADOW_API video::Driver* SH_CALLCONV GetDriver() { return m_driver; }
 		void SetSceneManager(scene::SceneManager* manager) { m_sceneManager = manager; }
 		scene::SceneManager* GetSceneManager() { return m_sceneManager; }
-		InputManager* GetInputManager() { return m_inputManager; }
-		ResourceManager* GetResourceManager() { return m_resourceManager; }
+		InputManager* GetInputManager() { return m_inputManager.get(); }
+		ResourceManager* GetResourceManager() { return m_resourceManager.get(); }
 		io::FileSystem* GetFileSystem() { return m_fileSystem; }
 		video::GLContextManager* GetContextManager() { return m_GLContextManager;}
 
-		static void SetInstance(Device* instance) { m_instance = instance; }
-		static Device* GetInstance() { return m_instance; }
+		static void SetInstance(Device* instance) { s_instance = instance; }
+		static Device* GetInstance() { return s_instance; }
+		static void Destroy();
 
 	protected:
 		CreationParameters m_creationParameters;
 		video::GLContextManager *m_GLContextManager = nullptr;
 		video::Driver *m_driver = nullptr;
 		scene::SceneManager* m_sceneManager = nullptr;
-		InputManager* m_inputManager = nullptr;
-		ResourceManager* m_resourceManager = nullptr;
+
+		InputManagerUPtr m_inputManager;
+		ResourceManagerUPtr m_resourceManager;
+
 		io::FileSystem* m_fileSystem = nullptr;
 		bool m_needsToClose = false;
 
 	private:
-		static Device* m_instance;
+		static Device* s_instance;
 	};
 }
 

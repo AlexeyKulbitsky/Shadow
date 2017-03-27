@@ -2,23 +2,21 @@
 
 namespace sh
 {
-	Device* Device::m_instance = nullptr;
+	Device* Device::s_instance = nullptr;
 
 	Device::Device()
 	{
-		m_inputManager = new InputManager();
-		m_resourceManager = new ResourceManager();
+		m_inputManager.reset(new InputManager());
+		m_resourceManager.reset(new ResourceManager());
 	}
 
 	Device::Device(const CreationParameters &parameters)
 		: m_creationParameters(parameters)
 	{
 		m_fileSystem = new io::FileSystem();
-		//m_fileSystem->AddFolder(String("../../../data"));
-		//m_fileSystem->Init();
 
-		m_inputManager = new InputManager();
-		m_resourceManager = new ResourceManager();
+		m_inputManager.reset(new InputManager());
+		m_resourceManager.reset(new ResourceManager());
 		m_resourceManager->Init();
 	}
 
@@ -29,5 +27,11 @@ namespace sh
 	void Device::SetWindow(void* window)
 	{
 		m_creationParameters.WinId = window;
+	}
+
+	void Device::Destroy()
+	{
+		delete s_instance;
+		s_instance = nullptr;
 	}
 }
