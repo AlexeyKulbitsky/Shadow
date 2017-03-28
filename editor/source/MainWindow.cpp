@@ -39,7 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
 	m_splitter->addWidget(m_graphicsWidget);
 	setCentralWidget(m_splitter);
 
-	connect(m_graphicsWidget, SIGNAL(EntitySelected(sh::Entity*)), this, SLOT(SetSelecte dEntity(sh::Entity*)));
+	connect(m_graphicsWidget, SIGNAL(EntitySelected(sh::Entity*)), this, SLOT(SetSelectedEntity(sh::Entity*)));
 	CreateToolBar();
 	InitDevice();
 	m_graphicsWidget->Init();

@@ -8,6 +8,7 @@
 #include "GLES20Texture.h"
 #include "GLES20RenderTarget.h"
 #include "GLES20RenderPIpeline.h"
+#include "GLES20RenderBatchManager.h"
 #include "../Material.h"
 #include "../GLContext/EGLContextManager.h"
 #include "../../scene/Mesh.h"
@@ -516,3 +517,8 @@ RenderPipelinePtr GLES20Driver::CreateRenderPipeline() const
 }
 
 ////////////////////////////////////////////////////////////////////////
+
+RenderBatchManager* GLES20Driver::CreateRenderBatchManager() const
+{
+	return new GLES20RenderBatchManager();
+}

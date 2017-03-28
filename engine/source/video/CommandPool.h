@@ -10,15 +10,6 @@ namespace sh
 	{
 		class CommandPool
 		{
-		public:
-			void AddMesh(scene::Mesh* mesh);
-			void Submit();
-			void Clear();
-
-		protected:
-			typedef HashMap<String, RenderBatchPtr> PerTechniqueRenderBatchesMap;
-
-			PerTechniqueRenderBatchesMap m_renderBatches[(size_t)RenderPipeline::Layer::COUNT];
 		};
 	}
 }

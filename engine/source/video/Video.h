@@ -11,6 +11,7 @@
 #include "Painter.h"
 #include "RasterizationState.h"
 #include "RenderBatch.h"
+#include "RenderBatchManager.h"
 #include "RenderCommand.h"
 #include "RenderPipeline.h"
 #include "RenderTarget.h"

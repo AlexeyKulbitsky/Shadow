@@ -74,7 +74,7 @@ namespace sh
 			void Normalize()
 			{
 				T n = x*x + y*y + z*z + w*w;
-				assert(n != 0);
+				//assert(n != 0);
 				n = 1 / (T)math::Sqrt(n);
 				*this *= n;
 			}

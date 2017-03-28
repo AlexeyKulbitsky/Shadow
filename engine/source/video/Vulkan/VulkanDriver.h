@@ -74,6 +74,7 @@ namespace sh
 			virtual ShaderProgramPtr CreateShaderProgram() const override;
 			virtual VertexInputDeclaration* CreateVertexInputDeclaration() const override;
 			virtual RenderPipelinePtr CreateRenderPipeline() const override;
+			virtual RenderBatchManager* CreateRenderBatchManager() const override;
 
 			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) override;
 

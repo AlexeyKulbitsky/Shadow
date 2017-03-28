@@ -3,7 +3,7 @@
 #include "../components/RenderComponent.h"
 #include "../components/TransformComponent.h"
 #include "../../scene/Model.h"
-#include "../../video/CommandPool.h"
+#include "../../video/RenderBatchManager.h"
 
 #include "../../Device.h"
 #include"../../video/Driver.h"
@@ -12,14 +12,14 @@ namespace sh
 {
 	RenderSystem::RenderSystem()
 	{
-		m_commandPool = new video::CommandPool();
+		m_batchManager = Device::GetInstance()->GetDriver()->CreateRenderBatchManager();
 	}
 
 	//////////////////////////////////////////////////////////////////
 
 	RenderSystem::~RenderSystem()
 	{
-		delete m_commandPool;
+		delete m_batchManager;
 	}
 
 	//////////////////////////////////////////////////////////////////
@@ -33,7 +33,7 @@ namespace sh
 
 		for (size_t i = 0, sz = model->GetMeshesCount(); i < sz; ++i)
 		{
-			m_commandPool->AddMesh(model->GetMesh(i).get());
+			m_batchManager->AddMesh(model->GetMesh(i).get());
 		}
 	}
 
@@ -67,18 +67,14 @@ namespace sh
 			renderComponent->GetModel()->UpdateTransformationUniforms();
 		}
 
-		//Device::GetInstance()->GetDriver()->BeginRendering();
-
-		m_commandPool->Submit();
-
-		//Device::GetInstance()->GetDriver()->EndRendering();
+		m_batchManager->Submit();
 	}
 
 	//////////////////////////////////////////////////////////////////
 
 	void RenderSystem::Clear()
 	{
-		m_commandPool->Clear();
+		m_batchManager->Clear();
 		m_entities.clear();
 	}
 }

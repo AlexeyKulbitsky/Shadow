@@ -1,18 +1,20 @@
 #ifndef SHADOW_GLOBALS_INCLUDE
 #define SHADOW_GLOBALS_INCLUDE
 
+#include "Types.h"
+#include "math\smath.h"
+#include "Event.h"
+#include "Forward.h"
+
+#include "pempek_assert.h"
+#include <pugixml.hpp>
+
 #include <vector>
 #include <array>
 #include <set>
 #include <map>
 #include <sstream>
-#include <pugixml.hpp>
-
-#include "Types.h"
-#include "math\smath.h"
-#include "Event.h"
-#include "pempek_assert.h"
-#include "Forward.h"
+#include <functional>
 
 namespace sh
 {

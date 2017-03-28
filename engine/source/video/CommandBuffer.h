@@ -7,6 +7,12 @@ namespace sh
 {
 	namespace video
 	{
+		class Command
+		{
+		public:
+			virtual void Execute() = 0;
+		};
+
 		class CommandBuffer
 		{
 		public:

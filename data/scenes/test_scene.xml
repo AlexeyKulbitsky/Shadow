@@ -1,4 +1,11 @@
 <?xml version="1.0"?>
+
+<materials>
+	<material name="testMaterial">
+		<technique filename="const_color.xml" />
+	</material>
+</materials>
+
 <scene>
 	<material name="testMaterial">
 		<technique filename="const_color.xml" />

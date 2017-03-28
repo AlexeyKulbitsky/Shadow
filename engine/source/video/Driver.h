@@ -79,6 +79,7 @@ namespace sh
 			virtual VertexInputDeclaration* CreateVertexInputDeclaration() const = 0;
 			virtual RenderTargetPtr CreateRenderTarget() const { return nullptr; }
 			virtual RenderPipelinePtr CreateRenderPipeline() const = 0;
+			virtual RenderBatchManager* CreateRenderBatchManager() const = 0;
 			
 
 			template<typename T>

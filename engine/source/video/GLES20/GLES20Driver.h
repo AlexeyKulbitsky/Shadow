@@ -60,6 +60,7 @@ namespace sh
 			virtual VertexInputDeclaration* CreateVertexInputDeclaration() const override;
 			virtual RenderTargetPtr CreateRenderTarget() const override;
 			virtual RenderPipelinePtr CreateRenderPipeline() const override;
+			virtual RenderBatchManager* CreateRenderBatchManager() const override;
 
 		private:
 			EGLContextManager* m_contextManager = nullptr;
