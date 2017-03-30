@@ -70,8 +70,8 @@ namespace sh
 			u32 GetMaxCubeTextureSize() const { return m_maxCubeTextureSize; }
 
 			// Resources creation interface
-			virtual VertexBufferPtr CreateVertexBuffer(HardwareBuffer::Usage usage) const = 0;
-			virtual IndexBufferPtr CreateIndexBuffer(HardwareBuffer::Usage usage) const = 0;
+			virtual VertexBufferPtr CreateVertexBuffer(Usage usage) const = 0;
+			virtual IndexBufferPtr CreateIndexBuffer(Usage usage) const = 0;
 			virtual UniformBufferPtr CreateUniformBuffer() const = 0;
 			virtual RenderCommandPtr CreateRenderCommand() const = 0;
 			virtual ShaderProgramPtr CreateShaderProgram() const = 0;

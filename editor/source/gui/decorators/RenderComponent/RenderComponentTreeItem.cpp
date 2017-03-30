@@ -139,8 +139,8 @@ bool RenderComponentTreeItem::SetData(int column, const QVariant &value)
 
 void RenderComponentTreeItem::SetDepthCompareFunction(int funcType)
 {
-	sh::video::CompareFunction *value = (sh::video::CompareFunction*)m_userPointer;
-	*value = (sh::video::CompareFunction)funcType;
+	sh::CompareFunction *value = (sh::CompareFunction*)m_userPointer;
+	*value = (sh::CompareFunction)funcType;
 }
 
 ////////////////////////////////////////////////////////////////////////

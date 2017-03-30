@@ -51,8 +51,8 @@ namespace sh
 
 			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) override;
 
-			virtual VertexBufferPtr CreateVertexBuffer(HardwareBuffer::Usage usage) const override;
-			virtual IndexBufferPtr CreateIndexBuffer(HardwareBuffer::Usage usage) const override;
+			virtual VertexBufferPtr CreateVertexBuffer(Usage usage) const override;
+			virtual IndexBufferPtr CreateIndexBuffer(Usage usage) const override;
 			virtual UniformBufferPtr CreateUniformBuffer() const override;
 			virtual RenderCommandPtr CreateRenderCommand() const override;
 			virtual ShaderProgramPtr CreateShaderProgram() const override;

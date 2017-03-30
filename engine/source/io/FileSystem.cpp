@@ -62,7 +62,7 @@ namespace sh
 		const FileInfo& FileSystem::FindFile(const String& fileName)
 		{
 			static const FileInfo errorFile("", "");
-			HashSet<FileInfo>::iterator it = m_fileList.find(FileInfo(fileName, ""));
+			Set<FileInfo>::iterator it = m_fileList.find(FileInfo(fileName, ""));
 			if (it != m_fileList.end())
 			{
 				return *it;

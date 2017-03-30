@@ -79,10 +79,10 @@ namespace sh
 					verticesCount++;
 				}
 
-				sh::video::Attribute positionAttribute(sh::video::AttributeSemantic::POSITION, sh::video::AttributeType::FLOAT, 3U);
-				sh::video::Attribute normalAttribute(sh::video::AttributeSemantic::NORMAL, sh::video::AttributeType::FLOAT, 3U);
-				sh::video::Attribute colorAttribute(sh::video::AttributeSemantic::COLOR, sh::video::AttributeType::FLOAT, 3U);
-				sh::video::Attribute uvAttribute(sh::video::AttributeSemantic::UV, sh::video::AttributeType::FLOAT, 2U);
+				sh::video::Attribute positionAttribute(AttributeSemantic::POSITION, AttributeType::FLOAT, 3U);
+				sh::video::Attribute normalAttribute(AttributeSemantic::NORMAL, AttributeType::FLOAT, 3U);
+				sh::video::Attribute colorAttribute(AttributeSemantic::COLOR, AttributeType::FLOAT, 3U);
+				sh::video::Attribute uvAttribute(AttributeSemantic::UV, AttributeType::FLOAT, 2U);
 				vertexDeclaration->AddAttribute(positionAttribute);	
 				vertexDeclaration->AddAttribute(normalAttribute);
 				vertexDeclaration->AddAttribute(colorAttribute);
@@ -95,7 +95,7 @@ namespace sh
 				// Create vertex buffer
 				const void* verticesPointer = vertexArray.data();
 				size_t verticesDataSize = vertexArray.size() * sizeof(float);
-				sh::video::VertexBufferPtr vertexBuffer = driver->CreateVertexBuffer(video::HardwareBuffer::STATIC);
+				sh::video::VertexBufferPtr vertexBuffer = driver->CreateVertexBuffer(Usage::STATIC);
 				vertexBuffer->SetData(0, verticesDataSize, verticesPointer);
 				vertexBuffer->SetVerticesCount(verticesCount);
 				vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
@@ -104,15 +104,15 @@ namespace sh
 				// Create index buffer
 				const void* indicesPointer = indexArray.data();
 				size_t indicesDataSize = indexArray.size() * sizeof(unsigned int);
-				sh::video::IndexBufferPtr indexBuffer = driver->CreateIndexBuffer(video::HardwareBuffer::STATIC);
+				sh::video::IndexBufferPtr indexBuffer = driver->CreateIndexBuffer(Usage::STATIC);
 				indexBuffer->SetData(0, indicesDataSize, indicesPointer);
-				indexBuffer->SetIndexType(sh::video::IndexBuffer::IndexType::UNSIGNED_32_BIT);
+				indexBuffer->SetIndexType(sh::IndexType::UNSIGNED_32_BIT);
 				indexBuffer->SetIndicesCount(indexArray.size());
 				
 				mesh->SetVertexBuffer(vertexBuffer);
 				mesh->SetIndexBuffer(indexBuffer);
 				//mesh->SetVertexDeclaration(vertexDeclaration);
-				mesh->SetTopology(sh::video::Topology::TRIANGLE_LIST);
+				mesh->SetTopology(Topology::TRIANGLE_LIST);
 
 				// Set base material
 				int materialId = shape.mesh.material_ids[0];

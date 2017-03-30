@@ -2,6 +2,7 @@
 #define SHADOW_GLOBALS_INCLUDE
 
 #include "Types.h"
+#include "CommonTypes.h"
 #include "math\smath.h"
 #include "Event.h"
 #include "Forward.h"
@@ -22,10 +23,10 @@ namespace sh
 	typedef std::string		String;
 	
 	template<typename T, typename U>
-	using HashMap = std::map<T, U>;
+	using Map = std::map<T, U>;
 
 	template<typename T>
-	using HashSet = std::set<T>;
+	using Set = std::set<T>;
 
 }
 

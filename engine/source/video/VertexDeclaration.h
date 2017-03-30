@@ -7,27 +7,6 @@ namespace sh
 {
 	namespace video
 	{
-		enum class AttributeSemantic
-		{
-			POSITION = 0,
-			COLOR,
-			UV,
-			NORMAL,
-			BINORMAL,
-			TANGENT,
-
-			COUNT
-		};
-
-		enum class AttributeType
-		{
-			FLOAT = 4,
-			INT = 4,
-			UNSIGNED_INT = 4,
-			BYTE = 1,
-			UNSIGNED_BYTE = 1
-		};
-
 		struct Attribute
 		{
 			Attribute()

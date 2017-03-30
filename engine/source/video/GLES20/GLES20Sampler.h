@@ -17,9 +17,9 @@ namespace sh
 			virtual void Init() override;
 			virtual Sampler* Clone() override;
 
-			virtual void SetFiltering(Texture::Filtering filtering) override;
-			virtual void SetTiling(Texture::Tiling tilingU, Texture::Tiling tilingV, Texture::Tiling tilingW = Texture::Tiling::REPEAT) override;
-			virtual void SetType(Texture::Type type) override;
+			virtual void SetFiltering(TextureFiltering filtering) override;
+			virtual void SetTiling(TextureTiling tilingU, TextureTiling tilingV, TextureTiling tilingW = TextureTiling::REPEAT) override;
+			virtual void SetType(TextureType type) override;
 
 			// GLES 2 - specific interface
 			void SetGLId(s32 id);

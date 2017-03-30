@@ -10,11 +10,7 @@ namespace sh
 		class HardwareBuffer
 		{
 		public:
-			enum Usage
-			{
-				STATIC = 0,
-				DYNAMIC
-			};
+			
 			/*explicit*/ HardwareBuffer(Usage usage) : m_size(0U), m_usage(usage){}
 			virtual ~HardwareBuffer(){}
 

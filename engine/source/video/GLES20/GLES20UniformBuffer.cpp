@@ -189,25 +189,25 @@ namespace sh
 				printf("Type: %s ", typeName.c_str());
 				if (typeName == "2D")
 				{
-					sampler->SetType(Texture::Type::TEXTURE_2D);
+					sampler->SetType(TextureType::TEXTURE_2D);
 				}
 				else if (typeName == "cube")
 				{
-					sampler->SetType(Texture::Type::TEXTURE_CUBE);
+					sampler->SetType(TextureType::TEXTURE_CUBE);
 				}
 
 
 				// Read tiling
-				Texture::Tiling tilingU = Texture::Tiling::REPEAT;
-				Texture::Tiling tilingV = Texture::Tiling::REPEAT;
-				Texture::Tiling tilingW = Texture::Tiling::REPEAT;
+				TextureTiling tilingU = TextureTiling::REPEAT;
+				TextureTiling tilingV = TextureTiling::REPEAT;
+				TextureTiling tilingW = TextureTiling::REPEAT;
 
 				if (tilingUAttr)
 				{
 					std::string tilingTypeName = tilingUAttr.as_string();
 					if (tilingTypeName == "clamp")
 					{
-						tilingU = Texture::Tiling::CLAMP_TO_EDGE;
+						tilingU = TextureTiling::CLAMP_TO_EDGE;
 					}
 				}
 
@@ -216,7 +216,7 @@ namespace sh
 					std::string tilingTypeName = tilingVAttr.as_string();
 					if (tilingTypeName == "clamp")
 					{
-						tilingV = Texture::Tiling::CLAMP_TO_EDGE;
+						tilingV = TextureTiling::CLAMP_TO_EDGE;
 					}
 				}
 				if (tilingWAttr)
@@ -224,31 +224,31 @@ namespace sh
 					std::string tilingTypeName = tilingVAttr.as_string();
 					if (tilingTypeName == "clamp")
 					{
-						tilingW = Texture::Tiling::CLAMP_TO_EDGE;
+						tilingW = TextureTiling::CLAMP_TO_EDGE;
 					}
 				}
 
 
 				// Read filter
-				Texture::Filtering filtering = Texture::Filtering::NEAREST;
+				TextureFiltering filtering = TextureFiltering::NEAREST;
 				if (filerAttr)
 				{
 					std::string filterTypeName = filerAttr.as_string();
 					if (filterTypeName == "nearest")
 					{
-						filtering = Texture::Filtering::NEAREST;
+						filtering = TextureFiltering::NEAREST;
 					}
 					else if (filterTypeName == "linear")
 					{
-						filtering = Texture::Filtering::LINEAR;
+						filtering = TextureFiltering::LINEAR;
 					}
 					else if (filterTypeName == "bilinear")
 					{
-						filtering = Texture::Filtering::BILINEAR;
+						filtering = TextureFiltering::BILINEAR;
 					}
 					else if (filterTypeName == "trilinear")
 					{
-						filtering = Texture::Filtering::TRILINEAR;
+						filtering = TextureFiltering::TRILINEAR;
 					}
 				}
 

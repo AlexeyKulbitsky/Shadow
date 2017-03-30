@@ -57,9 +57,9 @@ QWidget* RenderComponentTreeItemDelegate::createEditor(QWidget *parent, const QS
 						QComboBox* comboBox = new QComboBox(parent);
 						QStringList list;
 
-						for (size_t i = 0; i < (size_t)sh::video::CompareFunction::COUNT; ++i)
+						for (size_t i = 0; i < (size_t)sh::CompareFunction::COUNT; ++i)
 						{
-							list << sh::video::g_compareFunctionMap[i];
+							list << sh::g_compareFunctionMap[i];
 						}
 						comboBox->addItems(list);
 

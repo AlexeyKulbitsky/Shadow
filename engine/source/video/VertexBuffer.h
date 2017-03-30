@@ -8,6 +8,12 @@ namespace sh
 {
 	namespace video
 	{				
+		struct VertexBufferDecription
+		{
+			u32 size;
+			Usage usage;
+		};
+
 		class VertexBuffer : public HardwareBuffer
 		{
 		public:

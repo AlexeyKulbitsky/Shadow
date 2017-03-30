@@ -7,6 +7,7 @@ namespace sh
 {
 	namespace video
 	{
+		/*
 		enum class SHADOW_API BlendFactor
 		{
 			ZERO = 0,
@@ -85,7 +86,7 @@ namespace sh
 			"Screen",
 			"Substractive"
 		};
-
+		*/
 		////////////////////////////////////////////////////////////////////////////////////
 
 		class SHADOW_API BlendingState

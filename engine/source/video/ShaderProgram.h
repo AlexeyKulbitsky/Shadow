@@ -2,17 +2,13 @@
 #define SHADOW_SHADER_PROGRAM_INCLUDE
 
 #include "../Globals.h"
+#include "Shader.h"
 
 namespace sh
 {
 	namespace video
 	{
-		enum class ShaderType
-		{
-			VERTEX = 0,
-			FRAGMENT,
-			NONE
-		};
+		
 		
 		class ShaderProgram
 		{

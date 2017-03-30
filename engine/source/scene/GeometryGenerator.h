@@ -20,7 +20,7 @@ namespace sh
 			static ModelPtr GetPlaneModel(f32 width, f32 height, math::Matrix4f transform = math::Matrix4f::Identity());
 		private:
 			static ModelPtr CreateModel(const std::vector<float>& vertexArray, const std::vector<u32>& indexArray, 
-				const video::VertexDeclarationPtr& vertexDeclaration, video::Topology topology);
+				const video::VertexDeclarationPtr& vertexDeclaration, Topology topology);
 		};
 	}
 }

@@ -67,8 +67,8 @@ namespace sh
 			virtual void Render(const RenderCommandPtr& command) override;
 
 
-			virtual VertexBufferPtr CreateVertexBuffer(HardwareBuffer::Usage usage) const override;
-			virtual IndexBufferPtr CreateIndexBuffer(HardwareBuffer::Usage usage) const override;
+			virtual VertexBufferPtr CreateVertexBuffer(Usage usage) const override;
+			virtual IndexBufferPtr CreateIndexBuffer(Usage usage) const override;
 			virtual UniformBufferPtr CreateUniformBuffer() const override;
 			virtual RenderCommandPtr CreateRenderCommand() const override;
 			virtual ShaderProgramPtr CreateShaderProgram() const override;

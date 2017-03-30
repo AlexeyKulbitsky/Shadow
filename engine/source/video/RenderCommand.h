@@ -7,16 +7,6 @@ namespace sh
 {
 	namespace video
 	{
-		enum class Topology
-		{
-			LINE_LIST = 0,
-			LINE_LOOP,
-			LINE_STRIP,
-			TRIANGLE_LIST,
-			TRIANGLE_STRIP,
-			TRIANGLE_FAN
-		};
-
 		class VertexDeclaration;
 		class VertexInputDeclaration;
 

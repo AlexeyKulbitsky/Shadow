@@ -7,6 +7,7 @@ namespace sh
 {
 	namespace video
 	{
+		/*
 		enum class SHADOW_API FrontFace
 		{
 			CLOCKWISE = 0,
@@ -54,7 +55,7 @@ namespace sh
 			"Solid",
 			"WireFrame"
 		};
-
+		*/
 		////////////////////////////////////////////////////////////
 
 		class SHADOW_API RasterizationState

@@ -146,7 +146,7 @@ bool GLES20Driver::Init()
 	glGetIntegerv(GL_COMPRESSED_TEXTURE_FORMATS, valuePtr);
 	for (int i = 0; i < value; ++i)
 	{
-		Texture::Format format = GLES20Texture::GetFormatFromGL(valuePtr[i]);
+		TextureFormat format = GLES20Texture::GetFormatFromGL(valuePtr[i]);
 	}
 	delete[] valuePtr;
 	
@@ -439,7 +439,7 @@ void GLES20Driver::GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data)
 
 ////////////////////////////////////////////////////////////////////////
 
-VertexBufferPtr GLES20Driver::CreateVertexBuffer(HardwareBuffer::Usage usage) const
+VertexBufferPtr GLES20Driver::CreateVertexBuffer(Usage usage) const
 {
 	VertexBufferPtr result = nullptr;
 	result.reset(new GLES20VertexBuffer(usage));
@@ -448,7 +448,7 @@ VertexBufferPtr GLES20Driver::CreateVertexBuffer(HardwareBuffer::Usage usage) co
 
 ////////////////////////////////////////////////////////////////////////
 
-IndexBufferPtr GLES20Driver::CreateIndexBuffer(HardwareBuffer::Usage usage) const
+IndexBufferPtr GLES20Driver::CreateIndexBuffer(Usage usage) const
 {
 	IndexBufferPtr result = nullptr;
 	result.reset(new GLES20IndexBuffer(usage));

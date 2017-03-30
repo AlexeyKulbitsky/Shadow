@@ -55,14 +55,15 @@ namespace sh
 			String("light.directional.color")
 		};
 
+		/** 
+		Base implementation used just for holding values
+		More specific type of Uniform that includes renderindg system
+		information is defined in derived classes for each renser system
+		*/
 		class Uniform
 		{
 			public:	
-			/*
-			Base implementation used just for holding values
-			More specific type of Uniform that includes renderindg system
-			information is defined in derived classes for each renser system
-			*/
+			
 			enum class Type
 			{
 				FLOAT,

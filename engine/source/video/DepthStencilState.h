@@ -7,6 +7,7 @@ namespace sh
 {
 	namespace video
 	{
+		/*
 		enum class SHADOW_API CompareFunction
 		{
 			LESS = 0,
@@ -76,7 +77,7 @@ namespace sh
 			"IncrementWrap",
 			"DecrementWrap"
 		};
-
+		*/
 		////////////////////////////////////////////////////////////
 
 		struct SHADOW_API Face

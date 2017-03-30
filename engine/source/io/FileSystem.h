@@ -45,8 +45,8 @@ namespace sh
 			void CollectFilesFromFolder(const String& folder, bool recursive = true);
 
 		private:
-			HashSet<String> m_folders;
-			HashSet<FileInfo> m_fileList;
+			Set<String> m_folders;
+			Set<FileInfo> m_fileList;
 			String m_workingDirectoryPath;
 		};
 	}

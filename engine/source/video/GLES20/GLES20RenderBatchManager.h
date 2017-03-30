@@ -17,7 +17,7 @@ namespace sh
 			virtual void Clear() override;
 
 		private:
-			typedef HashMap<String, RenderBatchPtr> PerTechniqueRenderBatchesMap;
+			typedef Map<String, RenderBatchPtr> PerTechniqueRenderBatchesMap;
 
 			PerTechniqueRenderBatchesMap m_renderBatches[(size_t)RenderPipeline::Layer::COUNT];
 		};

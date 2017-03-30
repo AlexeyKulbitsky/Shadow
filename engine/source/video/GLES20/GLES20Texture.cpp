@@ -39,20 +39,20 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////
 
-		void GLES20Texture::SetType(Type type)
+		void GLES20Texture::SetType(TextureType type)
 		{
 			switch (type)
 			{
-			case sh::video::Texture::Type::TEXTURE_1D:
+			case sh::TextureType::TEXTURE_1D:
 				SH_ASSERT(0, "Texture type TEXTURE_1D is not supported by driver");
 				break;
-			case sh::video::Texture::Type::TEXTURE_2D:
+			case sh::TextureType::TEXTURE_2D:
 				m_glType = GL_TEXTURE_2D;
 				break;
-			case sh::video::Texture::Type::TEXTURE_3D:
+			case sh::TextureType::TEXTURE_3D:
 				SH_ASSERT(0, "Texture type TEXTURE_3D is not supported by driver");
 				break;
-			case sh::video::Texture::Type::TEXTURE_CUBE:
+			case sh::TextureType::TEXTURE_CUBE:
 				m_glType = GL_TEXTURE_CUBE_MAP;
 				break;
 			}
@@ -60,20 +60,20 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////
 
-		void GLES20Texture::SetTiling(Tiling tilingU, Tiling tilingV)
+		void GLES20Texture::SetTiling(TextureTiling tilingU, TextureTiling tilingV)
 		{
 			GLint textureTilingU = GL_REPEAT;
 			GLint textureTilingV = GL_REPEAT;
 
 			switch (tilingU)
 			{
-			case sh::video::Texture::Tiling::REPEAT:
+			case sh::TextureTiling::REPEAT:
 				textureTilingU = GL_REPEAT;
 				break;
-			case sh::video::Texture::Tiling::MIRRORED_REPEAT:
+			case sh::TextureTiling::MIRRORED_REPEAT:
 				textureTilingU = GL_MIRRORED_REPEAT;
 				break;
-			case sh::video::Texture::Tiling::CLAMP_TO_EDGE:
+			case sh::TextureTiling::CLAMP_TO_EDGE:
 				textureTilingU = GL_CLAMP_TO_EDGE;
 				break;
 			default:
@@ -82,13 +82,13 @@ namespace sh
 
 			switch (tilingV)
 			{
-			case sh::video::Texture::Tiling::REPEAT:
+			case sh::TextureTiling::REPEAT:
 				textureTilingV = GL_REPEAT;
 				break;
-			case sh::video::Texture::Tiling::MIRRORED_REPEAT:
+			case sh::TextureTiling::MIRRORED_REPEAT:
 				textureTilingV = GL_MIRRORED_REPEAT;
 				break;
-			case sh::video::Texture::Tiling::CLAMP_TO_EDGE:
+			case sh::TextureTiling::CLAMP_TO_EDGE:
 				textureTilingV = GL_CLAMP_TO_EDGE;
 				break;
 			default:
@@ -109,24 +109,24 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////
 
-		void GLES20Texture::SetFiltering(Filtering filtering)
+		void GLES20Texture::SetFiltering(TextureFiltering filtering)
 		{
 			GLint filter;
 			switch (filtering)
 			{
-			case sh::video::Texture::Filtering::NEAREST:
+			case sh::TextureFiltering::NEAREST:
 				filter = GL_NEAREST;
 				break;
-			case sh::video::Texture::Filtering::LINEAR:
+			case sh::TextureFiltering::LINEAR:
 				filter = GL_NEAREST_MIPMAP_NEAREST;
 				break;
-			case sh::video::Texture::Filtering::BILINEAR:
+			case sh::TextureFiltering::BILINEAR:
 				filter = GL_LINEAR_MIPMAP_NEAREST;
 				break;
-			case sh::video::Texture::Filtering::TRILINEAR:
+			case sh::TextureFiltering::TRILINEAR:
 				filter = GL_NEAREST_MIPMAP_LINEAR;
 				break;
-			case sh::video::Texture::Filtering::ANISOTROPIC:
+			case sh::TextureFiltering::ANISOTROPIC:
 				filter = GL_LINEAR_MIPMAP_LINEAR;
 				break;
 			default:
@@ -160,28 +160,28 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////
 
-		void GLES20Texture::LoadFaceData(Face face, u32 mipLevel, s32 width, s32 height, const void* data)
+		void GLES20Texture::LoadFaceData(TextureFace face, u32 mipLevel, s32 width, s32 height, const void* data)
 		{
 
 			GLenum target;
 			switch (face)
 			{
-				case Face::FRONT_FACE:
+				case TextureFace::FRONT_FACE:
 					target = GL_TEXTURE_CUBE_MAP_POSITIVE_X;
 					break;
-				case Face::BACK_FACE:
+				case TextureFace::BACK_FACE:
 					target = GL_TEXTURE_CUBE_MAP_NEGATIVE_X;
 					break;
-				case Face::RIGHT_FACE:
+				case TextureFace::RIGHT_FACE:
 					target = GL_TEXTURE_CUBE_MAP_POSITIVE_Y;
 					break;
-				case Face::LEFT_FACE:
+				case TextureFace::LEFT_FACE:
 					target = GL_TEXTURE_CUBE_MAP_NEGATIVE_Y;
 					break;
-				case Face::TOP_FACE:
+				case TextureFace::TOP_FACE:
 					target = GL_TEXTURE_CUBE_MAP_POSITIVE_Z;
 					break;
-				case Face::BOTTOM_FACE:
+				case TextureFace::BOTTOM_FACE:
 					target = GL_TEXTURE_CUBE_MAP_NEGATIVE_Z;
 					break;
 			}
@@ -199,17 +199,17 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////
 
-		Texture::Format GLES20Texture::GetFormatFromGL(GLenum glFormat)
+		TextureFormat GLES20Texture::GetFormatFromGL(GLenum glFormat)
 		{
-			Format result = Format::UNDEFINED;
+			TextureFormat result = TextureFormat::UNDEFINED;
 
 			switch (glFormat)
 			{
 			case GL_COMPRESSED_RGB_S3TC_DXT1_EXT:
-				result = Format::DXT1_RGB;
+				result = TextureFormat::DXT1_RGB;
 				break;
 			case GL_COMPRESSED_RGBA_S3TC_DXT1_EXT:
-				result = Format::DXT1_RGBA;
+				result = TextureFormat::DXT1_RGBA;
 				break;
 			default:
 				break;

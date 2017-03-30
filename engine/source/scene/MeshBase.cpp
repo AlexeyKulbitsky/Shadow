@@ -51,7 +51,7 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		void MeshBase::SetTopology(sh::video::Topology topology)
+		void MeshBase::SetTopology(Topology topology)
 		{
 			m_topology = topology;
 		}
@@ -127,7 +127,7 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		video::Topology MeshBase::GetTopology()
+		Topology MeshBase::GetTopology()
 		{
 			return m_topology;
 		}

@@ -23,7 +23,7 @@ namespace sh
 
 			glTexParameteri(m_glType, GL_TEXTURE_WRAP_S, m_glTilingS);
 			glTexParameteri(m_glType, GL_TEXTURE_WRAP_T, m_glTilingT);
-			if (m_type == Texture::Type::TEXTURE_CUBE)
+			if (m_type == TextureType::TEXTURE_CUBE)
 			{
 				glTexParameteri(m_glType, GL_TEXTURE_WRAP_R, m_glTilingR);
 			}
@@ -56,20 +56,20 @@ namespace sh
 			return result;
 		}
 
-		void GLES20Sampler::SetFiltering(Texture::Filtering filtering)
+		void GLES20Sampler::SetFiltering(TextureFiltering filtering)
 		{
 			Sampler::SetFiltering(filtering);
 			switch (filtering)
 			{
-			case sh::video::Texture::Filtering::NEAREST:
+			case sh::TextureFiltering::NEAREST:
 				m_glMagFilter = GL_NEAREST;
 				m_glMinFilter = GL_NEAREST;
 				break;
-			case sh::video::Texture::Filtering::LINEAR:
+			case sh::TextureFiltering::LINEAR:
 				m_glMagFilter = GL_NEAREST;
 				m_glMinFilter = GL_NEAREST_MIPMAP_NEAREST;
 				break;
-			case sh::video::Texture::Filtering::BILINEAR:
+			case sh::TextureFiltering::BILINEAR:
 			{
 				m_glMagFilter = GL_LINEAR;
 				if (m_hasMipMaps)
@@ -84,8 +84,8 @@ namespace sh
 				break;
 				// Requires mip maps. If there are no mip maps than 
 				// will be use bilinear filter
-			case sh::video::Texture::Filtering::TRILINEAR:
-			case sh::video::Texture::Filtering::ANISOTROPIC:
+			case sh::TextureFiltering::TRILINEAR:
+			case sh::TextureFiltering::ANISOTROPIC:
 			{
 				m_glMagFilter = GL_LINEAR;
 				if (m_hasMipMaps)
@@ -103,19 +103,19 @@ namespace sh
 			}
 		}
 
-		void GLES20Sampler::SetTiling(Texture::Tiling tilingU, Texture::Tiling tilingV, Texture::Tiling tilingW)
+		void GLES20Sampler::SetTiling(TextureTiling tilingU, TextureTiling tilingV, TextureTiling tilingW)
 		{
 			Sampler::SetTiling(tilingU, tilingV, tilingW);
 
 			switch (tilingU)
 			{
-			case sh::video::Texture::Tiling::REPEAT:
+			case sh::TextureTiling::REPEAT:
 				m_glTilingS = GL_REPEAT;
 				break;
-			case sh::video::Texture::Tiling::MIRRORED_REPEAT:
+			case sh::TextureTiling::MIRRORED_REPEAT:
 				m_glTilingS = GL_MIRRORED_REPEAT;
 				break;
-			case sh::video::Texture::Tiling::CLAMP_TO_EDGE:
+			case sh::TextureTiling::CLAMP_TO_EDGE:
 				m_glTilingS = GL_CLAMP_TO_EDGE;
 				break;
 			default:
@@ -124,13 +124,13 @@ namespace sh
 
 			switch (tilingV)
 			{
-			case sh::video::Texture::Tiling::REPEAT:
+			case sh::TextureTiling::REPEAT:
 				m_glTilingT = GL_REPEAT;
 				break;
-			case sh::video::Texture::Tiling::MIRRORED_REPEAT:
+			case sh::TextureTiling::MIRRORED_REPEAT:
 				m_glTilingT = GL_MIRRORED_REPEAT;
 				break;
-			case sh::video::Texture::Tiling::CLAMP_TO_EDGE:
+			case sh::TextureTiling::CLAMP_TO_EDGE:
 				m_glTilingT = GL_CLAMP_TO_EDGE;
 				break;
 			default:
@@ -139,13 +139,13 @@ namespace sh
 
 			switch (tilingW)
 			{
-			case sh::video::Texture::Tiling::REPEAT:
+			case sh::TextureTiling::REPEAT:
 				m_glTilingR = GL_REPEAT;
 				break;
-			case sh::video::Texture::Tiling::MIRRORED_REPEAT:
+			case sh::TextureTiling::MIRRORED_REPEAT:
 				m_glTilingR = GL_MIRRORED_REPEAT;
 				break;
-			case sh::video::Texture::Tiling::CLAMP_TO_EDGE:
+			case sh::TextureTiling::CLAMP_TO_EDGE:
 				m_glTilingR = GL_CLAMP_TO_EDGE;
 				break;
 			default:
@@ -153,15 +153,15 @@ namespace sh
 			}
 		}
 
-		void GLES20Sampler::SetType(Texture::Type type)
+		void GLES20Sampler::SetType(TextureType type)
 		{
 			Sampler::SetType(type);
 			switch (type)
 			{
-			case Texture::Type::TEXTURE_2D:
+			case TextureType::TEXTURE_2D:
 				m_glType = GL_TEXTURE_2D;
 				break;
-			case Texture::Type::TEXTURE_CUBE:
+			case TextureType::TEXTURE_CUBE:
 				m_glType = GL_TEXTURE_CUBE_MAP;
 				break;
 			}

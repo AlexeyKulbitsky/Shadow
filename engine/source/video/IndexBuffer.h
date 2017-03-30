@@ -8,14 +8,12 @@ namespace sh
 {
 	namespace video
 	{
+		
+
 		class IndexBuffer : public HardwareBuffer
 		{
 		public:
-			enum class IndexType
-			{
-				UNSIGNED_16_BIT,
-				UNSIGNED_32_BIT
-			};
+			
 
 		public:
 			IndexBuffer(Usage usage) : HardwareBuffer(usage) {}
@@ -38,6 +36,13 @@ namespace sh
 			IndexType m_indexType;
 			size_t m_indicesCount;
 			size_t m_indexSize = 4U;
+		};
+
+		struct IndexBufferDecription
+		{
+			u32 size;
+			Usage usage;
+			IndexType indexType;
 		};
 	}
 }

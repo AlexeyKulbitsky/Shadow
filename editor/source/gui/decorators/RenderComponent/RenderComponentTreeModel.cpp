@@ -337,14 +337,14 @@ void RenderComponentTreeModel::SetupModelData(sh::scene::Model* model, RenderCom
 			tempChild = depthStencilParent->GetChild(depthStencilParent->childCount() - 1);
 			tempChild->SetType(RenderComponentTreeItem::Type::LIST);
 			tempChild->SetData(0, QVariant("Depth Compare Func"));
-			tempChild->SetData(1, sh::video::g_compareFunctionMap[(size_t)depthStencilState->depthCompareFunction]);
+			tempChild->SetData(1, sh::g_compareFunctionMap[(size_t)depthStencilState->depthCompareFunction]);
 			tempChild->SetUserPointer((void*)(&(depthStencilState->depthCompareFunction)));
 			
 			depthStencilParent->InsertChildren(depthStencilParent->childCount(), 1, 2);
 			tempChild = depthStencilParent->GetChild(depthStencilParent->childCount() - 1);
 			tempChild->SetType(RenderComponentTreeItem::Type::LIST);
 			tempChild->SetData(0, QVariant("Depth Write Mask"));
-			tempChild->SetData(1, sh::video::g_writeMaskMap[(size_t)depthStencilState->depthWriteMask]);		
+			tempChild->SetData(1, sh::g_writeMaskMap[(size_t)depthStencilState->depthWriteMask]);		
 
 
 
@@ -356,17 +356,17 @@ void RenderComponentTreeModel::SetupModelData(sh::scene::Model* model, RenderCom
 			rasterizerParent->InsertChildren(rasterizerParent->childCount(), 1, 2);
 			tempChild = rasterizerParent->GetChild(rasterizerParent->childCount() - 1);
 			tempChild->SetData(0, QVariant("Cull Face"));
-			tempChild->SetData(1, sh::video::g_cullFaceMap[(size_t)rasterizationState->cullFace]);
+			tempChild->SetData(1, sh::g_cullFaceMap[(size_t)rasterizationState->cullFace]);
 
 			rasterizerParent->InsertChildren(rasterizerParent->childCount(), 1, 2);
 			tempChild = rasterizerParent->GetChild(rasterizerParent->childCount() - 1);
 			tempChild->SetData(0, QVariant("Front Face"));
-			tempChild->SetData(1, sh::video::g_frontFaceMap[(size_t)rasterizationState->frontFace]);
+			tempChild->SetData(1, sh::g_frontFaceMap[(size_t)rasterizationState->frontFace]);
 			
 			rasterizerParent->InsertChildren(rasterizerParent->childCount(), 1, 2);
 			tempChild = rasterizerParent->GetChild(rasterizerParent->childCount() - 1);
 			tempChild->SetData(0, QVariant("Fill Mode"));
-			tempChild->SetData(1, sh::video::g_fillModeMap[(size_t)rasterizationState->fillMode]);
+			tempChild->SetData(1, sh::g_fillModeMap[(size_t)rasterizationState->fillMode]);
 			
 			// Uniforms
 			passParent->InsertChildren(passParent->childCount(), 1, 1);

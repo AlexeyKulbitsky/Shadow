@@ -18,20 +18,20 @@ namespace sh
 			virtual void Load(const std::vector<String>& fileNames) override;
 			virtual void Unload() override;
 
-			virtual void SetType(Type type) override;
-			virtual void SetTiling(Tiling tilingU, Tiling tilingV) override;
-			virtual void SetFiltering(Filtering filtering) override;
+			virtual void SetType(TextureType type) override;
+			virtual void SetTiling(TextureTiling tilingU, TextureTiling tilingV) override;
+			virtual void SetFiltering(TextureFiltering filtering) override;
 			virtual void Bind() override;
 			virtual void Unbind() override;
 			virtual void LoadData(u32 mipLevel, s32 width, s32 height, const void* data) override;
-			virtual void LoadFaceData(Face face, u32 mipLevel, s32 width, s32 height, const void* data) override;
+			virtual void LoadFaceData(TextureFace face, u32 mipLevel, s32 width, s32 height, const void* data) override;
 			virtual void GenerateMipMaps() override;
 
 			// GLES interface
 			u32 GetGLId() const { return m_glID; }
 			u32 GetGLType() const { return m_glType; }
 
-			static Format GetFormatFromGL(GLenum glFormat);
+			static TextureFormat GetFormatFromGL(GLenum glFormat);
 
 		private:
 			u32 m_glID = 0U;
