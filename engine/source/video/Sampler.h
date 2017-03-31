@@ -8,6 +8,16 @@ namespace sh
 {
 	namespace video
 	{
+		struct SamplerStateDescription
+		{
+			TextureFiltering minFilter;
+			TextureFiltering magFilter;
+			TextureFiltering mipFilter;
+			TextureTiling tilingU;
+			TextureTiling tilingV;
+			TextureTiling tilingW;
+		};
+
 		class Sampler
 		{
 		public:

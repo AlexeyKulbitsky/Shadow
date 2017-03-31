@@ -226,6 +226,10 @@ namespace sh
 	{
 		VERTEX = 0,
 		FRAGMENT,
+		//GEOMETRY,
+		//DOMAIN,
+		//HULL,
+		//COMPUTE,
 		NONE
 	};
 

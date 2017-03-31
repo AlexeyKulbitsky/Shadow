@@ -28,6 +28,7 @@ namespace sh
 		DEFINE_CLASS_PTR(RenderTarget)
 		DEFINE_CLASS_PTR(RenderTechnique)
 		DEFINE_CLASS_PTR(Sampler)
+		DEFINE_CLASS_PTR(Shader)
 		DEFINE_CLASS_PTR(ShaderProgram)
 		DEFINE_CLASS_PTR(Texture)
 		DEFINE_CLASS_PTR(Uniform)
