@@ -32,9 +32,9 @@ namespace sh
 			Attribute positionAttribute(AttributeSemantic::POSITION, AttributeType::FLOAT, 3U);
 			vertexDeclaration.AddAttribute(positionAttribute);
 
-			VertexInputDeclaration* inputDeclaration = renderPipeline->GetVertexInputDeclaration();
+			const VertexInputDeclarationPtr& inputDeclaration = renderPipeline->GetVertexInputDeclaration();
 			inputDeclaration->Assemble(vertexDeclaration);
-			m_linesRenderCommand->SetVertexInputDeclaration(inputDeclaration);
+			m_linesRenderCommand->SetVertexInputDeclaration(inputDeclaration.get());
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////

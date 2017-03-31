@@ -21,7 +21,7 @@ namespace sh
 
 		void GLES20IndexBuffer::SetData(size_t offset, size_t length, const void* data)
 		{
-			Bind();
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_glID);
 
 			GLenum usage;
 			switch (m_usage)
@@ -48,7 +48,7 @@ namespace sh
 				m_size = offset + length;
 			}
 
-			Unbind();
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		}
 
 		////////////////////////////////////////////////////////////////////////
@@ -60,21 +60,10 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////
 
-		void GLES20IndexBuffer::SetIndexType(IndexType indexType)
+		GLES20IndexBuffer::GLES20IndexBuffer(const IndexBufferDescription& description)
+			: IndexBuffer(description)
 		{
-			IndexBuffer::SetIndexType(indexType);
-			switch (indexType)
-			{
-			case IndexType::UNSIGNED_16_BIT:
-				m_glIndexType = GL_UNSIGNED_SHORT;
-				break;
-			case IndexType::UNSIGNED_32_BIT:
-				m_glIndexType = GL_UNSIGNED_INT;
-				break;
-			}
+			glGenBuffers(1, &m_glID);
 		}
-
-		////////////////////////////////////////////////////////////////////////
-
 	}
 }

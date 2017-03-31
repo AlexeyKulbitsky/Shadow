@@ -20,7 +20,7 @@ namespace sh
 			virtual void Unload() override;
 
 			virtual const ShaderProgramPtr& GetShaderProgram() const override { return m_shaderProgram; }
-			virtual VertexInputDeclaration* GetVertexInputDeclaration() const override { return m_vertexInputDeclaration; }
+			virtual const VertexInputDeclarationPtr& GetVertexInputDeclaration() const override { return m_vertexInputDeclaration; }
 			virtual const UniformBufferPtr& GetUniformBuffer() const override { return m_uniformBuffer; }
 			virtual const UniformBufferPtr& GetTransformUniformBuffer() const override { return m_transformUniformBuffer; }
 
@@ -33,7 +33,7 @@ namespace sh
 
 		protected:
 			ShaderProgramPtr m_shaderProgram;
-			VertexInputDeclaration* m_vertexInputDeclaration;
+			VertexInputDeclarationPtr m_vertexInputDeclaration;
 			UniformBufferPtr m_uniformBuffer;
 			UniformBufferPtr m_transformUniformBuffer;
 

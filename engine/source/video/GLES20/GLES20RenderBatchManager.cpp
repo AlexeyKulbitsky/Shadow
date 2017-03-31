@@ -18,7 +18,7 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////
 
-		void GLES20RenderBatchManager::AddMesh(scene::Mesh* mesh)
+		void GLES20RenderBatchManager::AddMesh(const scene::MeshPtr& mesh)
 		{
 			const MaterialPtr& material = mesh->GetMaterial();
 			String techniqueName = material->GetRenderTechnique()->GetName();
@@ -41,6 +41,7 @@ namespace sh
 			}
 
 			m_renderBatches[layerIndex][techniqueName]->AddCommand(mesh->GetRenderCommand());
+			m_renderBatches[layerIndex][techniqueName]->AddMesh(mesh);
 		}
 
 		////////////////////////////////////////////////////////////////////////

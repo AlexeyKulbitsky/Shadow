@@ -9,6 +9,7 @@
 #include "GLES20RenderTarget.h"
 #include "GLES20RenderPIpeline.h"
 #include "GLES20RenderBatchManager.h"
+#include "GLES20Common.h"
 #include "../Material.h"
 #include "../GLContext/EGLContextManager.h"
 #include "../../scene/Mesh.h"
@@ -21,72 +22,7 @@
 using namespace sh;
 using namespace video;
 
-static GLenum const s_glWriteMask[] =
-{
-	GL_FALSE,
-	GL_TRUE
-};
 
-static GLenum const s_glFrontFace[] =
-{
-	GL_CW,
-	GL_CCW
-};
-
-static GLenum const s_glCullFace[] =
-{
-	GL_FRONT,
-	GL_BACK,
-	GL_NONE
-};
-
-static GLenum const s_glCompareFunction[] =
-{
-	GL_LESS,
-	GL_LEQUAL,
-	GL_EQUAL,
-	GL_GEQUAL,
-	GL_GREATER,
-	GL_NOTEQUAL,
-	GL_ALWAYS,
-	GL_NEVER
-};
-
-static GLenum const s_glStencilOperation[] =
-{
-	GL_KEEP,
-	GL_ZERO,
-	GL_REPLACE,
-	GL_INVERT,
-	GL_INCR,
-	GL_DECR,
-	GL_INCR_WRAP,
-	GL_DECR_WRAP
-};
-
-static GLenum const s_glBlendFactor[] =
-{
-	GL_ZERO,
-	GL_ONE,
-	GL_SRC_COLOR,
-	GL_ONE_MINUS_SRC_COLOR,
-	GL_DST_COLOR,
-	GL_ONE_MINUS_DST_COLOR,
-	GL_SRC_ALPHA,
-	GL_ONE_MINUS_SRC_ALPHA,
-	GL_DST_ALPHA,
-	GL_ONE_MINUS_DST_ALPHA,
-	GL_SRC_ALPHA_SATURATE
-};
-		
-static GLenum const s_glBlendOperation[] =
-{
-	GL_FUNC_ADD,
-	GL_FUNC_SUBTRACT,
-	GL_FUNC_REVERSE_SUBTRACT,
-	GL_MIN,
-	GL_MAX
-};
 
 GLES20Driver::GLES20Driver(EGLContextManager* contextManager)
 	:m_contextManager(contextManager)
@@ -198,11 +134,11 @@ void GLES20Driver::Render(const RenderCommandPtr& command)
 	if (command->IsUseIndices())
 	{
 		// Bind indices buffer
-		indexBuffer->Bind();
+		//indexBuffer->Bind();
 		// Draw with indices
-		glDrawElements(glesRenderCommand->GetGLTopology(), indexBuffer->GetIndicesCount(), indexBuffer->GetGLIndexType(), 0);
+		glDrawElements(glesRenderCommand->GetGLTopology(), indexBuffer->GetIndicesCount(), s_glIndexType[static_cast<size_t>(indexBuffer->GetIndexType())], 0);
 		// Unbind indices buffer
-		indexBuffer->Unbind();
+		//indexBuffer->Unbind();
 	}
 	else
 	{
@@ -390,6 +326,21 @@ void GLES20Driver::SetComputePipeline()
 
 ////////////////////////////////////////////////////////////////////////
 
+void GLES20Driver::SetTopology(Topology topology)
+{
+	m_currentTopology = s_glTopology[static_cast<size_t>(topology)];
+}
+
+void GLES20Driver::SetAutoUniformsBatch(const UniformsBatchPtr& batch)
+{
+	for (auto uniform : batch->m_uniforms)
+	{
+		uniform->Upload();
+	}
+}
+
+////////////////////////////////////////////////////////////////////////
+
 void GLES20Driver::SetVertexDeclaration(const VertexInputDeclarationPtr& declaration)
 {
 	GLES20VertexDeclaration* vertexDeclaration = static_cast<GLES20VertexDeclaration*>(declaration.get());	
@@ -404,14 +355,20 @@ void GLES20Driver::SetVertexDeclaration(const VertexInputDeclarationPtr& declara
 
 void GLES20Driver::SetVertexBuffer(const VertexBufferPtr& buffer)
 {
-	buffer->Bind();
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	GLES20VertexBuffer* glBuffer = static_cast<GLES20VertexBuffer*>(buffer.get());
+	m_currentVertexBuffer = glBuffer->GetGLId();
+	glBindBuffer(GL_ARRAY_BUFFER, m_currentVertexBuffer);
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 void GLES20Driver::SetIndexBuffer(const IndexBufferPtr& buffer)
 {
-	buffer->Bind();
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	GLES20IndexBuffer* glBuffer = static_cast<GLES20IndexBuffer*>(buffer.get());
+	m_currentIndexBuffer = glBuffer->GetGLId();
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_currentIndexBuffer);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -425,7 +382,7 @@ void GLES20Driver::Draw(u32 offset, u32 verticesCount, u32 instancesCount)
 
 void GLES20Driver::DrawIndexed(u32 offset, u32 indicesCount, u32 instancesCount)
 {
-
+	glDrawElements(GL_TRIANGLES, indicesCount, GL_UNSIGNED_INT, (void*)offset);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -448,10 +405,28 @@ VertexBufferPtr GLES20Driver::CreateVertexBuffer(Usage usage) const
 
 ////////////////////////////////////////////////////////////////////////
 
+VertexBufferPtr GLES20Driver::CreateVertexBuffer(const VertexBufferDecription& description) const
+{
+	VertexBufferPtr result = nullptr;
+	result.reset(new GLES20VertexBuffer(description));
+	return result;
+}
+
+////////////////////////////////////////////////////////////////////////
+
 IndexBufferPtr GLES20Driver::CreateIndexBuffer(Usage usage) const
 {
 	IndexBufferPtr result = nullptr;
 	result.reset(new GLES20IndexBuffer(usage));
+	return result;
+}
+
+////////////////////////////////////////////////////////////////////////
+
+IndexBufferPtr GLES20Driver::CreateIndexBuffer(const IndexBufferDescription& description) const
+{
+	IndexBufferPtr result = nullptr;
+	result.reset(new GLES20IndexBuffer(description));
 	return result;
 }
 
@@ -493,9 +468,11 @@ TexturePtr GLES20Driver::CreateTexture() const
 
 ////////////////////////////////////////////////////////////////////////
 
-VertexInputDeclaration* GLES20Driver::CreateVertexInputDeclaration() const
+VertexInputDeclarationPtr GLES20Driver::CreateVertexInputDeclaration() const
 {
-	return new GLES20VertexDeclaration();
+	VertexInputDeclarationPtr result = nullptr;
+	result.reset(new GLES20VertexDeclaration());
+	return result;
 }
 
 ////////////////////////////////////////////////////////////////////////

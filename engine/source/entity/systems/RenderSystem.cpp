@@ -33,7 +33,7 @@ namespace sh
 
 		for (size_t i = 0, sz = model->GetMeshesCount(); i < sz; ++i)
 		{
-			m_batchManager->AddMesh(model->GetMesh(i).get());
+			m_batchManager->AddMesh(model->GetMesh(i));
 		}
 	}
 

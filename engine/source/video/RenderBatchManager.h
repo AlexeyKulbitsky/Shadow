@@ -11,7 +11,7 @@ namespace sh
 		{
 		public:
 			virtual ~RenderBatchManager() { }
-			virtual void AddMesh(scene::Mesh* mesh) = 0;
+			virtual void AddMesh(const scene::MeshPtr& mesh) = 0;
 			virtual void Submit() = 0;
 			virtual void Clear() = 0;
 		};

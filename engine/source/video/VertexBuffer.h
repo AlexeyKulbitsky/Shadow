@@ -35,10 +35,16 @@ namespace sh
 			void SetVertexDeclaration(const VertexDeclarationPtr& vertexDeclaration) { m_vertexDeclaration = vertexDeclaration; }
 			const VertexDeclarationPtr& GetVertexDeclaration() const { return m_vertexDeclaration; }
 
+			static VertexBufferPtr Create(const VertexBufferDecription& description);
+
+		protected:
+			VertexBuffer(const VertexBufferDecription& description);
+
 		private:
 			size_t m_verticesCount;
 			size_t m_vertexSize;
 			VertexDeclarationPtr m_vertexDeclaration;
+			VertexBufferDecription m_description;
 		};
 	}
 }

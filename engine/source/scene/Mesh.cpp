@@ -24,6 +24,8 @@ namespace sh
 			: m_meshBase(meshBase)
 		{
 			m_worldMatrix.SetIdentity();
+			m_vertexBuffer = meshBase->GetVertexBuffer();
+			m_indexBuffer = meshBase->GetIndexBuffer();
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -83,7 +85,9 @@ namespace sh
 			size_t pipelinesCount = m_material->GetRenderPipelinesCount();
 			if (m_renderCommands.size() != pipelinesCount)
 			{
-				m_renderCommands.resize(pipelinesCount);		
+				m_renderCommands.resize(pipelinesCount);	
+				m_autoUniformsBatch.resize(pipelinesCount);
+				m_vertexDeclaration.resize(pipelinesCount);
 			}
 
 			for (size_t i = 0; i < pipelinesCount; ++i)
@@ -95,10 +99,10 @@ namespace sh
 					m_renderCommands[i] = driver->CreateRenderCommand();
 				}
 				
-				m_renderCommands[i]->SetVertexBuffer(m_meshBase->GetVertexBuffer());
+				m_renderCommands[i]->SetVertexBuffer(m_meshBase->GetVertexBuffer().get());
 				if (m_meshBase->IsUseIndices())
 				{
-					m_renderCommands[i]->SetIndexBuffer(m_meshBase->GetIndexBuffer());
+					m_renderCommands[i]->SetIndexBuffer(m_meshBase->GetIndexBuffer().get());
 					m_renderCommands[i]->SetUseIndices(true);
 				}
 				else
@@ -110,11 +114,16 @@ namespace sh
 				// Assemble vertex input declaration for render command
 				const video::RenderPipelinePtr& renderPipeline = m_material->GetRenderPipeline(i);
 
-				video::VertexInputDeclaration* inputDeclaration = renderPipeline->GetVertexInputDeclaration();
+				const video::VertexInputDeclarationPtr& inputDeclaration = renderPipeline->GetVertexInputDeclaration();
 				inputDeclaration->Assemble(*(m_renderCommands[i]->GetVertexBuffer()->GetVertexDeclaration().get()));
-				m_renderCommands[i]->SetVertexInputDeclaration(inputDeclaration);
+
+				m_vertexDeclaration[i] = inputDeclaration;
+
+				m_renderCommands[i]->SetVertexInputDeclaration(inputDeclaration.get());
 				const video::UniformsBatchPtr& uniformsBatch = renderPipeline->GetUniformBuffer()->GetAutoUniformsBatch()->Clone();
 				m_renderCommands[i]->SetAutoUniformsBatch(uniformsBatch);
+
+				m_autoUniformsBatch[i] = uniformsBatch;
 
 				sh::video::VulkanRenderCommand* rc = dynamic_cast<sh::video::VulkanRenderCommand*>(m_renderCommands[i].get());
 				if (rc)

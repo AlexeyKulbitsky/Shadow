@@ -7,21 +7,18 @@
 namespace sh
 {
 	namespace video
-	{
-		
+	{		
+		struct IndexBufferDescription
+		{
+			IndexType indexType;
+			Usage usage;
+		};
 
 		class IndexBuffer : public HardwareBuffer
 		{
 		public:
-			
-
-		public:
 			IndexBuffer(Usage usage) : HardwareBuffer(usage) {}
 			virtual ~IndexBuffer() {}
-
-			virtual void Bind() {}
-			virtual void Unbind() {}
-			virtual void Unload() {}
 
 			virtual void SetIndexType(IndexType indexType) { m_indexType = indexType; }
 			// Get the type of index
@@ -32,18 +29,18 @@ namespace sh
 			// Get the size of index (in bytes)
 			size_t GetIndexSize() const { return m_indexSize; }
 
+			static IndexBufferPtr Create(const IndexBufferDescription& description);
+
+		protected:
+			IndexBuffer(const IndexBufferDescription& description);
+
 		protected:
 			IndexType m_indexType;
 			size_t m_indicesCount;
 			size_t m_indexSize = 4U;
+			IndexBufferDescription m_description;
 		};
 
-		struct IndexBufferDecription
-		{
-			u32 size;
-			Usage usage;
-			IndexType indexType;
-		};
 	}
 }
 #endif // !SHADOW_INDEX_BUFFER_INCLUDE

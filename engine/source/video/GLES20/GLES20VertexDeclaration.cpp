@@ -84,10 +84,12 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////////////////
 
-		VertexInputDeclaration* GLES20VertexDeclaration::Clone()
+		VertexInputDeclarationPtr GLES20VertexDeclaration::Clone()
 		{
-			GLES20VertexDeclaration* result = new GLES20VertexDeclaration();
-			(*result) = (*this);
+			GLES20VertexDeclaration* internalDeclaration = new GLES20VertexDeclaration();
+			(*internalDeclaration) = (*this);
+
+			VertexInputDeclarationPtr result(internalDeclaration);
 			return result;
 		}
 

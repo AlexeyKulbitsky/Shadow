@@ -89,10 +89,11 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////////////////
 
-		VertexInputDeclaration* VulkanVertexDeclaration::Clone()
+		VertexInputDeclarationPtr VulkanVertexDeclaration::Clone()
 		{
-			VulkanVertexDeclaration* result = new VulkanVertexDeclaration();
-			(*result) = (*this);
+			VulkanVertexDeclaration* internalDeclaration = new VulkanVertexDeclaration();
+			(*internalDeclaration) = (*this);
+			VertexInputDeclarationPtr result(internalDeclaration);
 			return result;
 		}
 

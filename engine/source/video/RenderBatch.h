@@ -22,6 +22,7 @@ namespace sh
 			virtual void SetUniformBuffer(const UniformBufferPtr& uniformBuffer);
 			virtual void AddCommand(const RenderCommandPtr& renderCommand);
 			virtual void RemoveCommand(const RenderCommandPtr& renderCommand);
+			virtual void AddMesh(const scene::MeshPtr& mesh);
 			virtual void Submit();
 			virtual void Clear();
 
@@ -36,6 +37,7 @@ namespace sh
 			RasterizationStatePtr m_rasterizationState;
 			UniformBufferPtr m_uniformBuffer;
 			std::vector<RenderCommandPtr> m_commands;
+			std::vector<scene::MeshPtr> m_meshes;
 		};
 	}
 }

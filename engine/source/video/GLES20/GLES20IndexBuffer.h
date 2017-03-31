@@ -18,16 +18,13 @@ namespace sh
 			virtual void SetData(size_t offset, size_t length, const void* data) override;
 			virtual void GetData(size_t offset, size_t length, const void* data) override;
 
-			virtual void Bind() override { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_glID); }
-			virtual void Unbind() override { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); }
-
-			virtual void SetIndexType(IndexType indexType) override;
-
 			u32 GetGLId() const { return m_glID; }
-			u32 GetGLIndexType() const { return m_glIndexType; }
+
+		private:
+			GLES20IndexBuffer(const IndexBufferDescription& description);
+
 		private:
 			u32 m_glID = 0U;
-			u32 m_glIndexType;
 		};
 	}
 }

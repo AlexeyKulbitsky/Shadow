@@ -32,10 +32,6 @@ namespace sh
 
 		void MeshBase::Unload()
 		{
-			m_vertexBuffer->Unload();
-			m_indexBuffer->Unload();
-
-
 			for (size_t i = 0; i < m_uniforms.size(); ++i)
 			{
 				delete m_uniforms[i];
@@ -113,16 +109,16 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		video::VertexBuffer* MeshBase::GetVertexBuffer()
+		const video::VertexBufferPtr& MeshBase::GetVertexBuffer() const
 		{
-			return m_vertexBuffer.get();
+			return m_vertexBuffer;
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		video::IndexBuffer* MeshBase::GetIndexBuffer()
+		const video::IndexBufferPtr& MeshBase::GetIndexBuffer() const
 		{
-			return m_indexBuffer.get();
+			return m_indexBuffer;
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////

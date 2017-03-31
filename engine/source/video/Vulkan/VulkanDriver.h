@@ -72,7 +72,7 @@ namespace sh
 			virtual UniformBufferPtr CreateUniformBuffer() const override;
 			virtual RenderCommandPtr CreateRenderCommand() const override;
 			virtual ShaderProgramPtr CreateShaderProgram() const override;
-			virtual VertexInputDeclaration* CreateVertexInputDeclaration() const override;
+			virtual VertexInputDeclarationPtr CreateVertexInputDeclaration() const override;
 			virtual RenderPipelinePtr CreateRenderPipeline() const override;
 			virtual RenderBatchManager* CreateRenderBatchManager() const override;
 

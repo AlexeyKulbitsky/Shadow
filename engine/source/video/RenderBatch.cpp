@@ -1,7 +1,10 @@
 #include "RenderBatch.h"
 #include "ShaderProgram.h"
 #include "UniformBuffer.h"
+#include "RenderCommand.h"
+#include "IndexBuffer.h"
 #include "Driver.h"
+#include "../scene/Mesh.h"
 #include "../Device.h"
 
 
@@ -58,6 +61,13 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////////////
 
+		void RenderBatch::AddMesh(const scene::MeshPtr& mesh)
+		{
+			m_meshes.push_back(mesh);
+		}
+
+		//////////////////////////////////////////////////////////////////////////
+
 		void RenderBatch::Submit()
 		{
 			Driver* driver = Device::GetInstance()->GetDriver();
@@ -69,10 +79,20 @@ namespace sh
 
 			m_uniformBuffer->Upload();
 
-			for (auto command : m_commands)
-			{
-				driver->Render(command);
+			for (const auto& command : m_commands)
+			{				
+				//driver->Render(command);
 			}
+
+			for (const auto& mesh : m_meshes)
+			{
+				driver->SetAutoUniformsBatch(mesh->GetAutoUnformsBatch());
+				driver->SetVertexDeclaration(mesh->GetVertexDeclaration());
+				driver->SetIndexBuffer(mesh->GetIndexBuffer());
+				driver->SetVertexBuffer(mesh->GetVertexBuffer());
+				driver->DrawIndexed(0, mesh->GetIndexBuffer()->GetIndicesCount());
+			}
+
 
 			m_program->UnbindProgram();
 		}

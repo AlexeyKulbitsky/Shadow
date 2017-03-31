@@ -130,9 +130,6 @@ namespace sh
 		
 		void GLES20RenderPipeline::Unload()
 		{
-			delete m_vertexInputDeclaration;
-			m_vertexInputDeclaration = nullptr;
-
 			m_uniformBuffer->Unload();
 		}
 
@@ -142,7 +139,7 @@ namespace sh
 
 		///////////////////////////////////////////////////////////////////////////////////
 
-		VertexInputDeclaration* GLES20RenderPipeline::GetVertexInputDeclaration() const { return m_vertexInputDeclaration; }
+		const VertexInputDeclarationPtr& GLES20RenderPipeline::GetVertexInputDeclaration() const { return m_vertexInputDeclaration; }
 		
 		///////////////////////////////////////////////////////////////////////////////////
 		

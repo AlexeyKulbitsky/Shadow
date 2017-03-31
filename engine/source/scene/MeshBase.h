@@ -29,8 +29,8 @@ namespace sh
 			video::Uniform* GetUniform(size_t index);
 			video::Sampler* GetSampler(size_t index);
 
-			video::VertexBuffer* GetVertexBuffer();
-			video::IndexBuffer* GetIndexBuffer();
+			const video::VertexBufferPtr& GetVertexBuffer() const;
+			const video::IndexBufferPtr& GetIndexBuffer() const;
 			sh::Topology GetTopology();
 
 		private:

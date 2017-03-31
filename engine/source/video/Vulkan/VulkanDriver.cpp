@@ -376,9 +376,11 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		VertexInputDeclaration* VulkanDriver::CreateVertexInputDeclaration() const
+		VertexInputDeclarationPtr VulkanDriver::CreateVertexInputDeclaration() const
 		{
-			return new VulkanVertexDeclaration();
+			VertexInputDeclarationPtr result = nullptr;
+			result.reset(new VulkanVertexDeclaration());
+			return result;
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////

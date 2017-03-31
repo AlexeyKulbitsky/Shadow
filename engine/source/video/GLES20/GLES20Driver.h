@@ -2,6 +2,7 @@
 #define SHADOW_GLES20_DRIVER_INCLUDE
 
 #include "../Driver.h"
+#include "../GLContext/EGLContextManager.h"
 
 namespace sh
 {
@@ -43,6 +44,8 @@ namespace sh
 			virtual void SetComputePipeline() override;
 
 			// Rendering
+			virtual void SetTopology(Topology topology) override;
+			virtual void SetAutoUniformsBatch(const UniformsBatchPtr& batch) override;
 			virtual void SetVertexDeclaration(const VertexInputDeclarationPtr& declaration) override;
 			virtual void SetVertexBuffer(const VertexBufferPtr& buffer)override;
 			virtual void SetIndexBuffer(const IndexBufferPtr& buffer) override;
@@ -52,18 +55,24 @@ namespace sh
 			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) override;
 
 			virtual VertexBufferPtr CreateVertexBuffer(Usage usage) const override;
+			virtual VertexBufferPtr CreateVertexBuffer(const VertexBufferDecription& description) const override;
 			virtual IndexBufferPtr CreateIndexBuffer(Usage usage) const override;
+			virtual IndexBufferPtr CreateIndexBuffer(const IndexBufferDescription& description) const override;
 			virtual UniformBufferPtr CreateUniformBuffer() const override;
 			virtual RenderCommandPtr CreateRenderCommand() const override;
 			virtual ShaderProgramPtr CreateShaderProgram() const override;
 			virtual TexturePtr CreateTexture() const override;
-			virtual VertexInputDeclaration* CreateVertexInputDeclaration() const override;
+			virtual VertexInputDeclarationPtr CreateVertexInputDeclaration() const override;
 			virtual RenderTargetPtr CreateRenderTarget() const override;
 			virtual RenderPipelinePtr CreateRenderPipeline() const override;
 			virtual RenderBatchManager* CreateRenderBatchManager() const override;
 
 		private:
 			EGLContextManager* m_contextManager = nullptr;
+			GLuint m_currentVertexBuffer;
+			GLuint m_currentIndexBuffer;
+			GLuint m_currentShaderProgram;
+			GLenum m_currentTopology;
 		};
 	}
 }

@@ -19,13 +19,13 @@ namespace sh
 			virtual void Unload() override;
 			
 			virtual const ShaderProgramPtr& GetShaderProgram() const override;
-			virtual VertexInputDeclaration* GetVertexInputDeclaration() const override;
+			virtual const VertexInputDeclarationPtr& GetVertexInputDeclaration() const override;
 			virtual const UniformBufferPtr& GetUniformBuffer() const override;
 			virtual const UniformBufferPtr& GetTransformUniformBuffer() const override;
 
 		protected:			
 			ShaderProgramPtr m_shaderProgram;
-			VertexInputDeclaration* m_vertexInputDeclaration;
+			VertexInputDeclarationPtr m_vertexInputDeclaration;
 			UniformBufferPtr m_uniformBuffer;
 			UniformBufferPtr m_transformUniformBuffer;
 

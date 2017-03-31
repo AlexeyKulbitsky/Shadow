@@ -36,7 +36,7 @@ namespace sh
 			virtual void Load(const pugi::xml_node &node) override;
 			virtual void SetShaderProgram(ShaderProgram* shaderProgram) override;
 			virtual void Init() override;
-			virtual VertexInputDeclaration* Clone() override;
+			virtual VertexInputDeclarationPtr Clone() override;
 			virtual void Assemble(VertexDeclaration& declaration) override;
 
 		private:

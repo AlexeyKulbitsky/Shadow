@@ -21,6 +21,10 @@ namespace sh
 			virtual void Bind() override { glBindBuffer(GL_ARRAY_BUFFER, m_glID); }
 			virtual void Unbind() override { glBindBuffer(GL_ARRAY_BUFFER, 0); }
 			unsigned int GetGLId() const { return m_glID; }
+
+		private:
+			GLES20VertexBuffer(const VertexBufferDecription& description);
+
 		private:
 			u32 m_glID = 0U;
 		};

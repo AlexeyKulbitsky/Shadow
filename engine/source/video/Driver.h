@@ -4,6 +4,8 @@
 #include "../Globals.h"
 #include "Uniform.h"
 #include "HardwareBuffer.h"
+#include "IndexBuffer.h"
+#include "VertexBuffer.h"
 
 namespace sh
 {
@@ -57,6 +59,8 @@ namespace sh
 			virtual void SetComputePipeline() { }
 
 			// Rendering
+			virtual void SetTopology(Topology topology) { }
+			virtual void SetAutoUniformsBatch(const UniformsBatchPtr& batch) { }
 			virtual void SetVertexDeclaration(const VertexInputDeclarationPtr& declaration) { }
 			virtual void SetVertexBuffer(const VertexBufferPtr& buffer) { }
 			virtual void SetIndexBuffer(const IndexBufferPtr& buffer) { }
@@ -71,12 +75,14 @@ namespace sh
 
 			// Resources creation interface
 			virtual VertexBufferPtr CreateVertexBuffer(Usage usage) const = 0;
+			virtual VertexBufferPtr CreateVertexBuffer(const VertexBufferDecription& description) const { return nullptr; }
 			virtual IndexBufferPtr CreateIndexBuffer(Usage usage) const = 0;
+			virtual IndexBufferPtr CreateIndexBuffer(const IndexBufferDescription& description) const { return nullptr; }
 			virtual UniformBufferPtr CreateUniformBuffer() const = 0;
 			virtual RenderCommandPtr CreateRenderCommand() const = 0;
 			virtual ShaderProgramPtr CreateShaderProgram() const = 0;
 			virtual TexturePtr CreateTexture() const { return nullptr; }
-			virtual VertexInputDeclaration* CreateVertexInputDeclaration() const = 0;
+			virtual VertexInputDeclarationPtr CreateVertexInputDeclaration() const = 0;
 			virtual RenderTargetPtr CreateRenderTarget() const { return nullptr; }
 			virtual RenderPipelinePtr CreateRenderPipeline() const = 0;
 			virtual RenderBatchManager* CreateRenderBatchManager() const = 0;
