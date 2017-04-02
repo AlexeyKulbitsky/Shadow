@@ -2,7 +2,6 @@
 #define SHADOW_INDEX_BUFFER_INCLUDE
 
 #include "../Globals.h"
-#include "HardwareBuffer.h"
 
 namespace sh
 {
@@ -14,13 +13,15 @@ namespace sh
 			Usage usage;
 		};
 
-		class IndexBuffer : public HardwareBuffer
+		class IndexBuffer
 		{
 		public:
-			IndexBuffer(Usage usage) : HardwareBuffer(usage) {}
+			IndexBuffer(Usage usage) {}
 			virtual ~IndexBuffer() {}
 
-			virtual void SetIndexType(IndexType indexType) { m_indexType = indexType; }
+			virtual void SetData(size_t offset, size_t length, const void* data) { }
+			virtual void GetData(size_t offset, size_t length, const void* data) { }
+
 			// Get the type of index
 			IndexType GetIndexType() const { return m_indexType; }
 			void SetIndicesCount(size_t count) { m_indicesCount = count; }

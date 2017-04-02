@@ -43,16 +43,16 @@ namespace sh
 		{
 			switch (type)
 			{
-			case sh::TextureType::TEXTURE_1D:
+				case sh::TextureType::TEX_TYPE_TEXTURE_1D:
 				SH_ASSERT(0, "Texture type TEXTURE_1D is not supported by driver");
 				break;
-			case sh::TextureType::TEXTURE_2D:
+				case sh::TextureType::TEX_TYPE_TEXTURE_2D:
 				m_glType = GL_TEXTURE_2D;
 				break;
-			case sh::TextureType::TEXTURE_3D:
+				case sh::TextureType::TEX_TYPE_TEXTURE_3D:
 				SH_ASSERT(0, "Texture type TEXTURE_3D is not supported by driver");
 				break;
-			case sh::TextureType::TEXTURE_CUBE:
+				case sh::TextureType::TEX_TYPE_TEXTURE_CUBE:
 				m_glType = GL_TEXTURE_CUBE_MAP;
 				break;
 			}
@@ -67,13 +67,13 @@ namespace sh
 
 			switch (tilingU)
 			{
-			case sh::TextureTiling::REPEAT:
+				case sh::TextureTiling::TEX_TILING_REPEAT:
 				textureTilingU = GL_REPEAT;
 				break;
-			case sh::TextureTiling::MIRRORED_REPEAT:
+			case sh::TextureTiling::TEX_TILING_MIRRORED_REPEAT:
 				textureTilingU = GL_MIRRORED_REPEAT;
 				break;
-			case sh::TextureTiling::CLAMP_TO_EDGE:
+			case sh::TextureTiling::TEX_TILING_CLAMP_TO_EDGE:
 				textureTilingU = GL_CLAMP_TO_EDGE;
 				break;
 			default:
@@ -82,13 +82,13 @@ namespace sh
 
 			switch (tilingV)
 			{
-			case sh::TextureTiling::REPEAT:
+			case sh::TextureTiling::TEX_TILING_REPEAT:
 				textureTilingV = GL_REPEAT;
 				break;
-			case sh::TextureTiling::MIRRORED_REPEAT:
+			case sh::TextureTiling::TEX_TILING_MIRRORED_REPEAT:
 				textureTilingV = GL_MIRRORED_REPEAT;
 				break;
-			case sh::TextureTiling::CLAMP_TO_EDGE:
+			case sh::TextureTiling::TEX_TILING_CLAMP_TO_EDGE:
 				textureTilingV = GL_CLAMP_TO_EDGE;
 				break;
 			default:
@@ -114,19 +114,19 @@ namespace sh
 			GLint filter;
 			switch (filtering)
 			{
-			case sh::TextureFiltering::NEAREST:
+			case sh::TextureFiltering::TEX_FILT_NEAREST:
 				filter = GL_NEAREST;
 				break;
-			case sh::TextureFiltering::LINEAR:
+			case sh::TextureFiltering::TEX_FILT_LINEAR:
 				filter = GL_NEAREST_MIPMAP_NEAREST;
 				break;
-			case sh::TextureFiltering::BILINEAR:
+			case sh::TextureFiltering::TEX_FILT_BILINEAR:
 				filter = GL_LINEAR_MIPMAP_NEAREST;
 				break;
-			case sh::TextureFiltering::TRILINEAR:
+			case sh::TextureFiltering::TEX_FILT_TRILINEAR:
 				filter = GL_NEAREST_MIPMAP_LINEAR;
 				break;
-			case sh::TextureFiltering::ANISOTROPIC:
+			case sh::TextureFiltering::TEX_FILT_ANISOTROPIC:
 				filter = GL_LINEAR_MIPMAP_LINEAR;
 				break;
 			default:
@@ -166,22 +166,22 @@ namespace sh
 			GLenum target;
 			switch (face)
 			{
-				case TextureFace::FRONT_FACE:
+				case TextureFace::TEX_FRONT_FACE:
 					target = GL_TEXTURE_CUBE_MAP_POSITIVE_X;
 					break;
-				case TextureFace::BACK_FACE:
+				case TextureFace::TEX_BACK_FACE:
 					target = GL_TEXTURE_CUBE_MAP_NEGATIVE_X;
 					break;
-				case TextureFace::RIGHT_FACE:
+				case TextureFace::TEX_RIGHT_FACE:
 					target = GL_TEXTURE_CUBE_MAP_POSITIVE_Y;
 					break;
-				case TextureFace::LEFT_FACE:
+				case TextureFace::TEX_LEFT_FACE:
 					target = GL_TEXTURE_CUBE_MAP_NEGATIVE_Y;
 					break;
-				case TextureFace::TOP_FACE:
+				case TextureFace::TEX_TOP_FACE:
 					target = GL_TEXTURE_CUBE_MAP_POSITIVE_Z;
 					break;
-				case TextureFace::BOTTOM_FACE:
+				case TextureFace::TEX_BOTTOM_FACE:
 					target = GL_TEXTURE_CUBE_MAP_NEGATIVE_Z;
 					break;
 			}
@@ -217,5 +217,15 @@ namespace sh
 			
 			return result;
 		}
+
+		////////////////////////////////////////////////////////////////////
+
+		GLES20Texture::GLES20Texture(const TextureDescription& description)
+			: Texture(description)
+		{
+			glGenTextures(1, &m_glID);
+		}
+
+		////////////////////////////////////////////////////////////////////
 	}
 }

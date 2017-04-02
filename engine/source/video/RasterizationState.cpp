@@ -19,11 +19,11 @@ namespace sh
 					String value = valAttr.as_string();
 					if (value == "clockWise")
 					{
-						frontFace = FrontFace::CLOCKWISE;
+						frontFace = FrontFace::FF_CLOCKWISE;
 					}
 					else if (value == "counterClockWise")
 					{
-						frontFace = FrontFace::COUNTER_CLOCKWISE;
+						frontFace = FrontFace::FF_COUNTER_CLOCKWISE;
 					}
 				}
 			}
@@ -38,15 +38,15 @@ namespace sh
 					String value = valAttr.as_string();
 					if (value == "front")
 					{
-						cullFace = CullFace::FRONT;
+						cullFace = CullFace::CF_FRONT;
 					}
 					else if (value == "back")
 					{
-						cullFace = CullFace::BACK;
+						cullFace = CullFace::CF_BACK;
 					}
 					else if (value == "none")
 					{
-						cullFace = CullFace::NONE;
+						cullFace = CullFace::CF_NONE;
 					}
 				}
 			}

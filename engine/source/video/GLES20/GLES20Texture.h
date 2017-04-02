@@ -10,6 +10,7 @@ namespace sh
 	{
 		class GLES20Texture : public Texture
 		{
+			friend class GLES20Driver;
 		public:
 			GLES20Texture();
 			virtual ~GLES20Texture();
@@ -32,6 +33,9 @@ namespace sh
 			u32 GetGLType() const { return m_glType; }
 
 			static TextureFormat GetFormatFromGL(GLenum glFormat);
+
+		protected:
+			GLES20Texture(const TextureDescription& description);
 
 		private:
 			u32 m_glID = 0U;

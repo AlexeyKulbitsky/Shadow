@@ -2,6 +2,7 @@
 #define SHADOW_GLES20_COMMON_INCLUDE
 
 #include "../../Globals.h"
+#include "../GLContext/EGLContextManager.h"
 
 namespace sh
 {
@@ -91,6 +92,13 @@ namespace video
 	{
 		GL_UNSIGNED_SHORT,
 		GL_UNSIGNED_INT
+	};
+
+	static GLenum const s_glUsage[] =
+	{
+		GL_STATIC_DRAW,
+		GL_DYNAMIC_DRAW,
+		GL_STREAM_DRAW
 	};
 
 } // video

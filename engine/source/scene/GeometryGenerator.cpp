@@ -36,7 +36,9 @@ namespace sh
 			// Create vertex buffer
 			const void* verticesPointer = vertexArray.data();
 			size_t verticesDataSize = vertexArray.size() * sizeof(float);
-			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer(Usage::STATIC);
+			video::VertexBufferDecription vertexBufDesc;
+			vertexBufDesc.usage = USAGE_STATIC;
+			sh::video::VertexBufferPtr vertexBuffer = video::VertexBuffer::Create(vertexBufDesc);
 			vertexBuffer->SetData(0, verticesDataSize, verticesPointer);
 			vertexBuffer->SetVerticesCount(verticesCount / 3);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
@@ -45,7 +47,7 @@ namespace sh
 			sh::scene::MeshBasePtr mesh(new sh::scene::MeshBase());
 
 			mesh->SetVertexBuffer(vertexBuffer);
-			mesh->SetTopology(Topology::LINE_LIST);
+			mesh->SetTopology(Topology::TOP_LINE_LIST);
 
 			sh::scene::ModelBasePtr model(new sh::scene::ModelBase());
 			model->AddMesh(mesh);
@@ -93,7 +95,9 @@ namespace sh
 			// Create vertex buffer
 			const void* verticesPointer = vertexArray.data();
 			size_t verticesDataSize = vertexArray.size() * sizeof(float);
-			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer(Usage::STATIC);
+			video::VertexBufferDecription vertexBufDesc;
+			vertexBufDesc.usage = USAGE_STATIC;
+			sh::video::VertexBufferPtr vertexBuffer = video::VertexBuffer::Create(vertexBufDesc);
 			vertexBuffer->SetData(0, verticesDataSize, verticesPointer);
 			vertexBuffer->SetVerticesCount(verticesCount / 3);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
@@ -102,7 +106,7 @@ namespace sh
 			sh::scene::MeshBasePtr mesh(new sh::scene::MeshBase());
 
 			mesh->SetVertexBuffer(vertexBuffer);
-			mesh->SetTopology(Topology::LINE_LOOP);
+			mesh->SetTopology(Topology::TOP_LINE_LOOP);
 
 			sh::scene::ModelBasePtr model(new sh::scene::ModelBase());
 			model->AddMesh(mesh);
@@ -211,7 +215,9 @@ namespace sh
 			// Create vertex buffer
 			const void* verticesPointer = vertexArray.data();
 			size_t verticesDataSize = vertexArray.size() * sizeof(float);
-			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer(Usage::STATIC);
+			video::VertexBufferDecription vertexBufDesc;
+			vertexBufDesc.usage = USAGE_STATIC;
+			sh::video::VertexBufferPtr vertexBuffer = video::VertexBuffer::Create(vertexBufDesc);
 			vertexBuffer->SetData(0, verticesDataSize, verticesPointer);
 			vertexBuffer->SetVerticesCount(verticesCount / 3);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
@@ -220,16 +226,19 @@ namespace sh
 			// Create index buffer
 			const void* indicesPointer = indexArray.data();
 			size_t indicesDataSize = indexArray.size() * sizeof(unsigned int);
-			sh::video::IndexBufferPtr indexBuffer = Device::GetInstance()->GetDriver()->CreateIndexBuffer(Usage::STATIC);
+			video::IndexBufferDescription indexBufDesc;
+			indexBufDesc.usage = USAGE_STATIC;
+			indexBufDesc.indexType = IT_32_BIT;
+			sh::video::IndexBufferPtr indexBuffer = video::IndexBuffer::Create(indexBufDesc);
 			indexBuffer->SetData(0, indicesDataSize, indicesPointer);
-			indexBuffer->SetIndexType(sh::IndexType::UNSIGNED_32_BIT);
+			//indexBuffer->SetIndexType(sh::IndexType::UNSIGNED_32_BIT);
 			indexBuffer->SetIndicesCount(indexArray.size());
 
 			sh::scene::MeshBasePtr mesh(new sh::scene::MeshBase());
 
 			mesh->SetVertexBuffer(vertexBuffer);
 			mesh->SetIndexBuffer(indexBuffer);
-			mesh->SetTopology(Topology::TRIANGLE_LIST);
+			//mesh->SetTopology(Topology::TRIANGLE_LIST);
 
 			sh::scene::ModelBasePtr model(new sh::scene::ModelBase());
 			model->AddMesh(mesh);
@@ -338,7 +347,9 @@ namespace sh
 			// Create vertex buffer
 			const void* verticesPointer = vertexArray.data();
 			size_t verticesDataSize = vertexArray.size() * sizeof(float);
-			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer(Usage::STATIC);
+			video::VertexBufferDecription vertexBufDesc;
+			vertexBufDesc.usage = USAGE_STATIC;
+			sh::video::VertexBufferPtr vertexBuffer = video::VertexBuffer::Create(vertexBufDesc);
 			vertexBuffer->SetData(0, verticesDataSize, verticesPointer);
 			vertexBuffer->SetVerticesCount(verticesCount / 3);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
@@ -347,16 +358,19 @@ namespace sh
 			// Create index buffer
 			const void* indicesPointer = indexArray.data();
 			size_t indicesDataSize = indexArray.size() * sizeof(unsigned int);
-			sh::video::IndexBufferPtr indexBuffer = Device::GetInstance()->GetDriver()->CreateIndexBuffer(Usage::STATIC);
+			video::IndexBufferDescription indexBufDesc;
+			indexBufDesc.usage = USAGE_STATIC;
+			indexBufDesc.indexType = IT_32_BIT;
+			sh::video::IndexBufferPtr indexBuffer = video::IndexBuffer::Create(indexBufDesc);
 			indexBuffer->SetData(0, indicesDataSize, indicesPointer);
-			indexBuffer->SetIndexType(sh::IndexType::UNSIGNED_32_BIT);
+			//indexBuffer->SetIndexType(sh::IndexType::UNSIGNED_32_BIT);
 			indexBuffer->SetIndicesCount(indexArray.size());
 
 			sh::scene::MeshBasePtr mesh(new sh::scene::MeshBase());
 
 			mesh->SetVertexBuffer(vertexBuffer);
 			mesh->SetIndexBuffer(indexBuffer);
-			mesh->SetTopology(Topology::TRIANGLE_LIST);
+			//mesh->SetTopology(Topology::TRIANGLE_LIST);
 
 			sh::scene::ModelBasePtr model(new sh::scene::ModelBase());
 			model->AddMesh(mesh);
@@ -421,7 +435,7 @@ namespace sh
 			sh::video::Attribute positionAttribute(AttributeSemantic::POSITION, AttributeType::FLOAT, 3U);
 			vertexDeclaration->AddAttribute(positionAttribute);
 
-			return CreateModel(vertexArray, indexArray, vertexDeclaration, Topology::TRIANGLE_LIST);
+			return CreateModel(vertexArray, indexArray, vertexDeclaration, Topology::TOP_TRIANGLE_LIST);
 		}
 
 		//////////////////////////////////////////////////////////////////
@@ -460,7 +474,7 @@ namespace sh
 			sh::video::Attribute positionAttribute(AttributeSemantic::POSITION, AttributeType::FLOAT, 3U);
 			vertexDeclaration->AddAttribute(positionAttribute);
 
-			return CreateModel(vertexArray, std::vector<u32>(), vertexDeclaration, Topology::TRIANGLE_FAN);
+			return CreateModel(vertexArray, std::vector<u32>(), vertexDeclaration, Topology::TOP_TRIANGLE_FAN);
 		}
 
 		//////////////////////////////////////////////////////////////////
@@ -511,7 +525,7 @@ namespace sh
 			sh::video::Attribute positionAttribute(AttributeSemantic::POSITION, AttributeType::FLOAT, 3U);
 			vertexDeclaration->AddAttribute(positionAttribute);
 
-			return CreateModel(vertexArray, indexArray, vertexDeclaration, Topology::TRIANGLE_LIST);
+			return CreateModel(vertexArray, indexArray, vertexDeclaration, Topology::TOP_TRIANGLE_LIST);
 		}
 
 		//////////////////////////////////////////////////////////////////
@@ -525,7 +539,9 @@ namespace sh
 			size_t verticesCount = vertexArray.size() * sizeof(f32) / vertexDeclaration->GetStride();
 			const void* verticesPointer = vertexArray.data();
 			size_t verticesDataSize = vertexArray.size() * sizeof(float);
-			sh::video::VertexBufferPtr vertexBuffer = Device::GetInstance()->GetDriver()->CreateVertexBuffer(Usage::STATIC);
+			video::VertexBufferDecription vertexBufDesc;
+			vertexBufDesc.usage = USAGE_STATIC;
+			sh::video::VertexBufferPtr vertexBuffer = video::VertexBuffer::Create(vertexBufDesc);
 			vertexBuffer->SetData(0, verticesDataSize, verticesPointer);
 			vertexBuffer->SetVerticesCount(verticesCount);
 			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
@@ -537,9 +553,12 @@ namespace sh
 			{
 				const void* indicesPointer = indexArray.data();
 				size_t indicesDataSize = indexArray.size() * sizeof(u32);
-				sh::video::IndexBufferPtr indexBuffer = Device::GetInstance()->GetDriver()->CreateIndexBuffer(Usage::STATIC);
+				video::IndexBufferDescription indexBufDesc;
+				indexBufDesc.usage = USAGE_STATIC;
+				indexBufDesc.indexType = IT_32_BIT;
+				sh::video::IndexBufferPtr indexBuffer = video::IndexBuffer::Create(indexBufDesc);
 				indexBuffer->SetData(0, indicesDataSize, indicesPointer);
-				indexBuffer->SetIndexType(sh::IndexType::UNSIGNED_32_BIT);
+				//indexBuffer->SetIndexType(sh::IndexType::UNSIGNED_32_BIT);
 				indexBuffer->SetIndicesCount(indexArray.size());
 				mesh->SetIndexBuffer(indexBuffer);
 			}

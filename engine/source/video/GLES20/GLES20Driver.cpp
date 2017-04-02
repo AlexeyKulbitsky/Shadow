@@ -10,6 +10,7 @@
 #include "GLES20RenderPIpeline.h"
 #include "GLES20RenderBatchManager.h"
 #include "GLES20Common.h"
+#include "GLES20Shader.h"
 #include "../Material.h"
 #include "../GLContext/EGLContextManager.h"
 #include "../../scene/Mesh.h"
@@ -18,6 +19,8 @@
 #include "../DepthStencilState.h"
 #include "../RasterizationState.h"
 #include "../BlendingState.h"
+#include "../GpuParams.h"
+
 #include <sstream>
 using namespace sh;
 using namespace video;
@@ -121,7 +124,7 @@ void GLES20Driver::Render(const RenderCommandPtr& command)
 	}
 
 	// Bind vertex buffer
-	vertexBuffer->Bind();
+	//vertexBuffer->Bind();
 
 	// Send attributes to shader
 	for (auto attribute : vertexDeclaration->GetAttributes())
@@ -146,7 +149,7 @@ void GLES20Driver::Render(const RenderCommandPtr& command)
 	}
 
 	// Unbind vertex buffer
-	vertexBuffer->Unbind();
+	//vertexBuffer->Unbind();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -267,7 +270,7 @@ void GLES20Driver::SetDepthStencilState(const DepthStencilStatePtr& depthStencil
 
 void GLES20Driver::SetRasterizationState(const RasterizationStatePtr& rasterizationState)
 {
-	if (rasterizationState->cullFace != CullFace::NONE)
+	if (rasterizationState->cullFace != CullFace::CF_NONE)
 	{
 		glEnable(GL_CULL_FACE);
 		glCullFace(s_glCullFace[static_cast<size_t>(rasterizationState->cullFace)]);
@@ -312,9 +315,11 @@ void GLES20Driver::SetBlendingState(const BlendingStatePtr& blendingState)
 
 void GLES20Driver::SetRenderPipeline(const RenderPipelinePtr& pipeline)
 {
-	SetBlendingState(pipeline->GetBlendingState());
-	SetRasterizationState(pipeline->GetRasterizationState());
-	SetDepthStencilState(pipeline->GetDepthStencilState());
+	GLES20RenderPipeline* glPipeline = static_cast<GLES20RenderPipeline*>(pipeline.get());
+	SetBlendingState(glPipeline->GetBlendingState());
+	SetRasterizationState(glPipeline->GetRasterizationState());
+	SetDepthStencilState(glPipeline->GetDepthStencilState());
+	glUseProgram(glPipeline->GetProgramID());
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -322,6 +327,48 @@ void GLES20Driver::SetRenderPipeline(const RenderPipelinePtr& pipeline)
 void GLES20Driver::SetComputePipeline()
 {
 
+}
+
+////////////////////////////////////////////////////////////////////////
+
+void GLES20Driver::SetGpuParams(const GpuParamsPtr& params)
+{
+	const u8* data = params->GetData();
+	const GpuParamDescription& desc = params->GetDescripton();
+
+	for (const auto& param : desc.params)
+	{
+		const GLfloat* dataPtr = reinterpret_cast<const float*>(data + param.second.offset);
+		
+		switch (param.second.type)
+		{			
+			case GPDT_FLOAT1:
+			{				
+				glUniform1fv(param.second.location, 1, dataPtr);				
+			}
+			break;
+			case GPDT_FLOAT2:
+			{
+				glUniform2fv(param.second.location, 1, dataPtr);
+			}
+			break;
+			case GPDT_FLOAT3:
+			{
+				glUniform3fv(param.second.location, 1, dataPtr);
+			}
+			break;
+			case GPDT_MATRIX3:
+			{
+				glUniformMatrix3fv(param.second.location, 1, GL_FALSE, dataPtr);
+			}
+			break;
+			case GPDT_MATRIX4:
+			{
+				glUniformMatrix4fv(param.second.location, 1, GL_FALSE, dataPtr);
+			}
+			break;
+		}
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -396,28 +443,10 @@ void GLES20Driver::GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data)
 
 ////////////////////////////////////////////////////////////////////////
 
-VertexBufferPtr GLES20Driver::CreateVertexBuffer(Usage usage) const
-{
-	VertexBufferPtr result = nullptr;
-	result.reset(new GLES20VertexBuffer(usage));
-	return result;
-}
-
-////////////////////////////////////////////////////////////////////////
-
 VertexBufferPtr GLES20Driver::CreateVertexBuffer(const VertexBufferDecription& description) const
 {
 	VertexBufferPtr result = nullptr;
 	result.reset(new GLES20VertexBuffer(description));
-	return result;
-}
-
-////////////////////////////////////////////////////////////////////////
-
-IndexBufferPtr GLES20Driver::CreateIndexBuffer(Usage usage) const
-{
-	IndexBufferPtr result = nullptr;
-	result.reset(new GLES20IndexBuffer(usage));
 	return result;
 }
 
@@ -468,6 +497,15 @@ TexturePtr GLES20Driver::CreateTexture() const
 
 ////////////////////////////////////////////////////////////////////////
 
+TexturePtr GLES20Driver::CreateTexture(const TextureDescription& description) const
+{
+	TexturePtr result = nullptr;
+	result.reset(new GLES20Texture(description));
+	return result;
+}
+
+////////////////////////////////////////////////////////////////////////
+
 VertexInputDeclarationPtr GLES20Driver::CreateVertexInputDeclaration() const
 {
 	VertexInputDeclarationPtr result = nullptr;
@@ -498,4 +536,11 @@ RenderPipelinePtr GLES20Driver::CreateRenderPipeline() const
 RenderBatchManager* GLES20Driver::CreateRenderBatchManager() const
 {
 	return new GLES20RenderBatchManager();
+}
+
+ShaderPtr GLES20Driver::CreateShader(const ShaderDescription& description) const
+{
+	ShaderPtr result;
+	result.reset(new GLES20Shader(description));
+	return result;
 }

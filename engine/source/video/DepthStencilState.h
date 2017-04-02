@@ -82,10 +82,10 @@ namespace sh
 
 		struct SHADOW_API Face
 		{
-			StencilOperation fail = StencilOperation::KEEP;
-			StencilOperation depthFail = StencilOperation::KEEP;
-			StencilOperation pass = StencilOperation::KEEP;
-			CompareFunction compare = CompareFunction::ALWAYS;
+			StencilOperation fail = STENCIL_OP_KEEP;
+			StencilOperation depthFail = STENCIL_OP_KEEP;
+			StencilOperation pass = STENCIL_OP_KEEP;
+			CompareFunction compare = COMP_FUNC_ALWAYS;
 		};
 
 		////////////////////////////////////////////////////////////
@@ -94,12 +94,11 @@ namespace sh
 		{
 		public:
 			DepthStencilState();
-			DepthStencilState* Clone();
 
 			// Depth part
 			bool				enableDepthTest = true;
-			CompareFunction		depthCompareFunction = CompareFunction::LESS_OR_EQUAL;
-			WriteMask			depthWriteMask = WriteMask::ALL;
+			CompareFunction		depthCompareFunction = COMP_FUNC_LESS_OR_EQUAL;
+			WriteMask			depthWriteMask = WM_ALL;
 
 			// Stencil part
 			bool				enableStencilTest = false;
@@ -116,23 +115,14 @@ namespace sh
 
 		inline DepthStencilState::DepthStencilState()
 			: enableDepthTest(true)
-			, depthCompareFunction(CompareFunction::LESS_OR_EQUAL)
-			, depthWriteMask(WriteMask::ALL)
+			, depthCompareFunction(COMP_FUNC_LESS_OR_EQUAL)
+			, depthWriteMask(WM_ALL)
 			, enableStencilTest(false)
 			, stencilReadMask(0xFF)
 			, stencilWriteMask(0xFF)
 			, reference(0)
 		{
 
-		}
-
-		////////////////////////////////////////////////////////////
-
-		inline DepthStencilState* DepthStencilState::Clone()
-		{
-			DepthStencilState* result = new DepthStencilState();
-			(*result) = (*this);
-			return result;
 		}
 	}
 }

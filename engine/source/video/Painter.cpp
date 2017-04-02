@@ -5,6 +5,7 @@
 #include "RenderPipeline.h"
 #include "VertexDeclaration.h"
 #include "ShaderProgram.h"
+#include "../CommonTypes.h"
 
 namespace sh
 {
@@ -16,7 +17,7 @@ namespace sh
 			Driver* driver = Device::GetInstance()->GetDriver();
 			m_linesRenderCommand = driver->CreateRenderCommand();
 			m_linesRenderCommand->SetVertexBuffer(m_linesBuffer.get());
-			m_linesRenderCommand->SetTopology(Topology::LINE_LIST);
+			m_linesRenderCommand->SetTopology(Topology::TOP_LINE_LIST);
 			m_linesRenderCommand->SetUseIndices(false);
 		}
 

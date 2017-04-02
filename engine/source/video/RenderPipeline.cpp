@@ -145,28 +145,28 @@ namespace sh
 		void RenderPipeline::LoadStates(const pugi::xml_node& node)
 		{
 			// Load depth/stencil state
-			m_depthStencilState.reset(new DepthStencilState());
+			m_description.depthStencilState.reset(new DepthStencilState());
 			pugi::xml_node depthStencilStateNode = node.child("depthstencilstate");
 			if (!depthStencilStateNode.empty())
 			{
-				m_depthStencilState->Load(depthStencilStateNode);
+				m_description.depthStencilState->Load(depthStencilStateNode);
 			}
 
 			// Load rasterization state
-			m_rasterizationState.reset(new RasterizationState());
+			m_description.rasterizationState.reset(new RasterizationState());
 			pugi::xml_node rasterizationStateNode = node.child("rasterizationstate");
 			if (!rasterizationStateNode.empty())
 			{
-				m_rasterizationState->Load(rasterizationStateNode);
+				m_description.rasterizationState->Load(rasterizationStateNode);
 			}
 
 			// Load blending state
-			m_blendingState.reset(new BlendingState());
+			m_description.blendingState.reset(new BlendingState());
 			pugi::xml_node blendingStateNode = node.child("blendingstate");
 			if (!blendingStateNode.empty())
 			{
-				m_blendingState->Load(blendingStateNode);
-				m_blendingState->enabled = true;
+				m_description.blendingState->Load(blendingStateNode);
+				m_description.blendingState->enabled = true;
 			}
 		}
 

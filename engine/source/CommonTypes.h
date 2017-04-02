@@ -3,21 +3,20 @@
 
 namespace sh
 {
-	enum class BlendFactor
+	enum BlendFactor
 	{
-		ZERO = 0,
-		ONE,
-		SRC_COLOR,
-		INV_SRC_COLOR,
-		DST_COLOR,
-		INV_DST_COLOR,
-		SRC_ALPHA,
-		INV_SRC_ALPHA,
-		DST_ALPHA,
-		INV_DST_ALPHA,
-		SRC_ALPHA_SATURATED,
-
-		COUNT
+		BF_ZERO = 0,
+		BF_ONE,
+		BF_SRC_COLOR,
+		BF_INV_SRC_COLOR,
+		BF_DST_COLOR,
+		BF_INV_DST_COLOR,
+		BF_SRC_ALPHA,
+		BF_INV_SRC_ALPHA,
+		BF_DST_ALPHA,
+		BF_INV_DST_ALPHA,
+		BF_SRC_ALPHA_SATURATED,
+		BF_COUNT
 	};
 
 	static const char* const g_blendFactorMap[] =
@@ -37,15 +36,13 @@ namespace sh
 
 	////////////////////////////////////////////////////////////
 
-	enum class BlendOperation
+	enum BlendOperation
 	{
-		ADD = 0,
-		SUBSTRACT,
-		REVERSE_SUBSTRACT,
-		MIN,
-		MAX,
-
-		COUNT
+		BO_ADD = 0,
+		BO_SUBSTRACT,
+		BO_REVERSE_SUBSTRACT,
+		BO_MIN,
+		BO_MAX,
 	};
 
 	static const char* const g_blendOperationMap[] =
@@ -82,18 +79,17 @@ namespace sh
 		"Substractive"
 	};
 
-	enum class CompareFunction
+	enum CompareFunction
 	{
-		LESS = 0,
-		LESS_OR_EQUAL,
-		EQUAL,
-		GREATER_OR_EQUAL,
-		GREATER,
-		NOT_EQUAL,
-		ALWAYS,
-		NEVER,
-
-		COUNT
+		COMP_FUNC_LESS = 0,
+		COMP_FUNC_LESS_OR_EQUAL,
+		COMP_FUNC_EQUAL,
+		COMP_FUNC_GREATER_OR_EQUAL,
+		COMP_FUNC_GREATER,
+		COMP_FUNC_NOT_EQUAL,
+		COMP_FUNC_ALWAYS,
+		COMP_FUNC_NEVER,
+		COMP_FUNC_COUNT
 	};
 
 	static const char* const g_compareFunctionMap[] =
@@ -110,12 +106,10 @@ namespace sh
 
 	////////////////////////////////////////////////////////////
 
-	enum class WriteMask
+	enum WriteMask
 	{
-		ZERO = 0,
-		ALL,
-
-		COUNT
+		WM_ZERO = 0,
+		WM_ALL,
 	};
 
 	static const char* const g_writeMaskMap[] =
@@ -126,18 +120,16 @@ namespace sh
 
 	////////////////////////////////////////////////////////////
 
-	enum class StencilOperation
+	enum StencilOperation
 	{
-		KEEP = 0,
-		CLEAR,
-		REPLACE,
-		INVERT,
-		INCREMENT,
-		DECREMENT,
-		INCREMENT_WRAP,
-		DECREMENT_WRAP,
-
-		COUNT
+		STENCIL_OP_KEEP = 0,
+		STENCIL_OP_CLEAR,
+		STENCIL_OP_REPLACE,
+		STENCIL_OP_INVERT,
+		STENCIL_OP_INCREMENT,
+		STENCIL_OP_DECREMENT,
+		STENCIL_OP_INCREMENT_WRAP,
+		STENCIL_OP_DECREMENT_WRAP,
 	};
 
 	static const char* const g_stencilOperationMap[] =
@@ -152,12 +144,10 @@ namespace sh
 		"DecrementWrap"
 	};
 
-	enum class FrontFace
+	enum FrontFace
 	{
-		CLOCKWISE = 0,
-		COUNTER_CLOCKWISE,
-
-		COUNT
+		FF_CLOCKWISE = 0,
+		FF_COUNTER_CLOCKWISE,
 	};
 
 	static const char* const g_frontFaceMap[] =
@@ -168,13 +158,11 @@ namespace sh
 
 	////////////////////////////////////////////////////////////
 
-	enum class CullFace
+	enum CullFace
 	{
-		FRONT = 0,
-		BACK,
-		NONE,
-
-		COUNT
+		CF_FRONT = 0,
+		CF_BACK,
+		CF_NONE,
 	};
 
 	static const char* const g_cullFaceMap[] =
@@ -186,12 +174,10 @@ namespace sh
 
 	////////////////////////////////////////////////////////////
 
-	enum class FillMode
+	enum FillMode
 	{
-		SOLID = 0,
-		WIREFRAME,
-
-		COUNT
+		FM_SOLID = 0,
+		FM_WIREFRAME,
 	};
 
 	static const char* const g_fillModeMap[] =
@@ -200,73 +186,74 @@ namespace sh
 		"WireFrame"
 	};
 
-	enum class IndexType
+	enum IndexType
 	{
-		UNSIGNED_16_BIT,
-		UNSIGNED_32_BIT
+		IT_16_BIT,
+		IT_32_BIT
 	};
 
 	enum Usage
 	{
-		STATIC = 0,
-		DYNAMIC
+		USAGE_STATIC = 0,
+		USAGE_DYNAMIC,
+		USAGE_STREAM
 	};
 
-	enum class Topology
+	enum Topology
 	{
-		LINE_LIST = 0,
-		LINE_LOOP,
-		LINE_STRIP,
-		TRIANGLE_LIST,
-		TRIANGLE_STRIP,
-		TRIANGLE_FAN
+		TOP_LINE_LIST = 0,
+		TOP_LINE_LOOP,
+		TOP_LINE_STRIP,
+		TOP_TRIANGLE_LIST,
+		TOP_TRIANGLE_STRIP,
+		TOP_TRIANGLE_FAN
 	};
 
-	enum class ShaderType
+	enum ShaderType
 	{
-		VERTEX = 0,
-		FRAGMENT,
-		//GEOMETRY,
-		//DOMAIN,
-		//HULL,
-		//COMPUTE,
-		NONE
+		ST_VERTEX = 0,
+		ST_FRAGMENT,
+		ST_GEOMETRY,
+		ST_DOMAIN,
+		ST_HULL,
+		ST_COMPUTE,
+		ST_NONE
 	};
 
-	enum class TextureType
+	enum TextureType
 	{
-		TEXTURE_1D,
-		TEXTURE_2D,
-		TEXTURE_3D,
-		TEXTURE_CUBE
+		TEX_TYPE_TEXTURE_1D,
+		TEX_TYPE_TEXTURE_2D,
+		TEX_TYPE_TEXTURE_3D,
+		TEX_TYPE_TEXTURE_CUBE
 	};
 
-	enum class TextureTiling
+	enum TextureTiling
 	{
-		REPEAT,
-		MIRRORED_REPEAT,
-		CLAMP_TO_EDGE
+		TEX_TILING_REPEAT,
+		TEX_TILING_MIRRORED_REPEAT,
+		TEX_TILING_CLAMP_TO_EDGE
 	};
 
-	enum class TextureFiltering
+	enum TextureFiltering
 	{
-		NEAREST,
-		LINEAR,
-		BILINEAR,
-		TRILINEAR,
-		ANISOTROPIC
+		TEX_FILT_NEAREST,
+		TEX_FILT_LINEAR,
+		TEX_FILT_BILINEAR,
+		TEX_FILT_TRILINEAR,
+		TEX_FILT_ANISOTROPIC
 	};
 
-	enum class TextureFace
+	enum TextureFace
 	{
-		FRONT_FACE,
-		BACK_FACE,
-		RIGHT_FACE,
-		LEFT_FACE,
-		TOP_FACE,
-		BOTTOM_FACE,
+		TEX_FRONT_FACE,
+		TEX_BACK_FACE,
+		TEX_RIGHT_FACE,
+		TEX_LEFT_FACE,
+		TEX_TOP_FACE,
+		TEX_BOTTOM_FACE,
 
-		COUNT = 6
+		TEX_COUNT = 6
 	};
 
 	enum class TextureFormat
@@ -295,6 +282,20 @@ namespace sh
 		UNSIGNED_INT = 4,
 		BYTE = 1,
 		UNSIGNED_BYTE = 1
+	};
+
+	enum GpuParamDataType
+	{
+		GPDT_FLOAT1,
+		GPDT_FLOAT2,
+		GPDT_FLOAT3,
+		GPDT_FLOAT4,
+		GPDT_INT1,
+		GPDT_INT2,
+		GPDT_INT3,
+		GPDT_INT4,
+		GPDT_MATRIX4,
+		GPDT_MATRIX3
 	};
 }
 

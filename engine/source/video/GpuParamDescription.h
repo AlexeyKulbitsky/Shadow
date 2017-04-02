@@ -12,15 +12,17 @@ namespace video
 	struct GpuParamDataDescription
 	{
 		String name;
-		Uniform::Type type;
+		GpuParamDataType type;
 
 		u32 size;
+		u32 offset;
+		u32 location;
 	};
 
 	struct GpuObjectDescription
 	{
 		String name;
-		Texture::Type type;
+		//Texture::Type type;
 
 		u32 layout;
 		u32 binding;
@@ -38,7 +40,7 @@ namespace video
 
 	////////////////////////////////////////////////////
 
-	struct GpuParamDescriptoin
+	struct GpuParamDescription
 	{
 		Map<String, GpuParamsBlockDescription> paramsBlocks;
 		Map<String, GpuParamDataDescription> params;

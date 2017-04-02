@@ -44,6 +44,7 @@ namespace sh
 			virtual void SetComputePipeline() override;
 
 			// Rendering
+			virtual void SetGpuParams(const GpuParamsPtr& params) override;
 			virtual void SetTopology(Topology topology) override;
 			virtual void SetAutoUniformsBatch(const UniformsBatchPtr& batch) override;
 			virtual void SetVertexDeclaration(const VertexInputDeclarationPtr& declaration) override;
@@ -54,18 +55,18 @@ namespace sh
 
 			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) override;
 
-			virtual VertexBufferPtr CreateVertexBuffer(Usage usage) const override;
 			virtual VertexBufferPtr CreateVertexBuffer(const VertexBufferDecription& description) const override;
-			virtual IndexBufferPtr CreateIndexBuffer(Usage usage) const override;
 			virtual IndexBufferPtr CreateIndexBuffer(const IndexBufferDescription& description) const override;
 			virtual UniformBufferPtr CreateUniformBuffer() const override;
 			virtual RenderCommandPtr CreateRenderCommand() const override;
 			virtual ShaderProgramPtr CreateShaderProgram() const override;
 			virtual TexturePtr CreateTexture() const override;
+			virtual TexturePtr CreateTexture(const TextureDescription& description) const override;
 			virtual VertexInputDeclarationPtr CreateVertexInputDeclaration() const override;
 			virtual RenderTargetPtr CreateRenderTarget() const override;
 			virtual RenderPipelinePtr CreateRenderPipeline() const override;
 			virtual RenderBatchManager* CreateRenderBatchManager() const override;
+			virtual ShaderPtr CreateShader(const ShaderDescription& description) const override;
 
 		private:
 			EGLContextManager* m_contextManager = nullptr;

@@ -68,9 +68,9 @@ namespace sh
 			renderPipeline->GetUniformBuffer()->Upload();
 
 
-			const RenderCommandPtr& renderCommand = mesh->GetRenderCommand();
+			//const RenderCommandPtr& renderCommand = mesh->GetRenderCommand();
 
-			Render(renderCommand);
+			//Render(renderCommand);
 			renderPipeline->GetShaderProgram()->UnbindProgram();
 		}
 

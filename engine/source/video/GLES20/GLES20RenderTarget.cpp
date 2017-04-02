@@ -50,21 +50,21 @@ namespace sh
 			GLES20Texture *colorTexture = static_cast<GLES20Texture*>(m_colorTexture.get());
 			GLES20Texture *depthTexture = static_cast<GLES20Texture*>(m_depthTexture.get());
 
-			colorTexture->SetType(TextureType::TEXTURE_2D);
+			colorTexture->SetType(TextureType::TEX_TYPE_TEXTURE_2D);
 			colorTexture->Bind();
 			colorTexture->LoadData(0, width, height, nullptr);
-			colorTexture->SetFiltering(TextureFiltering::NEAREST);
-			colorTexture->SetTiling(TextureTiling::CLAMP_TO_EDGE, TextureTiling::CLAMP_TO_EDGE);		
+			colorTexture->SetFiltering(TextureFiltering::TEX_FILT_NEAREST);
+			colorTexture->SetTiling(TextureTiling::TEX_TILING_CLAMP_TO_EDGE, TextureTiling::TEX_TILING_CLAMP_TO_EDGE);		
 			colorTexture->Unbind();
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorTexture->GetGLId(), 0);
 
 			if (depthTexture)
 			{
-				depthTexture->SetType(TextureType::TEXTURE_2D);
+				depthTexture->SetType(TextureType::TEX_TYPE_TEXTURE_2D);
 				depthTexture->Bind();
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_SHORT, NULL);
-				depthTexture->SetFiltering(TextureFiltering::NEAREST);
-				depthTexture->SetTiling(TextureTiling::CLAMP_TO_EDGE, TextureTiling::CLAMP_TO_EDGE);
+				depthTexture->SetFiltering(TextureFiltering::TEX_FILT_NEAREST);
+				depthTexture->SetTiling(TextureTiling::TEX_TILING_CLAMP_TO_EDGE, TextureTiling::TEX_TILING_CLAMP_TO_EDGE);
 				depthTexture->Unbind();			
 				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthTexture->GetGLId(), 0);
 			}

@@ -16,6 +16,9 @@ namespace sh
 
 			virtual void SetData(size_t offset, size_t length, const void* data) override;
 			virtual void GetData(size_t offset, size_t length, const void* data) override;
+		
+		protected:
+			VulkanIndexBuffer(const IndexBufferDescription& description);
 		};
 	}
 }

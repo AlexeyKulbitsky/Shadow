@@ -8,6 +8,13 @@
 			<uniform name="lightDirection" type="vec3Array" val="light.directional.direction"/>
 			<uniform name="color" type="float" val="1.0"/>
 		</uniforms>
+
+
+		<constant name="matWorld" type="mat4" />
+		<constant name="matMVP" type="mat4" />
+		<constant name="lightDirection" type="vec3" />
+		<constant name="color" type="float" />
+
 	</constants>
 	
 	<attributes>
@@ -66,6 +73,8 @@
 		<uniforms>
 			<uniform name="color" type="vec4"/>
 			<uniform name="matMVP" type="mat4" val="model.worldViewProjectionMatrix"/>
+
+			<constant name="matMVP" type="mat4" />
 		</uniforms>
 	</constants>
 	

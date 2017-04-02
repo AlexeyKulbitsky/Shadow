@@ -36,11 +36,11 @@ namespace sh
 				renderBatch->SetBlendingState(renderPipeline->GetBlendingState());
 				renderBatch->SetUniformBuffer(renderPipeline->GetUniformBuffer());
 				renderBatch->SetTechniqueName(techniqueName);
+				renderBatch->SetRenderPipeline(renderPipeline);
 
 				m_renderBatches[layerIndex][techniqueName] = renderBatch;
 			}
 
-			m_renderBatches[layerIndex][techniqueName]->AddCommand(mesh->GetRenderCommand());
 			m_renderBatches[layerIndex][techniqueName]->AddMesh(mesh);
 		}
 

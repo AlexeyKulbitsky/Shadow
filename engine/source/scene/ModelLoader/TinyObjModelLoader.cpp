@@ -95,7 +95,9 @@ namespace sh
 				// Create vertex buffer
 				const void* verticesPointer = vertexArray.data();
 				size_t verticesDataSize = vertexArray.size() * sizeof(float);
-				sh::video::VertexBufferPtr vertexBuffer = driver->CreateVertexBuffer(Usage::STATIC);
+				video::VertexBufferDecription desc;
+				desc.usage = USAGE_STATIC;
+				sh::video::VertexBufferPtr vertexBuffer = video::VertexBuffer::Create(desc);
 				vertexBuffer->SetData(0, verticesDataSize, verticesPointer);
 				vertexBuffer->SetVerticesCount(verticesCount);
 				vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
@@ -104,15 +106,16 @@ namespace sh
 				// Create index buffer
 				const void* indicesPointer = indexArray.data();
 				size_t indicesDataSize = indexArray.size() * sizeof(unsigned int);
-				sh::video::IndexBufferPtr indexBuffer = driver->CreateIndexBuffer(Usage::STATIC);
+				video::IndexBufferDescription indexDesc;
+				indexDesc.indexType = IT_32_BIT;
+				indexDesc.usage = USAGE_STATIC;
+				sh::video::IndexBufferPtr indexBuffer = video::IndexBuffer::Create(indexDesc);
 				indexBuffer->SetData(0, indicesDataSize, indicesPointer);
-				indexBuffer->SetIndexType(sh::IndexType::UNSIGNED_32_BIT);
 				indexBuffer->SetIndicesCount(indexArray.size());
 				
 				mesh->SetVertexBuffer(vertexBuffer);
 				mesh->SetIndexBuffer(indexBuffer);
-				//mesh->SetVertexDeclaration(vertexDeclaration);
-				mesh->SetTopology(Topology::TRIANGLE_LIST);
+				mesh->SetTopology(Topology::TOP_TRIANGLE_LIST);
 
 				// Set base material
 				int materialId = shape.mesh.material_ids[0];

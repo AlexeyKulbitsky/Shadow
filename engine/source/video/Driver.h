@@ -6,6 +6,8 @@
 #include "HardwareBuffer.h"
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"
+#include "Shader.h"
+#include "Texture.h"
 
 namespace sh
 {
@@ -59,6 +61,7 @@ namespace sh
 			virtual void SetComputePipeline() { }
 
 			// Rendering
+			virtual void SetGpuParams(const GpuParamsPtr& params) { }
 			virtual void SetTopology(Topology topology) { }
 			virtual void SetAutoUniformsBatch(const UniformsBatchPtr& batch) { }
 			virtual void SetVertexDeclaration(const VertexInputDeclarationPtr& declaration) { }
@@ -74,19 +77,18 @@ namespace sh
 			u32 GetMaxCubeTextureSize() const { return m_maxCubeTextureSize; }
 
 			// Resources creation interface
-			virtual VertexBufferPtr CreateVertexBuffer(Usage usage) const = 0;
 			virtual VertexBufferPtr CreateVertexBuffer(const VertexBufferDecription& description) const { return nullptr; }
-			virtual IndexBufferPtr CreateIndexBuffer(Usage usage) const = 0;
 			virtual IndexBufferPtr CreateIndexBuffer(const IndexBufferDescription& description) const { return nullptr; }
 			virtual UniformBufferPtr CreateUniformBuffer() const = 0;
 			virtual RenderCommandPtr CreateRenderCommand() const = 0;
 			virtual ShaderProgramPtr CreateShaderProgram() const = 0;
 			virtual TexturePtr CreateTexture() const { return nullptr; }
+			virtual TexturePtr CreateTexture(const TextureDescription& description) const { return nullptr; }
 			virtual VertexInputDeclarationPtr CreateVertexInputDeclaration() const = 0;
 			virtual RenderTargetPtr CreateRenderTarget() const { return nullptr; }
 			virtual RenderPipelinePtr CreateRenderPipeline() const = 0;
 			virtual RenderBatchManager* CreateRenderBatchManager() const = 0;
-			
+			virtual ShaderPtr CreateShader(const ShaderDescription& description) const { return nullptr; }
 
 			template<typename T>
 			void SetGlobalUniform(GlobalUniformName globalName, const T& value);

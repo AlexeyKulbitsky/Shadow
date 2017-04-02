@@ -1,6 +1,8 @@
 #ifndef SHADOW_SHADER_INCLUDE
 #define SHADOW_SHADER_INCLUDE
 
+#include "../Globals.h"
+
 namespace sh
 {
 
@@ -19,6 +21,7 @@ namespace video
 	public:
 		ShaderType GetType() const { return m_type; }
 		static ShaderPtr Create(const ShaderDescription& description);
+
 	protected:
 		ShaderType m_type;
 	};

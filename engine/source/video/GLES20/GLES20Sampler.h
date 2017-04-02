@@ -18,7 +18,7 @@ namespace sh
 			virtual Sampler* Clone() override;
 
 			virtual void SetFiltering(TextureFiltering filtering) override;
-			virtual void SetTiling(TextureTiling tilingU, TextureTiling tilingV, TextureTiling tilingW = TextureTiling::REPEAT) override;
+			virtual void SetTiling(TextureTiling tilingU, TextureTiling tilingV, TextureTiling tilingW = TextureTiling::TEX_TILING_REPEAT) override;
 			virtual void SetType(TextureType type) override;
 
 			// GLES 2 - specific interface

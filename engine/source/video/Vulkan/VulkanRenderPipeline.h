@@ -14,8 +14,6 @@ namespace sh
 			VulkanRenderPipeline();
 			virtual ~VulkanRenderPipeline();
 
-			virtual RenderPipelinePtr Clone() override;
-
 			virtual void Load(const pugi::xml_node &node) override;
 			virtual void Unload() override;
 

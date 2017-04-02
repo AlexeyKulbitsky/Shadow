@@ -17,7 +17,7 @@ namespace sh
 				{
 					String value = valAttr.as_string();
 
-					for (size_t i = 0U; i < static_cast<size_t>( BlendFactor::COUNT ); ++i)
+					for (size_t i = 0U; i < BF_COUNT; ++i)
 					{
 						if (value == g_blendFactorMap[i])
 						{
@@ -36,7 +36,7 @@ namespace sh
 				{
 					String value = valAttr.as_string();
 
-					for (size_t i = 0U; i < static_cast<size_t>( BlendFactor::COUNT ); ++i)
+					for (size_t i = 0U; i < BF_COUNT; ++i)
 					{
 						if (value == g_blendFactorMap[i])
 						{
@@ -55,7 +55,7 @@ namespace sh
 				{
 					String value = valAttr.as_string();
 
-					for (size_t i = 0U; i < static_cast<size_t>( BlendOperation::COUNT ); ++i)
+					for (size_t i = 0U; i < BF_COUNT; ++i)
 					{
 						if (value == g_blendOperationMap[i])
 						{

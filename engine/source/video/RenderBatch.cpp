@@ -47,16 +47,9 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////////////
 
-		void RenderBatch::AddCommand(const RenderCommandPtr& renderCommand)
+		void RenderBatch::SetRenderPipeline(const RenderPipelinePtr& pipeline)
 		{
-			m_commands.push_back(renderCommand);
-		}
-
-		//////////////////////////////////////////////////////////////////////////
-
-		void RenderBatch::RemoveCommand(const RenderCommandPtr& renderCommand)
-		{
-
+			m_pipeline = pipeline;
 		}
 
 		//////////////////////////////////////////////////////////////////////////
@@ -72,29 +65,16 @@ namespace sh
 		{
 			Driver* driver = Device::GetInstance()->GetDriver();
 
-			driver->SetDepthStencilState(m_depthStencilState);
-			driver->SetBlendingState(m_blendingState);
-			driver->SetRasterizationState(m_rasterizationState);
-			m_program->BindProgram();
-
-			m_uniformBuffer->Upload();
-
-			for (const auto& command : m_commands)
-			{				
-				//driver->Render(command);
-			}
+			driver->SetRenderPipeline(m_pipeline);
 
 			for (const auto& mesh : m_meshes)
 			{
-				driver->SetAutoUniformsBatch(mesh->GetAutoUnformsBatch());
+				driver->SetGpuParams(mesh->GetGpuParams());
 				driver->SetVertexDeclaration(mesh->GetVertexDeclaration());
 				driver->SetIndexBuffer(mesh->GetIndexBuffer());
 				driver->SetVertexBuffer(mesh->GetVertexBuffer());
 				driver->DrawIndexed(0, mesh->GetIndexBuffer()->GetIndicesCount());
 			}
-
-
-			m_program->UnbindProgram();
 		}
 
 		//////////////////////////////////////////////////////////////////////////

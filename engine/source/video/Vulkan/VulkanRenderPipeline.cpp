@@ -33,28 +33,6 @@ namespace sh
 
 		///////////////////////////////////////////////////////////////////////////////////////
 
-		RenderPipelinePtr VulkanRenderPipeline::Clone()
-		{
-			RenderPipelinePtr result;
-
-			VulkanRenderPipeline* pipeline = new VulkanRenderPipeline();
-			pipeline->m_shaderProgram = m_shaderProgram;
-			pipeline->m_uniformBuffer = UniformBufferPtr(m_uniformBuffer->Clone());
-			pipeline->m_depthStencilState = DepthStencilStatePtr(m_depthStencilState->Clone());
-			pipeline->m_blendingState = BlendingStatePtr(m_blendingState->Clone());
-			pipeline->m_rasterizationState = RasterizationStatePtr(m_rasterizationState->Clone());
-			pipeline->m_vertexInputDeclaration = m_vertexInputDeclaration->Clone();
-			pipeline->m_name = m_name;
-			pipeline->m_layer = m_layer;
-
-			pipeline->m_graphicsPipeline = m_graphicsPipeline;
-
-			result.reset(pipeline);
-			return result;
-		}
-
-		///////////////////////////////////////////////////////////////////////////////////////
-
 		void VulkanRenderPipeline::Load(const pugi::xml_node &node)
 		{
 			RenderPipeline::LoadStates(node);
@@ -156,10 +134,10 @@ namespace sh
 			rasterizer.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
 			rasterizer.depthClampEnable = VK_FALSE;
 			rasterizer.rasterizerDiscardEnable = VK_FALSE;
-			rasterizer.polygonMode = s_vkPolygoneMode[static_cast<size_t>(m_rasterizationState->fillMode)];
-			rasterizer.lineWidth = m_rasterizationState->lineWidth;
-			rasterizer.cullMode = s_vkCullFace[static_cast<size_t>(m_rasterizationState->cullFace)];
-			rasterizer.frontFace = s_vkFrontFace[static_cast<size_t>(m_rasterizationState->frontFace)];
+			rasterizer.polygonMode = s_vkPolygoneMode[m_description.rasterizationState->fillMode];
+			rasterizer.lineWidth = m_description.rasterizationState->lineWidth;
+			rasterizer.cullMode = s_vkCullFace[m_description.rasterizationState->cullFace];
+			rasterizer.frontFace = s_vkFrontFace[m_description.rasterizationState->frontFace];
 			rasterizer.depthBiasEnable = VK_FALSE;
 
 			VkPipelineMultisampleStateCreateInfo multisampling = {};
@@ -169,11 +147,11 @@ namespace sh
 
 			VkPipelineDepthStencilStateCreateInfo depthStencil = {};
 			depthStencil.sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
-			depthStencil.depthTestEnable = m_depthStencilState->enableDepthTest ? VK_TRUE : VK_FALSE;
+			depthStencil.depthTestEnable = m_description.depthStencilState->enableDepthTest ? VK_TRUE : VK_FALSE;
 			depthStencil.depthWriteEnable = VK_TRUE;
-			depthStencil.depthCompareOp = s_vkCompareFunction[static_cast<size_t>(m_depthStencilState->depthCompareFunction)];
+			depthStencil.depthCompareOp = s_vkCompareFunction[m_description.depthStencilState->depthCompareFunction];
 			depthStencil.depthBoundsTestEnable = VK_FALSE;
-			depthStencil.stencilTestEnable = m_depthStencilState->enableStencilTest ? VK_TRUE : VK_FALSE;
+			depthStencil.stencilTestEnable = m_description.depthStencilState->enableStencilTest ? VK_TRUE : VK_FALSE;
 
 			VkPipelineColorBlendAttachmentState colorBlendAttachment = {};
 			colorBlendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;

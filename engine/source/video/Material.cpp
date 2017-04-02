@@ -134,7 +134,7 @@ namespace sh
 			for (size_t i = 0; i < pipelinesCount; ++i)
 			{			
 				RenderPipelinePtr pipeline = technique->GetRenderPipeline(i);
-				m_renderPipelines[i] = pipeline->Clone();
+				m_renderPipelines[i] = pipeline;//->Clone();
 			}
 		}
 	}

@@ -8,15 +8,16 @@ namespace sh
 namespace video
 {
 
-	VertexBufferPtr Create(const VertexBufferDecription& description)
+	VertexBufferPtr VertexBuffer::Create(const VertexBufferDecription& description)
 	{
 		Driver* driver = Device::GetInstance()->GetDriver();
 		return driver->CreateVertexBuffer(description);
 	}
 
 	VertexBuffer::VertexBuffer(const VertexBufferDecription& description)
-		: HardwareBuffer(description.usage)
-		, m_description(description)
+		: m_description(description)
+		, m_size(0U)
+		, m_verticesCount(0U)
 	{
 	}
 

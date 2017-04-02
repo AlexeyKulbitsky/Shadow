@@ -2,6 +2,7 @@
 #define SHADOW_RENDER_PASS_INCLUDE
 
 #include "../Globals.h"
+#include "GpuParamDescription.h"
 
 namespace sh
 {
@@ -31,8 +32,6 @@ namespace sh
 			RenderPipeline();			
 			virtual ~RenderPipeline();
 
-			virtual RenderPipelinePtr Clone() = 0;
-
 			virtual void Load(const pugi::xml_node &node);
 			virtual void Unload();
 
@@ -43,9 +42,9 @@ namespace sh
 			virtual const UniformBufferPtr& GetUniformBuffer() const = 0;
 			virtual const UniformBufferPtr& GetTransformUniformBuffer() const = 0;
 			
-			const DepthStencilStatePtr& GetDepthStencilState() const { return m_depthStencilState; }
-			const RasterizationStatePtr& GetRasterizationState() const { return m_rasterizationState; }
-			const BlendingStatePtr& GetBlendingState() const { return m_blendingState; }
+			const DepthStencilStatePtr& GetDepthStencilState() const { return m_description.depthStencilState; }
+			const RasterizationStatePtr& GetRasterizationState() const { return m_description.rasterizationState; }
+			const BlendingStatePtr& GetBlendingState() const { return m_description.blendingState; }
 			
 			bool HasVertexShader() const { return m_description.vertexShader != nullptr; }
 			bool HasFragmentShader() const { return m_description.fragmentShader != nullptr; }
@@ -57,23 +56,15 @@ namespace sh
 			
 			Layer GetLayer() const { return m_layer; }
 
+			const GpuParamDescription& GetGpuParamsDescription() const { return m_paramsDesc; }
 		protected:
 			void LoadStates(const pugi::xml_node& node);
 
 		protected:
 			String m_name;
-			/*
-			ShaderProgramPtr m_shaderProgram;
-			VertexInputDeclaration* m_vertexInputDeclaration;
-			UniformBufferPtr m_uniformBuffer;
-			UniformBufferPtr m_transformUniformBuffer;
-			*/
-
-			DepthStencilStatePtr m_depthStencilState;
-			RasterizationStatePtr m_rasterizationState;
-			BlendingStatePtr m_blendingState;
 
 			RenderPipelineDescription m_description;
+			GpuParamDescription m_paramsDesc;
 
 			Layer m_layer;
 		};

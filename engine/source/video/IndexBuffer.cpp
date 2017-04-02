@@ -15,9 +15,7 @@ namespace video
 	}
 
 	IndexBuffer::IndexBuffer(const IndexBufferDescription& description)
-		: HardwareBuffer(description.usage)
-		, m_description(description)
-		
+		: m_description(description)
 	{	
 	}
 

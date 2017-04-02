@@ -41,7 +41,7 @@ namespace sh
 			virtual Sampler* Clone(){ return nullptr; }
 
 			virtual void SetFiltering(TextureFiltering filtering);
-			virtual void SetTiling(TextureTiling tilingU, TextureTiling tilingV, TextureTiling tilingW = TextureTiling::REPEAT);
+			virtual void SetTiling(TextureTiling tilingU, TextureTiling tilingV, TextureTiling tilingW = TEX_TILING_REPEAT);
 			virtual void SetType(TextureType type);
 			virtual void SetName(const std::string& name);
 			void SetUsage(Usage usage) { m_usage = usage; }

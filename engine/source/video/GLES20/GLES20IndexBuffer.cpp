@@ -5,13 +5,6 @@ namespace sh
 {
 	namespace video
 	{
-		GLES20IndexBuffer::GLES20IndexBuffer(Usage usage) : IndexBuffer(usage)
-		{
-			glGenBuffers(1, &m_glID);
-		}
-
-		////////////////////////////////////////////////////////////////////////
-
 		GLES20IndexBuffer::~GLES20IndexBuffer()
 		{
 			glDeleteBuffers(1, &m_glID);
@@ -23,19 +16,7 @@ namespace sh
 		{
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_glID);
 
-			GLenum usage;
-			switch (m_usage)
-			{
-			case STATIC:
-				usage = GL_STATIC_DRAW;
-				break;
-			case DYNAMIC:
-				usage = GL_DYNAMIC_DRAW;
-				break;
-			default:
-				SH_ASSERT(0, "Unknown hardware buffer usage in OpenGL ES 2.0 API");
-				break;
-			}
+			GLenum usage = s_glUsage[m_description.usage];
 
 			if (offset == 0 && (length == m_size || m_size == 0))
 			{
@@ -62,6 +43,7 @@ namespace sh
 
 		GLES20IndexBuffer::GLES20IndexBuffer(const IndexBufferDescription& description)
 			: IndexBuffer(description)
+			, m_size(0U)
 		{
 			glGenBuffers(1, &m_glID);
 		}

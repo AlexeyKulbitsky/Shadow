@@ -2,6 +2,7 @@
 #define SHADOW_GLES20_VERTEX_BUFFER_INCLUDE
 
 #include "../VertexBuffer.h"
+#include "GLES20Common.h"
 #include "../GLContext/EGLContextManager.h"
 
 namespace sh
@@ -12,21 +13,18 @@ namespace sh
 		{
 			friend class GLES20Driver;
 		public:
-			GLES20VertexBuffer(Usage usage);
 			virtual ~GLES20VertexBuffer();
 
 			virtual void SetData(size_t offset, size_t length, const void* data) override;
 			virtual void GetData(size_t offset, size_t length, const void* data) override;
 
-			virtual void Bind() override { glBindBuffer(GL_ARRAY_BUFFER, m_glID); }
-			virtual void Unbind() override { glBindBuffer(GL_ARRAY_BUFFER, 0); }
 			unsigned int GetGLId() const { return m_glID; }
 
 		private:
 			GLES20VertexBuffer(const VertexBufferDecription& description);
 
 		private:
-			u32 m_glID = 0U;
+			GLuint m_glID = 0U;
 		};
 	}
 }

@@ -2,7 +2,6 @@
 #define SHADOW_VERTEX_BUFFER_INCLUDE
 
 #include "../Globals.h"
-#include "HardwareBuffer.h"
 
 namespace sh
 {
@@ -14,15 +13,14 @@ namespace sh
 			Usage usage;
 		};
 
-		class VertexBuffer : public HardwareBuffer
+		class VertexBuffer
 		{
 		public:
-			VertexBuffer(Usage usage) : HardwareBuffer(usage) {}
 			virtual ~VertexBuffer() {}
 
-			virtual void Bind() {}
-			virtual void Unbind() {}
-			virtual void Unload() {}
+			virtual void SetData(size_t offset, size_t length, const void* data) { }
+			virtual void GetData(size_t offset, size_t length, const void* data) { }
+
 			// Set vertices count
 			void SetVerticesCount(size_t count) { m_verticesCount = count; }
 			// Get vertices count
@@ -40,7 +38,8 @@ namespace sh
 		protected:
 			VertexBuffer(const VertexBufferDecription& description);
 
-		private:
+		protected:
+			size_t m_size;
 			size_t m_verticesCount;
 			size_t m_vertexSize;
 			VertexDeclarationPtr m_vertexDeclaration;

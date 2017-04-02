@@ -23,7 +23,7 @@ namespace sh
 
 			glTexParameteri(m_glType, GL_TEXTURE_WRAP_S, m_glTilingS);
 			glTexParameteri(m_glType, GL_TEXTURE_WRAP_T, m_glTilingT);
-			if (m_type == TextureType::TEXTURE_CUBE)
+			if (m_type == TextureType::TEX_TYPE_TEXTURE_CUBE)
 			{
 				glTexParameteri(m_glType, GL_TEXTURE_WRAP_R, m_glTilingR);
 			}
@@ -61,15 +61,15 @@ namespace sh
 			Sampler::SetFiltering(filtering);
 			switch (filtering)
 			{
-			case sh::TextureFiltering::NEAREST:
+				case sh::TextureFiltering::TEX_FILT_NEAREST:
 				m_glMagFilter = GL_NEAREST;
 				m_glMinFilter = GL_NEAREST;
 				break;
-			case sh::TextureFiltering::LINEAR:
+			case sh::TextureFiltering::TEX_FILT_LINEAR:
 				m_glMagFilter = GL_NEAREST;
 				m_glMinFilter = GL_NEAREST_MIPMAP_NEAREST;
 				break;
-			case sh::TextureFiltering::BILINEAR:
+			case sh::TextureFiltering::TEX_FILT_BILINEAR:
 			{
 				m_glMagFilter = GL_LINEAR;
 				if (m_hasMipMaps)
@@ -84,8 +84,8 @@ namespace sh
 				break;
 				// Requires mip maps. If there are no mip maps than 
 				// will be use bilinear filter
-			case sh::TextureFiltering::TRILINEAR:
-			case sh::TextureFiltering::ANISOTROPIC:
+			case sh::TextureFiltering::TEX_FILT_TRILINEAR:
+			case sh::TextureFiltering::TEX_FILT_ANISOTROPIC:
 			{
 				m_glMagFilter = GL_LINEAR;
 				if (m_hasMipMaps)
@@ -109,13 +109,13 @@ namespace sh
 
 			switch (tilingU)
 			{
-			case sh::TextureTiling::REPEAT:
+				case sh::TextureTiling::TEX_TILING_REPEAT:
 				m_glTilingS = GL_REPEAT;
 				break;
-			case sh::TextureTiling::MIRRORED_REPEAT:
+			case sh::TextureTiling::TEX_TILING_MIRRORED_REPEAT:
 				m_glTilingS = GL_MIRRORED_REPEAT;
 				break;
-			case sh::TextureTiling::CLAMP_TO_EDGE:
+			case sh::TextureTiling::TEX_TILING_CLAMP_TO_EDGE:
 				m_glTilingS = GL_CLAMP_TO_EDGE;
 				break;
 			default:
@@ -124,13 +124,13 @@ namespace sh
 
 			switch (tilingV)
 			{
-			case sh::TextureTiling::REPEAT:
+			case sh::TextureTiling::TEX_TILING_REPEAT:
 				m_glTilingT = GL_REPEAT;
 				break;
-			case sh::TextureTiling::MIRRORED_REPEAT:
+			case sh::TextureTiling::TEX_TILING_MIRRORED_REPEAT:
 				m_glTilingT = GL_MIRRORED_REPEAT;
 				break;
-			case sh::TextureTiling::CLAMP_TO_EDGE:
+			case sh::TextureTiling::TEX_TILING_CLAMP_TO_EDGE:
 				m_glTilingT = GL_CLAMP_TO_EDGE;
 				break;
 			default:
@@ -139,13 +139,13 @@ namespace sh
 
 			switch (tilingW)
 			{
-			case sh::TextureTiling::REPEAT:
+			case sh::TextureTiling::TEX_TILING_REPEAT:
 				m_glTilingR = GL_REPEAT;
 				break;
-			case sh::TextureTiling::MIRRORED_REPEAT:
+			case sh::TextureTiling::TEX_TILING_MIRRORED_REPEAT:
 				m_glTilingR = GL_MIRRORED_REPEAT;
 				break;
-			case sh::TextureTiling::CLAMP_TO_EDGE:
+			case sh::TextureTiling::TEX_TILING_CLAMP_TO_EDGE:
 				m_glTilingR = GL_CLAMP_TO_EDGE;
 				break;
 			default:
@@ -158,10 +158,10 @@ namespace sh
 			Sampler::SetType(type);
 			switch (type)
 			{
-			case TextureType::TEXTURE_2D:
+				case TextureType::TEX_TYPE_TEXTURE_2D:
 				m_glType = GL_TEXTURE_2D;
 				break;
-			case TextureType::TEXTURE_CUBE:
+			case TextureType::TEX_TYPE_TEXTURE_CUBE:
 				m_glType = GL_TEXTURE_CUBE_MAP;
 				break;
 			}

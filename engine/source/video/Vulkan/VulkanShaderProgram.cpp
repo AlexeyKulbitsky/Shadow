@@ -51,7 +51,7 @@ namespace sh
 				std::vector<char> vertShaderCode = ReadFile(path);
 
 				VulkanShader vertexShader;
-				vertexShader.type = ShaderType::VERTEX;
+				vertexShader.type = ST_VERTEX;
 				CompileShader(vertShaderCode, vertexShader.shaderModule);
 				m_shaders.push_back(vertexShader);
 
@@ -74,7 +74,7 @@ namespace sh
 				std::vector<char> fragmentShaderCode = ReadFile(path);
 
 				VulkanShader fragmentShader;
-				fragmentShader.type = ShaderType::FRAGMENT;
+				fragmentShader.type = ST_FRAGMENT;
 				CompileShader(fragmentShaderCode, fragmentShader.shaderModule);
 				m_shaders.push_back(fragmentShader);
 
@@ -108,7 +108,7 @@ namespace sh
 				std::vector<char> vertShaderCode = ReadFile(info.absolutePath);
 
 				VulkanShader vertexShader;
-				vertexShader.type = ShaderType::VERTEX;
+				vertexShader.type = ST_VERTEX;
 				CompileShader(vertShaderCode, vertexShader.shaderModule);
 				m_shaders.push_back(vertexShader);
 
@@ -137,7 +137,7 @@ namespace sh
 				std::vector<char> fragmentShaderCode = ReadFile(info.absolutePath);			
 
 				VulkanShader fragmentShader;
-				fragmentShader.type = ShaderType::FRAGMENT;
+				fragmentShader.type = ST_FRAGMENT;
 				CompileShader(fragmentShaderCode, fragmentShader.shaderModule);
 				m_shaders.push_back(fragmentShader);
 

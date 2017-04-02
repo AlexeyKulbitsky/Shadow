@@ -57,7 +57,7 @@ namespace sh
 		{
 			Driver* driver = Device::GetInstance()->GetDriver();
 			TexturePtr texture = driver->CreateTexture();
-			texture->SetType(TextureType::TEXTURE_2D);
+			texture->SetType(TextureType::TEX_TYPE_TEXTURE_2D);
 
 			int texWidth, texHeight, texChannels;
 			stbi_uc* pixels = stbi_load(path.c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
@@ -81,7 +81,7 @@ namespace sh
 		{
 			Driver* driver = Device::GetInstance()->GetDriver();
 			TexturePtr texture = driver->CreateTexture();
-			texture->SetType(TextureType::TEXTURE_CUBE);
+			texture->SetType(TextureType::TEX_TYPE_TEXTURE_CUBE);
 
 			texture->Bind();
 

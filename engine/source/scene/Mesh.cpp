@@ -12,6 +12,7 @@
 #include "../video/Uniform.h"
 #include "../scene/SceneManager.h"
 #include "../scene/Camera.h"
+#include "../video/GpuParams.h"
 
 #include "../video/Vulkan/VulkanRenderCommand.h"
 #include "../video/Vulkan/VulkanRenderPipeline.h"
@@ -44,30 +45,8 @@ namespace sh
 			
 			video::Driver* driver = Device::GetInstance()->GetDriver();
 			math::Matrix4f wvp = projectionMatrix * viewMatrix * m_worldMatrix;
-			//wvp.Transpose();
-			//math::Matrix4f wvp = m_worldMatrix * viewMatrix * projectionMatrix.GetTransposed();
-			
-			size_t pipelinesCount = m_material->GetRenderPipelinesCount();
-			for (size_t i = 0U; i < pipelinesCount; ++i)
-			{
-				size_t autoUniformsCount = m_renderCommands[i]->GetAutoUniformsBatch()->m_uniforms.size();
-				for (size_t uniIdx = 0; uniIdx < autoUniformsCount; ++uniIdx)
-				{
-					video::Uniform* uniform = m_renderCommands[i]->GetAutoUniformsBatch()->m_uniforms[uniIdx];
-					switch (uniform->GetGlobalUniformName())
-					{
-						case video::GlobalUniformName::MODEL_WORLD_VIEW_PROJECTION_MATRIX:
-							uniform->Set(wvp);
-							break;
-						case video::GlobalUniformName::MODEL_WORLD_MATRIX:
-							//uniform->Set(m_worldMatrix.GetTransposed());
-							uniform->Set(m_worldMatrix);
-							break;
-						default:
-							break;
-					}
-				}
-			}		
+				
+			m_matrices[0].Set(wvp);
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -83,48 +62,24 @@ namespace sh
 		{
 			m_material = material;
 			size_t pipelinesCount = m_material->GetRenderPipelinesCount();
-			if (m_renderCommands.size() != pipelinesCount)
-			{
-				m_renderCommands.resize(pipelinesCount);	
-				m_autoUniformsBatch.resize(pipelinesCount);
-				m_vertexDeclaration.resize(pipelinesCount);
-			}
+			
+			m_vertexDeclaration.resize(pipelinesCount);
+			m_gpuParams.resize(pipelinesCount);
+			m_matrices.resize(pipelinesCount);
 
 			for (size_t i = 0; i < pipelinesCount; ++i)
 			{
-				// Update render command with buffer data
-				if (!m_renderCommands[i])
-				{
-					sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
-					m_renderCommands[i] = driver->CreateRenderCommand();
-				}
-				
-				m_renderCommands[i]->SetVertexBuffer(m_meshBase->GetVertexBuffer().get());
-				if (m_meshBase->IsUseIndices())
-				{
-					m_renderCommands[i]->SetIndexBuffer(m_meshBase->GetIndexBuffer().get());
-					m_renderCommands[i]->SetUseIndices(true);
-				}
-				else
-				{
-					m_renderCommands[i]->SetUseIndices(false);
-				}
-				m_renderCommands[i]->SetTopology(m_meshBase->GetTopology());
-
 				// Assemble vertex input declaration for render command
 				const video::RenderPipelinePtr& renderPipeline = m_material->GetRenderPipeline(i);
 
 				const video::VertexInputDeclarationPtr& inputDeclaration = renderPipeline->GetVertexInputDeclaration();
-				inputDeclaration->Assemble(*(m_renderCommands[i]->GetVertexBuffer()->GetVertexDeclaration().get()));
+				inputDeclaration->Assemble(*(m_vertexBuffer->GetVertexDeclaration().get()));
 
 				m_vertexDeclaration[i] = inputDeclaration;
+				m_gpuParams[i] = video::GpuParams::Create(renderPipeline->GetGpuParamsDescription());
+				m_gpuParams[i]->GetParam("matMVP", m_matrices[i]);
 
-				m_renderCommands[i]->SetVertexInputDeclaration(inputDeclaration.get());
-				const video::UniformsBatchPtr& uniformsBatch = renderPipeline->GetUniformBuffer()->GetAutoUniformsBatch()->Clone();
-				m_renderCommands[i]->SetAutoUniformsBatch(uniformsBatch);
-
-				m_autoUniformsBatch[i] = uniformsBatch;
-
+				/*
 				sh::video::VulkanRenderCommand* rc = dynamic_cast<sh::video::VulkanRenderCommand*>(m_renderCommands[i].get());
 				if (rc)
 				{
@@ -132,8 +87,7 @@ namespace sh
 					rp->Init();
 					rc->SetPipeline(rp);
 				}
-
-				m_renderCommands[i]->Init();
+				*/
 			}			
 		}
 

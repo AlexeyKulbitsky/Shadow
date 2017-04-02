@@ -331,24 +331,6 @@ namespace sh
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		VertexBufferPtr VulkanDriver::CreateVertexBuffer(Usage usage) const
-		{
-			VertexBufferPtr result = nullptr;
-			result.reset(new VulkanVertexBuffer(usage));
-			return result;
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		IndexBufferPtr VulkanDriver::CreateIndexBuffer(Usage usage) const
-		{
-			IndexBufferPtr result = nullptr;
-			result.reset(new VulkanIndexBuffer(usage));
-			return result;
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 		UniformBufferPtr VulkanDriver::CreateUniformBuffer() const
 		{
 			UniformBufferPtr result = nullptr;

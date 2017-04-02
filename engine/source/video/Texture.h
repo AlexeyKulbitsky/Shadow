@@ -35,7 +35,7 @@ namespace sh
 
 			bool HasMipMaps() const { return m_hasMipMaps; }
 
-			static TexturePtr create(const TextureDescription& description);
+			static TexturePtr Create(const TextureDescription& description);
 
 		protected:
 			Texture(const TextureDescription& description);

@@ -33,22 +33,22 @@ namespace sh
 			m_topology = topology;
 			switch (topology)
 			{
-			case Topology::LINE_LIST:
+			case Topology::TOP_LINE_LIST:
 				m_glTopology = GL_LINES;
 				break;
-			case Topology::LINE_LOOP:
+			case Topology::TOP_LINE_LOOP:
 				m_glTopology = GL_LINE_LOOP;
 				break;
-			case Topology::LINE_STRIP:
+			case Topology::TOP_LINE_STRIP:
 				m_glTopology = GL_LINE_STRIP;
 				break;
-			case Topology::TRIANGLE_FAN:
+			case Topology::TOP_TRIANGLE_FAN:
 				m_glTopology = GL_TRIANGLE_FAN;
 				break;
-			case Topology::TRIANGLE_LIST:
+			case Topology::TOP_TRIANGLE_LIST:
 				m_glTopology = GL_TRIANGLES;
 				break;
-			case Topology::TRIANGLE_STRIP:
+			case Topology::TOP_TRIANGLE_STRIP:
 				m_glTopology = GL_TRIANGLE_STRIP;
 				break;
 			}
