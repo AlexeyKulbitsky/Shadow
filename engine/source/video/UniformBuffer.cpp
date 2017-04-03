@@ -184,11 +184,6 @@ namespace sh
 				result->m_globalUniforms[i] = m_globalUniforms[i]->Clone();
 			}
 
-			result->m_samplers.resize(m_samplers.size());
-			for (size_t i = 0, sz = m_samplers.size(); i < sz; ++i)
-			{
-				result->m_samplers[i] = m_samplers[i]->Clone();
-			}
 
 			return result;
 		}
@@ -236,30 +231,6 @@ namespace sh
 			{
 				if (m_uniforms[i]->GetUsage() == usage)
 					return m_uniforms[i];
-			}
-			return nullptr;
-		}
-
-		//////////////////////////////////////////////////////////////
-
-		Sampler* UniformBuffer::GetSampler(const std::string& name)
-		{
-			for (size_t i = 0, sz = m_samplers.size(); i < sz; ++i)
-			{
-				if (m_samplers[i]->GetName() == name)
-					return m_samplers[i];
-			}
-			return nullptr;
-		}
-
-		//////////////////////////////////////////////////////////////
-
-		Sampler* UniformBuffer::GetSampler(Sampler::Usage usage)
-		{
-			for (size_t i = 0, sz = m_samplers.size(); i < sz; ++i)
-			{
-				if (m_samplers[i]->GetUsage() == usage)
-					return m_samplers[i];
 			}
 			return nullptr;
 		}

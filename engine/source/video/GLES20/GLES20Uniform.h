@@ -4,6 +4,7 @@
 #include "../Uniform.h"
 #include "../GLContext/EGLContextManager.h"
 
+#if 0
 namespace sh
 {
 	namespace video
@@ -145,6 +146,6 @@ namespace sh
 	}
 }
 
-
+#endif
 
 #endif

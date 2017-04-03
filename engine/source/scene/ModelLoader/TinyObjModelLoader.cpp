@@ -122,11 +122,6 @@ namespace sh
 				if (materialId >= 0)
 				{
 					String diffuseTexName = materials[materialId].diffuse_texname;
-					sh::video::Sampler* diffuseSampler = new sh::video::Sampler();
-					diffuseSampler->SetTexureName(diffuseTexName);
-					diffuseSampler->SetUsage(video::Sampler::Usage::DIFFUSE_MAP);
-
-					mesh->AddSampler(diffuseSampler);
 				}
 				
 				

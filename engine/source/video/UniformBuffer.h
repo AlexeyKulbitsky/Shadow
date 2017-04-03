@@ -3,7 +3,6 @@
 
 #include "../Globals.h"
 #include "Uniform.h"
-#include "UniformBufferObject.h"
 #include "Sampler.h"
 
 namespace sh
@@ -50,8 +49,6 @@ namespace sh
 
 			virtual size_t GetSamplersCount() const { return m_samplers.size(); }
 			virtual Sampler* GetSampler(size_t index) { return m_samplers[index]; }
-			Sampler* GetSampler(const std::string& name);
-			Sampler* GetSampler(Sampler::Usage usage);
 
 			const std::vector<Uniform*>& GetUniforms() const { return m_uniforms; }
 			const std::vector<Uniform*>& GetGlobalUniforms() const { return m_globalUniforms; }

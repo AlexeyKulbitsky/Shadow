@@ -9,6 +9,7 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "RenderPipeline.h"
+#include "Sampler.h"
 
 namespace sh
 {
@@ -35,7 +36,7 @@ namespace sh
 			
 			virtual void Render(scene::Model* model);
 			virtual void Render(scene::Mesh* mesh);
-			virtual void Render(const RenderCommandPtr& command) = 0;
+			virtual void Render(const RenderCommandPtr& command) {};
 
 			// Viewport management
 			virtual void SetViewport(u32 x, u32 y, u32 width, u32 height);
@@ -82,9 +83,9 @@ namespace sh
 			// Resources creation interface
 			virtual VertexBufferPtr CreateVertexBuffer(const VertexBufferDecription& description) const { return nullptr; }
 			virtual IndexBufferPtr CreateIndexBuffer(const IndexBufferDescription& description) const { return nullptr; }
-			virtual UniformBufferPtr CreateUniformBuffer() const = 0;
-			virtual RenderCommandPtr CreateRenderCommand() const = 0;
-			virtual ShaderProgramPtr CreateShaderProgram() const = 0;
+			virtual UniformBufferPtr CreateUniformBuffer() const {return nullptr;}
+			virtual RenderCommandPtr CreateRenderCommand() const { return nullptr; }
+			virtual ShaderProgramPtr CreateShaderProgram() const { return nullptr; }
 			virtual TexturePtr CreateTexture() const { return nullptr; }
 			virtual TexturePtr CreateTexture(const TextureDescription& description) const { return nullptr; }
 			virtual VertexInputDeclarationPtr CreateVertexInputDeclaration() const = 0;
@@ -93,6 +94,7 @@ namespace sh
 			virtual RenderPipelinePtr CreateRenderPipeline(const RenderPipelineDescription& description) const { return nullptr; }
 			virtual RenderBatchManager* CreateRenderBatchManager() const = 0;
 			virtual ShaderPtr CreateShader(const ShaderDescription& description) const { return nullptr; }
+			virtual SamplerPtr CreateSampler(const SamplerDescription& description) const { return nullptr; }
 
 			template<typename T>
 			void SetGlobalUniform(GlobalUniformName globalName, const T& value);

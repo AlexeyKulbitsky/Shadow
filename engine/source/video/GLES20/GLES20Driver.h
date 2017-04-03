@@ -20,7 +20,6 @@ namespace sh
 			virtual bool Init() override;
 			virtual void BeginRendering() override;
 			virtual void EndRendering() override;			
-			virtual void Render(const RenderCommandPtr& command) override;
 
 			// Viewport management
 			virtual void SetViewport(u32 x, u32 y, u32 width, u32 height) override;
@@ -57,9 +56,6 @@ namespace sh
 
 			virtual VertexBufferPtr CreateVertexBuffer(const VertexBufferDecription& description) const override;
 			virtual IndexBufferPtr CreateIndexBuffer(const IndexBufferDescription& description) const override;
-			virtual UniformBufferPtr CreateUniformBuffer() const override;
-			virtual RenderCommandPtr CreateRenderCommand() const override;
-			virtual ShaderProgramPtr CreateShaderProgram() const override;
 			virtual TexturePtr CreateTexture() const override;
 			virtual TexturePtr CreateTexture(const TextureDescription& description) const override;
 			virtual VertexInputDeclarationPtr CreateVertexInputDeclaration() const override;
@@ -68,6 +64,7 @@ namespace sh
 			virtual RenderPipelinePtr CreateRenderPipeline(const RenderPipelineDescription& description) const override;
 			virtual RenderBatchManager* CreateRenderBatchManager() const override;
 			virtual ShaderPtr CreateShader(const ShaderDescription& description) const override;
+			virtual SamplerPtr CreateSampler(const SamplerDescription& description) const override;
 
 		private:
 			EGLContextManager* m_contextManager = nullptr;

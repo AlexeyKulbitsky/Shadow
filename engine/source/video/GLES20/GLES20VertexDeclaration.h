@@ -38,7 +38,6 @@ namespace sh
 			GLES20VertexDeclaration& operator=(const GLES20VertexDeclaration& other);
 
 			virtual void Load(const pugi::xml_node &node) override;
-			virtual void SetShaderProgram(ShaderProgram* shaderProgram) override;
 			virtual void Init() override;
 			virtual VertexInputDeclarationPtr Clone() override;
 			virtual void Assemble(VertexDeclaration& declatarion) override;

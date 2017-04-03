@@ -1,16 +1,14 @@
 #include "GLES20Driver.h"
-#include "GLES20ShaderProgram.h"
 #include "GLES20VertexDeclaration.h"
 #include "GLES20IndexBuffer.h"
 #include "GLES20VertexBuffer.h"
-#include "GLES20UniformBuffer.h"
-#include "GLES20RenderCommand.h"
 #include "GLES20Texture.h"
 #include "GLES20RenderTarget.h"
 #include "GLES20RenderPIpeline.h"
 #include "GLES20RenderBatchManager.h"
 #include "GLES20Common.h"
 #include "GLES20Shader.h"
+#include "GLES20Sampler.h"
 #include "../Material.h"
 #include "../GLContext/EGLContextManager.h"
 #include "../../scene/Mesh.h"
@@ -107,49 +105,6 @@ void GLES20Driver::EndRendering()
 {
 	glFlush();
 	m_contextManager->SwapBuffers();
-}
-
-////////////////////////////////////////////////////////////////////////
-
-void GLES20Driver::Render(const RenderCommandPtr& command)
-{
-	GLES20RenderCommand* glesRenderCommand = static_cast<GLES20RenderCommand*>(command.get());
-	GLES20VertexBuffer* vertexBuffer = glesRenderCommand->GetGLVertexBuffer();
-	GLES20IndexBuffer* indexBuffer = glesRenderCommand->GetGLIndexBuffer();
-	GLES20VertexDeclaration* vertexDeclaration = glesRenderCommand->GetGLVertexInputDeclaration();
-
-	for (auto uniform : command->GetAutoUniformsBatch()->m_uniforms)
-	{
-		uniform->Upload();
-	}
-
-	// Bind vertex buffer
-	//vertexBuffer->Bind();
-
-	// Send attributes to shader
-	for (auto attribute : vertexDeclaration->GetAttributes())
-	{
-		glEnableVertexAttribArray(attribute.index);
-		glVertexAttribPointer(attribute.index, attribute.size, attribute.type, false, vertexDeclaration->GetStride(), attribute.pointer);
-	}
-
-	// Render with indices
-	if (command->IsUseIndices())
-	{
-		// Bind indices buffer
-		//indexBuffer->Bind();
-		// Draw with indices
-		glDrawElements(glesRenderCommand->GetGLTopology(), indexBuffer->GetIndicesCount(), s_glIndexType[static_cast<size_t>(indexBuffer->GetIndexType())], 0);
-		// Unbind indices buffer
-		//indexBuffer->Unbind();
-	}
-	else
-	{
-		glDrawArrays(glesRenderCommand->GetGLTopology(), 0, vertexBuffer->GetVerticesCount());
-	}
-
-	// Unbind vertex buffer
-	//vertexBuffer->Unbind();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -461,33 +416,6 @@ IndexBufferPtr GLES20Driver::CreateIndexBuffer(const IndexBufferDescription& des
 
 ////////////////////////////////////////////////////////////////////////
 
-UniformBufferPtr GLES20Driver::CreateUniformBuffer() const
-{
-	UniformBufferPtr result = nullptr;
-	result.reset(new GLES20UniformBuffer());
-	return result;
-}
-
-////////////////////////////////////////////////////////////////////////
-
-RenderCommandPtr GLES20Driver::CreateRenderCommand() const
-{
-	RenderCommandPtr result = nullptr;
-	result.reset(new GLES20RenderCommand());
-	return result;
-}
-
-////////////////////////////////////////////////////////////////////////
-
-ShaderProgramPtr GLES20Driver::CreateShaderProgram() const
-{
-	ShaderProgramPtr result = nullptr;
-	result.reset(new GLES20ShaderProgram());
-	return result;
-}
-
-////////////////////////////////////////////////////////////////////////
-
 TexturePtr GLES20Driver::CreateTexture() const
 {
 	TexturePtr result = nullptr;
@@ -547,9 +475,22 @@ RenderBatchManager* GLES20Driver::CreateRenderBatchManager() const
 	return new GLES20RenderBatchManager();
 }
 
+////////////////////////////////////////////////////////////////////////
+
 ShaderPtr GLES20Driver::CreateShader(const ShaderDescription& description) const
 {
 	ShaderPtr result;
 	result.reset(new GLES20Shader(description));
 	return result;
 }
+
+////////////////////////////////////////////////////////////////////////
+
+SamplerPtr GLES20Driver::CreateSampler(const SamplerDescription& description) const
+{
+	SamplerPtr result;
+	result.reset(new GLES20Sampler(description));
+	return result;
+}
+
+////////////////////////////////////////////////////////////////////////

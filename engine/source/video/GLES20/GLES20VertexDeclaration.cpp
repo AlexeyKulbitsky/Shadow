@@ -1,5 +1,4 @@
 #include "GLES20VertexDeclaration.h"
-#include "GLES20ShaderProgram.h"
 
 namespace sh
 {
@@ -65,21 +64,8 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////////////////
 
-		void GLES20VertexDeclaration::SetShaderProgram(ShaderProgram* shaderProgram)
-		{
-			m_shaderProgram = static_cast<GLES20ShaderProgram*>(shaderProgram);
-		}
-
-		/////////////////////////////////////////////////////////////////////////////////
-
 		void GLES20VertexDeclaration::Init()
 		{
-			m_shaderProgram->BindProgram();
-			for (u32 i = 0; i < attributes.size(); ++i)
-			{
-				attributes[i].index = glGetAttribLocation(m_shaderProgram->GetGLId(), attributes[i].name.c_str());
-			}
-			m_shaderProgram->UnbindProgram();
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////

@@ -61,6 +61,7 @@ namespace sh
 			}
 
 			// Read samplers
+			/*
 			pugi::xml_node samplersNode = node.child("samplers");
 			if (samplersNode)
 			{
@@ -108,6 +109,7 @@ namespace sh
 					samplNode = samplNode.next_sibling();
 				}
 			}
+			*/
 		}
 
 		////////////////////////////////////////////////////////////////
