@@ -1,11 +1,9 @@
 #include "RenderPipeline.h"
-#include "ShaderProgram.h"
-#include "UniformBuffer.h"
 #include "DepthStencilState.h"
 #include "RasterizationState.h"
 #include "BlendingState.h"
-#include "VertexDeclaration.h"
 #include "../Device.h"
+#include "Driver.h"
 
 namespace sh
 {
@@ -168,6 +166,14 @@ namespace sh
 				m_description.blendingState->Load(blendingStateNode);
 				m_description.blendingState->enabled = true;
 			}
+		}
+
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+
+		RenderPipelinePtr RenderPipeline::Create(const RenderPipelineDescription& description)
+		{
+			Driver* driver = Device::GetInstance()->GetDriver();
+			return driver->CreateRenderPipeline(description);
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////

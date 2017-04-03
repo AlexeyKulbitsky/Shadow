@@ -64,6 +64,7 @@ namespace sh
 			}		
 
 			// Reinit samplers if base mesh has materials with model
+			/*
 			{
 				for (size_t i = 0; i < modelBase->GetMeshesCount(); ++i)
 				{
@@ -83,7 +84,7 @@ namespace sh
 					}
 				}
 			}
-
+			*/
 			m_model = model;
 		}
 	}

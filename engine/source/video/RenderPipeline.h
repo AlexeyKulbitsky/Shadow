@@ -17,6 +17,9 @@ namespace sh
 			ShaderPtr vertexShader;
 			ShaderPtr fragmentShader;
 			ShaderPtr geometryShader;
+
+			GpuParamDescription paramsDescription;
+			VertexInputDeclarationPtr vertexDeclaration;
 		};
 
 		class RenderPipeline
@@ -56,7 +59,10 @@ namespace sh
 			
 			Layer GetLayer() const { return m_layer; }
 
-			const GpuParamDescription& GetGpuParamsDescription() const { return m_paramsDesc; }
+			const GpuParamDescription& GetGpuParamsDescription() const { return m_description.paramsDescription; }
+
+			static RenderPipelinePtr Create(const RenderPipelineDescription& description);
+
 		protected:
 			void LoadStates(const pugi::xml_node& node);
 

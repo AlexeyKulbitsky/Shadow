@@ -533,6 +533,15 @@ RenderPipelinePtr GLES20Driver::CreateRenderPipeline() const
 
 ////////////////////////////////////////////////////////////////////////
 
+RenderPipelinePtr GLES20Driver::CreateRenderPipeline(const RenderPipelineDescription& description) const
+{
+	RenderPipelinePtr result = nullptr;
+	result.reset(new GLES20RenderPipeline(description));
+	return result;
+}
+
+////////////////////////////////////////////////////////////////////////
+
 RenderBatchManager* GLES20Driver::CreateRenderBatchManager() const
 {
 	return new GLES20RenderBatchManager();

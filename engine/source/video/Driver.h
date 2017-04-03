@@ -8,6 +8,7 @@
 #include "VertexBuffer.h"
 #include "Shader.h"
 #include "Texture.h"
+#include "RenderPipeline.h"
 
 namespace sh
 {
@@ -19,6 +20,8 @@ namespace sh
 			OPENGL_ES_3_0,
 			VULKAN
 		};
+
+		struct RenderPipelineDescription;
 
 		class Driver
 		{
@@ -87,6 +90,7 @@ namespace sh
 			virtual VertexInputDeclarationPtr CreateVertexInputDeclaration() const = 0;
 			virtual RenderTargetPtr CreateRenderTarget() const { return nullptr; }
 			virtual RenderPipelinePtr CreateRenderPipeline() const = 0;
+			virtual RenderPipelinePtr CreateRenderPipeline(const RenderPipelineDescription& description) const { return nullptr; }
 			virtual RenderBatchManager* CreateRenderBatchManager() const = 0;
 			virtual ShaderPtr CreateShader(const ShaderDescription& description) const { return nullptr; }
 

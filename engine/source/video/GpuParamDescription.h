@@ -2,8 +2,6 @@
 #define SHADOW_GPU_PARAM_DESCRIPTION_INCLUDE
 
 #include "../Globals.h"
-#include "Uniform.h"
-#include "Sampler.h"
 
 namespace sh
 {

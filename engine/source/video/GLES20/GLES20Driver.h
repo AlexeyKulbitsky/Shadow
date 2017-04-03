@@ -65,6 +65,7 @@ namespace sh
 			virtual VertexInputDeclarationPtr CreateVertexInputDeclaration() const override;
 			virtual RenderTargetPtr CreateRenderTarget() const override;
 			virtual RenderPipelinePtr CreateRenderPipeline() const override;
+			virtual RenderPipelinePtr CreateRenderPipeline(const RenderPipelineDescription& description) const override;
 			virtual RenderBatchManager* CreateRenderBatchManager() const override;
 			virtual ShaderPtr CreateShader(const ShaderDescription& description) const override;
 

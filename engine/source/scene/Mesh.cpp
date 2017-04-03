@@ -67,7 +67,7 @@ namespace sh
 			m_gpuParams.resize(pipelinesCount);
 			m_matrices.resize(pipelinesCount);
 
-			for (size_t i = 0; i < pipelinesCount; ++i)
+			for (size_t i = 0; i < 1; ++i)
 			{
 				// Assemble vertex input declaration for render command
 				const video::RenderPipelinePtr& renderPipeline = m_material->GetRenderPipeline(i);
@@ -78,6 +78,9 @@ namespace sh
 				m_vertexDeclaration[i] = inputDeclaration;
 				m_gpuParams[i] = video::GpuParams::Create(renderPipeline->GetGpuParamsDescription());
 				m_gpuParams[i]->GetParam("matMVP", m_matrices[i]);
+
+				int a = 0;
+				a++;
 
 				/*
 				sh::video::VulkanRenderCommand* rc = dynamic_cast<sh::video::VulkanRenderCommand*>(m_renderCommands[i].get());

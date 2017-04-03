@@ -3,6 +3,8 @@
 #include "BlendingState.h"
 #include "RasterizationState.h"
 #include "RenderPipeline.h"
+#include "Shader.h"
+#include "VertexDeclaration.h"
 #include "Driver.h"
 #include "../Device.h"
 #include <pugixml.hpp>
@@ -27,6 +29,7 @@ namespace sh
 
 		void RenderTechnique::Load(const String& filePath)
 		{
+			/*
 			pugi::xml_document doc;
 			pugi::xml_parse_result result = doc.load_file(filePath.c_str());
 			pugi::xml_node techniqueNode = doc.first_child();
@@ -40,14 +43,15 @@ namespace sh
 			while (renderPipelineNode)
 			{		
 				RenderPipelinePtr renderPipeline = Device::GetInstance()->GetDriver()->CreateRenderPipeline();
-				//RenderPipelinePtr renderPipeline = RenderPipelinePtr(new RenderPipeline());
 				renderPipeline->Load(renderPipelineNode);
 
 				m_renderPipelines.push_back(renderPipeline);
 				
 				renderPipelineNode = renderPipelineNode.next_sibling();
 			}
-			
+			*/
+
+			LoadAlternative(filePath);
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////
@@ -63,11 +67,57 @@ namespace sh
 				m_name = nameAttr.as_string();
 			}
 
-			RenderPipelineDescription pipelineDesc;
-			pipelineDesc.depthStencilState = LoadDepthStencilState(techniqueNode);
-			pipelineDesc.rasterizationState = LoadRasterizationState(techniqueNode);
-			pipelineDesc.blendingState = LoadBlendingState(techniqueNode);
+			// Load pipeline
+			pugi::xml_node pipelineNode = techniqueNode.child("pipeline");
 
+			RenderPipelineDescription pipelineDesc;
+			pipelineDesc.depthStencilState = LoadDepthStencilState(pipelineNode);
+			pipelineDesc.rasterizationState = LoadRasterizationState(pipelineNode);
+			pipelineDesc.blendingState = LoadBlendingState(pipelineNode);
+
+			// Load shaders
+			pugi::xml_node shadersNode = pipelineNode.child("shader");
+			String language = shadersNode.attribute("language").as_string();
+
+			// Load vertex shader data
+			pugi::xml_node vertexShaderSrcNode = shadersNode.child("vertexShader");
+			if (vertexShaderSrcNode)
+			{
+				ShaderDescription shaderDesc;
+				shaderDesc.entryPoint = "main";
+				shaderDesc.source = vertexShaderSrcNode.child_value();
+				shaderDesc.language = language;
+				shaderDesc.type = ST_VERTEX;
+				pipelineDesc.vertexShader = Shader::Create(shaderDesc);
+			}
+
+			// Load fragment shader data
+			pugi::xml_node fragmentShaderSrcNode = shadersNode.child("fragmentShader");
+			if (fragmentShaderSrcNode)
+			{
+				ShaderDescription shaderDesc;
+				shaderDesc.entryPoint = "main";
+				shaderDesc.source = fragmentShaderSrcNode.child_value();
+				shaderDesc.language = language;
+				shaderDesc.type = ST_FRAGMENT;
+				pipelineDesc.fragmentShader = Shader::Create(shaderDesc);
+			}
+
+			// Load constants
+			pugi::xml_node paramsNode = pipelineNode.child("constants");
+			pipelineDesc.paramsDescription = LoadParamsDescription(paramsNode);
+
+			// Load attributes
+			pugi::xml_node attributesNode = pipelineNode.child("attributes");
+			if (!attributesNode.empty())
+			{
+				Driver* driver = Device::GetInstance()->GetDriver();
+				VertexInputDeclarationPtr vertDeclaration = driver->CreateVertexInputDeclaration();
+				vertDeclaration->Load(attributesNode);
+				pipelineDesc.vertexDeclaration = vertDeclaration;
+			}
+
+			m_renderPipelines.push_back(RenderPipeline::Create(pipelineDesc));
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////
@@ -259,6 +309,68 @@ namespace sh
 			}
 
 			return state;
+		}
+
+		//////////////////////////////////////////////////////////////////////////////////////
+
+		GpuParamDescription RenderTechnique::LoadParamsDescription(const pugi::xml_node& node)
+		{
+			GpuParamDescription paramsDesc;
+
+			pugi::xml_node childNode = node.first_child();
+
+			while (childNode)
+			{
+				String name = childNode.name();
+
+				if (name == "constant")
+				{
+					GpuParamDataDescription desc;
+
+					// Read type
+					pugi::xml_attribute typeAttr = childNode.attribute("type");
+					if (typeAttr)
+					{
+						String typeStr = typeAttr.as_string();
+						if (typeStr == "float")
+						{
+							desc.type = GPDT_FLOAT1;
+							desc.size = sizeof(float);
+						}
+						else if (typeStr == "vec2")
+						{
+							desc.type = GPDT_FLOAT2;
+							desc.size = sizeof(math::Vector2f);
+						}
+						else if (typeStr == "vec3")
+						{
+							desc.type = GPDT_FLOAT3;
+							desc.size = sizeof(math::Vector3f);
+						}
+						else if (typeStr == "mat4")
+						{
+							desc.type = GPDT_MATRIX4;
+							desc.size = sizeof(math::Matrix4f);
+						}
+
+					}
+
+					// Read name
+					pugi::xml_attribute nameAttr = childNode.attribute("name");
+					if (nameAttr)
+					{
+						String constantName = nameAttr.as_string();
+						desc.name = constantName;
+					}
+
+					// Add param to map
+					paramsDesc.params[desc.name] = desc;
+				}
+
+				childNode = childNode.next_sibling();
+			}
+
+			return paramsDesc;
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////

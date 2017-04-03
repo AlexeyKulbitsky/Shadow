@@ -10,6 +10,7 @@ namespace sh
 	{
 		class GLES20RenderPipeline : public RenderPipeline
 		{
+			friend class GLES20Driver;
 		public:
 			GLES20RenderPipeline();
 			virtual ~GLES20RenderPipeline();
@@ -27,6 +28,7 @@ namespace sh
 		private:
 			void LoadConstants(const pugi::xml_node &node);
 			void LoadShaders(const pugi::xml_node &node);
+			GLES20RenderPipeline(const RenderPipelineDescription& description);
 
 		protected:			
 			ShaderProgramPtr m_shaderProgram;
