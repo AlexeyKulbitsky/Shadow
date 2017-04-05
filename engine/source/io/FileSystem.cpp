@@ -1,5 +1,6 @@
 #include "FileSystem.h"
 #include <windows.h>
+#include <fstream>
 
 namespace sh
 {
@@ -68,6 +69,26 @@ namespace sh
 				return *it;
 			}
 			return errorFile;
+		}
+
+		///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		bool FileSystem::SaveFile(const std::vector<char>& data, const String& fileName)
+		{
+			std::ofstream f(m_workingDirectoryPath + "/" + fileName, std::ofstream::out);
+			f.write(data.data(), data.size());
+			f.close();
+			return true;
+		}
+
+		///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		bool FileSystem::SaveFile(const String& data, const String& fileName)
+		{
+			std::ofstream f(m_workingDirectoryPath + "/" + fileName, std::ofstream::out);
+			f << data;
+			f.close();
+			return true;
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////

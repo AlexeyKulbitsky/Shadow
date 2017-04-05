@@ -1,0 +1,25 @@
+#ifndef SHADOW_VULKAN_RENDER_BATCH_MANAGER_INCLUDE
+#define SHADOW_VULKAN_RENDER_BATCH_MANAGER_INCLUDE
+
+#include "../RenderBatchManager.h"
+
+namespace sh
+{
+
+namespace video
+{
+
+	class VulkanRenderBatchManager : public RenderBatchManager
+	{
+	public:
+		virtual ~VulkanRenderBatchManager();
+		virtual void AddMesh(const scene::MeshPtr& mesh) override;
+		virtual void Submit() override;
+		virtual void Clear() override;
+	};
+
+} // video
+
+} // sh
+
+#endif

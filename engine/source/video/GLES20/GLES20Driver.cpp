@@ -32,6 +32,14 @@ GLES20Driver::GLES20Driver(EGLContextManager* contextManager)
 
 ////////////////////////////////////////////////////////////////////////
 
+const String& GLES20Driver::GetApiName() const
+{
+	static const String s_apiName = "GLES20";
+	return s_apiName;
+}
+
+////////////////////////////////////////////////////////////////////////
+
 bool GLES20Driver::Init()
 {
 	InitGlobalUniforms();
@@ -470,9 +478,11 @@ RenderPipelinePtr GLES20Driver::CreateRenderPipeline(const RenderPipelineDescrip
 
 ////////////////////////////////////////////////////////////////////////
 
-RenderBatchManager* GLES20Driver::CreateRenderBatchManager() const
+RenderBatchManagerPtr GLES20Driver::CreateRenderBatchManager() const
 {
-	return new GLES20RenderBatchManager();
+	RenderBatchManagerPtr result;
+	result.reset(new GLES20RenderBatchManager());
+	return result;
 }
 
 ////////////////////////////////////////////////////////////////////////

@@ -30,6 +30,8 @@ namespace sh
 			Driver(){}
 			~Driver(){}
 
+			virtual const String& GetApiName() const = 0;
+
 			virtual bool Init() = 0;
 			virtual void BeginRendering() = 0;
 			virtual void EndRendering() = 0;
@@ -92,8 +94,8 @@ namespace sh
 			virtual RenderTargetPtr CreateRenderTarget() const { return nullptr; }
 			virtual RenderPipelinePtr CreateRenderPipeline() const = 0;
 			virtual RenderPipelinePtr CreateRenderPipeline(const RenderPipelineDescription& description) const { return nullptr; }
-			virtual RenderBatchManager* CreateRenderBatchManager() const = 0;
-			virtual ShaderPtr CreateShader(const ShaderDescription& description) const { return nullptr; }
+			virtual RenderBatchManagerPtr CreateRenderBatchManager() const = 0;
+			virtual ShaderPtr CreateShader(const ShaderDescription& description) const = 0;
 			virtual SamplerPtr CreateSampler(const SamplerDescription& description) const { return nullptr; }
 
 			template<typename T>

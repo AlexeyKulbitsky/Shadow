@@ -8,7 +8,7 @@ namespace sh
 {
 	namespace video
 	{
-		struct VulkanShader
+		struct VulkanShaderTemp
 		{
 			VkShaderModule shaderModule;
 			ShaderType type;
@@ -41,7 +41,7 @@ namespace sh
 		private:
 			VkDevice m_device = VK_NULL_HANDLE;
 			VulkanVertexDeclaration m_vertexDeclaration;
-			std::vector<VulkanShader> m_shaders;
+			std::vector<VulkanShaderTemp> m_shaders;
 			std::vector<VkPipelineShaderStageCreateInfo> m_shaderStages;
 			
 			VkPipeline m_graphicsPipeline;

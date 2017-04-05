@@ -23,7 +23,7 @@ namespace sh
 
 	private:
 		std::vector<Entity*> m_entities;
-		video::RenderBatchManager* m_batchManager;
+		video::RenderBatchManagerPtr m_batchManager;
 	};
 }
 

@@ -78,6 +78,14 @@ namespace sh
 			// Load shaders
 			pugi::xml_node shadersNode = pipelineNode.child("shader");
 			String language = shadersNode.attribute("language").as_string();
+			String api = shadersNode.attribute("api").as_string();
+
+			while (api != Device::GetInstance()->GetDriver()->GetApiName())
+			{
+				shadersNode = shadersNode.next_sibling();
+				language = shadersNode.attribute("language").as_string();
+				api = shadersNode.attribute("api").as_string();
+			}
 
 			// Load vertex shader data
 			pugi::xml_node vertexShaderSrcNode = shadersNode.child("vertexShader");

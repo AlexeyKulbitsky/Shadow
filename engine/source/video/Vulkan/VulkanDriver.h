@@ -60,6 +60,8 @@ namespace sh
 			VulkanDriver();
 			VulkanDriver(const CreationParameters& parameters);
 			~VulkanDriver();
+			virtual const String& GetApiName() const override;
+
 			virtual bool Init() override;
 			virtual void BeginRendering() override;
 			virtual void EndRendering() override;
@@ -72,7 +74,8 @@ namespace sh
 			virtual ShaderProgramPtr CreateShaderProgram() const override;
 			virtual VertexInputDeclarationPtr CreateVertexInputDeclaration() const override;
 			virtual RenderPipelinePtr CreateRenderPipeline() const override;
-			virtual RenderBatchManager* CreateRenderBatchManager() const override;
+			virtual RenderBatchManagerPtr CreateRenderBatchManager() const override;
+			virtual ShaderPtr CreateShader(const ShaderDescription& description) const override;
 
 			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) override;
 

@@ -40,6 +40,9 @@ namespace sh
 
 			void AddFolder(const String& folder, bool recursive = true);
 			const FileInfo& FindFile(const String& fileName);
+			
+			bool SaveFile(const std::vector<char>& data, const String& fileName);
+			bool SaveFile(const String& data, const String& fileName);
 
 		private:
 			void CollectFilesFromFolder(const String& folder, bool recursive = true);

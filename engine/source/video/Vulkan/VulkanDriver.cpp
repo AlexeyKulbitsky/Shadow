@@ -7,6 +7,8 @@
 #include "VulkanShaderProgram.h"
 #include "VulkanUniformBuffer.h"
 #include "VulkanRenderCommand.h"
+#include "VulkanRenderBatchManager.h"
+#include "VulkanShader.h"
 
 #include <iostream>
 #include <stdexcept>
@@ -98,6 +100,12 @@ namespace sh
 		VulkanDriver::~VulkanDriver()
 		{
 			vkDeviceWaitIdle(m_device);
+		}
+
+		const String& VulkanDriver::GetApiName() const
+		{
+			static const String s_apiName = "Vulkan";
+			return s_apiName;
 		}
 
 		bool VulkanDriver::Init()
@@ -376,9 +384,20 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		RenderBatchManager* VulkanDriver::CreateRenderBatchManager() const
+		RenderBatchManagerPtr VulkanDriver::CreateRenderBatchManager() const
 		{
-			return nullptr;
+			RenderBatchManagerPtr result;
+			result.reset(new VulkanRenderBatchManager());
+			return result;
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		ShaderPtr VulkanDriver::CreateShader(const ShaderDescription& description) const
+		{
+			ShaderPtr result;
+			result.reset(new VulkanShader(description));
+			return result;
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////

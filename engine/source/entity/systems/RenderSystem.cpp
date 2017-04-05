@@ -19,7 +19,6 @@ namespace sh
 
 	RenderSystem::~RenderSystem()
 	{
-		delete m_batchManager;
 	}
 
 	//////////////////////////////////////////////////////////////////
