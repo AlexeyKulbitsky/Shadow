@@ -1,6 +1,7 @@
 project "Shadow"
    kind "StaticLib"
    language "C++"
+   local directXSDK = os.getenv("DXSDK_DIR")
    includedirs { 
 		"source/**",
 		"../libs/pugixml/src/",
@@ -8,7 +9,8 @@ project "Shadow"
 		"../libs/soil/include/",
 		"../libs/vulkan/include/",
 		"../libs/stb/include/",
-		"../libs/tinyobjloader/include/"
+		"../libs/tinyobjloader/include/",
+		"C:/Program Files (x86)/Microsoft DirectX SDK (June 2010)/Include/"
 	}
    
    targetdir "bin/%{cfg.buildcfg}"
