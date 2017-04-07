@@ -23,7 +23,6 @@ namespace video
 			
 
 		virtual VertexInputDeclarationPtr CreateVertexInputDeclaration() const override { return nullptr; }
-		virtual RenderPipelinePtr CreateRenderPipeline() const override { return nullptr; }
 		virtual RenderBatchManagerPtr CreateRenderBatchManager() const override { return nullptr; }
 		virtual ShaderPtr CreateShader(const ShaderDescription& description) const override { return nullptr; }
 	};

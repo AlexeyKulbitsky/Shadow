@@ -63,28 +63,6 @@ namespace sh
 				mesh->SetMaterial(material);
 			}		
 
-			// Reinit samplers if base mesh has materials with model
-			/*
-			{
-				for (size_t i = 0; i < modelBase->GetMeshesCount(); ++i)
-				{
-					scene::MeshBasePtr meshBase = modelBase->GetMesh(i);
-					scene::MeshPtr mesh = model->GetMesh(i);
-					const video::UniformBufferPtr& meshUniformBuffer = mesh->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
-
-					for (size_t j = 0; j < meshBase->GetSamplersCount(); ++j)
-					{
-						video::Sampler* baseSampler = meshBase->GetSampler(j);
-						video::Sampler* sampler = meshUniformBuffer->GetSampler(baseSampler->GetUsage());
-						if (sampler)
-						{
-							sh::video::TexturePtr texture = resourceManager->GetTexture(baseSampler->GetTextureName());
-							sampler->Set(texture);
-						}
-					}
-				}
-			}
-			*/
 			m_model = model;
 		}
 	}

@@ -14,10 +14,11 @@ namespace video
 	{
 		friend class VulkanDriver;
 	public:
-		const VkPipelineShaderStageCreateInfo& GetVulkanId() const { return m_stageInfo; }
+		VkPipelineShaderStageCreateInfo GetVulkanId() const { return m_stageInfo; }
 
 	private:
 		VulkanShader(const ShaderDescription& description);
+		std::vector<char> ReadFile(const String& filename);
 
 	private:
 		VkPipelineShaderStageCreateInfo m_stageInfo;

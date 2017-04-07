@@ -297,6 +297,12 @@ namespace sh
 		GPDT_MATRIX4,
 		GPDT_MATRIX3
 	};
+
+	enum CommandBufferType
+	{
+		COMMAND_BUFFER_TYPE_PRIMARY,
+		COMMAND_BUFFER_TYPE_SECONDARY
+	};
 }
 
 #endif

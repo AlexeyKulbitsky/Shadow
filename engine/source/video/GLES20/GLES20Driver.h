@@ -15,7 +15,7 @@ namespace sh
 		public:
 			GLES20Driver(){}
 			GLES20Driver(EGLContextManager* contextManager);
-			virtual ~GLES20Driver(){}
+			virtual ~GLES20Driver();
 			virtual const String& GetApiName() const override;
 
 			virtual bool Init() override;
@@ -40,23 +40,21 @@ namespace sh
 			virtual void SetDepthStencilState(const DepthStencilStatePtr& depthStencilState) override;
 			virtual void SetRasterizationState(const RasterizationStatePtr& rasterizationState) override;
 			virtual void SetBlendingState(const BlendingStatePtr& blendingState) override;
-			virtual void SetRenderPipeline(const RenderPipelinePtr& pipeline) override;
+			virtual void SetRenderPipeline(const RenderPipelinePtr& pipeline, const CommandBufferPtr& commandBuffer = nullptr) override;
 			virtual void SetComputePipeline() override;
 
 			// Rendering
-			virtual void SetGpuParams(const GpuParamsPtr& params) override;
-			virtual void SetTopology(Topology topology) override;
-			virtual void SetAutoUniformsBatch(const UniformsBatchPtr& batch) override;
-			virtual void SetVertexDeclaration(const VertexInputDeclarationPtr& declaration) override;
-			virtual void SetVertexBuffer(const VertexBufferPtr& buffer)override;
-			virtual void SetIndexBuffer(const IndexBufferPtr& buffer) override;
-			virtual void Draw(u32 offset, u32 verticesCount, u32 instancesCount = 1U) override;
-			virtual void DrawIndexed(u32 offset, u32 indicesCount, u32 instancesCount = 1U) override;
+			virtual void SetGpuParams(const GpuParamsPtr& params, const CommandBufferPtr& commandBuffer = nullptr) override;
+			virtual void SetTopology(Topology topology, const CommandBufferPtr& commandBuffer = nullptr) override;
+			virtual void SetAutoUniformsBatch(const UniformsBatchPtr& batch, const CommandBufferPtr& commandBuffer = nullptr) override;
+			virtual void SetVertexDeclaration(const VertexInputDeclarationPtr& declaration, const CommandBufferPtr& commandBuffer = nullptr) override;
+			virtual void SetVertexBuffer(const VertexBufferPtr& buffer, const CommandBufferPtr& commandBuffer = nullptr)override;
+			virtual void SetIndexBuffer(const IndexBufferPtr& buffer, const CommandBufferPtr& commandBuffer = nullptr) override;
+			virtual void Draw(u32 offset, u32 verticesCount, u32 instancesCount = 1U, const CommandBufferPtr& commandBuffer = nullptr) override;
+			virtual void DrawIndexed(u32 offset, u32 indicesCount, u32 instancesCount = 1U, const CommandBufferPtr& commandBuffer = nullptr) override;
 
 			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) override;
 
-			virtual VertexBufferPtr CreateVertexBuffer(const VertexBufferDecription& description) const override;
-			virtual IndexBufferPtr CreateIndexBuffer(const IndexBufferDescription& description) const override;
 			virtual TexturePtr CreateTexture() const override;
 			virtual TexturePtr CreateTexture(const TextureDescription& description) const override;
 			virtual VertexInputDeclarationPtr CreateVertexInputDeclaration() const override;

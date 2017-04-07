@@ -5,21 +5,31 @@
 
 namespace sh
 {
-	namespace video
+
+namespace video
+{
+	class Command
 	{
-		class Command
-		{
-		public:
-			virtual void Execute() = 0;
-		};
+	public:
+		virtual void Execute() = 0;
+	};
 
-		class CommandBuffer
-		{
-		public:
-			CommandBuffer() {}
-			~CommandBuffer() {}
-		};
+	struct CommandBufferDescription
+	{
+		CommandBufferType type;
+	};
 
-	}
-}
+	class CommandBuffer
+	{
+	public:
+		CommandBuffer() {}
+		~CommandBuffer() {}
+
+		static CommandBufferPtr Create(const CommandBufferDescription& description);
+	};
+
+} // video
+
+} // sh
+
 #endif // !SHADOW_COMMAND_BUFFER_INCLUDE

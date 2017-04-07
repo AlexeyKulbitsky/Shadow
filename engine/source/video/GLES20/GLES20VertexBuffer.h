@@ -12,6 +12,7 @@ namespace sh
 		class GLES20VertexBuffer : public VertexBuffer
 		{
 			friend class GLES20Driver;
+			friend class GLES20HardwareBufferManager;
 		public:
 			virtual ~GLES20VertexBuffer();
 

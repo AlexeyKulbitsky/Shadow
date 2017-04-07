@@ -12,6 +12,7 @@ namespace sh
 		class GLES20IndexBuffer : public IndexBuffer
 		{
 			friend class GLES20Driver;
+			friend class GLES20HardwareBufferManager;
 		public:
 			virtual ~GLES20IndexBuffer();
 

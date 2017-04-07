@@ -10,6 +10,8 @@ namespace sh
 	{
 		class VulkanIndexBuffer : public IndexBuffer, public VulkanBuffer
 		{
+			friend class VulkanDriver;
+			friend class VulkanHardwareBufferManager;
 		public:
 			VulkanIndexBuffer(Usage usage);
 			virtual ~VulkanIndexBuffer();

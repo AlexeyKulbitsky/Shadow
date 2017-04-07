@@ -3,43 +3,13 @@
 
 #include "../Driver.h"
 #include "VulkanDeleter.h"
+#include "VulkanCommon.h"
 #include "../../CreationParameters.h"
 
 namespace sh
 {
 	namespace video
 	{
-		static VkPolygonMode const s_vkPolygoneMode[] =
-		{
-			VK_POLYGON_MODE_FILL,
-			VK_POLYGON_MODE_LINE
-		};
-		
-		static VkFrontFace const s_vkFrontFace[] =
-		{
-			VK_FRONT_FACE_CLOCKWISE,
-			VK_FRONT_FACE_COUNTER_CLOCKWISE			
-		};
-
-		static VkCullModeFlagBits const s_vkCullFace[] =
-		{		
-			VK_CULL_MODE_FRONT_BIT,
-			VK_CULL_MODE_BACK_BIT,
-			VK_CULL_MODE_NONE
-		};
-
-		static VkCompareOp const s_vkCompareFunction[] =
-		{
-			VK_COMPARE_OP_LESS,
-			VK_COMPARE_OP_LESS_OR_EQUAL,
-			VK_COMPARE_OP_EQUAL,
-			VK_COMPARE_OP_GREATER_OR_EQUAL,
-			VK_COMPARE_OP_GREATER,
-			VK_COMPARE_OP_NOT_EQUAL,
-			VK_COMPARE_OP_ALWAYS,
-			VK_COMPARE_OP_NEVER
-		};
-
 		VkResult CreateDebugReportCallbackEXT(
 			VkInstance instance, 
 			const VkDebugReportCallbackCreateInfoEXT* pCreateInfo, 
@@ -69,13 +39,29 @@ namespace sh
 			virtual void Render(const RenderCommandPtr& command) override;
 
 
+			// State management 
+			virtual void SetRenderPipeline(const RenderPipelinePtr& pipeline, const CommandBufferPtr& commandBuffer = nullptr) override;
+
+			// Rendering
+			virtual void SetGpuParams(const GpuParamsPtr& params, const CommandBufferPtr& commandBuffer = nullptr) override;
+			virtual void SetTopology(Topology topology, const CommandBufferPtr& commandBuffer = nullptr) override;
+			virtual void SetAutoUniformsBatch(const UniformsBatchPtr& batch, const CommandBufferPtr& commandBuffer = nullptr) override;
+			virtual void SetVertexDeclaration(const VertexInputDeclarationPtr& declaration, const CommandBufferPtr& commandBuffer = nullptr) override;
+			virtual void SetVertexBuffer(const VertexBufferPtr& buffer, const CommandBufferPtr& commandBuffer = nullptr) override;
+			virtual void SetIndexBuffer(const IndexBufferPtr& buffer, const CommandBufferPtr& commandBuffer = nullptr) override;
+			virtual void Draw(u32 offset, u32 verticesCount, u32 instancesCount = 1U, const CommandBufferPtr& commandBuffer = nullptr) override;
+			virtual void DrawIndexed(u32 offset, u32 indicesCount, u32 instancesCount = 1U, const CommandBufferPtr& commandBuffer = nullptr) override;
+
+
 			virtual UniformBufferPtr CreateUniformBuffer() const override;
 			virtual RenderCommandPtr CreateRenderCommand() const override;
 			virtual ShaderProgramPtr CreateShaderProgram() const override;
 			virtual VertexInputDeclarationPtr CreateVertexInputDeclaration() const override;
 			virtual RenderPipelinePtr CreateRenderPipeline() const override;
+			virtual RenderPipelinePtr CreateRenderPipeline(const RenderPipelineDescription& description) const override;
 			virtual RenderBatchManagerPtr CreateRenderBatchManager() const override;
 			virtual ShaderPtr CreateShader(const ShaderDescription& description) const override;
+			virtual CommandBufferPtr CreateCommandBuffer(const CommandBufferDescription& description) const override;
 
 			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) override;
 

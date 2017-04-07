@@ -119,5 +119,35 @@ namespace sh
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////
+
+		bool VulkanVertexDeclaration::operator == (const VulkanVertexDeclaration& other)
+		{
+			// Compare descriptors
+			bool descriptorsEqual = 
+				m_descriptor.binding == other.m_descriptor.binding &&
+				m_descriptor.stride == other.m_descriptor.stride &&
+				m_descriptor.inputRate == other.m_descriptor.inputRate;
+			if (!descriptorsEqual)
+				return false;
+
+			// Compare Vulkan attributes
+			if(m_vulkanAttributes.size() != other.m_vulkanAttributes.size())
+				return false;
+
+			for( size_t i = 0U, sz = m_vulkanAttributes.size(); i < sz; ++i )
+			{
+				bool attributesEqual = 
+					m_vulkanAttributes[i].binding == other.m_vulkanAttributes[i].binding &&
+					m_vulkanAttributes[i].format == other.m_vulkanAttributes[i].format &&
+					m_vulkanAttributes[i].location == other.m_vulkanAttributes[i].location &&
+					m_vulkanAttributes[i].offset == other.m_vulkanAttributes[i].offset;
+				if(!attributesEqual)
+					return false;
+			}
+
+			return true;
+		}
+
+		/////////////////////////////////////////////////////////////////////////////////
 	}
 }

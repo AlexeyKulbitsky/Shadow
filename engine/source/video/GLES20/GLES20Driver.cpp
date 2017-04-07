@@ -9,6 +9,10 @@
 #include "GLES20Common.h"
 #include "GLES20Shader.h"
 #include "GLES20Sampler.h"
+
+#include "Managers/GLES20RenderStateManager.h"
+#include "Managers/GLES20HardwareBufferManager.h"
+
 #include "../Material.h"
 #include "../GLContext/EGLContextManager.h"
 #include "../../scene/Mesh.h"
@@ -28,6 +32,16 @@ using namespace video;
 GLES20Driver::GLES20Driver(EGLContextManager* contextManager)
 	:m_contextManager(contextManager)
 {
+	GLES20RenderStateManager::CreateInstance();
+	GLES20HardwareBufferManager::CreateInstance();
+}
+
+////////////////////////////////////////////////////////////////////////
+
+GLES20Driver::~GLES20Driver()
+{
+	GLES20RenderStateManager::DestroyInstance();
+	GLES20HardwareBufferManager::DestroyInstance();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -276,7 +290,7 @@ void GLES20Driver::SetBlendingState(const BlendingStatePtr& blendingState)
 
 ////////////////////////////////////////////////////////////////////////
 
-void GLES20Driver::SetRenderPipeline(const RenderPipelinePtr& pipeline)
+void GLES20Driver::SetRenderPipeline(const RenderPipelinePtr& pipeline, const CommandBufferPtr&)
 {
 	GLES20RenderPipeline* glPipeline = static_cast<GLES20RenderPipeline*>(pipeline.get());
 	SetBlendingState(glPipeline->GetBlendingState());
@@ -294,7 +308,7 @@ void GLES20Driver::SetComputePipeline()
 
 ////////////////////////////////////////////////////////////////////////
 
-void GLES20Driver::SetGpuParams(const GpuParamsPtr& params)
+void GLES20Driver::SetGpuParams(const GpuParamsPtr& params, const CommandBufferPtr&)
 {
 	const u8* data = params->GetData();
 	const GpuParamDescription& desc = params->GetDescripton();
@@ -336,12 +350,12 @@ void GLES20Driver::SetGpuParams(const GpuParamsPtr& params)
 
 ////////////////////////////////////////////////////////////////////////
 
-void GLES20Driver::SetTopology(Topology topology)
+void GLES20Driver::SetTopology(Topology topology, const CommandBufferPtr&)
 {
 	m_currentTopology = s_glTopology[static_cast<size_t>(topology)];
 }
 
-void GLES20Driver::SetAutoUniformsBatch(const UniformsBatchPtr& batch)
+void GLES20Driver::SetAutoUniformsBatch(const UniformsBatchPtr& batch, const CommandBufferPtr&)
 {
 	for (auto uniform : batch->m_uniforms)
 	{
@@ -351,7 +365,7 @@ void GLES20Driver::SetAutoUniformsBatch(const UniformsBatchPtr& batch)
 
 ////////////////////////////////////////////////////////////////////////
 
-void GLES20Driver::SetVertexDeclaration(const VertexInputDeclarationPtr& declaration)
+void GLES20Driver::SetVertexDeclaration(const VertexInputDeclarationPtr& declaration, const CommandBufferPtr&)
 {
 	GLES20VertexDeclaration* vertexDeclaration = static_cast<GLES20VertexDeclaration*>(declaration.get());	
 	for (auto attribute : vertexDeclaration->GetAttributes())
@@ -363,7 +377,7 @@ void GLES20Driver::SetVertexDeclaration(const VertexInputDeclarationPtr& declara
 
 ////////////////////////////////////////////////////////////////////////
 
-void GLES20Driver::SetVertexBuffer(const VertexBufferPtr& buffer)
+void GLES20Driver::SetVertexBuffer(const VertexBufferPtr& buffer, const CommandBufferPtr&)
 {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	GLES20VertexBuffer* glBuffer = static_cast<GLES20VertexBuffer*>(buffer.get());
@@ -373,7 +387,7 @@ void GLES20Driver::SetVertexBuffer(const VertexBufferPtr& buffer)
 
 ////////////////////////////////////////////////////////////////////////
 
-void GLES20Driver::SetIndexBuffer(const IndexBufferPtr& buffer)
+void GLES20Driver::SetIndexBuffer(const IndexBufferPtr& buffer, const CommandBufferPtr&)
 {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	GLES20IndexBuffer* glBuffer = static_cast<GLES20IndexBuffer*>(buffer.get());
@@ -383,14 +397,14 @@ void GLES20Driver::SetIndexBuffer(const IndexBufferPtr& buffer)
 
 ////////////////////////////////////////////////////////////////////////
 
-void GLES20Driver::Draw(u32 offset, u32 verticesCount, u32 instancesCount)
+void GLES20Driver::Draw(u32 offset, u32 verticesCount, u32 instancesCount, const CommandBufferPtr&)
 {
 
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-void GLES20Driver::DrawIndexed(u32 offset, u32 indicesCount, u32 instancesCount)
+void GLES20Driver::DrawIndexed(u32 offset, u32 indicesCount, u32 instancesCount, const CommandBufferPtr&)
 {
 	glDrawElements(GL_TRIANGLES, indicesCount, GL_UNSIGNED_INT, (void*)offset);
 }
@@ -402,24 +416,6 @@ void GLES20Driver::GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data)
 	GLint viewport[4]; 
     glGetIntegerv(GL_VIEWPORT, viewport);
 	glReadPixels(x, viewport[3] - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
-}
-
-////////////////////////////////////////////////////////////////////////
-
-VertexBufferPtr GLES20Driver::CreateVertexBuffer(const VertexBufferDecription& description) const
-{
-	VertexBufferPtr result = nullptr;
-	result.reset(new GLES20VertexBuffer(description));
-	return result;
-}
-
-////////////////////////////////////////////////////////////////////////
-
-IndexBufferPtr GLES20Driver::CreateIndexBuffer(const IndexBufferDescription& description) const
-{
-	IndexBufferPtr result = nullptr;
-	result.reset(new GLES20IndexBuffer(description));
-	return result;
 }
 
 ////////////////////////////////////////////////////////////////////////

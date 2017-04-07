@@ -15,6 +15,7 @@ namespace sh
 	namespace video
 	{
 		DEFINE_CLASS_PTR(BlendingState)
+		DEFINE_CLASS_PTR(CommandBuffer)
 		DEFINE_CLASS_PTR(DepthStencilState)
 		DEFINE_CLASS_PTR(GpuParams)
 		DEFINE_CLASS_PTR(HardwareBuffer)

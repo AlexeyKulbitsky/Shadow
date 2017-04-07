@@ -39,10 +39,15 @@ namespace sh
 			virtual VertexInputDeclarationPtr Clone() override;
 			virtual void Assemble(VertexDeclaration& declaration) override;
 
+			bool operator == (const VulkanVertexDeclaration& other);
+
 		private:
 			VkVertexInputBindingDescription m_descriptor;
 			std::vector<VkVertexInputAttributeDescription> m_vulkanAttributes;
 			std::vector<VulkanVertexAttribute> m_attributes;
+			u32 m_id = 0U;
+
+			static std::vector<VulkanVertexDeclaration*> s_declarations;
 		};
 	}
 }

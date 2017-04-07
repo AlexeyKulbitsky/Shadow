@@ -10,6 +10,7 @@
 #include "Texture.h"
 #include "RenderPipeline.h"
 #include "Sampler.h"
+#include "CommandBuffer.h"
 
 namespace sh
 {
@@ -64,18 +65,18 @@ namespace sh
 			virtual void SetDepthStencilState(const DepthStencilStatePtr& depthStencilState) { }
 			virtual void SetRasterizationState(const RasterizationStatePtr& rasterizationState) { }
 			virtual void SetBlendingState(const BlendingStatePtr& blendingState) { }
-			virtual void SetRenderPipeline(const RenderPipelinePtr& pipeline) { }
+			virtual void SetRenderPipeline(const RenderPipelinePtr& pipeline, const CommandBufferPtr& commandBuffer = nullptr) { }
 			virtual void SetComputePipeline() { }
 
 			// Rendering
-			virtual void SetGpuParams(const GpuParamsPtr& params) { }
-			virtual void SetTopology(Topology topology) { }
-			virtual void SetAutoUniformsBatch(const UniformsBatchPtr& batch) { }
-			virtual void SetVertexDeclaration(const VertexInputDeclarationPtr& declaration) { }
-			virtual void SetVertexBuffer(const VertexBufferPtr& buffer) { }
-			virtual void SetIndexBuffer(const IndexBufferPtr& buffer) { }
-			virtual void Draw(u32 offset, u32 verticesCount, u32 instancesCount = 1U) { }
-			virtual void DrawIndexed(u32 offset, u32 indicesCount, u32 instancesCount = 1U) { }
+			virtual void SetGpuParams(const GpuParamsPtr& params, const CommandBufferPtr& commandBuffer = nullptr) { }
+			virtual void SetTopology(Topology topology, const CommandBufferPtr& commandBuffer = nullptr) { }
+			virtual void SetAutoUniformsBatch(const UniformsBatchPtr& batch, const CommandBufferPtr& commandBuffer = nullptr) { }
+			virtual void SetVertexDeclaration(const VertexInputDeclarationPtr& declaration, const CommandBufferPtr& commandBuffer = nullptr) { }
+			virtual void SetVertexBuffer(const VertexBufferPtr& buffer, const CommandBufferPtr& commandBuffer = nullptr) { }
+			virtual void SetIndexBuffer(const IndexBufferPtr& buffer, const CommandBufferPtr& commandBuffer = nullptr) { }
+			virtual void Draw(u32 offset, u32 verticesCount, u32 instancesCount = 1U, const CommandBufferPtr& commandBuffer = nullptr) { }
+			virtual void DrawIndexed(u32 offset, u32 indicesCount, u32 instancesCount = 1U, const CommandBufferPtr& commandBuffer = nullptr) { }
 
 			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) {}
 
@@ -84,8 +85,6 @@ namespace sh
 			u32 GetMaxCubeTextureSize() const { return m_maxCubeTextureSize; }
 
 			// Resources creation interface
-			virtual VertexBufferPtr CreateVertexBuffer(const VertexBufferDecription& description) const { return nullptr; }
-			virtual IndexBufferPtr CreateIndexBuffer(const IndexBufferDescription& description) const { return nullptr; }
 			virtual UniformBufferPtr CreateUniformBuffer() const {return nullptr;}
 			virtual RenderCommandPtr CreateRenderCommand() const { return nullptr; }
 			virtual ShaderProgramPtr CreateShaderProgram() const { return nullptr; }
@@ -94,10 +93,11 @@ namespace sh
 			virtual VertexInputDeclarationPtr CreateVertexInputDeclaration() const = 0;
 			virtual RenderTargetPtr CreateRenderTarget() const { return nullptr; }
 			virtual RenderPipelinePtr CreateRenderPipeline() const = 0;
-			virtual RenderPipelinePtr CreateRenderPipeline(const RenderPipelineDescription& description) const { return nullptr; }
+			virtual RenderPipelinePtr CreateRenderPipeline(const RenderPipelineDescription& description) const = 0;
 			virtual RenderBatchManagerPtr CreateRenderBatchManager() const = 0;
 			virtual ShaderPtr CreateShader(const ShaderDescription& description) const = 0;
 			virtual SamplerPtr CreateSampler(const SamplerDescription& description) const { return nullptr; }
+			virtual CommandBufferPtr CreateCommandBuffer(const CommandBufferDescription& description) const { return nullptr; }
 
 			template<typename T>
 			void SetGlobalUniform(GlobalUniformName globalName, const T& value);

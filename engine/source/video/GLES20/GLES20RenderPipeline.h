@@ -11,6 +11,7 @@ namespace sh
 		class GLES20RenderPipeline : public RenderPipeline
 		{
 			friend class GLES20Driver;
+			friend class GLES20RenderStateManager;
 		public:
 			GLES20RenderPipeline();
 			virtual ~GLES20RenderPipeline();

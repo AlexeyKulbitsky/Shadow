@@ -75,6 +75,16 @@ namespace sh
 			pipelineDesc.rasterizationState = LoadRasterizationState(pipelineNode);
 			pipelineDesc.blendingState = LoadBlendingState(pipelineNode);
 
+			// Load attributes
+			pugi::xml_node attributesNode = pipelineNode.child("attributes");
+			if (!attributesNode.empty())
+			{
+				Driver* driver = Device::GetInstance()->GetDriver();
+				VertexInputDeclarationPtr vertDeclaration = driver->CreateVertexInputDeclaration();
+				vertDeclaration->Load(attributesNode);
+				pipelineDesc.vertexDeclaration = vertDeclaration;
+			}
+
 			// Load shaders
 			pugi::xml_node shadersNode = pipelineNode.child("shader");
 			String language = shadersNode.attribute("language").as_string();
@@ -87,13 +97,19 @@ namespace sh
 				api = shadersNode.attribute("api").as_string();
 			}
 
+			io::FileSystem* fs = Device::GetInstance()->GetFileSystem();
+
 			// Load vertex shader data
 			pugi::xml_node vertexShaderSrcNode = shadersNode.child("vertexShader");
 			if (vertexShaderSrcNode)
 			{
+				pugi::xml_node constantsNode = vertexShaderSrcNode.child("constants");
+				pugi::xml_node sourceNode = vertexShaderSrcNode.child("source");
+
+				
 				ShaderDescription shaderDesc;
+				shaderDesc.source = sourceNode.child_value();
 				shaderDesc.entryPoint = "main";
-				shaderDesc.source = vertexShaderSrcNode.child_value();
 				shaderDesc.language = language;
 				shaderDesc.type = ST_VERTEX;
 				pipelineDesc.vertexShader = Shader::Create(shaderDesc);
@@ -103,9 +119,12 @@ namespace sh
 			pugi::xml_node fragmentShaderSrcNode = shadersNode.child("fragmentShader");
 			if (fragmentShaderSrcNode)
 			{
+				pugi::xml_node constantsNode = fragmentShaderSrcNode.child("constants");
+				pugi::xml_node sourceNode = fragmentShaderSrcNode.child("source");
+
 				ShaderDescription shaderDesc;
+				shaderDesc.source = sourceNode.child_value();
 				shaderDesc.entryPoint = "main";
-				shaderDesc.source = fragmentShaderSrcNode.child_value();
 				shaderDesc.language = language;
 				shaderDesc.type = ST_FRAGMENT;
 				pipelineDesc.fragmentShader = Shader::Create(shaderDesc);
@@ -114,16 +133,6 @@ namespace sh
 			// Load constants
 			pugi::xml_node paramsNode = pipelineNode.child("constants");
 			pipelineDesc.paramsDescription = LoadParamsDescription(paramsNode);
-
-			// Load attributes
-			pugi::xml_node attributesNode = pipelineNode.child("attributes");
-			if (!attributesNode.empty())
-			{
-				Driver* driver = Device::GetInstance()->GetDriver();
-				VertexInputDeclarationPtr vertDeclaration = driver->CreateVertexInputDeclaration();
-				vertDeclaration->Load(attributesNode);
-				pipelineDesc.vertexDeclaration = vertDeclaration;
-			}
 
 			m_renderPipelines.push_back(RenderPipeline::Create(pipelineDesc));
 		}

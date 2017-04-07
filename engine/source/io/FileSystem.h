@@ -43,6 +43,7 @@ namespace sh
 			
 			bool SaveFile(const std::vector<char>& data, const String& fileName);
 			bool SaveFile(const String& data, const String& fileName);
+			std::vector<char> ReadFile(const String& filename);
 
 		private:
 			void CollectFilesFromFolder(const String& folder, bool recursive = true);

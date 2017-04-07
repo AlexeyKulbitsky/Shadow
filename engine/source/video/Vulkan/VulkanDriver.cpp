@@ -9,6 +9,10 @@
 #include "VulkanRenderCommand.h"
 #include "VulkanRenderBatchManager.h"
 #include "VulkanShader.h"
+#include "VulkanCommandBuffer.h"
+
+#include "Managers/VulkanRenderStateManager.h"
+#include "Managers/VulkanHardwareBufferManager.h"
 
 #include <iostream>
 #include <stdexcept>
@@ -89,17 +93,21 @@ namespace sh
 
 		VulkanDriver::VulkanDriver()
 		{
-
+			VulkanRenderStateManager::CreateInstance();
 		}
 
 		VulkanDriver::VulkanDriver(const CreationParameters& parameters)
 		{
 			m_parameters = parameters;
+			VulkanRenderStateManager::CreateInstance();
+			VulkanHardwareBufferManager::CreateInstance();
 		}
 
 		VulkanDriver::~VulkanDriver()
 		{
 			vkDeviceWaitIdle(m_device);
+			VulkanRenderStateManager::DestroyInstance();
+			VulkanHardwareBufferManager::DestroyInstance();
 		}
 
 		const String& VulkanDriver::GetApiName() const
@@ -181,17 +189,6 @@ namespace sh
 			m_inheritanceInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_INHERITANCE_INFO;
 			m_inheritanceInfo.renderPass = m_renderPass;
 			m_inheritanceInfo.framebuffer = framebuffer;
-
-
-
-
-
-
-			
-
-
-
-
 		}
 		void VulkanDriver::EndRendering()
 		{
@@ -336,6 +333,79 @@ namespace sh
 			SH_ASSERT(res == VK_SUCCESS, "Failed to present render result!");
 			*/
 		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		void VulkanDriver::SetRenderPipeline(const RenderPipelinePtr& pipeline, const CommandBufferPtr& commandBuffer)
+		{ 
+			VulkanCommandBuffer* cmdBuffer = static_cast<VulkanCommandBuffer*>(commandBuffer.get());
+			VulkanRenderPipeline* vkPipeline = static_cast<VulkanRenderPipeline*>(pipeline.get());
+
+			vkCmdBindPipeline(cmdBuffer->GetVulkanId(), VK_PIPELINE_BIND_POINT_GRAPHICS, vkPipeline->GetVulkanId());
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		void VulkanDriver::SetGpuParams(const GpuParamsPtr& params, const CommandBufferPtr& commandBuffer) 
+		{ 
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		void VulkanDriver::SetTopology(Topology topology, const CommandBufferPtr& commandBuffer) 
+		{ 
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		void VulkanDriver::SetAutoUniformsBatch(const UniformsBatchPtr& batch, const CommandBufferPtr& commandBuffer) 
+		{ 
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		void VulkanDriver::SetVertexDeclaration(const VertexInputDeclarationPtr& declaration, const CommandBufferPtr& commandBuffer) 
+		{ 
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		void VulkanDriver::SetVertexBuffer(const VertexBufferPtr& buffer, const CommandBufferPtr& commandBuffer) 
+		{ 
+			VulkanCommandBuffer* cmdBuffer = static_cast<VulkanCommandBuffer*>(commandBuffer.get());
+			VulkanVertexBuffer* vtxBuffer = static_cast<VulkanVertexBuffer*>(buffer.get());
+
+			VkDeviceSize offsets[1] = { 0 };
+			VkBuffer vertexBuffer = vtxBuffer->GetVulkanId();
+			vkCmdBindVertexBuffers(cmdBuffer->GetVulkanId(), 0, 1, &vertexBuffer, offsets);
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		void VulkanDriver::SetIndexBuffer(const IndexBufferPtr& buffer, const CommandBufferPtr& commandBuffer) 
+		{ 
+			VulkanCommandBuffer* cmdBuffer = static_cast<VulkanCommandBuffer*>(commandBuffer.get());
+			VulkanIndexBuffer* indBuffer = static_cast<VulkanIndexBuffer*>(buffer.get());
+
+			VkBuffer indexBuffer = indBuffer->GetVulkanId();
+			vkCmdBindIndexBuffer(cmdBuffer->GetVulkanId(), indexBuffer, 0, VK_INDEX_TYPE_UINT32);
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		void VulkanDriver::Draw(u32 offset, u32 verticesCount, u32 instancesCount, const CommandBufferPtr& commandBuffer) 
+		{ 
+
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		void VulkanDriver::DrawIndexed(u32 offset, u32 indicesCount, u32 instancesCount, const CommandBufferPtr& commandBuffer) 
+		{ 
+			VulkanCommandBuffer* cmdBuffer = static_cast<VulkanCommandBuffer*>(commandBuffer.get());
+
+			vkCmdDrawIndexed(cmdBuffer->GetVulkanId(), indicesCount, instancesCount, 0, 0, 0);
+		}
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -378,7 +448,16 @@ namespace sh
 		RenderPipelinePtr VulkanDriver::CreateRenderPipeline() const
 		{
 			RenderPipelinePtr result = nullptr;
-			result.reset(new VulkanRenderPipeline());
+			//result.reset(new VulkanRenderPipeline());
+			return result;
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		RenderPipelinePtr VulkanDriver::CreateRenderPipeline(const RenderPipelineDescription& description) const
+		{
+			RenderPipelinePtr result = nullptr;
+			result.reset(new VulkanRenderPipeline(description));
 			return result;
 		}
 
@@ -397,6 +476,15 @@ namespace sh
 		{
 			ShaderPtr result;
 			result.reset(new VulkanShader(description));
+			return result;
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		CommandBufferPtr VulkanDriver::CreateCommandBuffer(const CommandBufferDescription& description) const
+		{
+			CommandBufferPtr result;
+			result.reset(new VulkanCommandBuffer(description));
 			return result;
 		}
 
@@ -604,6 +692,9 @@ namespace sh
 			createInfo.enabledExtensionCount = m_deviceExtensionsList.size();
 			createInfo.ppEnabledExtensionNames = m_deviceExtensionsList.data();
 
+			createInfo.enabledLayerCount = validationLayers.size();
+			createInfo.ppEnabledLayerNames = validationLayers.data();
+
 			SH_ASSERT(vkCreateDevice(m_physicalDevice, &createInfo, nullptr, m_device.Replace()) == VK_SUCCESS,
 				"failed to create logical device!");
 
@@ -652,7 +743,7 @@ namespace sh
 			createInfo.imageColorSpace = surfaceFormat.colorSpace;
 			createInfo.imageExtent = extent;
 			createInfo.imageArrayLayers = 1;
-			createInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT;			
+			createInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
 
 			QueueFamilyIndices indices = findQueueFamilies(m_physicalDevice);
 			uint32_t queueFamilyIndices[] = { (uint32_t)indices.graphicsFamily, (uint32_t)indices.presentFamily };

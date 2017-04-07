@@ -1,6 +1,6 @@
 #include "VertexBuffer.h"
-#include "../Device.h"
-#include "Driver.h"
+
+#include "Managers/HardwareBufferManager.h"
 
 namespace sh
 {
@@ -10,8 +10,7 @@ namespace video
 
 	VertexBufferPtr VertexBuffer::Create(const VertexBufferDecription& description)
 	{
-		Driver* driver = Device::GetInstance()->GetDriver();
-		return driver->CreateVertexBuffer(description);
+		return HardwareBufferManager::GetInstance()->CreateVertexBuffer(description);
 	}
 
 	VertexBuffer::VertexBuffer(const VertexBufferDecription& description)

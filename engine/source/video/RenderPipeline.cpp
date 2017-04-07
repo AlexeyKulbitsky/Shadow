@@ -5,6 +5,8 @@
 #include "../Device.h"
 #include "Driver.h"
 
+#include "Managers/RenderStateManager.h"
+
 namespace sh
 {
 	namespace video
@@ -172,8 +174,10 @@ namespace sh
 
 		RenderPipelinePtr RenderPipeline::Create(const RenderPipelineDescription& description)
 		{
-			Driver* driver = Device::GetInstance()->GetDriver();
-			return driver->CreateRenderPipeline(description);
+			//Driver* driver = Device::GetInstance()->GetDriver();
+			//return driver->CreateRenderPipeline(description);
+
+			return RenderStateManager::GetInstance()->CreateRenderPipeline(description);
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////

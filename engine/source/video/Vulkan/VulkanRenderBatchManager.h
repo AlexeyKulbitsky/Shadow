@@ -16,6 +16,9 @@ namespace video
 		virtual void AddMesh(const scene::MeshPtr& mesh) override;
 		virtual void Submit() override;
 		virtual void Clear() override;
+
+	private:
+		std::vector<scene::MeshPtr> m_meshes;
 	};
 
 } // video

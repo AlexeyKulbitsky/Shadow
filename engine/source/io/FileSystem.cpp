@@ -93,6 +93,26 @@ namespace sh
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////
 
+		std::vector<char> FileSystem::ReadFile(const String& filename)
+		{
+			const auto& info = FindFile(filename);
+
+			std::ifstream file(info.absolutePath, std::ios::ate | std::ios::binary);
+
+			SH_ASSERT(file.is_open(), "failed to open file!");
+
+			size_t fileSize = (size_t)file.tellg();
+			std::vector<char> buffer(fileSize);
+
+			file.seekg(0);
+			file.read(buffer.data(), fileSize);
+			file.close();
+
+			return buffer;
+		}
+
+		///////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		void FileSystem::CollectFilesFromFolder(const String& folder, bool recursive)
 		{
 			

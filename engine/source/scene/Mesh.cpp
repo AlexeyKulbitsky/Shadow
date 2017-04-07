@@ -79,18 +79,7 @@ namespace sh
 				m_gpuParams[i] = video::GpuParams::Create(renderPipeline->GetGpuParamsDescription());
 				m_gpuParams[i]->GetParam("matMVP", m_matrices[i]);
 
-				int a = 0;
-				a++;
-
-				/*
-				sh::video::VulkanRenderCommand* rc = dynamic_cast<sh::video::VulkanRenderCommand*>(m_renderCommands[i].get());
-				if (rc)
-				{
-					sh::video::VulkanRenderPipeline* rp = dynamic_cast<sh::video::VulkanRenderPipeline*>(renderPipeline.get());
-					rp->Init();
-					rc->SetPipeline(rp);
-				}
-				*/
+				renderPipeline->Init();
 			}			
 		}
 

@@ -36,6 +36,7 @@ namespace sh
 			virtual ~RenderPipeline();
 
 			virtual void Load(const pugi::xml_node &node);
+			virtual void Init() {}
 			virtual void Unload();
 
 			const String& GetName() const { return m_name; }

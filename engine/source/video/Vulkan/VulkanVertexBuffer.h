@@ -10,6 +10,8 @@ namespace sh
 	{
 		class VulkanVertexBuffer : public VertexBuffer, public VulkanBuffer
 		{
+			friend class VulkanDriver;
+			friend class VulkanHardwareBufferManager;
 		public:
 			virtual ~VulkanVertexBuffer();
 

@@ -1,6 +1,6 @@
 #include "IndexBuffer.h"
-#include "../Device.h"
-#include "Driver.h"
+
+#include "Managers/HardwareBufferManager.h"
 
 namespace sh
 {
@@ -10,8 +10,7 @@ namespace video
 
 	IndexBufferPtr IndexBuffer::Create(const IndexBufferDescription& description)
 	{
-		Driver* driver = Device::GetInstance()->GetDriver();
-		return driver->CreateIndexBuffer(description);
+		return HardwareBufferManager::GetInstance()->CreateIndexBuffer(description);
 	}
 
 	IndexBuffer::IndexBuffer(const IndexBufferDescription& description)
