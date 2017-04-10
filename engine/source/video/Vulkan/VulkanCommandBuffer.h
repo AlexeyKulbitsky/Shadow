@@ -13,21 +13,28 @@ namespace video
 	class VulkanCommandBuffer : public CommandBuffer
 	{
 		friend class VulkanDriver;
+		friend class VulkanCommandBufferManager;
 	public:
 		virtual ~VulkanCommandBuffer();
 
-		void Begin();
-		void End();
+		virtual void Begin() override;
+		virtual void End() override;
 		void BeginRenderPass();
 		void EndRenderPass();
+
+		void Append(VulkanCommandBuffer* secondary);
+		void Execute();
 
 		VkCommandBuffer GetVulkanId() { return m_commandBuffer; }
 
 	private:
 		VulkanCommandBuffer(const CommandBufferDescription& description);
+		VulkanCommandBuffer() { }
 
 	private:
 		VkCommandBuffer m_commandBuffer;
+
+		std::vector<VkCommandBuffer> m_secondaryCommandBuffers;
 	};
 
 } // video

@@ -1,7 +1,6 @@
 #include "CommandBuffer.h"
 
-#include "../Device.h"
-#include "Driver.h"
+#include "Managers/CommandBufferManager.h"
 
 namespace sh
 {
@@ -11,8 +10,7 @@ namespace video
 		
 	CommandBufferPtr CommandBuffer::Create(const CommandBufferDescription& description)
 	{
-		Driver* driver = Device::GetInstance()->GetDriver();
-		return driver->CreateCommandBuffer(description);
+		return CommandBufferManager::GetInstance()->CreateCommandBuffer(description);
 	}
 
 } // video

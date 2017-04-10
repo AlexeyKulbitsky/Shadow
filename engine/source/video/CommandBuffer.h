@@ -25,6 +25,9 @@ namespace video
 		CommandBuffer() {}
 		~CommandBuffer() {}
 
+		virtual void Begin() { }
+		virtual void End() { }
+
 		static CommandBufferPtr Create(const CommandBufferDescription& description);
 	};
 

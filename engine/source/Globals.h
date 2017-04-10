@@ -7,6 +7,8 @@
 #include "Event.h"
 #include "Forward.h"
 
+#include "Singleton.h"
+
 #include "pempek_assert.h"
 #include <pugixml.hpp>
 

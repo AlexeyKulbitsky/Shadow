@@ -24,6 +24,8 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
 
+		class VulkanCommandBuffer;
+
 		class VulkanDriver : public Driver 
 		{
 		public:
@@ -73,6 +75,8 @@ namespace sh
 			VkCommandPool GetCommandPool() const { return m_commandPool; }
 			const std::vector<VulkanDeleter<VkFramebuffer>>& GetSwapChainFramebuffers() const { return m_swapChainFramebuffers; }
 			VkRenderPass GetRenderPass() const { return m_renderPass; }
+			const VkCommandBufferInheritanceInfo& GetInheritanceInfo() const { return m_inheritanceInfo; }
+			VulkanCommandBuffer* GetPrimaryCommandBuffer() { return m_primaryCommandBuffer; }
 
 		private:
 			struct QueueFamilyIndices 
@@ -207,6 +211,7 @@ namespace sh
 			uint32_t m_currentImageIndex;
 			std::vector<VkCommandBuffer> m_executableCommandBuffers;
 			VkCommandBufferInheritanceInfo m_inheritanceInfo;
+			VulkanCommandBuffer* m_primaryCommandBuffer = nullptr;
 		};
 	}
 }

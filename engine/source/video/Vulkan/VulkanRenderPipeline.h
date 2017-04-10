@@ -25,8 +25,6 @@ namespace sh
 			virtual const UniformBufferPtr& GetUniformBuffer() const override { return nullptr; } // { return m_uniformBuffer; }
 			virtual const UniformBufferPtr& GetTransformUniformBuffer() const override { return nullptr; } // { return m_transformUniformBuffer; }
 
-			//void Init();
-
 			VkPipeline GetVulkanPipeline(const VertexInputDeclarationPtr& vertexDeclaration);
 
 			VkPipeline GetVulkanId() const { return m_graphicsPipeline; }
@@ -36,15 +34,12 @@ namespace sh
 			VulkanRenderPipeline(const RenderPipelineDescription& description);
 
 		protected:
-			//ShaderProgramPtr m_shaderProgram;
-			//VertexInputDeclarationPtr m_vertexInputDeclaration;
-			//UniformBufferPtr m_uniformBuffer;
-			//UniformBufferPtr m_transformUniformBuffer;
-
 			VkPipeline m_pipelines;
 
 			VkPipeline m_graphicsPipeline;		
 			VkPipelineLayout m_pipelineLayout;
+
+			// Pipelines for different vertex declarations
 		};
 	}
 }

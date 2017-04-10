@@ -13,6 +13,7 @@
 
 #include "Managers/VulkanRenderStateManager.h"
 #include "Managers/VulkanHardwareBufferManager.h"
+#include "Managers/VulkanCommandBufferManager.h"
 
 #include <iostream>
 #include <stdexcept>
@@ -101,6 +102,7 @@ namespace sh
 			m_parameters = parameters;
 			VulkanRenderStateManager::CreateInstance();
 			VulkanHardwareBufferManager::CreateInstance();
+			CommandBufferManager::CreateInstance<VulkanCommandBufferManager>();
 		}
 
 		VulkanDriver::~VulkanDriver()
@@ -108,6 +110,7 @@ namespace sh
 			vkDeviceWaitIdle(m_device);
 			VulkanRenderStateManager::DestroyInstance();
 			VulkanHardwareBufferManager::DestroyInstance();
+			CommandBufferManager::DestroyInstance();
 		}
 
 		const String& VulkanDriver::GetApiName() const
@@ -152,13 +155,14 @@ namespace sh
 
 		void VulkanDriver::BeginRendering()
 		{
-			vkAcquireNextImageKHR(m_device, m_swapChain, 500000/*std::numeric_limits<uint64_t>::max()*/, m_imageAvailableSemaphore, VK_NULL_HANDLE, &m_currentImageIndex);
+			vkAcquireNextImageKHR(m_device, m_swapChain, 500000U, m_imageAvailableSemaphore, VK_NULL_HANDLE, &m_currentImageIndex);
 			
 			VkFramebuffer framebuffer = m_swapChainFramebuffers[m_currentImageIndex];
 
-			VkCommandBuffer primaryCommandBuffer = m_commandBuffers[0];
+			VkCommandBuffer primaryCommandBuffer = m_primaryCommandBuffer->GetVulkanId();//m_commandBuffers[0];
 			VkCommandBufferBeginInfo beginInfo = {};
 			beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+			beginInfo.flags = VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT;
 			
 
 			std::array<VkClearValue, 2> clearValues = {};
@@ -189,6 +193,11 @@ namespace sh
 			m_inheritanceInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_INHERITANCE_INFO;
 			m_inheritanceInfo.renderPass = m_renderPass;
 			m_inheritanceInfo.framebuffer = framebuffer;
+			m_inheritanceInfo.occlusionQueryEnable - VK_FALSE;
+			m_inheritanceInfo.pipelineStatistics = 0;
+			m_inheritanceInfo.pNext = nullptr;
+			m_inheritanceInfo.queryFlags = 0;
+			m_inheritanceInfo.subpass = 0;
 		}
 		void VulkanDriver::EndRendering()
 		{
@@ -225,12 +234,19 @@ namespace sh
 
 			*/
 
-			VkCommandBuffer primaryCommandBuffer = m_commandBuffers[0];
 
+
+			
+			VkCommandBuffer primaryCommandBuffer = m_primaryCommandBuffer->GetVulkanId();
+			/*
 			if (m_executableCommandBuffers.size() > 0)
 			{
 				vkCmdExecuteCommands(primaryCommandBuffer, m_executableCommandBuffers.size(), m_executableCommandBuffers.data());
 			}
+			*/
+
+			m_primaryCommandBuffer->Execute();
+
 
 			vkCmdEndRenderPass(primaryCommandBuffer);
 
@@ -348,6 +364,28 @@ namespace sh
 
 		void VulkanDriver::SetGpuParams(const GpuParamsPtr& params, const CommandBufferPtr& commandBuffer) 
 		{ 
+			VulkanCommandBuffer* cmdBuffer = static_cast<VulkanCommandBuffer*>(commandBuffer.get());
+
+			const u8* data = params->GetData();
+			const GpuParamDescription& desc = params->GetDescripton();
+
+			for (const auto& param : desc.params)
+			{
+				const u8* dataPtr = data + param.second.offset;
+				
+				/*
+				vkCmdPushConstants(
+					cmdBuffer->GetVulkanId(),  
+					m_pipeline->GetVulkanPipelineLayout(), 
+					VK_SHADER_STAGE_VERTEX_BIT, 
+					0, 
+					param.second.size, 
+					dataPtr);
+					*/
+			}
+
+
+			
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -921,6 +959,13 @@ namespace sh
 
 			VkResult res = vkAllocateCommandBuffers(m_device, &allocInfo, m_commandBuffers.data());
 			SH_ASSERT(res == VK_SUCCESS, "Failed to allocate command buffers!");
+
+
+			//CommandBufferDescription desc;
+			//desc.type = COMMAND_BUFFER_TYPE_PRIMARY;
+			//m_primaryCommandBuffer = new VulkanCommandBuffer(desc);
+			m_primaryCommandBuffer = new VulkanCommandBuffer();
+			m_primaryCommandBuffer->m_commandBuffer = m_commandBuffers[0];
 
 			/*
 			for (size_t i = 0; i < m_commandBuffers.size(); i++)

@@ -12,6 +12,7 @@ namespace video
 	class VulkanRenderBatchManager : public RenderBatchManager
 	{
 	public:
+		VulkanRenderBatchManager();
 		virtual ~VulkanRenderBatchManager();
 		virtual void AddMesh(const scene::MeshPtr& mesh) override;
 		virtual void Submit() override;
@@ -19,6 +20,7 @@ namespace video
 
 	private:
 		std::vector<scene::MeshPtr> m_meshes;
+		CommandBufferPtr m_commandBuffer;
 	};
 
 } // video

@@ -12,6 +12,7 @@
 
 #include "Managers/GLES20RenderStateManager.h"
 #include "Managers/GLES20HardwareBufferManager.h"
+#include "Managers/GLES20CommandBufferManager.h"
 
 #include "../Material.h"
 #include "../GLContext/EGLContextManager.h"
@@ -34,6 +35,7 @@ GLES20Driver::GLES20Driver(EGLContextManager* contextManager)
 {
 	GLES20RenderStateManager::CreateInstance();
 	GLES20HardwareBufferManager::CreateInstance();
+	CommandBufferManager::CreateInstance<GLES20CommandBufferManager>();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -42,6 +44,7 @@ GLES20Driver::~GLES20Driver()
 {
 	GLES20RenderStateManager::DestroyInstance();
 	GLES20HardwareBufferManager::DestroyInstance();
+	CommandBufferManager::DestroyInstance();
 }
 
 ////////////////////////////////////////////////////////////////////////
