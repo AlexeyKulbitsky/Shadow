@@ -212,6 +212,8 @@ namespace sh
 			std::vector<VkCommandBuffer> m_executableCommandBuffers;
 			VkCommandBufferInheritanceInfo m_inheritanceInfo;
 			VulkanCommandBuffer* m_primaryCommandBuffer = nullptr;
+			VertexInputDeclarationPtr m_vulkanDeclarationTemp = nullptr;
+			VkPipelineLayout m_layoutTemp;
 		};
 	}
 }

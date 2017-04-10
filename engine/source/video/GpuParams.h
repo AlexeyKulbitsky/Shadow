@@ -10,6 +10,8 @@ namespace sh
 
 namespace video
 {
+	
+
 	class GpuParams;
 
 	// Class for holding one param for fast usage
@@ -21,11 +23,12 @@ namespace video
 		TGpuParam(GpuParams* parent, GpuParamDataDescription* desc);
 		void Set(const T& value, u32 index = 0U) const;
 		const T& Get(u32 index = 0U) const;
+		operator bool() const { return m_valuePtr != nullptr; }
 
 	protected:
 		GpuParams* m_parent;
 		GpuParamDataDescription* m_desc;
-		T* m_valuePtr;
+		T* m_valuePtr = nullptr;
 	};
 
 	class TGpuParamStruct

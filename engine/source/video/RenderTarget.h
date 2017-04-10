@@ -16,6 +16,9 @@ namespace sh
 			virtual void Init() = 0;
 			virtual void Bind() = 0;
 			virtual void Unbind() = 0;
+
+		public:
+			static RenderTargetPtr Default;
 		};
 	}
 }

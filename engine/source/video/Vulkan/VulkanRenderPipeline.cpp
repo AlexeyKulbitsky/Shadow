@@ -10,7 +10,7 @@
 #include "../DepthStencilState.h"
 #include "../BlendingState.h"
 #include "../RasterizationState.h"
-#include "../VertexDeclaration.h"
+#include "VulkanVertexDeclaration.h"
 #include "../ShaderProgram.h"
 
 
@@ -87,12 +87,13 @@ namespace sh
 
 		VkPipeline VulkanRenderPipeline::GetVulkanPipeline(const VertexInputDeclarationPtr& vertexDeclaration)
 		{
-			return 0;
+			VulkanVertexDeclaration* vulkanVertexDeclaration = static_cast<VulkanVertexDeclaration*>(vertexDeclaration.get());
+			return m_intenalPipelines[vulkanVertexDeclaration->GetId()];
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////
 		
-		void VulkanRenderPipeline::Init()
+		void VulkanRenderPipeline::Init(const VertexInputDeclarationPtr& declaration)
 		{
 #if 0
 			VulkanDriver* driver = static_cast<VulkanDriver*>(Device::GetInstance()->GetDriver());
@@ -225,7 +226,15 @@ namespace sh
 			VkRenderPass renderPass = driver->GetRenderPass();
 
 			// Get vertex input declaration
-			VulkanVertexDeclaration* vertexDeclaration = static_cast<VulkanVertexDeclaration*>(m_description.vertexDeclaration.get());
+			VulkanVertexDeclaration* vertexDeclaration = static_cast<VulkanVertexDeclaration*>(declaration.get());
+			
+			auto it = std::find(m_declarations.begin(), m_declarations.end(), vertexDeclaration);
+			if (it != m_declarations.end())
+				return;
+
+			vertexDeclaration->m_id = m_declarations.size();
+			m_declarations.push_back(vertexDeclaration);
+
 			const auto& inputAttributeDescriptions = vertexDeclaration->GetVulkanAttributes();
 			const auto& inputBindingDescription = vertexDeclaration->GetBindingDescription();
 
@@ -348,6 +357,8 @@ namespace sh
 
 			res = vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &m_graphicsPipeline);
 			SH_ASSERT(res == VK_SUCCESS, "Failed to create graphics pipeline!");
+
+			m_intenalPipelines.push_back(m_graphicsPipeline);
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////

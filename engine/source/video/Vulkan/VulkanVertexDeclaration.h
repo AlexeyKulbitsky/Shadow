@@ -18,6 +18,7 @@ namespace sh
 
 		class VulkanVertexDeclaration : public VertexInputDeclaration
 		{			
+			friend class VulkanRenderPipeline;
 		public:
 			// Add attribute to engines structure
 			void AddAttribute(const VulkanVertexAttribute& attribute)
@@ -40,6 +41,7 @@ namespace sh
 			virtual void Assemble(VertexDeclaration& declaration) override;
 
 			bool operator == (const VulkanVertexDeclaration& other);
+			u32 GetId() const { return m_id; }
 
 		private:
 			VkVertexInputBindingDescription m_descriptor;

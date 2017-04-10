@@ -8,6 +8,8 @@ namespace sh
 {
 	namespace video
 	{
+		class VulkanVertexDeclaration;
+
 		class VulkanRenderPipeline : public RenderPipeline
 		{
 			friend class VulkanDriver;
@@ -17,7 +19,7 @@ namespace sh
 			virtual ~VulkanRenderPipeline();
 
 			virtual void Load(const pugi::xml_node &node) override;
-			virtual void Init() override;
+			virtual void Init(const VertexInputDeclarationPtr& vertexDeclaration) override;
 			virtual void Unload() override;
 
 			virtual const ShaderProgramPtr& GetShaderProgram() const override { return nullptr; } // { return m_shaderProgram; }
@@ -40,6 +42,8 @@ namespace sh
 			VkPipelineLayout m_pipelineLayout;
 
 			// Pipelines for different vertex declarations
+			std::vector<VulkanVertexDeclaration*> m_declarations;
+			std::vector<VkPipeline> m_intenalPipelines;
 		};
 	}
 }

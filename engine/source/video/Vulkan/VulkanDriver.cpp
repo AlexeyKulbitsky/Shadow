@@ -193,7 +193,7 @@ namespace sh
 			m_inheritanceInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_INHERITANCE_INFO;
 			m_inheritanceInfo.renderPass = m_renderPass;
 			m_inheritanceInfo.framebuffer = framebuffer;
-			m_inheritanceInfo.occlusionQueryEnable - VK_FALSE;
+			m_inheritanceInfo.occlusionQueryEnable = VK_FALSE;
 			m_inheritanceInfo.pipelineStatistics = 0;
 			m_inheritanceInfo.pNext = nullptr;
 			m_inheritanceInfo.queryFlags = 0;
@@ -356,8 +356,10 @@ namespace sh
 		{ 
 			VulkanCommandBuffer* cmdBuffer = static_cast<VulkanCommandBuffer*>(commandBuffer.get());
 			VulkanRenderPipeline* vkPipeline = static_cast<VulkanRenderPipeline*>(pipeline.get());
+			m_layoutTemp = vkPipeline->GetVulkanPipelineLayout();
 
-			vkCmdBindPipeline(cmdBuffer->GetVulkanId(), VK_PIPELINE_BIND_POINT_GRAPHICS, vkPipeline->GetVulkanId());
+			VkPipeline vulkanPipeline = vkPipeline->GetVulkanPipeline(m_vulkanDeclarationTemp);
+			vkCmdBindPipeline(cmdBuffer->GetVulkanId(), VK_PIPELINE_BIND_POINT_GRAPHICS, vulkanPipeline);
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -373,15 +375,15 @@ namespace sh
 			{
 				const u8* dataPtr = data + param.second.offset;
 				
-				/*
+				///*
 				vkCmdPushConstants(
 					cmdBuffer->GetVulkanId(),  
-					m_pipeline->GetVulkanPipelineLayout(), 
+					m_layoutTemp, 
 					VK_SHADER_STAGE_VERTEX_BIT, 
 					0, 
 					param.second.size, 
 					dataPtr);
-					*/
+					//*/
 			}
 
 
@@ -404,6 +406,7 @@ namespace sh
 
 		void VulkanDriver::SetVertexDeclaration(const VertexInputDeclarationPtr& declaration, const CommandBufferPtr& commandBuffer) 
 		{ 
+			m_vulkanDeclarationTemp = declaration;
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////

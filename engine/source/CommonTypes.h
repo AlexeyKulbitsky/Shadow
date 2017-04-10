@@ -3,6 +3,7 @@
 
 namespace sh
 {
+	
 	enum BlendFactor
 	{
 		BF_ZERO = 0,

@@ -36,9 +36,9 @@ namespace video
 
 		for(auto& mesh : m_meshes)
 		{
+			driver->SetVertexDeclaration(mesh->GetVertexDeclaration(), m_commandBuffer);
 			driver->SetRenderPipeline(mesh->GetMaterial()->GetRenderPipeline(), m_commandBuffer);
 			driver->SetGpuParams(mesh->GetGpuParams(), m_commandBuffer);
-			driver->SetVertexDeclaration(mesh->GetVertexDeclaration(), m_commandBuffer);
 			driver->SetIndexBuffer(mesh->GetIndexBuffer(), m_commandBuffer);
 			driver->SetVertexBuffer(mesh->GetVertexBuffer(), m_commandBuffer);
 			driver->DrawIndexed(0, mesh->GetIndexBuffer()->GetIndicesCount(), 1U, m_commandBuffer);			

@@ -1,42 +1,32 @@
 <technique name="ConstantColor">
 
-<pipeline name="firstPass" layer="main">
-	<constants>
-		<uniforms>
-			<uniform name="matWorld" type="mat4" val="model.worldMatrix"/>
-			<uniform name="matMVP" type="mat4" val="model.worldViewProjectionMatrix"/>
-			<uniform name="lightDirection" type="vec3Array" val="light.directional.direction"/>
-			<uniform name="color" type="float" val="1.0"/>
-		</uniforms>
-
-
-		<constant name="matWorld" type="mat4" />
-		<constant name="matMVP" type="mat4" />
-		<constant name="lightDirection" type="vec3" />
-		<constant name="color" type="float" />
-
-	</constants>
-	
+<pipeline name="firstPass" layer="main">	
 	<attributes>
-		<position 	type="vec3" name="aPosition"/>
-		<!--normal		type="vec3" name="aNormal"/-->
+		<position 	type="vec3" name="aPosition" location="0"/>
 	</attributes>
 	
 	<shader language="GLSL" api="GLES20">
+		<constants>
+			<constant name="matWorld" type="mat4" />
+			<constant name="matWVP" type="mat4" />
+			<constant name="lightDirection" type="vec3" />
+			<constant name="color" type="float" />
+		</constants>
+
 		<vertexShader>
 		<source>
 			<![CDATA[
 
 				attribute vec3 aPosition;
 				attribute vec3 aNormal;
-				uniform mat4 matMVP;
+				uniform mat4 matWVP;
 				uniform mat4 matWorld;
 				
 				varying vec3 vNormal;
 				
 				void main() 
 				{
-					gl_Position = matMVP * vec4(aPosition, 1.0);
+					gl_Position = matWVP * vec4(aPosition, 1.0);
 					//vNormal = (matWorld * vec4(aNormal, 0.0)).xyz;
 					vNormal = mat3(matWorld) * aNormal;
 				}

@@ -37,7 +37,12 @@ namespace sh
 			video::IndexBufferPtr m_indexBuffer;
 			std::vector<video::VertexInputDeclarationPtr> m_vertexDeclaration;
 			std::vector<video::GpuParamsPtr> m_gpuParams;
-			std::vector<video::GpuParamMatrix4f> m_matrices;
+
+			video::GpuParamMatrix4f m_worldMatrixParam;
+			video::GpuParamMatrix4f m_viewMatrixParam;
+			video::GpuParamMatrix4f m_projectionMatrixParam;
+			video::GpuParamMatrix4f m_worldViewdProjectionMatrixParam;
+			video::GpuParamVector3f m_lightDirectionParam;
 		};
 	}
 }

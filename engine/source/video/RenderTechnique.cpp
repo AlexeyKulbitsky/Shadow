@@ -99,6 +99,11 @@ namespace sh
 
 			io::FileSystem* fs = Device::GetInstance()->GetFileSystem();
 
+			// Load constants
+			pugi::xml_node paramsNode = shadersNode.child("constants");
+			pipelineDesc.paramsDescription = LoadParamsDescription(paramsNode);
+
+
 			// Load vertex shader data
 			pugi::xml_node vertexShaderSrcNode = shadersNode.child("vertexShader");
 			if (vertexShaderSrcNode)
@@ -130,9 +135,7 @@ namespace sh
 				pipelineDesc.fragmentShader = Shader::Create(shaderDesc);
 			}
 
-			// Load constants
-			pugi::xml_node paramsNode = pipelineNode.child("constants");
-			pipelineDesc.paramsDescription = LoadParamsDescription(paramsNode);
+			
 
 			m_renderPipelines.push_back(RenderPipeline::Create(pipelineDesc));
 		}
