@@ -47,6 +47,28 @@ namespace sh
 			math::Matrix4f wvp = projectionMatrix * viewMatrix * m_worldMatrix;
 			wvp.m[1][1] *= -1.0f;
 				
+			auto transformParams = m_material->GetTransformParams();
+
+			for (const auto& param : transformParams)
+			{
+				switch (param->GetType())
+				{
+					case MaterialParamType::MatrixWorld:
+						param->Set(m_worldMatrix);
+						break;
+					case MaterialParamType::MatrixView:
+						param->Set(viewMatrix);
+						break;
+					case MaterialParamType::MatrixProjection:
+						param->Set(projectionMatrix);
+						break;
+					case MaterialParamType::MatrixWorldViewProjection:
+						param->Set(wvp);
+						break;
+				}
+			}
+
+
 			if (m_worldViewdProjectionMatrixParam)
 				m_worldViewdProjectionMatrixParam.Set(wvp);
 			if (m_worldMatrixParam)

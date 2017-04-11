@@ -2,6 +2,8 @@
 #define SHADOW_MATERIAL_INCLUDE
 
 #include "../Globals.h"
+#include "MaterialParams.h"
+#include "GpuParams.h"
 
 namespace sh
 {
@@ -21,10 +23,19 @@ namespace sh
 			const RenderPipelinePtr& GetRenderPipeline(size_t index = 0U) { return m_renderPipelines[index]; }
 			const String& GetName() const { return m_name; }
 
+			const GpuParamsPtr& GetCommonGpuParams() const { return m_commonGpuParams; }
+			const GpuParamsPtr& GetTransformGpuParams() const { return m_transfromsGpuParams; }
+
+			const std::vector<SPtr<MaterialParam>>& GetTransformParams() const { return m_transformParams; }
+
 		private:
 			String m_name = "default";
 			RenderTechniquePtr m_renderTechnique;
 			std::vector<RenderPipelinePtr> m_renderPipelines;
+
+			GpuParamsPtr m_commonGpuParams;
+			GpuParamsPtr m_transfromsGpuParams;
+			std::vector<SPtr<MaterialParam>> m_transformParams;
 		};
 	}
 }

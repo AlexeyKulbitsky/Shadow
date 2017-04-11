@@ -1,6 +1,8 @@
 #ifndef SHADOW_COMMON_TYPES_INCLUDE
 #define SHADOW_COMMON_TYPES_INCLUDE
 
+#include "Globals.h"
+
 namespace sh
 {
 	
@@ -304,6 +306,16 @@ namespace sh
 		COMMAND_BUFFER_TYPE_PRIMARY,
 		COMMAND_BUFFER_TYPE_SECONDARY
 	};
+
+	enum class MaterialParamType : int
+	{
+		Undefined = -1,
+		MatrixWorldViewProjection,
+		MatrixWorld,
+		MatrixView,
+		MatrixProjection
+	};
+
 }
 
 #endif
