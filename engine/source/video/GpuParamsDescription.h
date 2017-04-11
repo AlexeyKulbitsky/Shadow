@@ -38,7 +38,7 @@ namespace video
 
 	////////////////////////////////////////////////////
 
-	struct GpuParamDescription
+	struct GpuParamsDescription
 	{
 		Map<String, GpuParamsBlockDescription> paramsBlocks;
 		Map<String, GpuParamDataDescription> params;

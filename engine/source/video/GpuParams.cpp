@@ -14,14 +14,14 @@ namespace video
 		}
 	}
 
-	GpuParamsPtr GpuParams::Create(const GpuParamDescription& description)
+	GpuParamsPtr GpuParams::Create(const GpuParamsDescription& description)
 	{
 		GpuParamsPtr result;
 		result.reset(new GpuParams(description));
 		return result;
 	}
 
-	GpuParams::GpuParams(const GpuParamDescription& desc)
+	GpuParams::GpuParams(const GpuParamsDescription& desc)
 	{
 		m_description = desc;
 

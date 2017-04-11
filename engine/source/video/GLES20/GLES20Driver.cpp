@@ -314,7 +314,7 @@ void GLES20Driver::SetComputePipeline()
 void GLES20Driver::SetGpuParams(const GpuParamsPtr& params, const CommandBufferPtr&)
 {
 	const u8* data = params->GetData();
-	const GpuParamDescription& desc = params->GetDescripton();
+	const GpuParamsDescription& desc = params->GetDescripton();
 
 	for (const auto& param : desc.params)
 	{

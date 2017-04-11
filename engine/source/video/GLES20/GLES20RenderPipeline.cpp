@@ -7,7 +7,7 @@
 #include "../RasterizationState.h"
 #include "../VertexDeclaration.h"
 #include "../ShaderProgram.h"
-#include "../GpuParamDescription.h"
+#include "../GpuParamsDescription.h"
 #include "../GpuParams.h"
 #include "GLES20Shader.h"
 #include "GLES20VertexDeclaration.h"

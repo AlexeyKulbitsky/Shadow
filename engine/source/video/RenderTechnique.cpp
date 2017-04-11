@@ -111,12 +111,14 @@ namespace sh
 				pugi::xml_node constantsNode = vertexShaderSrcNode.child("constants");
 				pugi::xml_node sourceNode = vertexShaderSrcNode.child("source");
 
+				SPtr<GpuParamDescription> paramsDescription;
 				
 				ShaderDescription shaderDesc;
 				shaderDesc.source = sourceNode.child_value();
 				shaderDesc.entryPoint = "main";
 				shaderDesc.language = language;
 				shaderDesc.type = ST_VERTEX;
+				shaderDesc.paramsDescription = paramsDescription;
 				pipelineDesc.vertexShader = Shader::Create(shaderDesc);
 			}
 
@@ -127,11 +129,14 @@ namespace sh
 				pugi::xml_node constantsNode = fragmentShaderSrcNode.child("constants");
 				pugi::xml_node sourceNode = fragmentShaderSrcNode.child("source");
 
+				SPtr<GpuParamDescription> paramsDescription;
+
 				ShaderDescription shaderDesc;
 				shaderDesc.source = sourceNode.child_value();
 				shaderDesc.entryPoint = "main";
 				shaderDesc.language = language;
 				shaderDesc.type = ST_FRAGMENT;
+				shaderDesc.paramsDescription = paramsDescription;
 				pipelineDesc.fragmentShader = Shader::Create(shaderDesc);
 			}
 
@@ -333,9 +338,9 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////////////////////////
 
-		GpuParamDescription RenderTechnique::LoadParamsDescription(const pugi::xml_node& node)
+		GpuParamsDescription RenderTechnique::LoadParamsDescription(const pugi::xml_node& node)
 		{
-			GpuParamDescription paramsDesc;
+			GpuParamsDescription paramsDesc;
 
 			pugi::xml_node childNode = node.first_child();
 

@@ -45,6 +45,7 @@ namespace sh
 			
 			video::Driver* driver = Device::GetInstance()->GetDriver();
 			math::Matrix4f wvp = projectionMatrix * viewMatrix * m_worldMatrix;
+			wvp.m[1][1] *= -1.0f;
 				
 			if (m_worldViewdProjectionMatrixParam)
 				m_worldViewdProjectionMatrixParam.Set(wvp);

@@ -39,6 +39,8 @@ namespace sh
 		DEFINE_CLASS_PTR(VertexBuffer)
 		DEFINE_CLASS_PTR(VertexDeclaration)
 		DEFINE_CLASS_PTR(VertexInputDeclaration)
+
+		struct GpuParamDescription;
 	}
 
 	namespace scene

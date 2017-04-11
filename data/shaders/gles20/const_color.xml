@@ -62,6 +62,9 @@
 	
 	<!-- VULKAN SHADER/-->
 	<shader language="SPIR-V" api="Vulkan">
+		<constants>
+			<constant name="matWVP" type="mat4" />
+		</constants>
 		<vertexShader>
 			<constants>
 			</constants>

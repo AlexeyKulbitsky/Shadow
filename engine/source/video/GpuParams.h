@@ -3,7 +3,7 @@
 
 #include "../Globals.h"
 #include "GpuParam.h"
-#include "GpuParamDescription.h"
+#include "GpuParamsDescription.h"
 
 namespace sh
 {
@@ -60,14 +60,16 @@ namespace video
 		void GetParam(const String& name, TGpuParam<T>& param);
 
 		const u8* GetData() const { return m_data; }
-		const GpuParamDescription& GetDescripton() const { return m_description; }
+		const GpuParamsDescription& GetDescripton() const { return m_description; }
 
-		static GpuParamsPtr Create(const GpuParamDescription& description);
+		static GpuParamsPtr Create(const GpuParamsDescription& description);
 	private:
-		GpuParams(const GpuParamDescription& description);
+		GpuParams(const GpuParamsDescription& description);
 		
 	private:
-		GpuParamDescription m_description;
+		GpuParamsDescription m_description;
+
+		std::array<GpuParamsDescription, 6U> m_paramsDescriptions;
 		u8* m_data = nullptr;
 	};
 

@@ -17,6 +17,7 @@
 #include <set>
 #include <map>
 #include <sstream>
+#include <memory>
 #include <functional>
 
 namespace sh
@@ -29,6 +30,9 @@ namespace sh
 
 	template<typename T>
 	using Set = std::set<T>;
+
+	template<typename T>
+	using SPtr = std::shared_ptr<T>;
 
 }
 

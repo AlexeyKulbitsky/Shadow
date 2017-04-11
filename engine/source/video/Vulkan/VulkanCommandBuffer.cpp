@@ -69,6 +69,7 @@ namespace video
 		{
 			vkCmdExecuteCommands(m_commandBuffer, m_secondaryCommandBuffers.size(), m_secondaryCommandBuffers.data());
 		}
+		m_secondaryCommandBuffers.clear();
 	}
 
 	////////////////////////////////////////////////////////////////////

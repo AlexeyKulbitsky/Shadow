@@ -369,13 +369,12 @@ namespace sh
 			VulkanCommandBuffer* cmdBuffer = static_cast<VulkanCommandBuffer*>(commandBuffer.get());
 
 			const u8* data = params->GetData();
-			const GpuParamDescription& desc = params->GetDescripton();
+			const GpuParamsDescription& desc = params->GetDescripton();
 
 			for (const auto& param : desc.params)
 			{
 				const u8* dataPtr = data + param.second.offset;
 				
-				///*
 				vkCmdPushConstants(
 					cmdBuffer->GetVulkanId(),  
 					m_layoutTemp, 
@@ -383,7 +382,6 @@ namespace sh
 					0, 
 					param.second.size, 
 					dataPtr);
-					//*/
 			}
 
 

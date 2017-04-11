@@ -11,7 +11,10 @@ namespace video
 	ShaderPtr Shader::Create(const ShaderDescription& description)
 	{
 		Driver* driver = Device::GetInstance()->GetDriver();
-		return driver->CreateShader(description);
+		ShaderPtr result = driver->CreateShader(description);
+		result->m_paramsDescription = description.paramsDescription;
+
+		return result;
 	}
 
 } // video

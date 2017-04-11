@@ -2,7 +2,7 @@
 #define SHADOW_RENDER_PASS_INCLUDE
 
 #include "../Globals.h"
-#include "GpuParamDescription.h"
+#include "GpuParamsDescription.h"
 
 namespace sh
 {
@@ -18,7 +18,7 @@ namespace sh
 			ShaderPtr fragmentShader;
 			ShaderPtr geometryShader;
 
-			GpuParamDescription paramsDescription;
+			GpuParamsDescription paramsDescription;
 			VertexInputDeclarationPtr vertexDeclaration;
 		};
 
@@ -60,7 +60,7 @@ namespace sh
 			
 			Layer GetLayer() const { return m_layer; }
 
-			const GpuParamDescription& GetGpuParamsDescription() const { return m_description.paramsDescription; }
+			const GpuParamsDescription& GetGpuParamsDescription() const { return m_description.paramsDescription; }
 
 			static RenderPipelinePtr Create(const RenderPipelineDescription& description);
 
@@ -71,7 +71,7 @@ namespace sh
 			String m_name;
 
 			RenderPipelineDescription m_description;
-			GpuParamDescription m_paramsDesc;
+			GpuParamsDescription m_paramsDesc;
 
 			Layer m_layer;
 		};
