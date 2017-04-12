@@ -38,7 +38,7 @@ namespace sh
 			virtual void BeginRendering() override;
 			virtual void EndRendering() override;
 			virtual void Render(scene::Mesh* mesh) override;
-			virtual void Render(const RenderCommandPtr& command) override;
+			//virtual void Render(const RenderCommandPtr& command) override;
 
 
 			// State management 
@@ -56,7 +56,7 @@ namespace sh
 
 
 			virtual UniformBufferPtr CreateUniformBuffer() const override;
-			virtual RenderCommandPtr CreateRenderCommand() const override;
+			//virtual RenderCommandPtr CreateRenderCommand() const override;
 			virtual ShaderProgramPtr CreateShaderProgram() const override;
 			virtual VertexInputDeclarationPtr CreateVertexInputDeclaration() const override;
 			virtual RenderPipelinePtr CreateRenderPipeline() const override;

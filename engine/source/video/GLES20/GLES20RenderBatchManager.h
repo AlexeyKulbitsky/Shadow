@@ -8,6 +8,8 @@ namespace sh
 {
 	namespace video
 	{
+		DEFINE_CLASS_PTR(GLES20RenderBatch)
+
 		class GLES20RenderBatchManager : public RenderBatchManager
 		{
 		public:
@@ -17,7 +19,7 @@ namespace sh
 			virtual void Clear() override;
 
 		private:
-			typedef Map<String, RenderBatchPtr> PerTechniqueRenderBatchesMap;
+			typedef Map<String, GLES20RenderBatchPtr> PerTechniqueRenderBatchesMap;
 
 			PerTechniqueRenderBatchesMap m_renderBatches[(size_t)RenderPipeline::Layer::COUNT];
 		};

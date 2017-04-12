@@ -18,6 +18,7 @@ namespace sh
 			void SetMaterial(const sh::video::MaterialPtr& material);
 			const video::MaterialPtr& GetMaterial();
 			const video::GpuParamsPtr& GetGpuParams(u32 idx = 0U) const { return m_gpuParams[idx]; }
+			const video::GpuParamsPtr& GetAutoGpuParams(u32 idx = 0U) const { return m_autoGpuParams[idx]; }
 
 			const video::VertexInputDeclarationPtr& GetVertexDeclaration() const { return m_vertexDeclaration[0]; }
 			const video::VertexBufferPtr& GetVertexBuffer() const { return m_vertexBuffer; }
@@ -37,6 +38,7 @@ namespace sh
 			video::IndexBufferPtr m_indexBuffer;
 			std::vector<video::VertexInputDeclarationPtr> m_vertexDeclaration;
 			std::vector<video::GpuParamsPtr> m_gpuParams;
+			std::vector<video::GpuParamsPtr> m_autoGpuParams;
 
 			video::GpuParamMatrix4f m_worldMatrixParam;
 			video::GpuParamMatrix4f m_viewMatrixParam;

@@ -3,6 +3,7 @@
 
 #include "../Globals.h"
 #include "GpuParamsDescription.h"
+#include "GpuPipelineParamsInfo.h"
 
 namespace sh
 {
@@ -63,6 +64,9 @@ namespace sh
 			const ShaderPtr& GetFragmentShader() const { return m_description.fragmentShader; }
 			const ShaderPtr& GetGeometryShader() const { return m_description.geometryShader; }
 			
+			const GpuPipelineParamsDescription& GetParamsDescription() const { return m_paramsDescription; }
+			const GpuPipelineParamsDescription& GetAutoParamsDescription() const { return m_autoParamsDescription; }
+
 			Layer GetLayer() const { return m_layer; }
 
 			static RenderPipelinePtr Create(const RenderPipelineDescription& description);
@@ -74,7 +78,8 @@ namespace sh
 			String m_name;
 
 			RenderPipelineDescription m_description;
-			GpuParamsDescription m_paramsDesc;
+			GpuPipelineParamsDescription m_paramsDescription;
+			GpuPipelineParamsDescription m_autoParamsDescription;
 
 			Layer m_layer;
 		};

@@ -180,14 +180,14 @@ namespace sh
 
 			vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, m_pipeline->GetVulkanId());
 
-			math::Matrix4f mat = m_autoUniformsBatch->m_uniforms[0]->Get<math::Matrix4f>();
-			vkCmdPushConstants(
-				commandBuffer, 
-				m_pipeline->GetVulkanPipelineLayout(), 
-				VK_SHADER_STAGE_VERTEX_BIT, 
-				0, 
-				sizeof(math::Matrix4f), 
-				m_autoUniformsBatch->m_uniforms[0]->GetData());
+			//math::Matrix4f mat = m_autoUniformsBatch->m_uniforms[0]->Get<math::Matrix4f>();
+			//vkCmdPushConstants(
+			//	commandBuffer, 
+			//	m_pipeline->GetVulkanPipelineLayout(), 
+			//	VK_SHADER_STAGE_VERTEX_BIT, 
+			//	0, 
+			//	sizeof(math::Matrix4f), 
+			//	m_autoUniformsBatch->m_uniforms[0]->GetData());
 
 			VkDeviceSize offsets[1] = { 0 };
 			VkBuffer vertexBuffer = m_vertexBuffer->GetVulkanId();

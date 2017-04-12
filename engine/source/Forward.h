@@ -25,7 +25,7 @@ namespace sh
 		DEFINE_CLASS_PTR(RasterizationState)
 		DEFINE_CLASS_PTR(RenderBatch)
 		DEFINE_CLASS_PTR(RenderBatchManager)
-		DEFINE_CLASS_PTR(RenderCommand)
+		DEFINE_CLASS_PTR(Renderable)
 		DEFINE_CLASS_PTR(RenderPipeline)
 		DEFINE_CLASS_PTR(RenderTarget)
 		DEFINE_CLASS_PTR(RenderTechnique)

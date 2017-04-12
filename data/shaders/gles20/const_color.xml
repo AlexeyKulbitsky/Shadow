@@ -8,10 +8,13 @@
 	<shader language="GLSL" api="GLES20">
 		<vertexShader>
 		<constants>
-			<constant name="matWorld" type="mat4" />
+			
 			<constant name="matWVP" type="mat4" />
 			<constant name="lightDirection" type="vec3" />
 			<constant name="color" type="float" />
+			<block type="transform">
+				<constant name="matWorld" type="mat4" />
+			</block>
 		</constants>
 		<source>
 			<![CDATA[

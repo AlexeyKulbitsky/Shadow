@@ -40,7 +40,7 @@ namespace sh
 			
 			virtual void Render(scene::Model* model);
 			virtual void Render(scene::Mesh* mesh);
-			virtual void Render(const RenderCommandPtr& command) {};
+			//virtual void Render(const RenderCommandPtr& command) {};
 
 			// Viewport management
 			virtual void SetViewport(u32 x, u32 y, u32 width, u32 height);
@@ -86,7 +86,7 @@ namespace sh
 
 			// Resources creation interface
 			virtual UniformBufferPtr CreateUniformBuffer() const {return nullptr;}
-			virtual RenderCommandPtr CreateRenderCommand() const { return nullptr; }
+			//virtual RenderCommandPtr CreateRenderCommand() const { return nullptr; }
 			virtual ShaderProgramPtr CreateShaderProgram() const { return nullptr; }
 			virtual TexturePtr CreateTexture() const { return nullptr; }
 			virtual TexturePtr CreateTexture(const TextureDescription& description) const { return nullptr; }

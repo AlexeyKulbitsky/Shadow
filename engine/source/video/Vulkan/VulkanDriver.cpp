@@ -309,17 +309,7 @@ namespace sh
 		{
 		}
 
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		void VulkanDriver::Render(const RenderCommandPtr& command)
-		{
-			VulkanRenderCommand* vulkanRenderCommand = static_cast<VulkanRenderCommand*>(command.get());
-			vulkanRenderCommand->Update(m_inheritanceInfo);
-			//vkAcquireNextImageKHR(m_device, m_swapChain, 500000/*std::numeric_limits<uint64_t>::max()*/, m_imageAvailableSemaphore, VK_NULL_HANDLE, &m_currentImageIndex);
-			
-			VkCommandBuffer commandBuffer = vulkanRenderCommand->GetCommandBuffer(0);
-			
-			m_executableCommandBuffers.push_back(commandBuffer);
 			/*
 			VkSubmitInfo submitInfo = {};
 			submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
@@ -348,7 +338,6 @@ namespace sh
 			res = vkQueuePresentKHR(m_presentQueue, &presentInfo);
 			SH_ASSERT(res == VK_SUCCESS, "Failed to present render result!");
 			*/
-		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -464,15 +453,6 @@ namespace sh
 		{
 			UniformBufferPtr result = nullptr;
 			result.reset(new VulkanUniformBuffer());
-			return result;
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		RenderCommandPtr VulkanDriver::CreateRenderCommand() const
-		{
-			RenderCommandPtr result = nullptr;
-			result.reset(new VulkanRenderCommand());
 			return result;
 		}
 

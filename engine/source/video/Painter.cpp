@@ -1,6 +1,5 @@
 #include "Painter.h"
 #include "../Device.h"
-#include "RenderCommand.h"
 #include "Material.h"
 #include "RenderPipeline.h"
 #include "VertexDeclaration.h"
@@ -15,10 +14,10 @@ namespace sh
 		{
 			m_linesVertexArray.reserve(5000);
 			Driver* driver = Device::GetInstance()->GetDriver();
-			m_linesRenderCommand = driver->CreateRenderCommand();
-			m_linesRenderCommand->SetVertexBuffer(m_linesBuffer.get());
-			m_linesRenderCommand->SetTopology(Topology::TOP_LINE_LIST);
-			m_linesRenderCommand->SetUseIndices(false);
+			//m_linesRenderCommand = driver->CreateRenderCommand();
+			//m_linesRenderCommand->SetVertexBuffer(m_linesBuffer.get());
+			//m_linesRenderCommand->SetTopology(Topology::TOP_LINE_LIST);
+			//m_linesRenderCommand->SetUseIndices(false);
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -35,7 +34,7 @@ namespace sh
 
 			const VertexInputDeclarationPtr& inputDeclaration = renderPipeline->GetVertexInputDeclaration();
 			inputDeclaration->Assemble(vertexDeclaration);
-			m_linesRenderCommand->SetVertexInputDeclaration(inputDeclaration.get());
+			//m_linesRenderCommand->SetVertexInputDeclaration(inputDeclaration.get());
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -113,7 +112,7 @@ namespace sh
 
 			renderPipeline->GetShaderProgram()->BindProgram();
 
-			driver->Render(m_linesRenderCommand);
+			//driver->Render(m_linesRenderCommand);
 
 			renderPipeline->GetShaderProgram()->UnbindProgram();
 

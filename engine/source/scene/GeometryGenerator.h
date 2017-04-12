@@ -2,7 +2,6 @@
 #define SHADOW_GEOMETRY_GENERATOR_INCLUDE
 
 #include "../Globals.h"
-#include "../video/RenderCommand.h"
 
 namespace sh
 {

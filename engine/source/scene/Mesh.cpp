@@ -98,6 +98,7 @@ namespace sh
 			
 			m_vertexDeclaration.resize(pipelinesCount);
 			m_gpuParams.resize(pipelinesCount);
+			m_autoGpuParams.resize(pipelinesCount);
 
 			for (size_t i = 0; i < 1; ++i)
 			{
@@ -108,13 +109,15 @@ namespace sh
 				inputDeclaration->Assemble(*(m_vertexBuffer->GetVertexDeclaration().get()));
 
 				m_vertexDeclaration[i] = inputDeclaration;
-				m_gpuParams[i] = video::GpuParams::Create(renderPipeline);
+				m_gpuParams[i] = video::GpuParams::Create(renderPipeline->GetParamsDescription());
+				m_autoGpuParams[i] = video::GpuParams::Create(renderPipeline->GetAutoParamsDescription());
+
 				
-				m_gpuParams[i]->GetParam("matWorld", m_worldMatrixParam);
-				m_gpuParams[i]->GetParam("matView", m_viewMatrixParam);
-				m_gpuParams[i]->GetParam("matProjection", m_projectionMatrixParam);
-				m_gpuParams[i]->GetParam("matWVP", m_worldViewdProjectionMatrixParam);
-				m_gpuParams[i]->GetParam("lightDirection", m_lightDirectionParam);
+				m_autoGpuParams[i]->GetParam("matWorld", m_worldMatrixParam);
+				m_autoGpuParams[i]->GetParam("matView", m_viewMatrixParam);
+				m_autoGpuParams[i]->GetParam("matProjection", m_projectionMatrixParam);
+				m_autoGpuParams[i]->GetParam("matWVP", m_worldViewdProjectionMatrixParam);
+				m_autoGpuParams[i]->GetParam("lightDirection", m_lightDirectionParam);
 
 				renderPipeline->Init(inputDeclaration);
 			}			

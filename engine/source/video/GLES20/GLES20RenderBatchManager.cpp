@@ -1,6 +1,6 @@
 #include "GLES20RenderBatchManager.h"
 
-#include "../RenderBatch.h"
+#include "GLES20RenderBatch.h"
 #include "../Material.h"
 #include "../RenderTechnique.h"
 #include "../RenderPipeline.h"
@@ -27,7 +27,7 @@ namespace sh
 
 			if (m_renderBatches[layerIndex].find(techniqueName) == m_renderBatches[layerIndex].end())
 			{
-				RenderBatchPtr renderBatch(new RenderBatch());
+				GLES20RenderBatchPtr renderBatch(new GLES20RenderBatch());
 				const RenderPipelinePtr& renderPipeline = material->GetRenderPipeline(0);
 				const ShaderProgramPtr& shader = renderPipeline->GetShaderProgram();
 				renderBatch->SetShaderProgram(shader);

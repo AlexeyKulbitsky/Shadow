@@ -1,7 +1,6 @@
 #ifndef SHADOW_VULKAN_RENDER_COMMAND_INCLUDE
 #define SHADOW_VULKAN_RENDER_COMMAND_INCLUDE
 
-#include "../RenderCommand.h"
 #include "VulkanVertexDeclaration.h"
 #include "VulkanVertexBuffer.h"
 #include "VulkanIndexBuffer.h"
@@ -11,26 +10,25 @@ namespace sh
 {
 	namespace video
 	{
-		class VulkanRenderCommand : public RenderCommand
+		class VulkanRenderCommand
 		{
 		public:
 			VulkanRenderCommand();
 			virtual ~VulkanRenderCommand();
 
-			virtual void Init() override;
+			virtual void Init();
 
-			virtual void SetUseIndices(bool useIndices) override;
-			virtual void SetVertexBuffer(VertexBuffer* vertexBuffer) override;
-			virtual void SetIndexBuffer(IndexBuffer* indexBuffer) override;
-			virtual void SetTopology(Topology topology) override;
-			virtual void SetVertexInputDeclaration(VertexInputDeclaration* declaration) override;
+			virtual void SetUseIndices(bool useIndices);
+			virtual void SetVertexBuffer(VertexBuffer* vertexBuffer);
+			virtual void SetIndexBuffer(IndexBuffer* indexBuffer);
+			virtual void SetTopology(Topology topology);
+			virtual void SetVertexInputDeclaration(VertexInputDeclaration* declaration);
 
-			virtual bool IsUseIndices() const override { return m_useIndices; }
-			virtual VertexBuffer* GetVertexBuffer() override { return m_vertexBuffer; }
-			virtual IndexBuffer* GetIndexBuffer() override { return m_indexBuffer; }
-			virtual Topology GetTopology() const override { return m_topology; }
-			virtual VertexInputDeclaration* GetVertexInputDeclaration() const override { return m_inputDeclaration; }
-			const UniformsBatchPtr& GetAutoUniformsBatch() const { return m_autoUniformsBatch; }
+			virtual bool IsUseIndices() const  { return m_useIndices; }
+			virtual VertexBuffer* GetVertexBuffer()  { return m_vertexBuffer; }
+			virtual IndexBuffer* GetIndexBuffer()  { return m_indexBuffer; }
+			virtual Topology GetTopology() const  { return m_topology; }
+			virtual VertexInputDeclaration* GetVertexInputDeclaration() const  { return m_inputDeclaration; }
 
 			// Vulkan-specific interface
 			void SetPipeline(VulkanRenderPipeline* pipeline) { m_pipeline = pipeline; }

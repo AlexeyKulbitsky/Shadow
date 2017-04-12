@@ -15,6 +15,7 @@ namespace video
 		String language;
 		ShaderType type;
 		SPtr<GpuParamsDescription> paramsDescription;
+		SPtr<GpuParamsDescription> autoParamsDescription;
 	};
 
 	class Shader
@@ -24,10 +25,12 @@ namespace video
 		static ShaderPtr Create(const ShaderDescription& description);
 
 		SPtr<GpuParamsDescription> GetParamsDescription() const { return m_paramsDescription; }
+		SPtr<GpuParamsDescription> GetAutoParamsDescription() const { return m_autoParamsDescription; }
 
 	protected:
 		ShaderType m_type;
 		SPtr<GpuParamsDescription> m_paramsDescription;
+		SPtr<GpuParamsDescription> m_autoParamsDescription;
 	};
 
 } // video

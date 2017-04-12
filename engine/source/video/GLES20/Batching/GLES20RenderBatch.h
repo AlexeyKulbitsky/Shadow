@@ -7,14 +7,14 @@ namespace sh
 {
 	namespace video
 	{
-		class RenderBatch
+		class GLES20RenderBatch
 		{
 		public:
 			/*
 			This class is used to hold render commands with the same material
 			*/
-			RenderBatch() {}
-			virtual ~RenderBatch() {}
+			GLES20RenderBatch() {}
+			virtual ~GLES20RenderBatch() {}
 			virtual void SetDepthStencilState(const DepthStencilStatePtr& renderState);
 			virtual void SetRasterizationState(const RasterizationStatePtr& renderState);
 			virtual void SetBlendingState(const BlendingStatePtr& renderState);

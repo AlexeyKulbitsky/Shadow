@@ -110,7 +110,10 @@ namespace sh
 			{
 				pugi::xml_node constantsNode = vertexShaderSrcNode.child("constants");
 				SPtr<GpuParamsDescription> paramsDescription;
-				paramsDescription = LoadParamsDescription(constantsNode);
+				SPtr<GpuParamsDescription> autoParamsDescription;
+				LoadParamsDescription(constantsNode,
+									  paramsDescription,
+									  autoParamsDescription);
 				pugi::xml_node sourceNode = vertexShaderSrcNode.child("source");
 				
 				ShaderDescription shaderDesc;
@@ -119,6 +122,7 @@ namespace sh
 				shaderDesc.language = language;
 				shaderDesc.type = ST_VERTEX;
 				shaderDesc.paramsDescription = paramsDescription;
+				shaderDesc.autoParamsDescription = autoParamsDescription;
 				pipelineDesc.vertexShader = Shader::Create(shaderDesc);
 			}
 
@@ -128,7 +132,10 @@ namespace sh
 			{
 				pugi::xml_node constantsNode = fragmentShaderSrcNode.child("constants");
 				SPtr<GpuParamsDescription> paramsDescription;
-				paramsDescription = LoadParamsDescription(constantsNode);
+				SPtr<GpuParamsDescription> autoParamsDescription;
+				LoadParamsDescription(constantsNode,
+									  paramsDescription,
+									  autoParamsDescription);
 				pugi::xml_node sourceNode = fragmentShaderSrcNode.child("source");
 
 				ShaderDescription shaderDesc;
@@ -137,6 +144,7 @@ namespace sh
 				shaderDesc.language = language;
 				shaderDesc.type = ST_FRAGMENT;
 				shaderDesc.paramsDescription = paramsDescription;
+				shaderDesc.autoParamsDescription = autoParamsDescription;
 				pipelineDesc.fragmentShader = Shader::Create(shaderDesc);
 			}
 
@@ -338,10 +346,12 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////////////////////////
 
-		SPtr<GpuParamsDescription> RenderTechnique::LoadParamsDescription(const pugi::xml_node& node)
+		void RenderTechnique::LoadParamsDescription(const pugi::xml_node& node,
+													SPtr<GpuParamsDescription>& paramsDesc,
+													SPtr<GpuParamsDescription>& autoParamsDesc)
 		{
-			SPtr<GpuParamsDescription> paramsDesc(new GpuParamsDescription);
-
+			paramsDesc.reset(new GpuParamsDescription);
+			autoParamsDesc.reset(new GpuParamsDescription);
 
 			pugi::xml_node childNode = node.first_child();
 
@@ -389,14 +399,21 @@ namespace sh
 						desc.name = constantName;
 					}
 
+					if (desc.name == "matWVP" ||
+						desc.name == "matWorld")
+					{
+						autoParamsDesc->params[desc.name] = desc;
+					}
+					else
+					{
+						paramsDesc->params[desc.name] = desc;
+					}
 					// Add param to map
-					paramsDesc->params[desc.name] = desc;
+					
 				}
 
 				childNode = childNode.next_sibling();
 			}
-
-			return paramsDesc;
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////

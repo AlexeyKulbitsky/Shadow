@@ -1,7 +1,6 @@
-#include "RenderBatch.h"
+#include "GLES20RenderBatch.h"
 #include "ShaderProgram.h"
 #include "UniformBuffer.h"
-#include "RenderCommand.h"
 #include "IndexBuffer.h"
 #include "Driver.h"
 #include "../scene/Mesh.h"
@@ -12,56 +11,56 @@ namespace sh
 {
 	namespace video
 	{
-		void RenderBatch::SetDepthStencilState(const DepthStencilStatePtr& depthStencilState)
+		void GLES20RenderBatch::SetDepthStencilState(const DepthStencilStatePtr& depthStencilState)
 		{
 			m_depthStencilState = depthStencilState;
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 
-		void RenderBatch::SetRasterizationState(const RasterizationStatePtr& rasterizationState)
+		void GLES20RenderBatch::SetRasterizationState(const RasterizationStatePtr& rasterizationState)
 		{
 			m_rasterizationState = rasterizationState;
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 
-		void RenderBatch::SetBlendingState(const BlendingStatePtr& blendingState)
+		void GLES20RenderBatch::SetBlendingState(const BlendingStatePtr& blendingState)
 		{
 			m_blendingState = blendingState;
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 
-		void RenderBatch::SetShaderProgram(const ShaderProgramPtr& shaderProgram)
+		void GLES20RenderBatch::SetShaderProgram(const ShaderProgramPtr& shaderProgram)
 		{
 			m_program = shaderProgram;
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 
-		void RenderBatch::SetUniformBuffer(const UniformBufferPtr& uniformBuffer)
+		void GLES20RenderBatch::SetUniformBuffer(const UniformBufferPtr& uniformBuffer)
 		{
 			m_uniformBuffer = uniformBuffer;
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 
-		void RenderBatch::SetRenderPipeline(const RenderPipelinePtr& pipeline)
+		void GLES20RenderBatch::SetRenderPipeline(const RenderPipelinePtr& pipeline)
 		{
 			m_pipeline = pipeline;
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 
-		void RenderBatch::AddMesh(const scene::MeshPtr& mesh)
+		void GLES20RenderBatch::AddMesh(const scene::MeshPtr& mesh)
 		{
 			m_meshes.push_back(mesh);
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 
-		void RenderBatch::Submit()
+		void GLES20RenderBatch::Submit()
 		{
 			Driver* driver = Device::GetInstance()->GetDriver();
 
@@ -70,6 +69,7 @@ namespace sh
 			for (const auto& mesh : m_meshes)
 			{
 				driver->SetGpuParams(mesh->GetGpuParams());
+				driver->SetGpuParams(mesh->GetAutoGpuParams());
 				driver->SetVertexDeclaration(mesh->GetVertexDeclaration());
 				driver->SetIndexBuffer(mesh->GetIndexBuffer());
 				driver->SetVertexBuffer(mesh->GetVertexBuffer());
@@ -79,7 +79,7 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////////////
 
-		void RenderBatch::Clear()
+		void GLES20RenderBatch::Clear()
 		{
 
 		}

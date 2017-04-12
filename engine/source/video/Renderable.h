@@ -1,5 +1,5 @@
-#ifndef SHADOW_RENDER_COMMAND_INCLUDE
-#define SHADOW_RENDER_COMMAND_INCLUDE
+#ifndef SHADOW_RENDERABLE_INCLUDE
+#define SHADOW_RENDERABLE_INCLUDE
 
 #include "../Globals.h"
 
@@ -10,11 +10,11 @@ namespace sh
 		class VertexDeclaration;
 		class VertexInputDeclaration;
 
-		class RenderCommand
+		class Renderable
 		{
 		public:
-			RenderCommand(){}
-			virtual ~RenderCommand(){}
+			Renderable(){}
+			virtual ~Renderable(){}
 
 			virtual void Init() = 0;
 

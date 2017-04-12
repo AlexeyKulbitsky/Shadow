@@ -2,7 +2,6 @@
 #define SHADOW_MESH_BASE_INCLUDE
 
 #include "../Globals.h"
-#include "../video/RenderCommand.h"
 
 namespace sh
 {

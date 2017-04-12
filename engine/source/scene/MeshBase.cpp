@@ -6,7 +6,6 @@
 #include "../video/RenderPipeline.h"
 #include "../video/VertexBuffer.h"
 #include "../video/IndexBuffer.h"
-#include "../video/RenderCommand.h"
 #include "../video/UniformBuffer.h"
 #include "../video/Uniform.h"
 #include "../video/VertexDeclaration.h"

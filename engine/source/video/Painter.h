@@ -30,7 +30,7 @@ namespace sh
 
 			std::vector<float> m_linesVertexArray;
 			VertexBufferPtr m_linesBuffer;
-			RenderCommandPtr m_linesRenderCommand;
+			//RenderCommandPtr m_linesRenderCommand;
 		};
 	}
 }

@@ -1,5 +1,4 @@
 #include "CommandPool.h"
-#include "RenderBatch.h"
 #include "Material.h"
 #include "RenderTechnique.h"
 #include "RenderPipeline.h"

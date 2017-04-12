@@ -13,6 +13,7 @@ namespace video
 		Driver* driver = Device::GetInstance()->GetDriver();
 		ShaderPtr result = driver->CreateShader(description);
 		result->m_paramsDescription = description.paramsDescription;
+		result->m_autoParamsDescription = description.autoParamsDescription;
 
 		return result;
 	}
