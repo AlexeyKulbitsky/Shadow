@@ -108,7 +108,7 @@ namespace sh
 				inputDeclaration->Assemble(*(m_vertexBuffer->GetVertexDeclaration().get()));
 
 				m_vertexDeclaration[i] = inputDeclaration;
-				m_gpuParams[i] = video::GpuParams::Create(renderPipeline->GetGpuParamsDescription());
+				m_gpuParams[i] = video::GpuParams::Create(renderPipeline);
 				
 				m_gpuParams[i]->GetParam("matWorld", m_worldMatrixParam);
 				m_gpuParams[i]->GetParam("matView", m_viewMatrixParam);

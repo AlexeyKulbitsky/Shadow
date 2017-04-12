@@ -369,20 +369,32 @@ namespace sh
 			VulkanCommandBuffer* cmdBuffer = static_cast<VulkanCommandBuffer*>(commandBuffer.get());
 
 			const u8* data = params->GetData();
-			const GpuParamsDescription& desc = params->GetDescripton();
 
-			for (const auto& param : desc.params)
+
+			for( size_t i = 0; i < 6U; ++i )
 			{
-				const u8* dataPtr = data + param.second.offset;
-				
-				vkCmdPushConstants(
-					cmdBuffer->GetVulkanId(),  
-					m_layoutTemp, 
-					VK_SHADER_STAGE_VERTEX_BIT, 
-					0, 
-					param.second.size, 
-					dataPtr);
+				ShaderType shaderType = static_cast<ShaderType>(i);
+
+				const SPtr<GpuParamsDescription>& desc = params->GetDescription(shaderType);
+				if(!desc)
+					continue;
+
+				for (const auto& param : desc->params)
+				{
+					const u8* dataPtr = data + param.second.offset;
+					
+					vkCmdPushConstants(
+						cmdBuffer->GetVulkanId(),  
+						m_layoutTemp, 
+						s_vkShaderType[i], 
+						0, 
+						param.second.size, 
+						dataPtr);
+				}
 			}
+
+
+			
 
 
 			

@@ -27,7 +27,7 @@ namespace sh
 			DepthStencilStatePtr LoadDepthStencilState(const pugi::xml_node& node);
 			RasterizationStatePtr LoadRasterizationState(const pugi::xml_node& node);
 			BlendingStatePtr LoadBlendingState(const pugi::xml_node& node);
-			GpuParamsDescription LoadParamsDescription(const pugi::xml_node& node);
+			SPtr<GpuParamsDescription> LoadParamsDescription(const pugi::xml_node& node);
 
 		protected:
 			std::vector<RenderPipelinePtr> m_renderPipelines;

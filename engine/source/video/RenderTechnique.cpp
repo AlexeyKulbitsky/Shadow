@@ -100,8 +100,8 @@ namespace sh
 			io::FileSystem* fs = Device::GetInstance()->GetFileSystem();
 
 			// Load constants
-			pugi::xml_node paramsNode = shadersNode.child("constants");
-			pipelineDesc.paramsDescription = LoadParamsDescription(paramsNode);
+			//pugi::xml_node paramsNode = shadersNode.child("constants");
+			//pipelineDesc.paramsDescription = LoadParamsDescription(paramsNode);
 
 
 			// Load vertex shader data
@@ -109,9 +109,9 @@ namespace sh
 			if (vertexShaderSrcNode)
 			{
 				pugi::xml_node constantsNode = vertexShaderSrcNode.child("constants");
+				SPtr<GpuParamsDescription> paramsDescription;
+				paramsDescription = LoadParamsDescription(constantsNode);
 				pugi::xml_node sourceNode = vertexShaderSrcNode.child("source");
-
-				SPtr<GpuParamDescription> paramsDescription;
 				
 				ShaderDescription shaderDesc;
 				shaderDesc.source = sourceNode.child_value();
@@ -127,9 +127,9 @@ namespace sh
 			if (fragmentShaderSrcNode)
 			{
 				pugi::xml_node constantsNode = fragmentShaderSrcNode.child("constants");
+				SPtr<GpuParamsDescription> paramsDescription;
+				paramsDescription = LoadParamsDescription(constantsNode);
 				pugi::xml_node sourceNode = fragmentShaderSrcNode.child("source");
-
-				SPtr<GpuParamDescription> paramsDescription;
 
 				ShaderDescription shaderDesc;
 				shaderDesc.source = sourceNode.child_value();
@@ -338,9 +338,10 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////////////////////////
 
-		GpuParamsDescription RenderTechnique::LoadParamsDescription(const pugi::xml_node& node)
+		SPtr<GpuParamsDescription> RenderTechnique::LoadParamsDescription(const pugi::xml_node& node)
 		{
-			GpuParamsDescription paramsDesc;
+			SPtr<GpuParamsDescription> paramsDesc(new GpuParamsDescription);
+
 
 			pugi::xml_node childNode = node.first_child();
 
@@ -389,7 +390,7 @@ namespace sh
 					}
 
 					// Add param to map
-					paramsDesc.params[desc.name] = desc;
+					paramsDesc->params[desc.name] = desc;
 				}
 
 				childNode = childNode.next_sibling();

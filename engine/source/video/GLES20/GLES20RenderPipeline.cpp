@@ -269,7 +269,19 @@ namespace sh
 				SH_ASSERT(0, "ERROR");
 			}
 
-			for (auto& param : m_description.paramsDescription.params)
+			// For GLES20 there are only two type of shaders : vertex and fragment
+			auto vertexParams = m_description.vertexShader->GetParamsDescription();
+			for (auto& param : vertexParams->params)
+			{
+				GLint location = glGetUniformLocation(m_programID, param.second.name.c_str());
+				if (location != -1)
+				{
+					param.second.location = location;
+				}
+			}
+
+			auto fragmentParams = m_description.fragmentShader->GetParamsDescription();
+			for (auto& param : fragmentParams->params)
 			{
 				GLint location = glGetUniformLocation(m_programID, param.second.name.c_str());
 				if (location != -1)

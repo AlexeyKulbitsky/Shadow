@@ -140,6 +140,8 @@ namespace sh
 			}
 
 			// Split params description
+
+			/*
 			GpuParamsDescription desc = m_renderPipelines[0]->GetGpuParamsDescription();
 			GpuParamsDescription transformDesc;
 			for (auto it = desc.params.begin(); it != desc.params.end();)
@@ -173,7 +175,7 @@ namespace sh
 				SPtr<MaterialParam> matParam(new MaterialParam(type, const_cast<u8*>(data)));
 				m_transformParams.push_back(matParam);
 			}
-
+			*/
 		}
 	}
 }

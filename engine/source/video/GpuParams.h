@@ -4,6 +4,7 @@
 #include "../Globals.h"
 #include "GpuParam.h"
 #include "GpuParamsDescription.h"
+#include "GpuPipelineParamsInfo.h"
 
 namespace sh
 {
@@ -60,16 +61,16 @@ namespace video
 		void GetParam(const String& name, TGpuParam<T>& param);
 
 		const u8* GetData() const { return m_data; }
-		const GpuParamsDescription& GetDescripton() const { return m_description; }
+		const SPtr<GpuParamsDescription>& GetDescription(ShaderType shaderType) { return m_paramsDescriptions[shaderType]; }
 
-		static GpuParamsPtr Create(const GpuParamsDescription& description);
-	private:
-		GpuParams(const GpuParamsDescription& description);
-		
-	private:
-		GpuParamsDescription m_description;
+		static GpuParamsPtr Create(const GpuPipelineParamsDescription& pipelineParamsInfo);
+		static GpuParamsPtr Create(const RenderPipelinePtr& pipeline);
 
-		std::array<GpuParamsDescription, 6U> m_paramsDescriptions;
+	private:
+		GpuParams(const GpuPipelineParamsDescription& pipelineParamsInfo);
+	private:
+
+		std::array<SPtr<GpuParamsDescription>, 6U> m_paramsDescriptions;
 		u8* m_data = nullptr;
 	};
 
@@ -103,16 +104,21 @@ namespace video
 		return *(m_valuePtr + index);
 	}
 
-
-
 	template<typename T>
 	inline void GpuParams::GetParam(const String& name, TGpuParam<T>& param)
 	{
-		auto it = m_description.params.find(name);
-		if (it != m_description.params.end())
+		for( size_t i = 0; i < 6U; ++i )
 		{
-			param = TGpuParam<T>(this, &(it->second));
-		}
+			if(!m_paramsDescriptions[i])
+				continue;
+
+			auto it = m_paramsDescriptions[i]->params.find(name);
+			if (it != m_paramsDescriptions[i]->params.end())
+			{
+				param = TGpuParam<T>(this, &(it->second));
+				return;
+			}
+		}		
 	}
 
 

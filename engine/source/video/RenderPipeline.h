@@ -17,13 +17,16 @@ namespace sh
 			ShaderPtr vertexShader;
 			ShaderPtr fragmentShader;
 			ShaderPtr geometryShader;
+			ShaderPtr tesselationControlShader;
+			ShaderPtr tesselationEvaluationShader;
+			ShaderPtr computeShader;
 
-			GpuParamsDescription paramsDescription;
 			VertexInputDeclarationPtr vertexDeclaration;
 		};
 
 		class RenderPipeline
 		{
+			friend class GpuParams;
 		public:
 			enum class Layer
 			{
@@ -45,6 +48,8 @@ namespace sh
 			virtual const VertexInputDeclarationPtr& GetVertexInputDeclaration() const = 0;
 			virtual const UniformBufferPtr& GetUniformBuffer() const = 0;
 			virtual const UniformBufferPtr& GetTransformUniformBuffer() const = 0;
+
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////
 			
 			const DepthStencilStatePtr& GetDepthStencilState() const { return m_description.depthStencilState; }
 			const RasterizationStatePtr& GetRasterizationState() const { return m_description.rasterizationState; }
@@ -59,8 +64,6 @@ namespace sh
 			const ShaderPtr& GetGeometryShader() const { return m_description.geometryShader; }
 			
 			Layer GetLayer() const { return m_layer; }
-
-			const GpuParamsDescription& GetGpuParamsDescription() const { return m_description.paramsDescription; }
 
 			static RenderPipelinePtr Create(const RenderPipelineDescription& description);
 
