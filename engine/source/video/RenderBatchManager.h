@@ -7,7 +7,7 @@ namespace sh
 {
 	namespace video
 	{
-		class RenderBatchManager
+		class RenderBatchManager : public Singleton<RenderBatchManager>
 		{
 		public:
 			virtual ~RenderBatchManager() { }

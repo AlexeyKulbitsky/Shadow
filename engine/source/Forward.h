@@ -21,6 +21,7 @@ namespace sh
 		DEFINE_CLASS_PTR(HardwareBuffer)
 		DEFINE_CLASS_PTR(IndexBuffer)
 		DEFINE_CLASS_PTR(Material)
+		DEFINE_CLASS_PTR(MaterialParams)
 		DEFINE_CLASS_PTR(Painter)
 		DEFINE_CLASS_PTR(RasterizationState)
 		DEFINE_CLASS_PTR(RenderBatch)

@@ -94,15 +94,15 @@ namespace sh
 
 		VulkanDriver::VulkanDriver()
 		{
-			VulkanRenderStateManager::CreateInstance();
 		}
 
 		VulkanDriver::VulkanDriver(const CreationParameters& parameters)
 		{
 			m_parameters = parameters;
-			VulkanRenderStateManager::CreateInstance();
-			VulkanHardwareBufferManager::CreateInstance();
+			RenderStateManager::CreateInstance<VulkanRenderStateManager>();
+			HardwareBufferManager::CreateInstance<VulkanHardwareBufferManager>();
 			CommandBufferManager::CreateInstance<VulkanCommandBufferManager>();
+			RenderBatchManager::CreateInstance<VulkanRenderBatchManager>();
 		}
 
 		VulkanDriver::~VulkanDriver()
@@ -111,6 +111,7 @@ namespace sh
 			VulkanRenderStateManager::DestroyInstance();
 			VulkanHardwareBufferManager::DestroyInstance();
 			CommandBufferManager::DestroyInstance();
+			RenderBatchManager::DestroyInstance();
 		}
 
 		const String& VulkanDriver::GetApiName() const
@@ -458,55 +459,10 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		ShaderProgramPtr VulkanDriver::CreateShaderProgram() const
-		{
-			ShaderProgramPtr result = nullptr;
-			result.reset(new VulkanShaderProgram(m_device));
-			return result;
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 		VertexInputDeclarationPtr VulkanDriver::CreateVertexInputDeclaration() const
 		{
 			VertexInputDeclarationPtr result = nullptr;
 			result.reset(new VulkanVertexDeclaration());
-			return result;
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		RenderPipelinePtr VulkanDriver::CreateRenderPipeline() const
-		{
-			RenderPipelinePtr result = nullptr;
-			//result.reset(new VulkanRenderPipeline());
-			return result;
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		RenderPipelinePtr VulkanDriver::CreateRenderPipeline(const RenderPipelineDescription& description) const
-		{
-			RenderPipelinePtr result = nullptr;
-			result.reset(new VulkanRenderPipeline(description));
-			return result;
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		RenderBatchManagerPtr VulkanDriver::CreateRenderBatchManager() const
-		{
-			RenderBatchManagerPtr result;
-			result.reset(new VulkanRenderBatchManager());
-			return result;
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		ShaderPtr VulkanDriver::CreateShader(const ShaderDescription& description) const
-		{
-			ShaderPtr result;
-			result.reset(new VulkanShader(description));
 			return result;
 		}
 

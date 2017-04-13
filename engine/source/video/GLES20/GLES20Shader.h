@@ -13,6 +13,7 @@ namespace video
 	class GLES20Shader : public Shader
 	{
 		friend class GLES20Driver;
+		friend class GLES20RenderStateManager;
 	public:
 		GLuint GetGLId() const { return m_glID; }
 

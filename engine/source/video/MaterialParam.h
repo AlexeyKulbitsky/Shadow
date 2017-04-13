@@ -25,7 +25,7 @@ namespace video
 			*data = value;
 		}
 
-	private:
+	//private:
 		MaterialParam(MaterialParamType type, u8* dataPtr) : m_type(type), m_dataPtr(dataPtr) { }
 
 	private:

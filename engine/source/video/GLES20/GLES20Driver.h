@@ -59,10 +59,6 @@ namespace sh
 			virtual TexturePtr CreateTexture(const TextureDescription& description) const override;
 			virtual VertexInputDeclarationPtr CreateVertexInputDeclaration() const override;
 			virtual RenderTargetPtr CreateRenderTarget() const override;
-			virtual RenderPipelinePtr CreateRenderPipeline() const override;
-			virtual RenderPipelinePtr CreateRenderPipeline(const RenderPipelineDescription& description) const override;
-			virtual RenderBatchManagerPtr CreateRenderBatchManager() const override;
-			virtual ShaderPtr CreateShader(const ShaderDescription& description) const override;
 			virtual SamplerPtr CreateSampler(const SamplerDescription& description) const override;
 
 		private:

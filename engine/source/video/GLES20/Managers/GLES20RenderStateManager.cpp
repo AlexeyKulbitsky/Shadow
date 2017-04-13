@@ -1,6 +1,7 @@
 #include "GLES20RenderStateManager.h"
 
 #include "../GLES20RenderPipeline.h"
+#include "../GLES20Shader.h"
 
 namespace sh
 {
@@ -15,15 +16,11 @@ namespace video
 		return result;
 	}
 
-	void GLES20RenderStateManager::CreateInstance()
+	ShaderPtr GLES20RenderStateManager::CreateShader(const ShaderDescription& description)
 	{
-		s_instance = new GLES20RenderStateManager();
-	}
-
-	void GLES20RenderStateManager::DestroyInstance()
-	{
-		delete s_instance;
-		s_instance = nullptr;
+		ShaderPtr result = nullptr;
+		result.reset(new GLES20Shader(description));
+		return result;
 	}
 
 } // video

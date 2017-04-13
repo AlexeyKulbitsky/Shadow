@@ -5,7 +5,6 @@
 #include "../video/RenderTechnique.h"
 #include "../video/ShaderProgram.h"
 #include "../video/RenderPipeline.h"
-#include "../video/RenderPipeline.h"
 #include "../video/VertexDeclaration.h"
 #include "../video/UniformBuffer.h"
 #include "../video/VertexBuffer.h"
@@ -13,6 +12,9 @@
 #include "../scene/SceneManager.h"
 #include "../scene/Camera.h"
 #include "../video/GpuParams.h"
+#include "../video/GpuParamsDescription.h"
+#include "../video/MaterialParam.h"
+#include "../video/Renderable.h"
 
 #include "../video/Vulkan/VulkanRenderCommand.h"
 #include "../video/Vulkan/VulkanRenderPipeline.h"
@@ -27,59 +29,17 @@ namespace sh
 			m_worldMatrix.SetIdentity();
 			m_vertexBuffer = meshBase->GetVertexBuffer();
 			m_indexBuffer = meshBase->GetIndexBuffer();
+
+			m_renderable.reset(new video::Renderable());
+			m_renderable->m_vertexBuffer = meshBase->GetVertexBuffer();
+			m_renderable->m_indexBuffer = meshBase->GetIndexBuffer();
+			m_renderable->m_matrix = &m_worldMatrix;
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
 		Mesh::~Mesh()
 		{
-		}
-
-		/////////////////////////////////////////////////////////////////////////////////////
-
-		void Mesh::UpdateTransformationUniforms()
-		{			
-			Camera* camera = Device::GetInstance()->GetSceneManager()->GetCamera();
-			sh::math::Matrix4f viewMatrix = camera->GetViewMatrix();
-			sh::math::Matrix4f projectionMatrix = camera->GetProjectionMatrix();
-			
-			video::Driver* driver = Device::GetInstance()->GetDriver();
-			math::Matrix4f wvp = projectionMatrix * viewMatrix * m_worldMatrix;
-			wvp.m[1][1] *= -1.0f;
-				
-			auto transformParams = m_material->GetTransformParams();
-
-			for (const auto& param : transformParams)
-			{
-				switch (param->GetType())
-				{
-					case MaterialParamType::MatrixWorld:
-						param->Set(m_worldMatrix);
-						break;
-					case MaterialParamType::MatrixView:
-						param->Set(viewMatrix);
-						break;
-					case MaterialParamType::MatrixProjection:
-						param->Set(projectionMatrix);
-						break;
-					case MaterialParamType::MatrixWorldViewProjection:
-						param->Set(wvp);
-						break;
-				}
-			}
-
-
-			if (m_worldViewdProjectionMatrixParam)
-				m_worldViewdProjectionMatrixParam.Set(wvp);
-			if (m_worldMatrixParam)
-				m_worldMatrixParam.Set(m_worldMatrix);
-			if (m_viewMatrixParam)
-				m_viewMatrixParam.Set(viewMatrix);
-			if (m_projectionMatrixParam)
-				m_projectionMatrixParam.Set(projectionMatrix);
-
-			if (m_lightDirectionParam)
-				m_lightDirectionParam.Set(math::Vector3f(0.0f, 0.0f, -1.0f));
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -108,16 +68,14 @@ namespace sh
 				video::VertexInputDeclarationPtr inputDeclaration = renderPipeline->GetVertexInputDeclaration()->Clone();
 				inputDeclaration->Assemble(*(m_vertexBuffer->GetVertexDeclaration().get()));
 
-				m_vertexDeclaration[i] = inputDeclaration;
-				m_gpuParams[i] = video::GpuParams::Create(renderPipeline->GetParamsDescription());
-				m_autoGpuParams[i] = video::GpuParams::Create(renderPipeline->GetAutoParamsDescription());
+				if (i == 0)
+				{
+					m_renderable->m_vertexDeclaration = inputDeclaration;
+					m_renderable->m_transfromsGpuParams = video::GpuParams::Create(renderPipeline->GetAutoParamsDescription());
 
-				
-				m_autoGpuParams[i]->GetParam("matWorld", m_worldMatrixParam);
-				m_autoGpuParams[i]->GetParam("matView", m_viewMatrixParam);
-				m_autoGpuParams[i]->GetParam("matProjection", m_projectionMatrixParam);
-				m_autoGpuParams[i]->GetParam("matWVP", m_worldViewdProjectionMatrixParam);
-				m_autoGpuParams[i]->GetParam("lightDirection", m_lightDirectionParam);
+					m_renderable->m_transformParams.reset(new video::MaterialParams(m_renderable->m_transfromsGpuParams));
+				}
+
 
 				renderPipeline->Init(inputDeclaration);
 			}			

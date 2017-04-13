@@ -14,10 +14,8 @@ namespace video
 		friend class GLES20Driver;
 	public:
 		virtual RenderPipelinePtr CreateRenderPipeline(const RenderPipelineDescription& description) override;
+		virtual ShaderPtr CreateShader(const ShaderDescription& description) override;
 
-	private:
-		static void CreateInstance();
-		static void DestroyInstance();
 	};
 
 } // video

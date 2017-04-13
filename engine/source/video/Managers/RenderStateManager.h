@@ -3,6 +3,7 @@
 
 #include "../Globals.h"
 #include "../RenderPipeline.h"
+#include "../Shader.h"
 
 namespace sh
 {
@@ -10,15 +11,11 @@ namespace sh
 namespace video
 {
 
-	class RenderStateManager
+	class RenderStateManager : public Singleton<RenderStateManager>
 	{
 	public: 
-		static RenderStateManager* GetInstance() { return s_instance; }
-
 		virtual RenderPipelinePtr CreateRenderPipeline(const RenderPipelineDescription& description) = 0;
-
-	protected:
-		static RenderStateManager* s_instance;
+		virtual ShaderPtr CreateShader(const ShaderDescription& description) = 0;
 	};
 
 } // video

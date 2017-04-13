@@ -13,7 +13,6 @@ namespace sh
 		public:			
 			explicit Mesh(MeshBasePtr meshBase);
 			~Mesh();	
-			void UpdateTransformationUniforms();
 			void SetWorldMatrix(const math::Matrix4f& matrix);
 			void SetMaterial(const sh::video::MaterialPtr& material);
 			const video::MaterialPtr& GetMaterial();
@@ -23,6 +22,8 @@ namespace sh
 			const video::VertexInputDeclarationPtr& GetVertexDeclaration() const { return m_vertexDeclaration[0]; }
 			const video::VertexBufferPtr& GetVertexBuffer() const { return m_vertexBuffer; }
 			const video::IndexBufferPtr& GetIndexBuffer() const { return m_indexBuffer; }
+
+			const video::RenderablePtr& GetRanderable() const { return m_renderable; }
 
 		private:
 			Mesh(){}
@@ -40,11 +41,8 @@ namespace sh
 			std::vector<video::GpuParamsPtr> m_gpuParams;
 			std::vector<video::GpuParamsPtr> m_autoGpuParams;
 
-			video::GpuParamMatrix4f m_worldMatrixParam;
-			video::GpuParamMatrix4f m_viewMatrixParam;
-			video::GpuParamMatrix4f m_projectionMatrixParam;
-			video::GpuParamMatrix4f m_worldViewdProjectionMatrixParam;
-			video::GpuParamVector3f m_lightDirectionParam;
+
+			video::RenderablePtr m_renderable;
 		};
 	}
 }

@@ -4,6 +4,9 @@
 #include "IndexBuffer.h"
 #include "Driver.h"
 #include "../scene/Mesh.h"
+#include "../../../scene/Camera.h"
+#include "../../../scene/SceneManager.h"
+#include "../../Renderable.h"
 #include "../Device.h"
 
 
@@ -11,51 +14,22 @@ namespace sh
 {
 	namespace video
 	{
-		void GLES20RenderBatch::SetDepthStencilState(const DepthStencilStatePtr& depthStencilState)
-		{
-			m_depthStencilState = depthStencilState;
-		}
-
-		//////////////////////////////////////////////////////////////////////////
-
-		void GLES20RenderBatch::SetRasterizationState(const RasterizationStatePtr& rasterizationState)
-		{
-			m_rasterizationState = rasterizationState;
-		}
-
-		//////////////////////////////////////////////////////////////////////////
-
-		void GLES20RenderBatch::SetBlendingState(const BlendingStatePtr& blendingState)
-		{
-			m_blendingState = blendingState;
-		}
-
-		//////////////////////////////////////////////////////////////////////////
-
-		void GLES20RenderBatch::SetShaderProgram(const ShaderProgramPtr& shaderProgram)
-		{
-			m_program = shaderProgram;
-		}
-
-		//////////////////////////////////////////////////////////////////////////
-
-		void GLES20RenderBatch::SetUniformBuffer(const UniformBufferPtr& uniformBuffer)
-		{
-			m_uniformBuffer = uniformBuffer;
-		}
-
-		//////////////////////////////////////////////////////////////////////////
 
 		void GLES20RenderBatch::SetRenderPipeline(const RenderPipelinePtr& pipeline)
 		{
 			m_pipeline = pipeline;
 		}
 
+		void GLES20RenderBatch::SetGpuParams(const GpuParamsPtr& gpuParams)
+		{
+			m_gpuParams = gpuParams;
+		}
+
 		//////////////////////////////////////////////////////////////////////////
 
 		void GLES20RenderBatch::AddMesh(const scene::MeshPtr& mesh)
 		{
-			m_meshes.push_back(mesh);
+			m_renderables.push_back(mesh->GetRanderable());
 		}
 
 		//////////////////////////////////////////////////////////////////////////
@@ -65,15 +39,15 @@ namespace sh
 			Driver* driver = Device::GetInstance()->GetDriver();
 
 			driver->SetRenderPipeline(m_pipeline);
+			driver->SetGpuParams(m_gpuParams);
 
-			for (const auto& mesh : m_meshes)
+			for (const auto& renderable : m_renderables)
 			{
-				driver->SetGpuParams(mesh->GetGpuParams());
-				driver->SetGpuParams(mesh->GetAutoGpuParams());
-				driver->SetVertexDeclaration(mesh->GetVertexDeclaration());
-				driver->SetIndexBuffer(mesh->GetIndexBuffer());
-				driver->SetVertexBuffer(mesh->GetVertexBuffer());
-				driver->DrawIndexed(0, mesh->GetIndexBuffer()->GetIndicesCount());
+				driver->SetGpuParams(renderable->GetAutoGpuParams());
+				driver->SetVertexDeclaration(renderable->GetVertexInputDeclaration());
+				driver->SetIndexBuffer(renderable->GetIndexBuffer());
+				driver->SetVertexBuffer(renderable->GetVertexBuffer());
+				driver->DrawIndexed(0, renderable->GetIndexBuffer()->GetIndicesCount());
 			}
 		}
 

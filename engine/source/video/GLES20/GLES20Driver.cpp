@@ -33,18 +33,20 @@ using namespace video;
 GLES20Driver::GLES20Driver( EGLContextManager* contextManager )
 	:m_contextManager( contextManager )
 {
-	GLES20RenderStateManager::CreateInstance();
-	GLES20HardwareBufferManager::CreateInstance();
+	RenderStateManager::CreateInstance<GLES20RenderStateManager>();
+	HardwareBufferManager::CreateInstance<GLES20HardwareBufferManager>();
 	CommandBufferManager::CreateInstance<GLES20CommandBufferManager>();
+	RenderBatchManager::CreateInstance<GLES20RenderBatchManager>();
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 GLES20Driver::~GLES20Driver()
 {
-	GLES20RenderStateManager::DestroyInstance();
-	GLES20HardwareBufferManager::DestroyInstance();
+	RenderStateManager::DestroyInstance();
+	HardwareBufferManager::DestroyInstance();
 	CommandBufferManager::DestroyInstance();
+	RenderBatchManager::DestroyInstance();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -462,42 +464,6 @@ RenderTargetPtr GLES20Driver::CreateRenderTarget() const
 {
 	RenderTargetPtr result = nullptr;
 	result.reset( new GLES20RenderTarget() );
-	return result;
-}
-
-////////////////////////////////////////////////////////////////////////
-
-RenderPipelinePtr GLES20Driver::CreateRenderPipeline() const
-{
-	RenderPipelinePtr result = nullptr;
-	result.reset( new GLES20RenderPipeline() );
-	return result;
-}
-
-////////////////////////////////////////////////////////////////////////
-
-RenderPipelinePtr GLES20Driver::CreateRenderPipeline( const RenderPipelineDescription& description ) const
-{
-	RenderPipelinePtr result = nullptr;
-	result.reset( new GLES20RenderPipeline( description ) );
-	return result;
-}
-
-////////////////////////////////////////////////////////////////////////
-
-RenderBatchManagerPtr GLES20Driver::CreateRenderBatchManager() const
-{
-	RenderBatchManagerPtr result;
-	result.reset( new GLES20RenderBatchManager() );
-	return result;
-}
-
-////////////////////////////////////////////////////////////////////////
-
-ShaderPtr GLES20Driver::CreateShader( const ShaderDescription& description ) const
-{
-	ShaderPtr result;
-	result.reset( new GLES20Shader( description ) );
 	return result;
 }
 

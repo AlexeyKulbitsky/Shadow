@@ -56,13 +56,7 @@ namespace sh
 
 
 			virtual UniformBufferPtr CreateUniformBuffer() const override;
-			//virtual RenderCommandPtr CreateRenderCommand() const override;
-			virtual ShaderProgramPtr CreateShaderProgram() const override;
 			virtual VertexInputDeclarationPtr CreateVertexInputDeclaration() const override;
-			virtual RenderPipelinePtr CreateRenderPipeline() const override;
-			virtual RenderPipelinePtr CreateRenderPipeline(const RenderPipelineDescription& description) const override;
-			virtual RenderBatchManagerPtr CreateRenderBatchManager() const override;
-			virtual ShaderPtr CreateShader(const ShaderDescription& description) const override;
 			virtual CommandBufferPtr CreateCommandBuffer(const CommandBufferDescription& description) const override;
 
 			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) override;

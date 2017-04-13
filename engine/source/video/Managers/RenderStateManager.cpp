@@ -6,7 +6,6 @@ namespace sh
 namespace video
 {
 
-	RenderStateManager* RenderStateManager::s_instance = nullptr;
 
 
 

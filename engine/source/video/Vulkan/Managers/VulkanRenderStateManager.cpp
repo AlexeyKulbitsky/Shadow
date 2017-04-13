@@ -1,6 +1,7 @@
 #include "VulkanRenderStateManager.h"
 
 #include "../VulkanRenderPipeline.h"
+#include "../VulkanShader.h"
 
 namespace sh
 {
@@ -15,15 +16,11 @@ namespace video
 		return result;
 	}
 
-	void VulkanRenderStateManager::CreateInstance()
+	ShaderPtr VulkanRenderStateManager::CreateShader(const ShaderDescription& description)
 	{
-		s_instance = new VulkanRenderStateManager();
-	}
-
-	void VulkanRenderStateManager::DestroyInstance()
-	{
-		delete s_instance;
-		s_instance = nullptr;
+		ShaderPtr result = nullptr;
+		result.reset(new VulkanShader(description));
+		return result;
 	}
 
 } // video

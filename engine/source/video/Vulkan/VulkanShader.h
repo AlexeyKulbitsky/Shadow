@@ -13,6 +13,7 @@ namespace video
 	class VulkanShader : public Shader
 	{
 		friend class VulkanDriver;
+		friend class VulkanRenderStateManager;
 	public:
 		VkPipelineShaderStageCreateInfo GetVulkanId() const { return m_stageInfo; }
 

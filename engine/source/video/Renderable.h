@@ -7,33 +7,30 @@ namespace sh
 {
 	namespace video
 	{
-		class VertexDeclaration;
-		class VertexInputDeclaration;
-
 		class Renderable
 		{
+			friend class scene::Mesh;
+			friend class RenderSystem;
 		public:
-			Renderable(){}
-			virtual ~Renderable(){}
-
-			virtual void Init() = 0;
-
-			virtual void SetUseIndices(bool useIndices) = 0;
-			virtual void SetVertexBuffer(VertexBuffer* vertexBuffer) = 0;
-			virtual void SetIndexBuffer(IndexBuffer* indexBuffer) = 0;
-			virtual void SetTopology(Topology topology) = 0;
-			virtual void SetVertexInputDeclaration(VertexInputDeclaration* declaration) = 0;
-			void SetAutoUniformsBatch(const UniformsBatchPtr& unifomsBatch) { m_autoUniformsBatch = unifomsBatch; }
-
-			virtual bool IsUseIndices() const = 0;
-			virtual VertexBuffer* GetVertexBuffer() = 0;
-			virtual IndexBuffer* GetIndexBuffer() = 0;
-			virtual Topology GetTopology() const = 0;
-			virtual VertexInputDeclaration* GetVertexInputDeclaration() const = 0;
-			const UniformsBatchPtr& GetAutoUniformsBatch() const { return m_autoUniformsBatch; }
+			bool HasIndices() const { return m_indexBuffer != nullptr; }
+			const VertexBufferPtr& GetVertexBuffer() const { return m_vertexBuffer; }
+			const IndexBufferPtr GetIndexBuffer() const { return m_indexBuffer; }
+			Topology GetTopology() const { return m_topology; }
+			const VertexInputDeclarationPtr GetVertexInputDeclaration() const { return m_vertexDeclaration; }
+			const GpuParamsPtr& GetAutoGpuParams() const { return m_transfromsGpuParams; }
+			const MaterialParamsPtr& GetAutoParams() const { return m_transformParams; }
+			const scene::Mesh* const GetParent() const { return m_parent; }
+			const math::Matrix4f& GetMatrix() const { return *m_matrix; }
 
 		protected:
-			UniformsBatchPtr m_autoUniformsBatch;
+			scene::Mesh* m_parent = nullptr;
+			VertexInputDeclarationPtr m_vertexDeclaration;
+			MaterialParamsPtr m_transformParams;
+			GpuParamsPtr m_transfromsGpuParams;
+			VertexBufferPtr m_vertexBuffer;
+			IndexBufferPtr m_indexBuffer;
+			Topology m_topology;
+			math::Matrix4f* m_matrix = nullptr;
 		};
 	}
 }

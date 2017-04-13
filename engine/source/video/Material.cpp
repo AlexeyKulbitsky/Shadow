@@ -137,45 +137,10 @@ namespace sh
 			{			
 				RenderPipelinePtr pipeline = technique->GetRenderPipeline(i);
 				m_renderPipelines[i] = pipeline;
+				m_commonGpuParams = GpuParams::Create(pipeline->GetParamsDescription());
 			}
 
-			// Split params description
-
-			/*
-			GpuParamsDescription desc = m_renderPipelines[0]->GetGpuParamsDescription();
-			GpuParamsDescription transformDesc;
-			for (auto it = desc.params.begin(); it != desc.params.end();)
-			{
-				if (it->first == "matWVP" ||
-					it->first == "matWorld" ||
-					it->first == "matView" ||
-					it->first == "matProjection")
-				{
-					transformDesc.params[it->first] = it->second;
-					it = desc.params.erase(it);
-				}
-				else
-				{
-					it++;
-				}
-			}
-
-			m_commonGpuParams = GpuParams::Create(desc);
-			m_transfromsGpuParams = GpuParams::Create(transformDesc);
-
-			const u8* dataPtr = m_transfromsGpuParams->GetData();
-			for (const auto& param : transformDesc.params)
-			{
-				const u8* data = dataPtr + param.second.offset;
-
-				MaterialParamType type = MaterialParamType::Undefined;
-				if (param.first == "matWVP")
-					type = MaterialParamType::MatrixWorldViewProjection;
-
-				SPtr<MaterialParam> matParam(new MaterialParam(type, const_cast<u8*>(data)));
-				m_transformParams.push_back(matParam);
-			}
-			*/
+			
 		}
 	}
 }

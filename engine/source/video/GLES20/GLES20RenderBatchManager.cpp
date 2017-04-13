@@ -29,14 +29,9 @@ namespace sh
 			{
 				GLES20RenderBatchPtr renderBatch(new GLES20RenderBatch());
 				const RenderPipelinePtr& renderPipeline = material->GetRenderPipeline(0);
-				const ShaderProgramPtr& shader = renderPipeline->GetShaderProgram();
-				renderBatch->SetShaderProgram(shader);
-				renderBatch->SetDepthStencilState(renderPipeline->GetDepthStencilState());
-				renderBatch->SetRasterizationState(renderPipeline->GetRasterizationState());
-				renderBatch->SetBlendingState(renderPipeline->GetBlendingState());
-				renderBatch->SetUniformBuffer(renderPipeline->GetUniformBuffer());
 				renderBatch->SetTechniqueName(techniqueName);
 				renderBatch->SetRenderPipeline(renderPipeline);
+				renderBatch->SetGpuParams(material->GetCommonGpuParams());
 
 				m_renderBatches[layerIndex][techniqueName] = renderBatch;
 			}

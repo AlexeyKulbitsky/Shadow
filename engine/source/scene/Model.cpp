@@ -58,7 +58,6 @@ namespace sh
 			for (auto mesh : m_meshes)
 			{
 				mesh->SetWorldMatrix(m_worldMatrix);
-				mesh->UpdateTransformationUniforms();
 			}
 		}
 

@@ -13,9 +13,14 @@ namespace video
 	class MaterialParams
 	{
 	public:
+		MaterialParams(const GpuParamsPtr& gpuParams);
+
+		u32 GetParamsCount() const { return m_params.size(); }
+		MaterialParam& GetParam(u32 idx) { return m_params[idx]; }
+		const std::vector<MaterialParam>& GetParams() const { return m_params; }
 
 	private:
-		u8* m_dataPtr = nullptr;
+		std::vector<MaterialParam> m_params;
 	};
 
 } // video

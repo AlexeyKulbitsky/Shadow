@@ -23,17 +23,6 @@ namespace video
 		return result;
 	}
 
-	void VulkanHardwareBufferManager::CreateInstance()
-	{
-		s_instance = new VulkanHardwareBufferManager();
-	}
-
-	void VulkanHardwareBufferManager::DestroyInstance()
-	{
-		delete s_instance;
-		s_instance = nullptr;
-	}
-
 } // video
 
 } // sh

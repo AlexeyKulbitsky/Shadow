@@ -15,12 +15,8 @@ namespace sh
 			*/
 			GLES20RenderBatch() {}
 			virtual ~GLES20RenderBatch() {}
-			virtual void SetDepthStencilState(const DepthStencilStatePtr& renderState);
-			virtual void SetRasterizationState(const RasterizationStatePtr& renderState);
-			virtual void SetBlendingState(const BlendingStatePtr& renderState);
-			virtual void SetShaderProgram(const ShaderProgramPtr& shaderProgram);
-			virtual void SetUniformBuffer(const UniformBufferPtr& uniformBuffer);
 			virtual void SetRenderPipeline(const RenderPipelinePtr& pipeline);
+			virtual void SetGpuParams(const GpuParamsPtr& m_gpuParams);
 			virtual void AddMesh(const scene::MeshPtr& mesh);
 			virtual void Submit();
 			virtual void Clear();
@@ -30,14 +26,10 @@ namespace sh
 
 		protected:
 			String m_techniqueName;
-			ShaderProgramPtr m_program;
-			BlendingStatePtr m_blendingState;
-			DepthStencilStatePtr m_depthStencilState;
-			RasterizationStatePtr m_rasterizationState;
-			UniformBufferPtr m_uniformBuffer;
-			std::vector<scene::MeshPtr> m_meshes;
+			std::vector<RenderablePtr> m_renderables;
 
 			RenderPipelinePtr m_pipeline;
+			GpuParamsPtr m_gpuParams;
 		};
 	}
 }

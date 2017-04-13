@@ -23,17 +23,6 @@ namespace video
 		return result;
 	}
 
-	void GLES20HardwareBufferManager::CreateInstance()
-	{
-		s_instance = new GLES20HardwareBufferManager();
-	}
-
-	void GLES20HardwareBufferManager::DestroyInstance()
-	{
-		delete s_instance;
-		s_instance = nullptr;
-	}
-
 } // video
 
 } // sh

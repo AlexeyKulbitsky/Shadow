@@ -16,9 +16,6 @@ namespace video
 		virtual VertexBufferPtr CreateVertexBuffer(const VertexBufferDecription& description) override;
 		virtual IndexBufferPtr CreateIndexBuffer(const IndexBufferDescription& description) override;
 
-	private:
-		static void CreateInstance();
-		static void DestroyInstance();
 	};
 
 } // video
