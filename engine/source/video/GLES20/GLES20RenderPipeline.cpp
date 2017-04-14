@@ -41,23 +41,9 @@ namespace sh
 
 		///////////////////////////////////////////////////////////////////////////////////
 
-		const ShaderProgramPtr& GLES20RenderPipeline::GetShaderProgram() const { return m_shaderProgram; }
-
-		///////////////////////////////////////////////////////////////////////////////////
-
 		const VertexInputDeclarationPtr& GLES20RenderPipeline::GetVertexInputDeclaration() const { return m_description.vertexDeclaration; }
 		
 		///////////////////////////////////////////////////////////////////////////////////
-		
-		const UniformBufferPtr& GLES20RenderPipeline::GetUniformBuffer() const { return m_uniformBuffer; }
-		
-		///////////////////////////////////////////////////////////////////////////////////
-
-		const UniformBufferPtr& GLES20RenderPipeline::GetTransformUniformBuffer() const { return m_transformUniformBuffer; }
-		
-		///////////////////////////////////////////////////////////////////////////////////
-
-
 
 		void GLES20RenderPipeline::LoadConstants(const pugi::xml_node &node)
 		{

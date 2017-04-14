@@ -19,10 +19,7 @@ namespace sh
 			virtual void Load(const pugi::xml_node &node) override;
 			virtual void Unload() override;
 			
-			virtual const ShaderProgramPtr& GetShaderProgram() const override;
 			virtual const VertexInputDeclarationPtr& GetVertexInputDeclaration() const override;
-			virtual const UniformBufferPtr& GetUniformBuffer() const override;
-			virtual const UniformBufferPtr& GetTransformUniformBuffer() const override;
 
 			GLuint GetProgramID() const { return m_programID; }
 

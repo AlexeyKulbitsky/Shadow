@@ -110,11 +110,11 @@ namespace sh
 			driver->SetBlendingState(renderPipeline->GetBlendingState());
 			driver->SetRasterizationState(renderPipeline->GetRasterizationState());
 
-			renderPipeline->GetShaderProgram()->BindProgram();
+			//renderPipeline->GetShaderProgram()->BindProgram();
 
 			//driver->Render(m_linesRenderCommand);
 
-			renderPipeline->GetShaderProgram()->UnbindProgram();
+			//renderPipeline->GetShaderProgram()->UnbindProgram();
 
 			m_linesVertexArray.clear();
 		}

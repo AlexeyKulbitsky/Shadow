@@ -64,14 +64,14 @@ namespace sh
 			SetDepthStencilState(renderPipeline->GetDepthStencilState());
 			SetRasterizationState(renderPipeline->GetRasterizationState());
 			SetBlendingState(renderPipeline->GetBlendingState());
-			renderPipeline->GetShaderProgram()->BindProgram();
-			renderPipeline->GetUniformBuffer()->Upload();
+//			renderPipeline->GetShaderProgram()->BindProgram();
+//			renderPipeline->GetUniformBuffer()->Upload();
 
 
 			//const RenderCommandPtr& renderCommand = mesh->GetRenderCommand();
 
 			//Render(renderCommand);
-			renderPipeline->GetShaderProgram()->UnbindProgram();
+//			renderPipeline->GetShaderProgram()->UnbindProgram();
 		}
 
 		/////////////////////////////////////////////////////////////////////////

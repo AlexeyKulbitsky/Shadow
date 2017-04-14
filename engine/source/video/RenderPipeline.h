@@ -45,10 +45,7 @@ namespace sh
 
 			const String& GetName() const { return m_name; }
 
-			virtual const ShaderProgramPtr& GetShaderProgram() const = 0;
 			virtual const VertexInputDeclarationPtr& GetVertexInputDeclaration() const = 0;
-			virtual const UniformBufferPtr& GetUniformBuffer() const = 0;
-			virtual const UniformBufferPtr& GetTransformUniformBuffer() const = 0;
 
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////
 			

@@ -181,8 +181,8 @@ void MoveGizmo::CreateArrow(Axis::Type type)
 
 	Axis::ModelInfo modelInfo;
 	modelInfo.model = sh::scene::GeometryGenerator::GetCylinderModel(height, radius, numberOfSides, transform);	
-	sh::video::UniformBufferPtr uniformBuffer = modelInfo.model->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
-	modelInfo.uniform = uniformBuffer->GetUniform(sh::String("color"));
+//	sh::video::UniformBufferPtr uniformBuffer = modelInfo.model->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
+//	modelInfo.uniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (modelInfo.uniform)
 	{
 		modelInfo.color = color;
@@ -196,8 +196,8 @@ void MoveGizmo::CreateArrow(Axis::Type type)
 	transform = transform * rotation.GetAsMatrix4();
 	modelInfo.model = sh::scene::GeometryGenerator::GetConeModel(0.25f, 1.0f, transform);
 	
-	uniformBuffer = modelInfo.model->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
-	modelInfo.uniform = uniformBuffer->GetUniform(sh::String("color"));
+//	uniformBuffer = modelInfo.model->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
+//	modelInfo.uniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (modelInfo.uniform)
 	{
 		modelInfo.color = color;
@@ -282,8 +282,8 @@ void MoveGizmo::CreatePlane(Axis::Type type)
 
 	Axis::ModelInfo modelInfo;
 	modelInfo.model = sh::scene::GeometryGenerator::GetCylinderModel(height, radius, numberOfSides, transform1);	
-	sh::video::UniformBufferPtr uniformBuffer = modelInfo.model->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
-	modelInfo.uniform = uniformBuffer->GetUniform(sh::String("color"));
+//	sh::video::UniformBufferPtr uniformBuffer = modelInfo.model->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
+//	modelInfo.uniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (modelInfo.uniform)
 	{
 		modelInfo.color = color1;
@@ -294,8 +294,8 @@ void MoveGizmo::CreatePlane(Axis::Type type)
 
 
 	modelInfo.model = sh::scene::GeometryGenerator::GetCylinderModel(height, radius, numberOfSides, transform2);	
-	uniformBuffer = modelInfo.model->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
-	modelInfo.uniform = uniformBuffer->GetUniform(sh::String("color"));
+//	uniformBuffer = modelInfo.model->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
+//	modelInfo.uniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (modelInfo.uniform)
 	{
 		modelInfo.color = color2;
@@ -306,8 +306,8 @@ void MoveGizmo::CreatePlane(Axis::Type type)
 	///////////////////////////////////////////////////////////////////////
 
 	modelInfo.model = sh::scene::GeometryGenerator::GetPlaneModel(height, height, transform3);
-	uniformBuffer = modelInfo.model->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
-	modelInfo.uniform = uniformBuffer->GetUniform(sh::String("color"));
+//	uniformBuffer = modelInfo.model->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
+//	modelInfo.uniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (modelInfo.uniform)
 	{
 		modelInfo.color = color3;

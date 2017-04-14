@@ -20,8 +20,8 @@ Gizmo::Gizmo()
 
 	m_axises[0].lineModel = sh::scene::GeometryGenerator::GetCylinderModel(height, radius, numberOfSides, transform);
 
-	sh::video::UniformBufferPtr uniformBuffer = m_axises[0].lineModel->GetMesh(0)->GetMaterial()->GetRenderPipeline(0)->GetUniformBuffer();
-	m_axises[0].lineColorUniform = uniformBuffer->GetUniform(sh::String("color"));
+//	sh::video::UniformBufferPtr uniformBuffer = m_axises[0].lineModel->GetMesh(0)->GetMaterial()->GetRenderPipeline(0)->GetUniformBuffer();
+//	m_axises[0].lineColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[0].lineColorUniform)
 	{
 		sh::math::Vector4f color(1.0f, 0.0f, 0.0f, 1.0f);
@@ -35,8 +35,8 @@ Gizmo::Gizmo()
 	transform.SetTranslation(translation);
 	m_axises[1].lineModel = sh::scene::GeometryGenerator::GetCylinderModel(height, radius, numberOfSides, transform);
 
-	uniformBuffer = m_axises[1].lineModel->GetMesh(0)->GetMaterial()->GetRenderPipeline(0)->GetUniformBuffer();
-	m_axises[1].lineColorUniform = uniformBuffer->GetUniform(sh::String("color"));
+//	uniformBuffer = m_axises[1].lineModel->GetMesh(0)->GetMaterial()->GetRenderPipeline(0)->GetUniformBuffer();
+//	m_axises[1].lineColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[1].lineColorUniform)
 	{
 		sh::math::Vector4f color(0.0f, 1.0f, 0.0f, 1.0f);
@@ -52,8 +52,8 @@ Gizmo::Gizmo()
 	transform = transform * rotation.GetAsMatrix4();
 	m_axises[2].lineModel = sh::scene::GeometryGenerator::GetCylinderModel(height, radius, numberOfSides, transform);
 
-	uniformBuffer = m_axises[2].lineModel->GetMesh(0)->GetMaterial()->GetRenderPipeline(0)->GetUniformBuffer();
-	m_axises[2].lineColorUniform = uniformBuffer->GetUniform(sh::String("color"));
+//	uniformBuffer = m_axises[2].lineModel->GetMesh(0)->GetMaterial()->GetRenderPipeline(0)->GetUniformBuffer();
+//	m_axises[2].lineColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[2].lineColorUniform)
 	{
 		sh::math::Vector4f color(0.0f, 0.0f, 1.0f, 1.0f);

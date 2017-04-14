@@ -12,8 +12,8 @@ RotateGizmo::RotateGizmo()
 		32, 
 		sh::math::Vector3f(0.0f, 0.0f, 1.0f), 
 		sh::math::Vector3f(0.0f, 1.0f, 0.0f));
-	sh::video::UniformBufferPtr uniformBuffer = m_axises[0].circleModel->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
-	m_axises[0].circleColorUniform = uniformBuffer->GetUniform(sh::String("color"));
+	//sh::video::UniformBufferPtr uniformBuffer = m_axises[0].circleModel->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
+	//m_axises[0].circleColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[0].circleColorUniform)
 	{
 		sh::math::Vector4f color(1.0f, 0.0f, 0.0f, 1.0f);
@@ -33,8 +33,8 @@ RotateGizmo::RotateGizmo()
 		32, 
 		sh::math::Vector3f(1.0f, 0.0f, 0.0f), 
 		sh::math::Vector3f(0.0f, 0.0f, 1.0f));
-	uniformBuffer = m_axises[1].circleModel->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
-	m_axises[1].circleColorUniform = uniformBuffer->GetUniform(sh::String("color"));
+//	uniformBuffer = m_axises[1].circleModel->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
+//	m_axises[1].circleColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[1].circleColorUniform)
 	{
 		sh::math::Vector4f color(0.0f, 1.0f, 0.0f, 1.0f);
@@ -52,8 +52,8 @@ RotateGizmo::RotateGizmo()
 		32, 
 		sh::math::Vector3f(1.0f, 0.0f, 0.0f), 
 		sh::math::Vector3f(0.0f, 1.0f, 0.0f));
-	uniformBuffer = m_axises[2].circleModel->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
-	m_axises[2].circleColorUniform = uniformBuffer->GetUniform(sh::String("color"));
+//	uniformBuffer = m_axises[2].circleModel->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
+//	m_axises[2].circleColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[2].circleColorUniform)
 	{
 		sh::math::Vector4f color(0.0f, 0.0f, 1.0f, 1.0f);
@@ -70,8 +70,8 @@ RotateGizmo::RotateGizmo()
 		32, 
 		sh::math::Vector3f(1.0f, 0.0f, 0.0f), 
 		sh::math::Vector3f(0.0f, 1.0f, 0.0f));
-	uniformBuffer = m_axises[3].circleModel->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
-	m_axises[3].circleColorUniform = uniformBuffer->GetUniform(sh::String("color"));
+//	uniformBuffer = m_axises[3].circleModel->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
+//	m_axises[3].circleColorUniform = uniformBuffer->GetUniform(sh::String("color"));
 	if (m_axises[3].circleColorUniform)
 	{
 		sh::math::Vector4f color(0.5f, 0.5f, 0.5f, 1.0f);

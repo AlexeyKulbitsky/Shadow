@@ -27,38 +27,6 @@ namespace sh
 			SetRenderTechnique(rt);
 
 			// Read uniforms
-			const sh::video::UniformBufferPtr& uniformBuffer = GetRenderPipeline(0)->GetUniformBuffer();
-			pugi::xml_node uniformsNode = node.child("uniforms");
-			
-			if (uniformsNode)
-			{
-				pugi::xml_node uniNode = uniformsNode.first_child();
-						
-				while (!uniNode.empty())
-				{
-					pugi::xml_attribute nameAttr = uniNode.attribute("name");
-					pugi::xml_attribute typeAttr = uniNode.attribute("type");
-					pugi::xml_attribute valAttr = uniNode.attribute("val");
-
-					std::string name = nameAttr.as_string();
-					std::string typeName = typeAttr.as_string();
-
-							
-					sh::video::Uniform* uniform = uniformBuffer->GetUniform(name);
-					if (typeName == "float")
-					{
-						float value = valAttr.as_float();							
-						uniform->Set(value);
-
-					}
-					else if (typeName == "int")
-					{
-						int value = valAttr.as_int();
-						uniform->Set(value);
-					}
-					uniNode = uniNode.next_sibling();
-				}
-			}
 
 			// Read samplers
 			/*

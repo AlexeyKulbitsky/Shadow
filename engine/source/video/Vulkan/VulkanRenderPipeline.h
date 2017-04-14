@@ -22,10 +22,7 @@ namespace sh
 			virtual void Init(const VertexInputDeclarationPtr& vertexDeclaration) override;
 			virtual void Unload() override;
 
-			virtual const ShaderProgramPtr& GetShaderProgram() const override { return nullptr; } // { return m_shaderProgram; }
 			virtual const VertexInputDeclarationPtr& GetVertexInputDeclaration() const override { return m_description.vertexDeclaration; }
-			virtual const UniformBufferPtr& GetUniformBuffer() const override { return nullptr; } // { return m_uniformBuffer; }
-			virtual const UniformBufferPtr& GetTransformUniformBuffer() const override { return nullptr; } // { return m_transformUniformBuffer; }
 
 			VkPipeline GetVulkanPipeline(const VertexInputDeclarationPtr& vertexDeclaration);
 

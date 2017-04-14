@@ -372,7 +372,7 @@ void RenderComponentTreeModel::SetupModelData(sh::scene::Model* model, RenderCom
 			passParent->InsertChildren(passParent->childCount(), 1, 1);
 			passParent->GetChild(passParent->childCount() - 1)->SetData(0, QVariant("Uniforms"));
 			RenderComponentTreeItem * uniformParent = passParent->GetChild(passParent->childCount() - 1);
-
+			/*
 			const sh::video::UniformBufferPtr& uniformBuffer = pipeline->GetUniformBuffer();
 			size_t uniformsCount = uniformBuffer->GetUniformsCount();
 			for (size_t uniformIdx = 0; uniformIdx < uniformsCount; ++uniformIdx)
@@ -388,6 +388,7 @@ void RenderComponentTreeModel::SetupModelData(sh::scene::Model* model, RenderCom
 					tempChild->SetType(RenderComponentTreeItem::Type::UNIFORM);
 				}
 			}
+			*/
 		}
            
 	}
