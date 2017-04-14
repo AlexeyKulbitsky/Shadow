@@ -3,6 +3,7 @@
 #include "../GLES20RenderPipeline.h"
 #include "../GLES20Shader.h"
 #include "../GLES20Sampler.h"
+#include "../GLES20VertexDeclaration.h"
 
 namespace sh
 {
@@ -28,6 +29,13 @@ namespace video
 	{
 		SamplerPtr result;
 		result.reset(new GLES20Sampler(description));
+		return result;
+	}
+
+	VertexInputDeclarationPtr GLES20RenderStateManager::CreateVertexDeclaration()
+	{
+		VertexInputDeclarationPtr result;
+		result.reset(new GLES20VertexDeclaration());
 		return result;
 	}
 

@@ -55,20 +55,17 @@ namespace sh
 
 		TexturePtr TextureLoader::LoadSTB(const String& path)
 		{
-			Driver* driver = Device::GetInstance()->GetDriver();
-			TexturePtr texture = driver->CreateTexture();
-			texture->SetType(TextureType::TEX_TYPE_TEXTURE_2D);
-
 			int texWidth, texHeight, texChannels;
 			stbi_uc* pixels = stbi_load(path.c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
 			SH_ASSERT(pixels, "failed to load texture image!");
+
+			TextureDescription desc;
+			desc.type = TEX_TYPE_TEXTURE_2D;
+			desc.width = texWidth;
+			desc.height = texHeight;
+			TexturePtr texture = Texture::Create(desc);
 			
-			texture->Bind();
-
-			texture->LoadData(0, texWidth, texHeight, pixels);
-			texture->GenerateMipMaps();
-
-			texture->Unbind();
+			texture->SetData(0, pixels);
 
 			stbi_image_free(pixels);
 
@@ -79,24 +76,21 @@ namespace sh
 
 		TexturePtr TextureLoader::LoadSTBCube(const std::vector<String>& faces)
 		{
-			Driver* driver = Device::GetInstance()->GetDriver();
-			TexturePtr texture = driver->CreateTexture();
-			texture->SetType(TextureType::TEX_TYPE_TEXTURE_CUBE);
+			TextureDescription desc;
+			desc.type = TEX_TYPE_TEXTURE_CUBE;
+			TexturePtr texture = Texture::Create(desc);
 
-			texture->Bind();
-
+			
 			int texWidth, texHeight, texChannels;			
 			for (size_t i = 0; i < faces.size(); ++i)
 			{
 				stbi_uc* pixels = stbi_load(faces[i].c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
 				
-				texture->LoadFaceData(TextureFace(i), 0, texWidth, texHeight, pixels);
+				texture->SetFaceData(TextureFace(i), 0, pixels);
 
 				stbi_image_free(pixels);
 			}
 
-			texture->GenerateMipMaps();
-			texture->Unbind();
 
 			return texture;
 		}

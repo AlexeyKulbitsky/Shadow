@@ -17,11 +17,21 @@ namespace video
 		u32 location;
 	};
 
+	struct GpuParamSamplerDescription
+	{
+		String name;
+
+		u32 size;
+		u32 offset;
+		u32 location;
+	};
+
 	////////////////////////////////////////////////////
 
 	struct GpuParamsDescription
 	{
 		Map<String, GpuParamDataDescription> params;
+		Map<String, GpuParamSamplerDescription> samplers;
 	};
 
 } // video

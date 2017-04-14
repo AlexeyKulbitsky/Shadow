@@ -91,6 +91,8 @@ namespace sh
 			virtual VertexInputDeclarationPtr Clone() { return nullptr; }
 			virtual void Assemble(VertexDeclaration& declaration){}
 			virtual void SetShaderProgram(ShaderProgram* shaderProgram){}
+
+			static VertexInputDeclarationPtr Create();
 		};
 	}
 }

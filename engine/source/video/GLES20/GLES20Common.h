@@ -101,6 +101,24 @@ namespace video
 		GL_STREAM_DRAW
 	};
 
+	static GLenum const s_glTextureType[] =
+	{
+		GL_TEXTURE,
+		GL_TEXTURE_2D,
+		GL_TEXTURE_3D,
+		GL_TEXTURE_CUBE_MAP
+	};
+
+	static GLenum const s_glTextureFace[] =
+	{
+		GL_TEXTURE_CUBE_MAP_POSITIVE_X,
+		GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
+		GL_TEXTURE_CUBE_MAP_POSITIVE_Y,
+		GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
+		GL_TEXTURE_CUBE_MAP_POSITIVE_Z,
+		GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
+	};
+
 } // video
 
 } // sh

@@ -13,6 +13,7 @@
 #include "Managers/GLES20RenderStateManager.h"
 #include "Managers/GLES20HardwareBufferManager.h"
 #include "Managers/GLES20CommandBufferManager.h"
+#include "Managers/GLES20TextureManager.h"
 
 #include "../Material.h"
 #include "../GLContext/EGLContextManager.h"
@@ -37,6 +38,7 @@ GLES20Driver::GLES20Driver( EGLContextManager* contextManager )
 	HardwareBufferManager::CreateInstance<GLES20HardwareBufferManager>();
 	CommandBufferManager::CreateInstance<GLES20CommandBufferManager>();
 	RenderBatchManager::CreateInstance<GLES20RenderBatchManager>();
+	TextureManager::CreateInstance<GLES20TextureManager>();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -47,6 +49,7 @@ GLES20Driver::~GLES20Driver()
 	HardwareBufferManager::DestroyInstance();
 	CommandBufferManager::DestroyInstance();
 	RenderBatchManager::DestroyInstance();
+	TextureManager::DestroyInstance();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -110,7 +113,7 @@ bool GLES20Driver::Init()
 	glGetIntegerv( GL_COMPRESSED_TEXTURE_FORMATS, valuePtr );
 	for( int i = 0; i < value; ++i )
 	{
-		TextureFormat format = GLES20Texture::GetFormatFromGL( valuePtr[i] );
+		;//TextureFormat format = GLES20Texture::GetFormatFromGL( valuePtr[i] );
 	}
 	delete[] valuePtr;
 
@@ -429,33 +432,6 @@ void GLES20Driver::GetPixelData( u32 x, u32 y, u32 width, u32 height, u8* data )
 	GLint viewport[4];
 	glGetIntegerv( GL_VIEWPORT, viewport );
 	glReadPixels( x, viewport[3] - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data );
-}
-
-////////////////////////////////////////////////////////////////////////
-
-TexturePtr GLES20Driver::CreateTexture() const
-{
-	TexturePtr result = nullptr;
-	result.reset( new GLES20Texture() );
-	return result;
-}
-
-////////////////////////////////////////////////////////////////////////
-
-TexturePtr GLES20Driver::CreateTexture( const TextureDescription& description ) const
-{
-	TexturePtr result = nullptr;
-	result.reset( new GLES20Texture( description ) );
-	return result;
-}
-
-////////////////////////////////////////////////////////////////////////
-
-VertexInputDeclarationPtr GLES20Driver::CreateVertexInputDeclaration() const
-{
-	VertexInputDeclarationPtr result = nullptr;
-	result.reset( new GLES20VertexDeclaration() );
-	return result;
 }
 
 ////////////////////////////////////////////////////////////////////////

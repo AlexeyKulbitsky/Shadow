@@ -14,6 +14,7 @@
 #include "Managers/VulkanRenderStateManager.h"
 #include "Managers/VulkanHardwareBufferManager.h"
 #include "Managers/VulkanCommandBufferManager.h"
+#include "Managers/VulkanTextureManager.h"
 
 #include <iostream>
 #include <stdexcept>
@@ -109,6 +110,7 @@ namespace sh
 			VulkanHardwareBufferManager::DestroyInstance();
 			CommandBufferManager::DestroyInstance();
 			RenderBatchManager::DestroyInstance();
+			TextureManager::DestroyInstance();
 		}
 
 		const String& VulkanDriver::GetApiName() const
@@ -144,6 +146,7 @@ namespace sh
 			HardwareBufferManager::CreateInstance<VulkanHardwareBufferManager>();
 			CommandBufferManager::CreateInstance<VulkanCommandBufferManager>();
 			RenderBatchManager::CreateInstance<VulkanRenderBatchManager>();
+			TextureManager::CreateInstance<VulkanTextureManager>();
 			/*			
 			CreateDepthResources();
 			CreateFramebuffers();
@@ -456,24 +459,6 @@ namespace sh
 			result.reset(new VulkanUniformBuffer());
 			return result;
 		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		VertexInputDeclarationPtr VulkanDriver::CreateVertexInputDeclaration() const
-		{
-			VertexInputDeclarationPtr result = nullptr;
-			result.reset(new VulkanVertexDeclaration());
-			return result;
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		//CommandBufferPtr VulkanDriver::CreateCommandBuffer(const CommandBufferDescription& description) const
-		//{
-		//	CommandBufferPtr result;
-		//	result.reset(new VulkanCommandBuffer(description));
-		//	return result;
-		//}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

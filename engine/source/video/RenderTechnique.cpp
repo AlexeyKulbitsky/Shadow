@@ -79,8 +79,7 @@ namespace sh
 			pugi::xml_node attributesNode = pipelineNode.child("attributes");
 			if (!attributesNode.empty())
 			{
-				Driver* driver = Device::GetInstance()->GetDriver();
-				VertexInputDeclarationPtr vertDeclaration = driver->CreateVertexInputDeclaration();
+				VertexInputDeclarationPtr vertDeclaration = VertexInputDeclaration::Create();
 				vertDeclaration->Load(attributesNode);
 				pipelineDesc.vertexDeclaration = vertDeclaration;
 			}

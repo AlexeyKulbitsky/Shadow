@@ -24,16 +24,8 @@ namespace sh
 			Texture(){}
 			virtual ~Texture(){}
 
-			virtual void SetType(TextureType type) = 0;
-			virtual void SetTiling(TextureTiling tilingU, TextureTiling tilingV) = 0;
-			virtual void SetFiltering(TextureFiltering filtering) = 0;
-			virtual void Bind() = 0;
-			virtual void Unbind() = 0;
-			virtual void LoadData(u32 mipLevel, s32 width, s32 height, const void* data) = 0;
-			virtual void LoadFaceData(TextureFace face, u32 mipLevel, s32 width, s32 height, const void* data) = 0;
-			virtual void GenerateMipMaps() = 0;
-
-			bool HasMipMaps() const { return m_hasMipMaps; }
+			virtual void SetData(u32 mipLevel, const void* data) = 0;
+			virtual void SetFaceData(TextureFace face, u32 mipLevel, const void* data) = 0;
 
 			static TexturePtr Create(const TextureDescription& description);
 
@@ -43,8 +35,6 @@ namespace sh
 		protected:
 			bool m_hasMipMaps = false; 
 			TextureDescription m_description;
-
-			friend class TextureManager;
 		};
 	}
 }

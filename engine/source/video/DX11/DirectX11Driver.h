@@ -20,9 +20,6 @@ namespace video
 		virtual bool Init() override;
 		virtual void BeginRendering() override;
 		virtual void EndRendering() override;
-			
-
-		virtual VertexInputDeclarationPtr CreateVertexInputDeclaration() const override { return nullptr; }
 	};
 
 } // video

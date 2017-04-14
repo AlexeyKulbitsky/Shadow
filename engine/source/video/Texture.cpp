@@ -1,6 +1,5 @@
 #include "Texture.h"
-#include "../Device.h"
-#include "Driver.h"
+#include "Managers/TextureManager.h"
 
 namespace sh
 {
@@ -9,8 +8,7 @@ namespace video
 {
 	TexturePtr Texture::Create(const TextureDescription& description)
 	{
-		Driver* driver = Device::GetInstance()->GetDriver();
-		return driver->CreateTexture(description);
+		return TextureManager::GetInstance()->CreateTexture(description);
 	}
 
 	Texture::Texture(const TextureDescription& description)

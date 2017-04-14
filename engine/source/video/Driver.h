@@ -86,9 +86,6 @@ namespace sh
 
 			// Resources creation interface
 			virtual UniformBufferPtr CreateUniformBuffer() const {return nullptr;}
-			virtual TexturePtr CreateTexture() const { return nullptr; }
-			virtual TexturePtr CreateTexture(const TextureDescription& description) const { return nullptr; }
-			virtual VertexInputDeclarationPtr CreateVertexInputDeclaration() const = 0;
 			virtual RenderTargetPtr CreateRenderTarget() const { return nullptr; }
 
 			template<typename T>

@@ -55,11 +55,7 @@ namespace sh
 
 			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) override;
 
-			virtual TexturePtr CreateTexture() const override;
-			virtual TexturePtr CreateTexture(const TextureDescription& description) const override;
-			virtual VertexInputDeclarationPtr CreateVertexInputDeclaration() const override;
 			virtual RenderTargetPtr CreateRenderTarget() const override;
-			//virtual SamplerPtr CreateSampler(const SamplerDescription& description) const override;
 
 		private:
 			EGLContextManager* m_contextManager = nullptr;
