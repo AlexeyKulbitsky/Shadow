@@ -86,17 +86,11 @@ namespace sh
 
 			// Resources creation interface
 			virtual UniformBufferPtr CreateUniformBuffer() const {return nullptr;}
-			//virtual RenderCommandPtr CreateRenderCommand() const { return nullptr; }
-			//virtual ShaderProgramPtr CreateShaderProgram() const { return nullptr; }
 			virtual TexturePtr CreateTexture() const { return nullptr; }
 			virtual TexturePtr CreateTexture(const TextureDescription& description) const { return nullptr; }
 			virtual VertexInputDeclarationPtr CreateVertexInputDeclaration() const = 0;
 			virtual RenderTargetPtr CreateRenderTarget() const { return nullptr; }
-			//virtual RenderPipelinePtr CreateRenderPipeline() const = 0;
-			//virtual RenderPipelinePtr CreateRenderPipeline(const RenderPipelineDescription& description) const = 0;
-			//virtual ShaderPtr CreateShader(const ShaderDescription& description) const = 0;
 			virtual SamplerPtr CreateSampler(const SamplerDescription& description) const { return nullptr; }
-			virtual CommandBufferPtr CreateCommandBuffer(const CommandBufferDescription& description) const { return nullptr; }
 
 			template<typename T>
 			void SetGlobalUniform(GlobalUniformName globalName, const T& value);

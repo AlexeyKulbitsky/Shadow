@@ -22,6 +22,8 @@ namespace sh
 
 	Device::~Device()
 	{
+		int a = 0;
+		a++;
 	}
 
 	void Device::SetWindow(void* window)

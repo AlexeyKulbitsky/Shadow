@@ -1,7 +1,7 @@
 #ifndef SHADOW_COMMON_TYPES_INCLUDE
 #define SHADOW_COMMON_TYPES_INCLUDE
 
-#include "Globals.h"
+#include <map>
 
 namespace sh
 {
@@ -316,6 +316,15 @@ namespace sh
 		MatrixProjection
 	};
 
+	
+	static const std::map<std::string, MaterialParamType> matParamsMap =
+	{
+		{"matWVP", MaterialParamType::MatrixWorldViewProjection},
+		{"matWorld", MaterialParamType::MatrixWorld},
+		{"matView", MaterialParamType::MatrixView},
+		{"matProjection", MaterialParamType::MatrixProjection}
+	};
+	
 }
 
 #endif

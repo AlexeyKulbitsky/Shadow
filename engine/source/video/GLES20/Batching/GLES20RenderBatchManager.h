@@ -1,7 +1,7 @@
 #ifndef SHADOW_GLES20_RENDER_BATCH_MANAGER_INCLDUE
 #define SHADOW_GLES20_RENDER_BATCH_MANAGER_INCLDUE
 
-#include "../RenderBatchManager.h"
+#include "../../RenderBatchManager.h"
 #include "GLES20RenderPipeline.h"
 
 namespace sh

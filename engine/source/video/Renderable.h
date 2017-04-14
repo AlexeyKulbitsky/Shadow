@@ -19,7 +19,7 @@ namespace sh
 			const VertexInputDeclarationPtr GetVertexInputDeclaration() const { return m_vertexDeclaration; }
 			const GpuParamsPtr& GetAutoGpuParams() const { return m_transfromsGpuParams; }
 			const MaterialParamsPtr& GetAutoParams() const { return m_transformParams; }
-			const scene::Mesh* const GetParent() const { return m_parent; }
+			scene::Mesh* GetParent() { return m_parent; }
 			const math::Matrix4f& GetMatrix() const { return *m_matrix; }
 
 		protected:

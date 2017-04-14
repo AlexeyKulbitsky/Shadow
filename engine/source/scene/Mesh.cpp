@@ -27,13 +27,12 @@ namespace sh
 			: m_meshBase(meshBase)
 		{
 			m_worldMatrix.SetIdentity();
-			m_vertexBuffer = meshBase->GetVertexBuffer();
-			m_indexBuffer = meshBase->GetIndexBuffer();
 
 			m_renderable.reset(new video::Renderable());
 			m_renderable->m_vertexBuffer = meshBase->GetVertexBuffer();
 			m_renderable->m_indexBuffer = meshBase->GetIndexBuffer();
 			m_renderable->m_matrix = &m_worldMatrix;
+			m_renderable->m_parent = this;
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -56,9 +55,6 @@ namespace sh
 			m_material = material;
 			size_t pipelinesCount = m_material->GetRenderPipelinesCount();
 			
-			m_vertexDeclaration.resize(pipelinesCount);
-			m_gpuParams.resize(pipelinesCount);
-			m_autoGpuParams.resize(pipelinesCount);
 
 			for (size_t i = 0; i < 1; ++i)
 			{
@@ -66,7 +62,7 @@ namespace sh
 				const video::RenderPipelinePtr& renderPipeline = m_material->GetRenderPipeline(i);
 
 				video::VertexInputDeclarationPtr inputDeclaration = renderPipeline->GetVertexInputDeclaration()->Clone();
-				inputDeclaration->Assemble(*(m_vertexBuffer->GetVertexDeclaration().get()));
+				inputDeclaration->Assemble(*(m_renderable->GetVertexBuffer()->GetVertexDeclaration().get()));
 
 				if (i == 0)
 				{

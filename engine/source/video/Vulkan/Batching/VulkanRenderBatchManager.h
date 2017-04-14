@@ -1,13 +1,16 @@
 #ifndef SHADOW_VULKAN_RENDER_BATCH_MANAGER_INCLUDE
 #define SHADOW_VULKAN_RENDER_BATCH_MANAGER_INCLUDE
 
-#include "../RenderBatchManager.h"
+#include "../../RenderBatchManager.h"
+#include "VulkanRenderBatch.h"
+#include "VulkanRenderPipeline.h"
 
 namespace sh
 {
 
 namespace video
 {
+	DEFINE_CLASS_PTR(VulkanRenderBatch)
 
 	class VulkanRenderBatchManager : public RenderBatchManager
 	{
@@ -19,8 +22,9 @@ namespace video
 		virtual void Clear() override;
 
 	private:
-		std::vector<scene::MeshPtr> m_meshes;
-		CommandBufferPtr m_commandBuffer;
+		typedef Map<String, VulkanRenderBatchPtr> PerTechniqueRenderBatchesMap;
+
+		PerTechniqueRenderBatchesMap m_renderBatches[(size_t)RenderPipeline::Layer::COUNT];
 	};
 
 } // video

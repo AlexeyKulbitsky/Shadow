@@ -16,7 +16,7 @@ namespace sh
 			GLES20RenderBatch() {}
 			virtual ~GLES20RenderBatch() {}
 			virtual void SetRenderPipeline(const RenderPipelinePtr& pipeline);
-			virtual void SetGpuParams(const GpuParamsPtr& m_gpuParams);
+			virtual void SetGpuParams(const GpuParamsPtr& gpuParams);
 			virtual void AddMesh(const scene::MeshPtr& mesh);
 			virtual void Submit();
 			virtual void Clear();

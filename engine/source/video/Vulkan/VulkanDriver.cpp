@@ -7,7 +7,7 @@
 #include "VulkanShaderProgram.h"
 #include "VulkanUniformBuffer.h"
 #include "VulkanRenderCommand.h"
-#include "VulkanRenderBatchManager.h"
+#include "Batching/VulkanRenderBatchManager.h"
 #include "VulkanShader.h"
 #include "VulkanCommandBuffer.h"
 
@@ -99,10 +99,7 @@ namespace sh
 		VulkanDriver::VulkanDriver(const CreationParameters& parameters)
 		{
 			m_parameters = parameters;
-			RenderStateManager::CreateInstance<VulkanRenderStateManager>();
-			HardwareBufferManager::CreateInstance<VulkanHardwareBufferManager>();
-			CommandBufferManager::CreateInstance<VulkanCommandBufferManager>();
-			RenderBatchManager::CreateInstance<VulkanRenderBatchManager>();
+			
 		}
 
 		VulkanDriver::~VulkanDriver()
@@ -143,7 +140,10 @@ namespace sh
 			m_executableCommandBuffers.reserve(100);
 
 			
-
+			RenderStateManager::CreateInstance<VulkanRenderStateManager>();
+			HardwareBufferManager::CreateInstance<VulkanHardwareBufferManager>();
+			CommandBufferManager::CreateInstance<VulkanCommandBufferManager>();
+			RenderBatchManager::CreateInstance<VulkanRenderBatchManager>();
 			/*			
 			CreateDepthResources();
 			CreateFramebuffers();
@@ -468,12 +468,12 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		CommandBufferPtr VulkanDriver::CreateCommandBuffer(const CommandBufferDescription& description) const
-		{
-			CommandBufferPtr result;
-			result.reset(new VulkanCommandBuffer(description));
-			return result;
-		}
+		//CommandBufferPtr VulkanDriver::CreateCommandBuffer(const CommandBufferDescription& description) const
+		//{
+		//	CommandBufferPtr result;
+		//	result.reset(new VulkanCommandBuffer(description));
+		//	return result;
+		//}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

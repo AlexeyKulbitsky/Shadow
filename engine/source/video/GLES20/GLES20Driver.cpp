@@ -5,7 +5,7 @@
 #include "GLES20Texture.h"
 #include "GLES20RenderTarget.h"
 #include "GLES20RenderPIpeline.h"
-#include "GLES20RenderBatchManager.h"
+#include "Batching/GLES20RenderBatchManager.h"
 #include "GLES20Common.h"
 #include "GLES20Shader.h"
 #include "GLES20Sampler.h"
