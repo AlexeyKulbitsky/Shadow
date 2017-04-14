@@ -23,7 +23,8 @@ namespace sh
 		public:
 			virtual ~Sampler(){}
 
-			virtual void Set(TexturePtr texture){}
+			void Set(TexturePtr texture) { m_texture = texture; }
+			const TexturePtr& GetTexture() const { return m_texture; }
 			virtual void Load(int textureChannel){}
 
 			const SamplerDescription& GetDescription() const { return m_description; }
@@ -32,6 +33,7 @@ namespace sh
 		
 		protected:
 			SamplerDescription m_description;
+			TexturePtr m_texture;
 		};
 	}
 }

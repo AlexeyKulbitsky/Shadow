@@ -23,6 +23,11 @@ namespace video
 		return result;
 	}
 
+	SamplerPtr VulkanRenderStateManager::CreateSampler(const SamplerDescription& description)
+	{
+		return nullptr;
+	}
+
 } // video
 
 } // sh

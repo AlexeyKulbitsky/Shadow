@@ -10,6 +10,7 @@ namespace sh
 		class GLES20Sampler : public Sampler
 		{
 			friend class GLES20Driver;
+			friend class GLES20RenderStateManager;
 		public:
 		
 		private:

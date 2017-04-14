@@ -1,6 +1,5 @@
 #include "Sampler.h"
-#include "../Device.h"
-#include "Driver.h"
+#include "Managers/RenderStateManager.h"
 
 namespace sh
 {
@@ -10,8 +9,7 @@ namespace video
 
 	SamplerPtr Sampler::Create(const SamplerDescription& description)
 	{
-		Driver* driver = Device::GetInstance()->GetDriver();
-		return driver->CreateSampler(description);
+		return RenderStateManager::GetInstance()->CreateSampler(description);
 	}
 
 } // video

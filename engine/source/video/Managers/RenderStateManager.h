@@ -4,6 +4,7 @@
 #include "../Globals.h"
 #include "../RenderPipeline.h"
 #include "../Shader.h"
+#include "../Sampler.h"
 
 namespace sh
 {
@@ -16,6 +17,7 @@ namespace video
 	public: 
 		virtual RenderPipelinePtr CreateRenderPipeline(const RenderPipelineDescription& description) = 0;
 		virtual ShaderPtr CreateShader(const ShaderDescription& description) = 0;
+		virtual SamplerPtr CreateSampler(const SamplerDescription& description) = 0;
 	};
 
 } // video

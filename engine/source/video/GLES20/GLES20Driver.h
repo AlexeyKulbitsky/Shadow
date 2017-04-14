@@ -59,7 +59,7 @@ namespace sh
 			virtual TexturePtr CreateTexture(const TextureDescription& description) const override;
 			virtual VertexInputDeclarationPtr CreateVertexInputDeclaration() const override;
 			virtual RenderTargetPtr CreateRenderTarget() const override;
-			virtual SamplerPtr CreateSampler(const SamplerDescription& description) const override;
+			//virtual SamplerPtr CreateSampler(const SamplerDescription& description) const override;
 
 		private:
 			EGLContextManager* m_contextManager = nullptr;

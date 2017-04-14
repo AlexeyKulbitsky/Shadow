@@ -469,11 +469,3 @@ RenderTargetPtr GLES20Driver::CreateRenderTarget() const
 
 ////////////////////////////////////////////////////////////////////////
 
-SamplerPtr GLES20Driver::CreateSampler( const SamplerDescription& description ) const
-{
-	SamplerPtr result;
-	result.reset( new GLES20Sampler( description ) );
-	return result;
-}
-
-////////////////////////////////////////////////////////////////////////

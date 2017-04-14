@@ -90,7 +90,6 @@ namespace sh
 			virtual TexturePtr CreateTexture(const TextureDescription& description) const { return nullptr; }
 			virtual VertexInputDeclarationPtr CreateVertexInputDeclaration() const = 0;
 			virtual RenderTargetPtr CreateRenderTarget() const { return nullptr; }
-			virtual SamplerPtr CreateSampler(const SamplerDescription& description) const { return nullptr; }
 
 			template<typename T>
 			void SetGlobalUniform(GlobalUniformName globalName, const T& value);

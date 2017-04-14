@@ -2,6 +2,7 @@
 
 #include "../GLES20RenderPipeline.h"
 #include "../GLES20Shader.h"
+#include "../GLES20Sampler.h"
 
 namespace sh
 {
@@ -20,6 +21,13 @@ namespace video
 	{
 		ShaderPtr result = nullptr;
 		result.reset(new GLES20Shader(description));
+		return result;
+	}
+
+	SamplerPtr GLES20RenderStateManager::CreateSampler(const SamplerDescription& description)
+	{
+		SamplerPtr result;
+		result.reset(new GLES20Sampler(description));
 		return result;
 	}
 
