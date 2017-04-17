@@ -44,11 +44,12 @@ namespace sh
 			for (const auto& renderable : m_renderables)
 			{
 				driver->SetGpuParams(renderable->GetAutoGpuParams());
-				driver->SetVertexDeclaration(renderable->GetVertexInputDeclaration());
-				driver->SetIndexBuffer(renderable->GetIndexBuffer());
 				driver->SetVertexBuffer(renderable->GetVertexBuffer());
+				driver->SetVertexDeclaration(renderable->GetVertexInputDeclaration());
+				driver->SetIndexBuffer(renderable->GetIndexBuffer());				
 				driver->DrawIndexed(0, renderable->GetIndexBuffer()->GetIndicesCount());
 			}
+			
 		}
 
 		//////////////////////////////////////////////////////////////////////////

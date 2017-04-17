@@ -53,28 +53,19 @@ namespace sh
 		void Mesh::SetMaterial(const sh::video::MaterialPtr& material)
 		{
 			m_material = material;
-			size_t pipelinesCount = m_material->GetRenderPipelinesCount();
+
+			// Assemble vertex input declaration for render command
+			const video::RenderPipelinePtr& renderPipeline = m_material->GetRenderPipeline();
+
+			video::VertexInputDeclarationPtr inputDeclaration = renderPipeline->GetVertexInputDeclaration()->Clone();
+			inputDeclaration->Assemble(*(m_renderable->GetVertexBuffer()->GetVertexDeclaration().get()));
 			
+			m_renderable->m_vertexDeclaration = inputDeclaration;
+			m_renderable->m_transfromsGpuParams = video::GpuParams::Create(renderPipeline->GetAutoParamsDescription());
 
-			for (size_t i = 0; i < 1; ++i)
-			{
-				// Assemble vertex input declaration for render command
-				const video::RenderPipelinePtr& renderPipeline = m_material->GetRenderPipeline(i);
-
-				video::VertexInputDeclarationPtr inputDeclaration = renderPipeline->GetVertexInputDeclaration()->Clone();
-				inputDeclaration->Assemble(*(m_renderable->GetVertexBuffer()->GetVertexDeclaration().get()));
-
-				if (i == 0)
-				{
-					m_renderable->m_vertexDeclaration = inputDeclaration;
-					m_renderable->m_transfromsGpuParams = video::GpuParams::Create(renderPipeline->GetAutoParamsDescription());
-
-					m_renderable->m_transformParams.reset(new video::MaterialParams(m_renderable->m_transfromsGpuParams));
-				}
-
-
-				renderPipeline->Init(inputDeclaration);
-			}			
+			m_renderable->m_transformParams.reset(new video::MaterialParams(m_renderable->m_transfromsGpuParams));
+			
+			renderPipeline->Init(inputDeclaration);			
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
