@@ -24,6 +24,7 @@
 #include "../RasterizationState.h"
 #include "../BlendingState.h"
 #include "../GpuParams.h"
+#include "../Sampler.h"
 
 #include <sstream>
 using namespace sh;
@@ -258,8 +259,8 @@ void GLES20Driver::SetRasterizationState( const RasterizationStatePtr& rasteriza
 	if( rasterizationState->cullFace != CullFace::CF_NONE )
 	{
 		glEnable( GL_CULL_FACE );
-		glCullFace( s_glCullFace[static_cast<size_t>( rasterizationState->cullFace )] );
-		glFrontFace( s_glFrontFace[static_cast<size_t>( rasterizationState->frontFace )] );
+		glCullFace( s_glCullFace[rasterizationState->cullFace] );
+		glFrontFace( s_glFrontFace[rasterizationState->frontFace] );
 	}
 	else
 	{
@@ -319,6 +320,7 @@ void GLES20Driver::SetComputePipeline()
 void GLES20Driver::SetGpuParams( const GpuParamsPtr& params, const CommandBufferPtr& )
 {
 	const u8* data = params->GetData();
+	const auto& samplers = params->GetSamplers();
 
 	for( size_t i = 0; i < 2U; ++i )
 	{
@@ -328,6 +330,7 @@ void GLES20Driver::SetGpuParams( const GpuParamsPtr& params, const CommandBuffer
 		if( !desc )
 			continue;
 
+		// Upload single params
 		for( const auto& param : desc->params )
 		{
 			const GLfloat* dataPtr = reinterpret_cast<const float*>( data + param.second.offset );
@@ -360,6 +363,24 @@ void GLES20Driver::SetGpuParams( const GpuParamsPtr& params, const CommandBuffer
 				}
 				break;
 			}
+		}
+
+		int counter = 0;
+		// Upload samplers
+		for (const auto& samplerDesc : desc->samplers)
+		{
+			const auto& sampler = samplers.at(samplerDesc.first);
+			GLES20Texture* texture = static_cast<GLES20Texture*>(sampler->GetTexture().get());
+			glActiveTexture(GL_TEXTURE0 + counter);
+			glBindTexture(GL_TEXTURE_2D, texture->GetGLId());
+
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+			glUniform1i(samplerDesc.second.location, counter);
+			
 		}
 	}
 }

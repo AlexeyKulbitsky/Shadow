@@ -412,7 +412,38 @@ namespace sh
 				}
 				else if( name == "sampler" )
 				{
+					GpuParamSamplerDescription desc;
+					desc.name = childNode.attribute("name").as_string();
+					String typeStr = childNode.attribute("type").as_string();
+					desc.samplerDesc.type = samplerTypeMap.at(typeStr);
+					pugi::xml_node filteringNode = childNode.child("filtering");
+					if (filteringNode)
+					{
+						pugi::xml_attribute attr = filteringNode.attribute("min");
+						if (attr)
+							desc.samplerDesc.minFilter = textureFilteringMap.at(attr.as_string());
+						attr = filteringNode.attribute("mag");
+						if (attr)
+							desc.samplerDesc.magFilter = textureFilteringMap.at(attr.as_string());
+						attr = filteringNode.attribute("mip");
+						if (attr)
+							desc.samplerDesc.mipFilter = textureFilteringMap.at(attr.as_string());
+					}
+					pugi::xml_node tilingNode = childNode.child("tiling");
+					if (tilingNode)
+					{
+						pugi::xml_attribute attr = tilingNode.attribute("U");
+						if (attr)
+							desc.samplerDesc.tilingU = textureTilingMap.at(attr.as_string());
+						attr = tilingNode.attribute("V");
+						if (attr)
+							desc.samplerDesc.tilingV = textureTilingMap.at(attr.as_string());
+						attr = tilingNode.attribute("W");
+						if (attr)
+							desc.samplerDesc.tilingW = textureTilingMap.at(attr.as_string());
+					}
 
+					paramsDesc->samplers[desc.name] = desc;
 				}
 
 				childNode = childNode.next_sibling();

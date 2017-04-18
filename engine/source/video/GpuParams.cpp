@@ -16,6 +16,17 @@ namespace video
 		}
 	}
 
+	void GpuParams::SetSampler(ShaderType shaderType, const String& name, const TexturePtr& texture)
+	{
+		auto it = m_paramsDescriptions[shaderType]->samplers.find(name);
+		if (it == m_paramsDescriptions[shaderType]->samplers.end())
+		{
+			SH_ASSERT(0, "Can not find sampler!");
+			return;
+		}
+		m_samplers[it->first]->Set(texture);
+	}
+
 	GpuParamsPtr GpuParams::Create( const GpuPipelineParamsDescription& pipelineParamsDesc )
 	{
 		GpuParamsPtr result;
@@ -75,7 +86,7 @@ namespace video
 			// Collect samplers
 			for( auto& sampler : m_paramsDescriptions[i]->samplers )
 			{
-
+				m_samplers[sampler.first] = Sampler::Create(sampler.second.samplerDesc);
 			}
 		}
 

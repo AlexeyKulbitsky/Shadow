@@ -70,10 +70,10 @@ namespace sh
 					vertexArray.push_back(0.5f);
 										
 					// uv
-					//vertexArray.push_back(attrib.texcoords[2 * index.texcoord_index + 0]);
-					//vertexArray.push_back(1.0f - attrib.texcoords[2 * index.texcoord_index + 1]);
-					vertexArray.push_back(0.0f);
-					vertexArray.push_back(0.0f);
+					vertexArray.push_back(attrib.texcoords[2 * index.texcoord_index + 0]);
+					vertexArray.push_back(1.0f - attrib.texcoords[2 * index.texcoord_index + 1]);
+					//vertexArray.push_back(0.0f);
+					//vertexArray.push_back(0.0f);
 
 					indexArray.push_back(indexArray.size());
 					verticesCount++;

@@ -11,7 +11,7 @@ namespace sh
 		{
 		public:
 			CullFace    cullFace = CF_BACK;
-			FrontFace	frontFace = FrontFace::FF_COUNTER_CLOCKWISE;
+			FrontFace	frontFace = FF_COUNTER_CLOCKWISE;
 			FillMode    fillMode = FM_SOLID;
 			bool		polygonOffsetEnabled = false;
 			float		polygonOffsetFactor = 0.0f; //OffsetFactor

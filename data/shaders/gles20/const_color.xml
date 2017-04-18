@@ -37,8 +37,10 @@
 		<fragmentShader>
 		<constants>
 			
-			<!--constant name="matWVP" type="mat4" /-->
-			
+			<sampler name="diffuse" type="2D">
+				<filtering min="Linear" mag="Linear"/>
+				<tiling U="Repeat" V="Repeat"/>
+			</sampler>
 		</constants>
 		<source>
 			<![CDATA[

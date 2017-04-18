@@ -36,10 +36,11 @@ namespace sh
 				if( name == "sampler" )
 				{
 					String samplerName = paramNode.attribute("name").as_string();
-					String type = paramNode.attribute("type").as_string();
-					String textureFilename = paramNode.attribute("texture").as_string();
+					String textureFilename = paramNode.attribute("val").as_string();
 
 					TexturePtr texture = resourceManager->GetTexture(textureFilename);
+
+					m_commonGpuParams->SetSampler(ST_FRAGMENT, samplerName, texture);
 				}
 
 				paramNode = paramNode.next_sibling();

@@ -85,6 +85,7 @@ namespace sh
 			}
 
 			// For GLES20 there are only two type of shaders : vertex and fragment
+			// Vertex shader
 			auto vertexParams = m_description.vertexShader->GetParamsDescription();
 			for (auto& param : vertexParams->params)
 			{
@@ -92,6 +93,14 @@ namespace sh
 				if (location != -1)
 				{
 					param.second.location = location;
+				}
+			}
+			for (auto& sampler : vertexParams->samplers)
+			{
+				GLint location = glGetUniformLocation(m_programID, sampler.second.name.c_str());
+				if (location != -1)
+				{
+					sampler.second.location = location;
 				}
 			}
 			auto autoVertexParams = m_description.vertexShader->GetAutoParamsDescription();
@@ -104,6 +113,7 @@ namespace sh
 				}
 			}
 
+			// Fragment shader
 			auto fragmentParams = m_description.fragmentShader->GetParamsDescription();
 			for (auto& param : fragmentParams->params)
 			{
@@ -111,6 +121,14 @@ namespace sh
 				if (location != -1)
 				{
 					param.second.location = location;
+				}
+			}
+			for (auto& sampler : fragmentParams->samplers)
+			{
+				GLint location = glGetUniformLocation(m_programID, sampler.second.name.c_str());
+				if (location != -1)
+				{
+					sampler.second.location = location;
 				}
 			}
 			auto autoFragmentParams = m_description.fragmentShader->GetAutoParamsDescription();

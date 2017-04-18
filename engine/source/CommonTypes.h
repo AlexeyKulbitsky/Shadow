@@ -235,16 +235,15 @@ namespace sh
 	{
 		TEX_TILING_REPEAT,
 		TEX_TILING_MIRRORED_REPEAT,
-		TEX_TILING_CLAMP_TO_EDGE
+		TEX_TILING_CLAMP_TO_EDGE,
+		TEX_TILING_NONE
 	};
 
 	enum TextureFiltering
 	{
 		TEX_FILT_NEAREST,
 		TEX_FILT_LINEAR,
-		TEX_FILT_BILINEAR,
-		TEX_FILT_TRILINEAR,
-		TEX_FILT_ANISOTROPIC
+		TEX_FILT_NONE
 	};
 
 	enum TextureFace
@@ -334,7 +333,27 @@ namespace sh
 		{"matView", MaterialParamType::MatrixView},
 		{"matProjection", MaterialParamType::MatrixProjection}
 	};
+
+	static const std::map<std::string, GpuParamObjectType> samplerTypeMap =
+	{
+		{ "1D", GPOT_SAMPLER_1D },
+		{ "2D", GPOT_SAMPLER_2D },
+		{ "3D", GPOT_SAMPLER_3D },
+		{ "Cube", GPOT_SAMPLER_CUBE }
+	};
 	
+	static const std::map<std::string, TextureFiltering> textureFilteringMap =
+	{
+		{ "Nearest", TEX_FILT_NEAREST },
+		{ "Linear", TEX_FILT_LINEAR }
+	};
+
+	static const std::map<std::string, TextureTiling> textureTilingMap =
+	{
+		{ "Repeat", TEX_TILING_REPEAT },
+		{ "MirroredRepeat", TEX_TILING_MIRRORED_REPEAT },
+		{ "ClampToEdge", TEX_TILING_CLAMP_TO_EDGE }
+	};
 }
 
 #endif

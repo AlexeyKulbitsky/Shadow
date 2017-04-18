@@ -10,12 +10,13 @@ namespace sh
 	{
 		struct SamplerDescription
 		{
-			TextureFiltering minFilter;
-			TextureFiltering magFilter;
-			TextureFiltering mipFilter;
-			TextureTiling tilingU;
-			TextureTiling tilingV;
-			TextureTiling tilingW;
+			GpuParamObjectType type;
+			TextureFiltering minFilter = TEX_FILT_NONE;
+			TextureFiltering magFilter = TEX_FILT_NONE;
+			TextureFiltering mipFilter = TEX_FILT_NONE;
+			TextureTiling tilingU = TEX_TILING_NONE;
+			TextureTiling tilingV = TEX_TILING_NONE;
+			TextureTiling tilingW = TEX_TILING_NONE;
 		};
 
 		class Sampler

@@ -2,6 +2,7 @@
 #define SHADOW_GPU_PARAM_DESCRIPTION_INCLUDE
 
 #include "../Globals.h"
+#include "Sampler.h"
 
 namespace sh
 {
@@ -17,10 +18,10 @@ namespace video
 		u32 location;
 	};
 
-	struct GpuParamObjectDescription
+	struct GpuParamSamplerDescription
 	{
 		String name;
-		GpuParamObjectType type;
+		SamplerDescription samplerDesc;
 
 		u32 location;
 	};
@@ -30,7 +31,7 @@ namespace video
 	struct GpuParamsDescription
 	{
 		Map<String, GpuParamDataDescription> params;
-		Map<String, GpuParamObjectDescription> samplers;
+		Map<String, GpuParamSamplerDescription> samplers;
 	};
 
 } // video
