@@ -15,7 +15,7 @@ namespace sh
 		public:
 			virtual ~GLES20Texture();
 
-			virtual void SetData(u32 mipLevel, const void* data) override;
+			virtual void SetData(u32 mipLevel, void* data) override;
 			virtual void SetFaceData(TextureFace face, u32 mipLevel, const void* data) override;
 
 			// GLES interface

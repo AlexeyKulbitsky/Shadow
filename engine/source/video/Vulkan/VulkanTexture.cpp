@@ -8,34 +8,48 @@ namespace sh
 namespace video
 {
 
-	void VulkanTexture::SetData(u32 mipLevel, const void* data)
+	void VulkanTexture::SetData(u32 mipLevel, void* data)
 	{
 		VulkanDriver* driver = static_cast<VulkanDriver*>(Device::GetInstance()->GetDriver());
 		VkDevice device = driver->GetVulkanDevice();
 
-		// Create temp image for transfering it to gpu final image
-		VkImageCreateInfo imageInfo = {};
-		imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
-		imageInfo.imageType = VK_IMAGE_TYPE_2D;
-		imageInfo.extent.width = m_description.width;
-		imageInfo.extent.height = m_description.height;
-		imageInfo.extent.depth = 1;
-		imageInfo.mipLevels = 1;
-		imageInfo.arrayLayers = 1;
-		imageInfo.format = VK_FORMAT_R8G8B8A8_UNORM;
-		imageInfo.tiling = VK_IMAGE_TILING_LINEAR;
-		imageInfo.initialLayout = VK_IMAGE_LAYOUT_PREINITIALIZED;
-		imageInfo.usage = VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
-		imageInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
-		imageInfo.samples = VK_SAMPLE_COUNT_1_BIT;
-		imageInfo.flags = 0; // Optional
+		size_t channelsCount = m_description.format == TextureFormat::RGBA ? 4 : 3;
+		VkDeviceSize imageSize = m_description.width * m_description.height * channelsCount;
 
 		VkImage stagingImage;
-		VkResult res = vkCreateImage(device, &imageInfo, nullptr, &stagingImage);
-		SH_ASSERT(res == VK_SUCCESS, "Can not create Vulkan image!");
+		VkDeviceMemory stagingImageMemory;
 
-		VkMemoryRequirements memRequirements;
-		vkGetImageMemoryRequirements(device, stagingImage, &memRequirements);
+		createImage(m_description.width, m_description.height, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_TILING_LINEAR, VK_IMAGE_USAGE_TRANSFER_SRC_BIT,
+					 VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, stagingImage, stagingImageMemory);
+
+		VkImageSubresource subresource = {};
+		subresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+		subresource.mipLevel = 0;
+		subresource.arrayLayer = 0;
+
+		VkSubresourceLayout stagingImageLayout;
+		vkGetImageSubresourceLayout(device, stagingImage, &subresource, &stagingImageLayout);
+
+		void* dataInternal;
+		vkMapMemory(device, stagingImageMemory, 0, imageSize, 0, &dataInternal);
+
+		u8* externalData = static_cast<u8*>(data);
+
+		if (stagingImageLayout.rowPitch == m_description.width * channelsCount) 
+		{
+			memcpy(dataInternal, externalData, (size_t) imageSize);
+		} 
+		else 
+		{
+			uint8_t* dataBytes = reinterpret_cast<uint8_t*>(dataInternal);
+
+			for (int y = 0; y < m_description.height; y++) 
+			{
+				memcpy(&dataBytes[y * stagingImageLayout.rowPitch], &externalData[y * m_description.width * channelsCount], m_description.width * channelsCount);
+			}
+		}
+
+		vkUnmapMemory(device, stagingImageMemory);
 	}
 
 	void VulkanTexture::SetFaceData(TextureFace face, u32 mipLevel, const void* data)
@@ -43,10 +57,55 @@ namespace video
 
 	}
 
+	void VulkanTexture::createImage(
+			uint32_t width, uint32_t height,
+			VkFormat format,
+			VkImageTiling tiling,
+			VkImageUsageFlags usage,
+			VkMemoryPropertyFlags properties,
+			VkImage& image,
+			VkDeviceMemory& imageMemory)
+		{
+
+			VulkanDriver* driver = static_cast<VulkanDriver*>(Device::GetInstance()->GetDriver());
+			VkDevice device = driver->GetVulkanDevice();
+
+			VkImageCreateInfo imageInfo = {};
+			imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+			imageInfo.imageType = VK_IMAGE_TYPE_2D;
+			imageInfo.extent.width = width;
+			imageInfo.extent.height = height;
+			imageInfo.extent.depth = 1;
+			imageInfo.mipLevels = 1;
+			imageInfo.arrayLayers = 1;
+			imageInfo.format = format;
+			imageInfo.tiling = tiling;
+			imageInfo.initialLayout = VK_IMAGE_LAYOUT_PREINITIALIZED;
+			imageInfo.usage = usage;
+			imageInfo.samples = VK_SAMPLE_COUNT_1_BIT;
+			imageInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+
+			VkResult res = vkCreateImage(device, &imageInfo, nullptr, &image);
+			SH_ASSERT(res == VK_SUCCESS, "failed to create image!");
+
+			VkMemoryRequirements memRequirements;
+			vkGetImageMemoryRequirements(device, image, &memRequirements);
+
+			VkMemoryAllocateInfo allocInfo = {};
+			allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+			allocInfo.allocationSize = memRequirements.size;
+			allocInfo.memoryTypeIndex = driver->findMemoryType(memRequirements.memoryTypeBits, properties);
+
+			res = vkAllocateMemory(device, &allocInfo, nullptr, &imageMemory);
+			SH_ASSERT(res == VK_SUCCESS, "failed to allocate image memory!");
+
+			vkBindImageMemory(device, image, imageMemory, 0);
+		}
+
 	VulkanTexture::VulkanTexture(const TextureDescription& description)
 		: Texture(description)
 	{
-		VkDeviceSize imageSize = description.width * description.height * 4;
+		
 	}
 
 } // video

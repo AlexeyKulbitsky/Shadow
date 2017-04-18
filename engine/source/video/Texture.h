@@ -24,7 +24,7 @@ namespace sh
 			Texture(){}
 			virtual ~Texture(){}
 
-			virtual void SetData(u32 mipLevel, const void* data) = 0;
+			virtual void SetData(u32 mipLevel, void* data) = 0;
 			virtual void SetFaceData(TextureFace face, u32 mipLevel, const void* data) = 0;
 
 			static TexturePtr Create(const TextureDescription& description);

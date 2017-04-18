@@ -81,7 +81,7 @@ namespace sh
 				char* log = new char[len + 1];
 				glGetProgramInfoLog(m_programID, len, &len, log);
 
-				SH_ASSERT(0, "ERROR");
+				SH_ASSERT(0, "Error while linking GLES20 shader program! Error message: %s", log);
 			}
 
 			// For GLES20 there are only two type of shaders : vertex and fragment

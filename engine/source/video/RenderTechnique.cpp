@@ -410,6 +410,10 @@ namespace sh
 					// Add param to map
 					
 				}
+				else if( name == "sampler" )
+				{
+
+				}
 
 				childNode = childNode.next_sibling();
 			}

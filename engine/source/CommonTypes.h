@@ -259,9 +259,11 @@ namespace sh
 		TEX_COUNT = 6
 	};
 
-	enum class TextureFormat
+	enum class TextureFormat : int
 	{
-		UNDEFINED,
+		UNDEFINED = -1,
+		RGB = 0,
+		RGBA,
 		DXT1_RGB,
 		DXT1_RGBA
 	};
@@ -299,6 +301,14 @@ namespace sh
 		GPDT_INT4,
 		GPDT_MATRIX4,
 		GPDT_MATRIX3
+	};
+
+	enum GpuParamObjectType
+	{
+		GPOT_SAMPLER_1D,
+		GPOT_SAMPLER_2D,
+		GPOT_SAMPLER_3D,
+		GPOT_SAMPLER_CUBE
 	};
 
 	enum CommandBufferType

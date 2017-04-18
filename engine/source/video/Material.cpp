@@ -26,6 +26,25 @@ namespace sh
 
 			SetRenderTechnique(rt);
 
+			pugi::xml_node paramsNode = node.child("params");
+
+			pugi::xml_node paramNode = paramsNode.first_child();
+
+			while( paramNode )
+			{
+				String name = paramNode.name();
+				if( name == "sampler" )
+				{
+					String samplerName = paramNode.attribute("name").as_string();
+					String type = paramNode.attribute("type").as_string();
+					String textureFilename = paramNode.attribute("texture").as_string();
+
+					TexturePtr texture = resourceManager->GetTexture(textureFilename);
+				}
+
+				paramNode = paramNode.next_sibling();
+			}
+
 			// Read uniforms
 
 			// Read samplers

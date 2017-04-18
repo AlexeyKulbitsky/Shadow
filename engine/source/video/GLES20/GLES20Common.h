@@ -119,6 +119,14 @@ namespace video
 		GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
 	};
 
+	static GLenum const s_glTextureFormat[] =
+	{
+		GL_RGB,
+		GL_RGBA,
+		GL_COMPRESSED_RGB_S3TC_DXT1_EXT,
+		GL_COMPRESSED_RGBA_S3TC_DXT1_EXT
+	};
+
 } // video
 
 } // sh

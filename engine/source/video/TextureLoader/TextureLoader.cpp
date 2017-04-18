@@ -61,6 +61,7 @@ namespace sh
 
 			TextureDescription desc;
 			desc.type = TEX_TYPE_TEXTURE_2D;
+			desc.format = texChannels == 4 ? TextureFormat::RGBA : TextureFormat::RGB;
 			desc.width = texWidth;
 			desc.height = texHeight;
 			TexturePtr texture = Texture::Create(desc);

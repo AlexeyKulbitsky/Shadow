@@ -72,6 +72,7 @@ namespace video
 
 		std::array<SPtr<GpuParamsDescription>, 6U> m_paramsDescriptions;
 		u8* m_data = nullptr;
+		std::vector<SamplerPtr> m_samplers;
 	};
 
 	///////////////////////////////////////////////////////

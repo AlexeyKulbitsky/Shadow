@@ -65,10 +65,17 @@ namespace video
 			if(!m_paramsDescriptions[i] )
 				continue;
 
+			// Collect data params
 			for( auto& param : m_paramsDescriptions[i]->params )
 			{
 				param.second.offset = totalSize;
 				totalSize += param.second.size;
+			}
+
+			// Collect samplers
+			for( auto& sampler : m_paramsDescriptions[i]->samplers )
+			{
+
 			}
 		}
 
