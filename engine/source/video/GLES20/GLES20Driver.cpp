@@ -364,20 +364,22 @@ void GLES20Driver::SetGpuParams( const GpuParamsPtr& params, const CommandBuffer
 				break;
 			}
 		}
-
-		int counter = 0;
+		
 		// Upload samplers
+		int counter = 0;
 		for (const auto& samplerDesc : desc->samplers)
 		{
 			const auto& sampler = samplers.at(samplerDesc.first);
 			GLES20Texture* texture = static_cast<GLES20Texture*>(sampler->GetTexture().get());
 			glActiveTexture(GL_TEXTURE0 + counter);
-			glBindTexture(GL_TEXTURE_2D, texture->GetGLId());
+			GLenum textureTraget = s_glTextureType[texture->GetDescription().type];
+			glBindTexture(textureTraget, texture->GetGLId()); 
 
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			
+			glTexParameteri(textureTraget, GL_TEXTURE_MIN_FILTER, s_glTextureFiltering[samplerDesc.second.samplerDesc.minFilter]);
+			glTexParameteri(textureTraget, GL_TEXTURE_MAG_FILTER, s_glTextureFiltering[samplerDesc.second.samplerDesc.magFilter]);
+			glTexParameteri(textureTraget, GL_TEXTURE_WRAP_S, s_glTextureTiling[samplerDesc.second.samplerDesc.tilingU]);
+			glTexParameteri(textureTraget, GL_TEXTURE_WRAP_T, s_glTextureTiling[samplerDesc.second.samplerDesc.tilingV]);
 
 			glUniform1i(samplerDesc.second.location, counter);
 			

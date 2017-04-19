@@ -127,6 +127,19 @@ namespace video
 		GL_COMPRESSED_RGBA_S3TC_DXT1_EXT
 	};
 
+	static GLint const s_glTextureFiltering[] =
+	{
+		GL_NEAREST,
+		GL_LINEAR
+	};
+
+	static GLint const s_glTextureTiling[] =
+	{
+		GL_REPEAT,
+		GL_MIRRORED_REPEAT,
+		GL_CLAMP_TO_EDGE
+	};
+
 } // video
 
 } // sh

@@ -76,6 +76,8 @@ namespace video
 		std::array<SPtr<GpuParamsDescription>, 6U> m_paramsDescriptions;
 		u8* m_data = nullptr;
 		Map<String, SamplerPtr> m_samplers;
+		SamplerPtr* samplers;
+
 	};
 
 	///////////////////////////////////////////////////////

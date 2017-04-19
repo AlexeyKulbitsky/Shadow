@@ -18,11 +18,11 @@ namespace sh
 			glBindTexture(s_glTextureType[m_description.type], m_glID);
 			glTexImage2D(s_glTextureType[m_description.type], 
 						  mipLevel, 
-						  GL_RGBA, //s_glTextureFormat[static_cast<size_t>(m_description.format)], 
+						  s_glTextureFormat[static_cast<size_t>(m_description.format)], 
 						  m_description.width, 
 						  m_description.height, 
 						  0, 
-						  GL_RGBA, //s_glTextureFormat[static_cast<size_t>(m_description.format)], 
+						  s_glTextureFormat[static_cast<size_t>(m_description.format)], 
 						  GL_UNSIGNED_BYTE, 
 						  data);
 			glGenerateMipmap(s_glTextureType[m_description.type]);

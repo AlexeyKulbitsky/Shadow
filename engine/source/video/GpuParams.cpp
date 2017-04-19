@@ -69,7 +69,10 @@ namespace video
 		m_paramsDescriptions[ST_TESSELATION_CONTROL] = pipelineParamsDesc.tesselationEvaluationParams;
 		m_paramsDescriptions[ST_COMPUTE] = pipelineParamsDesc.computeParams;
 
+		
 		u32 totalSize = 0U;
+		u32 paramsSize = 0U;
+		u32 samplersCount = 0U;
 		// For each params description in each stage
 		for( size_t i = 0; i < 6; ++i )
 		{
@@ -79,17 +82,20 @@ namespace video
 			// Collect data params
 			for( auto& param : m_paramsDescriptions[i]->params )
 			{
-				param.second.offset = totalSize;
-				totalSize += param.second.size;
+				param.second.offset = paramsSize;
+				paramsSize += param.second.size;
 			}
 
 			// Collect samplers
-			for( auto& sampler : m_paramsDescriptions[i]->samplers )
+			for(auto& sampler : m_paramsDescriptions[i]->samplers)
 			{
 				m_samplers[sampler.first] = Sampler::Create(sampler.second.samplerDesc);
 			}
+			samplersCount += m_paramsDescriptions[i]->samplers.size();
 		}
 
+		totalSize += paramsSize;
+		totalSize += sizeof(Sampler*) * samplersCount;
 		m_data = new u8[totalSize];
 	}
 

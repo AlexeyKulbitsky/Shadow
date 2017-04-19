@@ -24,9 +24,6 @@ namespace sh
 			const String& GetName() const { return m_name; }
 
 			const GpuParamsPtr& GetCommonGpuParams() const { return m_commonGpuParams; }
-			const GpuParamsPtr& GetTransformGpuParams() const { return m_transfromsGpuParams; }
-
-			const std::vector<SPtr<MaterialParam>>& GetTransformParams() const { return m_transformParams; }
 
 		private:
 			String m_name = "default";
@@ -34,8 +31,6 @@ namespace sh
 			std::vector<RenderPipelinePtr> m_renderPipelines;
 
 			GpuParamsPtr m_commonGpuParams;
-			GpuParamsPtr m_transfromsGpuParams;
-			std::vector<SPtr<MaterialParam>> m_transformParams;
 		};
 	}
 }

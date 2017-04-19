@@ -27,6 +27,7 @@ namespace sh
 			virtual void SetData(u32 mipLevel, void* data) = 0;
 			virtual void SetFaceData(TextureFace face, u32 mipLevel, const void* data) = 0;
 
+			const TextureDescription& GetDescription() const { return m_description; }
 			static TexturePtr Create(const TextureDescription& description);
 
 		protected:
