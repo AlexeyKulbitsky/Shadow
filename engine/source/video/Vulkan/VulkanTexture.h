@@ -36,7 +36,7 @@ namespace video
 		VkImageView m_imageView;
 
 
-		VkSampler m_sampler;
+		
 	};
 
 } // video

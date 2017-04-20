@@ -2,6 +2,7 @@
 
 #include "../VulkanVertexBuffer.h"
 #include "../VulkanIndexBuffer.h"
+#include "../VulkanGpuParams.h"
 
 namespace sh
 {
@@ -23,6 +24,12 @@ namespace video
 		return result;
 	}
 
+	GpuParamsPtr VulkanHardwareBufferManager::CreateGpuParams(const GpuPipelineParamsInfoPtr& pipelineParamsInfo)
+	{
+		GpuParamsPtr result;
+		result.reset(new VulkanGpuParams(pipelineParamsInfo));
+		return result;
+	}
 } // video
 
 } // sh

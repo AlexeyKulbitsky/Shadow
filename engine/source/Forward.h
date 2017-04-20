@@ -18,6 +18,7 @@ namespace sh
 		DEFINE_CLASS_PTR(CommandBuffer)
 		DEFINE_CLASS_PTR(DepthStencilState)
 		DEFINE_CLASS_PTR(GpuParams)
+		DEFINE_CLASS_PTR(GpuPipelineParamsInfo)
 		DEFINE_CLASS_PTR(HardwareBuffer)
 		DEFINE_CLASS_PTR(IndexBuffer)
 		DEFINE_CLASS_PTR(Material)

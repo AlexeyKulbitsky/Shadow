@@ -15,7 +15,7 @@ namespace video
 	public:
 		virtual VertexBufferPtr CreateVertexBuffer(const VertexBufferDecription& description) override;
 		virtual IndexBufferPtr CreateIndexBuffer(const IndexBufferDescription& description) override;
-
+		virtual GpuParamsPtr CreateGpuParams(const GpuPipelineParamsInfoPtr& pipelineParamsInfo) override;
 	};
 
 } // video

@@ -26,7 +26,7 @@ namespace video
 		}
 		m_samplers[it->first]->Set(texture);
 	}
-
+	/*
 	GpuParamsPtr GpuParams::Create( const GpuPipelineParamsDescription& pipelineParamsDesc )
 	{
 		GpuParamsPtr result;
@@ -59,15 +59,22 @@ namespace video
 		return Create(pipelineParamsDesc);
 
 	}
-
-	GpuParams::GpuParams( const GpuPipelineParamsDescription& pipelineParamsDesc )
+	*/
+	GpuParamsPtr GpuParams::Create(const GpuPipelineParamsInfoPtr& pipelineParamsInfo)
 	{
-		m_paramsDescriptions[ST_VERTEX] = pipelineParamsDesc.vertexParams;
-		m_paramsDescriptions[ST_FRAGMENT] = pipelineParamsDesc.fragmentParams;
-		m_paramsDescriptions[ST_GEOMETRY] = pipelineParamsDesc.geometryParams;
-		m_paramsDescriptions[ST_TESSELATION_EVALUATION] = pipelineParamsDesc.tesselationControlParams;
-		m_paramsDescriptions[ST_TESSELATION_CONTROL] = pipelineParamsDesc.tesselationEvaluationParams;
-		m_paramsDescriptions[ST_COMPUTE] = pipelineParamsDesc.computeParams;
+		GpuParamsPtr result;
+		result.reset(new GpuParams(pipelineParamsInfo));
+		return result;
+	}
+
+	GpuParams::GpuParams(const GpuPipelineParamsInfoPtr& pipelineParamsInfo)
+	{
+		m_paramsDescriptions[ST_VERTEX] = pipelineParamsInfo->GetParamsDescription(ST_VERTEX);
+		m_paramsDescriptions[ST_FRAGMENT] = pipelineParamsInfo->GetParamsDescription(ST_FRAGMENT);
+		m_paramsDescriptions[ST_GEOMETRY] = pipelineParamsInfo->GetParamsDescription(ST_GEOMETRY);
+		m_paramsDescriptions[ST_TESSELATION_EVALUATION] = pipelineParamsInfo->GetParamsDescription(ST_TESSELATION_EVALUATION);
+		m_paramsDescriptions[ST_TESSELATION_CONTROL] = pipelineParamsInfo->GetParamsDescription(ST_TESSELATION_CONTROL);
+		m_paramsDescriptions[ST_COMPUTE] = pipelineParamsInfo->GetParamsDescription(ST_COMPUTE);
 
 		
 		u32 totalSize = 0U;

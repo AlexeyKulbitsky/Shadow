@@ -3,6 +3,7 @@
 #include "../VulkanRenderPipeline.h"
 #include "../VulkanShader.h"
 #include "../VulkanVertexDeclaration.h"
+#include "../VulkanSampler.h"
 
 namespace sh
 {
@@ -26,7 +27,9 @@ namespace video
 
 	SamplerPtr VulkanRenderStateManager::CreateSampler(const SamplerDescription& description)
 	{
-		return nullptr;
+		SamplerPtr result;
+		result.reset(new VulkanSampler(description));
+		return result;
 	}
 
 	VertexInputDeclarationPtr VulkanRenderStateManager::CreateVertexDeclaration()

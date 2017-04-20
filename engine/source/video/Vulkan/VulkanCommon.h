@@ -56,6 +56,25 @@ namespace video
 		VK_COMMAND_BUFFER_LEVEL_SECONDARY
 	};
 
+	static VkFilter const s_vkTextureFiltering[] =
+	{
+		VK_FILTER_NEAREST,
+		VK_FILTER_LINEAR
+	};
+
+	static VkSamplerMipmapMode const s_vkMipFileting[] =
+	{
+		VK_SAMPLER_MIPMAP_MODE_NEAREST,
+		VK_SAMPLER_MIPMAP_MODE_LINEAR
+	};
+	
+	static VkSamplerAddressMode const s_vkTiling[] =
+	{
+		VK_SAMPLER_ADDRESS_MODE_REPEAT,
+		VK_SAMPLER_ADDRESS_MODE_MIRRORED_REPEAT,
+		VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE
+	};
+
 } // video
 
 } // sh

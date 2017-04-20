@@ -52,6 +52,7 @@ namespace video
 
 	class GpuParams
 	{
+		friend class HardwareBufferManager;
 		template<typename U>
 		friend class TGpuParam;
 	public:
@@ -66,11 +67,14 @@ namespace video
 		const Map<String, SamplerPtr>& GetSamplers() const { return m_samplers; }
 		void SetSampler(ShaderType shaderType, const String& name, const TexturePtr& texture);
 
-		static GpuParamsPtr Create(const GpuPipelineParamsDescription& pipelineParamsInfo);
-		static GpuParamsPtr Create(const RenderPipelinePtr& pipeline);
+		//static GpuParamsPtr Create(const GpuPipelineParamsDescription& pipelineParamsInfo);
+		//static GpuParamsPtr Create(const RenderPipelinePtr& pipeline);
 
-	private:
-		GpuParams(const GpuPipelineParamsDescription& pipelineParamsInfo);
+		static GpuParamsPtr Create(const GpuPipelineParamsInfoPtr& pipelineParamsInfo);
+
+	protected:
+		GpuParams(const GpuPipelineParamsInfoPtr& pipelineParamsInfo);
+
 	private:
 
 		std::array<SPtr<GpuParamsDescription>, 6U> m_paramsDescriptions;

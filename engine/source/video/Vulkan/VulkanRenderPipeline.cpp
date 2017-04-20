@@ -149,6 +149,9 @@ namespace sh
 
 
 
+
+
+
 			VkPushConstantRange pushConstantRange = {};
 			pushConstantRange.offset = 0;
 			pushConstantRange.size = sizeof(math::Matrix4f);
@@ -165,6 +168,15 @@ namespace sh
 
 			VkResult res = vkCreatePipelineLayout(device, &pipelineLayoutInfo, nullptr, &m_pipelineLayout);
 			SH_ASSERT(res == VK_SUCCESS, "Failed to create pipeline layout!");
+
+
+
+
+
+
+
+
+
 
 			std::vector<VkPipelineShaderStageCreateInfo> shaderStages;
 			shaderStages.reserve(6U);

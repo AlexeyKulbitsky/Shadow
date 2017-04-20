@@ -91,44 +91,47 @@ namespace sh
 		{
 			RenderPipelinePtr result = RenderStateManager::GetInstance()->CreateRenderPipeline(description);
 
+			GpuPipelineParamsDescription paramsDesc;
+			GpuPipelineParamsDescription autoParamsDesc;
 
 			if (result->m_description.vertexShader)
 			{
-				result->m_paramsDescription.vertexParams = result->m_description.vertexShader->GetParamsDescription();
-				result->m_autoParamsDescription.vertexParams = result->m_description.vertexShader->GetAutoParamsDescription();
+				paramsDesc.vertexParams = result->m_description.vertexShader->GetParamsDescription();
+				autoParamsDesc.vertexParams = result->m_description.vertexShader->GetAutoParamsDescription();
 			}
 
 			if (result->m_description.fragmentShader)
 			{
-				result->m_paramsDescription.fragmentParams = result->m_description.fragmentShader->GetParamsDescription();
-				result->m_autoParamsDescription.fragmentParams = result->m_description.fragmentShader->GetAutoParamsDescription();
+				paramsDesc.fragmentParams = result->m_description.fragmentShader->GetParamsDescription();
+				autoParamsDesc.fragmentParams = result->m_description.fragmentShader->GetAutoParamsDescription();
 			}
 
 			if (result->m_description.geometryShader)
 			{
-				result->m_paramsDescription.geometryParams = result->m_description.geometryShader->GetParamsDescription();
-				result->m_autoParamsDescription.geometryParams = result->m_description.geometryShader->GetAutoParamsDescription();
+				paramsDesc.geometryParams = result->m_description.geometryShader->GetParamsDescription();
+				autoParamsDesc.geometryParams = result->m_description.geometryShader->GetAutoParamsDescription();
 			}
 
 			if (result->m_description.tesselationControlShader)
 			{
-				result->m_paramsDescription.tesselationControlParams = result->m_description.tesselationControlShader->GetParamsDescription();
-				result->m_autoParamsDescription.tesselationControlParams = result->m_description.tesselationControlShader->GetAutoParamsDescription();
+				paramsDesc.tesselationControlParams = result->m_description.tesselationControlShader->GetParamsDescription();
+				autoParamsDesc.tesselationControlParams = result->m_description.tesselationControlShader->GetAutoParamsDescription();
 			}
 
 			if (result->m_description.tesselationEvaluationShader)
 			{
-				result->m_paramsDescription.tesselationEvaluationParams = result->m_description.tesselationEvaluationShader->GetParamsDescription();
-				result->m_autoParamsDescription.tesselationEvaluationParams = result->m_description.tesselationEvaluationShader->GetAutoParamsDescription();
+				paramsDesc.tesselationEvaluationParams = result->m_description.tesselationEvaluationShader->GetParamsDescription();
+				autoParamsDesc.tesselationEvaluationParams = result->m_description.tesselationEvaluationShader->GetAutoParamsDescription();
 			}
 
 			if (result->m_description.computeShader)
 			{
-				result->m_paramsDescription.computeParams = result->m_description.computeShader->GetParamsDescription();
-				result->m_autoParamsDescription.computeParams = result->m_description.computeShader->GetAutoParamsDescription();
+				paramsDesc.computeParams = result->m_description.computeShader->GetParamsDescription();
+				autoParamsDesc.computeParams = result->m_description.computeShader->GetAutoParamsDescription();
 			}
 
-
+			result->m_paramsInfo.reset(new GpuPipelineParamsInfo(paramsDesc));
+			result->m_autoParamsInfo.reset(new GpuPipelineParamsInfo(autoParamsDesc));
 			return result;
 		}
 

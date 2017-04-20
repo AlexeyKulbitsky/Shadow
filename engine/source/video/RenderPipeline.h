@@ -61,8 +61,11 @@ namespace sh
 			const ShaderPtr& GetFragmentShader() const { return m_description.fragmentShader; }
 			const ShaderPtr& GetGeometryShader() const { return m_description.geometryShader; }
 			
-			const GpuPipelineParamsDescription& GetParamsDescription() const { return m_paramsDescription; }
-			const GpuPipelineParamsDescription& GetAutoParamsDescription() const { return m_autoParamsDescription; }
+			//const GpuPipelineParamsDescription& GetParamsDescription() const { return m_paramsDescription; }
+			//const GpuPipelineParamsDescription& GetAutoParamsDescription() const { return m_autoParamsDescription; }
+
+			const GpuPipelineParamsInfoPtr& GetParamsInfo() const { return m_paramsInfo; }
+			const GpuPipelineParamsInfoPtr& GetAutoParamsInfo() const { return m_autoParamsInfo; }
 
 			Layer GetLayer() const { return m_layer; }
 
@@ -75,8 +78,11 @@ namespace sh
 			String m_name;
 
 			RenderPipelineDescription m_description;
-			GpuPipelineParamsDescription m_paramsDescription;
-			GpuPipelineParamsDescription m_autoParamsDescription;
+			//GpuPipelineParamsDescription m_paramsDescription;
+			//GpuPipelineParamsDescription m_autoParamsDescription;
+
+			GpuPipelineParamsInfoPtr m_paramsInfo;
+			GpuPipelineParamsInfoPtr m_autoParamsInfo;
 
 			Layer m_layer;
 		};

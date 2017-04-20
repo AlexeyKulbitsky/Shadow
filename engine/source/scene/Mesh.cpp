@@ -61,7 +61,7 @@ namespace sh
 			inputDeclaration->Assemble(*(m_renderable->GetVertexBuffer()->GetVertexDeclaration().get()));
 			
 			m_renderable->m_vertexDeclaration = inputDeclaration;
-			m_renderable->m_transfromsGpuParams = video::GpuParams::Create(renderPipeline->GetAutoParamsDescription());
+			m_renderable->m_transfromsGpuParams = video::GpuParams::Create(renderPipeline->GetAutoParamsInfo());
 
 			m_renderable->m_transformParams.reset(new video::MaterialParams(m_renderable->m_transfromsGpuParams));
 			
