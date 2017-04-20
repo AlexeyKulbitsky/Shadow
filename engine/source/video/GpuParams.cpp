@@ -97,6 +97,7 @@ namespace video
 		totalSize += paramsSize;
 		totalSize += sizeof(Sampler*) * samplersCount;
 		m_data = new u8[totalSize];
+		samplers = reinterpret_cast<Sampler*>(m_data + sizeof(Sampler*) * samplersCount);
 	}
 
 } // video

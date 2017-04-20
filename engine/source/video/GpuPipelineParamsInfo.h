@@ -27,6 +27,11 @@ namespace video
 
 	private:
 		std::array<SPtr<GpuParamsDescription>, 6U> m_paramsDescription;
+
+		struct SetInfo
+		{
+
+		};
 	};
 
 } // video

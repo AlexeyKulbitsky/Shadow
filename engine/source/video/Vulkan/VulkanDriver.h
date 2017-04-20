@@ -142,7 +142,7 @@ namespace sh
 				VkBuffer& buffer, VkDeviceMemory& 
 				bufferMemory);
 
-		private:
+		public:
 			void transitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout);
 			void copyImage(VkImage srcImage, VkImage dstImage, uint32_t width, uint32_t height);
 			void createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags, VulkanDeleter<VkImageView>& imageView);

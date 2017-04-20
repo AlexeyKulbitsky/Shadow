@@ -37,6 +37,7 @@ namespace sh
 
 			VkPipeline m_graphicsPipeline;		
 			VkPipelineLayout m_pipelineLayout;
+			VkDescriptorSetLayout m_descriptorSetLayout;
 
 			// Pipelines for different vertex declarations
 			std::vector<VulkanVertexDeclaration*> m_declarations;

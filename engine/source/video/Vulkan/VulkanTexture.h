@@ -29,6 +29,14 @@ namespace video
 
 	protected:
 		VulkanTexture(const TextureDescription& description);
+
+	private:
+		VkImage m_textureImage;//{device, vkDestroyImage};
+		VkDeviceMemory m_textureImageMemory;//{device, vkFreeMemory};
+		VkImageView m_imageView;
+
+
+		VkSampler m_sampler;
 	};
 
 } // video
