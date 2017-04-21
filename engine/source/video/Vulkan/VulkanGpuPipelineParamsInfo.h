@@ -12,8 +12,19 @@ namespace video
 
 	class VulkanGpuPipelineParamsInfo : public GpuPipelineParamsInfo
 	{
+		friend class VulkanRenderStateManager;
+	public:
+		virtual ~VulkanGpuPipelineParamsInfo();
+
+		const std::vector<VkPushConstantRange>& GetPushConstantRanges() const { return m_pushConstantRanges; }
+		const std::vector<VkDescriptorSetLayout>& GetDescriptorSetLayouts() const { return m_descriptorSetLayouts; }
+
 	private:
-		VkPipelineLayout m_pipelineLayout;
+		VulkanGpuPipelineParamsInfo(const GpuPipelineParamsDescription& description);
+
+	private:
+		std::vector<VkPushConstantRange> m_pushConstantRanges;
+		std::vector<VkDescriptorSetLayout> m_descriptorSetLayouts;
 	};
 
 } // video

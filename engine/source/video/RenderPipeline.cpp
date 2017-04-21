@@ -129,9 +129,9 @@ namespace sh
 				paramsDesc.computeParams = result->m_description.computeShader->GetParamsDescription();
 				autoParamsDesc.computeParams = result->m_description.computeShader->GetAutoParamsDescription();
 			}
+			result->m_paramsInfo = GpuPipelineParamsInfo::Create(paramsDesc);
+			result->m_autoParamsInfo = GpuPipelineParamsInfo::Create(autoParamsDesc);
 
-			result->m_paramsInfo.reset(new GpuPipelineParamsInfo(paramsDesc));
-			result->m_autoParamsInfo.reset(new GpuPipelineParamsInfo(autoParamsDesc));
 			return result;
 		}
 

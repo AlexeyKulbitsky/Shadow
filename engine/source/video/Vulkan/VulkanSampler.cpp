@@ -1,4 +1,5 @@
 #include "VulkanSampler.h"
+#include "VulkanTexture.h"
 #include "../../Device.h"
 #include "VulkanDriver.h"
 
@@ -7,6 +8,16 @@ namespace sh
 
 namespace video
 {
+
+	void VulkanSampler::Set( TexturePtr texture )
+	{
+		Sampler::Set(texture);
+		VulkanTexture* vkTexture = static_cast<VulkanTexture*>(texture.get());
+
+		m_imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+		m_imageInfo.imageView = vkTexture->GetImageView();
+		m_imageInfo.sampler = m_sampler;
+	}
 
 	VulkanSampler::VulkanSampler(const SamplerDescription& description)
 	{

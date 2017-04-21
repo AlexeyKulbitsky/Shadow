@@ -4,6 +4,7 @@
 #include "../VulkanShader.h"
 #include "../VulkanVertexDeclaration.h"
 #include "../VulkanSampler.h"
+#include "../VulkanGpuPipelineParamsInfo.h"
 
 namespace sh
 {
@@ -36,6 +37,13 @@ namespace video
 	{
 		VertexInputDeclarationPtr result;
 		result.reset(new VulkanVertexDeclaration());
+		return result;
+	}
+
+	GpuPipelineParamsInfoPtr VulkanRenderStateManager::CreateGpuPipelineParamsInfo(const GpuPipelineParamsDescription& description)
+	{
+		GpuPipelineParamsInfoPtr result;
+		result.reset(new VulkanGpuPipelineParamsInfo(description));
 		return result;
 	}
 

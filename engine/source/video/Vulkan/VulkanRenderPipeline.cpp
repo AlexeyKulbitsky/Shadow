@@ -4,6 +4,7 @@
 #include "VulkanShaderProgram.h"
 #include "VulkanVertexDeclaration.h"
 #include "VulkanUniformBuffer.h"
+#include "VulkanGpuPipelineParamsInfo.h"
 #include "VulkanShader.h"
 #include "../../Device.h"
 #include "../UniformBuffer.h"
@@ -145,39 +146,32 @@ namespace sh
 			colorBlending.blendConstants[3] = 0.0f;
 		
 
-			
+			VulkanGpuPipelineParamsInfo* paramsInfo = static_cast<VulkanGpuPipelineParamsInfo*>(m_paramsInfo.get());
+			VulkanGpuPipelineParamsInfo* autoParamsInfo = static_cast<VulkanGpuPipelineParamsInfo*>(m_autoParamsInfo.get());
 
+			std::vector<VkPushConstantRange> pushConstantRanges;
+			std::vector<VkDescriptorSetLayout> setLayouts;
+			pushConstantRanges.insert(pushConstantRanges.end(), paramsInfo->GetPushConstantRanges().begin(), paramsInfo->GetPushConstantRanges().end());
+			pushConstantRanges.insert(pushConstantRanges.end(), autoParamsInfo->GetPushConstantRanges().begin(), autoParamsInfo->GetPushConstantRanges().end());
 
-
-
-
-
-			VkPushConstantRange pushConstantRange = {};
-			pushConstantRange.offset = 0;
-			pushConstantRange.size = sizeof(math::Matrix4f);
-			pushConstantRange.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+			setLayouts.insert(setLayouts.end(), paramsInfo->GetDescriptorSetLayouts().begin(), paramsInfo->GetDescriptorSetLayouts().end());
+			setLayouts.insert(setLayouts.end(), autoParamsInfo->GetDescriptorSetLayouts().begin(), autoParamsInfo->GetDescriptorSetLayouts().end());
 
 			VkPipelineLayoutCreateInfo pipelineLayoutInfo = {};			
 			pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-			pipelineLayoutInfo.pushConstantRangeCount = 1;
-			pipelineLayoutInfo.pPushConstantRanges = &pushConstantRange;
-			pipelineLayoutInfo.setLayoutCount = 1;
-			pipelineLayoutInfo.pSetLayouts = &m_descriptorSetLayout;
+			pipelineLayoutInfo.pushConstantRangeCount = pushConstantRanges.size();
+			pipelineLayoutInfo.pPushConstantRanges = pushConstantRanges.data();
+			pipelineLayoutInfo.setLayoutCount = setLayouts.size();
+			pipelineLayoutInfo.pSetLayouts = setLayouts.data();
 			pipelineLayoutInfo.flags = 0;
-			pipelineLayoutInfo.pNext = nullptr;			
+			pipelineLayoutInfo.pNext = nullptr;		
+			
 
 			VkResult res = vkCreatePipelineLayout(device, &pipelineLayoutInfo, nullptr, &m_pipelineLayout);
 			SH_ASSERT(res == VK_SUCCESS, "Failed to create pipeline layout!");
 
 
-
-
-
-
-
-
-
-
+			
 			std::vector<VkPipelineShaderStageCreateInfo> shaderStages;
 			shaderStages.reserve(6U);
 			if (m_description.vertexShader)
@@ -218,27 +212,6 @@ namespace sh
 		VulkanRenderPipeline::VulkanRenderPipeline(const RenderPipelineDescription& description)
 		{
 			m_description = description;
-
-
-			VulkanDriver* driver = static_cast<VulkanDriver*>(Device::GetInstance()->GetDriver());
-			VkDevice device = driver->GetVulkanDevice();
-
-			// Create descriptor set layout
-			VkDescriptorSetLayoutBinding samplerLayoutBinding = {};
-			samplerLayoutBinding.binding = 0;
-			samplerLayoutBinding.descriptorCount = 1;
-			samplerLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-			samplerLayoutBinding.pImmutableSamplers = nullptr;
-			samplerLayoutBinding.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
-        
-			std::array<VkDescriptorSetLayoutBinding, 1> bindings = {samplerLayoutBinding};
-			VkDescriptorSetLayoutCreateInfo layoutInfo = {};
-			layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-			layoutInfo.bindingCount = bindings.size();
-			layoutInfo.pBindings = bindings.data();
-
-			VkResult res = vkCreateDescriptorSetLayout(device, &layoutInfo, nullptr, &m_descriptorSetLayout);
-			SH_ASSERT(res == VK_SUCCESS, "failed to create descriptor set layout!");
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////

@@ -17,6 +17,9 @@ namespace video
 		virtual void SetData(u32 mipLevel, void* data) override;
 		virtual void SetFaceData(TextureFace face, u32 mipLevel, const void* data) override;
 
+		VkImage GetImage() const { return m_textureImage; }
+		VkImageView GetImageView() const { return m_imageView; }
+
 	private:
 		void createImage(
 				uint32_t width, uint32_t height,

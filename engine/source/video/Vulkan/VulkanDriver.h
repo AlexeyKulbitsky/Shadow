@@ -70,6 +70,10 @@ namespace sh
 			const VkCommandBufferInheritanceInfo& GetInheritanceInfo() const { return m_inheritanceInfo; }
 			VulkanCommandBuffer* GetPrimaryCommandBuffer() { return m_primaryCommandBuffer; }
 
+
+			void SetGlobalPipelineLayout(VkPipelineLayout globalPipelineLayout) { m_globalPipelineLayout = globalPipelineLayout; }
+			void SetGlobalDescriptorSetLayout(VkDescriptorSetLayout globalDescriptorSetLayout) { m_globalDescriptorSetLayout = globalDescriptorSetLayout; }
+
 		private:
 			struct QueueFamilyIndices 
 			{
@@ -155,6 +159,10 @@ namespace sh
 			{
 				return format == VK_FORMAT_D32_SFLOAT_S8_UINT || format == VK_FORMAT_D24_UNORM_S8_UINT;
 			}
+
+		public:
+			VkPipelineLayout m_globalPipelineLayout;
+			VkDescriptorSetLayout m_globalDescriptorSetLayout;
 
 		private:
 			CreationParameters m_parameters;

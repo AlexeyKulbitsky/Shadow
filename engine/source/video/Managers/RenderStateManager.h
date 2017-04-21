@@ -19,6 +19,7 @@ namespace video
 		virtual ShaderPtr CreateShader(const ShaderDescription& description) = 0;
 		virtual SamplerPtr CreateSampler(const SamplerDescription& description) = 0;
 		virtual VertexInputDeclarationPtr CreateVertexDeclaration() = 0;
+		virtual GpuPipelineParamsInfoPtr CreateGpuPipelineParamsInfo(const GpuPipelineParamsDescription& description);
 	};
 
 } // video

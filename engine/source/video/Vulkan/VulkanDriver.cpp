@@ -9,7 +9,10 @@
 #include "VulkanRenderCommand.h"
 #include "Batching/VulkanRenderBatchManager.h"
 #include "VulkanShader.h"
+#include "VulkanSampler.h"
 #include "VulkanCommandBuffer.h"
+#include "VulkanGpuPipelineParamsInfo.h"
+#include "VulkanGpuParams.h"
 
 #include "Managers/VulkanRenderStateManager.h"
 #include "Managers/VulkanHardwareBufferManager.h"
@@ -349,6 +352,7 @@ namespace sh
 		{ 
 			VulkanCommandBuffer* cmdBuffer = static_cast<VulkanCommandBuffer*>(commandBuffer.get());
 			VulkanRenderPipeline* vkPipeline = static_cast<VulkanRenderPipeline*>(pipeline.get());
+			//VulkanGpuPipelineParamsInfo* vkParamsInfo = static_cast<VulkanGpuPipelineParamsInfo*>(pipeline->G)
 			m_layoutTemp = vkPipeline->GetVulkanPipelineLayout();
 
 			VkPipeline vulkanPipeline = vkPipeline->GetVulkanPipeline(m_vulkanDeclarationTemp);
@@ -360,9 +364,10 @@ namespace sh
 		void VulkanDriver::SetGpuParams(const GpuParamsPtr& params, const CommandBufferPtr& commandBuffer) 
 		{ 
 			VulkanCommandBuffer* cmdBuffer = static_cast<VulkanCommandBuffer*>(commandBuffer.get());
+			VulkanGpuParams* vkParams = static_cast<VulkanGpuParams*>(params.get());
 
 			const u8* data = params->GetData();
-
+			const auto& samplers = params->GetSamplers();
 
 			for( size_t i = 0; i < 6U; ++i )
 			{
@@ -384,12 +389,31 @@ namespace sh
 						param.second.size, 
 						dataPtr);
 				}
+
+
+				for (const auto& samplerDesc : desc->samplers)
+				{
+					const auto& sampler = samplers.at(samplerDesc.first);
+					
+					VulkanSampler* vkSampler = static_cast<VulkanSampler*>(sampler.get());
+					VkDescriptorImageInfo imageInfo = vkSampler->GetDescriptor();
+
+					VkWriteDescriptorSet descriptorWrite = {};
+					descriptorWrite.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+					descriptorWrite.dstSet = vkParams->GetDescriptorSet();
+					descriptorWrite.dstBinding = 0;
+					descriptorWrite.dstArrayElement = 0;
+					descriptorWrite.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+					descriptorWrite.descriptorCount = 1;
+					descriptorWrite.pImageInfo = &imageInfo; 
+					descriptorWrite.pBufferInfo = nullptr;
+					descriptorWrite.pNext = nullptr;
+					descriptorWrite.pTexelBufferView = nullptr;
+
+					vkUpdateDescriptorSets(m_device, 1, &descriptorWrite, 0, nullptr);
+				}
+
 			}
-
-
-			
-
-
 			
 		}
 

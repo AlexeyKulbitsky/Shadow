@@ -21,13 +21,18 @@ namespace video
 	class GpuPipelineParamsInfo
 	{
 		friend class RenderPipeline;
+		friend class RenderStateManager;
 	public:
 		SPtr<GpuParamsDescription> GetParamsDescription(ShaderType shaderType) const { return m_paramsDescription[shaderType]; }
+
+		virtual ~GpuPipelineParamsInfo() { }
+
+		static GpuPipelineParamsInfoPtr Create(const GpuPipelineParamsDescription& description);
 
 	protected:
 		GpuPipelineParamsInfo(const GpuPipelineParamsDescription& description);
 
-	private:
+	protected:
 		std::array<SPtr<GpuParamsDescription>, 6U> m_paramsDescription;
 
 		struct SetInfo

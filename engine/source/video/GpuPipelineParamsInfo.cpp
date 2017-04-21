@@ -1,4 +1,5 @@
 #include "GpuPipelineParamsInfo.h"
+#include "Managers/RenderStateManager.h"
 
 namespace sh
 {
@@ -6,6 +7,11 @@ namespace sh
 namespace video
 {
 	
+	GpuPipelineParamsInfoPtr GpuPipelineParamsInfo::Create( const GpuPipelineParamsDescription& description )
+	{
+		return RenderStateManager::GetInstance()->CreateGpuPipelineParamsInfo(description);
+	}
+
 	GpuPipelineParamsInfo::GpuPipelineParamsInfo( const GpuPipelineParamsDescription& description )
 	{
 		m_paramsDescription[ST_VERTEX] = description.vertexParams;

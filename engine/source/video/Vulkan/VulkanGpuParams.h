@@ -15,11 +15,15 @@ namespace video
 	{
 		friend class VulkanHardwareBufferManager;
 
+	public:
+		VkDescriptorSet GetDescriptorSet() const { return m_desctriptorSet; }
+
 	private:
 		VulkanGpuParams(const GpuPipelineParamsInfoPtr& pipelineParamsInfo);
 
 	private:
 		VkDescriptorSet m_desctriptorSet;
+		VkDescriptorPool m_descriptorPool;
 	};
 
 } // video

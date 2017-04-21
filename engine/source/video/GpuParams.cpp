@@ -1,6 +1,7 @@
 #include "GpuParams.h"
 #include "Shader.h"
 #include "RenderPipeline.h"
+#include "Managers/HardwareBufferManager.h"
 
 namespace sh
 {
@@ -26,45 +27,16 @@ namespace video
 		}
 		m_samplers[it->first]->Set(texture);
 	}
-	/*
-	GpuParamsPtr GpuParams::Create( const GpuPipelineParamsDescription& pipelineParamsDesc )
-	{
-		GpuParamsPtr result;
-		result.reset(new GpuParams(pipelineParamsDesc));
-		return result;
-	}
-
-	GpuParamsPtr GpuParams::Create( const RenderPipelinePtr& pipeline )
-	{
-		GpuPipelineParamsDescription pipelineParamsDesc;
-
-		if( pipeline->m_description.vertexShader)
-			pipelineParamsDesc.vertexParams = pipeline->m_description.vertexShader->GetParamsDescription();
-
-		if( pipeline->m_description.fragmentShader)
-			pipelineParamsDesc.fragmentParams = pipeline->m_description.fragmentShader->GetParamsDescription();
-
-		if( pipeline->m_description.geometryShader)
-			pipelineParamsDesc.geometryParams = pipeline->m_description.geometryShader->GetParamsDescription();
-
-		if( pipeline->m_description.tesselationControlShader)
-			pipelineParamsDesc.tesselationControlParams = pipeline->m_description.tesselationControlShader->GetParamsDescription();
-
-		if( pipeline->m_description.tesselationEvaluationShader)
-			pipelineParamsDesc.tesselationEvaluationParams = pipeline->m_description.tesselationEvaluationShader->GetParamsDescription();
-
-		if( pipeline->m_description.computeShader)
-			pipelineParamsDesc.computeParams = pipeline->m_description.computeShader->GetParamsDescription();
-
-		return Create(pipelineParamsDesc);
-
-	}
-	*/
+	
 	GpuParamsPtr GpuParams::Create(const GpuPipelineParamsInfoPtr& pipelineParamsInfo)
 	{
+		/*
 		GpuParamsPtr result;
 		result.reset(new GpuParams(pipelineParamsInfo));
 		return result;
+		*/
+
+		return HardwareBufferManager::GetInstance()->CreateGpuParams(pipelineParamsInfo);
 	}
 
 	GpuParams::GpuParams(const GpuPipelineParamsInfoPtr& pipelineParamsInfo)
