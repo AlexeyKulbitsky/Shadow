@@ -5,6 +5,8 @@
 #include "RasterizationState.h"
 #include "BlendingState.h"
 
+#include "../font/FontManager.h"
+
 #include "../scene/Mesh.h"
 #include "../scene/Model.h"
 
@@ -12,6 +14,17 @@ namespace sh
 {
 	namespace video
 	{
+
+		Driver::Driver()
+		{
+			FontManager::CreateInstance();
+		}
+
+		Driver::~Driver()
+		{
+			FontManager::DestroyInstance();
+		}
+
 		void Driver::Render(scene::Model* model)
 		{
 			size_t meshesCount = model->GetMeshesCount();

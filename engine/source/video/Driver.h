@@ -28,8 +28,8 @@ namespace sh
 		class Driver
 		{
 		public:
-			Driver(){}
-			~Driver(){}
+			Driver();
+			~Driver();
 
 			virtual const String& GetApiName() const = 0;
 

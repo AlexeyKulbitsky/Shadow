@@ -19,6 +19,7 @@ solution "Shadow Editor"
 		includedirs { 
 			"source/**",
 			"../libs/pugixml/src/",
+			"../libs/freetype/include/",
 			"../engine/source/"
 		}
 		--
@@ -44,7 +45,7 @@ solution "Shadow Editor"
 		-- will return an error since it won't be able to find the path
 		-- to your Qt installation.
 		--
-		--qtpath "C:/Qt/5.6/msvc2013"
+		qtpath "C:/Qt/5.6/msvc2013"
 
 		--
 		-- Setup which Qt modules will be used. This also apply to the
@@ -75,6 +76,7 @@ solution "Shadow Editor"
 			libdirs { 
 				"../libs/egl/lib/release", 
 				"../libs/vulkan/bin", 
+				"../libs/freetype/lib/release"
 				--"c:/Program Files (x86)/Microsoft DirectX SDK (June 2010)/Lib/x86/" 
 				}
 			links { 
@@ -85,6 +87,7 @@ solution "Shadow Editor"
 			--"d3d11",
 			--"d3dx11",
 			--"d3dx10",
+			"freetype271",
 			"Shadow" }
 			characterset ("MBCS") -- Multi-byte Character Set; currently Visual Studio only
 			characterset ("Default") --the default encoding for the toolset; usually Unicode

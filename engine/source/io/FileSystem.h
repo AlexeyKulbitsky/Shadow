@@ -28,11 +28,11 @@ namespace sh
 			}
 		};
 
-		class FileSystem
+		class FileSystem : public Singleton<FileSystem>
 		{
 		public:
 			FileSystem();
-			~FileSystem();
+			virtual ~FileSystem();
 
 			void Init();
 

@@ -13,7 +13,9 @@ namespace sh
 	Device::Device(const CreationParameters &parameters)
 		: m_creationParameters(parameters)
 	{
-		m_fileSystem = new io::FileSystem();
+		//m_fileSystem = new io::FileSystem();
+		io::FileSystem::CreateInstance();
+		m_fileSystem = io::FileSystem::GetInstance();
 
 		m_inputManager.reset(new InputManager());
 		m_resourceManager.reset(new ResourceManager());
@@ -24,6 +26,8 @@ namespace sh
 	{
 		int a = 0;
 		a++;
+
+		//io::FileSystem::DestroyInstance();
 	}
 
 	void Device::SetWindow(void* window)

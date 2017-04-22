@@ -10,6 +10,7 @@ project "Shadow"
 		"../libs/vulkan/include/",
 		"../libs/stb/include/",
 		"../libs/tinyobjloader/include/",
+		"../libs/freetype/include/",
 		"C:/Program Files (x86)/Microsoft DirectX SDK (June 2010)/Include/"
 	}
    
