@@ -1,12 +1,10 @@
 #include "GLES20RenderPIpeline.h"
 #include "../../Device.h"
 #include "../Driver.h"
-#include "../UniformBuffer.h"
 #include "../DepthStencilState.h"
 #include "../BlendingState.h"
 #include "../RasterizationState.h"
 #include "../VertexDeclaration.h"
-#include "../ShaderProgram.h"
 #include "../GpuParamsDescription.h"
 #include "../GpuParams.h"
 #include "GLES20Shader.h"
@@ -36,7 +34,6 @@ namespace sh
 		
 		void GLES20RenderPipeline::Unload()
 		{
-			m_uniformBuffer->Unload();
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////

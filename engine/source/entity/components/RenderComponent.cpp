@@ -8,7 +8,6 @@
 #include "../../video/Material.h"
 #include "../../video/RenderTechnique.h"
 #include "../../video/RenderPipeline.h"
-#include "../../video/UniformBuffer.h"
 #include "../../scene/SceneManager.h"
 
 

@@ -186,7 +186,6 @@ void MoveGizmo::CreateArrow(Axis::Type type)
 	if (modelInfo.uniform)
 	{
 		modelInfo.color = color;
-		modelInfo.uniform->Set(modelInfo.color);
 	}
 	m_axises[(Axis::Type)type].models.push_back(modelInfo);
 
@@ -201,7 +200,6 @@ void MoveGizmo::CreateArrow(Axis::Type type)
 	if (modelInfo.uniform)
 	{
 		modelInfo.color = color;
-		modelInfo.uniform->Set(modelInfo.color);
 	}
 	m_axises[(Axis::Type)type].models.push_back(modelInfo);
 }
@@ -287,7 +285,6 @@ void MoveGizmo::CreatePlane(Axis::Type type)
 	if (modelInfo.uniform)
 	{
 		modelInfo.color = color1;
-		modelInfo.uniform->Set(modelInfo.color);
 	}
 	m_axises[(Axis::Type)type].models.push_back(modelInfo);
 
@@ -299,7 +296,6 @@ void MoveGizmo::CreatePlane(Axis::Type type)
 	if (modelInfo.uniform)
 	{
 		modelInfo.color = color2;
-		modelInfo.uniform->Set(modelInfo.color);
 	}
 	m_axises[(Axis::Type)type].models.push_back(modelInfo);
 
@@ -311,7 +307,6 @@ void MoveGizmo::CreatePlane(Axis::Type type)
 	if (modelInfo.uniform)
 	{
 		modelInfo.color = color3;
-		modelInfo.uniform->Set(modelInfo.color);
 	}
 	m_axises[(Axis::Type)type].models.push_back(modelInfo);
 }
@@ -464,21 +459,19 @@ void MoveGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
 	{
 		for (size_t i = 0; i < m_axises[Axis::Type::X_AXIS].models.size(); ++i)
 		{
-			m_axises[Axis::Type::X_AXIS].models[i].uniform->Set(color);
+			//m_axises[Axis::Type::X_AXIS].models[i].uniform->Set(color);
 		}
 		m_axises[Axis::Type::X_AXIS].active = true;
 
 		for (size_t i = 0; i < m_axises[Axis::Type::Y_AXIS].models.size(); ++i)
 		{
 			const auto& col = m_axises[Axis::Type::Y_AXIS].models[i].color;
-			m_axises[Axis::Type::Y_AXIS].models[i].uniform->Set(col);
 		}
 		m_axises[Axis::Type::Y_AXIS].active = false;
 
 		for (size_t i = 0; i < m_axises[Axis::Type::Z_AXIS].models.size(); ++i)
 		{
 			const auto& col = m_axises[Axis::Type::Z_AXIS].models[i].color;
-			m_axises[Axis::Type::Z_AXIS].models[i].uniform->Set(col);
 		}
 		m_axises[Axis::Type::Z_AXIS].active = false;
 	}
@@ -486,21 +479,21 @@ void MoveGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
 	{
 		for (size_t i = 0; i < m_axises[Axis::Type::Y_AXIS].models.size(); ++i)
 		{
-			m_axises[Axis::Type::Y_AXIS].models[i].uniform->Set(color);
+			//m_axises[Axis::Type::Y_AXIS].models[i].uniform->Set(color);
 		}
 		m_axises[Axis::Type::Y_AXIS].active = true;
 
 		for (size_t i = 0; i < m_axises[Axis::Type::X_AXIS].models.size(); ++i)
 		{
 			const auto& col = m_axises[Axis::Type::X_AXIS].models[i].color;
-			m_axises[Axis::Type::X_AXIS].models[i].uniform->Set(col);
+			//m_axises[Axis::Type::X_AXIS].models[i].uniform->Set(col);
 		}
 		m_axises[Axis::Type::X_AXIS].active = false;
 
 		for (size_t i = 0; i < m_axises[Axis::Type::Z_AXIS].models.size(); ++i)
 		{
 			const auto& col = m_axises[Axis::Type::Z_AXIS].models[i].color;
-			m_axises[Axis::Type::Z_AXIS].models[i].uniform->Set(col);
+			//m_axises[Axis::Type::Z_AXIS].models[i].uniform->Set(col);
 		}
 		m_axises[Axis::Type::Z_AXIS].active = false;
 	}
@@ -508,21 +501,21 @@ void MoveGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
 	{
 		for (size_t i = 0; i < m_axises[Axis::Type::Z_AXIS].models.size(); ++i)
 		{
-			m_axises[Axis::Type::Z_AXIS].models[i].uniform->Set(color);
+			//m_axises[Axis::Type::Z_AXIS].models[i].uniform->Set(color);
 		}
 		m_axises[Axis::Type::Z_AXIS].active = true;
 
 		for (size_t i = 0; i < m_axises[Axis::Type::X_AXIS].models.size(); ++i)
 		{
 			const auto& col = m_axises[Axis::Type::X_AXIS].models[i].color;
-			m_axises[Axis::Type::X_AXIS].models[i].uniform->Set(col);
+			//m_axises[Axis::Type::X_AXIS].models[i].uniform->Set(col);
 		}
 		m_axises[Axis::Type::X_AXIS].active = false;
 
 		for (size_t i = 0; i < m_axises[Axis::Type::Y_AXIS].models.size(); ++i)
 		{
 			const auto& col = m_axises[Axis::Type::Y_AXIS].models[i].color;
-			m_axises[Axis::Type::Y_AXIS].models[i].uniform->Set(col);
+			//m_axises[Axis::Type::Y_AXIS].models[i].uniform->Set(col);
 		}
 		m_axises[Axis::Type::Y_AXIS].active = false;
 	}
@@ -537,7 +530,7 @@ void MoveGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
 			for (size_t j = 0; j < m_axises[i].models.size(); ++j)
 			{
 				const auto& col = m_axises[i].models[j].color;
-				m_axises[i].models[j].uniform->Set(col);
+				//m_axises[i].models[j].uniform->Set(col);
 			}
 			m_axises[i].active = false;
 		}
@@ -550,9 +543,9 @@ void MoveGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
 	for (size_t i = 3; i < 6; ++i)
 	{
 		const auto& color = m_axises[i].models[m_axises[i].models.size() - 1].color;
-		m_axises[i].models[m_axises[i].models.size() - 1].uniform->Set(color);
+		//m_axises[i].models[m_axises[i].models.size() - 1].uniform->Set(color);
 		driver->Render(m_axises[i].models[m_axises[i].models.size() - 1].model.get());
-		m_axises[i].models[m_axises[i].models.size() - 1].uniform->Set(sh::math::Vector4f(1.0f, 1.0f, 1.0f, 0.7f));
+		//m_axises[i].models[m_axises[i].models.size() - 1].uniform->Set(sh::math::Vector4f(1.0f, 1.0f, 1.0f, 0.7f));
 	}
 
 	driver->GetPixelData(x, y, width, height, data);

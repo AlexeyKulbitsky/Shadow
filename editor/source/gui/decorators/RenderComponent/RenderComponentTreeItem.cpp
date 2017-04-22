@@ -147,8 +147,6 @@ void RenderComponentTreeItem::SetDepthCompareFunction(int funcType)
 
 void RenderComponentTreeItem::SetUniformSingleFloat(double value)
 {
-	sh::video::Uniform* uniform = (sh::video::Uniform*)m_userPointer;
-	uniform->Set((float)value);
 }
 
 ////////////////////////////////////////////////////////////////////////

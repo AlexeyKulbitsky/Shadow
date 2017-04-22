@@ -25,7 +25,7 @@ Gizmo::Gizmo()
 	if (m_axises[0].lineColorUniform)
 	{
 		sh::math::Vector4f color(1.0f, 0.0f, 0.0f, 1.0f);
-		m_axises[0].lineColorUniform->Set(color);
+//		m_axises[0].lineColorUniform->Set(color);
 	}
 
 	////////////////////////////////////////////////
@@ -40,7 +40,7 @@ Gizmo::Gizmo()
 	if (m_axises[1].lineColorUniform)
 	{
 		sh::math::Vector4f color(0.0f, 1.0f, 0.0f, 1.0f);
-		m_axises[1].lineColorUniform->Set(color);
+//		m_axises[1].lineColorUniform->Set(color);
 	}
 
 	/////////////////////////////////////////////////
@@ -57,7 +57,7 @@ Gizmo::Gizmo()
 	if (m_axises[2].lineColorUniform)
 	{
 		sh::math::Vector4f color(0.0f, 0.0f, 1.0f, 1.0f);
-		m_axises[2].lineColorUniform->Set(color);
+//		m_axises[2].lineColorUniform->Set(color);
 	}
 
 	/*

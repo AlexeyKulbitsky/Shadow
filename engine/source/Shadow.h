@@ -47,10 +47,7 @@
 #include "video/RenderTarget.h"
 #include "video/RenderTechnique.h"
 #include "video/Sampler.h"
-#include "video/ShaderProgram.h"
 #include "video/Texture.h"
-#include "video/Uniform.h"
-#include "video/UniformBuffer.h"
 #include "video/VertexBuffer.h"
 #include "video/VertexDeclaration.h"
 

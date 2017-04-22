@@ -3,7 +3,6 @@
 #include "Material.h"
 #include "RenderPipeline.h"
 #include "VertexDeclaration.h"
-#include "ShaderProgram.h"
 #include "../CommonTypes.h"
 
 namespace sh

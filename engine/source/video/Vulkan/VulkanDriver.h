@@ -55,8 +55,6 @@ namespace sh
 			virtual void DrawIndexed(u32 offset, u32 indicesCount, u32 instancesCount = 1U, const CommandBufferPtr& commandBuffer = nullptr) override;
 
 
-			virtual UniformBufferPtr CreateUniformBuffer() const override;
-
 			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) override;
 
 			// Vulkan-specific interface

@@ -1,18 +1,14 @@
 #include "VulkanRenderPipeline.h"
 #include "VulkanDeleter.h"
 #include "VulkanDriver.h"
-#include "VulkanShaderProgram.h"
 #include "VulkanVertexDeclaration.h"
-#include "VulkanUniformBuffer.h"
 #include "VulkanGpuPipelineParamsInfo.h"
 #include "VulkanShader.h"
 #include "../../Device.h"
-#include "../UniformBuffer.h"
 #include "../DepthStencilState.h"
 #include "../BlendingState.h"
 #include "../RasterizationState.h"
 #include "VulkanVertexDeclaration.h"
-#include "../ShaderProgram.h"
 
 
 namespace sh

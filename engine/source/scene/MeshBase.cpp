@@ -2,12 +2,9 @@
 #include "../Device.h"
 #include "../video/Material.h"
 #include "../video/RenderTechnique.h"
-#include "../video/ShaderProgram.h"
 #include "../video/RenderPipeline.h"
 #include "../video/VertexBuffer.h"
 #include "../video/IndexBuffer.h"
-#include "../video/UniformBuffer.h"
-#include "../video/Uniform.h"
 #include "../video/VertexDeclaration.h"
 #include "../scene/SceneManager.h"
 #include "../scene/Camera.h"
@@ -31,12 +28,6 @@ namespace sh
 
 		void MeshBase::Unload()
 		{
-			for (size_t i = 0; i < m_uniforms.size(); ++i)
-			{
-				delete m_uniforms[i];
-				m_uniforms[i] = nullptr;
-			}
-
 			for (size_t i = 0; i < m_samplers.size(); ++i)
 			{
 				delete m_samplers[i];

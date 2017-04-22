@@ -2,7 +2,6 @@
 #define SHADOW_DRIVER_INCLUDE
 
 #include "../Globals.h"
-#include "Uniform.h"
 #include "HardwareBuffer.h"
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"
@@ -88,15 +87,8 @@ namespace sh
 			virtual UniformBufferPtr CreateUniformBuffer() const {return nullptr;}
 			virtual RenderTargetPtr CreateRenderTarget() const { return nullptr; }
 
-			template<typename T>
-			void SetGlobalUniform(GlobalUniformName globalName, const T& value);
-			Uniform* GetGlobalUniform(GlobalUniformName globalName) { return m_globalUniforms[(size_t)globalName]; }
 
 		protected:
-			void InitGlobalUniforms();
-
-		protected:
-			Uniform* m_globalUniforms[(size_t)GlobalUniformName::COUNT];
 			math::Vector4u m_viewPort;
 			math::Vector2f m_depthRange;
 			

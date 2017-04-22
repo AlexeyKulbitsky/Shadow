@@ -3,12 +3,9 @@
 #include "../Device.h"
 #include "../video/Material.h"
 #include "../video/RenderTechnique.h"
-#include "../video/ShaderProgram.h"
 #include "../video/RenderPipeline.h"
 #include "../video/VertexDeclaration.h"
-#include "../video/UniformBuffer.h"
 #include "../video/VertexBuffer.h"
-#include "../video/Uniform.h"
 #include "../scene/SceneManager.h"
 #include "../scene/Camera.h"
 #include "../video/GpuParams.h"
@@ -16,7 +13,6 @@
 #include "../video/MaterialParam.h"
 #include "../video/Renderable.h"
 
-#include "../video/Vulkan/VulkanRenderCommand.h"
 #include "../video/Vulkan/VulkanRenderPipeline.h"
 
 namespace sh

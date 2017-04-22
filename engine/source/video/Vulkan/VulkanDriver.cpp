@@ -4,9 +4,6 @@
 #include "VulkanVertexBuffer.h"
 #include "VulkanIndexBuffer.h"
 #include "VulkanRenderPipeline.h"
-#include "VulkanShaderProgram.h"
-#include "VulkanUniformBuffer.h"
-#include "VulkanRenderCommand.h"
 #include "Batching/VulkanRenderBatchManager.h"
 #include "VulkanShader.h"
 #include "VulkanSampler.h"
@@ -124,8 +121,6 @@ namespace sh
 
 		bool VulkanDriver::Init()
 		{
-			InitGlobalUniforms();
-
 			SetupLayersAndExtensions();			
 			CreateInstance();
 			setupDebugCallback();
@@ -475,15 +470,6 @@ namespace sh
 			vkCmdDrawIndexed(cmdBuffer->GetVulkanId(), indicesCount, instancesCount, 0, 0, 0);
 		}
 		
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		UniformBufferPtr VulkanDriver::CreateUniformBuffer() const
-		{
-			UniformBufferPtr result = nullptr;
-			result.reset(new VulkanUniformBuffer());
-			return result;
-		}
-
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		void VulkanDriver::GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data)

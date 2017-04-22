@@ -69,11 +69,6 @@ namespace sh
 			if (m_needsToRecalculateViewMatrix)
 			{
 				UpdateViewMatrix();
-				video::Driver* driver = Device::GetInstance()->GetDriver();
-				driver->GetGlobalUniform(video::GlobalUniformName::CAMERA_VIEW_MATRIX)->Set(m_viewMatrix);
-				driver->GetGlobalUniform(video::GlobalUniformName::CAMERA_VIEW_ROTATION_MATRIX)->Set(m_rotationMatrix);
-				driver->GetGlobalUniform(video::GlobalUniformName::CAMERA_VIEW_PROJECTION_MATRIX)->Set((m_projectionMatrix * m_viewMatrix).GetTransposed());
-				driver->GetGlobalUniform(video::GlobalUniformName::CAMERA_VIEW_ROTATION_PROJECTION_MATRIX)->Set((m_projectionMatrix * m_rotationMatrix).GetTransposed());
 				m_needsToRecalculateViewMatrix = false;
 			}
 		}
@@ -108,7 +103,6 @@ namespace sh
 			m_farDistance = farP;
 
 			UpdateProjectionMatrix();
-			Device::GetInstance()->GetDriver()->GetGlobalUniform(video::GlobalUniformName::CAMERA_PROJECTION_MATRIX)->Set(m_projectionMatrix);
 			m_needsToRecalculateProjectionMatrix = false;
 		}
 

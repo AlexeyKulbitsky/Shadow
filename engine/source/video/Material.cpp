@@ -1,7 +1,6 @@
 #include "Material.h"
 #include "RenderTechnique.h"
 #include "RenderPipeline.h"
-#include "UniformBuffer.h"
 #include "../Device.h"
 
 namespace sh

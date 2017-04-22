@@ -1,6 +1,4 @@
 #include "GLES20RenderBatch.h"
-#include "ShaderProgram.h"
-#include "UniformBuffer.h"
 #include "IndexBuffer.h"
 #include "Driver.h"
 #include "../scene/Mesh.h"

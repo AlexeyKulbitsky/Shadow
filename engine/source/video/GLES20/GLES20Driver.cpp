@@ -19,7 +19,6 @@
 #include "../GLContext/EGLContextManager.h"
 #include "../../scene/Mesh.h"
 #include "../../scene/Model.h"
-#include "../UniformBuffer.h"
 #include "../DepthStencilState.h"
 #include "../RasterizationState.h"
 #include "../BlendingState.h"
@@ -65,8 +64,6 @@ const String& GLES20Driver::GetApiName() const
 
 bool GLES20Driver::Init()
 {
-	InitGlobalUniforms();
-
 	glEnable( GL_DEPTH_TEST );
 	//glEnable(GL_BLEND);
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -392,14 +389,6 @@ void GLES20Driver::SetGpuParams( const GpuParamsPtr& params, const CommandBuffer
 void GLES20Driver::SetTopology( Topology topology, const CommandBufferPtr& )
 {
 	m_currentTopology = s_glTopology[static_cast<size_t>( topology )];
-}
-
-void GLES20Driver::SetAutoUniformsBatch( const UniformsBatchPtr& batch, const CommandBufferPtr& )
-{
-	for( auto uniform : batch->m_uniforms )
-	{
-		uniform->Upload();
-	}
 }
 
 ////////////////////////////////////////////////////////////////////////

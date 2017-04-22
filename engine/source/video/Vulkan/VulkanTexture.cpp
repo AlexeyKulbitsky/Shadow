@@ -14,7 +14,7 @@ namespace video
 		VkDevice device = driver->GetVulkanDevice();
 
 		size_t channelsCount = m_description.format == TextureFormat::RGBA ? 4 : 3;
-		VkDeviceSize imageSize = m_description.width * m_description.height * channelsCount;
+		VkDeviceSize imageSize = m_description.width * m_description.height * 4;
 
 		VkImage stagingImage;
 		VkDeviceMemory stagingImageMemory;
@@ -35,7 +35,7 @@ namespace video
 
 		u8* externalData = static_cast<u8*>(data);
 
-		if (stagingImageLayout.rowPitch == m_description.width * channelsCount) 
+		if (stagingImageLayout.rowPitch == m_description.width * 4) 
 		{
 			memcpy(dataInternal, externalData, (size_t) imageSize);
 		} 
@@ -45,7 +45,7 @@ namespace video
 
 			for (int y = 0; y < m_description.height; y++) 
 			{
-				memcpy(&dataBytes[y * stagingImageLayout.rowPitch], &externalData[y * m_description.width * channelsCount], m_description.width * channelsCount);
+				memcpy(&dataBytes[y * stagingImageLayout.rowPitch], &externalData[y * m_description.width * 4], m_description.width * 4);
 			}
 		}
 
@@ -87,7 +87,8 @@ namespace video
 
 
 
-
+		vkFreeMemory(device, stagingImageMemory, nullptr);
+		vkDestroyImage(device, stagingImage, nullptr);
 		// Sampler
 		
 

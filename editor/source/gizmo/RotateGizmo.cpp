@@ -17,7 +17,6 @@ RotateGizmo::RotateGizmo()
 	if (m_axises[0].circleColorUniform)
 	{
 		sh::math::Vector4f color(1.0f, 0.0f, 0.0f, 1.0f);
-		m_axises[0].circleColorUniform->Set(color);
 	}
 
 	m_axises[0].localUp = sh::math::Vector3f(0.0f, 1.0f, 0.0f);
@@ -38,7 +37,6 @@ RotateGizmo::RotateGizmo()
 	if (m_axises[1].circleColorUniform)
 	{
 		sh::math::Vector4f color(0.0f, 1.0f, 0.0f, 1.0f);
-		m_axises[1].circleColorUniform->Set(color);
 	}
 
 	/////////////////////////////////////////////////
@@ -57,7 +55,6 @@ RotateGizmo::RotateGizmo()
 	if (m_axises[2].circleColorUniform)
 	{
 		sh::math::Vector4f color(0.0f, 0.0f, 1.0f, 1.0f);
-		m_axises[2].circleColorUniform->Set(color);
 	}
 
 	////////////////////////////////////////////////////////////////////////
@@ -75,7 +72,6 @@ RotateGizmo::RotateGizmo()
 	if (m_axises[3].circleColorUniform)
 	{
 		sh::math::Vector4f color(0.5f, 0.5f, 0.5f, 1.0f);
-		m_axises[3].circleColorUniform->Set(color);
 	}
 }
 
@@ -240,41 +236,32 @@ void RotateGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 heigh
 	sh::math::Vector4f color(1.0f, 1.0f, 1.0f, 1.0f);
 	if (data[0] == 255 && data[1] == 0 && data[2] == 0)
 	{
-		m_axises[Axis::Type::X_AXIS].circleColorUniform->Set(color);
 		m_axises[Axis::Type::X_AXIS].active = true;
 
 		color = sh::math::Vector4f(0.0f, 1.0f, 0.0f, 1.0f);
-		m_axises[Axis::Type::Y_AXIS].circleColorUniform->Set(color);
 		m_axises[Axis::Type::Y_AXIS].active = false;
 
 		color = sh::math::Vector4f(0.0f, 0.0f, 1.0f, 1.0f);
-		m_axises[Axis::Type::Z_AXIS].circleColorUniform->Set(color);
 		m_axises[Axis::Type::Z_AXIS].active = false;
 	}
 	else if (data[0] == 0 && data[1] == 255 && data[2] == 0)
 	{
-		m_axises[Axis::Type::Y_AXIS].circleColorUniform->Set(color);
 		m_axises[Axis::Type::Y_AXIS].active = true;
 
 		color = sh::math::Vector4f(1.0f, 0.0f, 0.0f, 1.0f);
-		m_axises[Axis::Type::X_AXIS].circleColorUniform->Set(color);
 		m_axises[Axis::Type::X_AXIS].active = false;
 
 		color = sh::math::Vector4f(0.0f, 0.0f, 1.0f, 1.0f);
-		m_axises[Axis::Type::Z_AXIS].circleColorUniform->Set(color);
 		m_axises[Axis::Type::Z_AXIS].active = false;
 	}
 	else if (data[0] == 0 && data[1] == 0 && data[2] == 255)
 	{
-		m_axises[Axis::Type::Z_AXIS].circleColorUniform->Set(color);
 		m_axises[Axis::Type::Z_AXIS].active = true;
 
 		color = sh::math::Vector4f(1.0f, 0.0f, 0.0f, 1.0f);
-		m_axises[Axis::Type::X_AXIS].circleColorUniform->Set(color);
 		m_axises[Axis::Type::X_AXIS].active = false;
 
 		color = sh::math::Vector4f(0.0f, 1.0f, 0.0f, 1.0f);
-		m_axises[Axis::Type::Y_AXIS].circleColorUniform->Set(color);
 		m_axises[Axis::Type::Y_AXIS].active = false;
 	}
 	else if (data[0] == 255 && data[1] == 255 && data[2] == 255)
@@ -284,15 +271,12 @@ void RotateGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 heigh
 	else
 	{
 		color = sh::math::Vector4f(1.0f, 0.0f, 0.0f, 1.0f);
-		m_axises[Axis::Type::X_AXIS].circleColorUniform->Set(color);
 		m_axises[Axis::Type::X_AXIS].active = false;
 
 		color = sh::math::Vector4f(0.0f, 1.0f, 0.0f, 1.0f);
-		m_axises[Axis::Type::Y_AXIS].circleColorUniform->Set(color);
 		m_axises[Axis::Type::Y_AXIS].active = false;
 
 		color = sh::math::Vector4f(0.0f, 0.0f, 1.0f, 1.0f);
-		m_axises[Axis::Type::Z_AXIS].circleColorUniform->Set(color);
 		m_axises[Axis::Type::Z_AXIS].active = false;
 	}
 }

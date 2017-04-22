@@ -6,7 +6,6 @@
 #include "../../video/VertexDeclaration.h"
 #include "../../Device.h"
 #include "../../video/Sampler.h"
-#include "../../video/Uniform.h"
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>

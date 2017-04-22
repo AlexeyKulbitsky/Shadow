@@ -68,28 +68,6 @@ QWidget* RenderComponentTreeItemDelegate::createEditor(QWidget *parent, const QS
 					}			
 				}
 					break;
-				case RenderComponentTreeItem::Type::UNIFORM:
-				{				
-					sh::video::Uniform* uniform = (sh::video::Uniform*)item->GetUserPointer();
-					switch (uniform->GetType())
-					{
-						case sh::video::Uniform::Type::FLOAT:
-						{
-							QDoubleSpinBox* spinBox = new QDoubleSpinBox(parent);
-							float value = uniform->Get<float>();							
-							spinBox->setMaximum(1.0);
-							spinBox->setMinimum(0.0);
-							spinBox->setSingleStep(0.05);
-							spinBox->setValue(value);					
-							connect(spinBox, SIGNAL(valueChanged(double)), item, SLOT(SetUniformSingleFloat(double)));
-							return spinBox;
-						}
-							break;
-						default:
-							break;
-					}
-				}
-					break;
 			}
 					
 		}
