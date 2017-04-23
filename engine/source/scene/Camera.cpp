@@ -49,7 +49,7 @@ namespace sh
 
 			math::Vector2i old = inputManager->GetMousePositionOld();
 			math::Vector2i current = inputManager->GetMousePositionCurrent();
-			if (inputManager->IsMouseButtonPressed(MouseCode::BUTTON_RIGHT))
+			if (inputManager->IsMouseButtonPressed(MouseCode::ButtonRight))
 			{
 				
 				math::Vector2i delta = current - old;

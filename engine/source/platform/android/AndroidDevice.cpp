@@ -62,6 +62,7 @@ bool AndroidDevice::Run()
 
 ////////////////////////////////////////////////////////////////////////
 
+/*
 void AndroidDevice::OnEvent(const Event& e)
 {
 	switch (e.type)
@@ -80,7 +81,7 @@ void AndroidDevice::OnEvent(const Event& e)
 		break;
 	}
 }
-
+*/
 ////////////////////////////////////////////////////////////////////////
 
 u64 AndroidDevice::GetTime()

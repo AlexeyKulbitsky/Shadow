@@ -16,6 +16,7 @@ namespace sh
 			void Load(const pugi::xml_node &node);
 			void Save(pugi::xml_node &parent);
 			void SetRenderTechnique(const RenderTechniquePtr& technique);
+			void SetRenderTechnique( const String& techniqueName);
 
 			const RenderTechniquePtr& GetRenderTechnique() { return m_renderTechnique; }
 

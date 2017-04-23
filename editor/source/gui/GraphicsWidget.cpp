@@ -27,6 +27,7 @@ void GraphicsWidget::resizeEvent(QResizeEvent *e)
 
 void GraphicsWidget::mouseMoveEvent(QMouseEvent * ev)
 {	
+	/*
 	sh::Event e;
 	e.type = sh::EventType::MOUSE_INPUT_EVENT;
 	e.mouseEvent.type = sh::MouseEventType::MOVED;	
@@ -48,12 +49,14 @@ void GraphicsWidget::mouseMoveEvent(QMouseEvent * ev)
 	{
 		
 	}
+	*/
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 void GraphicsWidget::mousePressEvent(QMouseEvent * ev)
 {
+	/*
 	sh::Event e;
 	e.type = sh::EventType::MOUSE_INPUT_EVENT;
 	e.mouseEvent.type = sh::MouseEventType::BUTTON_PRESSED;
@@ -77,6 +80,9 @@ void GraphicsWidget::mousePressEvent(QMouseEvent * ev)
 	e.mouseEvent.y = ev->y();	
 	sh::Device::GetInstance()->OnEvent(e);	
 	
+
+	sh::gui::GuiManager::GetInstance()->OnMouseEvent(ev->x(), ev->y());
+	return;
 	if (m_gizmo)
 	{
 		m_gizmo->OnMousePressed(ev->x(), ev->y());
@@ -113,13 +119,14 @@ void GraphicsWidget::mousePressEvent(QMouseEvent * ev)
 	{
 		m_cameraTargetEntity = picker->TryToPick(ev->x(), ev->y(), width(), height());	
 	}
-		
+		*/
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 void GraphicsWidget::mouseReleaseEvent(QMouseEvent * ev)
 {
+	/*
 	sh::Event e;
 	e.type = sh::EventType::MOUSE_INPUT_EVENT;
 	e.mouseEvent.type = sh::MouseEventType::BUTTON_RELEASED;
@@ -145,6 +152,7 @@ void GraphicsWidget::mouseReleaseEvent(QMouseEvent * ev)
 
 	if (m_gizmo->IsEnabled())
 		m_gizmo->OnMouseReleased(ev->x(), ev->y());
+		*/
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -161,20 +169,24 @@ void GraphicsWidget::wheelEvent(QWheelEvent * e)
 
 void GraphicsWidget::keyPressEvent(QKeyEvent * ev)
 {
+	/*
 	sh::Event e;
 	e.type = sh::EventType::KEYBOARD_INPUT_EVENT;
 	e.keyboardEvent.keyCode = (sh::KeyCode)ev->key(); 
 	e.keyboardEvent.type = sh::KeyboardEventType::KEY_PRESEED;
+	*/
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 void GraphicsWidget::keyReleaseEvent(QKeyEvent * ev)
 {
+	/*
 	sh::Event e;
 	e.type = sh::EventType::KEYBOARD_INPUT_EVENT;
 	e.keyboardEvent.keyCode = (sh::KeyCode)ev->key();
 	e.keyboardEvent.type = sh::KeyboardEventType::KEY_RELEASED;
+	*/
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -206,6 +218,7 @@ void GraphicsWidget::Init()
 
 void GraphicsWidget::Update()
 {
+	/*
 	sh::Device* device = sh::Device::GetInstance();
 	sh::InputManager* inputManager = device->GetInputManager();
 	sh::math::Vector2i old = inputManager->GetMousePositionOld();
@@ -271,6 +284,7 @@ void GraphicsWidget::Update()
 		}		
 	}
 	inputManager->SetMousePositionOld(current);
+	*/
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -284,6 +298,7 @@ void GraphicsWidget::Render()
 		m_gizmo->Render();
 	}
 	
+	sh::gui::GuiManager::GetInstance()->Render();
 	m_driver->EndRendering();
 }
 

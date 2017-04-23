@@ -1,4 +1,8 @@
 #include "InputManager.h"
+#include "Device.h"
+
+
+
 
 namespace sh
 {
@@ -13,20 +17,43 @@ namespace sh
 		{
 			m_mouseKeys[i] = false;
 		}
+
+		
 	}
 
+	void InputManager::OnMouseEvent(int x, int y, MouseEventType type, MouseCode code)
+	{
+		switch (type)
+		{
+		case MouseEventType::ButtonPressed:
+			SetMouseButtonPressed(code);
+			break;
+		case MouseEventType::ButtonReleased:
+			SetMouseButtonReleased(code);
+			break;
+		case MouseEventType::Moved:
+			SetMousePositionCurrent(math::Vector2i(x, y));
+			break;
+		default:
+			break;
+		}
+		SetMousePositionCurrent(math::Vector2i(x, y));
+	}
+
+	void InputManager::OnKeyboardEvent(KeyboardEventType type, KeyCode code)
+	{
+		if (type == KeyboardEventType::KeyPressed)
+			SetKeyPressed(code);
+		else
+			SetKeyReleased(code);
+	}
+
+	/*
 	void InputManager::OnEvent(const Event& e)
 	{
 		switch (e.type)
 		{
-		case EventType::KEYBOARD_INPUT_EVENT:
-		{
-			if (e.keyboardEvent.type == KeyboardEventType::KEY_PRESEED)
-				SetKeyPressed(e.keyboardEvent.keyCode);
-			else
-				SetKeyReleased(e.keyboardEvent.keyCode);
-		}
-			break;
+		
 		case EventType::MOUSE_INPUT_EVENT:
 		{	
 			switch (e.mouseEvent.type)
@@ -50,7 +77,7 @@ namespace sh
 			break;
 		}
 	}
-
+	*/
 
 	void InputManager::SetKeyPressed(KeyCode code)
 	{

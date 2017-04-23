@@ -156,24 +156,28 @@ void MainWindow::SetSelectedEntity(sh::Entity* entity)
 
 void MainWindow::keyPressEvent(QKeyEvent * ev)
 {
+	/*
 	sh::Event pressEvent;
 	pressEvent.type = sh::EventType::KEYBOARD_INPUT_EVENT;
 	int key = ev->nativeVirtualKey();
 	pressEvent.keyboardEvent.keyCode = (sh::KeyCode)key;
 	pressEvent.keyboardEvent.type = sh::KeyboardEventType::KEY_PRESEED;
 	sh::Device::GetInstance()->OnEvent(pressEvent);
+	*/
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void MainWindow::keyReleaseEvent(QKeyEvent * ev)
 {
+	/*
 	sh::Event releaseEvent;
 	releaseEvent.type = sh::EventType::KEYBOARD_INPUT_EVENT;
 	int key = ev->nativeVirtualKey();
 	releaseEvent.keyboardEvent.keyCode = (sh::KeyCode)key;
 	releaseEvent.keyboardEvent.type = sh::KeyboardEventType::KEY_RELEASED;
 	sh::Device::GetInstance()->OnEvent(releaseEvent);
+	*/
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -343,6 +347,8 @@ void MainWindow::InitDevice()
 	sceneMgr->SetComponentsFactory(new EditorComponentsFactory());
 	device->SetSceneManager(sceneMgr);
 
+	sh::gui::GuiManager::CreateInstance();
+
 	m_sceneManager = sceneMgr;
 
 	sh::io::FileSystem* fs = device->GetFileSystem();
@@ -360,6 +366,8 @@ void MainWindow::InitDevice()
 	camera->SetProjection(3.1415926535f / 4.0f, 800.0f / 600.0f, 0.1f, 1000.0f);
 	camera->SetPosition(sh::math::Vector3f(0.0f));
 	sceneMgr->SetCamera(camera);
+
+	sh::gui::GuiManager::GetInstance()->Init();
 }
 
 //////////////////////////////////////////////////////////////////////////

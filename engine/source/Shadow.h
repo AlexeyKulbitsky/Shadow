@@ -5,6 +5,9 @@
 #include "Device.h"
 #include "Event.h"
 
+#include "gui/GuiManager.h"
+#include "gui/Button.h"
+
 #include "entity/Component.h"
 #include "entity/ComponentsFactory.h"
 #include "entity/Entity.h"

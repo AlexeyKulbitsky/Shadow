@@ -8,13 +8,19 @@ namespace sh
 
 namespace gui
 {
-	
+	struct GeometryData
+	{
+		u32 offset = 0U;
+	};
+
 	class GuiElement
 	{
 	public:
-		void SetPosition(u32 x, u32 y);
-		void SetWidth(u32 width);
-		void SetHeight(u32 height);
+		virtual void SetPosition(u32 x, u32 y) = 0;
+		virtual void SetWidth(u32 width) = 0;
+		virtual void SetHeight(u32 height) = 0;
+
+		virtual bool ProcessInput(u32 x, u32 y) = 0;
 	};
 
 } // gui

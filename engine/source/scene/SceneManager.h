@@ -45,7 +45,7 @@ namespace sh
 
 			const PickerPtr& GetPicker() const { return m_picker; }
 			void Update(f32 deltaTime = 0.0f);
-			void OnEvent(const Event& e);
+//			void OnEvent(const Event& e);
 
 		private:
 			static math::Vector3f	s_frontVector;

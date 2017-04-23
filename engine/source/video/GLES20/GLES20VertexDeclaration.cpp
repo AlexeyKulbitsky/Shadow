@@ -86,6 +86,8 @@ namespace sh
 			for (size_t i = 0; i < attributes.size(); ++i)
 			{
 				Attribute* attr = declatarion.GetAttribute(attributes[i].semantic);
+				if (!attr)
+					continue;
 				const void* tempPointer = (const void*)(attr->offset);
 				attributes[i].pointer = tempPointer;
 			}

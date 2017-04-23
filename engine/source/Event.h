@@ -3,6 +3,9 @@
 
 #include "Types.h"
 
+#include <functional>
+#include <vector>
+
 namespace sh
 {
 
@@ -167,61 +170,50 @@ namespace sh
 
 	enum class MouseCode
 	{
-		BUTTON_LEFT = 0,
-		BUTTON_RIGHT = 1,
-		BUTTON_WHEEL = 2
+		ButtonLeft = 0,
+		ButtonRight = 1,
+		ButtonWheel = 2
 	};
 
-	enum class EventType
-	{
-		MOUSE_INPUT_EVENT,
-		KEYBOARD_INPUT_EVENT,
-		UNKNOWN
-	};
 
 	enum class MouseEventType
 	{
-		BUTTON_PRESSED,
-		BUTTON_RELEASED,
-		BUTTON_DOUBLE_CLICKED,
-		MOVED,
-		WHEEL_SCROLLED
+		ButtonPressed,
+		ButtonReleased,
+		ButtonDoubleClicked,
+		Moved,
+		WheelScrolled
 	};
 
 	enum class KeyboardEventType
 	{
-		KEY_PRESEED,
-		KEY_RELEASED
+		KeyPressed,
+		KeyReleased
 	};
 
-	struct Event
+
+	template<class ReturnType, class... Args>
+	class Event
 	{
-		struct MouseEvent
+	public:
+		void Connect(std::function<ReturnType(Args...)> func)
 		{
-			s32 x;
-			s32 y;
+			m_connections.push_back(func);
+		}
 
-			MouseCode mouseCode;
-
-			MouseEventType type;
-		};
-
-		struct KeyboardEvent
+		void operator() (Args... args)
 		{
-			KeyCode keyCode;
+			for (auto& connection : m_connections)
+			{
+				connection(std::forward<Args>(args)...);
+				//connection(args...);
+			}
+		}
 
-			KeyboardEventType type;
-		};
-
-
-		EventType type;
-
-		union
-		{
-			struct MouseEvent mouseEvent;
-			struct KeyboardEvent keyboardEvent;
-		};
+	private:
+		std::vector< std::function<ReturnType(Args...)> > m_connections;
 	};
+
 }
 
 #endif

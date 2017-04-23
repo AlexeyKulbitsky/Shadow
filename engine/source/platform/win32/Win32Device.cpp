@@ -5,6 +5,8 @@
 #include "../video/Vulkan/VulkanDriver.h"
 #include "../scene/SceneManager.h"
 
+#include "../../gui/GuiManager.h"
+
 using namespace sh;
 using namespace video;
 
@@ -336,14 +338,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		int x = LOWORD(lParam);
 		int y = HIWORD(lParam);
 
-		Event e;
-		e.type = EventType::MOUSE_INPUT_EVENT;
-		e.mouseEvent.x = x;
-		e.mouseEvent.y = y;
-		e.mouseEvent.type = MouseEventType::BUTTON_PRESSED;
-		e.mouseEvent.mouseCode = MouseCode::BUTTON_LEFT;
 		if (device)
-			device->OnEvent(e);
+			device->mouseEvent(x, y, MouseEventType::ButtonPressed, MouseCode::ButtonLeft);
 	}
 		break;
 
@@ -352,14 +348,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		int x = LOWORD(lParam);
 		int y = HIWORD(lParam);
 
-		Event e;
-		e.type = EventType::MOUSE_INPUT_EVENT;
-		e.mouseEvent.x = x;
-		e.mouseEvent.y = y;
-		e.mouseEvent.type = MouseEventType::BUTTON_RELEASED;
-		e.mouseEvent.mouseCode = MouseCode::BUTTON_LEFT;
 		if (device)
-			device->OnEvent(e);
+			device->mouseEvent(x, y, MouseEventType::ButtonReleased, MouseCode::ButtonLeft);
 	}
 		break;
 	case WM_MOUSEMOVE:
@@ -368,13 +358,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		int x = LOWORD(lParam);
 		int y = HIWORD(lParam);
 
-		Event e;
-		e.type = EventType::MOUSE_INPUT_EVENT;
-		e.mouseEvent.x = x;
-		e.mouseEvent.y = y;
-		e.mouseEvent.type = MouseEventType::MOVED;
 		if (device)
-			device->OnEvent(e);
+			device->mouseEvent(x, y, MouseEventType::Moved, MouseCode::ButtonLeft);
 	}
 		break;
 	case WM_PAINT:
@@ -389,22 +374,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	case WM_KEYDOWN:
 	{
-		Event e;
-		e.type = EventType::KEYBOARD_INPUT_EVENT;
-		e.keyboardEvent.type = KeyboardEventType::KEY_PRESEED;
-		e.keyboardEvent.keyCode = (KeyCode)wParam;
 		if (device)
-			device->OnEvent(e);
+			device->keyboardEvent(KeyboardEventType::KeyPressed, (KeyCode)wParam);
 	}
 		break;
 	case WM_KEYUP:
 	{
-		Event e;
-		e.type = EventType::KEYBOARD_INPUT_EVENT;
-		e.keyboardEvent.type = KeyboardEventType::KEY_RELEASED;
-		e.keyboardEvent.keyCode = (KeyCode)wParam;
 		if (device)
-			device->OnEvent(e);
+			device->keyboardEvent(KeyboardEventType::KeyReleased, (KeyCode)wParam);
 	}
 		break;
 
@@ -572,13 +549,14 @@ void Win32Device::Update(f32 deltaTime)
 
 bool Win32Device::Run()
 {
-	/*
+	///*
 	static char capture[128];
 	static u64 t = 0;
-	sprintf(capture, "Shdow engine: FPS %d", GetTime() - t);
+	int delta = static_cast<int>(GetTime() - t);
+	sprintf(capture, "Shdow engine: FPS %d", delta);
 	t = GetTime();
 	SetWindowText(m_hwnd, capture);
-	*/
+	//*/
 
 	MSG msg;
 	bool done;
@@ -610,6 +588,7 @@ bool Win32Device::Run()
 
 ////////////////////////////////////////////////////////////////////////
 
+/*
 void Win32Device::OnEvent(const Event& e)
 {
 	switch (e.type)
@@ -617,6 +596,11 @@ void Win32Device::OnEvent(const Event& e)
 	case EventType::MOUSE_INPUT_EVENT:
 	{
 		m_inputManager->OnEvent(e);
+
+		if (e.mouseEvent.type == MouseEventType::BUTTON_PRESSED)
+		{
+			sh::gui::GuiManager::GetInstance()->OnMouseEvent(e.mouseEvent.x, e.mouseEvent.y);
+		}
 	}
 		break;
 	case EventType::KEYBOARD_INPUT_EVENT:
@@ -628,7 +612,7 @@ void Win32Device::OnEvent(const Event& e)
 		break;
 	}
 }
-
+*/
 ////////////////////////////////////////////////////////////////////////
 
 u64 Win32Device::GetTime()

@@ -13,7 +13,8 @@ namespace sh
 
 		InputManager();
 
-		void OnEvent(const Event& e);
+		void OnMouseEvent(int x, int y, MouseEventType type, MouseCode code);
+		void OnKeyboardEvent(KeyboardEventType type, KeyCode code);
 
 		void SetKeyPressed(KeyCode code);
 		void SetKeyReleased(KeyCode code);

@@ -43,6 +43,11 @@ namespace math
 			lowerRightCorner.x >= point.x && lowerRightCorner.y >= point.y;
 		}
 
+		bool IsPointInside(const T& x, const T& y)
+		{
+			return upperLeftCorner.x <= x && upperLeftCorner.y <= y &&
+			lowerRightCorner.x >= x && lowerRightCorner.y >= y;
+		}
 
 		Vector2<T> upperLeftCorner;
 		Vector2<T> lowerRightCorner;

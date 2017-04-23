@@ -126,8 +126,18 @@ namespace sh
 				m_renderPipelines[i] = pipeline;
 				m_commonGpuParams = GpuParams::Create(pipeline->GetParamsInfo());
 			}
-
-			
 		}
+
+		////////////////////////////////////////////////////////////////
+
+		void Material::SetRenderTechnique(const String& techniqueName)
+		{
+			ResourceManager* resourceManager = Device::GetInstance()->GetResourceManager();
+			sh::video::RenderTechniquePtr rt = resourceManager->GetRenderTechnique(techniqueName);
+
+			SetRenderTechnique(rt);
+		}
+
+		////////////////////////////////////////////////////////////////
 	}
 }

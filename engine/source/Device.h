@@ -32,7 +32,7 @@ namespace sh
 		virtual void SetWindow(void* window);
 		virtual bool Run() = 0;
 		virtual void Update(f32 deltaTime) = 0;
-		virtual void OnEvent(const Event& e) = 0;
+		//virtual void OnEvent(const Event& e) = 0;
 		virtual u64 GetTime() = 0;
 
 		virtual SHADOW_API video::Driver* SH_CALLCONV GetDriver() { return m_driver; }
@@ -46,6 +46,11 @@ namespace sh
 		static void SetInstance(Device* instance) { s_instance = instance; }
 		static Device* GetInstance() { return s_instance; }
 		static void Destroy();
+		void* GetWinId() { return m_creationParameters.WinId; }
+
+
+		Event<void, int, int, MouseEventType, MouseCode> mouseEvent;
+		Event<void, KeyboardEventType, KeyCode> keyboardEvent;
 
 	protected:
 		CreationParameters m_creationParameters;
