@@ -3,7 +3,7 @@
 #include "GuiManager.h"
 
 #include "../scene/SceneManager.h"
-
+#include "../video/VertexDeclaration.h"
 #include "../video/Driver.h"
 #include "../Device.h"
 
@@ -36,10 +36,10 @@ namespace gui
 
 		std::vector<float> vertices = 
 		{
-			leftUp.x, leftUp.y, 0.0f,		0.0f, 0.0f,
-			leftUp.x, rightDown.y, 0.0f,		1.0f, 0.0f,
-			rightDown.x, rightDown.y, 0.0f,		1.0f, 1.0f,
-			rightDown.x, leftUp.y, 0.0f,		0.0f, 1.0f
+			leftUp.x, leftUp.y, 0.0f,			0.0f, 0.0f,		0.5f, 0.5f, 0.5f,
+			leftUp.x, rightDown.y, 0.0f,		1.0f, 0.0f,		0.5f, 0.5f, 0.5f,
+			rightDown.x, rightDown.y, 0.0f,		1.0f, 1.0f,		0.5f, 0.5f, 0.5f,
+			rightDown.x, leftUp.y, 0.0f,		0.0f, 1.0f,		0.5f, 0.5f, 0.5f
 		};
 
 		std::vector<u32> indices = 
@@ -79,14 +79,55 @@ namespace gui
 
 	}
 
-	bool Button::ProcessInput(u32 x, u32 y)
+	bool Button::ProcessInput(u32 x, u32 y, MouseEventType type)
 	{
-		///*
+		bool inside = m_rect.IsPointInside(float(x), float(y));
+		bool openDialog = false;
+		if (inside)
+		{
+			math::Vector3f color(0.0f);
+			const auto& decl = GuiManager::GetInstance()->m_vertexBuffer->GetVertexDeclaration();
+			u32 offset = decl->GetAttribute(AttributeSemantic::COLOR)->offset;
+			u32 stride = decl->GetStride();
+
+			switch (type)
+			{
+				case MouseEventType::ButtonPressed:
+				{
+					color = math::Vector3f(0.0f, 0.0f, 0.0f);
+					for (u32 i = 0U; i < 4; ++i)
+					{
+						GuiManager::GetInstance()->m_vertexBuffer->SetData(stride * i + offset, sizeof(color), &color.x);
+					}
+					pressed();
+				}
+					break;
+				case MouseEventType::ButtonReleased:
+				{
+					color = math::Vector3f(0.5f, 0.5f, 0.5f);
+					for (u32 i = 0U; i < 4; ++i)
+					{
+						GuiManager::GetInstance()->m_vertexBuffer->SetData(stride * i + offset, sizeof(color), &color.x);
+					}
+					released();
+					openDialog = true;
+				}
+					break;
+				default:
+					break;
+			}
+		}
+		else
+		{
+			return false;
+		}
+
+		if (!openDialog)
+			return false;
+
 		HWND hWnd = (HWND)Device::GetInstance()->GetWinId();
 
-		bool inside = m_rect.IsPointInside(float(x), float(y));
-		if (!inside)
-			return false;
+	
 		char szFileName[MAX_PATH] = "";
 
 		OPENFILENAME ofn;
@@ -111,7 +152,7 @@ namespace gui
 			int a = 0;
 			a++;
 		}
-		//*/
+
 		return true;
 	}
 

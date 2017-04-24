@@ -48,8 +48,10 @@ namespace gui
 		sh::video::VertexDeclarationPtr vertexDeclaration = sh::video::VertexDeclarationPtr(new sh::video::VertexDeclaration());
 		sh::video::Attribute positionAttribute(AttributeSemantic::POSITION, AttributeType::FLOAT, 3U);
 		sh::video::Attribute uvAttribute(AttributeSemantic::UV, AttributeType::FLOAT, 2U);
+		sh::video::Attribute colorAttribute(AttributeSemantic::COLOR, AttributeType::FLOAT, 3U);
 		vertexDeclaration->AddAttribute(positionAttribute);	
-		vertexDeclaration->AddAttribute(uvAttribute);	
+		vertexDeclaration->AddAttribute(uvAttribute);
+		vertexDeclaration->AddAttribute(colorAttribute);
 
 		m_vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
 		m_vertexBuffer->SetVertexDeclaration(vertexDeclaration);
@@ -84,12 +86,9 @@ namespace gui
 
 	void GuiManager::OnMouseEvent(int x, int y, MouseEventType type, MouseCode code)
 	{
-		if (type != MouseEventType::ButtonPressed)
-			return;
-
 		for (auto& child : m_children)
 		{
-			child->ProcessInput(x, y);
+			child->ProcessInput(x, y, type);
 		}
 	}
 

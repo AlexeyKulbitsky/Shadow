@@ -398,8 +398,17 @@ namespace sh
 						desc.name = constantName;
 					}
 
+					pugi::xml_attribute usageAttr = childNode.attribute("usage");
+					bool perobject = false;
+					if (usageAttr)
+					{
+						if (usageAttr.as_string() == String("object"))
+							perobject = true;
+					}
+
 					if (desc.name == "matWVP" ||
-						desc.name == "matWorld")
+						desc.name == "matWorld" ||
+						perobject)
 					{
 						autoParamsDesc->params[desc.name] = desc;
 					}

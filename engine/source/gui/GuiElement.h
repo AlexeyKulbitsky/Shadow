@@ -20,7 +20,7 @@ namespace gui
 		virtual void SetWidth(u32 width) = 0;
 		virtual void SetHeight(u32 height) = 0;
 
-		virtual bool ProcessInput(u32 x, u32 y) = 0;
+		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type) = 0;
 	};
 
 } // gui
