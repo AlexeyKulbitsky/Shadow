@@ -264,7 +264,8 @@ namespace sh
 		RGB = 0,
 		RGBA,
 		DXT1_RGB,
-		DXT1_RGBA
+		DXT1_RGBA,
+		ALPHA
 	};
 
 	enum class AttributeSemantic

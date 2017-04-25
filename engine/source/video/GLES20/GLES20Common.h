@@ -124,7 +124,8 @@ namespace video
 		GL_RGB,
 		GL_RGBA,
 		GL_COMPRESSED_RGB_S3TC_DXT1_EXT,
-		GL_COMPRESSED_RGBA_S3TC_DXT1_EXT
+		GL_COMPRESSED_RGBA_S3TC_DXT1_EXT,
+		GL_LUMINANCE
 	};
 
 	static GLint const s_glTextureFiltering[] =

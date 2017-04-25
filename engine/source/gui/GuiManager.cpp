@@ -34,15 +34,15 @@ namespace gui
 	{
 		video::VertexBufferDecription desc;
 		desc.usage = USAGE_DYNAMIC;
-		m_vertexBuffer = video::VertexBuffer::Create(desc);
+		m_mainBatch.vertexBuffer = video::VertexBuffer::Create(desc);
 
 		video::IndexBufferDescription indexDesc;
 		indexDesc.indexType = IT_32_BIT;
 		indexDesc.usage = USAGE_DYNAMIC;
-		m_indexBuffer = video::IndexBuffer::Create(indexDesc);
+		m_mainBatch.indexBuffer = video::IndexBuffer::Create(indexDesc);
 
-		m_material.reset(new video::Material());
-		m_material->SetRenderTechnique("ui_base.xml");
+		m_mainBatch.material.reset(new video::Material());
+		m_mainBatch.material->SetRenderTechnique("ui_base.xml");
 
 
 		sh::video::VertexDeclarationPtr vertexDeclaration = sh::video::VertexDeclarationPtr(new sh::video::VertexDeclaration());
@@ -53,17 +53,11 @@ namespace gui
 		vertexDeclaration->AddAttribute(uvAttribute);
 		vertexDeclaration->AddAttribute(colorAttribute);
 
-		m_vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
-		m_vertexBuffer->SetVertexDeclaration(vertexDeclaration);
+		m_mainBatch.vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
+		m_mainBatch.vertexBuffer->SetVertexDeclaration(vertexDeclaration);
 
-		m_inputDeclaration = m_material->GetRenderPipeline()->GetVertexInputDeclaration()->Clone();
-		m_inputDeclaration->Assemble(*(m_vertexBuffer->GetVertexDeclaration().get()));
-
-		math::Rectf rect(0.0f, 0.0f, 40.0f, 15.0f);
-
-		Button* button = new Button(rect);
-		SPtr<GuiElement> child(button);
-		m_children.push_back(child);
+		m_mainBatch.inputDeclaration = m_mainBatch.material->GetRenderPipeline()->GetVertexInputDeclaration()->Clone();
+		m_mainBatch.inputDeclaration->Assemble(*(m_mainBatch.vertexBuffer->GetVertexDeclaration().get()));
 	}
 
 	void GuiManager::Update(u32 delta)
@@ -75,12 +69,17 @@ namespace gui
 	{
 		video::Driver* driver = Device::GetInstance()->GetDriver();
 
-		driver->SetRenderPipeline(m_material->GetRenderPipeline());
+		driver->SetRenderPipeline(m_mainBatch.material->GetRenderPipeline());
 		driver->SetTopology(Topology::TOP_TRIANGLE_LIST);
-		driver->SetVertexBuffer(m_vertexBuffer);
-		driver->SetVertexDeclaration(m_inputDeclaration);
-		driver->SetIndexBuffer(m_indexBuffer);				
-		driver->DrawIndexed(0, m_indexBuffer->GetIndicesCount());
+		driver->SetVertexBuffer(m_mainBatch.vertexBuffer);
+		driver->SetVertexDeclaration(m_mainBatch.inputDeclaration);
+		driver->SetIndexBuffer(m_mainBatch.indexBuffer);				
+		driver->DrawIndexed(0, m_mainBatch.indexBuffer->GetIndicesCount());
+	}
+
+	void GuiManager::AddChild(const SPtr<GuiElement>& child)
+	{
+		m_children.push_back(child);
 	}
 
 

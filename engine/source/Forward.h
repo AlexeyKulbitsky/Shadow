@@ -65,6 +65,13 @@ namespace sh
 		DEFINE_CLASS_PTR(FileSystem)
 	}
 
+	namespace gui
+	{
+		DEFINE_CLASS_PTR(GuiElement)
+		DEFINE_CLASS_PTR(Button)
+		DEFINE_CLASS_PTR(Sprite)
+	}
+
 	DEFINE_CLASS_PTR(Component)
 	DEFINE_CLASS_PTR(LightComponent)
 	DEFINE_CLASS_PTR(RenderComponent)
@@ -79,6 +86,8 @@ namespace sh
 	DEFINE_CLASS_PTR(InputManager)
 	DEFINE_CLASS_PTR(Resource)
 	DEFINE_CLASS_PTR(ResourceManager)
+
+	DEFINE_CLASS_PTR(Font)
 }
 
 #endif

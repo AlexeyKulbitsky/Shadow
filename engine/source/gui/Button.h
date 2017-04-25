@@ -25,6 +25,7 @@ namespace gui
 
 	private:
 		math::Rectf m_rect;
+		String m_text = "1";
 		u32 m_offset = 0U;
 	};
 

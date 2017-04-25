@@ -10,6 +10,14 @@ namespace gui
 {
 	class GuiElement;
 
+	struct GuiBatch
+	{
+		video::VertexBufferPtr vertexBuffer;
+		video::IndexBufferPtr indexBuffer;
+		video::VertexInputDeclarationPtr inputDeclaration;
+		video::MaterialPtr material;
+	};
+
 	class GuiManager : public Singleton <GuiManager>
 	{
 		friend class Button;
@@ -21,14 +29,14 @@ namespace gui
 		void Update(u32 delta);
 		void Render();
 
+		void AddChild(const SPtr<GuiElement>& child);
+
 		void OnMouseEvent(int x, int y, MouseEventType type, MouseCode code);
 		void OnKeyboardEvent(KeyboardEventType type, KeyCode code);
 
 	private:
-		video::VertexBufferPtr m_vertexBuffer;
-		video::IndexBufferPtr m_indexBuffer;
-		video::VertexInputDeclarationPtr m_inputDeclaration;
-		video::MaterialPtr m_material;
+		GuiBatch m_mainBatch;
+		GuiBatch m_textBatch;
 
 		std::vector<SPtr<GuiElement>> m_children;
 	};

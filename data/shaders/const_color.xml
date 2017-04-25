@@ -9,11 +9,7 @@
 	<shader language="GLSL" api="GLES20">
 		<vertexShader>
 		<constants>
-			
 			<constant name="matWVP" type="mat4" />
-			<!--block type="transform">
-				<constant name="matWorld" type="mat4" />
-			</block-->
 		</constants>
 		<source>
 			<![CDATA[

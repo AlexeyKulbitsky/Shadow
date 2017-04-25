@@ -3,6 +3,9 @@
 #include "RenderPipeline.h"
 #include "../Device.h"
 
+#include "../font/FontManager.h"
+#include "../font/Font.h"
+
 namespace sh
 {
 	namespace video

@@ -8,9 +8,7 @@
 #include "../Device.h"
 
 
-#include <Windows.h>
-#include <Commdlg.h>
-#include <tchar.h>
+
 
 namespace sh
 {
@@ -50,14 +48,14 @@ namespace gui
 
 		
 		// Create vertex buffer
-		auto& vertexBuffer = GuiManager::GetInstance()->m_vertexBuffer;
+		auto& vertexBuffer = GuiManager::GetInstance()->m_mainBatch.vertexBuffer;
 		const void* verticesPointer = vertices.data();
 		size_t verticesDataSize = vertices.size() * sizeof(float);
 		vertexBuffer->SetData(0, verticesDataSize, verticesPointer);
 		vertexBuffer->SetVerticesCount(4);
 
 		// Create index buffer
-		auto& indexBuffer = GuiManager::GetInstance()->m_indexBuffer;
+		auto& indexBuffer = GuiManager::GetInstance()->m_mainBatch.indexBuffer;
 		const void* indicesPointer = indices.data();
 		size_t indicesDataSize = indices.size() * sizeof(unsigned int);
 		indexBuffer->SetData(0, indicesDataSize, indicesPointer);
@@ -82,11 +80,10 @@ namespace gui
 	bool Button::ProcessInput(u32 x, u32 y, MouseEventType type)
 	{
 		bool inside = m_rect.IsPointInside(float(x), float(y));
-		bool openDialog = false;
 		if (inside)
 		{
 			math::Vector3f color(0.0f);
-			const auto& decl = GuiManager::GetInstance()->m_vertexBuffer->GetVertexDeclaration();
+			const auto& decl = GuiManager::GetInstance()->m_mainBatch.vertexBuffer->GetVertexDeclaration();
 			u32 offset = decl->GetAttribute(AttributeSemantic::COLOR)->offset;
 			u32 stride = decl->GetStride();
 
@@ -97,7 +94,7 @@ namespace gui
 					color = math::Vector3f(0.0f, 0.0f, 0.0f);
 					for (u32 i = 0U; i < 4; ++i)
 					{
-						GuiManager::GetInstance()->m_vertexBuffer->SetData(stride * i + offset, sizeof(color), &color.x);
+						GuiManager::GetInstance()->m_mainBatch.vertexBuffer->SetData(stride * i + offset, sizeof(color), &color.x);
 					}
 					pressed();
 				}
@@ -107,53 +104,17 @@ namespace gui
 					color = math::Vector3f(0.5f, 0.5f, 0.5f);
 					for (u32 i = 0U; i < 4; ++i)
 					{
-						GuiManager::GetInstance()->m_vertexBuffer->SetData(stride * i + offset, sizeof(color), &color.x);
+						GuiManager::GetInstance()->m_mainBatch.vertexBuffer->SetData(stride * i + offset, sizeof(color), &color.x);
 					}
 					released();
-					openDialog = true;
 				}
 					break;
 				default:
 					break;
 			}
 		}
-		else
-		{
-			return false;
-		}
-
-		if (!openDialog)
-			return false;
-
-		HWND hWnd = (HWND)Device::GetInstance()->GetWinId();
-
-	
-		char szFileName[MAX_PATH] = "";
-
-		OPENFILENAME ofn;
-		ZeroMemory( &ofn , sizeof( ofn));
-		ofn.lStructSize = sizeof(OPENFILENAME);
-		ofn.hwndOwner = hWnd;
-		ofn.lpstrFilter = 
-			"XML files (*.xml)\0*.xml\0"
-			"All files (*.*)\0*.*\0";
-		ofn.lpstrFile = szFileName;
-		ofn.nMaxFile = MAX_PATH;
-		ofn.lpstrTitle = "Open scene";
-		ofn.Flags = OFN_FILEMUSTEXIST|OFN_HIDEREADONLY;
-		ofn.lpstrDefExt = "xml";
-		if (GetOpenFileName(&ofn))
-		{
-			sh::scene::SceneManager* sceneMgr = sh::Device::GetInstance()->GetSceneManager();		
-			sceneMgr->LoadScene(ofn.lpstrFile);
-		}
-		else
-		{
-			int a = 0;
-			a++;
-		}
-
-		return true;
+		
+		return false;
 	}
 
 } // gui

@@ -14,6 +14,8 @@ int main(int argc, char *argv[])
 }
 */
 
+#include "MainWindow.h"
+
 #include <Shadow.h>
 
 int main()
@@ -53,11 +55,14 @@ int main()
 
 	sh::gui::GuiManager::GetInstance()->Init();
 
-	
+	MainWindow mainWindow;
+
 	if (device)
 	{
 		while (device->Run())
 		{
+			mainWindow.Update();
+
 			driver->BeginRendering();
 
 			sceneMgr->Update();

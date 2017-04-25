@@ -1,6 +1,7 @@
 #ifndef SHADOW_EDITOR_MAIN_WINDOW
 #define SHADOW_EDITOR_MAIN_WINDOW
 
+#if 0
 #include <QMainWindow>
 #include <Shadow.h>
 
@@ -65,6 +66,22 @@ private:
 	QTimer *m_timer;
 
 	sh::scene::SceneManager* m_sceneManager = nullptr;
+};
+#endif
+
+#include <Shadow.h>
+
+class MainWindow
+{
+public:
+	MainWindow();
+
+	void Update();
+
+	void OpenScene();
+
+private:
+	sh::gui::ButtonPtr m_openSceneBtn;
 };
 
 #endif

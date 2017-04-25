@@ -1,4 +1,5 @@
 #include "MainWindow.h"
+#if 0
 #include <QApplication>
 #include <QAction>
 #include <QMenuBar>
@@ -390,3 +391,52 @@ void MainWindow::ClearLayout(QLayout *layout)
 }
 
 //////////////////////////////////////////////////////////////////////////
+
+#endif
+
+#include <Windows.h>
+#include <Commdlg.h>
+#include <tchar.h>
+
+MainWindow::MainWindow()
+{
+	sh::math::Rectf rect(0.0f, 0.0f, 50.0f, 20.0f);
+	m_openSceneBtn.reset(new sh::gui::Button(rect));
+	m_openSceneBtn->pressed.Connect(std::bind(&MainWindow::OpenScene, this));
+
+	sh::gui::GuiManager::GetInstance()->AddChild(m_openSceneBtn);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void MainWindow::Update()
+{
+
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void MainWindow::OpenScene()
+{
+	HWND hWnd = (HWND)sh::Device::GetInstance()->GetWinId();
+
+	char szFileName[MAX_PATH] = "";
+
+	OPENFILENAME ofn;
+	ZeroMemory( &ofn , sizeof( ofn));
+	ofn.lStructSize = sizeof(OPENFILENAME);
+	ofn.hwndOwner = hWnd;
+	ofn.lpstrFilter = 
+		"XML files (*.xml)\0*.xml\0"
+		"All files (*.*)\0*.*\0";
+	ofn.lpstrFile = szFileName;
+	ofn.nMaxFile = MAX_PATH;
+	ofn.lpstrTitle = "Open scene";
+	ofn.Flags = OFN_FILEMUSTEXIST|OFN_HIDEREADONLY;
+	ofn.lpstrDefExt = "xml";
+	if (GetOpenFileName(&ofn))
+	{
+		sh::scene::SceneManager* sceneMgr = sh::Device::GetInstance()->GetSceneManager();		
+		sceneMgr->LoadScene(ofn.lpstrFile);
+	}
+}
