@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<texture val="ui_atlas.png"/>
+
+<button name="test_button">
+	<rect x1="0" y1="0" x2="50" y2="20"/>
+	<released u1="58" v1="30" u2="76" v2="48"/>
+	<pressed u1="79" v1="30" u2="97" v2="48"/>
+</button>
+

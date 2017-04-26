@@ -29,6 +29,7 @@ namespace gui
 		void Update(u32 delta);
 		void Render();
 
+		void LoadGui(const char* filename);
 		void AddChild(const SPtr<GuiElement>& child);
 
 		void OnMouseEvent(int x, int y, MouseEventType type, MouseCode code);

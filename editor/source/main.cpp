@@ -67,7 +67,7 @@ int main()
 
 			sceneMgr->Update();
 			
-			//sh::gui::GuiManager::GetInstance()->Render();
+			sh::gui::GuiManager::GetInstance()->Render();
 
 			driver->EndRendering();
 		}

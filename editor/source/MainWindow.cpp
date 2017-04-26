@@ -400,11 +400,20 @@ void MainWindow::ClearLayout(QLayout *layout)
 
 MainWindow::MainWindow()
 {
-	sh::math::Rectf rect(0.0f, 0.0f, 50.0f, 20.0f);
-	m_openSceneBtn.reset(new sh::gui::Button(rect));
-	m_openSceneBtn->pressed.Connect(std::bind(&MainWindow::OpenScene, this));
+	//sh::math::Rectf rect(0.0f, 0.0f, 50.0f, 20.0f);
+	//m_openSceneBtn.reset(new sh::gui::Button(rect));
+	//m_openSceneBtn->pressed.Connect(std::bind(&MainWindow::OpenScene, this));
 
-	sh::gui::GuiManager::GetInstance()->AddChild(m_openSceneBtn);
+	//sh::gui::GuiManager::GetInstance()->AddChild(m_openSceneBtn);
+
+	auto fileSystem = sh::Device::GetInstance()->GetFileSystem();
+
+	const auto& fileInfo = fileSystem->FindFile("editor_gui.xml");
+
+	if (fileInfo.name != "")
+	{
+		sh::gui::GuiManager::GetInstance()->LoadGui(fileInfo.absolutePath.c_str());
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////

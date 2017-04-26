@@ -32,7 +32,7 @@ namespace gui
 
 	void GuiManager::Init()
 	{
-		/*
+		///*
 		video::VertexBufferDecription desc;
 		desc.usage = USAGE_DYNAMIC;
 		m_mainBatch.vertexBuffer = video::VertexBuffer::Create(desc);
@@ -59,7 +59,7 @@ namespace gui
 
 		m_mainBatch.inputDeclaration = m_mainBatch.material->GetRenderPipeline()->GetVertexInputDeclaration()->Clone();
 		m_mainBatch.inputDeclaration->Assemble(*(m_mainBatch.vertexBuffer->GetVertexDeclaration().get()));
-		*/
+		//*/
 	}
 
 	void GuiManager::Update(u32 delta)
@@ -72,11 +72,42 @@ namespace gui
 		video::Driver* driver = Device::GetInstance()->GetDriver();
 
 		driver->SetRenderPipeline(m_mainBatch.material->GetRenderPipeline());
+		driver->SetGpuParams(m_mainBatch.material->GetCommonGpuParams());
 		driver->SetTopology(Topology::TOP_TRIANGLE_LIST);
 		driver->SetVertexBuffer(m_mainBatch.vertexBuffer);
 		driver->SetVertexDeclaration(m_mainBatch.inputDeclaration);
 		driver->SetIndexBuffer(m_mainBatch.indexBuffer);				
 		driver->DrawIndexed(0, m_mainBatch.indexBuffer->GetIndicesCount());
+	}
+
+	void GuiManager::LoadGui(const char* filename)
+	{
+		pugi::xml_document doc;
+		pugi::xml_parse_result result = doc.load_file(filename);
+			
+		
+		pugi::xml_node child = doc.first_child();
+		sh::String texFilename = child.attribute("val").as_string();
+		sh::video::TexturePtr texture = sh::Device::GetInstance()->GetResourceManager()->GetTexture(texFilename);
+		SH_ASSERT(!!texture, "Can not load texture!");
+
+		m_mainBatch.material->GetCommonGpuParams()->SetSampler(ST_FRAGMENT, "diffuse", texture);
+
+		child = child.next_sibling();
+
+		while (child)
+		{
+			// Read buttons
+			if (child.name() == sh::String("button"))
+			{
+				ButtonPtr button(new Button());
+				button->Load(child);
+
+				m_children.push_back(button);
+			}
+
+			child = child.next_sibling();
+		}
 	}
 
 	void GuiManager::AddChild(const SPtr<GuiElement>& child)
