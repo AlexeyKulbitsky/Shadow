@@ -26,7 +26,7 @@ int main()
 	params.driverType = sh::video::DriverType::OPENGL_ES_2_0;
 	//params.driverType = sh::video::DriverType::VULKAN;
 	//params.driverType = sh::video::DriverType::DIRECTX_11;
-	sh::Device* device = sh::CreateDevice(params);
+	sh::Device* device =  sh::CreateDevice(params);
 
 	sh::video::Driver* driver = device->GetDriver();
 	driver->SetClearColor(sh::math::Vector4f(0.7f, 0.7f, 0.7f, 1.0f));
@@ -67,7 +67,7 @@ int main()
 
 			sceneMgr->Update();
 			
-			sh::gui::GuiManager::GetInstance()->Render();
+			//sh::gui::GuiManager::GetInstance()->Render();
 
 			driver->EndRendering();
 		}

@@ -19,6 +19,7 @@ namespace gui
 	{
 		m_rect = rect;
 
+		/*
 		video::Driver* driver = Device::GetInstance()->GetDriver();
 
 		const auto& viewPort = driver->GetViewPort();
@@ -60,6 +61,7 @@ namespace gui
 		size_t indicesDataSize = indices.size() * sizeof(unsigned int);
 		indexBuffer->SetData(0, indicesDataSize, indicesPointer);
 		indexBuffer->SetIndicesCount(indices.size());
+		*/
 	}
 
 	void Button::SetPosition(u32 x, u32 y)
@@ -82,30 +84,35 @@ namespace gui
 		bool inside = m_rect.IsPointInside(float(x), float(y));
 		if (inside)
 		{
+			/*
 			math::Vector3f color(0.0f);
 			const auto& decl = GuiManager::GetInstance()->m_mainBatch.vertexBuffer->GetVertexDeclaration();
 			u32 offset = decl->GetAttribute(AttributeSemantic::COLOR)->offset;
 			u32 stride = decl->GetStride();
-
+			*/
 			switch (type)
 			{
 				case MouseEventType::ButtonPressed:
 				{
+					/*
 					color = math::Vector3f(0.0f, 0.0f, 0.0f);
 					for (u32 i = 0U; i < 4; ++i)
 					{
 						GuiManager::GetInstance()->m_mainBatch.vertexBuffer->SetData(stride * i + offset, sizeof(color), &color.x);
 					}
+					*/
 					pressed();
 				}
 					break;
 				case MouseEventType::ButtonReleased:
 				{
+					/*
 					color = math::Vector3f(0.5f, 0.5f, 0.5f);
 					for (u32 i = 0U; i < 4; ++i)
 					{
 						GuiManager::GetInstance()->m_mainBatch.vertexBuffer->SetData(stride * i + offset, sizeof(color), &color.x);
 					}
+					*/
 					released();
 				}
 					break;

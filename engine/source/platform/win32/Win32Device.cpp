@@ -7,6 +7,8 @@
 
 #include "../../gui/GuiManager.h"
 
+#include <chrono>
+
 using namespace sh;
 using namespace video;
 
@@ -551,10 +553,13 @@ bool Win32Device::Run()
 {
 	///*
 	static char capture[128];
-	static u64 t = 0;
-	int delta = static_cast<int>(GetTime() - t);
-	sprintf(capture, "Shdow engine: FPS %d", delta);
-	t = GetTime();
+	static auto t = std::chrono::high_resolution_clock::now();
+
+
+	u32 delta = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - t).count();
+	float fps = 1000.0f / static_cast<float>(delta);
+	sprintf(capture, "Shadow engine: FPS %.2f", fps);
+	t = std::chrono::system_clock::now();
 	SetWindowText(m_hwnd, capture);
 	//*/
 

@@ -17,6 +17,7 @@ namespace video
 
 	public:
 		VkDescriptorSet GetDescriptorSet() const { return m_desctriptorSet; }
+		VkPipelineLayout GetPipelineLayput() const { return m_pipelineLayout; }
 
 	private:
 		VulkanGpuParams(const GpuPipelineParamsInfoPtr& pipelineParamsInfo);
@@ -24,6 +25,8 @@ namespace video
 	private:
 		VkDescriptorSet m_desctriptorSet;
 		VkDescriptorPool m_descriptorPool;
+
+		VkPipelineLayout m_pipelineLayout;
 	};
 
 } // video

@@ -4,7 +4,7 @@
 	<material name="testMaterial">
 		<technique filename="const_color.xml" />
 		<params>
-			<sampler name="diffuse" val="Container.png"/>
+			<sampler name="diffuse" val="statue.jpg"/>
 		</params>
 	</material>	
 </materials>

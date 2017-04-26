@@ -360,6 +360,7 @@ namespace sh
 		{ 
 			VulkanCommandBuffer* cmdBuffer = static_cast<VulkanCommandBuffer*>(commandBuffer.get());
 			VulkanGpuParams* vkParams = static_cast<VulkanGpuParams*>(params.get());
+			
 
 			const u8* data = params->GetData();
 			const auto& samplers = params->GetSamplers();
@@ -406,6 +407,10 @@ namespace sh
 					descriptorWrite.pTexelBufferView = nullptr;
 
 					vkUpdateDescriptorSets(m_device, 1, &descriptorWrite, 0, nullptr);
+
+					VkDescriptorSet descriptorSet = vkParams->GetDescriptorSet();
+
+					vkCmdBindDescriptorSets(cmdBuffer->GetVulkanId(), VK_PIPELINE_BIND_POINT_GRAPHICS, m_layoutTemp, 0, 1, &descriptorSet, 0, nullptr);
 				}
 
 			}

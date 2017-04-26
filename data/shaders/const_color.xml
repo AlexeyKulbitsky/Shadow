@@ -111,7 +111,7 @@
 
 					void main() 
 					{
-						//outColor = vec4(1.0, 0.0, 0.0, 1.0);
+						//outColor = vec4(fragTexCoord.x, fragTexCoord.y, 0.0, 1.0);
 						outColor = texture(diffuse, fragTexCoord);
 					}
 		

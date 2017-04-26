@@ -13,6 +13,10 @@ namespace gui
 	{
 	public:
 		Sprite(const video::TexturePtr& texture, const math::Rectu& rect);
+
+	private:
+		video::TexturePtr m_texture;
+		math::Rectu m_rect;
 	};
 
 } // gui

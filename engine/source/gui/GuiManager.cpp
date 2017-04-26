@@ -32,6 +32,7 @@ namespace gui
 
 	void GuiManager::Init()
 	{
+		/*
 		video::VertexBufferDecription desc;
 		desc.usage = USAGE_DYNAMIC;
 		m_mainBatch.vertexBuffer = video::VertexBuffer::Create(desc);
@@ -58,6 +59,7 @@ namespace gui
 
 		m_mainBatch.inputDeclaration = m_mainBatch.material->GetRenderPipeline()->GetVertexInputDeclaration()->Clone();
 		m_mainBatch.inputDeclaration->Assemble(*(m_mainBatch.vertexBuffer->GetVertexDeclaration().get()));
+		*/
 	}
 
 	void GuiManager::Update(u32 delta)
