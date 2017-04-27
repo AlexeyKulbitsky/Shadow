@@ -128,7 +128,17 @@ namespace sh
 
 			VkPipelineColorBlendAttachmentState colorBlendAttachment = {};
 			colorBlendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
-			colorBlendAttachment.blendEnable = VK_FALSE;
+			colorBlendAttachment.blendEnable = m_description.blendingState->enabled ? VK_TRUE : VK_FALSE;
+			if(m_description.blendingState->enabled)
+			{
+				colorBlendAttachment.srcAlphaBlendFactor = s_vkBlendFactor[m_description.blendingState->srcAlpha];
+				colorBlendAttachment.dstAlphaBlendFactor = s_vkBlendFactor[m_description.blendingState->dstAlpha];
+				colorBlendAttachment.alphaBlendOp = s_vkBlendOperation[m_description.blendingState->operationAlpha];
+
+				colorBlendAttachment.srcColorBlendFactor = s_vkBlendFactor[m_description.blendingState->srcColor];
+				colorBlendAttachment.dstColorBlendFactor = s_vkBlendFactor[m_description.blendingState->dstColor];
+				colorBlendAttachment.colorBlendOp = s_vkBlendOperation[m_description.blendingState->operationColor];
+			}
 
 			VkPipelineColorBlendStateCreateInfo colorBlending = {};
 			colorBlending.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;

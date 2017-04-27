@@ -170,9 +170,12 @@ namespace sh
 			DepthStencilStatePtr state(new DepthStencilState());
 			pugi::xml_node stateNode;
 			pugi::xml_attribute valAttr;
+			pugi::xml_node parent = node.child("depthStencilState");
+			if(!parent)
+				return state;
 
 			// Depth test			
-			stateNode = node.child("depthTest");
+			stateNode = parent.child("depthTest");
 			if (!stateNode.empty())
 			{
 				valAttr = stateNode.attribute("val");
@@ -184,7 +187,7 @@ namespace sh
 			}
 
 			// Stencil test
-			stateNode = node.child("stencilTest");
+			stateNode = parent.child("stencilTest");
 			if (!stateNode.empty())
 			{
 				valAttr = stateNode.attribute("val");
@@ -203,12 +206,14 @@ namespace sh
 		RasterizationStatePtr RenderTechnique::LoadRasterizationState(const pugi::xml_node& node)
 		{
 			RasterizationStatePtr state(new RasterizationState());
-
 			pugi::xml_node stateNode;
 			pugi::xml_attribute valAttr;
+			pugi::xml_node parent = node.child("rasterizationState");
+			if(!parent)
+				return state;
 
 			// Front Face
-			stateNode = node.child("frontFace");
+			stateNode = parent.child("frontFace");
 			if (!stateNode.empty())
 			{
 				valAttr = stateNode.attribute("val");
@@ -227,7 +232,7 @@ namespace sh
 			}
 
 			// Cull face
-			stateNode = node.child("cullFace");
+			stateNode = parent.child("cullFace");
 			if (!stateNode.empty())
 			{
 				valAttr = stateNode.attribute("val");
@@ -250,7 +255,7 @@ namespace sh
 			}
 
 			// Point size
-			stateNode = node.child("pointSize");
+			stateNode = parent.child("pointSize");
 			if (!stateNode.empty())
 			{
 				valAttr = stateNode.attribute("val");
@@ -261,7 +266,7 @@ namespace sh
 			}
 
 			// Line width
-			stateNode = node.child("lineWidth");
+			stateNode = parent.child("lineWidth");
 			if (!stateNode.empty())
 			{
 				valAttr = stateNode.attribute("val");
@@ -279,11 +284,24 @@ namespace sh
 		BlendingStatePtr RenderTechnique::LoadBlendingState(const pugi::xml_node& node)
 		{
 			BlendingStatePtr state(new BlendingState());
-
 			pugi::xml_node stateNode;
 			pugi::xml_attribute valAttr;
+			pugi::xml_node parent = node.child("blendingState");
+			if(!parent)
+				return state;
+
+			stateNode = parent.child("enabled");
+			if(!stateNode.empty())
+			{
+				valAttr = stateNode.attribute("val");
+				if( valAttr )
+				{
+					bool value = valAttr.as_bool();
+					state->enabled = value;
+				}
+			}
 					
-			stateNode = node.child("srcFactor");
+			stateNode = parent.child("srcFactor");
 			if (!stateNode.empty())
 			{
 				valAttr = stateNode.attribute("val");
@@ -296,13 +314,14 @@ namespace sh
 						if (value == g_blendFactorMap[i])
 						{
 							state->srcAlpha = static_cast<BlendFactor>(i);
+							state->srcColor = static_cast<BlendFactor>(i);
 							break;
 						}
 					}
 				}
 			}
 
-			stateNode = node.child("dstFactor");
+			stateNode = parent.child("dstFactor");
 			if (!stateNode.empty())
 			{
 				valAttr = stateNode.attribute("val");
@@ -315,13 +334,14 @@ namespace sh
 						if (value == g_blendFactorMap[i])
 						{
 							state->dstAlpha = static_cast<BlendFactor>(i);
+							state->dstColor = static_cast<BlendFactor>(i);
 							break;
 						}
 					}
 				}
 			}
 
-			stateNode = node.child("operation");
+			stateNode = parent.child("operation");
 			if (!stateNode.empty())
 			{
 				valAttr = stateNode.attribute("val");
@@ -334,6 +354,7 @@ namespace sh
 						if (value == g_blendOperationMap[i])
 						{
 							state->operationAlpha = static_cast<BlendOperation>(i);
+							state->operationColor = static_cast<BlendOperation>(i);
 							break;
 						}
 					}

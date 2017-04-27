@@ -16,6 +16,7 @@ namespace gui
 		video::IndexBufferPtr indexBuffer;
 		video::VertexInputDeclarationPtr inputDeclaration;
 		video::MaterialPtr material;
+		video::CommandBufferPtr commandBuffer;
 	};
 
 	class GuiManager : public Singleton <GuiManager>
@@ -31,6 +32,9 @@ namespace gui
 
 		void LoadGui(const char* filename);
 		void AddChild(const SPtr<GuiElement>& child);
+
+		const SPtr<GuiElement>& GetChild(size_t i) const { return m_children[i]; }
+		size_t GetChildrenCount() const { return m_children.size(); }
 
 		void OnMouseEvent(int x, int y, MouseEventType type, MouseCode code);
 		void OnKeyboardEvent(KeyboardEventType type, KeyCode code);

@@ -1,6 +1,14 @@
 <technique name="ConstantColor">
 
 <pipeline name="firstPass" layer="main">	
+
+	<blendingState>
+		<enabled val="true"/>
+		<srcFactor val="SrcAlpha"/>
+		<dstFactor val="InvSrcAlpha"/>
+		<operation val="Add"/>
+	</blendingState>
+
 	<attributes>
 		<position type="vec3" name="aPosition" location="0"/>
 		<uv type="vec2" name="aUV" location="1"/>
@@ -75,8 +83,9 @@
 
 					void main() 
 					{
-						gl_Position = pushConsts.MVP * vec4(aPosition, 1.0);
+						gl_Position = vec4(aPosition, 1.0);
 						fragTexCoord = aUV;
+						fragColor = aColor;
 					}
 				
 				]]>

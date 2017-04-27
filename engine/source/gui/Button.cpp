@@ -115,15 +115,18 @@ namespace gui
 
 		math::Vector2f leftUp;
 		leftUp.x = m_rect.upperLeftCorner.x * 2.0f / extends.x - 1.0f;
-		leftUp.y = (extends.y - m_rect.upperLeftCorner.y) * 2.0f / extends.y - 1.0f;
+		//leftUp.y = (extends.y - m_rect.upperLeftCorner.y) * 2.0f / extends.y - 1.0f;
+		leftUp.y = m_rect.upperLeftCorner.y * 2.0f / extends.y - 1.0f;
 
 		math::Vector2f rightDown;
 		rightDown.x = m_rect.lowerRightCorner.x * 2.0f / extends.x - 1.0f;
-		rightDown.y = (extends.y - m_rect.lowerRightCorner.y) * 2.0f / extends.y - 1.0f;
+		//rightDown.y = (extends.y - m_rect.lowerRightCorner.y) * 2.0f / extends.y - 1.0f;
+		rightDown.y = m_rect.lowerRightCorner.y * 2.0f / extends.y - 1.0f;
 
 		math::Vector2f uvLeftUp = m_releasedRect.upperLeftCorner;
 		math::Vector2f uvRightDown = m_releasedRect.lowerRightCorner;
 
+		
 		std::vector<float> vertices = 
 		{
 			leftUp.x, leftUp.y, 0.0f,			uvLeftUp.x, uvLeftUp.y,		0.5f, 0.5f, 0.5f,
@@ -131,6 +134,7 @@ namespace gui
 			rightDown.x, rightDown.y, 0.0f,		uvRightDown.x, uvRightDown.y,		0.5f, 0.5f, 0.5f,
 			rightDown.x, leftUp.y, 0.0f,		uvRightDown.x, uvLeftUp.y,		0.5f, 0.5f, 0.5f
 		};
+		
 
 		m_batchData = vertices;
 

@@ -40,6 +40,7 @@
 #include "video/Driver.h"
 #include "video/BlendingState.h"
 #include "video/CommandPool.h"
+#include "video/CommandBuffer.h"
 #include "video/DepthStencilState.h"
 #include "video/IndexBuffer.h"
 #include "video/Material.h"
