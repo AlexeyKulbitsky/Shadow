@@ -1,5 +1,7 @@
 #include "RenderComponentTreeItem.h"
 
+
+#if 0
 #include <QStringList>
 #include <Shadow.h>
 
@@ -150,4 +152,6 @@ void RenderComponentTreeItem::SetUniformSingleFloat(double value)
 }
 
 ////////////////////////////////////////////////////////////////////////
+
+#endif
 

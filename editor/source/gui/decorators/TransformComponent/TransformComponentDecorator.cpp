@@ -1,4 +1,5 @@
 #include "TransformComponentDecorator.h"
+#if 0
 #include <entity\components\TransformComponent.h>
 
 #include <QLabel>
@@ -276,3 +277,4 @@ void TransformComponentDecorator::SetScaleZSlot(double value)
 
 ////////////////////////////////////////////////////////////////////
 
+#endif

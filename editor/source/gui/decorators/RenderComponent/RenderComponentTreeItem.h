@@ -1,6 +1,7 @@
 #ifndef RENDER_COMPONENT_TREE_ITEM_INCLUDE
 #define RENDER_COMPONENT_TREE_ITEM_INCLUDE
 
+#if 0
 #include <QList>
 #include <QVariant>
 #include <QVector>
@@ -51,5 +52,7 @@ private:
 
 	void* m_userPointer = nullptr;
 };
+
+#endif
 
 #endif 

@@ -1,6 +1,7 @@
 #ifndef SHADOW_TRANSFORM_COMPONENT_DECORATOR_INCLUDE
 #define SHADOW_TRANSFORM_COMPONENT_DECORATOR_INCLUDE
 
+#if 0
 #include "ComponentDecorator.h"
 #include <Shadow.h>
 
@@ -48,5 +49,6 @@ private:
 	sh::math::Vector3f m_axisRotations;
 	bool m_expandedLastTime = false;
 };
+#endif
 
 #endif

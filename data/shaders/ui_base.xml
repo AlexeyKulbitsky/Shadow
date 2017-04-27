@@ -57,7 +57,7 @@
 				void main() 
 				{				
 					vec4 color = texture2D(diffuse, vUV);
-					gl_FragColor = color;
+					gl_FragColor = color * vec4(vColor, 1.0);
 				} 
 		
 			]]>	

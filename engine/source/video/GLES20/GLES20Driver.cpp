@@ -62,6 +62,13 @@ const String& GLES20Driver::GetApiName() const
 
 ////////////////////////////////////////////////////////////////////////
 
+video::DriverType GLES20Driver::GetType() const
+{
+	return DriverType::OPENGL_ES_2_0;
+}
+
+////////////////////////////////////////////////////////////////////////
+
 bool GLES20Driver::Init()
 {
 	glEnable( GL_DEPTH_TEST );
@@ -427,7 +434,7 @@ void GLES20Driver::SetIndexBuffer( const IndexBufferPtr& buffer, const CommandBu
 
 void GLES20Driver::Draw( u32 offset, u32 verticesCount, u32 instancesCount, const CommandBufferPtr& )
 {
-
+	glDrawArrays(GL_TRIANGLES, offset, verticesCount);
 }
 
 ////////////////////////////////////////////////////////////////////////

@@ -21,7 +21,8 @@ namespace sh
 			void SetRotation(const math::Quaternionf& rot);
 			const math::Quaternionf& GetRotation() const { return m_rotation; }
 
-			void SetProjection(f32 fov, f32 aspect, f32 nearP, f32 farP);
+			void SetProjection(f32 fov, f32 aspect, f32 nearPlane, f32 farPlane);
+			void SetProjection(f32 fov, f32 width, f32 height, f32 nearPlane, f32 farPlane);
 			void BuildRay(u32 x, u32 y, math::Vector3f& origin, math::Vector3f& direction);
 
 			f32 GetFov() const { return m_fovy; }
@@ -31,6 +32,7 @@ namespace sh
 			const math::Matrix4f& GetViewMatrix();
 			const math::Matrix4f& GetProjectionMatrix();
 			const math::Matrix4f& GetViewProjectionMatrix();
+			const math::Matrix4f& Get2DProjectionMatrix() const { return m_2dProjectionMatrix; }
 
 			const math::Vector3f& GetFrontVector() const { return m_frontVector; }
 			const math::Vector3f& GetRightVector() const { return m_rightVector; }
@@ -55,6 +57,7 @@ namespace sh
 			math::Matrix4f m_translationMatrix;
 			math::Matrix4f m_viewMatrix;
 			math::Matrix4f m_viewProjectionMatrix;
+			math::Matrix4f m_2dProjectionMatrix;
 
 			math::Vector3f m_frontVector;
 			math::Vector3f m_upVector;

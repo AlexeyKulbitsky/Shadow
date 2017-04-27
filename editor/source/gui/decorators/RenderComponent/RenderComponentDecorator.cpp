@@ -1,4 +1,6 @@
 #include "RenderComponentDecorator.h"
+
+#if 0
 #include <QTreeView>
 #include "RenderComponentTreeModel.h"
 #include "RenderComponentTreeItemDelegate.h"
@@ -40,4 +42,6 @@ ExpandableWidget* RenderComponentDecorator::GetParametersWidget()
 }
 
 ///////////////////////////////////////////////////
+
+#endif
 

@@ -1,6 +1,7 @@
 #ifndef SHADOW_RENDER_COMPONENT_DECORATOR
 #define SHADOW_RENDER_COMPONENT_DECORATOR
 
+#if 0
 #include "ComponentDecorator.h"
 #include <Shadow.h>
 
@@ -15,5 +16,7 @@ public:
 private:
 	ExpandableWidget* m_parametersWidget = nullptr;
 };
+
+#endif
 
 #endif

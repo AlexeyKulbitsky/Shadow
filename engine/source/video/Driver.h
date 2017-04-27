@@ -32,6 +32,7 @@ namespace sh
 			~Driver();
 
 			virtual const String& GetApiName() const = 0;
+			virtual DriverType GetType() const = 0;
 
 			virtual bool Init() = 0;
 			virtual void BeginRendering() = 0;

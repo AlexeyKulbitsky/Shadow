@@ -1,6 +1,7 @@
 #ifndef SHADOW_EDITOR_GRAPHICS_WIDGET_INCLUDE
 #define SHADOW_EDITOR_GRAPHICS_WIDGET_INCLUDE
 
+#if 0
 #include <QWidget>
 #include <Shadow.h>
 #include "../gizmo/Gizmo.h"
@@ -56,5 +57,7 @@ private:
 	sh::Entity* m_cameraTargetEntity = nullptr;
 	bool m_leftButtonPressed = false;
 };
+
+#endif
 
 #endif

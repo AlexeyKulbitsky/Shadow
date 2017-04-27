@@ -78,6 +78,42 @@ namespace gui
 	void GuiManager::Render()
 	{
 		video::Driver* driver = Device::GetInstance()->GetDriver();
+		
+		u32 bufferSize = 0U;
+		u32 verticesCount = 0U;
+		std::vector<u32> indices;
+		std::vector<float> vertices;
+		indices.reserve(1000U);
+		vertices.reserve(1000U);
+		
+		for (u32 i = 0U; i < m_children.size(); ++i)
+		{
+			const auto& batchData = m_children[i]->GetBatchData();
+
+			for (auto b : batchData)
+			{
+				vertices.push_back(b);
+			}
+			
+			indices.push_back(verticesCount);
+			indices.push_back(verticesCount + 1);
+			indices.push_back(verticesCount + 2);
+
+			indices.push_back(verticesCount);
+			indices.push_back(verticesCount + 2);
+			indices.push_back(verticesCount + 3);
+			
+			verticesCount += 4U;
+		}
+		const void* verticesPointer = vertices.data();
+		size_t verticesDataSize = vertices.size() * sizeof(float);
+		m_mainBatch.vertexBuffer->SetData(0U, verticesDataSize, verticesPointer);
+		m_mainBatch.vertexBuffer->SetVerticesCount(verticesCount);
+
+		const void* indicesPointer = indices.data();
+		size_t indicesDataSize = indices.size() * sizeof(u32);
+		m_mainBatch.indexBuffer->SetData(0, indicesDataSize, indicesPointer);
+		m_mainBatch.indexBuffer->SetIndicesCount(indices.size());
 
 		if( driver->GetApiName() == "Vulkan" )
 		{

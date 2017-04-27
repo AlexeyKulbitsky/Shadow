@@ -1,6 +1,6 @@
-#include <QtWidgets>
+//#include <QtWidgets>
 
-
+#if 0
 #include "RenderComponentTreeItem.h"
 #include "RenderComponentTreeModel.h"
 
@@ -456,3 +456,4 @@ void RenderComponentTreeModel::SetupModelData(sh::scene::Model* model, RenderCom
 ////////////////////////////////////////////////////////////////////////
 
 
+#endif

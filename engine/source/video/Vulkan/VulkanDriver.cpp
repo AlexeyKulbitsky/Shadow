@@ -119,6 +119,11 @@ namespace sh
 			return s_apiName;
 		}
 
+		DriverType VulkanDriver::GetType() const
+		{
+			return DriverType::VULKAN;
+		}
+
 		bool VulkanDriver::Init()
 		{
 			SetupLayersAndExtensions();			

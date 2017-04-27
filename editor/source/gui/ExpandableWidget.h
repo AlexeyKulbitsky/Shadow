@@ -1,6 +1,8 @@
 #ifndef SHADOW_EDITOR_EXPANDABLE_WIDGET_INCLUDE
 #define SHADOW_EDITOR_EXPANDABLE_WIDGET_INCLUDE
 
+#if 0
+
 #include <QFrame>
 #include <QGridLayout>
 #include <QParallelAnimationGroup>
@@ -23,5 +25,7 @@ private:
 	QScrollArea contentArea;
 	int animationDuration{ 300 };
 };
+
+#endif
 
 #endif

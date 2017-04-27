@@ -33,6 +33,7 @@ namespace sh
 			VulkanDriver(const CreationParameters& parameters);
 			~VulkanDriver();
 			virtual const String& GetApiName() const override;
+			virtual DriverType GetType() const override;
 
 			virtual bool Init() override;
 			virtual void BeginRendering() override;

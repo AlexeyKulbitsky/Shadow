@@ -1,6 +1,7 @@
 #ifndef QVOBJECTDELEGATE_H
 #define QVOBJECTDELEGATE_H
 
+#if 0
 #include <QObject>
 #include <QItemDelegate>
 
@@ -25,5 +26,7 @@ protected:
 private:
 	QRect m_buttonRect;
 };
+
+#endif
 
 #endif // QVOBJECTDELEGATE_H

@@ -1,6 +1,7 @@
 #ifndef SHADOW_EDITOR_COMPONENT_DECORATOR_INCLUDE
 #define SHADOW_EDITOR_COMPONENT_DECORATOR_INCLUDE
 
+#if 0
 #include <Shadow.h>
 
 #include "../ExpandableWidget.h"
@@ -17,5 +18,7 @@ public:
 protected:
 	ExpandableWidget* m_parametersWidget = nullptr;
 };
+
+#endif
 
 #endif

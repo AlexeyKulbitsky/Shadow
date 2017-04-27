@@ -1,6 +1,7 @@
 #include "Camera.h"
 #include "SceneManager.h"
 #include "../Device.h"
+#include "../video/Driver.h"
 
 namespace sh
 {
@@ -95,15 +96,33 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////
 
-		void Camera::SetProjection(f32 fov, f32 aspect, f32 nearP, f32 farP)
+		void Camera::SetProjection(f32 fov, f32 aspect, f32 nearPlane, f32 farPlane)
 		{
 			m_fovy = fov;
 			m_aspectRatio = aspect;
-			m_nearDistance = nearP;
-			m_farDistance = farP;
+			m_nearDistance = nearPlane;
+			m_farDistance = farPlane;
 
 			UpdateProjectionMatrix();
 			m_needsToRecalculateProjectionMatrix = false;
+		}
+
+		void Camera::SetProjection(f32 fov, f32 width, f32 height, f32 nearPlane, f32 farPlane)
+		{
+			auto driverType = Device::GetInstance()->GetDriver()->GetType();
+			switch (driverType)
+			{
+				case video::DriverType::OPENGL_ES_2_0:
+					m_2dProjectionMatrix.SetOrtho(0.0f, width, height, 0.0f, -1.0f, 1.0f);
+					break;
+				case video::DriverType::VULKAN:
+					m_2dProjectionMatrix.SetOrtho(0.0f, width, -height, 0.0f, -1.0f, 1.0f);
+					break;
+				default:
+					break;
+			}
+
+			SetProjection(fov, width / height, nearPlane, farPlane);
 		}
 
 		/////////////////////////////////////////////////////////////////////

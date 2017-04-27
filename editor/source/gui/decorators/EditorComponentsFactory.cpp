@@ -1,4 +1,5 @@
 #include "EditorComponentsFactory.h"
+#if 0
 #include "TransformComponent/TransformComponentDecorator.h"
 #include "RenderComponent/RenderComponentDecorator.h"
 
@@ -33,3 +34,5 @@ sh::Component* EditorComponentsFactory::CreateComponent(sh::Component::Type type
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+#endif

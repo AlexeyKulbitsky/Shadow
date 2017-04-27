@@ -17,6 +17,7 @@ namespace sh
 			GLES20Driver(EGLContextManager* contextManager);
 			virtual ~GLES20Driver();
 			virtual const String& GetApiName() const override;
+			virtual DriverType GetType() const override;
 
 			virtual bool Init() override;
 			virtual void BeginRendering() override;

@@ -1,4 +1,6 @@
 #include "GraphicsWidget.h"
+
+#if 0
 #include "decorators\TransformComponent\TransformComponentDecorator.h"
 #include <QResizeEvent>
 #include <QAction>
@@ -344,3 +346,4 @@ void GraphicsWidget::TransformActionChanged(QAction* action)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
+#endif

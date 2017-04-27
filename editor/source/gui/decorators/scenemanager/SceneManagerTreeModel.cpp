@@ -1,4 +1,4 @@
-#include <QtWidgets>
+//#include <QtWidgets>
 
 #if 0
 #include "SceneManagerTreeItem.h"

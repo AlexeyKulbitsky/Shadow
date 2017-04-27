@@ -21,8 +21,9 @@ namespace gui
 
 		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type) override;
 
-		Event<void> pressed;
-		Event<void> released;
+		Event<void> OnPress;
+		Event<void> OnRelease;
+		Event<void> OnHover;
 
 	private:
 		math::Rectf m_rect;

@@ -8,3 +8,9 @@
 	<pressed u1="79" v1="30" u2="97" v2="48"/>
 </button>
 
+<button name="test_button1">
+	<rect x1="50" y1="0" x2="100" y2="20"/>
+	<released u1="58" v1="30" u2="76" v2="48"/>
+	<pressed u1="79" v1="30" u2="97" v2="48"/>
+</button>
+

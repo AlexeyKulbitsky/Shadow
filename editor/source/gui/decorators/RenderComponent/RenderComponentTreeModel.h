@@ -1,6 +1,8 @@
 #ifndef TREEMODEL_H
 #define TREEMODEL_H
 
+#if 0
+
 #include <QAbstractItemModel>
 #include <QModelIndex>
 #include <QVariant>
@@ -46,5 +48,7 @@ public:
 
     RenderComponentTreeItem *m_rootItem;
 };
+
+#endif
 
 #endif

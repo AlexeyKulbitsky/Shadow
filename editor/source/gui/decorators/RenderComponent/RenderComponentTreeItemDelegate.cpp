@@ -1,4 +1,5 @@
 #include "RenderComponentTreeItemDelegate.h"
+#if 0
 #include "RenderComponentTreeModel.h"
 #include "RenderComponentTreeItem.h"
 #include <QPainter>
@@ -105,4 +106,5 @@ void RenderComponentTreeItemDelegate::PaintObject(QPainter* painter, const QStyl
 
 ///////////////////////////////////////////////////////
 
+#endif
 	

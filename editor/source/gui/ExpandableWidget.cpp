@@ -1,6 +1,8 @@
-#include <QPropertyAnimation>
+//#include <QPropertyAnimation>
 
 #include "ExpandableWidget.h"
+
+#if 0
 
 ExpandableWidget::ExpandableWidget(const QString & title, const int animationDuration, QWidget *parent) : QWidget(parent), animationDuration(animationDuration)
 {
@@ -58,3 +60,5 @@ void ExpandableWidget::setContentLayout(QLayout & contentLayout)
 	contentAnimation->setStartValue(0);
 	contentAnimation->setEndValue(contentHeight);
 }
+
+#endif
