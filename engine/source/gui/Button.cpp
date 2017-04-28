@@ -164,18 +164,18 @@ namespace gui
 		else
 		{
 			math::Vector2f uvLeftUp = m_releasedRect.upperLeftCorner;
-					math::Vector2f uvRightDown = m_releasedRect.lowerRightCorner;
+			math::Vector2f uvRightDown = m_releasedRect.lowerRightCorner;
 
-					m_batchData[3] = uvLeftUp.x; m_batchData[4] = uvLeftUp.y; 
-					m_batchData[11] = uvLeftUp.x; m_batchData[12] = uvRightDown.y; 
-					m_batchData[19] = uvRightDown.x; m_batchData[20] = uvRightDown.y; 
-					m_batchData[27] = uvRightDown.x; m_batchData[28] = uvLeftUp.y; 
+			m_batchData[3] = uvLeftUp.x; m_batchData[4] = uvLeftUp.y; 
+			m_batchData[11] = uvLeftUp.x; m_batchData[12] = uvRightDown.y; 
+			m_batchData[19] = uvRightDown.x; m_batchData[20] = uvRightDown.y; 
+			m_batchData[27] = uvRightDown.x; m_batchData[28] = uvLeftUp.y; 
 
-					// color
-					m_batchData[5] = 1.0f; m_batchData[6] = 1.0f; m_batchData[7] = 1.0f;
-					m_batchData[13] = 1.0f; m_batchData[14] = 1.0f; m_batchData[15] = 1.0f; 
-					m_batchData[21] = 1.0f; m_batchData[22] = 1.0f; m_batchData[23] = 1.0f; 
-					m_batchData[29] = 1.0f; m_batchData[30] = 1.0f;  m_batchData[31] = 1.0f; 
+			// color
+			m_batchData[5] = 1.0f; m_batchData[6] = 1.0f; m_batchData[7] = 1.0f;
+			m_batchData[13] = 1.0f; m_batchData[14] = 1.0f; m_batchData[15] = 1.0f; 
+			m_batchData[21] = 1.0f; m_batchData[22] = 1.0f; m_batchData[23] = 1.0f; 
+			m_batchData[29] = 1.0f; m_batchData[30] = 1.0f;  m_batchData[31] = 1.0f; 
 		}
 		
 		return false;

@@ -407,8 +407,8 @@ MainWindow::MainWindow()
 	if (fileInfo.name != "")
 	{
 		sh::gui::GuiManager::GetInstance()->LoadGui(fileInfo.absolutePath.c_str());
-		//auto button = static_cast<sh::gui::Button*>(sh::gui::GuiManager::GetInstance()->GetChild(0).get());
-		//button->pressed.Connect(std::bind(&MainWindow::OpenScene, this));
+		auto button = static_cast<sh::gui::Button*>(sh::gui::GuiManager::GetInstance()->GetChild(0).get());
+		button->OnPress.Connect(std::bind(&MainWindow::OpenScene, this));
 	}
 }
 

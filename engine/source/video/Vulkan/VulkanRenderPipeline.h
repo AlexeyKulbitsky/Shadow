@@ -26,18 +26,18 @@ namespace sh
 
 			VkPipeline GetVulkanPipeline(const VertexInputDeclarationPtr& vertexDeclaration);
 
-			VkPipeline GetVulkanId() const { return m_graphicsPipeline; }
+			//VkPipeline GetVulkanId() const { return m_graphicsPipeline; }
 			VkPipelineLayout GetVulkanPipelineLayout() const { return m_pipelineLayout; }
 
 		private:
 			VulkanRenderPipeline(const RenderPipelineDescription& description);
 
 		protected:
-			VkPipeline m_pipelines;
+			//VkPipeline m_pipelines;
 
-			VkPipeline m_graphicsPipeline;		
+			//VkPipeline m_graphicsPipeline;		
 			VkPipelineLayout m_pipelineLayout;
-			VkDescriptorSetLayout m_descriptorSetLayout;
+			//VkDescriptorSetLayout m_descriptorSetLayout;
 
 			// Pipelines for different vertex declarations
 			std::vector<VulkanVertexDeclaration*> m_declarations;

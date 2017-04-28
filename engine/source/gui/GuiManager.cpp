@@ -34,7 +34,6 @@ namespace gui
 
 	void GuiManager::Init()
 	{
-		///*
 		video::VertexBufferDecription desc;
 		desc.usage = USAGE_DYNAMIC;
 		m_mainBatch.vertexBuffer = video::VertexBuffer::Create(desc);
@@ -46,7 +45,6 @@ namespace gui
 
 		m_mainBatch.material.reset(new video::Material());
 		m_mainBatch.material->SetRenderTechnique("ui_base.xml");
-
 
 		sh::video::VertexDeclarationPtr vertexDeclaration = sh::video::VertexDeclarationPtr(new sh::video::VertexDeclaration());
 		sh::video::Attribute positionAttribute(AttributeSemantic::POSITION, AttributeType::FLOAT, 3U);
@@ -67,7 +65,6 @@ namespace gui
 		video::CommandBufferDescription commandBufferDesc;
 		commandBufferDesc.type = COMMAND_BUFFER_TYPE_SECONDARY;
 		m_mainBatch.commandBuffer = video::CommandBuffer::Create(commandBufferDesc);
-		//*/
 	}
 
 	void GuiManager::Update(u32 delta)

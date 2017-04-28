@@ -7,6 +7,17 @@ namespace sh
 
 namespace video
 {
+	VulkanTexture::~VulkanTexture()
+	{
+		VulkanDriver* driver = static_cast<VulkanDriver*>(Device::GetInstance()->GetDriver());
+		VkDevice device = driver->GetVulkanDevice();
+
+		if(m_textureImageMemory != VK_NULL_HANDLE)
+			vkFreeMemory(device, m_textureImageMemory, nullptr);
+		if(m_textureImage != VK_NULL_HANDLE)
+			vkDestroyImage(device, m_textureImage, nullptr);
+	}
+
 
 	void VulkanTexture::SetData(u32 mipLevel, void* data)
 	{
@@ -43,7 +54,7 @@ namespace video
 		{
 			uint8_t* dataBytes = reinterpret_cast<uint8_t*>(dataInternal);
 
-			for (int y = 0; y < m_description.height; y++) 
+			for (u32 y = 0; y < m_description.height; y++) 
 			{
 				memcpy(&dataBytes[y * stagingImageLayout.rowPitch], &externalData[y * m_description.width * 4], m_description.width * 4);
 			}
@@ -70,8 +81,6 @@ namespace video
         driver->transitionImageLayout(m_textureImage, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
 		
 
-
-
 		VkImageViewCreateInfo viewInfo = {};
 		viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
 		viewInfo.image = m_textureImage;
@@ -86,12 +95,8 @@ namespace video
 		SH_ASSERT(res == VK_SUCCESS, "failed to create image view!");
 
 
-
 		vkFreeMemory(device, stagingImageMemory, nullptr);
 		vkDestroyImage(device, stagingImage, nullptr);
-		// Sampler
-		
-
 	}
 
 	void VulkanTexture::SetFaceData(TextureFace face, u32 mipLevel, const void* data)

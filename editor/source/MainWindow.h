@@ -81,7 +81,6 @@ public:
 	void OpenScene();
 
 private:
-	sh::gui::ButtonPtr m_openSceneBtn;
 };
 
 #endif

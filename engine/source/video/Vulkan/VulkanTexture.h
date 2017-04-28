@@ -14,6 +14,8 @@ namespace video
 	{
 		friend class VulkanTextureManager;
 	public:
+		virtual ~VulkanTexture();
+
 		virtual void SetData(u32 mipLevel, void* data) override;
 		virtual void SetFaceData(TextureFace face, u32 mipLevel, const void* data) override;
 
@@ -34,9 +36,9 @@ namespace video
 		VulkanTexture(const TextureDescription& description);
 
 	private:
-		VkImage m_textureImage;//{device, vkDestroyImage};
-		VkDeviceMemory m_textureImageMemory;//{device, vkFreeMemory};
-		VkImageView m_imageView;
+		VkImage m_textureImage = VK_NULL_HANDLE;//{device, vkDestroyImage};
+		VkDeviceMemory m_textureImageMemory = VK_NULL_HANDLE;//{device, vkFreeMemory};
+		VkImageView m_imageView = VK_NULL_HANDLE;
 
 
 		

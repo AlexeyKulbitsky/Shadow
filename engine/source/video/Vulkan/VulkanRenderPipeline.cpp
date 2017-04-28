@@ -26,7 +26,12 @@ namespace sh
 			VulkanDriver* driver = static_cast<VulkanDriver*>(Device::GetInstance()->GetDriver());
 			VkDevice device = driver->GetVulkanDevice();
 
-			vkDestroyPipeline(device, m_graphicsPipeline, nullptr);
+			//vkDestroyPipeline(device, m_graphicsPipeline, nullptr);
+
+			for(auto pipeline : m_intenalPipelines)
+			{
+				vkDestroyPipeline(device, pipeline, nullptr);
+			}
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////
@@ -207,10 +212,11 @@ namespace sh
 			pipelineInfo.subpass = 0;
 			pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
 
-			res = vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &m_graphicsPipeline);
+			VkPipeline pipeline = VK_NULL_HANDLE;
+			res = vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipeline);
 			SH_ASSERT(res == VK_SUCCESS, "Failed to create graphics pipeline!");
 
-			m_intenalPipelines.push_back(m_graphicsPipeline);
+			m_intenalPipelines.push_back(pipeline);
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////

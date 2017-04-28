@@ -25,6 +25,11 @@ namespace sh
 			VulkanDriver* driver = static_cast<VulkanDriver*>(Device::GetInstance()->GetDriver());
 			VkDevice device = driver->GetVulkanDevice();
 
+			if(m_bufferMemory != VK_NULL_HANDLE)
+				vkFreeMemory(device, m_bufferMemory, nullptr);
+			if(m_buffer != VK_NULL_HANDLE)
+				vkDestroyBuffer(device, m_buffer, nullptr);
+
 			// Create temporary buffer
 			VkDeviceSize bufferSize = length;
 			VkBuffer stagingBuffer;

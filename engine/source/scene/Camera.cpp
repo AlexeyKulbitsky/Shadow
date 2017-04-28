@@ -116,7 +116,7 @@ namespace sh
 					m_2dProjectionMatrix.SetOrtho(0.0f, width, height, 0.0f, -1.0f, 1.0f);
 					break;
 				case video::DriverType::VULKAN:
-					m_2dProjectionMatrix.SetOrtho(0.0f, width, -height, 0.0f, -1.0f, 1.0f);
+					m_2dProjectionMatrix.SetOrtho(0.0f, width, 0.0f, height, -1.0f, 1.0f);
 					break;
 				default:
 					break;

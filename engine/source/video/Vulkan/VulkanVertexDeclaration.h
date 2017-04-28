@@ -21,10 +21,7 @@ namespace sh
 			friend class VulkanRenderPipeline;
 		public:
 			// Add attribute to engines structure
-			void AddAttribute(const VulkanVertexAttribute& attribute)
-			{
-				m_attributes.push_back(attribute);
-			}
+			void AddAttribute(const VulkanVertexAttribute& attribute) { m_attributes.push_back(attribute); }
 
 			// Get Vulkan Internal attributes
 			const VkVertexInputBindingDescription& GetBindingDescription() const { return m_descriptor; }
