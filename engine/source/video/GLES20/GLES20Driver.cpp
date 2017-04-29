@@ -15,6 +15,8 @@
 #include "Managers/GLES20CommandBufferManager.h"
 #include "Managers/GLES20TextureManager.h"
 
+#include "../../gui/SpriteManager.h"
+
 #include "../Material.h"
 #include "../GLContext/EGLContextManager.h"
 #include "../../scene/Mesh.h"
@@ -39,6 +41,8 @@ GLES20Driver::GLES20Driver( EGLContextManager* contextManager )
 	CommandBufferManager::CreateInstance<GLES20CommandBufferManager>();
 	RenderBatchManager::CreateInstance<GLES20RenderBatchManager>();
 	TextureManager::CreateInstance<GLES20TextureManager>();
+
+	gui::SpriteManager::CreateInstance();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -50,6 +54,8 @@ GLES20Driver::~GLES20Driver()
 	CommandBufferManager::DestroyInstance();
 	RenderBatchManager::DestroyInstance();
 	TextureManager::DestroyInstance();
+
+	gui::SpriteManager::DestroyInstance();
 }
 
 ////////////////////////////////////////////////////////////////////////

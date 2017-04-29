@@ -404,12 +404,65 @@ MainWindow::MainWindow()
 
 	const auto& fileInfo = fileSystem->FindFile("editor_gui.xml");
 
+	auto guiMgr = sh::gui::GuiManager::GetInstance();
+
 	if (fileInfo.name != "")
 	{
-		sh::gui::GuiManager::GetInstance()->LoadGui(fileInfo.absolutePath.c_str());
-		auto button = static_cast<sh::gui::Button*>(sh::gui::GuiManager::GetInstance()->GetChild(0).get());
-		button->OnPress.Connect(std::bind(&MainWindow::OpenScene, this));
+		guiMgr->LoadGui(fileInfo.absolutePath.c_str());
 	}
+
+	auto font = sh::FontManager::GetInstance()->GenerateFont("VeraMono.ttf");
+	guiMgr->SetFont(font);
+
+	auto releasedSprite = sh::gui::SpriteManager::GetInstance()->GetSprite("DefaultButton");
+	auto pressedSprite = sh::gui::SpriteManager::GetInstance()->GetSprite("PressedButton");
+	auto redSprite = sh::gui::SpriteManager::GetInstance()->GetSprite("RedButton");
+
+	m_menuBar.reset(new sh::gui::MenuBar(releasedSprite));
+	sh::gui::ButtonPtr menuButton(new sh::gui::Button(
+		sh::math::Rectu(0, 0, 50, 15), 
+		releasedSprite,
+		pressedSprite,
+		redSprite));
+	menuButton->SetToggleable(true);
+	const auto& fileMenu = m_menuBar->AddMenu("File", menuButton);
+
+	sh::gui::ButtonPtr openSceneButton(new sh::gui::Button(
+		sh::math::Rectu(0, 0, 50, 15), 
+		releasedSprite,
+		pressedSprite,
+		redSprite));
+	openSceneButton->SetText("Open scene...");
+	openSceneButton->OnRelease.Connect(std::bind(&MainWindow::OpenScene, this));
+	fileMenu->AddItem(openSceneButton);
+
+	sh::gui::ButtonPtr saveSceneButton(new sh::gui::Button(
+		sh::math::Rectu(0, 0, 50, 15), 
+		releasedSprite,
+		pressedSprite,
+		redSprite));
+	saveSceneButton->SetText("Save scene...");
+	saveSceneButton->OnRelease.Connect(std::bind(&MainWindow::SaveScene, this));
+	fileMenu->AddItem(saveSceneButton);
+
+	sh::gui::ButtonPtr exitButton(new sh::gui::Button(
+		sh::math::Rectu(0, 0, 50, 15), 
+		releasedSprite,
+		pressedSprite,
+		redSprite));
+	exitButton->SetText("Exit");
+	exitButton->OnRelease.Connect(std::bind(&MainWindow::Close, this));
+	fileMenu->AddItem(exitButton);
+
+	guiMgr->AddChild(m_menuBar);
+
+	/*
+	m_toolBar.reset(new sh::gui::ToolBar());
+	m_toolBar->AddItem(toggleableButton->Clone());
+	m_toolBar->AddItem(toggleableButton->Clone());
+	guiMgr->AddChild(m_toolBar);
+
+	*/
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -444,4 +497,14 @@ void MainWindow::OpenScene()
 		sh::scene::SceneManager* sceneMgr = sh::Device::GetInstance()->GetSceneManager();		
 		sceneMgr->LoadScene(ofn.lpstrFile);
 	}
+}
+
+void MainWindow::SaveScene()
+{
+
+}
+
+void MainWindow::Close()
+{
+
 }

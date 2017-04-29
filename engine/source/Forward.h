@@ -70,6 +70,9 @@ namespace sh
 		DEFINE_CLASS_PTR(GuiElement)
 		DEFINE_CLASS_PTR(Button)
 		DEFINE_CLASS_PTR(Sprite)
+		DEFINE_CLASS_PTR(MenuBar)
+		DEFINE_CLASS_PTR(Menu)
+		DEFINE_CLASS_PTR(ToolBar)
 	}
 
 	DEFINE_CLASS_PTR(Component)

@@ -79,8 +79,12 @@ public:
 	void Update();
 
 	void OpenScene();
+	void SaveScene();
+	void Close();
 
 private:
+	sh::gui::MenuBarPtr m_menuBar;
+	sh::gui::ToolBarPtr m_toolBar;
 };
 
 #endif

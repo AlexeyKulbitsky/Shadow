@@ -2,15 +2,30 @@
 
 <texture val="ui_atlas.png"/>
 
-<button name="test_button_0">
-	<rect x1="0" y1="0" x2="50" y2="20"/>
+<sprites>
+	<sprite name="DefaultButton">
+		<rect x1="60" y1="32" x2="73" y2="45"/>
+		<texture val="ui_atlas.png"/>
+	</sprite>
+	<sprite name="PressedButton">
+		<rect x1="81" y1="32" x2="94" y2="45"/>
+		<texture val="ui_atlas.png"/>
+	</sprite>
+	<sprite name="RedButton">
+		<rect x1="102" y1="33" x2="107" y2="44"/>
+		<texture val="ui_atlas.png"/>
+	</sprite>
+</sprites>
+
+<!--button name="test_button_0">
+	<rect x1="0" y1="0" x2="50" y2="15"/>
 	<released u1="58" v1="30" u2="76" v2="48"/>
 	<pressed u1="79" v1="30" u2="97" v2="48"/>
 </button>
 
 <button name="test_button_1">
-	<rect x1="50" y1="0" x2="100" y2="20"/>
+	<rect x1="50" y1="0" x2="100" y2="15"/>
 	<released u1="58" v1="30" u2="76" v2="48"/>
 	<pressed u1="79" v1="30" u2="97" v2="48"/>
-</button>
+</button-->
 

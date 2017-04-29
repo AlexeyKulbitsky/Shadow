@@ -100,6 +100,8 @@ int CustomMessageBox(HWND hWnd, LPCTSTR lpText, LPCTSTR lpCaption, LPCTSTR textb
 	return nRet;
 }
 
+
+
 LRESULT CALLBACK CustomMessageBoxProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg)
@@ -329,6 +331,8 @@ pempek::assert::implementation::AssertAction::AssertAction _testHandler(const ch
 
   }
 
+int g_xPoint, g_yPoint;
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	Device* device = Device::GetInstance();
@@ -359,6 +363,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		bool isShiftPressed = (LOWORD(wParam) & MK_SHIFT) != 0;
 		int x = LOWORD(lParam);
 		int y = HIWORD(lParam);
+
+		g_xPoint = x;
+		g_yPoint = y;
 
 		if (device)
 			device->mouseEvent(x, y, MouseEventType::Moved, MouseCode::ButtonLeft);
@@ -558,7 +565,7 @@ bool Win32Device::Run()
 
 	u32 delta = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - t).count();
 	float fps = 1000.0f / static_cast<float>(delta);
-	sprintf(capture, "Shadow engine: FPS %.2f", fps);
+	sprintf(capture, "Shadow engine: FPS %.2f | x: %d y: %d", fps, g_xPoint, g_yPoint);
 	t = std::chrono::system_clock::now();
 	SetWindowText(m_hwnd, capture);
 	//*/

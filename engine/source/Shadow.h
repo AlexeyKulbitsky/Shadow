@@ -5,8 +5,16 @@
 #include "Device.h"
 #include "Event.h"
 
+#include "font/Font.h"
+#include "font/FontManager.h"
+
 #include "gui/GuiManager.h"
 #include "gui/Button.h"
+#include "gui/MenuBar.h"
+#include "gui/Menu.h"
+#include "gui/ToolBar.h"
+#include "gui/Sprite.h"
+#include "gui/SpriteManager.h"
 
 #include "entity/Component.h"
 #include "entity/ComponentsFactory.h"

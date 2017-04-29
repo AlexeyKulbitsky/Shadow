@@ -17,7 +17,7 @@ namespace sh
 		SH_ASSERT(!error, "ERROR initializing freetype library!");
 	}
 
-	FontPtr FontManager::CreateFont(const String& filename)
+	FontPtr FontManager::GenerateFont(const String& filename)
 	{
 		FT_Face     face;
 		FT_Error error;
@@ -27,9 +27,9 @@ namespace sh
 			return FontPtr();
 
 		error = FT_New_Face(m_fontLibrary, fileInefo.absolutePath.c_str(), 0, &face);
-		SH_ASSERT(!error, "ERROR loading VeraMono-Italic.ttf font!, ");
+		SH_ASSERT(!error, "ERROR loading %s font!", filename.c_str());
 
-		FT_Set_Pixel_Sizes(face, 0, 128);
+		FT_Set_Pixel_Sizes(face, 0, 12);
 
 		FontPtr font(new Font());
 
@@ -72,6 +72,8 @@ namespace sh
 
 			font->m_descriptions[i].x_off   = face->glyph->bitmap_left;
 			font->m_descriptions[i].y_off   = face->glyph->bitmap_top;
+			font->m_descriptions[i].width   = bmp->width;
+			font->m_descriptions[i].height  = bmp->rows;
 			font->m_descriptions[i].advance = face->glyph->advance.x >> 6;
 
 			pen_x += bmp->width + 1;

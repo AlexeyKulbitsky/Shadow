@@ -7,9 +7,10 @@ namespace sh
 {
 	struct GlyphDescription 
 	{
-		u32 x0, y0, x1, y1;	// coords of glyph in the texture atlas
-		u32 x_off, y_off;   // left & top bearing when rendering
-		u32 advance;        // x advance when rendering
+		s32 x0, y0, x1, y1;	// coords of glyph in the texture atlas
+		s32 x_off, y_off;   // left & top bearing when rendering
+		s32 width, height;
+		s32 advance;        // x advance when rendering
 	};
 
 	class Font

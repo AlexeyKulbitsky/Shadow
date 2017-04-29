@@ -25,7 +25,7 @@ namespace sh
 						  s_glTextureFormat[static_cast<size_t>(m_description.format)], 
 						  GL_UNSIGNED_BYTE, 
 						  data);
-			glGenerateMipmap(s_glTextureType[m_description.type]);
+			//glGenerateMipmap(s_glTextureType[m_description.type]);
 			glBindTexture(s_glTextureType[m_description.type], 0U);
 		}
 

@@ -19,7 +19,7 @@ namespace sh
 
 		FontManager();
 		const video::TexturePtr& GetTexture();
-		FontPtr CreateFont(const String& filename);
+		FontPtr GenerateFont(const String& filename);
 
 	private:
 		GlyphInfo m_infos[128];

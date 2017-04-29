@@ -6,7 +6,7 @@ namespace sh
 
 	FontPtr Font::Create(const String& filename)
 	{
-		return FontManager::GetInstance()->CreateFont(filename);
+		return FontManager::GetInstance()->GenerateFont(filename);
 	}
 
 } // sh

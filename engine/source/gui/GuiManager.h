@@ -10,6 +10,13 @@ namespace gui
 {
 	class GuiElement;
 
+	struct GuiBatchData
+	{
+		std::vector<float> vertices;
+		u32 verticesCount = 0U;
+		std::vector<u32> indices;
+	};
+
 	struct GuiBatch
 	{
 		video::VertexBufferPtr vertexBuffer;
@@ -33,15 +40,28 @@ namespace gui
 		void LoadGui(const char* filename);
 		void AddChild(const SPtr<GuiElement>& child);
 
+		void SetFont(const FontPtr& font);
+		const FontPtr& GetFont() const { return m_font; }
+
 		const SPtr<GuiElement>& GetChild(size_t i) const { return m_children[i]; }
 		size_t GetChildrenCount() const { return m_children.size(); }
+		void RemoveAllChildren() { m_children.clear(); }
 
 		void OnMouseEvent(int x, int y, MouseEventType type, MouseCode code);
 		void OnKeyboardEvent(KeyboardEventType type, KeyCode code);
 
 	private:
+		void InitMainBatch();
+		void InitTextBatch();
+
+	private:
+		GuiBatchData m_mainBatchData;
 		GuiBatch m_mainBatch;
+
+		GuiBatchData m_textBatchData;
 		GuiBatch m_textBatch;
+
+		FontPtr m_font;
 
 		std::vector<SPtr<GuiElement>> m_children;
 	};
