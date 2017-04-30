@@ -47,6 +47,8 @@ namespace gui
 		size_t GetChildrenCount() const { return m_children.size(); }
 		void RemoveAllChildren() { m_children.clear(); }
 
+		bool ProcessInput(u32 x, u32 y, MouseEventType type);
+
 		void OnMouseEvent(int x, int y, MouseEventType type, MouseCode code);
 		void OnKeyboardEvent(KeyboardEventType type, KeyCode code);
 

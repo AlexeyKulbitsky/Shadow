@@ -49,7 +49,7 @@ namespace gui
 	void ToolBar::AddItem(const ButtonPtr& button)
 	{
 		u32 size = m_buttons.size();
-		button->SetPosition(30 * (size + 1), 15U);
+		button->SetPosition(30 * (size), 15U);
 		button->SetWidth(30U);
 		button->SetHeight(30U);
 

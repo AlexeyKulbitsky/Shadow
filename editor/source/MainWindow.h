@@ -69,6 +69,8 @@ private:
 };
 #endif
 
+#include "gizmo/Gizmo.h"
+
 #include <Shadow.h>
 
 class MainWindow
@@ -82,9 +84,14 @@ public:
 	void SaveScene();
 	void Close();
 
+	void OnMouseEvent(int x, int y, sh::MouseEventType type, sh::MouseCode code);
+	void OnKeyboardEvent(sh::KeyboardEventType type, sh::KeyCode code);
+
 private:
 	sh::gui::MenuBarPtr m_menuBar;
 	sh::gui::ToolBarPtr m_toolBar;
+
+	sh::SPtr<Gizmo> m_gizmo;
 };
 
 #endif

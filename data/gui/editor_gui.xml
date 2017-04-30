@@ -15,6 +15,10 @@
 		<rect x1="102" y1="33" x2="107" y2="44"/>
 		<texture val="ui_atlas.png"/>
 	</sprite>
+	<sprite name="MoveGizmo">
+		<rect x1="155" y1="35" x2="168" y2="48"/>
+		<texture val="ui_atlas.png"/>
+	</sprite>
 </sprites>
 
 <!--button name="test_button_0">

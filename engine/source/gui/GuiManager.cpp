@@ -27,8 +27,7 @@ namespace gui
 
 	GuiManager::GuiManager()
 	{
-		Device::GetInstance()->mouseEvent.Connect(std::bind(&GuiManager::OnMouseEvent, this, _1, _2, _3, _4));
-		Device::GetInstance()->keyboardEvent.Connect(std::bind(&GuiManager::OnKeyboardEvent, this, _1, _2));
+		
 	}
 
 	GuiManager::~GuiManager()
@@ -196,6 +195,16 @@ namespace gui
 		SH_ASSERT(!!texture, "Can not set empty font to Gui manager!");
 
 		m_textBatch.material->GetCommonGpuParams()->SetSampler(ST_FRAGMENT, "fontAtlas", texture);
+	}
+
+	bool GuiManager::ProcessInput(u32 x, u32 y, MouseEventType type)
+	{
+		for (auto& child : m_children)
+		{
+			if (child->ProcessInput(x, y, type))
+				return true;
+		}
+		return false;
 	}
 
 	void GuiManager::OnMouseEvent(int x, int y, MouseEventType type, MouseCode code)
