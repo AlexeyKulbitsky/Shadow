@@ -33,38 +33,7 @@ namespace sh
 			sh::video::Attribute positionAttribute(AttributeSemantic::POSITION, AttributeType::FLOAT, 3U);
 			vertexDeclaration->AddAttribute(positionAttribute);
 
-			// Create vertex buffer
-			const void* verticesPointer = vertexArray.data();
-			size_t verticesDataSize = vertexArray.size() * sizeof(float);
-			video::VertexBufferDecription vertexBufDesc;
-			vertexBufDesc.usage = USAGE_STATIC;
-			sh::video::VertexBufferPtr vertexBuffer = video::VertexBuffer::Create(vertexBufDesc);
-			vertexBuffer->SetData(0, verticesDataSize, verticesPointer);
-			vertexBuffer->SetVerticesCount(verticesCount / 3);
-			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
-			vertexBuffer->SetVertexDeclaration(vertexDeclaration);
-
-			sh::scene::MeshBasePtr mesh(new sh::scene::MeshBase());
-
-			mesh->SetVertexBuffer(vertexBuffer);
-			mesh->SetTopology(Topology::TOP_LINE_LIST);
-
-			sh::scene::ModelBasePtr model(new sh::scene::ModelBase());
-			model->AddMesh(mesh);
-
-			sh::scene::ModelPtr resultModel(new sh::scene::Model(model));
-
-			sh::video::MaterialPtr material(new sh::video::Material());			
-			sh::video::RenderTechniquePtr rt = Device::GetInstance()->GetResourceManager()->GetRenderTechnique("base.xml");			
-			material->SetRenderTechnique(rt);
-
-			size_t meshesCount = resultModel->GetMeshesCount();
-			for (size_t i = 0; i < meshesCount; ++i)
-			{
-				resultModel->GetMesh(i)->SetMaterial(material);
-			}
-
-			return resultModel;
+			return CreateModel(vertexArray, std::vector<u32>(), vertexDeclaration, Topology::TOP_TRIANGLE_LIST);
 		}
 
 		//////////////////////////////////////////////////////////////////
@@ -92,38 +61,7 @@ namespace sh
 			sh::video::Attribute positionAttribute(AttributeSemantic::POSITION, AttributeType::FLOAT, 3U);
 			vertexDeclaration->AddAttribute(positionAttribute);
 
-			// Create vertex buffer
-			const void* verticesPointer = vertexArray.data();
-			size_t verticesDataSize = vertexArray.size() * sizeof(float);
-			video::VertexBufferDecription vertexBufDesc;
-			vertexBufDesc.usage = USAGE_STATIC;
-			sh::video::VertexBufferPtr vertexBuffer = video::VertexBuffer::Create(vertexBufDesc);
-			vertexBuffer->SetData(0, verticesDataSize, verticesPointer);
-			vertexBuffer->SetVerticesCount(verticesCount / 3);
-			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
-			vertexBuffer->SetVertexDeclaration(vertexDeclaration);
-
-			sh::scene::MeshBasePtr mesh(new sh::scene::MeshBase());
-
-			mesh->SetVertexBuffer(vertexBuffer);
-			mesh->SetTopology(Topology::TOP_LINE_LOOP);
-
-			sh::scene::ModelBasePtr model(new sh::scene::ModelBase());
-			model->AddMesh(mesh);
-
-			sh::scene::ModelPtr resultModel(new sh::scene::Model(model));
-
-			sh::video::MaterialPtr material(new sh::video::Material());
-			sh::video::RenderTechniquePtr rt = Device::GetInstance()->GetResourceManager()->GetRenderTechnique("base.xml");
-			material->SetRenderTechnique(rt);
-
-			size_t meshesCount = resultModel->GetMeshesCount();
-			for (size_t i = 0; i < meshesCount; ++i)
-			{
-				resultModel->GetMesh(i)->SetMaterial(material);
-			}
-
-			return resultModel;
+			return CreateModel(vertexArray, std::vector<u32>(), vertexDeclaration, Topology::TOP_TRIANGLE_LIST);
 		}
 
 		//////////////////////////////////////////////////////////////////
@@ -212,50 +150,7 @@ namespace sh
 			sh::video::Attribute positionAttribute(AttributeSemantic::POSITION, AttributeType::FLOAT, 3U);
 			vertexDeclaration->AddAttribute(positionAttribute);
 
-			// Create vertex buffer
-			const void* verticesPointer = vertexArray.data();
-			size_t verticesDataSize = vertexArray.size() * sizeof(float);
-			video::VertexBufferDecription vertexBufDesc;
-			vertexBufDesc.usage = USAGE_STATIC;
-			sh::video::VertexBufferPtr vertexBuffer = video::VertexBuffer::Create(vertexBufDesc);
-			vertexBuffer->SetData(0, verticesDataSize, verticesPointer);
-			vertexBuffer->SetVerticesCount(verticesCount / 3);
-			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
-			vertexBuffer->SetVertexDeclaration(vertexDeclaration);
-
-			// Create index buffer
-			const void* indicesPointer = indexArray.data();
-			size_t indicesDataSize = indexArray.size() * sizeof(unsigned int);
-			video::IndexBufferDescription indexBufDesc;
-			indexBufDesc.usage = USAGE_STATIC;
-			indexBufDesc.indexType = IT_32_BIT;
-			sh::video::IndexBufferPtr indexBuffer = video::IndexBuffer::Create(indexBufDesc);
-			indexBuffer->SetData(0, indicesDataSize, indicesPointer);
-			//indexBuffer->SetIndexType(sh::IndexType::UNSIGNED_32_BIT);
-			indexBuffer->SetIndicesCount(indexArray.size());
-
-			sh::scene::MeshBasePtr mesh(new sh::scene::MeshBase());
-
-			mesh->SetVertexBuffer(vertexBuffer);
-			mesh->SetIndexBuffer(indexBuffer);
-			//mesh->SetTopology(Topology::TRIANGLE_LIST);
-
-			sh::scene::ModelBasePtr model(new sh::scene::ModelBase());
-			model->AddMesh(mesh);
-
-			sh::scene::ModelPtr resultModel(new sh::scene::Model(model));
-
-			sh::video::MaterialPtr material(new sh::video::Material());
-			sh::video::RenderTechniquePtr rt = Device::GetInstance()->GetResourceManager()->GetRenderTechnique("base.xml");
-			material->SetRenderTechnique(rt);
-
-			size_t meshesCount = resultModel->GetMeshesCount();
-			for (size_t i = 0; i < meshesCount; ++i)
-			{
-				resultModel->GetMesh(i)->SetMaterial(material);
-			}
-
-			return resultModel;
+			return CreateModel(vertexArray, indexArray, vertexDeclaration, Topology::TOP_TRIANGLE_LIST);
 		}
 
 		//////////////////////////////////////////////////////////////////
@@ -344,50 +239,7 @@ namespace sh
 			sh::video::Attribute positionAttribute(AttributeSemantic::POSITION, AttributeType::FLOAT, 3U);
 			vertexDeclaration->AddAttribute(positionAttribute);
 
-			// Create vertex buffer
-			const void* verticesPointer = vertexArray.data();
-			size_t verticesDataSize = vertexArray.size() * sizeof(float);
-			video::VertexBufferDecription vertexBufDesc;
-			vertexBufDesc.usage = USAGE_STATIC;
-			sh::video::VertexBufferPtr vertexBuffer = video::VertexBuffer::Create(vertexBufDesc);
-			vertexBuffer->SetData(0, verticesDataSize, verticesPointer);
-			vertexBuffer->SetVerticesCount(verticesCount / 3);
-			vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
-			vertexBuffer->SetVertexDeclaration(vertexDeclaration);
-
-			// Create index buffer
-			const void* indicesPointer = indexArray.data();
-			size_t indicesDataSize = indexArray.size() * sizeof(unsigned int);
-			video::IndexBufferDescription indexBufDesc;
-			indexBufDesc.usage = USAGE_STATIC;
-			indexBufDesc.indexType = IT_32_BIT;
-			sh::video::IndexBufferPtr indexBuffer = video::IndexBuffer::Create(indexBufDesc);
-			indexBuffer->SetData(0, indicesDataSize, indicesPointer);
-			//indexBuffer->SetIndexType(sh::IndexType::UNSIGNED_32_BIT);
-			indexBuffer->SetIndicesCount(indexArray.size());
-
-			sh::scene::MeshBasePtr mesh(new sh::scene::MeshBase());
-
-			mesh->SetVertexBuffer(vertexBuffer);
-			mesh->SetIndexBuffer(indexBuffer);
-			//mesh->SetTopology(Topology::TRIANGLE_LIST);
-
-			sh::scene::ModelBasePtr model(new sh::scene::ModelBase());
-			model->AddMesh(mesh);
-
-			sh::scene::ModelPtr resultModel(new sh::scene::Model(model));
-
-			sh::video::MaterialPtr material(new sh::video::Material());
-			sh::video::RenderTechniquePtr rt = Device::GetInstance()->GetResourceManager()->GetRenderTechnique("base.xml");
-			material->SetRenderTechnique(rt);
-
-			size_t meshesCount = resultModel->GetMeshesCount();
-			for (size_t i = 0; i < meshesCount; ++i)
-			{
-				resultModel->GetMesh(i)->SetMaterial(material);
-			}
-
-			return resultModel;
+			return CreateModel(vertexArray, indexArray, vertexDeclaration, Topology::TOP_TRIANGLE_LIST);
 		}
 
 		//////////////////////////////////////////////////////////////////
@@ -558,7 +410,6 @@ namespace sh
 				indexBufDesc.indexType = IT_32_BIT;
 				sh::video::IndexBufferPtr indexBuffer = video::IndexBuffer::Create(indexBufDesc);
 				indexBuffer->SetData(0, indicesDataSize, indicesPointer);
-				//indexBuffer->SetIndexType(sh::IndexType::UNSIGNED_32_BIT);
 				indexBuffer->SetIndicesCount(indexArray.size());
 				mesh->SetIndexBuffer(indexBuffer);
 			}
@@ -570,16 +421,6 @@ namespace sh
 			model->AddMesh(mesh);
 
 			sh::scene::ModelPtr resultModel(new sh::scene::Model(model));
-
-			sh::video::MaterialPtr material(new sh::video::Material());
-			sh::video::RenderTechniquePtr rt = Device::GetInstance()->GetResourceManager()->GetRenderTechnique("base.xml");
-			material->SetRenderTechnique(rt);
-
-			size_t meshesCount = resultModel->GetMeshesCount();
-			for (size_t i = 0; i < meshesCount; ++i)
-			{
-				resultModel->GetMesh(i)->SetMaterial(material);
-			}
 
 			return resultModel;
 		}

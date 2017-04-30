@@ -11,7 +11,7 @@ MainWindow::MainWindow()
 	sh::Device::GetInstance()->mouseEvent.Connect(std::bind(&MainWindow::OnMouseEvent, this, _1, _2, _3, _4));
 	sh::Device::GetInstance()->keyboardEvent.Connect(std::bind(&MainWindow::OnKeyboardEvent, this, _1, _2));
 
-	//m_gizmo.reset(new Gizmo());
+	m_gizmo.reset(new Gizmo());
 
 	auto fileSystem = sh::Device::GetInstance()->GetFileSystem();
 

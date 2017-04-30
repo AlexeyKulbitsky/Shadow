@@ -29,6 +29,7 @@ namespace video
 		MaterialParam(MaterialParamType type, u8* dataPtr) : m_type(type), m_dataPtr(dataPtr) { }
 
 	private:
+		String m_name;
 		MaterialParamType m_type = MaterialParamType::Undefined;
 		u8* m_dataPtr = nullptr;
 	};
