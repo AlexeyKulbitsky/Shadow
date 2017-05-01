@@ -105,7 +105,7 @@ namespace gui
 		m_textBatchData.verticesCount = 0U;
 		for (u32 i = 0U; i < m_children.size(); ++i)
 		{
-			m_children[i]->GetText(m_textBatchData);
+			m_children[i]->GetTextGeometry(m_textBatchData);
 		}
 
 		verticesPointer = m_textBatchData.vertices.data();

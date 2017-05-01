@@ -52,8 +52,6 @@ namespace gui
 	{
 		ButtonPtr result(new Button());
 		result->m_rect = m_rect;
-		result->m_releasedRect = m_releasedRect;
-		result->m_pressedRect = m_pressedRect;
 
 		result->m_releasedSprite = m_releasedSprite;
 		result->m_pressedSprite = m_pressedSprite;
@@ -72,51 +70,7 @@ namespace gui
 		u32 y1 = rect.attribute("y1").as_uint();
 		u32 x2 = rect.attribute("x2").as_uint();
 		u32 y2 = rect.attribute("y2").as_uint();
-
 		m_rect.Set(x1, y1, x2, y2);
-
-		pugi::xml_node pressed = node.child("pressed");
-		f32 u1 = pressed.attribute("u1").as_float();
-		f32 v1 = pressed.attribute("v1").as_float();
-		f32 u2 = pressed.attribute("u2").as_float();
-		f32 v2 = pressed.attribute("v2").as_float();
-		m_pressedRect.Set(u1 / 256, v1 / 128, u2 / 256, v2 / 128);
-
-		pugi::xml_node released = node.child("released");
-		u1 = released.attribute("u1").as_float();
-		v1 = released.attribute("v1").as_float();
-		u2 = released.attribute("u2").as_float();
-		v2 = released.attribute("v2").as_float();
-		m_releasedRect.Set(u1 / 256, v1 / 128, u2 / 256, v2 / 128);
-
-		video::Driver* driver = Device::GetInstance()->GetDriver();
-
-		const auto& viewPort = driver->GetViewPort();
-		math::Vector2f extends(viewPort.z, viewPort.w);
-
-		const math::Matrix4f& ortho = sh::Device::GetInstance()->GetSceneManager()->GetCamera()->Get2DProjectionMatrix();
-		math::Vector4f leftUp((float)m_rect.upperLeftCorner.x, (float)m_rect.upperLeftCorner.y, 0.0f, 1.0f);
-		TransformVector(ortho, leftUp);
-		//leftUp = ortho * leftUp;
-
-		math::Vector4f rightDown((float)m_rect.lowerRightCorner.x, (float)m_rect.lowerRightCorner.y, 0.0f, 1.0f);
-		TransformVector(ortho, rightDown);
-		//rightDown = ortho * rightDown;
-
-		math::Vector2f uvLeftUp = m_releasedRect.upperLeftCorner;
-		math::Vector2f uvRightDown = m_releasedRect.lowerRightCorner;
-
-		
-		std::vector<float> vertices = 
-		{
-			leftUp.x, leftUp.y, 0.0f,			uvLeftUp.x, uvLeftUp.y,			1.0f, 1.0f, 1.0f,
-			leftUp.x, rightDown.y, 0.0f,		uvLeftUp.x, uvRightDown.y,		1.0f, 1.0f, 1.0f,
-			rightDown.x, rightDown.y, 0.0f,		uvRightDown.x, uvRightDown.y,	1.0f, 1.0f, 1.0f,
-			rightDown.x, leftUp.y, 0.0f,		uvRightDown.x, uvLeftUp.y,		1.0f, 1.0f, 1.0f
-		};
-		
-
-		m_batchData = std::move(vertices);
 	}
 
 	void Button::GetGeometry(GuiBatchData& data)
@@ -133,7 +87,7 @@ namespace gui
 		data.verticesCount += 4;
 	}
 
-	void Button::GetText(GuiBatchData& data)
+	void Button::GetTextGeometry(GuiBatchData& data)
 	{
 		const auto& font = GuiManager::GetInstance()->GetFont();
 		s32 width = font->GetTextureAtlas()->GetDescription().width; 
@@ -300,39 +254,6 @@ namespace gui
 	const math::Vector2u& Button::GetPosition() const
 	{
 		return m_rect.upperLeftCorner;
-	}
-
-	void Button::UpdatePosition()
-	{
-		const math::Matrix4f& ortho = sh::Device::GetInstance()->GetSceneManager()->GetCamera()->Get2DProjectionMatrix();
-		math::Vector4f leftUp((float)m_rect.upperLeftCorner.x, (float)m_rect.upperLeftCorner.y, 0.0f, 1.0f);
-		//leftUp = ortho * leftUp;
-		TransformVector(ortho, leftUp);
-
-		math::Vector4f rightDown((float)m_rect.lowerRightCorner.x, (float)m_rect.lowerRightCorner.y, 0.0f, 1.0f);
-		//rightDown = ortho * rightDown;
-		TransformVector(ortho, rightDown);
-
-		m_batchData[0] = leftUp.x; m_batchData[1] = leftUp.y; m_batchData[2] = 0.0f;
-		m_batchData[8] = leftUp.x; m_batchData[9] = rightDown.y; m_batchData[10] = 0.0f;
-		m_batchData[16] = rightDown.x; m_batchData[17] = rightDown.y; m_batchData[18] = 0.0f;
-		m_batchData[24] = rightDown.x; m_batchData[25] = leftUp.y; m_batchData[26] = 0.0f;
-	}
-
-	void Button::UpdateUV(const math::Vector2f& uvLeftUp, const math::Vector2f& uvRightDown)
-	{
-		m_batchData[3] = uvLeftUp.x; m_batchData[4] = uvLeftUp.y; 
-		m_batchData[11] = uvLeftUp.x; m_batchData[12] = uvRightDown.y; 
-		m_batchData[19] = uvRightDown.x; m_batchData[20] = uvRightDown.y; 
-		m_batchData[27] = uvRightDown.x; m_batchData[28] = uvLeftUp.y; 
-	}
-
-	void Button::UpdateColor(const math::Vector3f& color)
-	{
-		m_batchData[5] = color.x; m_batchData[6] = color.y; m_batchData[7] = color.z;
-		m_batchData[13] = color.x; m_batchData[14] = color.y; m_batchData[15] = color.z; 
-		m_batchData[21] = color.x; m_batchData[22] = color.y; m_batchData[23] = color.z; 
-		m_batchData[29] = color.x; m_batchData[30] = color.y;  m_batchData[31] = color.z; 
 	}
 
 	void Button::UpdateText()

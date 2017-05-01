@@ -96,13 +96,13 @@ namespace gui
 		}
 	}
 
-	void MenuBar::GetText(GuiBatchData& data)
+	void MenuBar::GetTextGeometry(GuiBatchData& data)
 	{
 		for (const auto& menu : m_menus)
 		{
-			menu.first->GetText(data);
+			menu.first->GetTextGeometry(data);
 			if (menu.second->IsVisible())
-				menu.second->GetText(data);
+				menu.second->GetTextGeometry(data);
 		}
 	}
 

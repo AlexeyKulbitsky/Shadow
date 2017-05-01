@@ -20,7 +20,6 @@ namespace gui
 		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type) override;
 
 	private:
-		math::Rectu m_rect;
 		std::vector<ButtonPtr> m_buttons;
 	};
 

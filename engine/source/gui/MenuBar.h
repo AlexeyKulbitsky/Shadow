@@ -18,7 +18,7 @@ namespace gui
 		const MenuPtr& AddMenu(const String& menuName, const ButtonPtr& button);
 
 		virtual void GetGeometry(GuiBatchData& data) override;
-		virtual void GetText(GuiBatchData& data) override;
+		virtual void GetTextGeometry(GuiBatchData& data) override;
 		virtual void SetPosition(u32 x, u32 y) override;
 		virtual void SetWidth(u32 width) override;
 		virtual void SetHeight(u32 height) override;
@@ -32,7 +32,6 @@ namespace gui
 		void OnMenuReleased();
 
 	private:
-		math::Rectu m_rect;
 		SpritePtr m_sprite;
 		std::vector< std::pair<ButtonPtr, MenuPtr> > m_menus;
 	};

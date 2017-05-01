@@ -10,10 +10,13 @@
 
 #include "gui/GuiManager.h"
 #include "gui/Button.h"
+#include "gui/Label.h"
 #include "gui/LineEdit.h"
+#include "gui/FloatLineEdit.h"
 #include "gui/MenuBar.h"
 #include "gui/Menu.h"
 #include "gui/ToolBar.h"
+#include "gui/Text.h"
 #include "gui/Sprite.h"
 #include "gui/SpriteManager.h"
 

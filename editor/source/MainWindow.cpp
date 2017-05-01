@@ -83,10 +83,15 @@ MainWindow::MainWindow()
 	sh::gui::LineEditPtr lineEdit(new sh::gui::LineEdit(
 		sh::math::Rectu(0, 50, 150, 65), 
 		releasedSprite,
-		pressedSprite,
-		redSprite));
+		pressedSprite));
+
+	sh::gui::FloatLineEditPtr floatLineEdit(new sh::gui::FloatLineEdit(
+		sh::math::Rectu(0, 65, 150, 80), 
+		releasedSprite,
+		pressedSprite));
 
 	guiMgr->AddChild(lineEdit);
+	guiMgr->AddChild(floatLineEdit);
 	guiMgr->AddChild(m_toolBar);
 	guiMgr->AddChild(m_menuBar);
 }

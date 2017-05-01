@@ -19,6 +19,8 @@ namespace gui
 	class GuiElement
 	{
 	public:
+		virtual ~GuiElement() {}
+
 		void SetVisible(bool visible) { m_visible = visible; }
 		bool IsVisible() const { return m_visible; }
 
@@ -27,7 +29,7 @@ namespace gui
 
 		virtual void Load(const pugi::xml_node& node) { }
 		virtual void GetGeometry(GuiBatchData& data) { }
-		virtual void GetText(GuiBatchData& data) { }
+		virtual void GetTextGeometry(GuiBatchData& data) { }
 		virtual void SetPosition(u32 x, u32 y) { }
 		virtual void SetSize(const math::Vector2u& size) { }
 		virtual void SetWidth(u32 width) {}
@@ -36,6 +38,12 @@ namespace gui
 		virtual bool ProcessKeyboardInput(KeyboardEventType type, KeyCode code) { return false; }
 
 	protected:
+		void UpdatePosition();
+		void UpdateUV(const math::Vector2f& leftUp, const math::Vector2f& rightDown);
+		void UpdateColor(const math::Vector3f& color);
+
+	protected:
+		math::Rectu m_rect;
 		bool m_visible = true;
 		bool m_enabled = true;
 		std::vector<float> m_batchData;

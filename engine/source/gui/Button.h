@@ -25,7 +25,7 @@ namespace gui
 
 		virtual void Load(const pugi::xml_node& node) override;
 		virtual void GetGeometry(GuiBatchData& data) override;
-		virtual void GetText(GuiBatchData& data) override;
+		virtual void GetTextGeometry(GuiBatchData& data) override;
 		virtual void SetPosition(u32 x, u32 y) override;
 		virtual void SetSize(const math::Vector2u& size) override;
 		virtual void SetWidth(u32 width) override;
@@ -42,20 +42,13 @@ namespace gui
 		Event<void, bool> OnToggle;
 
 	private:
-		void UpdatePosition();
-		void UpdateUV(const math::Vector2f& leftUp, const math::Vector2f& rightDown);
-		void UpdateColor(const math::Vector3f& color);
 		void UpdateText();
 
 	private:
-		math::Rectu m_rect;
-
 		SpritePtr m_pressedSprite;
 		SpritePtr m_releasedSprite;
 		SpritePtr m_hoveredSprite;
 
-		math::Rectf m_releasedRect;
-		math::Rectf m_pressedRect;
 
 		String m_text = "Button";
 		std::vector<float> m_textBatchData;

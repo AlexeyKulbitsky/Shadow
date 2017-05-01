@@ -24,7 +24,7 @@ namespace gui
 		void AddItem(const ButtonPtr& button);// { m_buttons.push_back(button); }
 
 		virtual void GetGeometry(GuiBatchData& data) override;
-		virtual void GetText(GuiBatchData& data) override;
+		virtual void GetTextGeometry(GuiBatchData& data) override;
 		virtual void SetPosition(u32 x, u32 y) override;
 		virtual void SetWidth(u32 width) override;
 		virtual void SetHeight(u32 height) override;

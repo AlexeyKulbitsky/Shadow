@@ -20,6 +20,7 @@
 #include <map>
 #include <sstream>
 #include <memory>
+#include <regex>
 #include <functional>
 
 namespace sh

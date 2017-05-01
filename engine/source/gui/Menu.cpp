@@ -47,11 +47,11 @@ namespace gui
 		}
 	}
 
-	void Menu::GetText(GuiBatchData& data)
+	void Menu::GetTextGeometry(GuiBatchData& data)
 	{
 		for (const auto& button : m_buttons)
 		{
-			button->GetText(data);
+			button->GetTextGeometry(data);
 		}
 	}
 
