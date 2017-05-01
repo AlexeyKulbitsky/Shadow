@@ -11,7 +11,10 @@ MainWindow::MainWindow()
 	sh::Device::GetInstance()->mouseEvent.Connect(std::bind(&MainWindow::OnMouseEvent, this, _1, _2, _3, _4));
 	sh::Device::GetInstance()->keyboardEvent.Connect(std::bind(&MainWindow::OnKeyboardEvent, this, _1, _2));
 
-	m_gizmo.reset(new Gizmo());
+	m_defaultGizmo.reset(new Gizmo());
+	m_moveGizmo.reset(new MoveGizmo());
+
+	m_gizmo = m_moveGizmo;
 
 	auto fileSystem = sh::Device::GetInstance()->GetFileSystem();
 
@@ -77,7 +80,13 @@ MainWindow::MainWindow()
 		redSprite));
 	m_toolBar->AddItem(moveGIzmo);
 
+	sh::gui::LineEditPtr lineEdit(new sh::gui::LineEdit(
+		sh::math::Rectu(0, 50, 150, 65), 
+		releasedSprite,
+		pressedSprite,
+		redSprite));
 
+	guiMgr->AddChild(lineEdit);
 	guiMgr->AddChild(m_toolBar);
 	guiMgr->AddChild(m_menuBar);
 }
@@ -86,7 +95,17 @@ MainWindow::MainWindow()
 
 void MainWindow::Update()
 {
+	auto driver = sh::Device::GetInstance()->GetDriver();
+	auto sceneMgr = sh::Device::GetInstance()->GetSceneManager();
 
+	driver->BeginRendering();
+
+	sceneMgr->Update();
+	m_gizmo->Render();
+			
+	sh::gui::GuiManager::GetInstance()->Render();
+
+	driver->EndRendering();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -134,15 +153,43 @@ void MainWindow::OnMouseEvent(int x, int y, sh::MouseEventType type, sh::MouseCo
 	switch (type)
 	{
 		case sh::MouseEventType::ButtonPressed:
+		{
+			if (code == sh::MouseCode::ButtonLeft)
+			{
+				if (m_gizmo->IsEnabled())
+				{
+					m_gizmo->OnMousePressed(x, y);
+				}
+			}
+		}
 			break;
 		case sh::MouseEventType::ButtonReleased:
 		{
 			if (code == sh::MouseCode::ButtonLeft)
 			{
-				const auto& picker = sh::Device::GetInstance()->GetSceneManager()->GetPicker();
-
-				auto result = picker->TryToPick(x, y, 640, 480);
+				if (!m_gizmo->IsEnabled())
+				{
+					const auto& picker = sh::Device::GetInstance()->GetSceneManager()->GetPicker();
+					auto result = picker->TryToPick(x, y, 640, 480);
+					m_gizmo->SetEntity(result);
+				}
+				else
+				{
+					m_gizmo->OnMouseReleased(x, y);
+				}
 			}
+		}
+			break;
+		case sh::MouseEventType::Moved:
+		{
+			if (code == sh::MouseCode::ButtonLeft)
+			{
+				if (m_gizmo->IsEnabled())
+				{
+					m_gizmo->OnMouseMoved(x, y);
+				}
+			}
+			
 		}
 			break;
 		default:
@@ -152,5 +199,6 @@ void MainWindow::OnMouseEvent(int x, int y, sh::MouseEventType type, sh::MouseCo
 
 void MainWindow::OnKeyboardEvent(sh::KeyboardEventType type, sh::KeyCode code)
 {
-
+	if (sh::gui::GuiManager::GetInstance()->ProcessKeyboardInput(type, code))
+		return;
 }

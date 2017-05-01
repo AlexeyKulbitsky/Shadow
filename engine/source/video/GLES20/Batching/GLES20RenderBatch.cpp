@@ -44,7 +44,8 @@ namespace sh
 				driver->SetGpuParams(renderable->GetAutoGpuParams());
 				driver->SetVertexBuffer(renderable->GetVertexBuffer());
 				driver->SetVertexDeclaration(renderable->GetVertexInputDeclaration());
-				driver->SetIndexBuffer(renderable->GetIndexBuffer());				
+				driver->SetIndexBuffer(renderable->GetIndexBuffer());	
+				driver->SetTopology(renderable->GetTopology());
 				driver->DrawIndexed(0, renderable->GetIndexBuffer()->GetIndicesCount());
 			}
 			

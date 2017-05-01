@@ -3,6 +3,9 @@
 
 MoveGizmo::MoveGizmo()
 {
+	m_material.reset(new sh::video::Material());
+	m_material->SetRenderTechnique("editor_base_color.xml");
+
 	CreateArrow(Axis::Type::X_AXIS);
 	CreateArrow(Axis::Type::Y_AXIS);
 	CreateArrow(Axis::Type::Z_AXIS);
@@ -33,12 +36,15 @@ void MoveGizmo::Render()
 
 	sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
 	sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
+	sh::math::Matrix4f viewMatrix = camera->GetViewMatrix();
+	sh::math::Matrix4f projectionMatrix = camera->GetProjectionMatrix();
+
+
 	if (m_entity)
 	{
 		sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_entity->GetComponent(sh::Component::Type::TRANSFORM));
 		if (transformComponent)
 		{
-			//sh::math::Matrix4f matrix = transformComponent->GetWorldMatrix();
 			sh::math::Matrix4f matrix;
 			matrix.SetIdentity();
 
@@ -51,40 +57,50 @@ void MoveGizmo::Render()
 			matrix.SetTranslation(position);
 			matrix = matrix * rotation.GetAsMatrix4();
 
+			sh::math::Matrix4f wvpMatrix = projectionMatrix * viewMatrix * matrix;
+
 			for (size_t i = 0; i < 6; ++i)
 			{
-				for (size_t modelIdx = 0U; modelIdx < m_axises[i].models.size(); ++modelIdx)
-				{
-					m_axises[i].models[modelIdx].model->SetWorldMatrix(matrix);
-					m_axises[i].models[modelIdx].model->UpdateTransformationUniforms();
-				}
+				m_axises[i].wvpMatrix.Set(wvpMatrix);
 			}
 		}
 	}
 
 
-	
-	for (size_t i = 0; i < 3; ++i)
+	driver->SetRenderPipeline(m_material->GetRenderPipeline());
+
+	for (size_t i = 0; i < 6; ++i)
 	{
+		auto& axis = m_axises[i];
+
 		for (size_t modelIdx = 0U; modelIdx < m_axises[i].models.size(); ++modelIdx)
 		{
-			driver->Render(m_axises[i].models[modelIdx].model.get());
-			
-		}
-	}
+			sh::u32 meshesCount = m_axises[i].models[modelIdx].model->GetMeshesCount();
+			for (size_t j = 0; j < meshesCount; ++j)
+			{
+				auto& model = axis.models[modelIdx];
+				const auto& mesh = model.model->GetMesh(j);
+				const auto& renderable = mesh->GetRanderable();
 
-	for (size_t i = 3; i < 6; ++i)
-	{
-		for (size_t modelIdx = 0U; modelIdx < m_axises[i].models.size() - 1; ++modelIdx)
-		{
-			driver->Render(m_axises[i].models[modelIdx].model.get());			
-		}
-		if (m_axises[i].active)
-		{
-			driver->Render(m_axises[i].models[m_axises[i].models.size() - 1].model.get());
+				axis.color.Set(model.currentColor);
+				driver->SetGpuParams(axis.params);
+			
+				driver->SetVertexBuffer(renderable->GetVertexBuffer());
+				driver->SetVertexDeclaration(renderable->GetVertexInputDeclaration());
+				driver->SetTopology(renderable->GetTopology());
+				if (renderable->GetIndexBuffer())
+				{
+					driver->SetIndexBuffer(renderable->GetIndexBuffer());				
+					driver->DrawIndexed(0, renderable->GetIndexBuffer()->GetIndicesCount());
+				}
+				else
+				{
+					driver->Draw(0, renderable->GetVertexBuffer()->GetVerticesCount());
+				}
+				
+			}
 		}
 	}
-	
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -98,52 +114,52 @@ void MoveGizmo::Process()
 
 void MoveGizmo::OnMousePressed(sh::u32 x, sh::u32 y) 
 {
+	TryToSelect(x, y, 640, 480);
+	m_mousePressed = true;
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void MoveGizmo::OnMouseReleased(sh::u32 x, sh::u32 y) 
 {
+	TryToSelect(x, y, 640, 480);
+	m_mousePressed = false;
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void MoveGizmo::OnMouseMoved(sh::u32 x, sh::u32 y) 
 {
-	/*
-	if (m_axises[0].active)
-	{
-		Move(Axis::Type::X_AXIS);		
-	}
-	else if (m_axises[1].active)
-	{
-		Move(Axis::Type::Y_AXIS);
-	}
-	else if (m_axises[2].active)
-	{
-		Move(Axis::Type::Z_AXIS);
-	}
-	*/
-
 	for (size_t i = 0; i < static_cast<size_t>(Axis::Type::COUNT); ++i)
 	{
-		if (m_axises[i].active)
+		if (m_axises[i].active && m_mousePressed)
 		{
 			Move(static_cast<Axis::Type>(i));
+			return;
 		}
 	}
+
+	TryToSelect(x, y, 640, 480);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void MoveGizmo::CreateArrow(Axis::Type type)
 {
+	const auto& info = m_material->GetRenderPipeline()->GetAutoParamsInfo();
+
+	auto& axis = m_axises[(Axis::Type)type];
+	axis.params = sh::video::GpuParams::Create(info);
+	axis.params->GetParam("matWVP", axis.wvpMatrix);
+	axis.params->GetParam("color", axis.color);
+
 	float radius = 0.1f;
 	float height = 4.0f;
 	sh::u32 numberOfSides = 100U;
 	
 	sh::math::Vector3f translation(0.0f);
-	sh::math::Vector4f color;
+	sh::math::Vector4f defaultColor;
+	sh::math::Vector4f selectedColor(1.0f);
 	sh::math::Quaternionf rotation;	
 	sh::math::Matrix4f transform;
 	transform.SetIdentity();
@@ -154,21 +170,21 @@ void MoveGizmo::CreateArrow(Axis::Type type)
 		{
 			translation = sh::math::Vector3f(3.0f, 0.0f, 0.0f);
 			rotation.SetFromAxisAngle(sh::scene::SceneManager::GetFrontVector(), sh::math::k_pi_2);
-			color = sh::math::Vector4f(1.0f, 0.0f, 0.0f, 1.0f);
+			defaultColor = sh::math::Vector4f(1.0f, 0.0f, 0.0f, 1.0f);
 		}
 			break;
 		case Axis::Type::Y_AXIS:
 		{
 			translation = sh::math::Vector3f(0.0f, 3.0f, 0.0f);
 			rotation.SetIndentity();
-			color = sh::math::Vector4f(0.0f, 1.0f, 0.0f, 1.0f);
+			defaultColor = sh::math::Vector4f(0.0f, 1.0f, 0.0f, 1.0f);
 		}
 			break;
 		case Axis::Type::Z_AXIS:
 		{
 			translation = sh::math::Vector3f(0.0f, 0.0f, 3.0f);
 			rotation.SetFromAxisAngle(sh::scene::SceneManager::GetRightVector(), sh::math::k_pi_2);
-			color = sh::math::Vector4f(0.0f, 0.0f, 1.0f, 1.0f);
+			defaultColor = sh::math::Vector4f(0.0f, 0.0f, 1.0f, 1.0f);
 		}
 			break;
 		default:
@@ -181,33 +197,34 @@ void MoveGizmo::CreateArrow(Axis::Type type)
 
 	Axis::ModelInfo modelInfo;
 	modelInfo.model = sh::scene::GeometryGenerator::GetCylinderModel(height, radius, numberOfSides, transform);	
-//	sh::video::UniformBufferPtr uniformBuffer = modelInfo.model->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
-//	modelInfo.uniform = uniformBuffer->GetUniform(sh::String("color"));
-	if (modelInfo.uniform)
-	{
-		modelInfo.color = color;
-	}
-	m_axises[(Axis::Type)type].models.push_back(modelInfo);
+	modelInfo.model->SetMaterial(m_material);
+	modelInfo.defaultColor = defaultColor;
+	modelInfo.selectedColor = selectedColor;
+	modelInfo.currentColor = defaultColor;
+	axis.models.push_back(modelInfo);
 
 	transform.SetIdentity();
 	translation *= 1.5f;
 	transform.SetTranslation(translation);
 	transform = transform * rotation.GetAsMatrix4();
 	modelInfo.model = sh::scene::GeometryGenerator::GetConeModel(0.25f, 1.0f, transform);
-	
-//	uniformBuffer = modelInfo.model->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
-//	modelInfo.uniform = uniformBuffer->GetUniform(sh::String("color"));
-	if (modelInfo.uniform)
-	{
-		modelInfo.color = color;
-	}
-	m_axises[(Axis::Type)type].models.push_back(modelInfo);
+	modelInfo.model->SetMaterial(m_material);
+	modelInfo.defaultColor = defaultColor;
+	modelInfo.selectedColor = selectedColor;
+	modelInfo.currentColor = defaultColor;
+	axis.models.push_back(modelInfo);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void MoveGizmo::CreatePlane(Axis::Type type)
 {
+	const auto& info = m_material->GetRenderPipeline()->GetAutoParamsInfo();
+	auto& axis = m_axises[type];
+	axis.params = sh::video::GpuParams::Create(info);
+	axis.params->GetParam("matWVP", axis.wvpMatrix);
+	axis.params->GetParam("color", axis.color);
+
 	float radius = 0.1f;
 	float height = 3.0f;
 	sh::u32 numberOfSides = 100U;
@@ -215,9 +232,12 @@ void MoveGizmo::CreatePlane(Axis::Type type)
 	sh::math::Matrix4f transform1 = sh::math::Matrix4f::Identity();
 	sh::math::Matrix4f transform2 = sh::math::Matrix4f::Identity();
 	sh::math::Matrix4f transform3 = sh::math::Matrix4f::Identity();
-	sh::math::Vector4f color1(0.0f);
-	sh::math::Vector4f color2(0.0f);
-	sh::math::Vector4f color3(0.0f);
+	sh::math::Vector4f color1_default(0.0f);
+	sh::math::Vector4f color1_selected(0.0f);
+	sh::math::Vector4f color2_default(0.0f);
+	sh::math::Vector4f color2_selected(0.0f);
+	sh::math::Vector4f color3_default(0.0f);
+	sh::math::Vector4f color3_selected(0.0f);
 	switch (type)
 	{
 		case Axis::Type::XY_PLANE:
@@ -225,15 +245,18 @@ void MoveGizmo::CreatePlane(Axis::Type type)
 			sh::math::Quaternionf rotation;
 
 			transform1.SetTranslation(sh::math::Vector3f(height, height / 2.0f, 0.0f));
-			color1 = sh::math::Vector4f(1.0f, 0.0f, 0.0f, 1.0f);
+			color1_default = sh::math::Vector4f(1.0f, 0.0f, 0.0f, 1.0f);
+			color1_selected = sh::math::Vector4f(1.0f, 0.0f, 0.0f, 1.0f);
 
 			transform2.SetTranslation(sh::math::Vector3f(height / 2.0f, height, 0.0f));
 			rotation.SetFromAxisAngle(sh::scene::SceneManager::GetFrontVector(), sh::math::k_pi_2);
 			transform2 = transform2 * rotation.GetAsMatrix4();
-			color2 = sh::math::Vector4f(0.0f, 1.0f, 0.0f, 1.0f);
+			color2_default = sh::math::Vector4f(0.0f, 1.0f, 0.0f, 1.0f);
+			color2_selected = sh::math::Vector4f(0.0f, 1.0f, 0.0f, 1.0f);
 
 			transform3.SetTranslation(sh::math::Vector3f(height / 2.0f, height / 2.0f, 0.0f));
-			color3 = sh::math::Vector4f(1.0f, 1.0f, 0.0f, 1.0f);
+			color3_default = sh::math::Vector4f(1.0f, 1.0f, 0.0f, 0.2f);
+			color3_selected = sh::math::Vector4f(1.0f, 1.0f, 1.0f, 0.5f);
 		}
 			break;
 		case Axis::Type::XZ_PLANE:
@@ -243,17 +266,20 @@ void MoveGizmo::CreatePlane(Axis::Type type)
 			transform1.SetTranslation(sh::math::Vector3f(height, 0.0f, height / 2.0f));
 			rotation.SetFromAxisAngle(sh::scene::SceneManager::GetRightVector(), sh::math::k_pi_2);
 			transform1 = transform1 * rotation.GetAsMatrix4();
-			color1 = sh::math::Vector4f(1.0f, 0.0f, 0.0f, 1.0f);
+			color1_default = sh::math::Vector4f(1.0f, 0.0f, 0.0f, 1.0f);
+			color1_selected = sh::math::Vector4f(1.0f, 0.0f, 0.0f, 1.0f);
 
 			transform2.SetTranslation(sh::math::Vector3f(height / 2.0f, 0.0f, height));
 			rotation.SetFromAxisAngle(sh::scene::SceneManager::GetFrontVector(), sh::math::k_pi_2);
 			transform2 = transform2 * rotation.GetAsMatrix4();
-			color2 = sh::math::Vector4f(0.0f, 0.0f, 1.0f, 1.0f);
+			color2_default = sh::math::Vector4f(0.0f, 0.0f, 1.0f, 1.0f);
+			color2_selected = sh::math::Vector4f(0.0f, 0.0f, 1.0f, 1.0f);
 
 			transform3.SetTranslation(sh::math::Vector3f(height / 2.0f, 0.0f, height / 2.0f));
 			rotation.SetFromAxisAngle(sh::scene::SceneManager::GetRightVector(), sh::math::k_pi_2);
 			transform3 = transform3 * rotation.GetAsMatrix4();
-			color3 = sh::math::Vector4f(1.0f, 0.0f, 1.0f, 1.0f);
+			color3_default = sh::math::Vector4f(1.0f, 0.0f, 1.0f, 0.2f);
+			color3_selected = sh::math::Vector4f(1.0f, 1.0f, 1.0f, 0.5f);
 		}
 			break;
 		case Axis::Type::YZ_PLANE:
@@ -262,15 +288,18 @@ void MoveGizmo::CreatePlane(Axis::Type type)
 			transform1.SetTranslation(sh::math::Vector3f(0.0f, height, height / 2.0f));
 			rotation.SetFromAxisAngle(sh::scene::SceneManager::GetRightVector(), sh::math::k_pi_2);
 			transform1 = transform1 * rotation.GetAsMatrix4();
-			color1 = sh::math::Vector4f(0.0f, 1.0f, 0.0f, 1.0f);
+			color1_default = sh::math::Vector4f(0.0f, 1.0f, 0.0f, 1.0f);
+			color1_selected = sh::math::Vector4f(0.0f, 1.0f, 0.0f, 1.0f);
 
 			transform2.SetTranslation(sh::math::Vector3f(0.0f, height / 2.0f, height));
-			color2 = sh::math::Vector4f(0.0f, 0.0f, 1.0f, 1.0f);
+			color2_default = sh::math::Vector4f(0.0f, 0.0f, 1.0f, 1.0f);
+			color2_selected = sh::math::Vector4f(0.0f, 0.0f, 1.0f, 1.0f);
 
 			transform3.SetTranslation(sh::math::Vector3f(0.0f, height / 2.0f, height / 2.0f));
 			rotation.SetFromAxisAngle(sh::scene::SceneManager::GetUpVector(), sh::math::k_pi_2);
 			transform3 = transform3 * rotation.GetAsMatrix4();
-			color3 = sh::math::Vector4f(0.0f, 1.0f, 1.0f, 1.0f);
+			color3_default = sh::math::Vector4f(0.0f, 1.0f, 1.0f, 0.2f);
+			color3_selected = sh::math::Vector4f(1.0f, 1.0f, 1.0f, 0.5f);
 		}
 			break;
 		default:
@@ -280,35 +309,29 @@ void MoveGizmo::CreatePlane(Axis::Type type)
 
 	Axis::ModelInfo modelInfo;
 	modelInfo.model = sh::scene::GeometryGenerator::GetCylinderModel(height, radius, numberOfSides, transform1);	
-//	sh::video::UniformBufferPtr uniformBuffer = modelInfo.model->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
-//	modelInfo.uniform = uniformBuffer->GetUniform(sh::String("color"));
-	if (modelInfo.uniform)
-	{
-		modelInfo.color = color1;
-	}
-	m_axises[(Axis::Type)type].models.push_back(modelInfo);
+	modelInfo.model->SetMaterial(m_material);
+	modelInfo.defaultColor = color1_default;
+	modelInfo.selectedColor = color1_selected;
+	modelInfo.currentColor = color1_default;
+	axis.models.push_back(modelInfo);
 
 
 
 	modelInfo.model = sh::scene::GeometryGenerator::GetCylinderModel(height, radius, numberOfSides, transform2);	
-//	uniformBuffer = modelInfo.model->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
-//	modelInfo.uniform = uniformBuffer->GetUniform(sh::String("color"));
-	if (modelInfo.uniform)
-	{
-		modelInfo.color = color2;
-	}
-	m_axises[(Axis::Type)type].models.push_back(modelInfo);
+	modelInfo.model->SetMaterial(m_material);
+	modelInfo.defaultColor = color2_default;
+	modelInfo.selectedColor = color2_selected;
+	modelInfo.currentColor = color2_default;
+	axis.models.push_back(modelInfo);
 
 	///////////////////////////////////////////////////////////////////////
 
 	modelInfo.model = sh::scene::GeometryGenerator::GetPlaneModel(height, height, transform3);
-//	uniformBuffer = modelInfo.model->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
-//	modelInfo.uniform = uniformBuffer->GetUniform(sh::String("color"));
-	if (modelInfo.uniform)
-	{
-		modelInfo.color = color3;
-	}
-	m_axises[(Axis::Type)type].models.push_back(modelInfo);
+	modelInfo.model->SetMaterial(m_material);
+	modelInfo.defaultColor = color3_default;
+	modelInfo.selectedColor = color3_selected;
+	modelInfo.currentColor = color3_default;
+	axis.models.push_back(modelInfo);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -422,11 +445,27 @@ void MoveGizmo::Move(Axis::Type axis)
 
 
 	transformComponent->SetPosition(pos + direction);
-
-	inputManager->SetMousePositionOld(current);
 }
 
 //////////////////////////////////////////////////////////////////////////
+
+void MoveGizmo::SetModifierActive(Axis::Type idx, bool active)
+{
+	if (idx >= Axis::COUNT)
+		return;
+
+	
+	auto& axis = m_axises[idx];
+	axis.active = active;
+
+	for (auto& model : axis.models)
+	{
+		if (active)
+			model.currentColor = model.selectedColor;
+		else
+			model.currentColor = model.defaultColor;
+	}
+}
 
 void MoveGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
 {
@@ -434,142 +473,128 @@ void MoveGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
 	driver->ClearBuffers();
 
 
+	driver->SetRenderPipeline(m_material->GetRenderPipeline());
+
 	for (size_t i = 0; i < 3; ++i)
 	{
+		driver->SetGpuParams(m_axises[i].params);
+
 		for (size_t modelIdx = 0U; modelIdx < m_axises[i].models.size(); ++modelIdx)
 		{
-			driver->Render(m_axises[i].models[modelIdx].model.get());
+			sh::u32 meshesCount = m_axises[i].models[modelIdx].model->GetMeshesCount();
+			for (size_t j = 0; j < meshesCount; ++j)
+			{
+				const auto& mesh = m_axises[i].models[modelIdx].model->GetMesh(j);
+				const auto& renderable = mesh->GetRanderable();
+
 			
+				driver->SetVertexBuffer(renderable->GetVertexBuffer());
+				driver->SetVertexDeclaration(renderable->GetVertexInputDeclaration());
+				driver->SetTopology(renderable->GetTopology());
+				if (renderable->GetIndexBuffer())
+				{
+					driver->SetIndexBuffer(renderable->GetIndexBuffer());				
+					driver->DrawIndexed(0, renderable->GetIndexBuffer()->GetIndicesCount());
+				}
+				else
+				{
+					driver->Draw(0, renderable->GetVertexBuffer()->GetVerticesCount());
+				}
+				
+			}
 		}
 	}
 
 	
 
-
-
-
-
-
-
-
 	unsigned char data[4];
 	driver->GetPixelData(x, y, width, height, data);
-	sh::math::Vector4f color(1.0f, 1.0f, 1.0f, 1.0f);
+
 	if (data[0] == 255 && data[1] == 0 && data[2] == 0)
 	{
-		for (size_t i = 0; i < m_axises[Axis::Type::X_AXIS].models.size(); ++i)
-		{
-			//m_axises[Axis::Type::X_AXIS].models[i].uniform->Set(color);
-		}
-		m_axises[Axis::Type::X_AXIS].active = true;
-
-		for (size_t i = 0; i < m_axises[Axis::Type::Y_AXIS].models.size(); ++i)
-		{
-			const auto& col = m_axises[Axis::Type::Y_AXIS].models[i].color;
-		}
-		m_axises[Axis::Type::Y_AXIS].active = false;
-
-		for (size_t i = 0; i < m_axises[Axis::Type::Z_AXIS].models.size(); ++i)
-		{
-			const auto& col = m_axises[Axis::Type::Z_AXIS].models[i].color;
-		}
-		m_axises[Axis::Type::Z_AXIS].active = false;
+		SetModifierActive(m_activeModifier, false);
+		m_activeModifier = Axis::Type::X_AXIS;
+		SetModifierActive(m_activeModifier, true);
+		return;
 	}
 	else if (data[0] == 0 && data[1] == 255 && data[2] == 0)
 	{
-		for (size_t i = 0; i < m_axises[Axis::Type::Y_AXIS].models.size(); ++i)
-		{
-			//m_axises[Axis::Type::Y_AXIS].models[i].uniform->Set(color);
-		}
-		m_axises[Axis::Type::Y_AXIS].active = true;
-
-		for (size_t i = 0; i < m_axises[Axis::Type::X_AXIS].models.size(); ++i)
-		{
-			const auto& col = m_axises[Axis::Type::X_AXIS].models[i].color;
-			//m_axises[Axis::Type::X_AXIS].models[i].uniform->Set(col);
-		}
-		m_axises[Axis::Type::X_AXIS].active = false;
-
-		for (size_t i = 0; i < m_axises[Axis::Type::Z_AXIS].models.size(); ++i)
-		{
-			const auto& col = m_axises[Axis::Type::Z_AXIS].models[i].color;
-			//m_axises[Axis::Type::Z_AXIS].models[i].uniform->Set(col);
-		}
-		m_axises[Axis::Type::Z_AXIS].active = false;
+		SetModifierActive(m_activeModifier, false);
+		m_activeModifier = Axis::Type::Y_AXIS;
+		SetModifierActive(m_activeModifier, true);
+		return;
 	}
 	else if (data[0] == 0 && data[1] == 0 && data[2] == 255)
 	{
-		for (size_t i = 0; i < m_axises[Axis::Type::Z_AXIS].models.size(); ++i)
-		{
-			//m_axises[Axis::Type::Z_AXIS].models[i].uniform->Set(color);
-		}
-		m_axises[Axis::Type::Z_AXIS].active = true;
-
-		for (size_t i = 0; i < m_axises[Axis::Type::X_AXIS].models.size(); ++i)
-		{
-			const auto& col = m_axises[Axis::Type::X_AXIS].models[i].color;
-			//m_axises[Axis::Type::X_AXIS].models[i].uniform->Set(col);
-		}
-		m_axises[Axis::Type::X_AXIS].active = false;
-
-		for (size_t i = 0; i < m_axises[Axis::Type::Y_AXIS].models.size(); ++i)
-		{
-			const auto& col = m_axises[Axis::Type::Y_AXIS].models[i].color;
-			//m_axises[Axis::Type::Y_AXIS].models[i].uniform->Set(col);
-		}
-		m_axises[Axis::Type::Y_AXIS].active = false;
+		SetModifierActive(m_activeModifier, false);
+		m_activeModifier = Axis::Type::Z_AXIS;
+		SetModifierActive(m_activeModifier, true);
+		return;
 	}
 	else if (data[0] == 255 && data[1] == 255 && data[2] == 255)
 	{
 		return;
 	}
-	else
-	{
-		for (size_t i = 0; i < 3; ++i)
-		{
-			for (size_t j = 0; j < m_axises[i].models.size(); ++j)
-			{
-				const auto& col = m_axises[i].models[j].color;
-				//m_axises[i].models[j].uniform->Set(col);
-			}
-			m_axises[i].active = false;
-		}
-		
-	}
 	
+	driver->ClearBuffers();
 
 	///////////////////////////////////////////////////////////////
 
 	for (size_t i = 3; i < 6; ++i)
 	{
-		const auto& color = m_axises[i].models[m_axises[i].models.size() - 1].color;
-		//m_axises[i].models[m_axises[i].models.size() - 1].uniform->Set(color);
-		driver->Render(m_axises[i].models[m_axises[i].models.size() - 1].model.get());
-		//m_axises[i].models[m_axises[i].models.size() - 1].uniform->Set(sh::math::Vector4f(1.0f, 1.0f, 1.0f, 0.7f));
+		sh::math::Vector4f color = m_axises[i].color.Get();
+		color.w = 1.0f;
+		m_axises[i].color.Set(color);
+		driver->SetGpuParams(m_axises[i].params);
+
+		for (size_t modelIdx = 0U; modelIdx < m_axises[i].models.size(); ++modelIdx)
+		{
+			sh::u32 meshesCount = m_axises[i].models[modelIdx].model->GetMeshesCount();
+			for (size_t j = 0; j < meshesCount; ++j)
+			{
+				const auto& mesh = m_axises[i].models[modelIdx].model->GetMesh(j);
+				const auto& renderable = mesh->GetRanderable();
+
+			
+				driver->SetVertexBuffer(renderable->GetVertexBuffer());
+				driver->SetVertexDeclaration(renderable->GetVertexInputDeclaration());
+				driver->SetTopology(renderable->GetTopology());
+				if (renderable->GetIndexBuffer())
+				{
+					driver->SetIndexBuffer(renderable->GetIndexBuffer());				
+					driver->DrawIndexed(0, renderable->GetIndexBuffer()->GetIndicesCount());
+				}
+				else
+				{
+					driver->Draw(0, renderable->GetVertexBuffer()->GetVerticesCount());
+				}
+				
+			}
+		}
 	}
 
 	driver->GetPixelData(x, y, width, height, data);
 
 	if (data[0] == 255 && data[1] == 255 && data[2] == 0)
 	{
-		m_axises[3].active = true;
-
-		m_axises[4].active = false;
-		m_axises[5].active = false;
+		SetModifierActive(m_activeModifier, false);
+		m_activeModifier = Axis::Type::XY_PLANE;
+		SetModifierActive(m_activeModifier, true);
+		return;
 	}
 	else if (data[0] == 255 && data[1] == 0 && data[2] == 255)
 	{
-		m_axises[4].active = true;
-
-		m_axises[3].active = false;
-		m_axises[5].active = false;
+		SetModifierActive(m_activeModifier, false);
+		m_activeModifier = Axis::Type::XZ_PLANE;
+		SetModifierActive(m_activeModifier, true);
+		return;
 	}
 	else if (data[0] == 0 && data[1] == 255 && data[2] == 255)
 	{
-		m_axises[5].active = true;
-
-		m_axises[3].active = false;
-		m_axises[4].active = false;
+		SetModifierActive(m_activeModifier, false);
+		m_activeModifier = Axis::Type::YZ_PLANE;
+		SetModifierActive(m_activeModifier, true);
+		return;
 	}
 	else if (data[0] == 255 && data[1] == 255 && data[2] == 255)
 	{
@@ -577,10 +602,8 @@ void MoveGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
 	}
 	else
 	{
-		for (size_t i = 3; i < 6; ++i)
-		{			
-			m_axises[i].active = false;
-		}
+		SetModifierActive(m_activeModifier, false);
+		m_activeModifier = Axis::Type::NONE;
 	}
 
 	driver->ClearBuffers();

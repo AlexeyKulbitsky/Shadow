@@ -2,6 +2,7 @@
 #define SHADOW_PICKER_INCLUDE
 
 #include "../Globals.h"
+#include "../video/GpuParams.h"
 
 namespace sh
 {
@@ -18,7 +19,11 @@ namespace sh
 
 		private:
 			std::vector<sh::Entity*> m_entities;
-			sh::video::RenderTechniquePtr m_renderTechnique = nullptr;
+
+			sh::video::MaterialPtr m_material;
+			sh::video::GpuParamsPtr m_params;
+			sh::video::GpuParamMatrix4f m_wvpMtrix;
+			sh::video::GpuParamVector4f m_color;
 		};
 	}
 }

@@ -33,6 +33,7 @@ namespace gui
 		virtual void SetWidth(u32 width) {}
 		virtual void SetHeight(u32 height) {}
 		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type) { return false; }
+		virtual bool ProcessKeyboardInput(KeyboardEventType type, KeyCode code) { return false; }
 
 	protected:
 		bool m_visible = true;

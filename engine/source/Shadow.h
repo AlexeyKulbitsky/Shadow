@@ -10,6 +10,7 @@
 
 #include "gui/GuiManager.h"
 #include "gui/Button.h"
+#include "gui/LineEdit.h"
 #include "gui/MenuBar.h"
 #include "gui/Menu.h"
 #include "gui/ToolBar.h"

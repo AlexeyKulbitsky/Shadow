@@ -403,6 +403,16 @@ namespace sh
 							desc.type = GPDT_FLOAT3;
 							desc.size = sizeof(math::Vector3f);
 						}
+						else if (typeStr == "vec4")
+						{
+							desc.type = GPDT_FLOAT4;
+							desc.size = sizeof(math::Vector4f);
+						}
+						else if (typeStr == "mat3")
+						{
+							desc.type = GPDT_MATRIX3;
+							desc.size = sizeof(math::Matrix3f);
+						}
 						else if (typeStr == "mat4")
 						{
 							desc.type = GPDT_MATRIX4;

@@ -18,17 +18,22 @@ public:
 			XZ_PLANE,
 			YZ_PLANE,
 
-			COUNT
+			COUNT,
+			NONE
 		};
 
 		struct ModelInfo
 		{
-			sh::scene::ModelPtr model = nullptr;
-			sh::video::Uniform* uniform = nullptr;
-			sh::math::Vector4f color;
+			sh::scene::ModelPtr model;
+			sh::math::Vector4f currentColor;
+			sh::math::Vector4f defaultColor;
+			sh::math::Vector4f selectedColor;
 		};
 
 		std::vector<ModelInfo> models;
+		sh::video::GpuParamsPtr params;
+		sh::video::GpuParamVector4f color;
+		sh::video::GpuParamMatrix4f wvpMatrix;
 		bool active = false;
 	};
 
@@ -47,9 +52,13 @@ private:
 	void CreateArrow(Axis::Type type);
 	void CreatePlane(Axis::Type type);
 	void Move(Axis::Type axis);
+	void SetModifierActive(Axis::Type idx, bool active);
 
 private:
-	Axis m_axises[static_cast<sh::u32>(Axis::Type::COUNT)];
+	Axis m_axises[Axis::Type::COUNT];
+	sh::video::MaterialPtr m_material;
+	Axis::Type m_activeModifier = Axis::NONE;
+	bool m_mousePressed = false;
 };
 
 #endif

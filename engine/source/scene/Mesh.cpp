@@ -29,6 +29,7 @@ namespace sh
 			m_renderable->m_indexBuffer = meshBase->GetIndexBuffer();
 			m_renderable->m_matrix = &m_worldMatrix;
 			m_renderable->m_parent = this;
+			m_renderable->m_topology = m_meshBase->GetTopology();
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////

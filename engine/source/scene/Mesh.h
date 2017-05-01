@@ -14,6 +14,7 @@ namespace sh
 			explicit Mesh(MeshBasePtr meshBase);
 			~Mesh();	
 			void SetWorldMatrix(const math::Matrix4f& matrix);
+			const math::Matrix4f& GetWorldMatrix() const { return m_worldMatrix; }
 			void SetMaterial(const sh::video::MaterialPtr& material);
 			const video::MaterialPtr& GetMaterial();
 

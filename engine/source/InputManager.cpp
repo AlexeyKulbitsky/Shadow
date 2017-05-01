@@ -17,8 +17,6 @@ namespace sh
 		{
 			m_mouseKeys[i] = false;
 		}
-
-		
 	}
 
 	void InputManager::OnMouseEvent(int x, int y, MouseEventType type, MouseCode code)
@@ -31,12 +29,10 @@ namespace sh
 		case MouseEventType::ButtonReleased:
 			SetMouseButtonReleased(code);
 			break;
-		case MouseEventType::Moved:
-			SetMousePositionCurrent(math::Vector2i(x, y));
-			break;
 		default:
 			break;
 		}
+		SetMousePositionOld(m_mousePositionCurrent);
 		SetMousePositionCurrent(math::Vector2i(x, y));
 	}
 
@@ -47,37 +43,6 @@ namespace sh
 		else
 			SetKeyReleased(code);
 	}
-
-	/*
-	void InputManager::OnEvent(const Event& e)
-	{
-		switch (e.type)
-		{
-		
-		case EventType::MOUSE_INPUT_EVENT:
-		{	
-			switch (e.mouseEvent.type)
-			{
-			case MouseEventType::BUTTON_PRESSED:
-				SetMouseButtonPressed(e.mouseEvent.mouseCode);
-				break;
-			case MouseEventType::BUTTON_RELEASED:
-				SetMouseButtonReleased(e.mouseEvent.mouseCode);
-				break;
-			case MouseEventType::MOVED:
-				SetMousePositionCurrent(math::Vector2i(e.mouseEvent.x, e.mouseEvent.y));
-				break;
-			default:
-				break;
-			}
-			SetMousePositionCurrent(math::Vector2i(e.mouseEvent.x, e.mouseEvent.y));
-		}
-			break;
-		default:
-			break;
-		}
-	}
-	*/
 
 	void InputManager::SetKeyPressed(KeyCode code)
 	{

@@ -12,6 +12,11 @@ int main()
 	//params.driverType = sh::video::DriverType::DIRECTX_11;
 	sh::Device* device =  sh::CreateDevice(params);
 
+	sh::io::FileSystem* fs = device->GetFileSystem();
+	fs->AddFolder(sh::String("../../../../../data"));
+	fs->AddFolder(sh::String("../../../../../libs"));
+	fs->Init();
+
 	sh::video::Driver* driver = device->GetDriver();
 	driver->SetClearColor(sh::math::Vector4f(0.7f, 0.7f, 0.7f, 1.0f));
 	
@@ -26,10 +31,7 @@ int main()
 	sh::gui::GuiManager::CreateInstance();
 
 
-	sh::io::FileSystem* fs = device->GetFileSystem();
-	fs->AddFolder(sh::String("../../../../../data"));
-	fs->AddFolder(sh::String("../../../../../libs"));
-	fs->Init();
+	
 
 
 	sh::scene::Camera* camera = new sh::scene::Camera();
@@ -47,13 +49,7 @@ int main()
 		{
 			mainWindow.Update();
 
-			driver->BeginRendering();
-
-			sceneMgr->Update();
 			
-			sh::gui::GuiManager::GetInstance()->Render();
-
-			driver->EndRendering();
 		}
 	}
 	return 0;

@@ -207,17 +207,14 @@ namespace gui
 		return false;
 	}
 
-	void GuiManager::OnMouseEvent(int x, int y, MouseEventType type, MouseCode code)
+	bool GuiManager::ProcessKeyboardInput(KeyboardEventType type, KeyCode code)
 	{
 		for (auto& child : m_children)
 		{
-			child->ProcessInput(x, y, type);
+			if (child->ProcessKeyboardInput(type, code))
+				return true;
 		}
-	}
-
-	void GuiManager::OnKeyboardEvent(KeyboardEventType type, KeyCode code)
-	{
-
+		return false;
 	}
 
 	void GuiManager::InitMainBatch()

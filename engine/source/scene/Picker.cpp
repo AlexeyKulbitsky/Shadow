@@ -3,8 +3,11 @@
 #include "../video/Driver.h"
 #include "../video/Material.h"
 #include "../video/RenderPipeline.h"
+#include "../video/Renderable.h"
 #include "../scene/Mesh.h"
 #include "../scene/Model.h"
+#include "../scene/Camera.h"
+#include "../scene/SceneManager.h"
 #include "../entity/Entity.h"
 #include "../entity/Component.h"
 #include "../entity/components/RenderComponent.h"
@@ -15,7 +18,12 @@ namespace sh
 	{
 		Picker::Picker()
 		{	
-			m_renderTechnique = sh::Device::GetInstance()->GetResourceManager()->GetRenderTechnique("base.xml");		
+			m_material.reset(new sh::video::Material());
+			m_material->SetRenderTechnique("editor_base_color.xml");
+			const auto& info = m_material->GetRenderPipeline()->GetAutoParamsInfo();	
+			m_params = sh::video::GpuParams::Create(info);
+			m_params->GetParam("matWVP", m_wvpMtrix);
+			m_params->GetParam("color", m_color);
 		}
 
 		/////////////////////////////////////////////////////////
@@ -40,8 +48,13 @@ namespace sh
 		sh::Entity* Picker::TryToPick(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
 		{
 			sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
-			/*
+			sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
+			sh::math::Matrix4f viewMatrix = camera->GetViewMatrix();
+			sh::math::Matrix4f projectionMatrix = camera->GetProjectionMatrix();
+			
 			driver->BeginRendering();
+
+			driver->SetRenderPipeline(m_material->GetRenderPipeline());
 
 			for (size_t i = 0, sz = m_entities.size(); i < sz; ++i)
 			{
@@ -50,27 +63,28 @@ namespace sh
 				int b = (i & 0x00FF0000) >> 16;
 				sh::math::Vector4f color(r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
 
+				m_color.Set(color);
+
 				sh::RenderComponent* renderComponent = static_cast<sh::RenderComponent*>(m_entities[i]->GetComponent(sh::Component::Type::RENDER));		
-				sh::scene::Model* model = renderComponent->GetModel();
+				const auto& model = renderComponent->GetModel();
 
 				size_t meshesCount = model->GetMeshesCount();
 				for (size_t j = 0; j < meshesCount; ++j)
 				{
-					sh::scene::MeshPtr mesh = model->GetMesh(j);
-					mesh->GetMaterial()->GetRenderPipeline(1)->GetShaderProgram()->BindProgram();
-					//sh::video::Uniform* uniform = mesh->GetRenderCommand(1)->GetUniformBuffer()->GetUniform("color");
-					const sh::video::UniformBufferPtr& uniformBuffer = mesh->GetMaterial()->GetRenderPipeline(1)->GetUniformBuffer();
-					sh::video::Uniform* uniform = uniformBuffer->GetUniform("color");
-					if (uniform)
-					{
-						uniform->Set(color);
-					}
-					uniformBuffer->Upload();
-					driver->Render(mesh->GetRenderCommand(1));
-					mesh->GetMaterial()->GetRenderPipeline(1)->GetShaderProgram()->UnbindProgram();
+					const auto& mesh = model->GetMesh(j);
+					const auto& renderable = mesh->GetRanderable();
+					sh::math::Matrix4f wvpMatrix = projectionMatrix * viewMatrix * mesh->GetWorldMatrix();
+					m_wvpMtrix.Set(wvpMatrix);
+
+
+					driver->SetGpuParams(m_params);
+					driver->SetVertexBuffer(renderable->GetVertexBuffer());
+					driver->SetVertexDeclaration(renderable->GetVertexInputDeclaration());
+					driver->SetIndexBuffer(renderable->GetIndexBuffer());				
+					driver->DrawIndexed(0, renderable->GetIndexBuffer()->GetIndicesCount());
 				}			
 			}
-			*/
+			
 			unsigned char data[4];
 			driver->GetPixelData(x, y, width, height, data);
 

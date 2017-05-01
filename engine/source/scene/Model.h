@@ -21,7 +21,9 @@ namespace sh
 			void UpdateTransformationUniforms();
 			void AddMesh(MeshPtr mesh);
 			size_t GetMeshesCount() const;
-			MeshPtr GetMesh(size_t index);
+			const MeshPtr& GetMesh(size_t index) const;
+
+			void SetMaterial(const video::MaterialPtr& material);
 
 		private:
 			std::vector<MeshPtr> m_meshes;

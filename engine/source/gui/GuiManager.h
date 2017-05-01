@@ -48,9 +48,7 @@ namespace gui
 		void RemoveAllChildren() { m_children.clear(); }
 
 		bool ProcessInput(u32 x, u32 y, MouseEventType type);
-
-		void OnMouseEvent(int x, int y, MouseEventType type, MouseCode code);
-		void OnKeyboardEvent(KeyboardEventType type, KeyCode code);
+		bool ProcessKeyboardInput(KeyboardEventType type, KeyCode code);
 
 	private:
 		void InitMainBatch();

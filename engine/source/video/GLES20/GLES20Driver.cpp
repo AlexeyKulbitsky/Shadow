@@ -362,6 +362,11 @@ void GLES20Driver::SetGpuParams( const GpuParamsPtr& params, const CommandBuffer
 					glUniform3fv( param.second.location, 1, dataPtr );
 				}
 				break;
+				case GPDT_FLOAT4:
+				{
+					glUniform4fv( param.second.location, 1, dataPtr );
+				}
+				break;
 				case GPDT_MATRIX3:
 				{
 					glUniformMatrix3fv( param.second.location, 1, GL_FALSE, dataPtr );
@@ -440,14 +445,14 @@ void GLES20Driver::SetIndexBuffer( const IndexBufferPtr& buffer, const CommandBu
 
 void GLES20Driver::Draw( u32 offset, u32 verticesCount, u32 instancesCount, const CommandBufferPtr& )
 {
-	glDrawArrays(GL_TRIANGLES, offset, verticesCount);
+	glDrawArrays(m_currentTopology, offset, verticesCount);
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 void GLES20Driver::DrawIndexed( u32 offset, u32 indicesCount, u32 instancesCount, const CommandBufferPtr& )
 {
-	glDrawElements( GL_TRIANGLES, indicesCount, GL_UNSIGNED_INT, (void*)offset );
+	glDrawElements(m_currentTopology, indicesCount, GL_UNSIGNED_INT, (void*)offset);
 }
 
 ////////////////////////////////////////////////////////////////////////
