@@ -11,6 +11,7 @@
 #include "../entity/Entity.h"
 #include "../entity/Component.h"
 #include "../entity/components/RenderComponent.h"
+#include "../entity/components/TransformComponent.h"
 
 namespace sh
 {
@@ -46,6 +47,28 @@ namespace sh
 		/////////////////////////////////////////////////////////
 
 		sh::Entity* Picker::TryToPick(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
+		{
+			switch (m_mode)
+			{
+				case Mode::Color:
+					return TryToPickByColor(x, y, width, height);
+				case Mode::RayCast:
+					return TryToPickByRayCast(x, y, width, height);
+				default:
+					return nullptr;
+			}
+		}
+
+		/////////////////////////////////////////////////////////
+
+		void Picker::Clear()
+		{
+			m_entities.clear();
+		}
+
+		/////////////////////////////////////////////////////////
+
+		sh::Entity* Picker::TryToPickByColor(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
 		{
 			sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
 			sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
@@ -99,9 +122,29 @@ namespace sh
 
 		/////////////////////////////////////////////////////////
 
-		void Picker::Clear()
+		sh::Entity* Picker::TryToPickByRayCast(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
 		{
-			m_entities.clear();
+			sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
+
+			sh::math::Vector3f rayOrigin(0.0f);
+			sh::math::Vector3f rayDirection(0.0f);
+
+			float t0 = 0.0f;
+			float t1 = 0.0f;
+
+			camera->BuildRay(x, y, rayOrigin, rayDirection);
+
+			for (size_t i = 0, sz = m_entities.size(); i < sz; ++i)
+			{
+				sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_entities[i]->GetComponent(sh::Component::Type::TRANSFORM));		
+				const auto& pos = transformComponent->GetPosition();
+
+				int res = math::RayIntersectSphere(rayOrigin, rayDirection, pos, 1.0f, t0, t1);
+				if (res != 0)
+					return m_entities[i];
+			}
+
+			return nullptr;
 		}
 
 		/////////////////////////////////////////////////////////

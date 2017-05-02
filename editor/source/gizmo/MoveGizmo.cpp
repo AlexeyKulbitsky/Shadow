@@ -469,6 +469,84 @@ void MoveGizmo::SetModifierActive(Axis::Type idx, bool active)
 
 void MoveGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
 {
+	sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_entity->GetComponent(sh::Component::Type::TRANSFORM));
+	if (transformComponent)
+	{
+		sh::math::Matrix4f matrix;
+		sh::math::Matrix4f invMatrix;
+		matrix.SetIdentity();
+		sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
+
+		sh::math::Vector3f position = transformComponent->GetPosition();
+		sh::math::Quaternionf rotation = transformComponent->GetRotation();
+		sh::f32 scaleFactor = (camera->GetPosition() - position).GetLength() / 35.0f;
+		sh::math::Vector3f scale(scaleFactor);
+
+		matrix.SetScale(scale);
+		matrix.SetTranslation(position);
+		matrix = matrix * rotation.GetAsMatrix4();
+		invMatrix = matrix.GetInversed();
+
+		sh::math::Vector3f rayOrigin(0.0f);
+		sh::math::Vector3f rayDirection(0.0f);
+		camera->BuildRay(x, y, rayOrigin, rayDirection);
+
+		// Intersection with Y - axis
+		sh::math::Planef plane(position, 
+							   position + sh::math::Vector3f(0.0f, 1.0f, 0.0f), 
+							   position + camera->GetRightVector());
+		sh::math::Vector3f intersection(0.0f);
+		bool res = plane.GetIntersectionWithLine(rayOrigin, rayDirection, intersection);
+		intersection = invMatrix * intersection;
+
+		if (intersection.y > 0.0f && intersection.y < 10.0f && fabs(intersection.x) < 0.1f)
+		{
+			SetModifierActive(m_activeModifier, false);
+			m_activeModifier = Axis::Type::Y_AXIS;
+			SetModifierActive(m_activeModifier, true);
+			return;
+		}
+
+		// Intersection with X - axis
+		plane.SetPlane(position, 
+						position + sh::math::Vector3f(1.0f, 0.0f, 0.0f), 
+						position + camera->GetUpVector());
+		res = plane.GetIntersectionWithLine(rayOrigin, rayDirection, intersection);
+		intersection = invMatrix * intersection;
+		if (intersection.x > 0.0f && intersection.x < 10.0f && fabs(intersection.y) < 0.1f)
+		{
+			SetModifierActive(m_activeModifier, false);
+			m_activeModifier = Axis::Type::X_AXIS;
+			SetModifierActive(m_activeModifier, true);
+			return;
+		}
+
+		// Intersection with Z - axis
+		plane.SetPlane(position, 
+						position + sh::math::Vector3f(0.0f, 0.0f, 1.0f), 
+						position + camera->GetUpVector());
+		res = plane.GetIntersectionWithLine(rayOrigin, rayDirection, intersection);
+		intersection = invMatrix * intersection;
+		if (intersection.z > 0.0f && intersection.z < 10.0f && fabs(intersection.y) < 0.1f)
+		{
+			SetModifierActive(m_activeModifier, false);
+			m_activeModifier = Axis::Type::Z_AXIS;
+			SetModifierActive(m_activeModifier, true);
+			return;
+		}
+		else
+		{
+			SetModifierActive(m_activeModifier, false);
+			m_activeModifier = Axis::Type::NONE;
+		}
+	}
+
+
+
+
+
+	return;
+
 	sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
 	driver->ClearBuffers();
 

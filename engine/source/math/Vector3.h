@@ -49,6 +49,11 @@ namespace sh
 				return Sqrt(x * x + y * y + z * z);
 			}
 
+			T GetLengthSquare() const
+			{
+				return x * x + y * y + z * z;
+			}
+
 			Vector3<T>& Normalize()
 			{
 				T length = GetLength();
