@@ -10,7 +10,7 @@ namespace sh
 namespace gui
 {
 
-	class LineEdit : public Text//public GuiElement
+	class LineEdit : public Text
 	{
 	public:
 		LineEdit(const math::Rectu& rect, 
@@ -18,7 +18,6 @@ namespace gui
 			   const SpritePtr& editSprite);
 
 		virtual void GetGeometry(GuiBatchData& data) override;
-		virtual void GetTextGeometry(GuiBatchData& data) override;
 		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type) override;
 		virtual bool ProcessKeyboardInput(KeyboardEventType type, KeyCode code) override;
 
@@ -31,11 +30,8 @@ namespace gui
 		SpritePtr m_defaultSprite;
 		SpritePtr m_editSprite;
 
-		//String m_text = "";
-		//std::vector<float> m_textBatchData;
-
 		bool m_dirty = false;
-		bool m_inFocus = true;
+		bool m_inFocus = false;
 	};
 
 } // gui

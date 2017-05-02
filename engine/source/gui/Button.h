@@ -21,7 +21,7 @@ namespace gui
 		ButtonPtr Clone() const;
 
 		void SetToggleable(bool toggleable) { m_toggleable = toggleable; }
-		void SetText(const String& text) { m_text = text; }
+		void SetText(const String& text);
 
 		virtual void Load(const pugi::xml_node& node) override;
 		virtual void GetGeometry(GuiBatchData& data) override;
@@ -42,16 +42,11 @@ namespace gui
 		Event<void, bool> OnToggle;
 
 	private:
-		void UpdateText();
-
-	private:
 		SpritePtr m_pressedSprite;
 		SpritePtr m_releasedSprite;
 		SpritePtr m_hoveredSprite;
 
-
-		String m_text = "Button";
-		std::vector<float> m_textBatchData;
+		TextPtr m_text;
 
 		bool m_toggleable = false;
 		bool m_toggled = false;

@@ -45,10 +45,34 @@ namespace gui
 
 	void Text::GetTextGeometry(GuiBatchData& data)
 	{
-		data.vertices.insert(data.vertices.end(), m_textBatchData.begin(), m_textBatchData.end());
+		const auto& viewPort = sh::Device::GetInstance()->GetDriver()->GetViewPort();
 
-		for (u32 i = 0, sz = m_text.size(); i < sz; ++i)
+		const auto& font = GuiManager::GetInstance()->GetFont();
+		s32 width = font->GetTextureAtlas()->GetDescription().width; 
+		s32 height = font->GetTextureAtlas()->GetDescription().height;
+
+		s32 xOrigin = m_rect.upperLeftCorner.x + 5;
+		s32 yOrigin = m_rect.lowerRightCorner.y - m_rect.GetHeight() / 4;
+
+		for (const auto c : m_text)
 		{
+			const auto& desc = font->GetGlyphDescription(static_cast<u32>(c));
+			
+			float x1 = xOrigin + desc.x_off;
+			float y1 = yOrigin - desc.y_off;
+			float x2 = xOrigin + desc.x_off + desc.width;
+			float y2 = yOrigin - desc.y_off + desc.height;
+
+			float u1 = (float)desc.x0 / (float)width;
+			float v1 = (float)desc.y0 / (float)height;
+			float u2 = (float)desc.x1 / (float)width;
+			float v2 = (float)desc.y1 / (float)height;
+
+			data.vertices.insert(data.vertices.end(), {x1, y1, 0.0f, u1, v1});
+			data.vertices.insert(data.vertices.end(), {x1, y2, 0.0f, u1, v2});
+			data.vertices.insert(data.vertices.end(), {x2, y2, 0.0f, u2, v2});
+			data.vertices.insert(data.vertices.end(), {x2, y1, 0.0f, u2, v1});
+
 			data.indices.push_back(data.verticesCount);
 			data.indices.push_back(data.verticesCount + 1);
 			data.indices.push_back(data.verticesCount + 2);
@@ -57,7 +81,39 @@ namespace gui
 			data.indices.push_back(data.verticesCount + 2);
 			data.indices.push_back(data.verticesCount + 3);
 			data.verticesCount += 4;
+
+			xOrigin += desc.advance;
 		}
+	}
+
+	void Text::SetPosition( u32 x, u32 y )
+	{
+		auto size = m_rect.GetSize();
+		m_rect.Set(x, y, x + size.x, y + size.y);
+		UpdateTextGeometry();
+	}
+
+	void Text::SetSize( const math::Vector2u& size )
+	{
+		const auto& pos = m_rect.upperLeftCorner;
+		m_rect.Set(pos.x, pos.y, pos.x + size.x, pos.y + size.y);
+		UpdateTextGeometry();
+	}
+
+	void Text::SetWidth( u32 width )
+	{
+		auto size = m_rect.GetSize();
+		const auto& pos = m_rect.upperLeftCorner;
+		m_rect.Set(pos.x, pos.y, pos.x + width, pos.y + size.y);
+		UpdateTextGeometry();
+	}
+
+	void Text::SetHeight( u32 height )
+	{
+		auto size = m_rect.GetSize();
+		const auto& pos = m_rect.upperLeftCorner;
+		m_rect.Set(pos.x, pos.y, pos.x + size.x, pos.y + height);
+		UpdateTextGeometry();
 	}
 
 	void Text::UpdateTextGeometry()
@@ -74,11 +130,11 @@ namespace gui
 		for (const auto c : m_text)
 		{
 			const auto& desc = font->GetGlyphDescription(static_cast<u32>(c));
-
-			float x1 = 2.0f * (float)(xOrigin + desc.x_off) / viewPort.z - 1.0f;
-			float y1 = 2.0f * (viewPort.w - (float)(yOrigin - desc.y_off)) / viewPort.w - 1.0f;
-			float x2 = 2.0f * (float)(xOrigin + desc.x_off + desc.width) / viewPort.z - 1.0f;
-			float y2 = 2.0f * (viewPort.w - (float)(yOrigin - desc.y_off + desc.height)) / viewPort.w - 1.0f;
+			
+			float x1 = xOrigin + desc.x_off;
+			float y1 = yOrigin - desc.y_off;
+			float x2 = xOrigin + desc.x_off + desc.width;
+			float y2 = yOrigin - desc.y_off + desc.height;
 
 			float u1 = (float)desc.x0 / (float)width;
 			float v1 = (float)desc.y0 / (float)height;

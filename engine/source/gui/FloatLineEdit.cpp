@@ -73,6 +73,7 @@ namespace gui
 			s >> m_value;
 
 			OnValueChanged(m_value);
+			m_dirty = false;
 		}
 	}
 

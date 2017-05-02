@@ -30,10 +30,10 @@ namespace gui
 		virtual void Load(const pugi::xml_node& node) { }
 		virtual void GetGeometry(GuiBatchData& data) { }
 		virtual void GetTextGeometry(GuiBatchData& data) { }
-		virtual void SetPosition(u32 x, u32 y) { }
-		virtual void SetSize(const math::Vector2u& size) { }
-		virtual void SetWidth(u32 width) {}
-		virtual void SetHeight(u32 height) {}
+		virtual void SetPosition(u32 x, u32 y);
+		virtual void SetSize(const math::Vector2u& size);
+		virtual void SetWidth(u32 width);
+		virtual void SetHeight(u32 height);
 		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type) { return false; }
 		virtual bool ProcessKeyboardInput(KeyboardEventType type, KeyCode code) { return false; }
 

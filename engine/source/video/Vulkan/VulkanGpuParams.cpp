@@ -47,12 +47,6 @@ namespace video
 
 		res = vkAllocateDescriptorSets(device, &allocInfo, &m_desctriptorSet);
 		SH_ASSERT(res == VK_SUCCESS, "failed to allocate descriptor set!");
-
-		// Fill descriptor set with data
-		//VkDescriptorImageInfo imageInfo = {};
-        //imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-        //imageInfo.imageView = textureImageView;
-        //imageInfo.sampler = textureSampler;
 	}
 
 } // video

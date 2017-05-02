@@ -21,7 +21,7 @@ namespace gui
 		void SetTitle(const String& title) { m_title = title; }
 		const String& GetTitle() const { return m_title; }
 
-		void AddItem(const ButtonPtr& button);// { m_buttons.push_back(button); }
+		void AddItem(const ButtonPtr& button);
 
 		virtual void GetGeometry(GuiBatchData& data) override;
 		virtual void GetTextGeometry(GuiBatchData& data) override;

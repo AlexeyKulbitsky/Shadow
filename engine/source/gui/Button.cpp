@@ -2,6 +2,7 @@
 
 #include "GuiManager.h"
 #include "Sprite.h"
+#include "Text.h"
 
 #include "../scene/SceneManager.h"
 #include "../scene/Camera.h"
@@ -19,14 +20,6 @@ namespace sh
 
 namespace gui
 {
-	void TransformVector(const math::Matrix4f& mat, math::Vector4f& vec)
-	{
-		math::Vector4f temp;
-		temp.x = (vec.x / 640.0f) * 2.0f - 1.0f;
-		temp.y = ((480.0f - vec.y) / 480.0f) * 2.0f - 1.0f;
-		vec = temp;
-	}
-
 	Button::Button()
 	{
 		m_batchData.resize(4 * 8);
@@ -42,6 +35,8 @@ namespace gui
 		m_releasedSprite = defaultSprite;
 		m_pressedSprite = pressedSprite;
 		m_hoveredSprite = hoveredSprite;
+
+		m_text.reset(new Text(rect));
 
 		UpdatePosition();
 		UpdateUV(m_releasedSprite->GetUVRect().upperLeftCorner, m_releasedSprite->GetUVRect().lowerRightCorner);
@@ -73,6 +68,11 @@ namespace gui
 		m_rect.Set(x1, y1, x2, y2);
 	}
 
+	void Button::SetText( const String& text )
+	{
+		m_text->SetText(text);
+	}
+
 	void Button::GetGeometry(GuiBatchData& data)
 	{
 		data.vertices.insert(data.vertices.end(), m_batchData.begin(), m_batchData.end());
@@ -89,77 +89,33 @@ namespace gui
 
 	void Button::GetTextGeometry(GuiBatchData& data)
 	{
-		const auto& font = GuiManager::GetInstance()->GetFont();
-		s32 width = font->GetTextureAtlas()->GetDescription().width; 
-		s32 height = font->GetTextureAtlas()->GetDescription().height;
-
-		s32 xOrigin = m_rect.upperLeftCorner.x + 5;
-		s32 yOrigin = m_rect.lowerRightCorner.y - m_rect.GetHeight() / 4;
-
-		for (const auto c : m_text)
-		{
-			const auto& desc = font->GetGlyphDescription(static_cast<u32>(c));
-
-			float x1 = 2.0f * (float)(xOrigin + desc.x_off) / 640.0f - 1.0f;
-			float y1 = 2.0f * (480.0f - (float)(yOrigin - desc.y_off)) / 480.0f - 1.0f;
-			float x2 = 2.0f * (float)(xOrigin + desc.x_off + desc.width) / 640.0f - 1.0f;
-			float y2 = 2.0f * (480.0f - (float)(yOrigin - desc.y_off + desc.height)) / 480.0f - 1.0f;
-
-			float u1 = (float)desc.x0 / (float)width;
-			float v1 = (float)desc.y0 / (float)height;
-			float u2 = (float)desc.x1 / (float)width;
-			float v2 = (float)desc.y1 / (float)height;
-
-			data.vertices.insert(data.vertices.end(), {x1, y1, 0.0f, u1, v1});
-			data.vertices.insert(data.vertices.end(), {x1, y2, 0.0f, u1, v2});
-			data.vertices.insert(data.vertices.end(), {x2, y2, 0.0f, u2, v2});
-			data.vertices.insert(data.vertices.end(), {x2, y1, 0.0f, u2, v1});
-
-			data.indices.push_back(data.verticesCount);
-			data.indices.push_back(data.verticesCount + 1);
-			data.indices.push_back(data.verticesCount + 2);
-
-			data.indices.push_back(data.verticesCount);
-			data.indices.push_back(data.verticesCount + 2);
-			data.indices.push_back(data.verticesCount + 3);
-			data.verticesCount += 4;
-
-			xOrigin += desc.advance;
-		}
+		m_text->GetTextGeometry(data);
 	}
 
 	void Button::SetPosition(u32 x, u32 y)
 	{
-		auto size = m_rect.GetSize();
-		m_rect.Set(x, y, x + size.x, y + size.y);
-
-		UpdatePosition();
+		GuiElement::SetPosition(x, y);
+		m_text->SetPosition(x, y);
 	}
 
 	void Button::SetSize(const math::Vector2u& size)
 	{
-		const auto& pos = m_rect.upperLeftCorner;
-		m_rect.Set(pos.x, pos.y, pos.x + size.x, pos.y + size.y);
-
-		UpdatePosition();
+		GuiElement::SetSize(size);
+		m_text->SetSize(size);
 	}
 
 	void Button::SetWidth(u32 width)
 	{
-		auto size = m_rect.GetSize();
-		const auto& pos = m_rect.upperLeftCorner;
-		m_rect.Set(pos.x, pos.y, pos.x + width, pos.y + size.y);
-
-		UpdatePosition();
+		
+		GuiElement::SetWidth(width);
+		m_text->SetWidth(width);
 	}
 
 	void Button::SetHeight(u32 height)
 	{
-		auto size = m_rect.GetSize();
-		const auto& pos = m_rect.upperLeftCorner;
-		m_rect.Set(pos.x, pos.y, pos.x + size.x, pos.y + height);
-
-		UpdatePosition();
+		
+		GuiElement::SetHeight(height);
+		m_text->SetHeight(height);
 	}
 
 	bool Button::ProcessInput(u32 x, u32 y, MouseEventType type)
@@ -256,49 +212,6 @@ namespace gui
 		return m_rect.upperLeftCorner;
 	}
 
-	void Button::UpdateText()
-	{
-		const auto& font = GuiManager::GetInstance()->GetFont();
-		s32 width = font->GetTextureAtlas()->GetDescription().width; 
-		s32 height = font->GetTextureAtlas()->GetDescription().height;
-
-		s32 xOrigin = m_rect.upperLeftCorner.x + 5;
-		s32 yOrigin = m_rect.lowerRightCorner.y - m_rect.GetHeight() / 4;
-
-		m_textBatchData.clear();
-
-		for (const auto c : m_text)
-		{
-			const auto& desc = font->GetGlyphDescription(static_cast<u32>(c));
-
-			float x1 = 2.0f * (float)(xOrigin + desc.x_off) / 640.0f - 1.0f;
-			float y1 = 2.0f * (480.0f - (float)(yOrigin - desc.y_off)) / 480.0f - 1.0f;
-			float x2 = 2.0f * (float)(xOrigin + desc.x_off + desc.width) / 640.0f - 1.0f;
-			float y2 = 2.0f * (480.0f - (float)(yOrigin - desc.y_off + desc.height)) / 480.0f - 1.0f;
-
-			float u1 = (float)desc.x0 / (float)width;
-			float v1 = (float)desc.y0 / (float)height;
-			float u2 = (float)desc.x1 / (float)width;
-			float v2 = (float)desc.y1 / (float)height;
-
-			m_textBatchData.insert(m_textBatchData.end(), {x1, y1, 0.0f, u1, v1});
-			m_textBatchData.insert(m_textBatchData.end(), {x1, y2, 0.0f, u1, v2});
-			m_textBatchData.insert(m_textBatchData.end(), {x2, y2, 0.0f, u2, v2});
-			m_textBatchData.insert(m_textBatchData.end(), {x2, y1, 0.0f, u2, v1});
-
-			/*
-			data.indices.push_back(data.verticesCount);
-			data.indices.push_back(data.verticesCount + 1);
-			data.indices.push_back(data.verticesCount + 2);
-
-			data.indices.push_back(data.verticesCount);
-			data.indices.push_back(data.verticesCount + 2);
-			data.indices.push_back(data.verticesCount + 3);
-			data.verticesCount += 4;
-			*/
-			xOrigin += desc.advance;
-		}
-	}
 
 } // gui
 

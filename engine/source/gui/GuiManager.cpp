@@ -1,9 +1,4 @@
 #include "GuiManager.h"
-#include "../video/VertexBuffer.h"
-#include "../video/IndexBuffer.h"
-#include "../video/Material.h"
-#include "../video/VertexDeclaration.h"
-#include "../video/RenderPipeline.h"
 
 #include "../font/Font.h"
 
@@ -13,8 +8,15 @@
 #include "../video/Driver.h"
 #include "../video/Vulkan/VulkanDriver.h"
 #include "../video/Vulkan/VulkanCommandBuffer.h"
-#include "../Device.h"
+#include "../video/VertexBuffer.h"
+#include "../video/IndexBuffer.h"
+#include "../video/Material.h"
+#include "../video/VertexDeclaration.h"
+#include "../video/RenderPipeline.h"
 
+#include "../scene/SceneManager.h"
+#include "../scene/Camera.h"
+#include "../Device.h"
 
 
 using namespace std::placeholders;
@@ -230,6 +232,9 @@ namespace gui
 
 		m_mainBatch.material.reset(new video::Material());
 		m_mainBatch.material->SetRenderTechnique("ui_base.xml");
+		m_mainBatch.material->GetCommonGpuParams()->GetParam("orthoMat", m_mainBatch.orthoMatrix);
+		const auto& mat = sh::Device::GetInstance()->GetSceneManager()->GetCamera()->Get2DProjectionMatrix();
+		m_mainBatch.orthoMatrix.Set(mat);
 
 		sh::video::VertexDeclarationPtr vertexDeclaration = sh::video::VertexDeclarationPtr(new sh::video::VertexDeclaration());
 		sh::video::Attribute positionAttribute(AttributeSemantic::POSITION, AttributeType::FLOAT, 3U);
@@ -269,6 +274,9 @@ namespace gui
 
 		m_textBatch.material.reset(new video::Material());
 		m_textBatch.material->SetRenderTechnique("text_base.xml");
+		m_textBatch.material->GetCommonGpuParams()->GetParam("orthoMat", m_textBatch.orthoMatrix);
+		const auto& mat = sh::Device::GetInstance()->GetSceneManager()->GetCamera()->Get2DProjectionMatrix();
+		m_textBatch.orthoMatrix.Set(mat);
 
 		sh::video::VertexDeclarationPtr vertexDeclaration = sh::video::VertexDeclarationPtr(new sh::video::VertexDeclaration());
 		sh::video::Attribute positionAttribute(AttributeSemantic::POSITION, AttributeType::FLOAT, 3U);

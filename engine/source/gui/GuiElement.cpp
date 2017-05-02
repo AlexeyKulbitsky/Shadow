@@ -9,16 +9,42 @@ namespace sh
 namespace gui
 {
 
+	void GuiElement::SetPosition(u32 x, u32 y) 
+	{ 
+		auto size = m_rect.GetSize();
+		m_rect.Set(x, y, x + size.x, y + size.y);
+		UpdatePosition();
+	}
+
+	void GuiElement::SetSize(const math::Vector2u& size) 
+	{ 
+		const auto& pos = m_rect.upperLeftCorner;
+		m_rect.Set(pos.x, pos.y, pos.x + size.x, pos.y + size.y);
+		UpdatePosition();
+	}
+
+	void GuiElement::SetWidth(u32 width)
+	{
+		auto size = m_rect.GetSize();
+		const auto& pos = m_rect.upperLeftCorner;
+		m_rect.Set(pos.x, pos.y, pos.x + width, pos.y + size.y);
+		UpdatePosition();
+	}
+
+	void GuiElement::SetHeight(u32 height) 
+	{
+		auto size = m_rect.GetSize();
+		const auto& pos = m_rect.upperLeftCorner;
+		m_rect.Set(pos.x, pos.y, pos.x + size.x, pos.y + height);
+		UpdatePosition();
+	}
+
 	void GuiElement::UpdatePosition()
 	{
 		const auto& viewPort = sh::Device::GetInstance()->GetDriver()->GetViewPort();
 		math::Vector4f leftUp((float)m_rect.upperLeftCorner.x, (float)m_rect.upperLeftCorner.y, 0.0f, 1.0f);
-		leftUp.x = (leftUp.x / viewPort.z) * 2.0f - 1.0f;
-		leftUp.y = ((viewPort.w - leftUp.y) / viewPort.w) * 2.0f - 1.0f;
 
 		math::Vector4f rightDown((float)m_rect.lowerRightCorner.x, (float)m_rect.lowerRightCorner.y, 0.0f, 1.0f);
-		rightDown.x = (rightDown.x / viewPort.z) * 2.0f - 1.0f;
-		rightDown.y = ((viewPort.w - rightDown.y) / viewPort.w) * 2.0f - 1.0f;
 
 		m_batchData[0] = leftUp.x; m_batchData[1] = leftUp.y; m_batchData[2] = 0.0f;
 		m_batchData[8] = leftUp.x; m_batchData[9] = rightDown.y; m_batchData[10] = 0.0f;

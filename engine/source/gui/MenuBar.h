@@ -26,9 +26,6 @@ namespace gui
 		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type) override;
 
 	private:
-		void UpdatePosition();
-		void UpdateUV();
-		void UpdateColor();
 		void OnMenuReleased();
 
 	private:

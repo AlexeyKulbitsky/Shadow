@@ -84,7 +84,7 @@
 		
 		<fragmentShader>
 			<constants>
-				<constant name="color" type="vec3" type="auto" />
+				<constant name="color" type="vec3" usage="object" />
 			</constants>
 			<source val="frag.spv">
 				<![CDATA[
@@ -92,13 +92,14 @@
 					#version 450
 					#extension GL_ARB_separate_shader_objects : enable
 					
-					layout(binding = 0) uniform vec3 color;
+					//layout(binding = 0) uniform vec3 color;
 					
 					layout(location = 0) out vec4 outColor;
 
 					void main() 
 					{
-						outColor = vec4(color, 1.0);
+						//outColor = vec4(color, 1.0);
+						outColor = vec4(1.0);
 					}
 		
 				]]>	
@@ -109,54 +110,5 @@
 
 </pipeline>
 
-<!--pipeline name="tecnicalPass" layer="main">	
-	<constants>
-		<uniforms>
-			<uniform name="color" type="vec4"/>
-			<uniform name="matMVP" type="mat4" val="model.worldViewProjectionMatrix"/>
-
-			<constant name="matMVP" type="mat4" />
-		</uniforms>
-	</constants>
-	
-	<attributes>
-		<position 	type="vec3" name="aPosition"/>
-	</attributes>
-	
-	<shader language="GLSL" api="GLES20">
-		<vertexShader>
-		<source>
-			<![CDATA[
-
-				attribute vec3 aPosition;
-				uniform mat4 matMVP;
-				
-				void main() 
-				{
-					gl_Position = matMVP * vec4(aPosition, 1.0);
-				}
-				
-			]]>
-		</source>
-		</vertexShader>
-
-		<fragmentShader>
-		<source>
-			<![CDATA[
-
-				precision mediump float;
-		
-				uniform vec4 color;
-		
-				void main() 
-				{				
-					gl_FragColor = vec4(color);
-				} 
-		
-			]]>	
-		</source>
-		</fragmentShader>
-	</shader>
-</pipeline-->
 
 </technique>

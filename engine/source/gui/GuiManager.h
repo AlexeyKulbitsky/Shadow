@@ -2,6 +2,7 @@
 #define SHADOW_GUI_MANAGER_INCLUDE
 
 #include "../Globals.h"
+#include "../video/GpuParams.h"
 
 namespace sh
 {
@@ -24,6 +25,7 @@ namespace gui
 		video::VertexInputDeclarationPtr inputDeclaration;
 		video::MaterialPtr material;
 		video::CommandBufferPtr commandBuffer;
+		video::GpuParamMatrix4f orthoMatrix;
 	};
 
 	class GuiManager : public Singleton <GuiManager>

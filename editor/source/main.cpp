@@ -35,7 +35,7 @@ int main()
 
 
 	sh::scene::Camera* camera = new sh::scene::Camera();
-	camera->SetProjection(3.1415926535f / 4.0f, 800.0f, 600.0f, 0.1f, 1000.0f);
+	camera->SetProjection(3.1415926535f / 4.0f, params.width, params.height, 0.1f, 1000.0f);
 	camera->SetPosition(sh::math::Vector3f(0.0f));
 	sceneMgr->SetCamera(camera);
 

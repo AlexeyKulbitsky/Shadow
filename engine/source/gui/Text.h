@@ -23,6 +23,10 @@ namespace gui
 		const String& GetText() const { return m_text; }
 
 		virtual void GetTextGeometry(GuiBatchData& data) override;
+		virtual void SetPosition(u32 x, u32 y) override;
+		virtual void SetSize(const math::Vector2u& size) override;
+		virtual void SetWidth(u32 width) override;
+		virtual void SetHeight(u32 height) override;
 
 	protected:
 		void UpdateTextGeometry();

@@ -16,6 +16,8 @@
 #include "Managers/VulkanCommandBufferManager.h"
 #include "Managers/VulkanTextureManager.h"
 
+#include "../../gui/SpriteManager.h"
+
 #include <iostream>
 #include <stdexcept>
 #include <functional>
@@ -100,7 +102,7 @@ namespace sh
 		VulkanDriver::VulkanDriver(const CreationParameters& parameters)
 		{
 			m_parameters = parameters;
-			
+			gui::SpriteManager::CreateInstance();
 		}
 
 		VulkanDriver::~VulkanDriver()
@@ -111,6 +113,8 @@ namespace sh
 			CommandBufferManager::DestroyInstance();
 			RenderBatchManager::DestroyInstance();
 			TextureManager::DestroyInstance();
+
+			gui::SpriteManager::DestroyInstance();
 		}
 
 		const String& VulkanDriver::GetApiName() const

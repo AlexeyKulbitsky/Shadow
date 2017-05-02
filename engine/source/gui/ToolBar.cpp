@@ -22,12 +22,7 @@ namespace gui
 		m_rect.Set(0U, 15U, extends.x, 45U);
 
 		math::Vector4f leftUp((float)m_rect.upperLeftCorner.x, (float)m_rect.upperLeftCorner.y, 0.0f, 1.0f);
-		leftUp.x = (leftUp.x / extends.x) * 2.0f - 1.0f;
-		leftUp.y = ((extends.y - leftUp.y) / extends.y) * 2.0f - 1.0f;
-
 		math::Vector4f rightDown((float)m_rect.lowerRightCorner.x, (float)m_rect.lowerRightCorner.y, 0.0f, 1.0f);
-		rightDown.x = (rightDown.x / extends.x) * 2.0f - 1.0f;
-		rightDown.y = ((extends.y - rightDown.y) / extends.y) * 2.0f - 1.0f;
 
 		math::Rectf uvRect(60.0f / 256.0f, 32.0f / 128.0f, 74.0f / 256.0f, 46.0f / 128.0f);
 		math::Vector2f uvLeftUp = uvRect.upperLeftCorner;
