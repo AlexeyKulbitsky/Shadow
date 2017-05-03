@@ -358,6 +358,24 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			device->mouseEvent(x, y, MouseEventType::ButtonReleased, MouseCode::ButtonLeft);
 	}
 		break;
+	case WM_MBUTTONDOWN:
+	{
+		int x = LOWORD(lParam);
+		int y = HIWORD(lParam);
+
+		if (device)
+			device->mouseEvent(x, y, MouseEventType::ButtonPressed, MouseCode::ButtonWheel);
+	}
+		break;
+	case WM_MBUTTONUP:
+	{
+		int x = LOWORD(lParam);
+		int y = HIWORD(lParam);
+
+		if (device)
+			device->mouseEvent(x, y, MouseEventType::ButtonReleased, MouseCode::ButtonWheel);
+	}
+		break;
 	case WM_MOUSEMOVE:
 	{
 		bool isShiftPressed = (LOWORD(wParam) & MK_SHIFT) != 0;
@@ -369,6 +387,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 		if (device)
 			device->mouseEvent(x, y, MouseEventType::Moved, MouseCode::ButtonLeft);
+	}
+		break;
+	case WM_MOUSEHWHEEL:
+	case WM_MOUSEWHEEL:
+	{
+		int x = LOWORD(lParam);
+		int y = HIWORD(lParam);
+
+		g_xPoint = x;
+		g_yPoint = y;
+
+		short delta = (short)HIWORD(wParam);
+		int d = delta < 0 ? -1 : 1;
+		
+		if (device)
+			device->mouseWheelEvent(d);
 	}
 		break;
 	case WM_PAINT:

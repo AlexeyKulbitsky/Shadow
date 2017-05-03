@@ -129,6 +129,29 @@ void Gizmo::Render()
 
 ///////////////////////////////////////////////////////////////////
 
+void Gizmo::OnMouseEvent(int x, int y, sh::MouseEventType type, sh::MouseCode code)
+{
+	if (code != sh::MouseCode::ButtonLeft)
+		return;
+
+	switch (type)
+	{
+		case sh::MouseEventType::ButtonPressed:
+			OnMousePressed(x, y);
+			break;
+		case sh::MouseEventType::ButtonReleased:
+			OnMouseReleased(x, y);
+			break;
+		case sh::MouseEventType::Moved:
+			OnMouseMoved(x, y);
+			break;
+		default:
+			break;
+	}
+}
+
+///////////////////////////////////////////////////////////////////
+
 void Gizmo::SetEntity(sh::Entity* entity)
 {
 	m_entity = entity;

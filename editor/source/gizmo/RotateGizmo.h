@@ -30,7 +30,7 @@ public:
 	virtual void OnMousePressed(sh::u32 x, sh::u32 y) override;
 	virtual void OnMouseReleased(sh::u32 x, sh::u32 y) override;
 	virtual void OnMouseMoved(sh::u32 x, sh::u32 y) override;
-	virtual void TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height) override;
+	virtual bool TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height) override;
 	virtual bool IsActive() const override;
 
 private:

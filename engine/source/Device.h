@@ -50,6 +50,7 @@ namespace sh
 
 
 		Event<void, int, int, MouseEventType, MouseCode> mouseEvent;
+		Event<void, int> mouseWheelEvent;
 		Event<void, KeyboardEventType, KeyCode> keyboardEvent;
 
 	protected:

@@ -390,7 +390,7 @@ namespace sh
 						cmdBuffer->GetVulkanId(),  
 						m_layoutTemp, 
 						s_vkShaderType[i], 
-						0, 
+						param.second.offset, 
 						param.second.size, 
 						dataPtr);
 				}

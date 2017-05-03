@@ -120,7 +120,11 @@ void MoveGizmo::Process()
 
 void MoveGizmo::OnMousePressed(sh::u32 x, sh::u32 y) 
 {
-	TryToSelect(x, y, 640, 480);
+	if (!TryToSelect(x, y, 640, 480))
+	{
+		SetEntity(nullptr);
+		return;
+	}
 	m_mousePressed = true;
 }
 
@@ -473,7 +477,7 @@ void MoveGizmo::SetModifierActive(Axis::Type idx, bool active)
 	}
 }
 
-void MoveGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
+bool MoveGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
 {
 	sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_entity->GetComponent(sh::Component::Type::TRANSFORM));
 	if (transformComponent)
@@ -507,55 +511,56 @@ void MoveGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
 		bool res = plane.GetIntersectionWithLine(rayOrigin, rayDirection, iPoint);
 		iPoint = invMatrix * iPoint;
 
+		float length = 5.0f;
+		float halfLength = length * 0.6f;
+
 		bool inters = false;
 		Axis::Type oldModifier = m_activeModifier;
-		if (iPoint.x > 0.0f && iPoint.x < 10.0f && fabs(iPoint.y) < 0.1f) { m_activeModifier = Axis::Type::X_AXIS; inters = true; } 
-		else if (iPoint.y > 0.0f && iPoint.y < 10.0f && fabs(iPoint.x) < 0.1f) { m_activeModifier = Axis::Type::Y_AXIS; inters = true; } 
-		else if (iPoint.y > 0.0f && iPoint.y < 5.0f && iPoint.x > 0.0f && iPoint.x < 5.0f) { m_activeModifier = Axis::Type::XY_PLANE; inters = true; } 
+		if (iPoint.x > 0.0f && iPoint.x < length && fabs(iPoint.y) < 0.15f) { m_activeModifier = Axis::Type::X_AXIS; inters = true; } 
+		else if (iPoint.y > 0.0f && iPoint.y < length && fabs(iPoint.x) < 0.15f) { m_activeModifier = Axis::Type::Y_AXIS; inters = true; } 
+		else if (iPoint.y > 0.0f && iPoint.y < halfLength && iPoint.x > 0.0f && iPoint.x < halfLength) { m_activeModifier = Axis::Type::XY_PLANE; inters = true; } 
 		if (inters)
 		{
 			SetModifierActive(oldModifier, false);
 			SetModifierActive(m_activeModifier, true);
-			return;
+			return true;
 		}
 
 		// Intersection with Y/Z - axis
 		plane.SetPlane(position, position + localY, position + localZ);
 		res = plane.GetIntersectionWithLine(rayOrigin, rayDirection, iPoint);
 		iPoint = invMatrix * iPoint;
-		if (iPoint.y > 0.0f && iPoint.y < 10.0f && fabs(iPoint.z) < 0.1f) { m_activeModifier = Axis::Type::Y_AXIS; inters = true; } 
-		else if (iPoint.z > 0.0f && iPoint.z < 10.0f && fabs(iPoint.y) < 0.1f) { m_activeModifier = Axis::Type::Z_AXIS; inters = true; } 
+		if (iPoint.y > 0.0f && iPoint.y < length && fabs(iPoint.z) < 0.15f) { m_activeModifier = Axis::Type::Y_AXIS; inters = true; } 
+		else if (iPoint.z > 0.0f && iPoint.z < length && fabs(iPoint.y) < 0.15f) { m_activeModifier = Axis::Type::Z_AXIS; inters = true; } 
 		else if (iPoint.z > 0.0f && iPoint.z < 5.0f && iPoint.y > 0.0f && iPoint.y < 5.0f) { m_activeModifier = Axis::Type::YZ_PLANE; inters = true; } 
 		if (inters)
 		{
 			SetModifierActive(oldModifier, false);
 			SetModifierActive(m_activeModifier, true);
-			return;
+			return true;
 		}
 
 		// Intersection with X/Z - axis
 		plane.SetPlane(position, position + localX, position + localZ);
 		res = plane.GetIntersectionWithLine(rayOrigin, rayDirection, iPoint);
 		iPoint = invMatrix * iPoint;
-		if (iPoint.x > 0.0f && iPoint.x < 10.0f && fabs(iPoint.z) < 0.1f) { m_activeModifier = Axis::Type::X_AXIS; inters = true; } 
-		else if (iPoint.z > 0.0f && iPoint.z < 10.0f && fabs(iPoint.x) < 0.1f) { m_activeModifier = Axis::Type::Z_AXIS; inters = true; } 	
-		else if (iPoint.z > 0.0f && iPoint.z < 5.0f && iPoint.x > 0.0f && iPoint.x < 5.0f) { m_activeModifier = Axis::Type::XZ_PLANE; inters = true; } 	
+		if (iPoint.x > 0.0f && iPoint.x < length && fabs(iPoint.z) < 0.15f) { m_activeModifier = Axis::Type::X_AXIS; inters = true; } 
+		else if (iPoint.z > 0.0f && iPoint.z < length && fabs(iPoint.x) < 0.15f) { m_activeModifier = Axis::Type::Z_AXIS; inters = true; } 	
+		else if (iPoint.z > 0.0f && iPoint.z < halfLength && iPoint.x > 0.0f && iPoint.x < halfLength) { m_activeModifier = Axis::Type::XZ_PLANE; inters = true; } 	
 		if (inters)
 		{
 			SetModifierActive(oldModifier, false);
 			SetModifierActive(m_activeModifier, true);
-			return;
+			return true;
 		}
 
 		SetModifierActive(m_activeModifier, false);
 		m_activeModifier = Axis::Type::NONE;
 	}
+	return false;
 
-
-
-
-
-	return;
+#if 0
+	///////////////////////////////////////////////
 
 	sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
 	driver->ClearBuffers();
@@ -695,6 +700,7 @@ void MoveGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
 	}
 
 	driver->ClearBuffers();
+#endif
 }
 
 //////////////////////////////////////////////////////////////////////////

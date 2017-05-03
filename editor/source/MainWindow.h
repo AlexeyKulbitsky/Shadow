@@ -18,6 +18,7 @@ public:
 	void Close();
 
 	void OnMouseEvent(int x, int y, sh::MouseEventType type, sh::MouseCode code);
+	void OnMouseWeelEvent(int delta);
 	void OnKeyboardEvent(sh::KeyboardEventType type, sh::KeyCode code);
 
 private:
@@ -28,6 +29,8 @@ private:
 
 	sh::SPtr<Gizmo> m_defaultGizmo;
 	sh::SPtr<MoveGizmo> m_moveGizmo;
+
+	sh::Entity* m_cameraTargetEntity = nullptr;
 };
 
 #endif

@@ -227,7 +227,7 @@ void RotateGizmo::OnMouseMoved(sh::u32 x, sh::u32 y)
 
 //////////////////////////////////////////////////////////////////////////
 
-void RotateGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
+bool RotateGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
 {
 	sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
 
@@ -243,6 +243,8 @@ void RotateGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 heigh
 
 		color = sh::math::Vector4f(0.0f, 0.0f, 1.0f, 1.0f);
 		m_axises[Axis::Type::Z_AXIS].active = false;
+
+		return true;
 	}
 	else if (data[0] == 0 && data[1] == 255 && data[2] == 0)
 	{
@@ -253,6 +255,8 @@ void RotateGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 heigh
 
 		color = sh::math::Vector4f(0.0f, 0.0f, 1.0f, 1.0f);
 		m_axises[Axis::Type::Z_AXIS].active = false;
+
+		return true;
 	}
 	else if (data[0] == 0 && data[1] == 0 && data[2] == 255)
 	{
@@ -263,10 +267,12 @@ void RotateGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 heigh
 
 		color = sh::math::Vector4f(0.0f, 1.0f, 0.0f, 1.0f);
 		m_axises[Axis::Type::Y_AXIS].active = false;
+
+		return true;
 	}
 	else if (data[0] == 255 && data[1] == 255 && data[2] == 255)
 	{
-		return;
+		return true;
 	}
 	else
 	{
@@ -279,6 +285,8 @@ void RotateGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 heigh
 		color = sh::math::Vector4f(0.0f, 0.0f, 1.0f, 1.0f);
 		m_axises[Axis::Type::Z_AXIS].active = false;
 	}
+
+	return false;
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -126,8 +126,15 @@ namespace gui
 	{
 		for (const auto& menu : m_menus)
 		{
-			if (menu.second->IsEnabled() && menu.second->ProcessInput(x, y, type))
+			if (menu.second->IsEnabled() &&
+				(type == MouseEventType::ButtonReleased ||
+				type == MouseEventType::Moved) &&
+				menu.second->ProcessInput(x, y, type))
+			{
+				menu.second->SetEnabled(false);
+				menu.second->SetVisible(false);
 				return true;
+			}
 
 			if (menu.first->ProcessInput(x, y, type))
 				return true;

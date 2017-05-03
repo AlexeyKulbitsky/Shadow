@@ -27,10 +27,11 @@ namespace video
 			// Collect size of data params
 			for( auto& param : m_paramsDescription[i]->params )
 			{
+				param.second.offset = paramsSize;
 				paramsSize += param.second.size;
-
+				
 				VkPushConstantRange pushConstantRange = {};
-				pushConstantRange.offset = 0;
+				pushConstantRange.offset = param.second.offset;
 				pushConstantRange.size = param.second.size;
 				pushConstantRange.stageFlags = s_vkShaderType[i];
 		

@@ -26,47 +26,6 @@ namespace sh
 
 		void Camera::Update()
 		{
-			InputManager* inputManager = Device::GetInstance()->GetInputManager();
-
-			if (inputManager->IsKeyPressed(KeyCode::KEY_KEY_W))
-			{
-				SetPosition(m_position + m_frontVector * 0.3f);
-			}
-
-			if (inputManager->IsKeyPressed(KeyCode::KEY_KEY_S))
-			{
-				SetPosition(m_position - m_frontVector * 0.3f);
-			}
-
-			if (inputManager->IsKeyPressed(KeyCode::KEY_KEY_A))
-			{
-				SetPosition(m_position - m_rightVector * 0.3f);
-			}
-
-			if (inputManager->IsKeyPressed(KeyCode::KEY_KEY_D))
-			{
-				SetPosition(m_position + m_rightVector * 0.3f);
-			}
-
-			math::Vector2i old = inputManager->GetMousePositionOld();
-			math::Vector2i current = inputManager->GetMousePositionCurrent();
-			if (inputManager->IsMouseButtonPressed(MouseCode::ButtonRight))
-			{
-				
-				math::Vector2i delta = current - old;
-				float xAngle = (float)delta.x * 0.01f;
-				float yAngle = (float)delta.y * 0.01f;
-
-				math::Quaternionf xRot;
-				xRot.SetFromAxisAngle(SceneManager::GetUpVector(), xAngle);
-
-				math::Quaternionf yRot;
-				yRot.SetFromAxisAngle(m_rightVector, yAngle);
-
-				SetRotation(xRot * yRot * m_rotation);
-			}
-			//inputManager->SetMousePositionOld(current);
-
 			if (m_needsToRecalculateViewMatrix)
 			{
 				UpdateViewMatrix();

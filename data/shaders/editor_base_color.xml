@@ -2,6 +2,10 @@
 
 <pipeline name="firstPass" layer="main">	
 
+	<rasterizationState>
+		<cullFace val="none"/>
+	</rasterizationState>
+
 	<blendingState>
 		<enabled val="true"/>
 		<srcFactor val="SrcAlpha"/>
