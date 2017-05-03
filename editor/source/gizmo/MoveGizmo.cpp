@@ -6,6 +6,10 @@ MoveGizmo::MoveGizmo()
 	m_material.reset(new sh::video::Material());
 	m_material->SetRenderTechnique("editor_base_color.xml");
 
+	sh::video::CommandBufferDescription commandBufferDesc;
+	commandBufferDesc.type = sh::COMMAND_BUFFER_TYPE_SECONDARY;
+	m_commandBuffer = sh::video::CommandBuffer::Create(commandBufferDesc);
+
 	CreateArrow(Axis::Type::X_AXIS);
 	CreateArrow(Axis::Type::Y_AXIS);
 	CreateArrow(Axis::Type::Z_AXIS);
@@ -25,10 +29,6 @@ MoveGizmo::~MoveGizmo()
 
 void MoveGizmo::Render()
 {
-	//if (!m_axises[0].lineModel || !m_axises[1].lineModel || !m_axises[2].lineModel ||
-	//	!m_axises[0].coneModel || !m_axises[1].coneModel || !m_axises[2].coneModel ||
-	//	!m_entity)
-	//	return;
 	if (!m_entity)
 	{
 		return;
@@ -38,7 +38,7 @@ void MoveGizmo::Render()
 	sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
 	sh::math::Matrix4f viewMatrix = camera->GetViewMatrix();
 	sh::math::Matrix4f projectionMatrix = camera->GetProjectionMatrix();
-
+	
 
 	if (m_entity)
 	{
@@ -58,6 +58,7 @@ void MoveGizmo::Render()
 			matrix = matrix * rotation.GetAsMatrix4();
 
 			sh::math::Matrix4f wvpMatrix = projectionMatrix * viewMatrix * matrix;
+			//wvpMatrix.m[1][1] *= -1.0f;
 
 			for (size_t i = 0; i < 6; ++i)
 			{
@@ -66,8 +67,9 @@ void MoveGizmo::Render()
 		}
 	}
 
+	m_commandBuffer->Begin();
 
-	driver->SetRenderPipeline(m_material->GetRenderPipeline());
+	driver->SetRenderPipeline(m_material->GetRenderPipeline(), m_commandBuffer);
 
 	for (size_t i = 0; i < 6; ++i)
 	{
@@ -83,24 +85,28 @@ void MoveGizmo::Render()
 				const auto& renderable = mesh->GetRanderable();
 
 				axis.color.Set(model.currentColor);
-				driver->SetGpuParams(axis.params);
+				driver->SetGpuParams(axis.params, m_commandBuffer);
 			
-				driver->SetVertexBuffer(renderable->GetVertexBuffer());
-				driver->SetVertexDeclaration(renderable->GetVertexInputDeclaration());
-				driver->SetTopology(renderable->GetTopology());
+				driver->SetVertexBuffer(renderable->GetVertexBuffer(), m_commandBuffer);
+				driver->SetVertexDeclaration(renderable->GetVertexInputDeclaration(), m_commandBuffer);
+				driver->SetTopology(renderable->GetTopology(), m_commandBuffer);
 				if (renderable->GetIndexBuffer())
 				{
-					driver->SetIndexBuffer(renderable->GetIndexBuffer());				
-					driver->DrawIndexed(0, renderable->GetIndexBuffer()->GetIndicesCount());
+					driver->SetIndexBuffer(renderable->GetIndexBuffer(), m_commandBuffer);				
+					driver->DrawIndexed(0, renderable->GetIndexBuffer()->GetIndicesCount(), 1U, m_commandBuffer);
 				}
 				else
 				{
-					driver->Draw(0, renderable->GetVertexBuffer()->GetVerticesCount());
+					driver->Draw(0, renderable->GetVertexBuffer()->GetVerticesCount(), 1U, m_commandBuffer);
 				}
 				
 			}
 		}
 	}
+
+	m_commandBuffer->End();
+
+	driver->SubmitCommandBuffer(m_commandBuffer);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -487,58 +493,62 @@ void MoveGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
 		matrix = matrix * rotation.GetAsMatrix4();
 		invMatrix = matrix.GetInversed();
 
+		sh::math::Vector3f localX = rotation.GetAsMatrix3() * sh::math::Vector3f(1.0f, 0.0f, 0.0f);
+		sh::math::Vector3f localY = rotation.GetAsMatrix3() * sh::math::Vector3f(0.0f, 1.0f, 0.0f);
+		sh::math::Vector3f localZ = rotation.GetAsMatrix3() * sh::math::Vector3f(0.0f, 0.0f, 1.0f);
+
 		sh::math::Vector3f rayOrigin(0.0f);
 		sh::math::Vector3f rayDirection(0.0f);
 		camera->BuildRay(x, y, rayOrigin, rayDirection);
 
-		// Intersection with Y - axis
-		sh::math::Planef plane(position, 
-							   position + sh::math::Vector3f(0.0f, 1.0f, 0.0f), 
-							   position + camera->GetRightVector());
-		sh::math::Vector3f intersection(0.0f);
-		bool res = plane.GetIntersectionWithLine(rayOrigin, rayDirection, intersection);
-		intersection = invMatrix * intersection;
+		// Intersection with X/Y - axis
+		sh::math::Planef plane(position, position + localX, position + localY);
+		sh::math::Vector3f iPoint(0.0f);
+		bool res = plane.GetIntersectionWithLine(rayOrigin, rayDirection, iPoint);
+		iPoint = invMatrix * iPoint;
 
-		if (intersection.y > 0.0f && intersection.y < 10.0f && fabs(intersection.x) < 0.1f)
+		bool inters = false;
+		Axis::Type oldModifier = m_activeModifier;
+		if (iPoint.x > 0.0f && iPoint.x < 10.0f && fabs(iPoint.y) < 0.1f) { m_activeModifier = Axis::Type::X_AXIS; inters = true; } 
+		else if (iPoint.y > 0.0f && iPoint.y < 10.0f && fabs(iPoint.x) < 0.1f) { m_activeModifier = Axis::Type::Y_AXIS; inters = true; } 
+		else if (iPoint.y > 0.0f && iPoint.y < 5.0f && iPoint.x > 0.0f && iPoint.x < 5.0f) { m_activeModifier = Axis::Type::XY_PLANE; inters = true; } 
+		if (inters)
 		{
-			SetModifierActive(m_activeModifier, false);
-			m_activeModifier = Axis::Type::Y_AXIS;
+			SetModifierActive(oldModifier, false);
 			SetModifierActive(m_activeModifier, true);
 			return;
 		}
 
-		// Intersection with X - axis
-		plane.SetPlane(position, 
-						position + sh::math::Vector3f(1.0f, 0.0f, 0.0f), 
-						position + camera->GetUpVector());
-		res = plane.GetIntersectionWithLine(rayOrigin, rayDirection, intersection);
-		intersection = invMatrix * intersection;
-		if (intersection.x > 0.0f && intersection.x < 10.0f && fabs(intersection.y) < 0.1f)
+		// Intersection with Y/Z - axis
+		plane.SetPlane(position, position + localY, position + localZ);
+		res = plane.GetIntersectionWithLine(rayOrigin, rayDirection, iPoint);
+		iPoint = invMatrix * iPoint;
+		if (iPoint.y > 0.0f && iPoint.y < 10.0f && fabs(iPoint.z) < 0.1f) { m_activeModifier = Axis::Type::Y_AXIS; inters = true; } 
+		else if (iPoint.z > 0.0f && iPoint.z < 10.0f && fabs(iPoint.y) < 0.1f) { m_activeModifier = Axis::Type::Z_AXIS; inters = true; } 
+		else if (iPoint.z > 0.0f && iPoint.z < 5.0f && iPoint.y > 0.0f && iPoint.y < 5.0f) { m_activeModifier = Axis::Type::YZ_PLANE; inters = true; } 
+		if (inters)
 		{
-			SetModifierActive(m_activeModifier, false);
-			m_activeModifier = Axis::Type::X_AXIS;
+			SetModifierActive(oldModifier, false);
 			SetModifierActive(m_activeModifier, true);
 			return;
 		}
 
-		// Intersection with Z - axis
-		plane.SetPlane(position, 
-						position + sh::math::Vector3f(0.0f, 0.0f, 1.0f), 
-						position + camera->GetUpVector());
-		res = plane.GetIntersectionWithLine(rayOrigin, rayDirection, intersection);
-		intersection = invMatrix * intersection;
-		if (intersection.z > 0.0f && intersection.z < 10.0f && fabs(intersection.y) < 0.1f)
+		// Intersection with X/Z - axis
+		plane.SetPlane(position, position + localX, position + localZ);
+		res = plane.GetIntersectionWithLine(rayOrigin, rayDirection, iPoint);
+		iPoint = invMatrix * iPoint;
+		if (iPoint.x > 0.0f && iPoint.x < 10.0f && fabs(iPoint.z) < 0.1f) { m_activeModifier = Axis::Type::X_AXIS; inters = true; } 
+		else if (iPoint.z > 0.0f && iPoint.z < 10.0f && fabs(iPoint.x) < 0.1f) { m_activeModifier = Axis::Type::Z_AXIS; inters = true; } 	
+		else if (iPoint.z > 0.0f && iPoint.z < 5.0f && iPoint.x > 0.0f && iPoint.x < 5.0f) { m_activeModifier = Axis::Type::XZ_PLANE; inters = true; } 	
+		if (inters)
 		{
-			SetModifierActive(m_activeModifier, false);
-			m_activeModifier = Axis::Type::Z_AXIS;
+			SetModifierActive(oldModifier, false);
 			SetModifierActive(m_activeModifier, true);
 			return;
 		}
-		else
-		{
-			SetModifierActive(m_activeModifier, false);
-			m_activeModifier = Axis::Type::NONE;
-		}
+
+		SetModifierActive(m_activeModifier, false);
+		m_activeModifier = Axis::Type::NONE;
 	}
 
 

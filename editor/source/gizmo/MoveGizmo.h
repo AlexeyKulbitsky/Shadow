@@ -57,6 +57,7 @@ private:
 private:
 	Axis m_axises[Axis::Type::COUNT];
 	sh::video::MaterialPtr m_material;
+	sh::video::CommandBufferPtr m_commandBuffer;
 	Axis::Type m_activeModifier = Axis::NONE;
 	bool m_mousePressed = false;
 };

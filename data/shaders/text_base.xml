@@ -122,7 +122,7 @@
 
 					void main() 
 					{
-						vec4 color = vec4(1.0, 1.0, 1.0, texture(fontAtlas, vUV));
+						vec4 color = texture(fontAtlas, vUV);
 						outColor = vec4(0.0, 0.0, 0.0, color.r);
 					}
 		

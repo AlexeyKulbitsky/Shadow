@@ -356,11 +356,11 @@ namespace sh
 		{ 
 			VulkanCommandBuffer* cmdBuffer = static_cast<VulkanCommandBuffer*>(commandBuffer.get());
 			VulkanRenderPipeline* vkPipeline = static_cast<VulkanRenderPipeline*>(pipeline.get());
-			//VulkanGpuPipelineParamsInfo* vkParamsInfo = static_cast<VulkanGpuPipelineParamsInfo*>(pipeline->G)
+			m_pipelineTemp = vkPipeline;
 			m_layoutTemp = vkPipeline->GetVulkanPipelineLayout();
 
-			VkPipeline vulkanPipeline = vkPipeline->GetVulkanPipeline(m_vulkanDeclarationTemp);
-			vkCmdBindPipeline(cmdBuffer->GetVulkanId(), VK_PIPELINE_BIND_POINT_GRAPHICS, vulkanPipeline);
+			//VkPipeline vulkanPipeline = vkPipeline->GetVulkanPipeline(m_vulkanDeclarationTemp);
+			//vkCmdBindPipeline(cmdBuffer->GetVulkanId(), VK_PIPELINE_BIND_POINT_GRAPHICS, vulkanPipeline);
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -442,7 +442,11 @@ namespace sh
 
 		void VulkanDriver::SetVertexDeclaration(const VertexInputDeclarationPtr& declaration, const CommandBufferPtr& commandBuffer) 
 		{ 
+			VulkanCommandBuffer* cmdBuffer = static_cast<VulkanCommandBuffer*>(commandBuffer.get());
 			m_vulkanDeclarationTemp = declaration;
+
+			VkPipeline vulkanPipeline = m_pipelineTemp->GetVulkanPipeline(m_vulkanDeclarationTemp);
+			vkCmdBindPipeline(cmdBuffer->GetVulkanId(), VK_PIPELINE_BIND_POINT_GRAPHICS, vulkanPipeline);
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -472,7 +476,8 @@ namespace sh
 
 		void VulkanDriver::Draw(u32 offset, u32 verticesCount, u32 instancesCount, const CommandBufferPtr& commandBuffer) 
 		{ 
-
+			VulkanCommandBuffer* cmdBuffer = static_cast<VulkanCommandBuffer*>(commandBuffer.get());
+			vkCmdDraw(cmdBuffer->GetVulkanId(), verticesCount, instancesCount, offset, 0U);
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -480,10 +485,17 @@ namespace sh
 		void VulkanDriver::DrawIndexed(u32 offset, u32 indicesCount, u32 instancesCount, const CommandBufferPtr& commandBuffer) 
 		{ 
 			VulkanCommandBuffer* cmdBuffer = static_cast<VulkanCommandBuffer*>(commandBuffer.get());
-
 			vkCmdDrawIndexed(cmdBuffer->GetVulkanId(), indicesCount, instancesCount, 0, 0, 0);
 		}
 		
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		void VulkanDriver::SubmitCommandBuffer( const CommandBufferPtr& commandBuffer )
+		{
+			VulkanCommandBuffer* cmdBuf = static_cast<VulkanCommandBuffer*>(commandBuffer.get());
+			m_primaryCommandBuffer->Append(cmdBuf);
+		}
+
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		void VulkanDriver::GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data)

@@ -54,7 +54,7 @@ namespace sh
 			virtual void SetIndexBuffer(const IndexBufferPtr& buffer, const CommandBufferPtr& commandBuffer = nullptr) override;
 			virtual void Draw(u32 offset, u32 verticesCount, u32 instancesCount = 1U, const CommandBufferPtr& commandBuffer = nullptr) override;
 			virtual void DrawIndexed(u32 offset, u32 indicesCount, u32 instancesCount = 1U, const CommandBufferPtr& commandBuffer = nullptr) override;
-
+			virtual void SubmitCommandBuffer(const CommandBufferPtr& commandBuffer) override;
 
 			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) override;
 
@@ -212,7 +212,12 @@ namespace sh
 			VkCommandBufferInheritanceInfo m_inheritanceInfo;
 			VulkanCommandBuffer* m_primaryCommandBuffer = nullptr;
 			VertexInputDeclarationPtr m_vulkanDeclarationTemp = nullptr;
+			class VulkanRenderPipeline* m_pipelineTemp = nullptr;
 			VkPipelineLayout m_layoutTemp;
+
+			/////////////////////////////////////////////////////////////
+
+			
 		};
 	}
 }

@@ -565,7 +565,7 @@ bool Win32Device::Run()
 
 	u32 delta = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - t).count();
 	float fps = 1000.0f / static_cast<float>(delta);
-	sprintf(capture, "Shadow engine: FPS %.2f | x: %d y: %d", fps, g_xPoint, g_yPoint);
+	sprintf(capture, "Shadow engine: %s API | FPS %.2f | x: %d y: %d", m_driver->GetApiName().c_str(), fps, g_xPoint, g_yPoint);
 	t = std::chrono::system_clock::now();
 	SetWindowText(m_hwnd, capture);
 	//*/
@@ -598,33 +598,6 @@ bool Win32Device::Run()
 	return !m_needsToClose;
 }
 
-////////////////////////////////////////////////////////////////////////
-
-/*
-void Win32Device::OnEvent(const Event& e)
-{
-	switch (e.type)
-	{
-	case EventType::MOUSE_INPUT_EVENT:
-	{
-		m_inputManager->OnEvent(e);
-
-		if (e.mouseEvent.type == MouseEventType::BUTTON_PRESSED)
-		{
-			sh::gui::GuiManager::GetInstance()->OnMouseEvent(e.mouseEvent.x, e.mouseEvent.y);
-		}
-	}
-		break;
-	case EventType::KEYBOARD_INPUT_EVENT:
-	{
-		m_inputManager->OnEvent(e);
-	}
-		break;
-	default:
-		break;
-	}
-}
-*/
 ////////////////////////////////////////////////////////////////////////
 
 u64 Win32Device::GetTime()

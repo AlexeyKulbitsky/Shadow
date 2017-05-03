@@ -69,6 +69,7 @@ namespace gui
 		m_mainBatch.indexBuffer->SetData(0U, indicesDataSize, indicesPointer);
 		m_mainBatch.indexBuffer->SetIndicesCount(m_mainBatchData.indices.size());
 
+		/*
 		if( driver->GetApiName() == "Vulkan" )
 		{
 			video::VulkanDriver* vulkanDriver = static_cast<video::VulkanDriver*>(driver);
@@ -89,14 +90,21 @@ namespace gui
 			vulkanDriver->GetPrimaryCommandBuffer()->Append(cmdBuf);
 		}
 		else
+			*/
 		{
-			driver->SetRenderPipeline(m_mainBatch.material->GetRenderPipeline());
-			driver->SetGpuParams(m_mainBatch.material->GetCommonGpuParams());
-			driver->SetTopology(Topology::TOP_TRIANGLE_LIST);
-			driver->SetVertexBuffer(m_mainBatch.vertexBuffer);
-			driver->SetVertexDeclaration(m_mainBatch.inputDeclaration);
-			driver->SetIndexBuffer(m_mainBatch.indexBuffer);				
-			driver->DrawIndexed(0, m_mainBatch.indexBuffer->GetIndicesCount());
+			m_mainBatch.commandBuffer->Begin();
+
+			driver->SetRenderPipeline(m_mainBatch.material->GetRenderPipeline(), m_mainBatch.commandBuffer);
+			driver->SetGpuParams(m_mainBatch.material->GetCommonGpuParams(), m_mainBatch.commandBuffer);
+			driver->SetTopology(Topology::TOP_TRIANGLE_LIST, m_mainBatch.commandBuffer);
+			driver->SetVertexBuffer(m_mainBatch.vertexBuffer, m_mainBatch.commandBuffer);
+			driver->SetVertexDeclaration(m_mainBatch.inputDeclaration, m_mainBatch.commandBuffer);
+			driver->SetIndexBuffer(m_mainBatch.indexBuffer, m_mainBatch.commandBuffer);				
+			driver->DrawIndexed(0, m_mainBatch.indexBuffer->GetIndicesCount(), 1U, m_mainBatch.commandBuffer);
+
+			m_mainBatch.commandBuffer->End();
+
+			driver->SubmitCommandBuffer(m_mainBatch.commandBuffer);
 		}
 
 
@@ -120,7 +128,7 @@ namespace gui
 		m_textBatch.indexBuffer->SetData(0U, indicesDataSize, indicesPointer);
 		m_textBatch.indexBuffer->SetIndicesCount(m_textBatchData.indices.size());
 
-
+		/*
 		if( driver->GetApiName() == "Vulkan" )
 		{
 			video::VulkanDriver* vulkanDriver = static_cast<video::VulkanDriver*>(driver);
@@ -141,14 +149,21 @@ namespace gui
 			vulkanDriver->GetPrimaryCommandBuffer()->Append(cmdBuf);
 		}
 		else
+			*/
 		{
-			driver->SetRenderPipeline(m_textBatch.material->GetRenderPipeline());
-			driver->SetGpuParams(m_textBatch.material->GetCommonGpuParams());
-			driver->SetTopology(Topology::TOP_TRIANGLE_LIST);
-			driver->SetVertexBuffer(m_textBatch.vertexBuffer);
-			driver->SetVertexDeclaration(m_textBatch.inputDeclaration);
-			driver->SetIndexBuffer(m_textBatch.indexBuffer);				
-			driver->DrawIndexed(0, m_textBatch.indexBuffer->GetIndicesCount());
+			m_textBatch.commandBuffer->Begin();
+
+			driver->SetRenderPipeline(m_textBatch.material->GetRenderPipeline(), m_textBatch.commandBuffer);
+			driver->SetGpuParams(m_textBatch.material->GetCommonGpuParams(), m_textBatch.commandBuffer);
+			driver->SetTopology(Topology::TOP_TRIANGLE_LIST, m_textBatch.commandBuffer);
+			driver->SetVertexBuffer(m_textBatch.vertexBuffer, m_textBatch.commandBuffer);
+			driver->SetVertexDeclaration(m_textBatch.inputDeclaration, m_textBatch.commandBuffer);
+			driver->SetIndexBuffer(m_textBatch.indexBuffer, m_textBatch.commandBuffer);				
+			driver->DrawIndexed(0, m_textBatch.indexBuffer->GetIndicesCount(), 1U, m_textBatch.commandBuffer);
+
+			m_textBatch.commandBuffer->End();
+
+			driver->SubmitCommandBuffer(m_textBatch.commandBuffer);
 		}
 	}
 

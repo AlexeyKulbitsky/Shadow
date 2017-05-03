@@ -100,6 +100,14 @@ namespace video
 		VK_BLEND_OP_MAX
 	};
 	
+	static VkFormat const s_vkTextureFormat[] =
+	{
+		VK_FORMAT_R8G8B8_UNORM,
+		VK_FORMAT_R8G8B8A8_UNORM,
+		VK_FORMAT_END_RANGE,
+		VK_FORMAT_END_RANGE,
+		VK_FORMAT_R8_UNORM
+	};
 
 } // video
 

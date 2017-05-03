@@ -28,6 +28,10 @@ namespace video
 		VkCommandBuffer GetVulkanId() { return m_commandBuffer; }
 
 	private:
+		//void SetGpuParams(VulkanGpuParams* params) { }
+		//void SetRenderPipeline(VulkanRenderPipeline* pipeline) { }
+
+	private:
 		VulkanCommandBuffer(const CommandBufferDescription& description);
 		VulkanCommandBuffer() { }
 
@@ -35,6 +39,11 @@ namespace video
 		VkCommandBuffer m_commandBuffer;
 
 		std::vector<VkCommandBuffer> m_secondaryCommandBuffers;
+
+		struct
+		{
+
+		} m_cache;
 	};
 
 } // video

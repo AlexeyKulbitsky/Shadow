@@ -42,15 +42,6 @@ namespace video
 		m_commandBuffer->Begin();
 
 		/*
-		if( m_renderables.size() > 0 )
-		{
-			driver->SetVertexDeclaration(m_renderables[0]->GetVertexInputDeclaration(), m_commandBuffer);
-			driver->SetRenderPipeline(m_renderables[0]->GetParent()->GetMaterial()->GetRenderPipeline(), m_commandBuffer);
-			driver->SetGpuParams(m_renderables[0]->GetParent()->GetMaterial()->GetCommonGpuParams(), m_commandBuffer);
-
-		}
-		*/
-
 		for(auto& renderable : m_renderables)
 		{
 			driver->SetVertexDeclaration(renderable->GetVertexInputDeclaration(), m_commandBuffer);
@@ -60,6 +51,30 @@ namespace video
 			driver->SetIndexBuffer(renderable->GetIndexBuffer(), m_commandBuffer);
 			driver->SetVertexBuffer(renderable->GetVertexBuffer(), m_commandBuffer);
 			driver->DrawIndexed(0, renderable->GetIndexBuffer()->GetIndicesCount(), 1U, m_commandBuffer);		
+		}
+		*/
+
+		for(auto& renderable : m_renderables)
+		{
+			driver->SetRenderPipeline(m_pipeline, m_commandBuffer);
+			driver->SetGpuParams(m_gpuParams, m_commandBuffer);
+			driver->SetGpuParams(renderable->GetAutoGpuParams(), m_commandBuffer);
+			driver->SetVertexBuffer(renderable->GetVertexBuffer(), m_commandBuffer);
+			driver->SetVertexDeclaration(renderable->GetVertexInputDeclaration(), m_commandBuffer);
+			driver->SetIndexBuffer(renderable->GetIndexBuffer(), m_commandBuffer);
+			driver->DrawIndexed(0, renderable->GetIndexBuffer()->GetIndicesCount(), 1U, m_commandBuffer);		
+
+
+
+			/*
+			driver->SetRenderPipeline(m_textBatch.material->GetRenderPipeline(), m_textBatch.commandBuffer);
+			driver->SetGpuParams(m_textBatch.material->GetCommonGpuParams(), m_textBatch.commandBuffer);
+			driver->SetTopology(Topology::TOP_TRIANGLE_LIST, m_textBatch.commandBuffer);
+			driver->SetVertexBuffer(m_textBatch.vertexBuffer, m_textBatch.commandBuffer);
+			driver->SetVertexDeclaration(m_textBatch.inputDeclaration, m_textBatch.commandBuffer);
+			driver->SetIndexBuffer(m_textBatch.indexBuffer, m_textBatch.commandBuffer);				
+			driver->DrawIndexed(0, m_textBatch.indexBuffer->GetIndicesCount(), 1U, m_textBatch.commandBuffer);
+			*/
 		}
 
 		m_commandBuffer->End();

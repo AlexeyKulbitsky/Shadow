@@ -11,7 +11,7 @@ MainWindow::MainWindow()
 	sh::Device::GetInstance()->mouseEvent.Connect(std::bind(&MainWindow::OnMouseEvent, this, _1, _2, _3, _4));
 	sh::Device::GetInstance()->keyboardEvent.Connect(std::bind(&MainWindow::OnKeyboardEvent, this, _1, _2));
 
-	m_defaultGizmo.reset(new Gizmo());
+	//m_defaultGizmo.reset(new Gizmo());
 	m_moveGizmo.reset(new MoveGizmo());
 
 	m_gizmo = m_moveGizmo;

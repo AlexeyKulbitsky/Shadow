@@ -24,13 +24,28 @@ namespace video
 		VulkanDriver* driver = static_cast<VulkanDriver*>(Device::GetInstance()->GetDriver());
 		VkDevice device = driver->GetVulkanDevice();
 
-		size_t channelsCount = m_description.format == TextureFormat::RGBA ? 4 : 3;
-		VkDeviceSize imageSize = m_description.width * m_description.height * 4;
+		size_t channelsCount = 0;
+		switch( m_description.format )
+		{
+			case TextureFormat::RGBA:
+				channelsCount = 4;
+				break;
+			case TextureFormat::ALPHA:
+				channelsCount = 1;
+				break;
+			default:
+				break;
+		}
+
+
+		VkDeviceSize imageSize = m_description.width * m_description.height * channelsCount;//4;
 
 		VkImage stagingImage;
 		VkDeviceMemory stagingImageMemory;
 
-		createImage(m_description.width, m_description.height, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_TILING_LINEAR, VK_IMAGE_USAGE_TRANSFER_SRC_BIT,
+		VkFormat internalFormat = s_vkTextureFormat[static_cast<u32>(m_description.format)];
+
+		createImage(m_description.width, m_description.height, internalFormat/*VK_FORMAT_R8G8B8A8_UNORM*/, VK_IMAGE_TILING_LINEAR, VK_IMAGE_USAGE_TRANSFER_SRC_BIT,
 					 VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, stagingImage, stagingImageMemory);
 
 		VkImageSubresource subresource = {};
@@ -46,7 +61,7 @@ namespace video
 
 		u8* externalData = static_cast<u8*>(data);
 
-		if (stagingImageLayout.rowPitch == m_description.width * 4) 
+		if (stagingImageLayout.rowPitch == m_description.width * channelsCount) 
 		{
 			memcpy(dataInternal, externalData, (size_t) imageSize);
 		} 
@@ -56,7 +71,7 @@ namespace video
 
 			for (u32 y = 0; y < m_description.height; y++) 
 			{
-				memcpy(&dataBytes[y * stagingImageLayout.rowPitch], &externalData[y * m_description.width * 4], m_description.width * 4);
+				memcpy(&dataBytes[y * stagingImageLayout.rowPitch], &externalData[y * m_description.width * channelsCount], m_description.width * channelsCount);
 			}
 		}
 
@@ -65,7 +80,7 @@ namespace video
 		// Create final texture
 		createImage(
 			m_description.width, m_description.height,
-			VK_FORMAT_R8G8B8A8_UNORM,
+			internalFormat/*VK_FORMAT_R8G8B8A8_UNORM*/,
 			VK_IMAGE_TILING_OPTIMAL,
 			VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT,
 			VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
@@ -74,18 +89,18 @@ namespace video
 		);
 
 
-		driver->transitionImageLayout(stagingImage, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_LAYOUT_PREINITIALIZED, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL);
-        driver->transitionImageLayout(m_textureImage, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_LAYOUT_PREINITIALIZED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
+		driver->transitionImageLayout(stagingImage, internalFormat/*VK_FORMAT_R8G8B8A8_UNORM*/, VK_IMAGE_LAYOUT_PREINITIALIZED, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL);
+        driver->transitionImageLayout(m_textureImage, internalFormat/*VK_FORMAT_R8G8B8A8_UNORM*/, VK_IMAGE_LAYOUT_PREINITIALIZED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
         driver->copyImage(stagingImage, m_textureImage, m_description.width, m_description.height);
 
-        driver->transitionImageLayout(m_textureImage, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+        driver->transitionImageLayout(m_textureImage, internalFormat/*VK_FORMAT_R8G8B8A8_UNORM*/, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
 		
 
 		VkImageViewCreateInfo viewInfo = {};
 		viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
 		viewInfo.image = m_textureImage;
 		viewInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
-		viewInfo.format = VK_FORMAT_R8G8B8A8_UNORM;
+		viewInfo.format = internalFormat;//VK_FORMAT_R8G8B8A8_UNORM;
 		viewInfo.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
 		viewInfo.subresourceRange.baseMipLevel = 0;
 		viewInfo.subresourceRange.levelCount = 1;

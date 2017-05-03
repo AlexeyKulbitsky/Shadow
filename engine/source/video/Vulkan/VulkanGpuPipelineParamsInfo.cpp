@@ -28,6 +28,13 @@ namespace video
 			for( auto& param : m_paramsDescription[i]->params )
 			{
 				paramsSize += param.second.size;
+
+				VkPushConstantRange pushConstantRange = {};
+				pushConstantRange.offset = 0;
+				pushConstantRange.size = param.second.size;
+				pushConstantRange.stageFlags = s_vkShaderType[i];
+		
+				m_pushConstantRanges.push_back(pushConstantRange);
 			}
 
 			// Collect samplers count
@@ -39,6 +46,7 @@ namespace video
 		VkDevice device = driver->GetVulkanDevice();
 		
 		// Push constants
+		/*
 		if( paramsSize > 0U )
 		{
 			VkPushConstantRange pushConstantRange = {};
@@ -48,6 +56,7 @@ namespace video
 		
 			m_pushConstantRanges.push_back(pushConstantRange);
 		}
+		*/
 		
 		// Descriptor set layouts
 		if( samplersCount > 0U )
