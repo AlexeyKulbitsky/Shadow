@@ -7,8 +7,8 @@ int main()
 	sh::CreationParameters params;
 	params.width = 640;
 	params.height = 480;
-	//params.driverType = sh::video::DriverType::OPENGL_ES_2_0;
-	params.driverType = sh::video::DriverType::VULKAN;
+	params.driverType = sh::video::DriverType::OPENGL_ES_2_0;
+	//params.driverType = sh::video::DriverType::VULKAN;
 	//params.driverType = sh::video::DriverType::DIRECTX_11;
 	sh::Device* device =  sh::CreateDevice(params);
 
@@ -35,7 +35,7 @@ int main()
 
 
 	sh::scene::Camera* camera = new sh::scene::Camera();
-	camera->SetProjection(3.1415926535f / 4.0f, params.width, params.height, 0.1f, 1000.0f);
+	camera->SetProjection(3.1415926535f / 3.0f, params.width, params.height, 0.1f, 1000.0f);
 	camera->SetPosition(sh::math::Vector3f(0.0f));
 	sceneMgr->SetCamera(camera);
 

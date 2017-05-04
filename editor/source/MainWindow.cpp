@@ -122,22 +122,24 @@ void MainWindow::Update()
 			}
 
 			sh::math::Vector2i delta = current - old;
-			float xAngle = -(float)delta.x * 0.01f;
-			float yAngle = (float)delta.y * 0.01f;
+			
+			float yAxisAngle = (float)delta.x * 0.01f;
+			sh::math::Quaternionf yAxisRot;
+			yAxisRot.SetFromAxisAngle(camera->GetUpVector(), yAxisAngle);
 
-			sh::math::Quaternionf xRot;
-			xRot.SetFromAxisAngle(sh::scene::SceneManager::GetUpVector(), -xAngle);
-			sh::math::Quaternionf yRot;
-			yRot.SetFromAxisAngle(camera->GetRightVector(), yAngle);
-			sh::math::Quaternionf deltaRot = xRot;// * yRot;
+			float xAxisangle = (float)delta.y * 0.01f;
+			sh::math::Quaternionf xAxisRot;
+			xAxisRot.SetFromAxisAngle(camera->GetRightVector(), xAxisangle);
+
+			sh::math::Quaternionf deltaRot = yAxisRot * xAxisRot;
+
 			sh::math::Vector3f baseVec = camera->GetPosition() - targetPos;
 			float length = baseVec.GetLength();
 			baseVec.Normalize();
 			sh::math::Vector3f targetVec = deltaRot * baseVec;
 			camera->SetPosition(targetPos + targetVec * length);
 
-			sh::math::Quaternionf finalCamRot = deltaRot * camera->GetRotation();
-			camera->SetRotation(finalCamRot);
+			camera->SetRotation(camera->GetRotation() * deltaRot);
 		}
 		else
 		{

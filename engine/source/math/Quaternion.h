@@ -56,7 +56,7 @@ namespace sh
 				Quaternion<T> result;
 				result.x = (other.w * x) + (other.x * w) + (other.y * z) - (other.y * z);
 				result.y = (other.w * y) + (other.y * w) + (other.z * x) - (other.z * x);
-				result.z = (other.w * z) + (other.z * w) + (other.x * y) - (other.x * y);
+				result.z = (other.w * z) + (other.z * w) + (other.y * x) - (other.x * y);
 				result.w = (other.w * w) - (other.x * x) - (other.y * y) - (other.z * z);
 				return result;
 			}
@@ -205,7 +205,7 @@ namespace sh
 
 			Vector3<T> operator*(const Vector3<T>& v) const
 			{
-				//return Rotate(v);
+				return Rotate(v);
 				// nVidia SDK implementation				
 				Vector3<T> uv, uuv;
 				Vector3<T> qvec(x, y, z);

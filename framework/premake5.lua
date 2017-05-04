@@ -11,6 +11,7 @@ project "Application"
    includedirs { 
 		"source/**",
 		"../libs/pugixml/src/",
+		"../libs/freetype/include/",
 		"../engine/source/"
 	}
    
@@ -30,8 +31,8 @@ project "Application"
       optimize "On"
 	  
 	filter "platforms:Win32"
-		libdirs { "../libs/egl/lib", "../libs/vulkan/bin" }
-		links { "libEGL", "libGLESv2", "vulkan-1", "Shadow" }
+		libdirs { "../libs/egl/lib/release", "../libs/vulkan/bin", "../libs/freetype/lib/release" }
+		links { "libEGL", "libGLESv2", "vulkan-1", "freetype271", "Shadow" }
 		characterset ("MBCS") -- Multi-byte Character Set; currently Visual Studio only
 --		characterset ("Default") --the default encoding for the toolset; usually Unicode
 --		characterset ("MBCS") --Unicode: Unicode character encoding
