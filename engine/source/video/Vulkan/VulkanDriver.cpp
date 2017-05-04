@@ -395,7 +395,7 @@ namespace sh
 						dataPtr);
 				}
 
-
+				
 				for (const auto& samplerDesc : desc->samplers)
 				{
 					const auto& sampler = samplers.at(samplerDesc.first);

@@ -2,10 +2,6 @@
 
 <pipeline name="firstPass" layer="main">	
 
-	<rasterizationState>
-		<cullFace val="none"/>
-	</rasterizationState>
-
 	<blendingState>
 		<enabled val="true"/>
 		<srcFactor val="SrcAlpha"/>
@@ -98,7 +94,7 @@
 					
 					layout (std140, push_constant) uniform PushCnsts 
 					{
-						vec4 color;
+						layout(offset = 64) vec4 color;
 					} pushColorConsts;
 					
 					layout(location = 0) out vec4 outColor;

@@ -7,8 +7,8 @@ int main()
 	sh::CreationParameters params;
 	params.width = 640;
 	params.height = 480;
-	params.driverType = sh::video::DriverType::OPENGL_ES_2_0;
-	//params.driverType = sh::video::DriverType::VULKAN;
+	//params.driverType = sh::video::DriverType::OPENGL_ES_2_0;
+	params.driverType = sh::video::DriverType::VULKAN;
 	//params.driverType = sh::video::DriverType::DIRECTX_11;
 	sh::Device* device =  sh::CreateDevice(params);
 

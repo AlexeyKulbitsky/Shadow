@@ -453,6 +453,7 @@ void MoveGizmo::Move(Axis::Type axis)
 		direction = delta;
 	}
 
+	//direction.y *= -1.0f;
 
 	transformComponent->SetPosition(pos + direction);
 }
