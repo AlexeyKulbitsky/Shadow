@@ -10,6 +10,7 @@ solution "Shadow Editor"
 	-- setup your solution's configuration here ...
 	--
 	
+	include "../libs/freetype/premake5.lua"
 	include "../engine/premake5.lua"		
 
 	-- main project
@@ -46,7 +47,7 @@ solution "Shadow Editor"
 			--"d3d11",
 			--"d3dx11",
 			--"d3dx10",
-			"freetype271",
+			"Freetype",
 			"Shadow" }
 			characterset ("MBCS") -- Multi-byte Character Set; currently Visual Studio only
 			characterset ("Default") --the default encoding for the toolset; usually Unicode
