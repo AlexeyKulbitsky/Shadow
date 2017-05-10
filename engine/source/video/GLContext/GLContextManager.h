@@ -20,6 +20,7 @@ namespace sh
 			virtual bool CreateContext(bool createDisplay) = 0;
 			virtual bool DestroyContext(bool destroyDisplay) = 0;
 			virtual bool SwapBuffers() = 0;
+			virtual bool IsContextCreated() = 0;
 		};
 	}
 }

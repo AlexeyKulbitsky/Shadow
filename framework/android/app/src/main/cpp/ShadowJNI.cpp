@@ -2,6 +2,7 @@
 #include <android/native_window_jni.h>
 #include <pthread.h>
 #include <Shadow.h>
+#include <iostream>
 
 static ANativeWindow *window = 0;
 static sh::Device* device = 0;
@@ -33,8 +34,34 @@ void* Main(void *myself)
         switch (_msg) {
 
             case MSG_WINDOW_SET:
-                device->Init();
+            {
+                if (!device->GetContextManager()->IsContextCreated())
+                {
+                    device->SetWindow(window);
+                    device->GetContextManager()->AttachWindow(device->GetWinId());
+                    device->GetContextManager()->CreateContext(true);
+                    device->GetDriver()->Init();
+                    device->GetDriver()->SetViewport(0, 0, 500, 500);
+                    device->GetDriver()->SetClearColor(sh::math::Vector4f(1.0f, 0.0f, 0.0f, 1.0f));
+                } else
+                {
+                    device->GetContextManager()->DestroyContext(false);
+                    device->SetWindow(window);
+                    device->GetContextManager()->AttachWindow(device->GetWinId());
+                    device->GetContextManager()->CreateContext(false);
+                    device->GetDriver()->SetViewport(0, 0, 500, 500);
+                    device->GetDriver()->SetClearColor(sh::math::Vector4f(0.0f, 0.0f, 1.0f, 1.0f));
+                }
+                //device->GetDriver()->SetViewport(0, 0, 500, 500);
+                //device->GetDriver()->SetClearColor(sh::math::Vector4f(1.0f, 0.0f, 1.0f, 1.0f));
                 _msg = MSG_RENDER_LOOP;
+            }
+                //device->Init();
+                //device->GetContextManager()->AttachWindow(device->GetWinId());
+                //device->CreateWindowContext();
+                //device->GetDriver()->SetViewport(0, 0, 500, 500);
+                //device->GetDriver()->SetClearColor(sh::math::Vector4f(1.0f, 0.0f, 1.0f, 1.0f));
+                //_msg = MSG_RENDER_LOOP;
                 break;
 
 
@@ -82,7 +109,7 @@ void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_OnResume(JNIEnv *en
 void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_OnPause(JNIEnv *env, jclass type)
 {
     pthread_mutex_lock(&_mutex);
-    _msg = MSG_RENDER_LOOP_EXIT;
+    //_msg = MSG_RENDER_LOOP_EXIT;
     pthread_mutex_unlock(&_mutex);
     pthread_join(_threadId, 0);
 }
@@ -96,37 +123,45 @@ void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_OnStop(JNIEnv *env,
 
 void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_SurfaceCreated(JNIEnv *env, jclass type, jobject surface)
 {
-    window = ANativeWindow_fromSurface(env, surface);
+    //window = ANativeWindow_fromSurface(env, surface);
 
-    pthread_mutex_lock(&_mutex);
-    _msg = MSG_WINDOW_SET;
-    device->SetWindow(window);
-    pthread_mutex_unlock(&_mutex);
+    //pthread_mutex_lock(&_mutex);
+    //_msg = MSG_WINDOW_SET;
+   // device->SetWindow(window);
+   // pthread_mutex_unlock(&_mutex);
 }
 
 void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_SurfaceChanged(JNIEnv *env, jclass type, jobject surface, jint width, jint height)
 {
-    /*
-    static bool first = true;
-    if (surface != 0 && first)
-    {
-        first = false;
-        window = ANativeWindow_fromSurface(env, surface);
-
-        pthread_mutex_lock(&_mutex);
-        _msg = MSG_WINDOW_SET;
-        device->SetWindow(window);
-        pthread_mutex_unlock(&_mutex);
-
-    } else
-    {
-        ANativeWindow_release(window);
-    }
-    */
+    window = ANativeWindow_fromSurface(env, surface);
 
     pthread_mutex_lock(&_mutex);
-    device->GetDriver()->SetViewport(0, 0, width, height);
+    _msg = MSG_WINDOW_SET;
+    //device->SetWindow(window);
     pthread_mutex_unlock(&_mutex);
+
+    /*
+    pthread_mutex_lock(&_mutex);
+    _msg = MSG_WINDOW_SET;
+    if (!device->GetContextManager()->IsContextCreated())
+    {
+        device->SetWindow(window);
+        device->GetContextManager()->CreateContext(true);
+        device->GetDriver()->Init();
+    } else
+    {
+        device->GetContextManager()->DestroyContext(false);
+        device->SetWindow(window);
+        device->GetContextManager()->CreateContext(false);
+    }
+    pthread_mutex_unlock(&_mutex);
+     */
+
+    //std::cout << "Changed\n";
+
+    //pthread_mutex_lock(&_mutex);
+    //device->GetDriver()->SetViewport(0, 0, width, height);
+    //pthread_mutex_unlock(&_mutex);
 }
 
 void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_SurfaceDestroyed(JNIEnv *env, jclass type)

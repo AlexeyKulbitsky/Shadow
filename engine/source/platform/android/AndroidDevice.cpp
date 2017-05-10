@@ -95,6 +95,24 @@ u64 AndroidDevice::GetTime()
 	return result;
 }
 
+////////////////////////////////////////////////////////////////////////
+
+void AndroidDevice::CreateWindowContext()
+{
+	if (!m_GLContextManager->IsContextCreated())
+	{
+		bool success = m_GLContextManager->CreateContext(true);
+		m_driver->Init();
+	}
+	else
+	{
+		m_GLContextManager->DestroyContext(false);
+		bool success = m_GLContextManager->CreateContext(false);
+	}
+}
+
+////////////////////////////////////////////////////////////////////////
+
 bool AndroidDevice::CreateDriver()
 {
 	switch (m_creationParameters.driverType)
@@ -104,9 +122,7 @@ bool AndroidDevice::CreateDriver()
 		video::EGLContextManager* contextManager = new video::EGLContextManager();
 		if (contextManager)
 		{
-			//contextManager->InitContext(m_creationParameters);
 			m_driver = new video::GLES20Driver(contextManager);
-			//m_driver->Init();
 
 			m_GLContextManager = contextManager;
 		}
@@ -114,8 +130,6 @@ bool AndroidDevice::CreateDriver()
 	break;
 	case video::DriverType::VULKAN:
 	{
-		//m_driver = new video::VulkanDriver(m_creationParameters);
-		//m_driver->Init();
 	}
 	break;
 	default:

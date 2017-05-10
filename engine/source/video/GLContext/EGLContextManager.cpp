@@ -267,30 +267,71 @@ bool EGLContextManager::DestroyDisplay()
 
 bool EGLContextManager::CreateContext(bool createDisplay)
 {
-	if (createDisplay)
+	EGLint attribList[] =
 	{
-		if (!CreateDisplay())
+		EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
+		EGL_RENDERABLE_TYPE, m_glesContextVersion,
+		EGL_RED_SIZE, 8,
+		EGL_GREEN_SIZE, 8,
+		EGL_BLUE_SIZE, 8,
+		EGL_ALPHA_SIZE, 8,
+		EGL_DEPTH_SIZE, 16,
+		//EGL_STENCIL_SIZE,   8,
+		//EGL_SAMPLE_BUFFERS, 1,
+		//EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
+		//EGL_RENDERABLE_TYPE, glesContextVersion,
+		EGL_NONE
+	};
+
+	if (m_isContextCreated)
+	{
+		return false;
+	}
+	if (createDisplay) 
+	{
+		m_eglDisplay = eglGetDisplay(EGL_DEFAULT_DISPLAY);
+		if (m_eglDisplay == EGL_NO_DISPLAY)
 		{
 			return false;
 		}
+		if (!eglInitialize(m_eglDisplay, 0, 0)) 
+		{
+			return false;
+		}
+		EGLint mathConfigNum;
+		if (!eglChooseConfig(m_eglDisplay, attribList, &m_config, 1, &mathConfigNum))
+		{
+			return false;
+		}
+#ifdef ANDROID
+		//new stuff
+		EGLint format;
+		if (!eglGetConfigAttrib(m_eglDisplay, m_config, EGL_NATIVE_VISUAL_ID, &format))
+		{
+			return false;
+		}
+		ANativeWindow_setBuffersGeometry(m_eglNativeWindow, 0, 0, format);
+#endif // ANDROID
 	}
-
-	EGLint contextAttribs[] = { EGL_CONTEXT_CLIENT_VERSION, m_glesApiVersion, EGL_NONE };
-
-	// Create a surface
+	//create surface
 	m_eglSurface = eglCreateWindowSurface(m_eglDisplay, m_config, m_eglNativeWindow, NULL);
-
 	if (m_eglSurface == EGL_NO_SURFACE)
 	{
-		return GL_FALSE;
+		return false;
 	}
-
-	// Create a GL context
-	m_eglContext = eglCreateContext(m_eglDisplay, m_config, EGL_NO_CONTEXT, contextAttribs);
-
-	if (m_eglContext == EGL_NO_CONTEXT)
+	EGLint contextAttribs[] {
+		EGL_CONTEXT_CLIENT_VERSION, 2,
+			EGL_NONE
+	};
+	//create context
+	if (createDisplay) 
 	{
-		return GL_FALSE;
+		m_eglContext = eglCreateContext(m_eglDisplay, m_config, EGL_NO_CONTEXT, contextAttribs);
+
+		if (m_eglContext == EGL_NO_CONTEXT)
+		{
+			return GL_FALSE;
+		}
 	}
 
 	// Make the context current
@@ -298,32 +339,37 @@ bool EGLContextManager::CreateContext(bool createDisplay)
 	{
 		return GL_FALSE;
 	}
+	m_isContextCreated = true;
+	return m_isContextCreated;
 }
 
 bool EGLContextManager::DestroyContext(bool destroyDisplay)
 {
-	eglMakeCurrent(m_eglDisplay, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
-
-	if (destroyDisplay) 
+	if (m_eglDisplay)
 	{
-		if (m_eglContext != EGL_NO_CONTEXT)
+		eglMakeCurrent(m_eglDisplay, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
+
+		if (destroyDisplay)
 		{
-			eglDestroyContext(m_eglDisplay, m_eglContext);
-			m_eglContext = EGL_NO_CONTEXT;
+			if (m_eglContext != EGL_NO_CONTEXT)
+			{
+				eglDestroyContext(m_eglDisplay, m_eglContext);
+				m_eglContext = EGL_NO_CONTEXT;
+			}
+		}
+
+		if (m_eglSurface != EGL_NO_SURFACE)
+		{
+			eglDestroySurface(m_eglDisplay, m_eglSurface);
+			m_eglSurface = EGL_NO_SURFACE;
+		}
+		if (destroyDisplay)
+		{
+			eglTerminate(m_eglDisplay);
+			m_eglDisplay = EGL_NO_DISPLAY;
 		}
 	}
-
-	if (m_eglSurface != EGL_NO_SURFACE)
-	{
-		eglDestroySurface(m_eglDisplay, m_eglSurface);
-		m_eglSurface = EGL_NO_SURFACE;
-	}
-
-	if (destroyDisplay) 
-	{
-		eglTerminate(m_eglDisplay);
-		m_eglDisplay = EGL_NO_DISPLAY;
-	}
+	m_isContextCreated = false;
 	return true;
 }
 

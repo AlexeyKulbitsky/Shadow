@@ -38,6 +38,7 @@ namespace sh
 			virtual bool CreateContext(bool createDisplay) override;
 			virtual bool DestroyContext(bool destroyDisplay) override;
 			virtual bool SwapBuffers() override;
+			virtual bool IsContextCreated() override { return m_isContextCreated; }
 
 		private:
 			EGLint GetContextRenderableType(EGLDisplay eglDisplay);
@@ -49,6 +50,8 @@ namespace sh
 			s32			m_glesContextVersion = 0U;
 			EGLConfig	m_config;
 			bool		m_displayEmpty = true;
+
+			bool		m_isContextCreated = false;
 
 #if !defined SHADOW_APPLE
 			EGLNativeDisplayType	m_eglNativeDisplay;

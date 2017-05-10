@@ -3,6 +3,7 @@ package com.shadow.alexeykulbitsky.myapplication;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Surface;
+import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder;
 import android.view.WindowManager;
@@ -81,5 +82,37 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback
     {
         Log.d("---SHADOW", "SURFACE CHANGED");
         ShadowJNI.SurfaceChanged(holder.getSurface(), w, h);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event)
+    {
+        int actionIndex = event.getActionIndex();
+        int actionId = event.getPointerId(actionIndex);
+        int actionMasked = event.getActionMasked();
+        switch (actionMasked)
+        {
+            case MotionEvent.ACTION_DOWN:
+            case MotionEvent.ACTION_POINTER_DOWN:
+                {
+                //cross.ActionDown(event.getX(actionIndex), event.getY(actionIndex), actionId);
+                return true;
+            }
+            case MotionEvent.ACTION_MOVE:
+            {
+                for(int i = 0; i < event.getPointerCount(); i++)
+                {
+                   // cross.ActionMove(event.getX(i), event.getY(i), event.getPointerId(i));
+                }
+                return true;
+            }
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_POINTER_UP:
+                {
+                //cross.ActionUp(event.getX(actionIndex), event.getY(actionIndex), actionId);
+                return true;
+            }
+        }
+        return super.onTouchEvent(event);
     }
 }

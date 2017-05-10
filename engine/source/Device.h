@@ -34,6 +34,7 @@ namespace sh
 		virtual void Update(f32 deltaTime) = 0;
 		//virtual void OnEvent(const Event& e) = 0;
 		virtual u64 GetTime() = 0;
+		virtual void CreateWindowContext() {}
 
 		virtual SHADOW_API video::Driver* SH_CALLCONV GetDriver() { return m_driver; }
 		void SetSceneManager(scene::SceneManager* manager) { m_sceneManager = manager; }

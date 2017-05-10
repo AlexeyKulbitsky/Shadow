@@ -14,7 +14,6 @@
     <facet type="android" name="Android">
       <configuration>
         <option name="SELECTED_BUILD_VARIANT" value="debug" />
-        <option name="SELECTED_TEST_ARTIFACT" value="_android_test_" />
         <option name="ASSEMBLE_TASK_NAME" value="assembleDebug" />
         <option name="COMPILE_JAVA_TASK_NAME" value="compileDebugSources" />
         <afterSyncTasks>
@@ -44,8 +43,11 @@
     <content url="file://$MODULE_DIR$/../../../engine/source/entity/systems">
       <sourceFolder url="file://$MODULE_DIR$/../../../engine/source/entity/systems" isTestSource="false" />
     </content>
-    <content url="file://$MODULE_DIR$/../../../engine/source/io">
-      <sourceFolder url="file://$MODULE_DIR$/../../../engine/source/io" isTestSource="false" />
+    <content url="file://$MODULE_DIR$/../../../engine/source/font">
+      <sourceFolder url="file://$MODULE_DIR$/../../../engine/source/font" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../engine/source/gui">
+      <sourceFolder url="file://$MODULE_DIR$/../../../engine/source/gui" isTestSource="false" />
     </content>
     <content url="file://$MODULE_DIR$/../../../engine/source/platform/android">
       <sourceFolder url="file://$MODULE_DIR$/../../../engine/source/platform/android" isTestSource="false" />
@@ -67,6 +69,15 @@
     </content>
     <content url="file://$MODULE_DIR$/../../../engine/source/video/GLES20">
       <sourceFolder url="file://$MODULE_DIR$/../../../engine/source/video/GLES20" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../engine/source/video/GLES20/Batching">
+      <sourceFolder url="file://$MODULE_DIR$/../../../engine/source/video/GLES20/Batching" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../engine/source/video/GLES20/Managers">
+      <sourceFolder url="file://$MODULE_DIR$/../../../engine/source/video/GLES20/Managers" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../engine/source/video/Managers">
+      <sourceFolder url="file://$MODULE_DIR$/../../../engine/source/video/Managers" isTestSource="false" />
     </content>
     <content url="file://$MODULE_DIR$/../../../engine/source/video/TextureLoader">
       <sourceFolder url="file://$MODULE_DIR$/../../../engine/source/video/TextureLoader" isTestSource="false" />
@@ -92,6 +103,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/debug/assets" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/debug/aidl" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/debug/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/debug/jni" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/debug/rs" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/debug/shaders" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/testDebug/res" type="java-test-resource" />
@@ -99,6 +111,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/testDebug/assets" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/testDebug/aidl" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/testDebug/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/testDebug/jni" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/testDebug/rs" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/testDebug/shaders" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/res" type="java-resource" />
@@ -106,22 +119,25 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/assets" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/aidl" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/jni" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/rs" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/shaders" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/res" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/resources" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/assets" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/aidl" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/rs" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/shaders" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/res" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/assets" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/aidl" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/jni" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/rs" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/shaders" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/res" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/resources" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/assets" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/aidl" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/jni" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/rs" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTest/shaders" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/assets" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/blame" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/classes" />
@@ -149,6 +165,69 @@
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
       <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
+    <content url="file://$MODULE_DIR$/../../../libs/freetype/src/autofit">
+      <sourceFolder url="file://$MODULE_DIR$/../../../libs/freetype/src/autofit" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../libs/freetype/src/base">
+      <sourceFolder url="file://$MODULE_DIR$/../../../libs/freetype/src/base" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../libs/freetype/src/bdf">
+      <sourceFolder url="file://$MODULE_DIR$/../../../libs/freetype/src/bdf" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../libs/freetype/src/cache">
+      <sourceFolder url="file://$MODULE_DIR$/../../../libs/freetype/src/cache" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../libs/freetype/src/cff">
+      <sourceFolder url="file://$MODULE_DIR$/../../../libs/freetype/src/cff" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../libs/freetype/src/cid">
+      <sourceFolder url="file://$MODULE_DIR$/../../../libs/freetype/src/cid" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../libs/freetype/src/gzip">
+      <sourceFolder url="file://$MODULE_DIR$/../../../libs/freetype/src/gzip" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../libs/freetype/src/lzw">
+      <sourceFolder url="file://$MODULE_DIR$/../../../libs/freetype/src/lzw" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../libs/freetype/src/pcf">
+      <sourceFolder url="file://$MODULE_DIR$/../../../libs/freetype/src/pcf" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../libs/freetype/src/pfr">
+      <sourceFolder url="file://$MODULE_DIR$/../../../libs/freetype/src/pfr" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../libs/freetype/src/psaux">
+      <sourceFolder url="file://$MODULE_DIR$/../../../libs/freetype/src/psaux" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../libs/freetype/src/pshinter">
+      <sourceFolder url="file://$MODULE_DIR$/../../../libs/freetype/src/pshinter" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../libs/freetype/src/psnames">
+      <sourceFolder url="file://$MODULE_DIR$/../../../libs/freetype/src/psnames" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../libs/freetype/src/raster">
+      <sourceFolder url="file://$MODULE_DIR$/../../../libs/freetype/src/raster" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../libs/freetype/src/sfnt">
+      <sourceFolder url="file://$MODULE_DIR$/../../../libs/freetype/src/sfnt" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../libs/freetype/src/smooth">
+      <sourceFolder url="file://$MODULE_DIR$/../../../libs/freetype/src/smooth" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../libs/freetype/src/truetype">
+      <sourceFolder url="file://$MODULE_DIR$/../../../libs/freetype/src/truetype" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../libs/freetype/src/type1">
+      <sourceFolder url="file://$MODULE_DIR$/../../../libs/freetype/src/type1" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../libs/freetype/src/type42">
+      <sourceFolder url="file://$MODULE_DIR$/../../../libs/freetype/src/type42" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../libs/freetype/src/winfonts">
+      <sourceFolder url="file://$MODULE_DIR$/../../../libs/freetype/src/winfonts" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../libs/freetype/windows">
+      <sourceFolder url="file://$MODULE_DIR$/../../../libs/freetype/windows" isTestSource="false" />
+    </content>
     <content url="file://$MODULE_DIR$/../../../libs/pugixml/src">
       <sourceFolder url="file://$MODULE_DIR$/../../../libs/pugixml/src" isTestSource="false" />
     </content>
@@ -172,5 +251,6 @@
     <orderEntry type="library" exported="" name="support-vector-drawable-23.4.0" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="jsr305-2.0.1" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-23.4.0" level="project" />
+    <orderEntry type="library" exported="" name="android-android-23" level="project" />
   </component>
 </module>

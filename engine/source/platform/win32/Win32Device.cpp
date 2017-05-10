@@ -555,7 +555,7 @@ Win32Device::Win32Device(const CreationParameters &parameters)
 	m_fileSystem = io::FileSystem::GetInstance();
 
 	CreateDriver();
-	m_driver->SetViewport(0, 0, m_creationParameters.width, m_creationParameters.height);
+	//m_driver->SetViewport(0, 0, m_creationParameters.width, m_creationParameters.height);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -580,6 +580,14 @@ Win32Device::~Win32Device()
 	}
 	
 	io::FileSystem::DestroyInstance();
+}
+
+////////////////////////////////////////////////////////////////////////
+
+void Win32Device::Init()
+{
+	CreateWindowContext();
+	m_driver->Init();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -644,6 +652,19 @@ u64 Win32Device::GetTime()
 	return (crt.QuadPart * 1000000) / freq.QuadPart;
 }
 
+void Win32Device::CreateWindowContext()
+{
+	if (!m_GLContextManager->IsContextCreated())
+	{
+		bool success = m_GLContextManager->CreateContext(true);
+	}
+	else
+	{
+		m_GLContextManager->DestroyContext(false);
+		bool success = m_GLContextManager->CreateContext(false);
+	}
+}
+
 bool Win32Device::CreateDriver()
 {
 	switch (m_creationParameters.driverType)
@@ -653,9 +674,11 @@ bool Win32Device::CreateDriver()
 		video::EGLContextManager* contextManager = new video::EGLContextManager();
 		if (contextManager)
 		{
-			contextManager->InitContext(m_creationParameters);
+			//contextManager->InitContext(m_creationParameters);
 			m_driver = new video::GLES20Driver(contextManager);
-			m_driver->Init();
+
+			contextManager->AttachWindow(m_creationParameters.WinId);
+			//m_driver->Init();
 
 			m_GLContextManager = contextManager;
 		}
