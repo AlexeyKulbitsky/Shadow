@@ -7,6 +7,8 @@
 
 #include "../../gui/GuiManager.h"
 
+#include "../../io/win32/WindowsFileSystem.h"
+
 #include <chrono>
 
 using namespace sh;
@@ -549,6 +551,9 @@ Win32Device::Win32Device(const CreationParameters &parameters)
 		m_creationParameters.height = r.bottom - r.top;
 	}
 
+	io::FileSystem::CreateInstance<io::WindowsFileSystem>();
+	m_fileSystem = io::FileSystem::GetInstance();
+
 	CreateDriver();
 	m_driver->SetViewport(0, 0, m_creationParameters.width, m_creationParameters.height);
 }
@@ -574,11 +579,7 @@ Win32Device::~Win32Device()
 		m_sceneManager = nullptr;
 	}
 	
-	if (!!m_fileSystem)
-	{
-		delete m_fileSystem;
-		m_fileSystem = nullptr;
-	}
+	io::FileSystem::DestroyInstance();
 }
 
 ////////////////////////////////////////////////////////////////////////

@@ -16,10 +16,6 @@ namespace sh
 	Device::Device(const CreationParameters &parameters)
 		: m_creationParameters(parameters)
 	{
-		//m_fileSystem = new io::FileSystem();
-		io::FileSystem::CreateInstance();
-		m_fileSystem = io::FileSystem::GetInstance();
-
 		m_inputManager.reset(new InputManager());
 
 		mouseEvent.Connect(std::bind(&InputManager::OnMouseEvent, m_inputManager.get(), _1, _2, _3, _4));
@@ -31,10 +27,6 @@ namespace sh
 
 	Device::~Device()
 	{
-		int a = 0;
-		a++;
-
-		//io::FileSystem::DestroyInstance();
 	}
 
 	void Device::SetWindow(void* window)

@@ -1,7 +1,7 @@
 #ifndef SHADOW_RENDER_BATCH_INCLUDE
 #define SHADOW_RENDER_BATCH_INCLUDE
 
-#include "../Globals.h"
+#include "../../../Globals.h"
 
 namespace sh
 {

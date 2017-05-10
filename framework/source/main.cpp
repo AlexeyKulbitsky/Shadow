@@ -33,24 +33,32 @@ Vector3<T> Mult(const Quaternion<T>& q, const Vector3<T>& v)
 
 int main()
 {
-	/*
-	sh::Device* device = sh::CreateDevice();
+	
+	sh::CreationParameters params;
+	params.width = 640;
+	params.height = 480;
+	params.driverType = sh::video::DriverType::OPENGL_ES_2_0;
+	//params.driverType = sh::video::DriverType::VULKAN;
+	//params.driverType = sh::video::DriverType::DIRECTX_11;
+	sh::Device* device = sh::CreateDevice(params);
+
 	sh::video::Driver* driver = device->GetDriver();
 	driver->SetClearColor(sh::math::Vector4f(0.0f, 0.0f, 1.0f, 1.0f));
 
-	sh::scene::SceneManager* sceneMgr = new sh::scene::SceneManager();
-	device->SetSceneManager(sceneMgr);
+	//sh::scene::SceneManager* sceneMgr = new sh::scene::SceneManager();
+	//device->SetSceneManager(sceneMgr);
 
 	if (device)
 	{
-	while (device->Run())
-	{
-	driver->BeginRendering();
+		while (device->Run())
+		{
+			driver->BeginRendering();
 
-	driver->EndRendering();
+			driver->EndRendering();
+		}
 	}
-	}
-	*/
+
+	/*
 	Quaternionf xAxisQuat, yAxisQuat, zAxisQuat;
 	xAxisQuat.SetFromAxisAngle(Vector3f(1.0f, 0.0f, 0.0f), k_pi / 2.0f);
 	yAxisQuat.SetFromAxisAngle(Vector3f(0.0f, 1.0f, 0.0f), k_pi / 2.0f);
@@ -63,10 +71,7 @@ int main()
 
 	pointA = resQuatA * pointA;
 	pointB = Mult(resQuatA, pointB);
-
-	int a = 0;
-	a++;
-
+	*/
 	return 0;
 }
 

@@ -1,10 +1,10 @@
 #include "GLES20RenderBatchManager.h"
 
 #include "GLES20RenderBatch.h"
-#include "../Material.h"
-#include "../RenderTechnique.h"
-#include "../RenderPipeline.h"
-#include "../../scene/Mesh.h"
+#include "../../Material.h"
+#include "../../RenderTechnique.h"
+#include "../../RenderPipeline.h"
+#include "../../../scene/Mesh.h"
 
 namespace sh
 {

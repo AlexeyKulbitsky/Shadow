@@ -1,5 +1,9 @@
 #include "EGLContextManager.h"
 
+#ifdef SHADOW_ANDROID
+#include <android/native_window.h>
+#endif
+
 using namespace sh;
 using namespace video;
 

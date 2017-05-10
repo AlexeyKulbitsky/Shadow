@@ -1,7 +1,7 @@
 #ifndef SHADOW_RENDER_STATE_MANAGER_INCLUDE
 #define SHADOW_RENDER_STATE_MANAGER_INCLUDE
 
-#include "../Globals.h"
+#include "../../Globals.h"
 #include "../RenderPipeline.h"
 #include "../Shader.h"
 #include "../Sampler.h"

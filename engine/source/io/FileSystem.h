@@ -34,24 +34,16 @@ namespace sh
 			FileSystem();
 			virtual ~FileSystem();
 
-			void Init();
+			virtual void Init() {}
 
-			const String& GetWorkingDirectory() const;
+			virtual const String& GetWorkingDirectory() const { return String(); }
 
-			void AddFolder(const String& folder, bool recursive = true);
-			const FileInfo& FindFile(const String& fileName);
+			virtual void AddFolder(const String& folder, bool recursive = true) {}
+			virtual const FileInfo& FindFile(const String& fileName) { return FileInfo(); }
 			
-			bool SaveFile(const std::vector<char>& data, const String& fileName);
-			bool SaveFile(const String& data, const String& fileName);
-			std::vector<char> ReadFile(const String& filename);
-
-		private:
-			void CollectFilesFromFolder(const String& folder, bool recursive = true);
-
-		private:
-			Set<String> m_folders;
-			Set<FileInfo> m_fileList;
-			String m_workingDirectoryPath;
+			virtual bool SaveFile(const std::vector<char>& data, const String& fileName) { return false; }
+			virtual bool SaveFile(const String& data, const String& fileName) { return false; }
+			virtual std::vector<char> ReadFile(const String& filename) { return std::vector<char>(); }
 		};
 	}
 }

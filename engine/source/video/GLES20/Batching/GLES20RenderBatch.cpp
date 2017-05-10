@@ -1,11 +1,11 @@
 #include "GLES20RenderBatch.h"
-#include "IndexBuffer.h"
-#include "Driver.h"
-#include "../scene/Mesh.h"
+#include "../../IndexBuffer.h"
+#include "../../Driver.h"
+#include "../../../scene/Mesh.h"
 #include "../../../scene/Camera.h"
 #include "../../../scene/SceneManager.h"
 #include "../../Renderable.h"
-#include "../Device.h"
+#include "../../../Device.h"
 
 
 namespace sh

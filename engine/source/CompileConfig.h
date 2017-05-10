@@ -14,7 +14,7 @@
 	#define SH_COMPILE_WITH_WINDOWS_DEVICE
 #endif
 
-#if defined(ANDROID)
+#if defined(ANDROID) || defined(__ANDROID__)
 	#define SHADOW_ANDROID
 	#define SH_ANDROID_API
 	#define SH_COMPILE_WITH_ANDROID_DEVICE

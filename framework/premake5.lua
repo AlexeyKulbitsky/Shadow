@@ -3,6 +3,7 @@ workspace "Shadow Framework"
    platforms { "Win32", "Win64" }
    location "prj"
    
+include "../libs/freetype/premake5.lua"   
 include "../engine/premake5.lua"
 
 project "Application"
@@ -32,14 +33,14 @@ project "Application"
 	  
 	filter "platforms:Win32"
 		libdirs { "../libs/egl/lib/release", "../libs/vulkan/bin", "../libs/freetype/lib/release" }
-		links { "libEGL", "libGLESv2", "vulkan-1", "freetype271", "Shadow" }
+		links { "libEGL", "libGLESv2", "vulkan-1", "Freetype", "Shadow" }
 		characterset ("MBCS") -- Multi-byte Character Set; currently Visual Studio only
 --		characterset ("Default") --the default encoding for the toolset; usually Unicode
 --		characterset ("MBCS") --Unicode: Unicode character encoding
 
 		postbuildcommands {
-			"{COPY} ../../libs/egl/lib/libEGL.dll ../bin/%{cfg.buildcfg}/",
-			"{COPY} ../../libs/egl/lib/libGLESv2.dll ../bin/%{cfg.buildcfg}/",
+			"{COPY} ../../libs/egl/bin/release/libEGL.dll ../bin/%{cfg.buildcfg}/",
+			"{COPY} ../../libs/egl/bin/release/libGLESv2.dll ../bin/%{cfg.buildcfg}/",
 			"{COPY} ../../libs/vulkan/bin/vulkan-1.dll ../bin/%{cfg.buildcfg}/",
 			}
 

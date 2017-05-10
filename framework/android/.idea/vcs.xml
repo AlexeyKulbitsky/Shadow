@@ -2,5 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="svn" />
+    <mapping directory="$PROJECT_DIR$/../../engine/source" vcs="svn" />
+    <mapping directory="$PROJECT_DIR$/../../libs/pugixml/src" vcs="svn" />
   </component>
 </project>
