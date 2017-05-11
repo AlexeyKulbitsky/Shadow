@@ -36,10 +36,18 @@ namespace sh
 
 			virtual void Init() {}
 
-			virtual const String& GetWorkingDirectory() const { return String(); }
+			virtual const String& GetWorkingDirectory() const 
+			{ 
+				static String res;
+				return res;
+			}
 
 			virtual void AddFolder(const String& folder, bool recursive = true) {}
-			virtual const FileInfo& FindFile(const String& fileName) { return FileInfo(); }
+			virtual const FileInfo& FindFile(const String& fileName) 
+			{ 
+				static FileInfo res;
+				return res;
+			}
 			
 			virtual bool SaveFile(const std::vector<char>& data, const String& fileName) { return false; }
 			virtual bool SaveFile(const String& data, const String& fileName) { return false; }

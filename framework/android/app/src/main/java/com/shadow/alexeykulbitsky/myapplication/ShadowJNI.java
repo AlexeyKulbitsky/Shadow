@@ -1,9 +1,11 @@
 package com.shadow.alexeykulbitsky.myapplication;
 import android.view.Surface;
+import android.content.res.AssetManager;
 
 public class ShadowJNI
 {
     public static native void OnCreate();
+    public static native void OnDestroy();
     public static native void OnStart();
     public static native void OnResume();
     public static native void OnPause();

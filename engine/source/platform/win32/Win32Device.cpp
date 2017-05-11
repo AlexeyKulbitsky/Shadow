@@ -687,7 +687,7 @@ bool Win32Device::CreateDriver()
 	case video::DriverType::VULKAN:
 	{
 		m_driver = new video::VulkanDriver(m_creationParameters);
-		m_driver->Init();
+		//m_driver->Init();
 	}
 	break;
 	default:

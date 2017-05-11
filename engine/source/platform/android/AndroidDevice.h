@@ -3,6 +3,9 @@
 
 #include "../../Device.h"
 
+//#include <jni.h>
+//#include <android/asset_manager.h>
+
 namespace sh
 {
 	class AndroidDevice : public Device 

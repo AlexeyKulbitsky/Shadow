@@ -337,6 +337,7 @@ bool EGLContextManager::CreateContext(bool createDisplay)
 	// Make the context current
 	if (!eglMakeCurrent(m_eglDisplay, m_eglSurface, m_eglSurface, m_eglContext))
 	{
+        EGLint error = eglGetError();
 		return GL_FALSE;
 	}
 	m_isContextCreated = true;

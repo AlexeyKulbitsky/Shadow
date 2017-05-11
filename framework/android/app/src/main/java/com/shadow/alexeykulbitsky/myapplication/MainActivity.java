@@ -1,6 +1,7 @@
 package com.shadow.alexeykulbitsky.myapplication;
 
 import android.app.Activity;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.view.Surface;
 import android.view.MotionEvent;
@@ -13,6 +14,7 @@ import android.util.Log;
 public class MainActivity extends Activity implements SurfaceHolder.Callback
 {
     private SurfaceView m_SurfaceView = null;
+    private AssetManager m_assetManager = null;
 
     static
     {
@@ -35,29 +37,43 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback
         m_SurfaceView.getHolder().addCallback(this);
         setContentView(m_SurfaceView);
 
+        String dataPath = getFilesDir().getPath() + "/";
+        m_assetManager = getResources().getAssets();
+
         ShadowJNI.OnCreate();
     }
 
     @Override
-    protected void onStart() {
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        ShadowJNI.OnDestroy();
+    }
+
+    @Override
+    protected void onStart()
+    {
         super.onStart();
         ShadowJNI.OnStart();
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
         ShadowJNI.OnResume();
     }
 
     @Override
-    protected void onPause() {
+    protected void onPause()
+    {
         super.onPause();
         ShadowJNI.OnPause();
     }
 
     @Override
-    protected void onStop() {
+    protected void onStop()
+    {
         super.onStop();
         ShadowJNI.OnStop();
     }
@@ -66,21 +82,18 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback
     @Override
     public void surfaceCreated(SurfaceHolder holder)
     {
-        Log.d("---SHADOW", "SURFACE CREATED");
         ShadowJNI.SurfaceCreated(holder.getSurface());
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder)
     {
-        Log.d("---SHADOW", "SURFACE DESTROYED");
         ShadowJNI.SurfaceDestroyed();
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h)
     {
-        Log.d("---SHADOW", "SURFACE CHANGED");
         ShadowJNI.SurfaceChanged(holder.getSurface(), w, h);
     }
 
@@ -94,22 +107,19 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback
         {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_POINTER_DOWN:
-                {
-                //cross.ActionDown(event.getX(actionIndex), event.getY(actionIndex), actionId);
+            {
                 return true;
             }
             case MotionEvent.ACTION_MOVE:
             {
                 for(int i = 0; i < event.getPointerCount(); i++)
                 {
-                   // cross.ActionMove(event.getX(i), event.getY(i), event.getPointerId(i));
                 }
                 return true;
             }
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP:
-                {
-                //cross.ActionUp(event.getX(actionIndex), event.getY(actionIndex), actionId);
+            {
                 return true;
             }
         }
