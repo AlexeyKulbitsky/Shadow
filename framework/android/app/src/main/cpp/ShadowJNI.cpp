@@ -7,6 +7,8 @@
 static ANativeWindow *window = 0;
 static sh::Device* device = 0;
 
+bool isCreated = false;
+
 enum RenderThreadMessage
 {
     MSG_NONE = 0,
@@ -22,13 +24,21 @@ pthread_mutex_t _mutex;
 
 void* Main(void *myself)
 {
-    sh::Device* device = (sh::Device*)myself;
+   // sh::Device* device = (sh::Device*)myself;
     bool renderingEnabled = true;
 
+    int counter = 0;
 
     while (renderingEnabled) {
 
         pthread_mutex_lock(&_mutex);
+
+        if (!isCreated)
+        {
+            device = sh::CreateDevice();
+            isCreated = true;
+        }
+
 
         // process incoming messages
         switch (_msg) {
@@ -43,6 +53,7 @@ void* Main(void *myself)
                     device->GetDriver()->Init();
                     device->GetDriver()->SetViewport(0, 0, 500, 500);
                     device->GetDriver()->SetClearColor(sh::math::Vector4f(1.0f, 0.0f, 0.0f, 1.0f));
+                    counter++;
                 } else
                 {
                     device->GetContextManager()->DestroyContext(false);
@@ -69,6 +80,7 @@ void* Main(void *myself)
                 renderingEnabled = false;
                 break;
             case MSG_RENDER_LOOP:
+                //break;
                 device->GetDriver()->BeginRendering();
                 device->GetDriver()->EndRendering();
                 break;
@@ -92,26 +104,29 @@ extern "C"
 
 void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_OnCreate(JNIEnv *env, jclass type)
 {
-
+    pthread_mutex_init(&_mutex, 0);
+    //device = sh::CreateDevice();
+    //pthread_create(&_threadId, 0, Main, device);
+    pthread_create(&_threadId, 0, Main, NULL);
 }
 
 void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_OnStart(JNIEnv *env, jclass type)
 {
-    pthread_mutex_init(&_mutex, 0);
-    device = sh::CreateDevice();
+
 }
 
 void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_OnResume(JNIEnv *env, jclass type)
 {
-    pthread_create(&_threadId, 0, Main, device);
+
 }
 
 void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_OnPause(JNIEnv *env, jclass type)
 {
     pthread_mutex_lock(&_mutex);
     //_msg = MSG_RENDER_LOOP_EXIT;
+    _msg = MSG_NONE;
     pthread_mutex_unlock(&_mutex);
-    pthread_join(_threadId, 0);
+    //pthread_join(_threadId, 0);
 }
 
 void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_OnStop(JNIEnv *env, jclass type)
