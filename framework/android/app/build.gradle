@@ -22,6 +22,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+	sourceSets {
+        main.assets.srcDirs += '../../../Data'
+    }
     externalNativeBuild {
         cmake {
             path "CMakeLists.txt"

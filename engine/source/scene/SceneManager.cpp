@@ -74,9 +74,11 @@ namespace sh
 			ClearScene();
 
 			ResourceManager* resourceManager = Device::GetInstance()->GetResourceManager();
+			std::vector<char> buffer = io::FileSystem::GetInstance()->ReadFile(filename);
 
 			pugi::xml_document doc;
-			pugi::xml_parse_result result = doc.load_file(filename);
+			//pugi::xml_parse_result result = doc.load_file(filename);
+			pugi::xml_parse_result result = doc.load_buffer(buffer.data(), buffer.size());
 			
 			// Read materials
 			pugi::xml_node materialsNode = doc.child("materials");

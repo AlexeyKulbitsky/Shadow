@@ -16,7 +16,8 @@ namespace sh
 			~RenderTechnique();
 
 			virtual void Load(const String& filePath) override;
-			void LoadAlternative(const String& filePath);
+			virtual void Load(const std::vector<char>& data) override;
+			void LoadInternal(const pugi::xml_document& document);
 			virtual void Unload() override;
 
 			const String& GetName() const { return m_name; }

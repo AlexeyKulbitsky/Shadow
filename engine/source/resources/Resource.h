@@ -18,6 +18,7 @@ namespace sh
 		};
 
 		virtual void Load(const String& filePath){}
+		virtual void Load(const std::vector<char>& data) { }
 		virtual void Load(const std::vector<String>& fileNames){}
 		virtual void Unload(){}
 

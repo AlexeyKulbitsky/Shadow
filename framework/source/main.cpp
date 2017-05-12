@@ -14,13 +14,26 @@ int main()
 	sh::Device* device = sh::CreateDevice(params);
 	device->Init();
 
+	sh::io::FileSystem* fs = device->GetFileSystem();
+	fs->AddFolder(sh::String("../../../data"));
+	fs->Init();
+
 	sh::video::Driver* driver = device->GetDriver();
 	//driver->SetViewport(0U, 0U, 640U, 480U);
 	driver->SetViewport(0U, 0U, 300U, 300U);
 	driver->SetClearColor(sh::math::Vector4f(0.5f, 0.5f, 0.5f, 1.0f));
 
-	//sh::scene::SceneManager* sceneMgr = new sh::scene::SceneManager();
-	//device->SetSceneManager(sceneMgr);
+	sh::scene::SceneManager* sceneMgr = new sh::scene::SceneManager();
+	sh::ComponentsFactory* factory = new sh::ComponentsFactory();
+	sceneMgr->SetComponentsFactory(factory);
+	device->SetSceneManager(sceneMgr);
+
+	sh::scene::Camera* camera = new sh::scene::Camera();
+	camera->SetProjection(3.1415926535f / 3.0f, params.width, params.height, 0.1f, 1000.0f);
+	camera->SetPosition(sh::math::Vector3f(0.0f));
+	sceneMgr->SetCamera(camera);
+
+	sceneMgr->LoadScene("test_scene.xml");
 
 	if (device)
 	{

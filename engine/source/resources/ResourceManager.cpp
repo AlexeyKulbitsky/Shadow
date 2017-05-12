@@ -104,8 +104,9 @@ namespace sh
 				return m_renderTechniques[i];
 		}
 
+#if defined SHADOW_WINDOWS
 		// Find file in file system
-		io::FileSystem* fs = Device::GetInstance()->GetFileSystem();
+		io::FileSystem* fs = Device::GetInstance()->GetFileSystem(); 
 		io::FileInfo rtFileInfo = fs->FindFile(fileName);
 
 		// If file exists in file system then load
@@ -117,6 +118,17 @@ namespace sh
 			m_renderTechniques.push_back(rt);
 			return rt;
 		}
+#elif defined SHADOW_ANDROID
+		io::FileSystem* fs = Device::GetInstance()->GetFileSystem();
+		std::vector<char> buffer;
+		buffer = fs->ReadFile(fileName);
+
+		video::RenderTechniquePtr rt(new video::RenderTechnique());
+		rt->Load(buffer);
+		rt->SetFileName(fileName);
+		m_renderTechniques.push_back(rt);
+		return rt;
+#endif
 
 		return nullptr;
 	}

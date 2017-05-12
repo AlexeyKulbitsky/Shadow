@@ -5,8 +5,12 @@
 #include <thread>
 #include <mutex>
 
+#include <io/android/AndroidFileSystem.h>
+
 static ANativeWindow *window = 0;
 static sh::Device* device = 0;
+int width = 0;
+int height = 0;
 
 bool isDeviceCreated = false;
 
@@ -42,6 +46,16 @@ void shadowThreadFunction(sh::Device* _device)
                     _device->GetDriver()->Init();
                     _device->GetDriver()->SetViewport(0, 0, 500, 500);
                     _device->GetDriver()->SetClearColor(sh::math::Vector4f(1.0f, 0.0f, 0.0f, 1.0f));
+
+                    sh::scene::SceneManager* sceneMgr = new sh::scene::SceneManager();
+                    sh::ComponentsFactory* factory = new sh::ComponentsFactory();
+                    sceneMgr->SetComponentsFactory(factory);
+                    device->SetSceneManager(sceneMgr);
+
+                    sh::scene::Camera* camera = new sh::scene::Camera();
+                    camera->SetProjection(3.1415926535f / 3.0f, width, height, 0.1f, 1000.0f);
+                    camera->SetPosition(sh::math::Vector3f(0.0f));
+                    sceneMgr->SetCamera(camera);
                 }
                 else
                 {
@@ -89,6 +103,25 @@ void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_OnCreate(JNIEnv *en
     }
 }
 
+void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_OnExtendedCreate(JNIEnv *env, jclass type, jobject mainActivity, jobject assManager, jstring dataPath)
+{
+    if (!isDeviceCreated)
+    {
+        device = sh::CreateDevice();
+
+        AAssetManager *mng = AAssetManager_fromJava(env, assManager);
+        sh::String stdDataPath = env->GetStringUTFChars(dataPath, NULL);
+
+        sh::io::AndroidFileSystem * fs = static_cast<sh::io::AndroidFileSystem*>(device->GetFileSystem());
+        fs->SetAssetManager(mng);
+        fs->SetDataPath(stdDataPath);
+
+        isDeviceCreated = true;
+
+        shadowThread = std::thread(shadowThreadFunction, device);
+    }
+}
+
 void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_OnDestroy(JNIEnv *env, jclass type)
 {
     // This method is called even if orientation changes
@@ -128,10 +161,12 @@ void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_SurfaceCreated(JNIE
 {
 }
 
-void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_SurfaceChanged(JNIEnv *env, jclass type, jobject surface, jint width, jint height)
+void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_SurfaceChanged(JNIEnv *env, jclass type, jobject surface, jint _width, jint _height)
 {
     shadowMutex.lock();
     window = ANativeWindow_fromSurface(env, surface);
+    width = _width;
+    height = _height;
     shMessage = ShadowMessage::Create;
     shadowMutex.unlock();
 }

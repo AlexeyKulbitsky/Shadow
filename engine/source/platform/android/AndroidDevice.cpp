@@ -3,6 +3,7 @@
 #include "../../video/GLContext/EGLContextManager.h"
 #include "../../video/GLES20/GLES20Driver.h"
 #include "../../scene/SceneManager.h"
+#include "../../io/android/AndroidFileSystem.h"
 
 using namespace sh;
 using namespace video;
@@ -27,6 +28,11 @@ AndroidDevice::AndroidDevice(const CreationParameters &parameters)
 	{
 		;
 	}
+
+#if defined SHADOW_ANDROID
+	io::FileSystem::CreateInstance<io::AndroidFileSystem>();
+	m_fileSystem = io::FileSystem::GetInstance();
+#endif
 
 	CreateDriver();
 }

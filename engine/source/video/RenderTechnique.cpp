@@ -29,44 +29,33 @@ namespace sh
 
 		void RenderTechnique::Load(const String& filePath)
 		{
-			/*
 			pugi::xml_document doc;
 			pugi::xml_parse_result result = doc.load_file(filePath.c_str());
-			pugi::xml_node techniqueNode = doc.first_child();
-			pugi::xml_attribute nameAttr = techniqueNode.attribute("name");
-			if (nameAttr)
-			{
-				m_name = nameAttr.as_string();
-			}
 
-			pugi::xml_node renderPipelineNode = techniqueNode.child("pipeline");
-			while (renderPipelineNode)
-			{		
-				RenderPipelinePtr renderPipeline = Device::GetInstance()->GetDriver()->CreateRenderPipeline();
-				renderPipeline->Load(renderPipelineNode);
-
-				m_renderPipelines.push_back(renderPipeline);
-				
-				renderPipelineNode = renderPipelineNode.next_sibling();
-			}
-			*/
-
-			LoadAlternative(filePath);
+			LoadInternal(doc);
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////
 
-		void RenderTechnique::LoadAlternative(const String& filePath)
+		void RenderTechnique::Load( const std::vector<char>& data )
 		{
 			pugi::xml_document doc;
-			pugi::xml_parse_result result = doc.load_file(filePath.c_str());
+			pugi::xml_parse_result result = doc.load_buffer(data.data(), data.size());
+
+			LoadInternal(doc);
+		}
+
+		//////////////////////////////////////////////////////////////////////////////////////
+
+		void RenderTechnique::LoadInternal(const pugi::xml_document& doc)
+		{
 			pugi::xml_node techniqueNode = doc.first_child();
 			pugi::xml_attribute nameAttr = techniqueNode.attribute("name");
 			if (nameAttr)
 			{
 				m_name = nameAttr.as_string();
 			}
-
+			
 			// Load pipeline
 			pugi::xml_node pipelineNode = techniqueNode.child("pipeline");
 
