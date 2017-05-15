@@ -32,14 +32,12 @@ namespace io
                 {
                     String fullName = folders[i] + "/" + tempName;
                     asset = AAssetManager_open(m_assetManager, fullName.c_str(), AASSET_MODE_STREAMING);
-                    AAssetDir_close(assetDir);
+                    //AAssetDir_close(assetDir);
                     break;
                 }
             }
             AAssetDir_close(assetDir);
         }
-
-
 
 
         if (asset == NULL)
@@ -52,6 +50,13 @@ namespace io
         AAsset_close(asset);
 
 		return buffer;
+	}
+
+	File AndroidFileSystem::LoadFile(const String& filename)
+	{
+		File file;
+		file.m_data = ReadFile(filename);
+		return file;
 	}
 
 } // io

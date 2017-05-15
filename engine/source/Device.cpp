@@ -1,5 +1,10 @@
 #include "Device.h"
 
+#include "scene/ModelLoader/TinyObjModelLoader.h"
+#include "scene/SceneManager.h"
+#include "scene/Camera.h"
+#include "entity/ComponentsFactory.h"
+
 #include <functional>
 using namespace std::placeholders;
 
@@ -29,10 +34,25 @@ namespace sh
 	{
 	}
 
-	void Device::SetWindow(void* window)
+	void Device::Init()
 	{
-		m_creationParameters.WinId = window;
+		// Model loader
+		scene::ModelLoader* modelLoader = new sh::scene::TinyObjModelLoader();
+		scene::ModelLoader::SetInstance(modelLoader);
+
+		// Scene manager
+		sh::scene::SceneManager* sceneMgr = new sh::scene::SceneManager();
+		sh::ComponentsFactory* factory = new sh::ComponentsFactory();
+		sceneMgr->SetComponentsFactory(factory);
+		SetSceneManager(sceneMgr);
+
+		// Camera
+		sh::scene::Camera* camera = new sh::scene::Camera();
+		camera->SetProjection(3.1415926535f / 3.0f, m_creationParameters.width, m_creationParameters.height, 0.1f, 1000.0f);
+		camera->SetPosition(sh::math::Vector3f(0.0f));
+		sceneMgr->SetCamera(camera);
 	}
+
 
 	void Device::Destroy()
 	{

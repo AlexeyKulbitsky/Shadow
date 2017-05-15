@@ -28,13 +28,10 @@ namespace sh
 		Device(const CreationParameters &parameters);	
 		virtual ~Device();
 
-		virtual void Init(){}
-		virtual void SetWindow(void* window);
+		virtual void Init();
 		virtual bool Run() = 0;
 		virtual void Update(f32 deltaTime) = 0;
-		//virtual void OnEvent(const Event& e) = 0;
 		virtual u64 GetTime() = 0;
-		virtual void CreateWindowContext() {}
 
 		virtual SHADOW_API video::Driver* SH_CALLCONV GetDriver() { return m_driver; }
 		void SetSceneManager(scene::SceneManager* manager) { m_sceneManager = manager; }
@@ -48,7 +45,7 @@ namespace sh
 		static Device* GetInstance() { return s_instance; }
 		static void Destroy();
 		void* GetWinId() { return m_creationParameters.WinId; }
-
+		void SetWinId(void* window) { m_creationParameters.WinId = window; }
 
 		Event<void, int, int, MouseEventType, MouseCode> mouseEvent;
 		Event<void, int> mouseWheelEvent;

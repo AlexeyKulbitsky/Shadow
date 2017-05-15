@@ -53,10 +53,15 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////
 
-		TexturePtr TextureLoader::LoadSTB(const String& path)
+		TexturePtr TextureLoader::LoadSTB(const String& filename)
 		{
+			io::File file = io::FileSystem::GetInstance()->LoadFile(filename);
+			const char* dataPtr = file.GetData().data();
+			const u8* uDataPtr = reinterpret_cast<const u8*>(dataPtr);
+			
 			int texWidth, texHeight, texChannels;
-			stbi_uc* pixels = stbi_load(path.c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
+			//stbi_uc* pixels = stbi_load(path.c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
+			stbi_uc* pixels = stbi_load_from_memory(uDataPtr, file.GetData().size(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
 			SH_ASSERT(pixels, "failed to load texture image!");
 
 			TextureDescription desc;

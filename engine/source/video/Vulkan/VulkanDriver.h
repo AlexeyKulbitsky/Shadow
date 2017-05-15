@@ -187,6 +187,7 @@ namespace sh
 
 			VulkanDeleter<VkSemaphore> m_imageAvailableSemaphore{ m_device, vkDestroySemaphore };
 			VulkanDeleter<VkSemaphore> m_renderFinishedSemaphore{ m_device, vkDestroySemaphore };
+			VulkanDeleter<VkSemaphore> m_showImageSemaphore{ m_device, vkDestroySemaphore };
 
 			VulkanDeleter<VkDescriptorPool> m_descriptorPool{ m_device, vkDestroyDescriptorPool };
 			VulkanDeleter<VkImageView> m_textureImageView{ m_device, vkDestroyImageView };

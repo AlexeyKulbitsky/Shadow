@@ -22,6 +22,7 @@ namespace io
 
 		void SetAssetManager(AAssetManager* manager) { m_assetManager = manager; }
 		void SetDataPath(const String& dataPath) { m_dataPath = dataPath; }
+		virtual File LoadFile(const String& filename) override;
 
 	private:
 		AAssetManager* m_assetManager;

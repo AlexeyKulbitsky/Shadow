@@ -21,7 +21,9 @@ namespace sh
 
 			virtual bool Init() override;
 			virtual void BeginRendering() override;
-			virtual void EndRendering() override;			
+			virtual void EndRendering() override;		
+
+			virtual void SetSurface(void* winId, u32 width, u32 height) override;
 
 			// Viewport management
 			virtual void SetViewport(u32 x, u32 y, u32 width, u32 height) override;

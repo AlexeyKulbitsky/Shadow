@@ -20,7 +20,7 @@ namespace sh
 		virtual bool Run() override;
 //		virtual void OnEvent(const Event& e) override;
 		virtual u64 GetTime() override;
-		virtual void CreateWindowContext() override;
+		
 
 		bool CreateDriver();
 	private:

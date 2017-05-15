@@ -58,6 +58,12 @@ namespace sh
 				return m_textures[i];
 		}
 
+		video::TexturePtr texture = m_textureLoader->Load(fileName);
+		texture->SetFileName(fileName);
+		m_textures.push_back(texture);
+		return texture;
+
+#if 0
 		// Find file in file system
 		io::FileSystem* fs = Device::GetInstance()->GetFileSystem();
 		io::FileInfo textureFileInfo = fs->FindFile(fileName);
@@ -71,6 +77,7 @@ namespace sh
 
 			return texture;
 		}
+#endif
 
 		return nullptr;
 	}
@@ -103,6 +110,16 @@ namespace sh
 			if (m_renderTechniques[i]->GetFileName() == fileName)
 				return m_renderTechniques[i];
 		}
+		io::FileSystem* fs = Device::GetInstance()->GetFileSystem();
+		io::File file = fs->LoadFile(fileName);
+
+		video::RenderTechniquePtr rt(new video::RenderTechnique());
+		rt->Load(file.GetData());
+		rt->SetFileName(fileName);
+		m_renderTechniques.push_back(rt);
+		return rt;
+
+#if 0
 
 #if defined SHADOW_WINDOWS
 		// Find file in file system
@@ -128,6 +145,8 @@ namespace sh
 		rt->SetFileName(fileName);
 		m_renderTechniques.push_back(rt);
 		return rt;
+#endif
+
 #endif
 
 		return nullptr;
@@ -172,6 +191,12 @@ namespace sh
 				return m_models[i];
 		}
 
+		scene::ModelBasePtr model = scene::ModelLoader::GetInstance()->Load(fileName);
+		model->SetFileName(fileName);
+		m_models.push_back(model);
+		return model;
+
+#if 0
 		// Find file in file system
 		io::FileSystem* fs = Device::GetInstance()->GetFileSystem();
 		io::FileInfo modelFileInfo = fs->FindFile(fileName);
@@ -184,7 +209,7 @@ namespace sh
 			m_models.push_back(model);
 			return model;
 		}
-
+#endif
 		return nullptr;
 	}
 

@@ -13,6 +13,7 @@ int width = 0;
 int height = 0;
 
 bool isDeviceCreated = false;
+bool isDriverInited = false;
 
 std::thread shadowThread;
 std::mutex shadowMutex;
@@ -38,34 +39,28 @@ void shadowThreadFunction(sh::Device* _device)
         {
             case ShadowMessage::Create:
             {
-                if (!device->GetContextManager()->IsContextCreated())
+                if (!isDriverInited)
                 {
-                    _device->SetWindow(window);
-                    _device->GetContextManager()->AttachWindow(device->GetWinId());
-                    _device->GetContextManager()->CreateContext(true);
-                    _device->GetDriver()->Init();
-                    _device->GetDriver()->SetViewport(0, 0, 500, 500);
+                    _device->SetWinId(window);
+                    _device->Init();
+
                     _device->GetDriver()->SetClearColor(sh::math::Vector4f(1.0f, 0.0f, 0.0f, 1.0f));
-
-                    sh::scene::SceneManager* sceneMgr = new sh::scene::SceneManager();
-                    sh::ComponentsFactory* factory = new sh::ComponentsFactory();
-                    sceneMgr->SetComponentsFactory(factory);
-                    device->SetSceneManager(sceneMgr);
-
-                    sh::scene::Camera* camera = new sh::scene::Camera();
+                    auto sceneMgr = _device->GetSceneManager();
+                    auto camera = sceneMgr->GetCamera();
                     camera->SetProjection(3.1415926535f / 3.0f, width, height, 0.1f, 1000.0f);
-                    camera->SetPosition(sh::math::Vector3f(0.0f));
-                    sceneMgr->SetCamera(camera);
+                    sceneMgr->LoadScene("test_scene.xml");
+
+                    isDriverInited = true;
                 }
                 else
                 {
-                    _device->GetContextManager()->DestroyContext(false);
-                    _device->SetWindow(window);
-                    _device->GetContextManager()->AttachWindow(device->GetWinId());
-                    _device->GetContextManager()->CreateContext(false);
-                    _device->GetDriver()->SetViewport(0, 0, 500, 500);
+                    auto sceneMgr = _device->GetSceneManager();
+                    auto camera = sceneMgr->GetCamera();
+                    camera->SetProjection(3.1415926535f / 3.0f, width, height, 0.1f, 1000.0f);
+                    _device->GetDriver()->SetSurface(window, width, height);
                     _device->GetDriver()->SetClearColor(sh::math::Vector4f(0.0f, 0.0f, 1.0f, 1.0f));
                 }
+
                 shMessage = ShadowMessage::Run;
             }
             break;
@@ -77,6 +72,9 @@ void shadowThreadFunction(sh::Device* _device)
             case ShadowMessage::Run:
             {
                 _device->GetDriver()->BeginRendering();
+
+                _device->GetSceneManager()->Update();
+
                 _device->GetDriver()->EndRendering();
             }
             break;
@@ -92,18 +90,7 @@ void shadowThreadFunction(sh::Device* _device)
 extern "C"
 {
 
-void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_OnCreate(JNIEnv *env, jclass type)
-{
-    if (!isDeviceCreated)
-    {
-        device = sh::CreateDevice();
-        isDeviceCreated = true;
-
-        shadowThread = std::thread(shadowThreadFunction, device);
-    }
-}
-
-void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_OnExtendedCreate(JNIEnv *env, jclass type, jobject mainActivity, jobject assManager, jstring dataPath)
+void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_OnCreate(JNIEnv *env, jclass type, jobject mainActivity, jobject assManager, jstring dataPath)
 {
     if (!isDeviceCreated)
     {

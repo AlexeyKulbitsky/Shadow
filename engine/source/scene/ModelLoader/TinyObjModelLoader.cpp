@@ -24,21 +24,29 @@ namespace sh
 
 		}
 
-		ModelBasePtr TinyObjModelLoader::Load(const char* path)
+		ModelBasePtr TinyObjModelLoader::Load(const std::string &filename)
 		{
 			tinyobj::attrib_t attrib;
 			std::vector<tinyobj::shape_t> shapes;
 			std::vector<tinyobj::material_t> materials;
 			std::string err;
 
-			String fullPath(path);
-			String::size_type pos = String(path).find_last_of("\\/");
-			String materialFolder = String(fullPath).substr(0, pos) + "/";
+			//String fullPath(path);
+			//String::size_type pos = String(path).find_last_of("\\/");
+			//String materialFolder = String(fullPath).substr(0, pos) + "/";
 
-			if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &err, path, materialFolder.c_str()))
-			{
-				throw std::runtime_error(err);
-			}
+			io::File file = io::FileSystem::GetInstance()->LoadFile(filename);
+			std::stringstream stringBuffer;
+			stringBuffer << file.GetData().data();
+
+			bool res = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, &stringBuffer);
+
+			SH_ASSERT(res, "Can not load model %s", filename.c_str());
+			
+			//if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &err, path, materialFolder.c_str()))
+			//{
+			//	throw std::runtime_error(err);
+			//}
 
 			ModelBasePtr model(new ModelBase());
 
@@ -130,9 +138,9 @@ namespace sh
 			return model;
 		}
 
-		ModelBasePtr TinyObjModelLoader::Load(const std::string &path)
+		ModelBasePtr TinyObjModelLoader::Load(const char* path)
 		{
-			return Load(path.c_str());
+			return Load(String(path));
 		}
 	}
 }

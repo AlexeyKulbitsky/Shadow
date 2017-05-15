@@ -23,7 +23,7 @@
 	</entity>
 	<entity name="test_cube">
 		<component name="transform">
-			<position val="-1.05 0 -17.12" />
+			<position val="0 0 -2" />
 			<rotation val="0 0 0 1" />
 			<scale val="1 1 1" />
 		</component>

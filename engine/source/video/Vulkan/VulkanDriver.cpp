@@ -245,16 +245,8 @@ namespace sh
 
 			*/
 
-
-
 			
 			VkCommandBuffer primaryCommandBuffer = m_primaryCommandBuffer->GetVulkanId();
-			/*
-			if (m_executableCommandBuffers.size() > 0)
-			{
-				vkCmdExecuteCommands(primaryCommandBuffer, m_executableCommandBuffers.size(), m_executableCommandBuffers.data());
-			}
-			*/
 
 			m_primaryCommandBuffer->Execute();
 
@@ -263,8 +255,6 @@ namespace sh
 
 			VkResult res = vkEndCommandBuffer(primaryCommandBuffer);
 			SH_ASSERT(res == VK_SUCCESS, "failed to record command buffer!");
-
-
 
 			// Submitting
 			VkSubmitInfo submitInfo = {};
@@ -297,15 +287,15 @@ namespace sh
 			VkPresentInfoKHR presentInfo = {};
 			presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
 			presentInfo.waitSemaphoreCount = 1;
+
 			presentInfo.pWaitSemaphores = signalSemaphores;
 			VkSwapchainKHR swapChains[] = { m_swapChain };
 			presentInfo.swapchainCount = 1;
 			presentInfo.pSwapchains = swapChains;
 			presentInfo.pImageIndices = &m_currentImageIndex;
+
 			res = vkQueuePresentKHR(m_presentQueue, &presentInfo);
 			SH_ASSERT(res == VK_SUCCESS, "Failed to present render result!");
-
-
 
 			vkDestroyFence(m_device, renderFence, nullptr);
 			res = vkQueueWaitIdle(m_presentQueue);
@@ -981,10 +971,14 @@ namespace sh
 			VkSemaphoreCreateInfo semaphoreInfo = {};
 			semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
 
-			SH_ASSERT(vkCreateSemaphore(m_device, &semaphoreInfo, nullptr, m_imageAvailableSemaphore.Replace()) == VK_SUCCESS,
-				"failed to create semaphores!");
-			SH_ASSERT(vkCreateSemaphore(m_device, &semaphoreInfo, nullptr, m_renderFinishedSemaphore.Replace()) == VK_SUCCESS,
-				"failed to create semaphores!");			
+			VkResult res = vkCreateSemaphore(m_device, &semaphoreInfo, nullptr, m_imageAvailableSemaphore.Replace());
+			SH_ASSERT(res == VK_SUCCESS, "Failed to create semaphores!");
+
+			res = vkCreateSemaphore(m_device, &semaphoreInfo, nullptr, m_renderFinishedSemaphore.Replace());
+			SH_ASSERT(res == VK_SUCCESS, "Failed to create semaphores!");			
+
+			res = vkCreateSemaphore(m_device, &semaphoreInfo, nullptr, m_showImageSemaphore.Replace());
+			SH_ASSERT(res == VK_SUCCESS, "Failed to create semaphores!");
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////

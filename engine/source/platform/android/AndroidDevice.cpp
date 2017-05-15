@@ -48,8 +48,13 @@ AndroidDevice::~AndroidDevice()
 
 void AndroidDevice::Init()
 {
-	m_GLContextManager->InitContext(m_creationParameters);
+	//m_GLContextManager->InitContext(m_creationParameters);
+	//m_driver->Init();
+
+	m_driver->SetSurface(m_creationParameters.WinId, m_creationParameters.width, m_creationParameters.height);
 	m_driver->Init();
+
+	Device::Init();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -68,28 +73,6 @@ bool AndroidDevice::Run()
 
 ////////////////////////////////////////////////////////////////////////
 
-/*
-void AndroidDevice::OnEvent(const Event& e)
-{
-	switch (e.type)
-	{
-	case EventType::MOUSE_INPUT_EVENT:
-	{
-		m_inputManager->OnEvent(e);
-	}
-		break;
-	case EventType::KEYBOARD_INPUT_EVENT:
-	{
-		m_inputManager->OnEvent(e);
-	}
-		break;
-	default:
-		break;
-	}
-}
-*/
-////////////////////////////////////////////////////////////////////////
-
 u64 AndroidDevice::GetTime()
 {
 	//static LARGE_INTEGER freq;
@@ -99,22 +82,6 @@ u64 AndroidDevice::GetTime()
 	//return (crt.QuadPart * 1000000) / freq.QuadPart;
 	u64 result = 0;
 	return result;
-}
-
-////////////////////////////////////////////////////////////////////////
-
-void AndroidDevice::CreateWindowContext()
-{
-	if (!m_GLContextManager->IsContextCreated())
-	{
-		bool success = m_GLContextManager->CreateContext(true);
-		m_driver->Init();
-	}
-	else
-	{
-		m_GLContextManager->DestroyContext(false);
-		bool success = m_GLContextManager->CreateContext(false);
-	}
 }
 
 ////////////////////////////////////////////////////////////////////////

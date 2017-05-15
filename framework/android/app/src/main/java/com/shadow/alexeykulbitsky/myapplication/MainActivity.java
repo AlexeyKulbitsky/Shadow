@@ -40,9 +40,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback
         String dataPath = getFilesDir().getPath() + "/";
         m_assetManager = getResources().getAssets();
 
-        ShadowJNI.OnExtendedCreate(this, m_assetManager, dataPath);
-
-        //ShadowJNI.OnCreate();
+        ShadowJNI.OnCreate(this, m_assetManager, dataPath);
     }
 
     @Override

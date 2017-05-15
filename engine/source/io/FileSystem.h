@@ -2,6 +2,7 @@
 #define SHADOW_FILE_SYSTEM_INCLUDE
 
 #include "../Globals.h"
+#include "File.h"
 
 namespace sh
 {
@@ -52,6 +53,7 @@ namespace sh
 			virtual bool SaveFile(const std::vector<char>& data, const String& fileName) { return false; }
 			virtual bool SaveFile(const String& data, const String& fileName) { return false; }
 			virtual std::vector<char> ReadFile(const String& filename) { return std::vector<char>(); }
+			virtual File LoadFile(const String& filename) { return File(); }
 		};
 	}
 }

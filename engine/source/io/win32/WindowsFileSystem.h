@@ -25,6 +25,7 @@ namespace io
 		virtual bool SaveFile(const std::vector<char>& data, const String& fileName) override;
 		virtual bool SaveFile(const String& data, const String& fileName) override;
 		virtual std::vector<char> ReadFile(const String& filename) override;
+		virtual File LoadFile(const String& filename) override;
 
 	private:
 		void CollectFilesFromFolder(const String& folder, bool recursive = true);

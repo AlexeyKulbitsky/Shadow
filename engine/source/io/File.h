@@ -12,11 +12,14 @@ namespace io
 	class File
 	{
 		friend class FileSystem;
+		friend class WindowsFileSystem;
+		friend class AndroidFileSystem;
 	public:
-		const std::vector<u8>& GetData() const { return m_data; }
-		u8* GetData() { return m_data.data(); }
+		const std::vector<char>& GetData() const { return m_data; }
+		//char* GetData() { return m_data.data(); }
+
 	private:
-		std::vector<u8> m_data;
+		std::vector<char> m_data;
 	};
 
 } // io

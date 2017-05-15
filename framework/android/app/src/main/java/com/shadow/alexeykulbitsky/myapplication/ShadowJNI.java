@@ -4,8 +4,7 @@ import android.content.res.AssetManager;
 
 public class ShadowJNI
 {
-    public static native void OnCreate();
-    public static native void OnExtendedCreate(MainActivity activity, AssetManager assManager, String dataPath);
+    public static native void OnCreate(MainActivity activity, AssetManager assManager, String dataPath);
     public static native void OnDestroy();
     public static native void OnStart();
     public static native void OnResume();

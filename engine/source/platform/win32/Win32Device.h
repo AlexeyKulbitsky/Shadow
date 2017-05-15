@@ -20,9 +20,7 @@ namespace sh
 		virtual void Init() override;
 		virtual void Update(f32 deltaTime) override;
 		virtual bool Run() override;
-		//virtual void OnEvent(const Event& e) override;
 		virtual u64 GetTime() override;
-		virtual void CreateWindowContext() override;
 
 		bool CreateDriver();
 	private:
