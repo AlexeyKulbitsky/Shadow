@@ -5,13 +5,14 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.shadow.alexeykulbitsky.myapplication"
-        minSdkVersion 15
+        minSdkVersion 8
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
+                abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
                 cppFlags "-std=c++11 -frtti -fexceptions"
             }
         }
@@ -20,6 +21,28 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    productFlavors {
+        GLES20 {
+            minSdkVersion 8
+        }
+        GLES30 {
+            minSdkVersion 18
+        }
+        GLES31 {
+            minSdkVersion 21
+        }
+        Vulkan {
+            minSdkVersion 24
+
+            externalNativeBuild {
+                cmake {
+                    cppFlags "-std=c++11 -frtti -fexceptions"
+                    arguments "-DUSE_VULKAN_API=1"
+                }
+
+            }
         }
     }
 	sourceSets {

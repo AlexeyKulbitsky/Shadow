@@ -12,6 +12,7 @@
 	#define SHADOW_WINDOWS
 	#define SH_WINDOWS_API
 	#define SH_COMPILE_WITH_WINDOWS_DEVICE
+	#define NOMINMAX
 #endif
 
 #if defined(ANDROID) || defined(__ANDROID__)

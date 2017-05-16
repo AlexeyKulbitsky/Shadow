@@ -44,7 +44,7 @@ void shadowThreadFunction(sh::Device* _device)
                     _device->SetWinId(window);
                     _device->Init();
 
-                    _device->GetDriver()->SetClearColor(sh::math::Vector4f(1.0f, 0.0f, 0.0f, 1.0f));
+                    //_device->GetDriver()->SetClearColor(sh::math::Vector4f(1.0f, 0.0f, 0.0f, 1.0f));
                     auto sceneMgr = _device->GetSceneManager();
                     auto camera = sceneMgr->GetCamera();
                     camera->SetProjection(3.1415926535f / 3.0f, width, height, 0.1f, 1000.0f);
@@ -58,7 +58,7 @@ void shadowThreadFunction(sh::Device* _device)
                     auto camera = sceneMgr->GetCamera();
                     camera->SetProjection(3.1415926535f / 3.0f, width, height, 0.1f, 1000.0f);
                     _device->GetDriver()->SetSurface(window, width, height);
-                    _device->GetDriver()->SetClearColor(sh::math::Vector4f(0.0f, 0.0f, 1.0f, 1.0f));
+                    //_device->GetDriver()->SetClearColor(sh::math::Vector4f(0.0f, 0.0f, 1.0f, 1.0f));
                 }
 
                 shMessage = ShadowMessage::Run;

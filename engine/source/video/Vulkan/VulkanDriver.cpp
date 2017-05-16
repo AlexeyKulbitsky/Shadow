@@ -26,6 +26,7 @@
 #include <vector>
 #include <cstring>
 #include <set>
+#include <limits>
 
 #include <stb_image.h>
 
@@ -166,7 +167,7 @@ namespace sh
 
 		void VulkanDriver::BeginRendering()
 		{
-			vkAcquireNextImageKHR(m_device, m_swapChain, 500000U, m_imageAvailableSemaphore, VK_NULL_HANDLE, &m_currentImageIndex);
+			vkAcquireNextImageKHR(m_device, m_swapChain, std::numeric_limits<u64>::max(), m_imageAvailableSemaphore, VK_NULL_HANDLE, &m_currentImageIndex);
 			
 			VkFramebuffer framebuffer = m_swapChainFramebuffers[m_currentImageIndex];
 
@@ -212,44 +213,9 @@ namespace sh
 		}
 		void VulkanDriver::EndRendering()
 		{
-			/*
-			VkSubmitInfo submitInfo = {};
-			submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-			VkSemaphore waitSemaphores[] = { m_imageAvailableSemaphore };
-			VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
-			submitInfo.waitSemaphoreCount = 1;
-			submitInfo.pWaitSemaphores = waitSemaphores;
-			submitInfo.pWaitDstStageMask = waitStages;
-			submitInfo.commandBufferCount = m_executableCommandBuffers.size();
-			submitInfo.pCommandBuffers = m_executableCommandBuffers.data();
-			VkSemaphore signalSemaphores[] = { m_renderFinishedSemaphore };
-			submitInfo.signalSemaphoreCount = 1;
-			submitInfo.pSignalSemaphores = signalSemaphores;
-			VkResult res = vkQueueSubmit(m_graphicsQueue, 1, &submitInfo, VK_NULL_HANDLE);
-			SH_ASSERT(res == VK_SUCCESS, "Failed to submit draw command buffer!");
-
-
-			VkPresentInfoKHR presentInfo = {};
-			presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
-			presentInfo.waitSemaphoreCount = 1;
-			presentInfo.pWaitSemaphores = signalSemaphores;
-			VkSwapchainKHR swapChains[] = { m_swapChain };
-			presentInfo.swapchainCount = 1;
-			presentInfo.pSwapchains = swapChains;
-			presentInfo.pImageIndices = &m_currentImageIndex;
-			res = vkQueuePresentKHR(m_presentQueue, &presentInfo);
-			SH_ASSERT(res == VK_SUCCESS, "Failed to present render result!");
-			
-			m_executableCommandBuffers.clear();
-
-
-			*/
-
-			
 			VkCommandBuffer primaryCommandBuffer = m_primaryCommandBuffer->GetVulkanId();
 
 			m_primaryCommandBuffer->Execute();
-
 
 			vkCmdEndRenderPass(primaryCommandBuffer);
 
@@ -293,13 +259,15 @@ namespace sh
 			presentInfo.swapchainCount = 1;
 			presentInfo.pSwapchains = swapChains;
 			presentInfo.pImageIndices = &m_currentImageIndex;
+			presentInfo.pNext = nullptr;
+			presentInfo.pResults = nullptr;
 
 			res = vkQueuePresentKHR(m_presentQueue, &presentInfo);
 			SH_ASSERT(res == VK_SUCCESS, "Failed to present render result!");
-
-			vkDestroyFence(m_device, renderFence, nullptr);
 			res = vkQueueWaitIdle(m_presentQueue);
 			SH_ASSERT(res == VK_SUCCESS, "Failed waiting!");
+
+			vkDestroyFence(m_device, renderFence, nullptr);
 
 			m_executableCommandBuffers.clear();
 		}
@@ -970,6 +938,8 @@ namespace sh
 		{
 			VkSemaphoreCreateInfo semaphoreInfo = {};
 			semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+			semaphoreInfo.pNext = nullptr;
+			semaphoreInfo.flags = 0;
 
 			VkResult res = vkCreateSemaphore(m_device, &semaphoreInfo, nullptr, m_imageAvailableSemaphore.Replace());
 			SH_ASSERT(res == VK_SUCCESS, "Failed to create semaphores!");

@@ -58,6 +58,13 @@ file(GLOB SHADOW_SRC
     "../../../libs/pugixml/src/*.cpp"
 )
 
+if (USE_VULKAN_API)
+    file(GLOB VULKAN_SRC
+        "../../../engine/source/video/Vulkan/*.cpp"
+        )
+    list(APPEND SHADOW_SRC ${VULKAN_SRC})
+endif(USE_VULKAN_API)
+
 add_library( # Sets the name of the library.
              shadow-lib
 
