@@ -588,6 +588,7 @@ void Win32Device::Init()
 {
 	m_driver->SetSurface(m_creationParameters.WinId, m_creationParameters.width, m_creationParameters.height);
 	m_driver->Init();
+	m_driver->SetViewport(0U, 0U, m_creationParameters.width, m_creationParameters.height);
 
 	Device::Init();
 }

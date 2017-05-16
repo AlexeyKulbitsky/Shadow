@@ -267,8 +267,8 @@ namespace sh
 			submitInfo.commandBufferCount = 1;
 			submitInfo.pCommandBuffers = &primaryCommandBuffer;
 			VkSemaphore signalSemaphores[] = { m_renderFinishedSemaphore };
-			submitInfo.signalSemaphoreCount = 1;
-			submitInfo.pSignalSemaphores = signalSemaphores;
+			submitInfo.signalSemaphoreCount = 0;//1;
+			submitInfo.pSignalSemaphores = nullptr;//signalSemaphores;
 
 			VkFence renderFence = {};
 			VkFenceCreateInfo fenceCreateInfo = {};
@@ -286,9 +286,9 @@ namespace sh
 
 			VkPresentInfoKHR presentInfo = {};
 			presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
-			presentInfo.waitSemaphoreCount = 1;
+			presentInfo.waitSemaphoreCount = 0;//1;
 
-			presentInfo.pWaitSemaphores = signalSemaphores;
+			presentInfo.pWaitSemaphores = nullptr;//signalSemaphores;
 			VkSwapchainKHR swapChains[] = { m_swapChain };
 			presentInfo.swapchainCount = 1;
 			presentInfo.pSwapchains = swapChains;
