@@ -1,7 +1,8 @@
 #ifndef SHADOW_VULKAN_COMMON_INCLUDE
 #define SHADOW_VULKAN_COMMON_INCLUDE
 
-#include "VulkanDeleter.h"
+//#include "VulkanDeleter.h"
+#include "VulkanFunctions.h"
 
 namespace sh
 {

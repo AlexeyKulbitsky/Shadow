@@ -32,8 +32,8 @@ project "Application"
       optimize "On"
 	  
 	filter "platforms:Win32"
-		libdirs { "../libs/egl/lib/release", "../libs/vulkan/bin", "../libs/freetype/lib/release" }
-		links { "libEGL", "libGLESv2", "vulkan-1", "Freetype", "Shadow" }
+		libdirs { "../libs/egl/lib/release", "../libs/freetype/lib/release" }
+		links { "libEGL", "libGLESv2", "Freetype", "Shadow" }
 		characterset ("MBCS") -- Multi-byte Character Set; currently Visual Studio only
 --		characterset ("Default") --the default encoding for the toolset; usually Unicode
 --		characterset ("MBCS") --Unicode: Unicode character encoding
@@ -41,7 +41,6 @@ project "Application"
 		postbuildcommands {
 			"{COPY} ../../libs/egl/bin/release/libEGL.dll ../bin/%{cfg.buildcfg}/",
 			"{COPY} ../../libs/egl/bin/release/libGLESv2.dll ../bin/%{cfg.buildcfg}/",
-			"{COPY} ../../libs/vulkan/bin/vulkan-1.dll ../bin/%{cfg.buildcfg}/",
 			}
 
 		

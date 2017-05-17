@@ -102,6 +102,7 @@ namespace sh
 
 		VulkanDriver::VulkanDriver(const CreationParameters& parameters)
 		{
+			InitVulkanFunctions();
 			m_parameters = parameters;
 			gui::SpriteManager::CreateInstance();
 		}
@@ -547,7 +548,11 @@ namespace sh
 			// Needed for surface to draw on
 			m_instanceExtensionsList.push_back(VK_KHR_SURFACE_EXTENSION_NAME);
 			// Needed for platform-specific surface creation
+#if defined SHADOW_WINDOWS
 			m_instanceExtensionsList.push_back(VK_KHR_WIN32_SURFACE_EXTENSION_NAME);
+#elif defined SHADOW_ANDROID
+			m_instanceExtensionsList.push_back(VK_KHR_ANDROID_SURFACE_EXTENSION_NAME);
+#endif
 			// Neede for swapping buffer and picture presentation
 			m_deviceExtensionsList.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
 
@@ -679,6 +684,15 @@ namespace sh
 			createInfo.hwnd = static_cast<HWND>(m_parameters.WinId);
 			SH_ASSERT(vkCreateWin32SurfaceKHR(m_instance, &createInfo, nullptr, m_surface.Replace()) == VK_SUCCESS,
 				"failed to create window surface!");
+#elif defined SHADOW_ANDROID
+			VkAndroidSurfaceCreateInfoKHR createInfo{};
+			createInfo.sType = VK_STRUCTURE_TYPE_ANDROID_SURFACE_CREATE_INFO_KHR;
+			createInfo.pNext = nullptr;
+			createInfo.flags = 0;
+			createInfo.window = static_cast<ANativeWindow*>(m_parameters.WinId);
+			SH_ASSERT(vkCreateAndroidSurfaceKHR(m_instance, &createInfo, nullptr, m_surface.Replace()) == VK_SUCCESS,
+				"failed to create window surface!");
+		};
 #else
 			SH_ASSERT(0, "Unimplemented for non-Windows platform");
 #endif
