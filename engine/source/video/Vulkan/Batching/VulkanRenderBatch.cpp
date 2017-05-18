@@ -4,8 +4,8 @@
 #include "../../../scene/Mesh.h"
 #include "../../Renderable.h"
 #include "../../Material.h"
-#include "VulkanDriver.h"
-#include "VulkanCommandBuffer.h"
+#include "../VulkanDriver.h"
+#include "../VulkanCommandBuffer.h"
 
 namespace sh
 {

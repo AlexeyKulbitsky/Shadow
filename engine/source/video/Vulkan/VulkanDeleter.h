@@ -45,7 +45,7 @@ namespace sh
 
 			T* Replace() 
 			{
-				Cleanup();
+				//Cleanup();
 				return &object;
 			}
 

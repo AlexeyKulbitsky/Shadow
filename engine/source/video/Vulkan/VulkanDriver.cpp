@@ -130,6 +130,21 @@ namespace sh
 			return DriverType::VULKAN;
 		}
 
+        void VulkanDriver::SetSurface(void* winId, u32 width, u32 height)
+        {
+            m_parameters.WinId = winId;
+            m_parameters.width = width;
+            m_parameters.height = height;
+            SetViewport(0U, 0U, width, height);
+
+			static bool first = true;
+			if( !first )
+			{
+				recreateSwapChain();
+			}
+			first = false;
+        }
+
 		bool VulkanDriver::Init()
 		{
 			SetupLayersAndExtensions();			
@@ -179,9 +194,9 @@ namespace sh
 			
 
 			std::array<VkClearValue, 2> clearValues = {};
-			clearValues[0].color.float32[0] = 0.7f;
-			clearValues[0].color.float32[1] = 0.7f;
-			clearValues[0].color.float32[2] = 0.7f;
+			clearValues[0].color.float32[0] = 1.0f;
+			clearValues[0].color.float32[1] = 0.0f;
+			clearValues[0].color.float32[2] = 0.0f;
 			clearValues[0].color.float32[3] = 1.0f;
 			clearValues[1].depthStencil.depth = 1.0f;
 			clearValues[1].depthStencil.stencil = 0;
@@ -191,8 +206,8 @@ namespace sh
 			renderPassInfo.renderPass = m_renderPass;
 			renderPassInfo.framebuffer = framebuffer;
 			renderPassInfo.renderArea.offset = { 0, 0 };
-			renderPassInfo.renderArea.extent.width = m_viewPort.z;
-			renderPassInfo.renderArea.extent.height = m_viewPort.w;
+			renderPassInfo.renderArea.extent.width = 500;// m_viewPort.z;
+			renderPassInfo.renderArea.extent.height = 500;// m_viewPort.w;
 			renderPassInfo.clearValueCount = clearValues.size();
 			renderPassInfo.pClearValues = clearValues.data();
 
@@ -574,7 +589,7 @@ namespace sh
 		// Main entry to Vulkan API
 		void VulkanDriver::CreateInstance()
 		{
-			SH_ASSERT(chechValidationLayers(), "Can not create Vulkan instance! Not all the validation layers are supported!");
+			//SH_ASSERT(chechValidationLayers(), "Can not create Vulkan instance! Not all the validation layers are supported!");
 
 
 			VkApplicationInfo appInfo = {};
@@ -591,8 +606,8 @@ namespace sh
 			createInfo.enabledExtensionCount = m_instanceExtensionsList.size();
 			createInfo.ppEnabledExtensionNames = m_instanceExtensionsList.data();
 
-			createInfo.enabledLayerCount = validationLayers.size();
-			createInfo.ppEnabledLayerNames = validationLayers.data();
+			createInfo.enabledLayerCount = 0;//validationLayers.size();
+			createInfo.ppEnabledLayerNames = nullptr;//validationLayers.data();
 
 			SH_ASSERT(vkCreateInstance(&createInfo, nullptr, m_instance.Replace()) == VK_SUCCESS, "failed to create instance!");		
 		}
@@ -692,7 +707,7 @@ namespace sh
 			createInfo.window = static_cast<ANativeWindow*>(m_parameters.WinId);
 			SH_ASSERT(vkCreateAndroidSurfaceKHR(m_instance, &createInfo, nullptr, m_surface.Replace()) == VK_SUCCESS,
 				"failed to create window surface!");
-		};
+
 #else
 			SH_ASSERT(0, "Unimplemented for non-Windows platform");
 #endif
@@ -1250,6 +1265,41 @@ namespace sh
 			VkResult res = CreateDebugReportCallbackEXT(m_instance, &createInfo, nullptr, m_callback.Replace());
 			SH_ASSERT(res == VK_SUCCESS, "Failed to set up debug callback!");
 			
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		void VulkanDriver::recreateSwapChain()
+		{
+			vkDeviceWaitIdle(m_device);
+
+			cleanupSwapChain();
+
+			CreateSurface();
+			CreateSwapChain();
+			CreateImageViews();
+			CreateRenderPass();
+			CreateFramebuffers();
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		void VulkanDriver::cleanupSwapChain()
+		{
+			for (size_t i = 0; i < m_swapChainFramebuffers.size(); i++) 
+			{
+				vkDestroyFramebuffer(m_device, m_swapChainFramebuffers[i], nullptr);
+			}
+
+
+			vkDestroyRenderPass(m_device, m_renderPass, nullptr);
+
+			for (size_t i = 0; i < m_swapChainImageViews.size(); i++) 
+			{
+				vkDestroyImageView(m_device, m_swapChainImageViews[i], nullptr);
+			}
+
+			vkDestroySwapchainKHR(m_device, m_swapChain, nullptr);
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////

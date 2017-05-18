@@ -61,6 +61,8 @@ file(GLOB SHADOW_SRC
 if (USE_VULKAN_API)
     file(GLOB VULKAN_SRC
         "../../../engine/source/video/Vulkan/*.cpp"
+        "../../../engine/source/video/Vulkan/Managers/*.cpp"
+        "../../../engine/source/video/Vulkan/Batching/*.cpp"
         )
     list(APPEND SHADOW_SRC ${VULKAN_SRC})
 endif(USE_VULKAN_API)

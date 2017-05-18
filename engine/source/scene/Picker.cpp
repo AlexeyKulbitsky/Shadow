@@ -19,12 +19,12 @@ namespace sh
 	{
 		Picker::Picker()
 		{	
-			m_material.reset(new sh::video::Material());
-			m_material->SetRenderTechnique("editor_base_color.xml");
-			const auto& info = m_material->GetRenderPipeline()->GetAutoParamsInfo();	
-			m_params = sh::video::GpuParams::Create(info);
-			m_params->GetParam("matWVP", m_wvpMtrix);
-			m_params->GetParam("color", m_color);
+			//m_material.reset(new sh::video::Material());
+			//m_material->SetRenderTechnique("editor_base_color.xml");
+			//const auto& info = m_material->GetRenderPipeline()->GetAutoParamsInfo();
+			//m_params = sh::video::GpuParams::Create(info);
+			//m_params->GetParam("matWVP", m_wvpMtrix);
+			//m_params->GetParam("color", m_color);
 		}
 
 		/////////////////////////////////////////////////////////

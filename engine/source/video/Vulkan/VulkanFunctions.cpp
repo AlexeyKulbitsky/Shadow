@@ -17,10 +17,8 @@ HMODULE vulkanLibrary = nullptr;
 #elif defined(SHADOW_ANDROID)
 
 void* vulkanLibrary = nullptr;
-#define LOAD_VULKAN_FUNCTION(fun)														\
-	if (! (fun = reinterpret_cast<PFN_##fun>(dlsym(vulkanLibrary, #fun) ) )				\
-		SH_ASSERT(0, "ERROR LOADING VULKAN FUNCTION!");
-
+#define LOAD_VULKAN_FUNCTION(fun)			                        \
+     fun = reinterpret_cast<PFN_##fun>(dlsym(vulkanLibrary, #fun))
 
 #endif
 

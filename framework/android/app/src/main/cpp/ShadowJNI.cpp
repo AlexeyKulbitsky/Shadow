@@ -48,7 +48,7 @@ void shadowThreadFunction(sh::Device* _device)
                     auto sceneMgr = _device->GetSceneManager();
                     auto camera = sceneMgr->GetCamera();
                     camera->SetProjection(3.1415926535f / 3.0f, width, height, 0.1f, 1000.0f);
-                    sceneMgr->LoadScene("test_scene.xml");
+                    //sceneMgr->LoadScene("test_scene.xml");
 
                     isDriverInited = true;
                 }
@@ -73,7 +73,7 @@ void shadowThreadFunction(sh::Device* _device)
             {
                 _device->GetDriver()->BeginRendering();
 
-                _device->GetSceneManager()->Update();
+                //_device->GetSceneManager()->Update();
 
                 _device->GetDriver()->EndRendering();
             }
@@ -94,7 +94,9 @@ void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_OnCreate(JNIEnv *en
 {
     if (!isDeviceCreated)
     {
-        device = sh::CreateDevice();
+        sh::CreationParameters params;
+        params.driverType = sh::video::DriverType::VULKAN;
+        device = sh::CreateDevice(params);
 
         AAssetManager *mng = AAssetManager_fromJava(env, assManager);
         sh::String stdDataPath = env->GetStringUTFChars(dataPath, NULL);

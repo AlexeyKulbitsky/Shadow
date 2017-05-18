@@ -2,6 +2,7 @@
 #include "../../video/Driver.h"
 #include "../../video/GLContext/EGLContextManager.h"
 #include "../../video/GLES20/GLES20Driver.h"
+#include "../../video/Vulkan/VulkanDriver.h"
 #include "../../scene/SceneManager.h"
 #include "../../io/android/AndroidFileSystem.h"
 
@@ -103,6 +104,7 @@ bool AndroidDevice::CreateDriver()
 	break;
 	case video::DriverType::VULKAN:
 	{
+		m_driver = new video::VulkanDriver(m_creationParameters);
 	}
 	break;
 	default:

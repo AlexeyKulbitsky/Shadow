@@ -35,6 +35,8 @@ namespace sh
 			virtual const String& GetApiName() const override;
 			virtual DriverType GetType() const override;
 
+			virtual void SetSurface(void* winId, u32 width, u32 height) override;
+
 			virtual bool Init() override;
 			virtual void BeginRendering() override;
 			virtual void EndRendering() override;
@@ -121,6 +123,8 @@ namespace sh
 			VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
 			bool chechValidationLayers();
 			void setupDebugCallback();
+			void recreateSwapChain();
+			void cleanupSwapChain();
 
 		public:
 			uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
