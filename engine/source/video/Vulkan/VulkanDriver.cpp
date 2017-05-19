@@ -692,22 +692,22 @@ namespace sh
 
 		void VulkanDriver::CreateSurface()
 		{
+            VkResult res;
 #if defined SHADOW_WINDOWS
 			VkWin32SurfaceCreateInfoKHR createInfo{};
 			createInfo.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
 			createInfo.hinstance = GetModuleHandle(nullptr);
 			createInfo.hwnd = static_cast<HWND>(m_parameters.WinId);
-			SH_ASSERT(vkCreateWin32SurfaceKHR(m_instance, &createInfo, nullptr, m_surface.Replace()) == VK_SUCCESS,
-				"failed to create window surface!");
+			res = vkCreateWin32SurfaceKHR(m_instance, &createInfo, nullptr, &m_surface);
+			SH_ASSERT(res == VK_SUCCESS, "failed to create window surface!");
 #elif defined SHADOW_ANDROID
 			VkAndroidSurfaceCreateInfoKHR createInfo{};
 			createInfo.sType = VK_STRUCTURE_TYPE_ANDROID_SURFACE_CREATE_INFO_KHR;
 			createInfo.pNext = nullptr;
 			createInfo.flags = 0;
 			createInfo.window = static_cast<ANativeWindow*>(m_parameters.WinId);
-			SH_ASSERT(vkCreateAndroidSurfaceKHR(m_instance, &createInfo, nullptr, m_surface.Replace()) == VK_SUCCESS,
-				"failed to create window surface!");
-
+            res = vkCreateAndroidSurfaceKHR(m_instance, &createInfo, nullptr, &m_surface);
+			SH_ASSERT(res == VK_SUCCESS, "failed to create window surface!");
 #else
 			SH_ASSERT(0, "Unimplemented for non-Windows platform");
 #endif
@@ -761,7 +761,7 @@ namespace sh
 
 			createInfo.oldSwapchain = VK_NULL_HANDLE;
 
-			SH_ASSERT(vkCreateSwapchainKHR(m_device, &createInfo, nullptr, m_swapChain.Replace()) == VK_SUCCESS,
+			SH_ASSERT(vkCreateSwapchainKHR(m_device, &createInfo, nullptr, &m_swapChain) == VK_SUCCESS,
 				"failed to create swap chain!");
 			
 
@@ -807,7 +807,7 @@ namespace sh
 				framebufferInfo.height = m_swapChainExtent.height;
 				framebufferInfo.layers = 1;
 
-				SH_ASSERT(vkCreateFramebuffer(m_device, &framebufferInfo, nullptr, m_swapChainFramebuffers[i].Replace()) == VK_SUCCESS,
+				SH_ASSERT(vkCreateFramebuffer(m_device, &framebufferInfo, nullptr, &m_swapChainFramebuffers[i]) == VK_SUCCESS,
 					"failed to create framebuffer!");
 			}
 		}
@@ -839,68 +839,6 @@ namespace sh
 			createImageView(m_depthImage, depthFormat, VK_IMAGE_ASPECT_DEPTH_BIT, m_depthImageView);
 
 			transitionImageLayout(m_depthImage, depthFormat, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL);
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		void VulkanDriver::CreateTextureImage()
-		{
-			int texWidth, texHeight, texChannels;
-			stbi_uc* pixels = stbi_load("", &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
-			SH_ASSERT(pixels, "failed to load texture image!");
-
-			VkDeviceSize imageSize = texWidth * texHeight * 4;
-
-			VulkanDeleter<VkImage> stagingImage{ m_device, vkDestroyImage };
-			VulkanDeleter<VkDeviceMemory> stagingImageMemory{ m_device, vkFreeMemory };
-
-			createImage(texWidth, texHeight, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_TILING_LINEAR, VK_IMAGE_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, stagingImage, stagingImageMemory);
-
-			void* data;
-			vkMapMemory(m_device, stagingImageMemory, 0, imageSize, 0, &data);
-			memcpy(data, pixels, (size_t)imageSize);
-			vkUnmapMemory(m_device, stagingImageMemory);
-
-			stbi_image_free(pixels);
-
-			createImage(texWidth, texHeight, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, m_textureImage, m_textureImageMemory);
-
-			transitionImageLayout(stagingImage, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_LAYOUT_PREINITIALIZED, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL);
-			transitionImageLayout(m_textureImage, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_LAYOUT_PREINITIALIZED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
-			copyImage(stagingImage, m_textureImage, texWidth, texHeight);
-
-			transitionImageLayout(m_textureImage, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		void VulkanDriver::CreateTextureImageView()
-		{
-			createImageView(m_textureImage, VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_ASPECT_COLOR_BIT, m_textureImageView);
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		void VulkanDriver::CreateTextureSampler()
-		{
-			VkSamplerCreateInfo samplerInfo = {};
-			samplerInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
-			samplerInfo.magFilter = VK_FILTER_LINEAR;
-			samplerInfo.minFilter = VK_FILTER_LINEAR;
-			samplerInfo.addressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT;
-			samplerInfo.addressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT;
-			samplerInfo.addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT;
-			samplerInfo.anisotropyEnable = VK_TRUE;
-			samplerInfo.maxAnisotropy = 16;
-			samplerInfo.borderColor = VK_BORDER_COLOR_INT_OPAQUE_BLACK;
-			samplerInfo.unnormalizedCoordinates = VK_FALSE;
-			samplerInfo.compareEnable = VK_FALSE;
-			samplerInfo.compareOp = VK_COMPARE_OP_ALWAYS;
-			samplerInfo.mipmapMode = VK_SAMPLER_MIPMAP_MODE_LINEAR;
-
-			SH_ASSERT(vkCreateSampler(m_device, &samplerInfo, nullptr, m_textureSampler.Replace()) == VK_SUCCESS,
-				"failed to create texture sampler!");
-		
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -970,13 +908,13 @@ namespace sh
 			semaphoreInfo.pNext = nullptr;
 			semaphoreInfo.flags = 0;
 
-			VkResult res = vkCreateSemaphore(m_device, &semaphoreInfo, nullptr, m_imageAvailableSemaphore.Replace());
+			VkResult res = vkCreateSemaphore(m_device, &semaphoreInfo, nullptr, &m_imageAvailableSemaphore);
 			SH_ASSERT(res == VK_SUCCESS, "Failed to create semaphores!");
 
-			res = vkCreateSemaphore(m_device, &semaphoreInfo, nullptr, m_renderFinishedSemaphore.Replace());
+			res = vkCreateSemaphore(m_device, &semaphoreInfo, nullptr, &m_renderFinishedSemaphore);
 			SH_ASSERT(res == VK_SUCCESS, "Failed to create semaphores!");			
 
-			res = vkCreateSemaphore(m_device, &semaphoreInfo, nullptr, m_showImageSemaphore.Replace());
+			res = vkCreateSemaphore(m_device, &semaphoreInfo, nullptr, &m_showImageSemaphore);
 			SH_ASSERT(res == VK_SUCCESS, "Failed to create semaphores!");
 		}
 
@@ -1058,7 +996,7 @@ namespace sh
 			renderPassInfo.dependencyCount = 1;
 			renderPassInfo.pDependencies = &dependency;
 
-			VkResult res = vkCreateRenderPass(m_device, &renderPassInfo, nullptr, m_renderPass.Replace());
+			VkResult res = vkCreateRenderPass(m_device, &renderPassInfo, nullptr, &m_renderPass);
 			SH_ASSERT(res == VK_SUCCESS, "Failed to create render pass!");
 			
 		}
@@ -1300,6 +1238,8 @@ namespace sh
 			}
 
 			vkDestroySwapchainKHR(m_device, m_swapChain, nullptr);
+
+			vkDestroySurfaceKHR(m_instance, m_surface, nullptr);
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1329,8 +1269,8 @@ namespace sh
 			VkImageTiling tiling,
 			VkImageUsageFlags usage,
 			VkMemoryPropertyFlags properties,
-			VulkanDeleter<VkImage>& image,
-			VulkanDeleter<VkDeviceMemory>& imageMemory)
+			VkImage& image,
+			VkDeviceMemory& imageMemory)
 		{
 			VkImageCreateInfo imageInfo = {};
 			imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
@@ -1348,7 +1288,7 @@ namespace sh
 			imageInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
 
-			SH_ASSERT(vkCreateImage(m_device, &imageInfo, nullptr, image.Replace()) == VK_SUCCESS,
+			SH_ASSERT(vkCreateImage(m_device, &imageInfo, nullptr, &image) == VK_SUCCESS,
 				"failed to create image!");
 
 			VkMemoryRequirements memRequirements;
@@ -1360,7 +1300,7 @@ namespace sh
 			allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits, properties);
 
 
-			SH_ASSERT(vkAllocateMemory(m_device, &allocInfo, nullptr, imageMemory.Replace()) == VK_SUCCESS,
+			SH_ASSERT(vkAllocateMemory(m_device, &allocInfo, nullptr, &imageMemory) == VK_SUCCESS,
 				"failed to allocate image memory!");
 
 			vkBindImageMemory(m_device, image, imageMemory, 0);
@@ -1525,7 +1465,7 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		void VulkanDriver::createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags, VulkanDeleter<VkImageView>& imageView)
+		void VulkanDriver::createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags, VkImageView& imageView)
 		{
 			VkImageViewCreateInfo viewInfo = {};
 			viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
@@ -1539,7 +1479,7 @@ namespace sh
 			viewInfo.subresourceRange.layerCount = 1;
 			viewInfo.flags = 0;
 
-			VkResult res = vkCreateImageView(m_device, &viewInfo, nullptr, imageView.Replace());
+			VkResult res = vkCreateImageView(m_device, &viewInfo, nullptr, &imageView);
 			SH_ASSERT(res == VK_SUCCESS, "Failed to create texture image view!");			
 		}
 

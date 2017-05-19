@@ -12,5 +12,5 @@ public class ShadowJNI
     public static native void OnStop();
     public static native void SurfaceCreated(Surface surface);
     public static native void SurfaceChanged(Surface surface, int width, int height);
-    public static native void SurfaceDestroyed();
+    public static native void SurfaceDestroyed(Surface surface);
 }

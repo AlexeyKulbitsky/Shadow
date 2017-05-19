@@ -8,6 +8,9 @@
 #include <io/android/AndroidFileSystem.h>
 
 static ANativeWindow *window = 0;
+
+static ANativeWindow *testWindow = 0;
+
 static sh::Device* device = 0;
 int width = 0;
 int height = 0;
@@ -148,6 +151,10 @@ void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_OnStop(JNIEnv *env,
 
 void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_SurfaceCreated(JNIEnv *env, jclass type, jobject surface)
 {
+    shadowMutex.lock();
+    testWindow = ANativeWindow_fromSurface(env, surface);
+    testWindow = 0;
+    shadowMutex.unlock();
 }
 
 void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_SurfaceChanged(JNIEnv *env, jclass type, jobject surface, jint _width, jint _height)
@@ -160,7 +167,7 @@ void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_SurfaceChanged(JNIE
     shadowMutex.unlock();
 }
 
-void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_SurfaceDestroyed(JNIEnv *env, jclass type)
+void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_SurfaceDestroyed(JNIEnv *env, jclass type, jobject surface)
 {
     shadowMutex.lock();
     shMessage = ShadowMessage::None;

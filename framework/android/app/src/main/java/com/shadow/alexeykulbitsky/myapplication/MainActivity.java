@@ -88,7 +88,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback
     @Override
     public void surfaceDestroyed(SurfaceHolder holder)
     {
-        ShadowJNI.SurfaceDestroyed();
+        ShadowJNI.SurfaceDestroyed(holder.getSurface());
     }
 
     @Override

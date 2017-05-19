@@ -66,7 +66,7 @@ namespace sh
 			VkDescriptorPool GetDescriptorPool() const { return m_descriptorPool; }
 			VkFormat GetSwapChainImageFormat() const { return m_swapChainImageFormat; }
 			VkCommandPool GetCommandPool() const { return m_commandPool; }
-			const std::vector<VulkanDeleter<VkFramebuffer>>& GetSwapChainFramebuffers() const { return m_swapChainFramebuffers; }
+			const std::vector<VkFramebuffer>& GetSwapChainFramebuffers() const { return m_swapChainFramebuffers; }
 			VkRenderPass GetRenderPass() const { return m_renderPass; }
 			const VkCommandBufferInheritanceInfo& GetInheritanceInfo() const { return m_inheritanceInfo; }
 			VulkanCommandBuffer* GetPrimaryCommandBuffer() { return m_primaryCommandBuffer; }
@@ -108,9 +108,6 @@ namespace sh
 			void CreateDepthResources();
 			void CreateSemaphores();
 			void CreateDescriptorPool();
-			void CreateTextureImage();
-			void CreateTextureImageView();
-			void CreateTextureSampler();
 
 			void CreateDefaultCommadBuffers();
 
@@ -135,8 +132,8 @@ namespace sh
 				VkImageTiling tiling,
 				VkImageUsageFlags usage,
 				VkMemoryPropertyFlags properties,
-				VulkanDeleter<VkImage>& image,		
-				VulkanDeleter<VkDeviceMemory>& imageMemory);
+				VkImage& image,		
+				VkDeviceMemory& imageMemory);
 
 			// Working command for immediate execution (buffer creation)
 		public:
@@ -152,7 +149,7 @@ namespace sh
 		public:
 			void transitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout);
 			void copyImage(VkImage srcImage, VkImage dstImage, uint32_t width, uint32_t height);
-			void createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags, VulkanDeleter<VkImageView>& imageView);
+			void createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags, VkImageView& imageView);
 			VkFormat findSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features);
 
 		public:
@@ -170,36 +167,37 @@ namespace sh
 		private:
 			CreationParameters m_parameters;
 			VulkanDeleter<VkInstance> m_instance{ vkDestroyInstance };			
-			VulkanDeleter<VkSurfaceKHR> m_surface{ m_instance, vkDestroySurfaceKHR };
+			VkSurfaceKHR m_surface; // vkDestroySurfaceKHR
 			VkPhysicalDevice m_physicalDevice = VK_NULL_HANDLE;
 			VulkanDeleter<VkDevice> m_device{ vkDestroyDevice };
 			VkQueue m_graphicsQueue;
 			VkQueue m_presentQueue;
-			VulkanDeleter<VkSwapchainKHR> m_swapChain{ m_device, vkDestroySwapchainKHR };
+			VkSwapchainKHR m_swapChain; // vkDestroySwapchainKHR
 			std::vector<VkImage> m_swapChainImages;
 			VkFormat m_swapChainImageFormat;
 			VkExtent2D m_swapChainExtent;
-			std::vector<VulkanDeleter<VkImageView>> m_swapChainImageViews;
-			std::vector<VulkanDeleter<VkFramebuffer>> m_swapChainFramebuffers;
+			std::vector<VkImageView> m_swapChainImageViews;
+			std::vector<VkFramebuffer> m_swapChainFramebuffers;
 			
-			VulkanDeleter<VkRenderPass> m_renderPass{ m_device, vkDestroyRenderPass };
+			VkRenderPass m_renderPass; // vkDestroyRenderPass
 			VulkanDeleter<VkPipelineLayout> m_pipelineLayout{ m_device, vkDestroyPipelineLayout };
 			VulkanDeleter<VkCommandPool> m_commandPool{ m_device, vkDestroyCommandPool };
 
-			VulkanDeleter<VkImage> m_textureImage{ m_device, vkDestroyImage };
-			VulkanDeleter<VkDeviceMemory> m_textureImageMemory{ m_device, vkFreeMemory };
+			VkImage m_textureImage; // vkDestroyImage
+			VkDeviceMemory m_textureImageMemory;//{ m_device, vkFreeMemory };
 
-			VulkanDeleter<VkSemaphore> m_imageAvailableSemaphore{ m_device, vkDestroySemaphore };
-			VulkanDeleter<VkSemaphore> m_renderFinishedSemaphore{ m_device, vkDestroySemaphore };
-			VulkanDeleter<VkSemaphore> m_showImageSemaphore{ m_device, vkDestroySemaphore };
+			VkSemaphore m_imageAvailableSemaphore;//{ m_device, vkDestroySemaphore };
+			VkSemaphore m_renderFinishedSemaphore;//{ m_device, vkDestroySemaphore };
+			VkSemaphore m_showImageSemaphore;//{ m_device, vkDestroySemaphore };
 
 			VulkanDeleter<VkDescriptorPool> m_descriptorPool{ m_device, vkDestroyDescriptorPool };
-			VulkanDeleter<VkImageView> m_textureImageView{ m_device, vkDestroyImageView };
-			VulkanDeleter<VkSampler> m_textureSampler{ m_device, vkDestroySampler };
+			
+			VkImageView m_textureImageView;//{ m_device, vkDestroyImageView };
+			VkSampler m_textureSampler;//{ m_device, vkDestroySampler };
 
-			VulkanDeleter<VkImage> m_depthImage{ m_device, vkDestroyImage };
-			VulkanDeleter<VkDeviceMemory> m_depthImageMemory{ m_device, vkFreeMemory };
-			VulkanDeleter<VkImageView> m_depthImageView{ m_device, vkDestroyImageView };
+			VkImage m_depthImage;//{ m_device, vkDestroyImage };
+			VkDeviceMemory m_depthImageMemory;//{ m_device, vkFreeMemory };
+			VkImageView m_depthImageView;//{ m_device, vkDestroyImageView };
 
 			VulkanDeleter<VkDebugReportCallbackEXT> m_callback{ m_instance, DestroyDebugReportCallbackEXT };
 
