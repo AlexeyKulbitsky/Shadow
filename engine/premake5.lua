@@ -4,6 +4,8 @@ project "Shadow"
    local directXSDK = os.getenv("DXSDK_DIR")
    includedirs { 
 		"source/**",
+		"../libs/glslang/source/",
+		"../libs/glslang",
 		"../libs/pugixml/src/",
 		"../libs/egl/include/",
 		"../libs/soil/include/",

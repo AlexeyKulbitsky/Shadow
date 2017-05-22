@@ -10,6 +10,7 @@
 #include "VulkanCommandBuffer.h"
 #include "VulkanGpuPipelineParamsInfo.h"
 #include "VulkanGpuParams.h"
+#include "VulkanShaderCompiler.h"
 
 #include "Managers/VulkanRenderStateManager.h"
 #include "Managers/VulkanHardwareBufferManager.h"
@@ -105,6 +106,7 @@ namespace sh
 			InitVulkanFunctions();
 			m_parameters = parameters;
 			gui::SpriteManager::CreateInstance();
+			VulkanShaderCompiler::CreateInstance();
 		}
 
 		VulkanDriver::~VulkanDriver()

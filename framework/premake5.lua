@@ -3,6 +3,9 @@ workspace "Shadow Framework"
    platforms { "Win32", "Win64" }
    location "prj"
    
+include "../libs/glslang/OGLCompilersDLL/premake5.lua"
+include "../libs/glslang/SPIRV/premake5.lua"  
+include "../libs/glslang/glslang/premake5.lua" 
 include "../libs/freetype/premake5.lua"   
 include "../engine/premake5.lua"
 
@@ -11,6 +14,8 @@ project "Application"
    language "C++"
    includedirs { 
 		"source/**",
+		"../libs/glslang/source/",
+		"../libs/glslang",
 		"../libs/pugixml/src/",
 		"../libs/freetype/include/",
 		"../engine/source/"
@@ -33,7 +38,13 @@ project "Application"
 	  
 	filter "platforms:Win32"
 		libdirs { "../libs/egl/lib/release", "../libs/freetype/lib/release" }
-		links { "libEGL", "libGLESv2", "Freetype", "Shadow" }
+		links { 
+		"libEGL", 
+		"libGLESv2", 
+		"Freetype",
+		"glslang", "SPIRV", "SPVRemapper", "OGLCompiler", "OSDependent", 
+		"Shadow" 
+		}
 		characterset ("MBCS") -- Multi-byte Character Set; currently Visual Studio only
 --		characterset ("Default") --the default encoding for the toolset; usually Unicode
 --		characterset ("MBCS") --Unicode: Unicode character encoding
