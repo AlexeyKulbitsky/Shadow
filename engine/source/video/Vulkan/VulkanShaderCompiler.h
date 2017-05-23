@@ -3,6 +3,7 @@
 
 #include "../../Globals.h"
 
+
 namespace sh
 {
 
@@ -12,6 +13,7 @@ namespace video
 	{
 	public:
 		VulkanShaderCompiler();
+		std::vector<unsigned int> CompileShader(const String& source, ShaderType type);
 	};
 } // video
 

@@ -19,30 +19,37 @@ namespace video
 
 	VulkanShaderCompiler::VulkanShaderCompiler()
 	{
+	}
+
+	std::vector<unsigned int> VulkanShaderCompiler::CompileShader( const String& source, ShaderType type )
+	{
+		EShLanguage language = EShLangCount;
+		switch( type )
+		{
+			case ST_VERTEX:
+				language = EShLangVertex;
+				break;
+			case ST_FRAGMENT:
+				language = EShLangFragment;
+				break;
+			case ST_GEOMETRY:
+				language = EShLangGeometry;
+				break;
+			case ST_TESSELATION_EVALUATION:
+				language = EShLangTessEvaluation;
+				break;
+			case ST_TESSELATION_CONTROL:
+				language = EShLangTessControl;
+				break;
+			case ST_COMPUTE:
+				language = EShLangCompute;
+				break;
+			default:
+				language = EShLangCount;
+				break;
+		}
+
 		glslang::InitializeProcess();
-
-		const char* vertShaderStr =
-			"#version 450\n"													\
-			"#extension GL_ARB_separate_shader_objects : enable\n"				\
-			"layout(std140, push_constant) uniform PushConsts\n"				\
-			"{\n"																\
-			"	mat4 MVP;\n"													\
-			"} pushConsts;\n"													\
-			"layout(location = 0) in vec3 aPosition;\n"							\
-			"void main()\n"														\
-			"{\n"																\
-			"	gl_Position = pushConsts.MVP * vec4(aPosition, 1.0);\n"			\
-			"}";
-		//*/
-		const char* fragShaderStr =
-			"#version 450\n"													\
-			"#extension GL_ARB_separate_shader_objects : enable\n"				\
-			"layout(location = 0) out vec4 outColor;\n"							\
-			"void main()\n"														\
-			"{\n"																\
-			"	outColor = vec4(1.0);\n"										\
-			"}";
-
 
 		EShMessages messages = EShMsgDefault;
 		messages = EShMessages(messages | EShMsgVulkanRules);
@@ -51,31 +58,25 @@ namespace video
 		const int defaultVersion = 110;
 		TBuiltInResource Resources = glslang::DefaultTBuiltInResource;
 
-		glslang::TShader shaderVertex(EShLangVertex);
-		shaderVertex.setStrings(&vertShaderStr, 1);
-		bool res = shaderVertex.parse(&Resources, defaultVersion, false, messages);
-		printf("MESSAGE %s", shaderVertex.getInfoLog());
-
-		glslang::TShader shaderFragment(EShLangFragment);
-		shaderFragment.setStrings(&fragShaderStr, 1);
-		res = shaderFragment.parse(&Resources, defaultVersion, false, messages);
-		printf("MESSAGE %s", shaderFragment.getInfoLog());
+		glslang::TShader shader(language);
+		const char* str = source.c_str();
+		shader.setStrings(&str, 1);
+		bool res = shader.parse(&Resources, defaultVersion, false, messages);
+		SH_ASSERT(res, "Error compiling shader:\n%s", shader.getInfoLog());
 
 		glslang::TProgram program;
-		program.addShader(&shaderVertex);
-		program.addShader(&shaderFragment);
+		program.addShader(&shader);
 		res = program.link(messages);
-		printf("MESSAGE %s", program.getInfoLog());
+		SH_ASSERT(res, "Error linking program:\n%s", program.getInfoLog());
 
 		std::vector<unsigned int> spirv;
 		std::string warningsErrors;
 		spv::SpvBuildLogger logger;
-		glslang::GlslangToSpv(*program.getIntermediate(EShLangVertex), spirv, &logger);
+		glslang::GlslangToSpv(*program.getIntermediate(language), spirv, &logger);
 
-
-		int a = 0;
-		a++;
 		glslang::FinalizeProcess();
+
+		return spirv;
 	}
 
 } // video
