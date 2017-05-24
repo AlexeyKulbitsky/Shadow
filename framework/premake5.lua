@@ -3,11 +3,18 @@ workspace "Shadow Framework"
    platforms { "Win32", "Win64" }
    location "prj"
    
-include "../libs/glslang/OGLCompilersDLL/premake5.lua"
-include "../libs/glslang/SPIRV/premake5.lua"  
-include "../libs/glslang/glslang/premake5.lua" 
-include "../libs/freetype/premake5.lua"   
-include "../engine/premake5.lua"
+group "glslang"
+	include "../libs/glslang/OGLCompilersDLL/premake5.lua"
+	include "../libs/glslang/SPIRV/premake5.lua"  
+	include "../libs/glslang/glslang/premake5.lua" 
+
+group "freetype"	
+	include "../libs/freetype/premake5.lua" 
+
+group "engine"	
+	include "../engine/premake5.lua"
+
+group ""
 
 project "Application"
    kind "ConsoleApp"
