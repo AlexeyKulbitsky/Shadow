@@ -1,0 +1,94 @@
+﻿Build started 08.05.2017 17:46:24.
+     1>Project "d:\Programming\Sandbox\Freetype\freetype-2.7.1\builds\windows\vc2010\freetype.vcxproj" on node 2 (Rebuild target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I..\..\..\include /nologo /W4 /WX- /MP /Ox /Ob2 /Oi /Oy /GT /D NDEBUG /D WIN32 /D _LIB /D _CRT_SECURE_NO_WARNINGS /D FT2_BUILD_LIBRARY /D _MBCS /GF /Gm- /EHsc /MD /GS /Gy /arch:SSE2 /fp:precise /fp:except- /Za /Zc:wchar_t /Zc:forScope /Fo".\..\..\..\objs\vc2010\Win32\Release\\" /Gd /TC /wd4001 /analyze- /errorReport:prompt ..\..\..\src\autofit\autofit.c ..\..\..\src\base\ftbitmap.c ..\..\..\src\base\ftfstype.c ..\..\..\src\base\ftgasp.c ..\..\..\src\base\ftstroke.c ..\..\..\src\base\ftbbox.c ..\..\..\src\base\ftfntfmt.c ..\..\..\src\base\ftpfr.c ..\..\..\src\base\ftsynth.c ..\..\..\src\base\fttype1.c ..\..\..\src\base\ftwinfnt.c ..\..\..\src\base\ftlcdfil.c ..\..\..\src\base\ftgxval.c ..\..\..\src\base\ftotval.c ..\..\..\src\base\ftpatent.c
+         autofit.c
+         ftbitmap.c
+         ftfstype.c
+         ftgasp.c
+         ftstroke.c
+         ftbbox.c
+         ftfntfmt.c
+         ftpfr.c
+         ftsynth.c
+         fttype1.c
+         ftwinfnt.c
+         ftlcdfil.c
+         ftgxval.c
+         ftotval.c
+         ftpatent.c
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I..\..\..\include /nologo /W4 /WX- /MP /O2 /Ob2 /Oi /Oy /GT /D NDEBUG /D WIN32 /D _LIB /D _CRT_SECURE_NO_WARNINGS /D FT2_BUILD_LIBRARY /D _MBCS /GF /Gm- /EHsc /MD /GS /Gy /arch:SSE2 /fp:precise /fp:except- /Za /Zc:wchar_t /Zc:forScope /Fo".\..\..\..\objs\vc2010\Win32\Release\\" /Gd /TC /wd4001 /analyze- /errorReport:prompt ..\..\..\src\bdf\bdf.c ..\..\..\src\cff\cff.c ..\..\..\src\base\ftbase.c ..\..\..\src\cache\ftcache.c ..\..\..\src\base\ftglyph.c ..\..\..\src\gzip\ftgzip.c ..\..\..\src\base\ftinit.c ..\..\..\src\lzw\ftlzw.c ..\..\..\src\base\ftsystem.c ..\..\..\src\smooth\smooth.c ..\..\..\src\base\ftmm.c ..\..\..\src\pcf\pcf.c ..\..\..\src\pfr\pfr.c ..\..\..\src\psaux\psaux.c ..\..\..\src\pshinter\pshinter.c ..\..\..\src\psnames\psmodule.c ..\..\..\src\raster\raster.c ..\..\..\src\sfnt\sfnt.c ..\..\..\src\truetype\truetype.c ..\..\..\src\type1\type1.c ..\..\..\src\cid\type1cid.c ..\..\..\src\type42\type42.c ..\..\..\src\winfonts\winfnt.c
+         bdf.c
+         cff.c
+         ftbase.c
+         ftcache.c
+         ftglyph.c
+         ftgzip.c
+         ftinit.c
+     1>d:\programming\sandbox\freetype\freetype-2.7.1\src\base\ftobjs.c(4883): warning C4702: unreachable code
+     1>d:\programming\sandbox\freetype\freetype-2.7.1\src\base\ftobjs.c(4884): warning C4702: unreachable code
+         ftlzw.c
+         ftsystem.c
+         smooth.c
+         ftmm.c
+         pcf.c
+         pfr.c
+         psaux.c
+         pshinter.c
+         psmodule.c
+         raster.c
+         sfnt.c
+         truetype.c
+         type1.c
+     1>d:\programming\sandbox\freetype\freetype-2.7.1\src\sfnt\ttsbit.c(1452): warning C4100: 'metrics_only' : unreferenced formal parameter (..\..\..\src\sfnt\sfnt.c)
+         type1cid.c
+         type42.c
+         winfnt.c
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I..\..\..\include /nologo /W4 /WX- /MP /O2 /Ob2 /Oi /Oy /GT /D NDEBUG /D WIN32 /D _LIB /D _CRT_SECURE_NO_WARNINGS /D FT2_BUILD_LIBRARY /D _MBCS /GF /Gm- /EHsc /MD /GS /Gy /arch:SSE2 /fp:precise /fp:except- /Zc:wchar_t /Zc:forScope /Fo".\..\..\..\objs\vc2010\Win32\Release\\" /Gd /TC /wd4001 /analyze- /errorReport:prompt ..\ftdebug.c
+         ftdebug.c
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\Lib.exe /OUT:".\..\..\..\objs\vc2010\Win32\freetype271.lib" /NOLOGO /MACHINE:X86 /LTCG .\..\..\..\objs\vc2010\Win32\Release\autofit.obj
+         .\..\..\..\objs\vc2010\Win32\Release\bdf.obj
+         .\..\..\..\objs\vc2010\Win32\Release\cff.obj
+         .\..\..\..\objs\vc2010\Win32\Release\ftbase.obj
+         .\..\..\..\objs\vc2010\Win32\Release\ftbitmap.obj
+         .\..\..\..\objs\vc2010\Win32\Release\ftcache.obj
+         .\..\..\..\objs\vc2010\Win32\Release\ftdebug.obj
+         .\..\..\..\objs\vc2010\Win32\Release\ftfstype.obj
+         .\..\..\..\objs\vc2010\Win32\Release\ftgasp.obj
+         .\..\..\..\objs\vc2010\Win32\Release\ftglyph.obj
+         .\..\..\..\objs\vc2010\Win32\Release\ftgzip.obj
+         .\..\..\..\objs\vc2010\Win32\Release\ftinit.obj
+         .\..\..\..\objs\vc2010\Win32\Release\ftlzw.obj
+         .\..\..\..\objs\vc2010\Win32\Release\ftstroke.obj
+         .\..\..\..\objs\vc2010\Win32\Release\ftsystem.obj
+         .\..\..\..\objs\vc2010\Win32\Release\smooth.obj
+         .\..\..\..\objs\vc2010\Win32\Release\ftbbox.obj
+         .\..\..\..\objs\vc2010\Win32\Release\ftfntfmt.obj
+         .\..\..\..\objs\vc2010\Win32\Release\ftmm.obj
+         .\..\..\..\objs\vc2010\Win32\Release\ftpfr.obj
+         .\..\..\..\objs\vc2010\Win32\Release\ftsynth.obj
+         .\..\..\..\objs\vc2010\Win32\Release\fttype1.obj
+         .\..\..\..\objs\vc2010\Win32\Release\ftwinfnt.obj
+         .\..\..\..\objs\vc2010\Win32\Release\ftlcdfil.obj
+         .\..\..\..\objs\vc2010\Win32\Release\ftgxval.obj
+         .\..\..\..\objs\vc2010\Win32\Release\ftotval.obj
+         .\..\..\..\objs\vc2010\Win32\Release\ftpatent.obj
+         .\..\..\..\objs\vc2010\Win32\Release\pcf.obj
+         .\..\..\..\objs\vc2010\Win32\Release\pfr.obj
+         .\..\..\..\objs\vc2010\Win32\Release\psaux.obj
+         .\..\..\..\objs\vc2010\Win32\Release\pshinter.obj
+         .\..\..\..\objs\vc2010\Win32\Release\psmodule.obj
+         .\..\..\..\objs\vc2010\Win32\Release\raster.obj
+         .\..\..\..\objs\vc2010\Win32\Release\sfnt.obj
+         .\..\..\..\objs\vc2010\Win32\Release\truetype.obj
+         .\..\..\..\objs\vc2010\Win32\Release\type1.obj
+         .\..\..\..\objs\vc2010\Win32\Release\type1cid.obj
+         .\..\..\..\objs\vc2010\Win32\Release\type42.obj
+         .\..\..\..\objs\vc2010\Win32\Release\winfnt.obj
+         freetype.vcxproj -> d:\Programming\Sandbox\Freetype\freetype-2.7.1\builds\windows\vc2010\.\..\..\..\objs\vc2010\Win32\freetype271.lib
+     1>Done Building Project "d:\Programming\Sandbox\Freetype\freetype-2.7.1\builds\windows\vc2010\freetype.vcxproj" (Rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:03.92
