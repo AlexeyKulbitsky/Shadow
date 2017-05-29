@@ -48,7 +48,7 @@ if (WIN32)
 endif(WIN32)
 
 # Add pugixml
-add_subdirectory(../libs/pugixml/scripts "${CMAKE_CURRENT_BINARY_DIR}/pugixml_build")
+add_subdirectory(../libs/pugixml "${CMAKE_CURRENT_BINARY_DIR}/pugixml_build")
 include_directories( ../libs/pugixml/src )
 
 # Add freetype
@@ -58,11 +58,11 @@ include_directories(../libs/freetype/include)
 # Add Vulkan
 include_directories(../libs/vulkan/include)
 
-# Add stb_image
-include_directories(../libs/stb/include)
+# Add stb
+include_directories(../libs/stb)
 
 # Add Tiny OBJ loader
-include_directories(../libs/tinyobjloader/include)
+include_directories(../libs/tinyobjloader)
 
 # Add EGL
 include_directories(../libs/egl/include)
@@ -70,9 +70,9 @@ find_library(EGL_LIBRARY libEGL HINTS ../libs/egl/lib/release)
 find_library(GLESV2_LIBRARY libGLESv2 HINTS ../libs/egl/lib/release)
 
 # Add glslang library
-add_subdirectory(../libs/glslangTest "${CMAKE_CURRENT_BINARY_DIR}/glslang_build")
-include_directories(../libs/glslangTest)
-include_directories(../libs/glslangTest/StandAlone)
+add_subdirectory(../libs/glslang "${CMAKE_CURRENT_BINARY_DIR}/glslang_build")
+include_directories(../libs/glslang)
+include_directories(../libs/glslang/StandAlone)
 
 add_library(${PROJECT_NAME} ${PROJECT_SOURCE_FILES})
 
