@@ -1,9 +1,9 @@
 #include "Win32Device.h"
-#include "../video/Driver.h"
-#include "../video/GLContext/EGLContextManager.h"
-#include "../video/GLES20/GLES20Driver.h"
-#include "../video/Vulkan/VulkanDriver.h"
-#include "../scene/SceneManager.h"
+#include "../../video/Driver.h"
+#include "../../video/GLContext/EGLContextManager.h"
+#include "../../video/GLES20/GLES20Driver.h"
+#include "../../video/Vulkan/VulkanDriver.h"
+#include "../../scene/SceneManager.h"
 
 #include "../../gui/GuiManager.h"
 
