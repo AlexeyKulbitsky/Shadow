@@ -74,6 +74,11 @@ add_subdirectory(../libs/glslang "${CMAKE_CURRENT_BINARY_DIR}/glslang_build")
 include_directories(../libs/glslang)
 include_directories(../libs/glslang/StandAlone)
 
+# Add assimp
+add_subdirectory(../libs/assimp "${CMAKE_CURRENT_BINARY_DIR}/assimp_build")
+include_directories(../libs/assimp/include)
+include_directories("${CMAKE_CURRENT_BINARY_DIR}/assimp_build/include")
+
 add_library(${PROJECT_NAME} ${PROJECT_SOURCE_FILES})
 
-target_link_libraries(${PROJECT_NAME} pugixml freetype glslang SPIRV SPVRemapper glslang-default-resource-limits ${EGL_LIBRARY} ${GLESV2_LIBRARY})
+target_link_libraries(${PROJECT_NAME} pugixml freetype glslang SPIRV SPVRemapper glslang-default-resource-limits assimp ${EGL_LIBRARY} ${GLESV2_LIBRARY})

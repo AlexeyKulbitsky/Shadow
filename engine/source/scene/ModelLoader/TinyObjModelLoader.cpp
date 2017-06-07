@@ -138,9 +138,5 @@ namespace sh
 			return model;
 		}
 
-		ModelBasePtr TinyObjModelLoader::Load(const char* path)
-		{
-			return Load(String(path));
-		}
 	}
 }

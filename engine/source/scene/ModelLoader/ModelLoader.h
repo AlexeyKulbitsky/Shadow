@@ -7,19 +7,15 @@ namespace sh
 {
 	namespace scene
 	{
-		class ModelLoader
+		class ModelLoader : public Singleton<ModelLoader>
 		{
 		public:
 			ModelLoader(){}
 			virtual ~ModelLoader(){}
 
-			virtual ModelBasePtr Load(const char* path) = 0;
-			virtual ModelBasePtr Load(const std::string &path) = 0;
+			ModelBasePtr Load(const char* path);
 
-			static void SetInstance(ModelLoader* loader);
-			static ModelLoader* GetInstance();
-		protected:
-			static ModelLoader* s_modelLoader;
+			virtual ModelBasePtr Load(const std::string &path) = 0;
 		};
 	}
 }

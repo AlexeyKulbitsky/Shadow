@@ -97,7 +97,8 @@ namespace sh
 						case MaterialParamType::MatrixWorldViewProjection:
 						{
 							math::Matrix4f wvp = projectionMatrix * viewMatrix * renderable->GetMatrix();
-							wvp.m[1][1] *= -1.0f;
+							//wvp.m[1][1] *= -1.0f;
+							wvp.Transpose();
 							param.Set(wvp);
 						}
 							break;

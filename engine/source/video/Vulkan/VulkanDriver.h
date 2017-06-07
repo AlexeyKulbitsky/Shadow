@@ -41,7 +41,6 @@ namespace sh
 			virtual void BeginRendering() override;
 			virtual void EndRendering() override;
 			virtual void Render(scene::Mesh* mesh) override;
-			//virtual void Render(const RenderCommandPtr& command) override;
 
 
 			// State management 
@@ -72,8 +71,9 @@ namespace sh
 			VulkanCommandBuffer* GetPrimaryCommandBuffer() { return m_primaryCommandBuffer; }
 
 
-			void SetGlobalPipelineLayout(VkPipelineLayout globalPipelineLayout) { m_globalPipelineLayout = globalPipelineLayout; }
-			void SetGlobalDescriptorSetLayout(VkDescriptorSetLayout globalDescriptorSetLayout) { m_globalDescriptorSetLayout = globalDescriptorSetLayout; }
+			//void SetGlobalPipelineLayout(VkPipelineLayout globalPipelineLayout) { m_globalPipelineLayout = globalPipelineLayout; }
+			//void SetGlobalDescriptorSetLayout(VkDescriptorSetLayout globalDescriptorSetLayout) { m_globalDescriptorSetLayout = globalDescriptorSetLayout; }
+			void OnWindowResized(int width, int height);
 
 		private:
 			struct QueueFamilyIndices 
@@ -120,8 +120,8 @@ namespace sh
 			VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
 			bool chechValidationLayers();
 			void setupDebugCallback();
-			void recreateSwapChain();
-			void cleanupSwapChain();
+			void recreateSwapChain(bool recreateSurface);
+			void cleanupSwapChain(bool destroySurface);
 
 		public:
 			uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);

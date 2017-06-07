@@ -59,6 +59,8 @@ namespace sh
 
 			virtual RenderTargetPtr CreateRenderTarget() const override;
 
+			void OnWindowResized(int width, int height);
+
 		private:
 			EGLContextManager* m_contextManager = nullptr;
 			GLuint m_currentVertexBuffer;

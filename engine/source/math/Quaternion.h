@@ -54,7 +54,7 @@ namespace sh
 			Quaternion<T> operator*(const Quaternion<T>& other) const
 			{
 				Quaternion<T> result;
-				result.x = (other.w * x) + (other.x * w) + (other.y * z) - (other.y * z);
+				result.x = (other.w * x) + (other.x * w) + (other.z * y) - (other.y * z);
 				result.y = (other.w * y) + (other.y * w) + (other.z * x) - (other.z * x);
 				result.z = (other.w * z) + (other.z * w) + (other.y * x) - (other.x * y);
 				result.w = (other.w * w) - (other.x * x) - (other.y * y) - (other.z * z);
@@ -149,11 +149,16 @@ namespace sh
 
 				Matrix3<T> r;
 
-				r.m[0][0] = 1 - (yy + zz);  r.m[1][0] = xy - wz;	
-				r.m[2][0] = xz + wy;        
-				r.m[0][1] = xy + wz;        r.m[1][1] = 1 - (xx + zz);
-				r.m[2][1] = yz - wx;        
-				r.m[0][2] = xz - wy;        r.m[1][2] = yz + wx;
+				r.m[0][0] = 1 - (yy + zz);  
+				r.m[1][0] = xy - wz;	
+				r.m[2][0] = xz + wy;  
+
+				r.m[0][1] = xy + wz;        
+				r.m[1][1] = 1 - (xx + zz);
+				r.m[2][1] = yz - wx;   
+
+				r.m[0][2] = xz - wy;        
+				r.m[1][2] = yz + wx;
 				r.m[2][2] = 1 - (xx + yy);  
 				              			             
 				return r;				

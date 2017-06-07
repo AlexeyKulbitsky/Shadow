@@ -1,5 +1,6 @@
 #include "VulkanDriver.h"
 #include "../../scene/Mesh.h"
+#include "../../Device.h"
 
 #include "VulkanVertexBuffer.h"
 #include "VulkanIndexBuffer.h"
@@ -19,6 +20,11 @@
 
 #include "../../gui/SpriteManager.h"
 
+#include "../../scene/SceneManager.h"
+#include "../../scene/Camera.h"
+
+
+
 #include <iostream>
 #include <stdexcept>
 #include <functional>
@@ -28,8 +34,6 @@
 #include <cstring>
 #include <set>
 #include <limits>
-
-#include <stb_image.h>
 
 namespace sh
 {
@@ -107,6 +111,8 @@ namespace sh
 			m_parameters = parameters;
 			gui::SpriteManager::CreateInstance();
 			VulkanShaderCompiler::CreateInstance();
+
+			
 		}
 
 		VulkanDriver::~VulkanDriver()
@@ -142,13 +148,16 @@ namespace sh
 			static bool first = true;
 			if( !first )
 			{
-				recreateSwapChain();
+				recreateSwapChain(true);
 			}
 			first = false;
         }
 
 		bool VulkanDriver::Init()
 		{
+			sh::Device::GetInstance()->windowResizeEvent.Connect(
+				std::bind(&VulkanDriver::OnWindowResized, this, std::placeholders::_1, std::placeholders::_2));
+
 			SetupLayersAndExtensions();			
 			CreateInstance();
 			setupDebugCallback();
@@ -173,13 +182,7 @@ namespace sh
 			CommandBufferManager::CreateInstance<VulkanCommandBufferManager>();
 			RenderBatchManager::CreateInstance<VulkanRenderBatchManager>();
 			TextureManager::CreateInstance<VulkanTextureManager>();
-			/*			
-			CreateDepthResources();
-			CreateFramebuffers();
-			CreateTextureImage();
-			CreateTextureImageView();
-			CreateTextureSampler();			
-			*/
+			
 			return true;
 		}
 
@@ -196,20 +199,20 @@ namespace sh
 			
 
 			std::array<VkClearValue, 2> clearValues = {};
-			clearValues[0].color.float32[0] = 1.0f;
-			clearValues[0].color.float32[1] = 0.0f;
-			clearValues[0].color.float32[2] = 0.0f;
+			clearValues[0].color.float32[0] = 0.7f;
+			clearValues[0].color.float32[1] = 0.7f;
+			clearValues[0].color.float32[2] = 0.7f;
 			clearValues[0].color.float32[3] = 1.0f;
 			clearValues[1].depthStencil.depth = 1.0f;
-			clearValues[1].depthStencil.stencil = 0;
+			clearValues[1].depthStencil.stencil = 0U;
 
 			VkRenderPassBeginInfo renderPassInfo = {};
 			renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
 			renderPassInfo.renderPass = m_renderPass;
 			renderPassInfo.framebuffer = framebuffer;
 			renderPassInfo.renderArea.offset = { 0, 0 };
-			renderPassInfo.renderArea.extent.width = 500;// m_viewPort.z;
-			renderPassInfo.renderArea.extent.height = 500;// m_viewPort.w;
+			renderPassInfo.renderArea.extent.width = m_viewPort.z;
+			renderPassInfo.renderArea.extent.height = m_viewPort.w;
 			renderPassInfo.clearValueCount = clearValues.size();
 			renderPassInfo.pClearValues = clearValues.data();
 
@@ -546,6 +549,20 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+		void VulkanDriver::OnWindowResized(int width, int height)
+		{
+			m_parameters.width = static_cast<u32>(width);
+			m_parameters.height = static_cast<u32>(height);
+			SetViewport(0U, 0U, width, height);
+
+			recreateSwapChain(false);
+
+			auto camera = Device::GetInstance()->GetSceneManager()->GetCamera();
+			camera->SetProjection(3.1415926535f / 3.0f, (float)width / (float)height, 0.1f, 1000.0f);
+		}
+		
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		void VulkanDriver::SetupLayersAndExtensions()
 		{
 			uint32_t extensionCount = 0;
@@ -608,8 +625,8 @@ namespace sh
 			createInfo.enabledExtensionCount = m_instanceExtensionsList.size();
 			createInfo.ppEnabledExtensionNames = m_instanceExtensionsList.data();
 
-			createInfo.enabledLayerCount = 0;//validationLayers.size();
-			createInfo.ppEnabledLayerNames = nullptr;//validationLayers.data();
+			createInfo.enabledLayerCount = validationLayers.size();
+			createInfo.ppEnabledLayerNames = validationLayers.data();
 
 			SH_ASSERT(vkCreateInstance(&createInfo, nullptr, m_instance.Replace()) == VK_SUCCESS, "failed to create instance!");		
 		}
@@ -1145,7 +1162,7 @@ namespace sh
 
 		VkExtent2D VulkanDriver::chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities)
 		{
-			if (capabilities.currentExtent.width != 5000/*std::numeric_limits<uint32_t>::max()*/) 
+			if (capabilities.currentExtent.width != std::numeric_limits<uint32_t>::max()) 
 			{
 				return capabilities.currentExtent;
 			}
@@ -1153,8 +1170,8 @@ namespace sh
 			{
 				VkExtent2D actualExtent = { 800, 600 };
 				
-				//actualExtent.width = std::max(capabilities.minImageExtent.width, std::min(capabilities.maxImageExtent.width, actualExtent.width));
-				//actualExtent.height = std::max(capabilities.minImageExtent.height, std::min(capabilities.maxImageExtent.height, actualExtent.height));
+				actualExtent.width = std::max(capabilities.minImageExtent.width, std::min(capabilities.maxImageExtent.width, actualExtent.width));
+				actualExtent.height = std::max(capabilities.minImageExtent.height, std::min(capabilities.maxImageExtent.height, actualExtent.height));
 
 				return actualExtent;
 			}
@@ -1209,22 +1226,25 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		void VulkanDriver::recreateSwapChain()
+		void VulkanDriver::recreateSwapChain(bool recreateSurface)
 		{
 			vkDeviceWaitIdle(m_device);
 
-			cleanupSwapChain();
+			cleanupSwapChain(recreateSurface);
 
-			CreateSurface();
+			if (recreateSurface)
+				CreateSurface();
+
 			CreateSwapChain();
 			CreateImageViews();
-			CreateRenderPass();
+			//CreateRenderPass();
+			CreateDepthResources();
 			CreateFramebuffers();
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		void VulkanDriver::cleanupSwapChain()
+		void VulkanDriver::cleanupSwapChain(bool destroySurface)
 		{
 			for (size_t i = 0; i < m_swapChainFramebuffers.size(); i++) 
 			{
@@ -1232,16 +1252,21 @@ namespace sh
 			}
 
 
-			vkDestroyRenderPass(m_device, m_renderPass, nullptr);
+			//vkDestroyRenderPass(m_device, m_renderPass, nullptr);
 
 			for (size_t i = 0; i < m_swapChainImageViews.size(); i++) 
 			{
 				vkDestroyImageView(m_device, m_swapChainImageViews[i], nullptr);
 			}
 
+			vkDestroyImageView(m_device, m_depthImageView, nullptr);
+			vkDestroyImage(m_device, m_depthImage, nullptr);
+			vkFreeMemory(m_device, m_depthImageMemory, nullptr);
+
 			vkDestroySwapchainKHR(m_device, m_swapChain, nullptr);
 
-			vkDestroySurfaceKHR(m_instance, m_surface, nullptr);
+			if (destroySurface)
+				vkDestroySurfaceKHR(m_instance, m_surface, nullptr);
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////

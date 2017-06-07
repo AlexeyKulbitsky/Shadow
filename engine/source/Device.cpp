@@ -1,6 +1,8 @@
 #include "Device.h"
 
 #include "scene/ModelLoader/TinyObjModelLoader.h"
+#include "scene/ModelLoader/AssimpModelLoader.h"
+
 #include "scene/SceneManager.h"
 #include "scene/Camera.h"
 #include "entity/ComponentsFactory.h"
@@ -37,8 +39,8 @@ namespace sh
 	void Device::Init()
 	{
 		// Model loader
-		scene::ModelLoader* modelLoader = new sh::scene::TinyObjModelLoader();
-		scene::ModelLoader::SetInstance(modelLoader);
+		scene::ModelLoader::CreateInstance<scene::AssimpModelLoader>();
+		//scene::ModelLoader::CreateInstance<scene::TinyObjModelLoader>();
 
 		// Scene manager
 		sh::scene::SceneManager* sceneMgr = new sh::scene::SceneManager();

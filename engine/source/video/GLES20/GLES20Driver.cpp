@@ -27,6 +27,10 @@
 #include "../GpuParams.h"
 #include "../Sampler.h"
 
+#include "../../Device.h"
+#include "../../scene/SceneManager.h"
+#include "../../scene/Camera.h"
+
 #include <sstream>
 using namespace sh;
 using namespace video;
@@ -77,6 +81,9 @@ video::DriverType GLES20Driver::GetType() const
 
 bool GLES20Driver::Init()
 {
+	sh::Device::GetInstance()->windowResizeEvent.Connect(
+		std::bind(&GLES20Driver::OnWindowResized, this, std::placeholders::_1, std::placeholders::_2));
+
 	glEnable( GL_DEPTH_TEST );
 	//glEnable(GL_BLEND);
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -492,4 +499,11 @@ RenderTargetPtr GLES20Driver::CreateRenderTarget() const
 }
 
 ////////////////////////////////////////////////////////////////////////
+
+void GLES20Driver::OnWindowResized(int width, int height)
+{
+	SetViewport(0U, 0U, static_cast<u32>(width), static_cast<u32>(height));
+	auto camera = Device::GetInstance()->GetSceneManager()->GetCamera();
+	camera->SetProjection(math::k_pi / 4.0f, (float)width / (float)height, 0.1f, 1000.0f);
+}
 
