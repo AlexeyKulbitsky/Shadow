@@ -20,6 +20,8 @@ public:
 	void OnMouseEvent(int x, int y, sh::MouseEventType type, sh::MouseCode code);
 	void OnMouseWeelEvent(int delta);
 	void OnKeyboardEvent(sh::KeyboardEventType type, sh::KeyCode code);
+	void OnWindowResized(int width, int height);
+
 
 private:
 	sh::gui::MenuBarPtr m_menuBar;

@@ -55,7 +55,7 @@ namespace sh
 			{
 				Quaternion<T> result;
 				result.x = (other.w * x) + (other.x * w) + (other.z * y) - (other.y * z);
-				result.y = (other.w * y) + (other.y * w) + (other.z * x) - (other.z * x);
+				result.y = (other.w * y) + (other.y * w) + (other.x * z) - (other.z * x);
 				result.z = (other.w * z) + (other.z * w) + (other.y * x) - (other.x * y);
 				result.w = (other.w * w) - (other.x * x) - (other.y * y) - (other.z * z);
 				return result;
@@ -149,18 +149,31 @@ namespace sh
 
 				Matrix3<T> r;
 
+				/*
 				r.m[0][0] = 1 - (yy + zz);  
+				r.m[0][1] = xy + wz;
+				r.m[0][2] = xz - wy;
+
 				r.m[1][0] = xy - wz;	
-				r.m[2][0] = xz + wy;  
-
-				r.m[0][1] = xy + wz;        
 				r.m[1][1] = 1 - (xx + zz);
-				r.m[2][1] = yz - wx;   
-
-				r.m[0][2] = xz - wy;        
 				r.m[1][2] = yz + wx;
+
+				r.m[2][0] = xz + wy;  
+				r.m[2][1] = yz - wx;   
 				r.m[2][2] = 1 - (xx + yy);  
-				              			             
+				  */
+
+				r.m[0][0] = 1 - (yy + zz);
+				r.m[0][1] = xy - wz;
+				r.m[0][2] = xz + wy;
+
+				r.m[1][0] = xy + wz;
+				r.m[1][1] = 1 - (xx + zz);
+				r.m[1][2] = yz - wx;
+
+				r.m[2][0] = xz - wy;
+				r.m[2][1] = yz + wx;
+				r.m[2][2] = 1 - (xx + yy);
 				return r;				
 			}
 
@@ -210,7 +223,6 @@ namespace sh
 
 			Vector3<T> operator*(const Vector3<T>& v) const
 			{
-				return Rotate(v);
 				// nVidia SDK implementation				
 				Vector3<T> uv, uuv;
 				Vector3<T> qvec(x, y, z);

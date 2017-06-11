@@ -2,12 +2,20 @@
 
 <pipeline name="firstPass" layer="main">	
 
+	<depthStencilState>
+		<depthTest val="false"/>
+	</depthStencilState>
+	
 	<blendingState>
 		<enabled val="true"/>
 		<srcFactor val="SrcAlpha"/>
 		<dstFactor val="InvSrcAlpha"/>
 		<operation val="Add"/>
 	</blendingState>
+
+	<rasterizationState>
+		<cullFace val="none"/>
+	</rasterizationState>
 
 	<attributes>
 		<position type="vec3" name="aPosition" location="0"/>

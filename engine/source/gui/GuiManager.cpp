@@ -214,6 +214,13 @@ namespace gui
 		m_textBatch.material->GetCommonGpuParams()->SetSampler(ST_FRAGMENT, "fontAtlas", texture);
 	}
 
+	void GuiManager::UpdateMatrices()
+	{
+		const auto& mat = sh::Device::GetInstance()->GetSceneManager()->GetCamera()->Get2DProjectionMatrix();
+		m_mainBatch.orthoMatrix.Set(mat);
+		m_textBatch.orthoMatrix.Set(mat);
+	}
+
 	bool GuiManager::ProcessInput(u32 x, u32 y, MouseEventType type)
 	{
 		for (auto& child : m_children)

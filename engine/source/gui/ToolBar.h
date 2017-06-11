@@ -19,6 +19,8 @@ namespace gui
 		virtual void GetGeometry(GuiBatchData& data) override;
 		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type) override;
 
+		void OnWindowResized(int width, int height);
+
 	private:
 		std::vector<ButtonPtr> m_buttons;
 	};

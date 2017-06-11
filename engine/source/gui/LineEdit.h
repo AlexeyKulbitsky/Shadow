@@ -17,7 +17,6 @@ namespace gui
 			   const SpritePtr& defaultSprite, 
 			   const SpritePtr& editSprite);
 
-		virtual void GetGeometry(GuiBatchData& data) override;
 		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type) override;
 		virtual bool ProcessKeyboardInput(KeyboardEventType type, KeyCode code) override;
 

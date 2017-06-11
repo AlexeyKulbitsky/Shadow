@@ -138,6 +138,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	}
 
 	}
+
+	if (device)
+	{
+		KeyboardEventType ev = KeyboardEventType::KeyReleased;
+		// Alt button
+		GetKeyState(VK_MENU) & 0x8000 ? ev = KeyboardEventType::KeyPressed : KeyboardEventType::KeyReleased;
+		device->keyboardEvent(ev, KeyCode::KEY_MENU);
+		// Shift button
+		GetKeyState(VK_SHIFT) & 0x8000 ? ev = KeyboardEventType::KeyPressed : KeyboardEventType::KeyReleased;
+		device->keyboardEvent(ev, KeyCode::KEY_SHIFT);
+		// Ctrl button
+		GetKeyState(VK_CONTROL) & 0x8000 ? ev = KeyboardEventType::KeyPressed : KeyboardEventType::KeyReleased;
+		device->keyboardEvent(ev, KeyCode::KEY_CONTROL);
+	}
+
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
@@ -198,7 +213,8 @@ Win32Device::Win32Device(const CreationParameters &parameters)
 
 		DWORD style = WS_POPUP;
 	
-		style = WS_SYSMENU | WS_BORDER | WS_CAPTION | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_SIZEBOX;
+		style = WS_SYSMENU | WS_BORDER | WS_CAPTION | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | 
+			WS_SIZEBOX | WS_MAXIMIZEBOX | WS_MINIMIZEBOX;
 
 		AdjustWindowRect(&clientSize, style, FALSE);
 

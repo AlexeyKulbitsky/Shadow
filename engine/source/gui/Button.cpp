@@ -73,20 +73,6 @@ namespace gui
 		m_text->SetText(text);
 	}
 
-	void Button::GetGeometry(GuiBatchData& data)
-	{
-		data.vertices.insert(data.vertices.end(), m_batchData.begin(), m_batchData.end());
-
-		data.indices.push_back(data.verticesCount);
-		data.indices.push_back(data.verticesCount + 1);
-		data.indices.push_back(data.verticesCount + 2);
-
-		data.indices.push_back(data.verticesCount);
-		data.indices.push_back(data.verticesCount + 2);
-		data.indices.push_back(data.verticesCount + 3);
-		data.verticesCount += 4;
-	}
-
 	void Button::GetTextGeometry(GuiBatchData& data)
 	{
 		m_text->GetTextGeometry(data);

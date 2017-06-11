@@ -556,9 +556,6 @@ namespace sh
 			SetViewport(0U, 0U, width, height);
 
 			recreateSwapChain(false);
-
-			auto camera = Device::GetInstance()->GetSceneManager()->GetCamera();
-			camera->SetProjection(3.1415926535f / 3.0f, (float)width / (float)height, 0.1f, 1000.0f);
 		}
 		
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////

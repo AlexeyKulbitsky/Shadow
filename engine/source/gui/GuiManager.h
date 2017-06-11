@@ -48,7 +48,10 @@ namespace gui
 		const SPtr<GuiElement>& GetChild(size_t i) const { return m_children[i]; }
 		size_t GetChildrenCount() const { return m_children.size(); }
 		void RemoveAllChildren() { m_children.clear(); }
+		
+		void UpdateMatrices();
 
+		// Events
 		bool ProcessInput(u32 x, u32 y, MouseEventType type);
 		bool ProcessKeyboardInput(KeyboardEventType type, KeyCode code);
 

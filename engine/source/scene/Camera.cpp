@@ -51,6 +51,7 @@ namespace sh
 			m_upVector = m_rotation * SceneManager::GetUpVector();
 			m_frontVector = m_rotation * SceneManager::GetFrontVector();
 			m_rightVector = m_rotation * SceneManager::GetRightVector();
+			m_rightVector.Normalize();
 		}
 
 		/////////////////////////////////////////////////////////////////////

@@ -36,10 +36,14 @@ namespace gui
 			rightDown.x, rightDown.y, 0.0f,		uvRightDown.x, uvRightDown.y,	0.7f, 0.7f, 0.7f,
 			rightDown.x, leftUp.y, 0.0f,		uvRightDown.x, uvLeftUp.y,		0.7f, 0.7f, 0.7f
 		};
-		
 
 		m_batchData = std::move(vertices);
+
+		Device::GetInstance()->windowResizeEvent.Connect(std::bind(&ToolBar::OnWindowResized, this,
+			std::placeholders::_1, std::placeholders::_2));
 	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
 
 	void ToolBar::AddItem(const ButtonPtr& button)
 	{
@@ -51,29 +55,26 @@ namespace gui
 		m_buttons.push_back(button); 
 	}
 
+	/////////////////////////////////////////////////////////////////////////////////////
+
 	void ToolBar::Load(const pugi::xml_node& node)
 	{
 
 	}
 
+	/////////////////////////////////////////////////////////////////////////////////////
+
 	void ToolBar::GetGeometry(GuiBatchData& data)
 	{
-		data.vertices.insert(data.vertices.end(), m_batchData.begin(), m_batchData.end());
-
-		data.indices.push_back(data.verticesCount);
-		data.indices.push_back(data.verticesCount + 1);
-		data.indices.push_back(data.verticesCount + 2);
-
-		data.indices.push_back(data.verticesCount);
-		data.indices.push_back(data.verticesCount + 2);
-		data.indices.push_back(data.verticesCount + 3);
-		data.verticesCount += 4;
+		GuiElement::GetGeometry(data);
 
 		for (const auto& button : m_buttons)
 		{
 			button->GetGeometry(data);
 		}
 	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
 
 	bool ToolBar::ProcessInput(u32 x, u32 y, MouseEventType type)
 	{
@@ -84,6 +85,16 @@ namespace gui
 		}
 		return false;
 	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	void ToolBar::OnWindowResized(int width, int)
+	{
+		m_rect.Set(0U, 15U, width, 45U);
+		UpdatePosition();
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
 
 } // gui
 

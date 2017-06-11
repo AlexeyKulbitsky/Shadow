@@ -21,6 +21,9 @@
 #include "../entity/Component.h"
 #include "../entity/Entity.h"
 #include "../entity/ComponentsFactory.h"
+
+#include "../gui/GuiManager.h"
+
 #include <pugixml.hpp>
 
 namespace sh
@@ -225,20 +228,20 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
 
-		/*
-		void SceneManager::OnEvent(const Event& e)
+		void SceneManager::OnWindowResized(int width, int height)
 		{
-			switch (e.type)
+			m_camera->SetProjection(3.1415926535f / 3.0f, 
+				static_cast<f32>(width), 
+				static_cast<f32>(height), 0.1f, 1000.0f);
+
+			sh::gui::GuiManager* guiManager = sh::gui::GuiManager::GetInstance();
+			if (guiManager)
 			{
-			case EventType::KEYBOARD_INPUT_EVENT:
-				break;
-			case EventType::MOUSE_INPUT_EVENT:
-				break;
-			default:
-				break;
+				guiManager->UpdateMatrices();
 			}
 		}
-		*/
+
 		//////////////////////////////////////////////////////////////////////////////////////////////
+
 	}
 }

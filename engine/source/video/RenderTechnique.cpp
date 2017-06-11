@@ -87,11 +87,6 @@ namespace sh
 
 			io::FileSystem* fs = Device::GetInstance()->GetFileSystem();
 
-			// Load constants
-			//pugi::xml_node paramsNode = shadersNode.child("constants");
-			//pipelineDesc.paramsDescription = LoadParamsDescription(paramsNode);
-
-
 			// Load vertex shader data
 			pugi::xml_node vertexShaderSrcNode = shadersNode.child("vertexShader");
 			if (vertexShaderSrcNode)

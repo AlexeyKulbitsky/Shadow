@@ -32,20 +32,6 @@ namespace gui
 		UpdateColor(m_defaultSprite->GetColor());
 	}
 
-	void LineEdit::GetGeometry(GuiBatchData& data)
-	{
-		data.vertices.insert(data.vertices.end(), m_batchData.begin(), m_batchData.end());
-
-		data.indices.push_back(data.verticesCount);
-		data.indices.push_back(data.verticesCount + 1);
-		data.indices.push_back(data.verticesCount + 2);
-
-		data.indices.push_back(data.verticesCount);
-		data.indices.push_back(data.verticesCount + 2);
-		data.indices.push_back(data.verticesCount + 3);
-		data.verticesCount += 4;
-	}
-
 	bool LineEdit::ProcessInput(u32 x, u32 y, MouseEventType type)
 	{
 		if (type == MouseEventType::ButtonPressed)

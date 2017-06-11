@@ -92,10 +92,17 @@ MainWindow::MainWindow()
 		releasedSprite,
 		pressedSprite));
 
+	sh::gui::WindowPtr window(new sh::gui::Window(
+		sh::math::Rectu(100, 100, 300, 300),
+		releasedSprite));
+	window->SetText("Inspector");
+
+	guiMgr->AddChild(window);
 	guiMgr->AddChild(lineEdit);
 	guiMgr->AddChild(floatLineEdit);
 	guiMgr->AddChild(m_toolBar);
 	guiMgr->AddChild(m_menuBar);
+	
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -111,7 +118,7 @@ void MainWindow::Update()
 
 	if (inputManager->IsMouseButtonPressed(sh::MouseCode::ButtonWheel))
 	{
-		if (inputManager->IsKeyPressed(sh::KeyCode::KEY_KEY_R))
+		if (inputManager->IsKeyPressed(sh::KeyCode::KEY_MENU))
 		{
 			const sh::math::Vector4u& viewport = device->GetDriver()->GetViewPort();
 			sh::math::Vector3f targetPos(0.0f);
@@ -123,11 +130,11 @@ void MainWindow::Update()
 
 			sh::math::Vector2i delta = current - old;
 			
-			float yAxisAngle = (float)delta.x * 0.01f;
+			float yAxisAngle = -(float)delta.x * 0.01f;
 			sh::math::Quaternionf yAxisRot;
 			yAxisRot.SetFromAxisAngle(camera->GetUpVector(), yAxisAngle);
 
-			float xAxisangle = (float)delta.y * 0.01f;
+			float xAxisangle = -(float)delta.y * 0.01f;
 			sh::math::Quaternionf xAxisRot;
 			xAxisRot.SetFromAxisAngle(camera->GetRightVector(), xAxisangle);
 
@@ -139,7 +146,7 @@ void MainWindow::Update()
 			sh::math::Vector3f targetVec = deltaRot * baseVec;
 			camera->SetPosition(targetPos + targetVec * length);
 
-			camera->SetRotation(camera->GetRotation() * deltaRot);
+			camera->SetRotation(deltaRot * camera->GetRotation());
 		}
 		else
 		{
@@ -322,4 +329,9 @@ void MainWindow::OnKeyboardEvent(sh::KeyboardEventType type, sh::KeyCode code)
 		sh::Device::GetInstance()->GetInputManager()->SetKeyPressed(code);
 	else
 		sh::Device::GetInstance()->GetInputManager()->SetKeyReleased(code);
+}
+
+void MainWindow::OnWindowResized(int width, int height)
+{
+
 }

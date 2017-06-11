@@ -58,7 +58,7 @@ void MoveGizmo::Render()
 			matrix = matrix * rotation.GetAsMatrix4();
 
 			sh::math::Matrix4f wvpMatrix = projectionMatrix * viewMatrix * matrix;
-			//wvpMatrix.m[1][1] *= -1.0f;
+			wvpMatrix.Transpose();
 
 			for (size_t i = 0; i < 6; ++i)
 			{

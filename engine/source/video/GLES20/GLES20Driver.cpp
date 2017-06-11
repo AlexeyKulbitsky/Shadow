@@ -503,7 +503,5 @@ RenderTargetPtr GLES20Driver::CreateRenderTarget() const
 void GLES20Driver::OnWindowResized(int width, int height)
 {
 	SetViewport(0U, 0U, static_cast<u32>(width), static_cast<u32>(height));
-	auto camera = Device::GetInstance()->GetSceneManager()->GetCamera();
-	camera->SetProjection(math::k_pi / 4.0f, (float)width / (float)height, 0.1f, 1000.0f);
 }
 

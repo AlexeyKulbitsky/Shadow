@@ -21,13 +21,57 @@ int main()
 	device->Init();
 
 	sh::video::Driver* driver = device->GetDriver();
-	//driver->SetClearColor(sh::math::Vector4f(0.5f, 0.5f, 0.5f, 1.0f));
 
 	auto sceneMgr = device->GetSceneManager();
 	sceneMgr->LoadScene("test_scene.xml");
 
+	sh::InputManager* inputManager = device->GetInputManager();
+	sh::scene::Camera* camera = sceneMgr->GetCamera();
+
 	while (device->Run())
 	{
+		if (inputManager->IsKeyPressed(sh::KeyCode::KEY_KEY_W))
+		{
+			camera->SetPosition(camera->GetPosition() + camera->GetFrontVector() * 0.05f);
+		}
+		if (inputManager->IsKeyPressed(sh::KeyCode::KEY_KEY_S))
+		{
+			camera->SetPosition(camera->GetPosition() - camera->GetFrontVector() * 0.05f);
+		}
+		if (inputManager->IsKeyPressed(sh::KeyCode::KEY_KEY_D))
+		{
+			camera->SetPosition(camera->GetPosition() + camera->GetRightVector() * 0.05f);
+		}
+		if (inputManager->IsKeyPressed(sh::KeyCode::KEY_KEY_A))
+		{
+			camera->SetPosition(camera->GetPosition() - camera->GetRightVector() * 0.05f);
+		}
+
+		sh::math::Quaternionf rot;
+		if (inputManager->IsKeyPressed(sh::KeyCode::KEY_UP))
+		{
+			sh::math::Quaternionf r;
+			r.SetFromAxisAngle(camera->GetRightVector(), -0.01f);
+			camera->SetRotation(r * camera->GetRotation());
+		}
+		if (inputManager->IsKeyPressed(sh::KeyCode::KEY_DOWN))
+		{
+			sh::math::Quaternionf r;
+			r.SetFromAxisAngle(camera->GetRightVector(), 0.01f);
+			camera->SetRotation(r * camera->GetRotation());
+		}
+		if (inputManager->IsKeyPressed(sh::KeyCode::KEY_RIGHT))
+		{
+			sh::math::Quaternionf r;
+			r.SetFromAxisAngle(camera->GetUpVector(), -0.01f);
+			camera->SetRotation(r * camera->GetRotation());
+		}
+		if (inputManager->IsKeyPressed(sh::KeyCode::KEY_LEFT))
+		{
+			sh::math::Quaternionf r;
+			r.SetFromAxisAngle(camera->GetUpVector(), 0.01f);
+			camera->SetRotation(r * camera->GetRotation());
+		}
 		driver->BeginRendering();
 
 		sceneMgr->Update();

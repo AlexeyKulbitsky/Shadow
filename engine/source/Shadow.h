@@ -11,6 +11,7 @@
 #include "gui/GuiManager.h"
 #include "gui/Button.h"
 #include "gui/Label.h"
+#include "gui/Layout.h"
 #include "gui/LineEdit.h"
 #include "gui/FloatLineEdit.h"
 #include "gui/MenuBar.h"
@@ -19,6 +20,7 @@
 #include "gui/Text.h"
 #include "gui/Sprite.h"
 #include "gui/SpriteManager.h"
+#include "gui/Window.h"
 
 #include "entity/Component.h"
 #include "entity/ComponentsFactory.h"

@@ -13,7 +13,7 @@ include_directories(../libs/assimp/include)
 file(GLOB FRAMEWORK_SRC "source/*.cpp")
 add_executable(framework ${FRAMEWORK_SRC})
 
-target_link_libraries(framework shadow-lib)
+target_link_libraries(framework Shadow)
 
 add_custom_command(TARGET framework POST_BUILD
 					COMMAND ${CMAKE_COMMAND} -E 

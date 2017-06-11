@@ -7,6 +7,8 @@
 #include "scene/Camera.h"
 #include "entity/ComponentsFactory.h"
 
+#include "gui/GuiManager.h"
+
 #include <functional>
 using namespace std::placeholders;
 
@@ -50,14 +52,25 @@ namespace sh
 
 		// Camera
 		sh::scene::Camera* camera = new sh::scene::Camera();
-		camera->SetProjection(3.1415926535f / 3.0f, m_creationParameters.width, m_creationParameters.height, 0.1f, 1000.0f);
+		camera->SetProjection(3.1415926535f / 3.0f, 
+			static_cast<f32>(m_creationParameters.width), 
+			static_cast<f32>(m_creationParameters.height), 0.1f, 1000.0f);
 		camera->SetPosition(sh::math::Vector3f(0.0f));
 		sceneMgr->SetCamera(camera);
+
+		windowResizeEvent.Connect(std::bind(&scene::SceneManager::OnWindowResized, sceneMgr,
+			std::placeholders::_1, std::placeholders::_2));
+
+		// Gui manager
+		sh::gui::GuiManager::CreateInstance();
+		sh::gui::GuiManager::GetInstance()->Init();
 	}
 
 
 	void Device::Destroy()
 	{
+		sh::gui::GuiManager::DestroyInstance();
+
 		delete s_instance;
 		s_instance = nullptr;
 	}

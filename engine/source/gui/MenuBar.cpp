@@ -15,6 +15,7 @@ namespace sh
 
 namespace gui
 {
+
 	MenuBar::MenuBar()
 	{
 		m_batchData.resize(4 * 8);
@@ -44,7 +45,12 @@ namespace gui
 		
 
 		m_batchData = std::move(vertices);
+
+		Device::GetInstance()->windowResizeEvent.Connect(std::bind(&MenuBar::OnWindowResized, this,
+			std::placeholders::_1, std::placeholders::_2));
 	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
 
 	MenuBar::MenuBar(const SpritePtr& sprite)
 	{
@@ -56,7 +62,13 @@ namespace gui
 		UpdatePosition();
 		UpdateUV(m_sprite->GetUVRect().upperLeftCorner, m_sprite->GetUVRect().lowerRightCorner);
 		UpdateColor(m_sprite->GetColor());
+
+		Device::GetInstance()->windowResizeEvent.Connect(std::bind(&MenuBar::OnWindowResized, this,
+			std::placeholders::_1, std::placeholders::_2));
+
 	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
 
 	const MenuPtr& MenuBar::AddMenu(const String& title, const ButtonPtr& button)
 	{
@@ -70,18 +82,11 @@ namespace gui
 		return m_menus[m_menus.size() - 1].second;
 	}
 
+	/////////////////////////////////////////////////////////////////////////////////////
+
 	void MenuBar::GetGeometry(GuiBatchData& data)
 	{
-		data.vertices.insert(data.vertices.end(), m_batchData.begin(), m_batchData.end());
-
-		data.indices.push_back(data.verticesCount);
-		data.indices.push_back(data.verticesCount + 1);
-		data.indices.push_back(data.verticesCount + 2);
-
-		data.indices.push_back(data.verticesCount);
-		data.indices.push_back(data.verticesCount + 2);
-		data.indices.push_back(data.verticesCount + 3);
-		data.verticesCount += 4;
+		GuiElement::GetGeometry(data);
 		
 		for (const auto& menu : m_menus)
 		{
@@ -90,6 +95,8 @@ namespace gui
 				menu.second->GetGeometry(data);
 		}
 	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
 
 	void MenuBar::GetTextGeometry(GuiBatchData& data)
 	{
@@ -101,15 +108,21 @@ namespace gui
 		}
 	}
 
+	/////////////////////////////////////////////////////////////////////////////////////
+
 	void MenuBar::SetPosition(u32 x, u32 y)
 	{
-
+		// Position is fixed in left upper corener of viewport
 	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
 
 	void MenuBar::SetWidth(u32 width)
 	{
-
+		// Width is always stretched to viewport's width
 	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
 
 	void MenuBar::SetHeight(u32 height)
 	{
@@ -121,6 +134,8 @@ namespace gui
 
 		UpdatePosition();
 	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
 
 	bool MenuBar::ProcessInput(u32 x, u32 y, MouseEventType type)
 	{
@@ -141,6 +156,16 @@ namespace gui
 		}
 		return false;
 	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	void MenuBar::OnWindowResized(int width, int)
+	{
+		m_rect.Set(0U, 0U, width, m_rect.lowerRightCorner.y);
+		UpdatePosition();
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
 
 } // gui
 
