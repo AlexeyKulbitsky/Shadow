@@ -20,7 +20,10 @@
 #include "gui/Text.h"
 #include "gui/Sprite.h"
 #include "gui/SpriteManager.h"
+#include "gui/Widget.h"
 #include "gui/Window.h"
+#include "gui/HorizontalLayout.h"
+#include "gui/VerticalLayout.h"
 
 #include "entity/Component.h"
 #include "entity/ComponentsFactory.h"

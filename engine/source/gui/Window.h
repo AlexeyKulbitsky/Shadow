@@ -1,7 +1,7 @@
 #ifndef SHADOW_WINDOW_INCLUDE
 #define SHADOW_WINDOW_INCLUDE
 
-#include "GuiElement.h"
+#include "Widget.h"
 
 namespace sh
 {
@@ -9,7 +9,7 @@ namespace sh
 namespace gui
 {
 
-	class Window : public GuiElement
+	class Window : public Widget
 	{
 	public:
 		Window(const math::Rectu& rect, const SpritePtr& sprite);

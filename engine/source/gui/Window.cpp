@@ -2,6 +2,7 @@
 
 #include "Sprite.h"
 #include "Text.h"
+#include "Layout.h"
 
 #include "../Device.h"
 
@@ -24,6 +25,11 @@ namespace gui
 		UpdatePosition();
 		UpdateUV(m_sprite->GetUVRect().upperLeftCorner, m_sprite->GetUVRect().lowerRightCorner);
 		UpdateColor(m_sprite->GetColor());
+
+		m_topMargin = 25U;
+		m_rightMargin = 5U;
+		m_bottomMargin = 5U;
+		m_leftMargin = 5U;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -37,7 +43,7 @@ namespace gui
 
 	void Window::GetGeometry(GuiBatchData& data)
 	{
-		GuiElement::GetGeometry(data);
+		Widget::GetGeometry(data);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -51,6 +57,9 @@ namespace gui
 
 	bool Window::ProcessInput(u32 x, u32 y, MouseEventType type)
 	{
+		if (Widget::ProcessInput(x, y, type))
+			return true;
+
 		switch (type)
 		{
 		case MouseEventType::ButtonPressed:

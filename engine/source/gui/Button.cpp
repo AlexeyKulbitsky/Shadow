@@ -43,6 +43,11 @@ namespace gui
 		UpdateColor(m_releasedSprite->GetColor());
 	}
 
+	Button::Button(const String& text)
+	{
+
+	}
+
 	ButtonPtr Button::Clone() const
 	{
 		ButtonPtr result(new Button());

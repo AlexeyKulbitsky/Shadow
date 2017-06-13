@@ -1,7 +1,7 @@
 #ifndef SHADOW_TOOL_BAR_INCLUDE
 #define SHADOW_TOOL_BAR_INCLUDE
 
-#include "GuiElement.h"
+#include "Widget.h"
 
 namespace sh
 {
@@ -9,7 +9,7 @@ namespace sh
 namespace gui
 {
 
-	class ToolBar : public GuiElement
+	class ToolBar : public Widget
 	{
 	public:
 		ToolBar();

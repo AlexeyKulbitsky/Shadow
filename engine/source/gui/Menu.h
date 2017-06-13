@@ -1,7 +1,7 @@
 #ifndef SHADOW_MENU_INCLUDE
 #define SHADOW_MENU_INCLUDE
 
-#include "GuiElement.h"
+#include "Widget.h"
 
 namespace sh
 {
@@ -9,7 +9,7 @@ namespace sh
 namespace gui
 {
 
-	class Menu : public GuiElement
+	class Menu : public Widget
 	{
 	public:
 		Menu();

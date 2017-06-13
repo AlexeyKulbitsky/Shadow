@@ -69,15 +69,19 @@ namespace sh
 	{
 		DEFINE_CLASS_PTR(GuiElement)
 		DEFINE_CLASS_PTR(Button)
+		DEFINE_CLASS_PTR(HorizontalLayout)
+		DEFINE_CLASS_PTR(VerticalLayout)
 		DEFINE_CLASS_PTR(Sprite)
 		DEFINE_CLASS_PTR(Label)
 		DEFINE_CLASS_PTR(Layout)
+		DEFINE_CLASS_PTR(LayoutItem)
 		DEFINE_CLASS_PTR(LineEdit)
 		DEFINE_CLASS_PTR(FloatLineEdit)
 		DEFINE_CLASS_PTR(MenuBar)
 		DEFINE_CLASS_PTR(Menu)
 		DEFINE_CLASS_PTR(Text)
 		DEFINE_CLASS_PTR(ToolBar)
+		DEFINE_CLASS_PTR(Widget)
 		DEFINE_CLASS_PTR(Window)
 	}
 

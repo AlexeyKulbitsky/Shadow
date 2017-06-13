@@ -27,6 +27,8 @@ namespace gui
 		void SetEnabled(bool enabled) { m_enabled = enabled; }
 		bool IsEnabled() const { return m_enabled; }
 
+		const math::Rectu& GetRect() const { return m_rect; }
+
 		virtual void Load(const pugi::xml_node& node) { }
 		virtual void GetGeometry(GuiBatchData& data);
 		virtual void GetTextGeometry(GuiBatchData& data) { }

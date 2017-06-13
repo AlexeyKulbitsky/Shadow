@@ -1,7 +1,7 @@
 #ifndef SHADOW_BUTTON_INCLUDE
 #define SHADOW_BUTTON_INCLUDE
 
-#include "GuiElement.h"
+#include "Widget.h"
 
 namespace sh
 {
@@ -9,7 +9,7 @@ namespace sh
 namespace gui
 {
 
-	class Button : public GuiElement
+	class Button : public Widget
 	{
 	public:
 		//Button(const math::Rectu rect);
@@ -18,6 +18,8 @@ namespace gui
 			   const SpritePtr& pressedSprite,
 			   const SpritePtr& hoveredSprite);
 		Button();
+		Button(const String& text);
+
 		ButtonPtr Clone() const;
 
 		void SetToggleable(bool toggleable) { m_toggleable = toggleable; }

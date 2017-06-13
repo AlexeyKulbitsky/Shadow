@@ -92,10 +92,28 @@ MainWindow::MainWindow()
 		releasedSprite,
 		pressedSprite));
 
+	
 	sh::gui::WindowPtr window(new sh::gui::Window(
 		sh::math::Rectu(100, 100, 300, 300),
 		releasedSprite));
 	window->SetText("Inspector");
+
+	sh::gui::VerticalLayoutPtr layout(new sh::gui::VerticalLayout());
+	sh::math::Rectu r(400, 200, 500, 300);
+	sh::gui::ButtonPtr btn1(new sh::gui::Button(r, releasedSprite, pressedSprite, redSprite));
+	sh::gui::HorizontalLayoutPtr childLayout(new sh::gui::HorizontalLayout());
+	sh::gui::ButtonPtr btn2(new sh::gui::Button(r, releasedSprite, pressedSprite, redSprite));
+	sh::gui::ButtonPtr btn3(new sh::gui::Button(r, releasedSprite, pressedSprite, redSprite));
+	sh::gui::ButtonPtr btn4(new sh::gui::Button(r, releasedSprite, pressedSprite, redSprite));
+	childLayout->AddWidget(btn2);
+	childLayout->AddWidget(btn3);
+	childLayout->AddWidget(btn4);
+	sh::gui::ButtonPtr btn5(new sh::gui::Button(r, releasedSprite, pressedSprite, redSprite));
+	layout->AddWidget(btn1);
+	layout->AddLayout(childLayout);
+	layout->AddWidget(btn5);
+
+	window->SetLayout(layout);
 
 	guiMgr->AddChild(window);
 	guiMgr->AddChild(lineEdit);

@@ -1,5 +1,5 @@
-#ifndef SHADOW_HORIZONTAL_LAYOUT_INCLUDE
-#define SHADOW_HORIZONTAL_LAYOUT_INCLUDE
+#ifndef SHADOW_VERTICAL_LAYOUT_INCLUDE
+#define SHADOW_VERTICAL_LAYOUT_INCLUDE
 
 #include "Layout.h"
 
@@ -9,9 +9,10 @@ namespace sh
 namespace gui
 {
 
-	class HorizontalLayout : public Layout
+	class VerticalLayout : public Layout
 	{
 	public:
+		VerticalLayout() {}
 		virtual void AddWidget(const WidgetPtr& widget) override;
 		virtual void AddLayout(const LayoutPtr& layout) override;
 		virtual void SetSize(const math::Vector2u& size) override;
@@ -20,7 +21,6 @@ namespace gui
 
 	protected:
 		virtual void Resize(const math::Rectu& rect) override;
-		
 	};
 
 } // gui
