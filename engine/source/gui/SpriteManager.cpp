@@ -4,6 +4,8 @@
 
 #include "../Device.h"
 
+#include "../video/TextureLoader/TextureLoader.h"
+
 namespace sh
 {
 
@@ -31,7 +33,9 @@ namespace gui
 			SH_ASSERT(rect, "Can not find Rect node for sprite!");
 
 			sh::String texFilename = tex.attribute("val").as_string();
-			sh::video::TexturePtr texture = sh::Device::GetInstance()->GetResourceManager()->GetTexture(texFilename);
+			//sh::video::TexturePtr texture = sh::Device::GetInstance()->GetResourceManager()->GetTexture(texFilename);
+
+			video::TexturePtr texture = video::TextureLoader::GetInstance()->GetWhiteTexture();
 
 			SpritePtr sprite(new Sprite(texture, r));
 			sprite->SetName(name);

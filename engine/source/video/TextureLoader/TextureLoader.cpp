@@ -15,7 +15,7 @@ namespace sh
 	{
 		TextureLoader::TextureLoader()
 		{
-
+			
 		}
 
 		//////////////////////////////////////////////////////////////
@@ -49,6 +49,29 @@ namespace sh
 		TexturePtr TextureLoader::LoadCube(const std::vector<String>& faces)
 		{
 			return LoadSTBCube(faces);
+		}
+
+		//////////////////////////////////////////////////////////////
+
+		const TexturePtr& TextureLoader::GetWhiteTexture()
+		{ 
+			if( !m_whiteTexture )
+			{
+				const u32 textureSize = 8U;
+				video::TextureDescription textureDesc;
+				textureDesc.type = TEX_TYPE_TEXTURE_2D;
+				textureDesc.width = textureSize;
+				textureDesc.height = textureSize;
+				textureDesc.format = TextureFormat::RGBA;
+
+				m_whiteTexture = video::Texture::Create(textureDesc);
+
+				const u32 color = 0xFFFFFFFF;
+				std::vector<u32> data(textureSize * textureSize, color);
+				m_whiteTexture->SetData(0U, (char*)data.data());
+			}
+
+			return m_whiteTexture; 
 		}
 
 		//////////////////////////////////////////////////////////////

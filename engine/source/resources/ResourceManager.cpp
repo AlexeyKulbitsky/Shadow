@@ -11,15 +11,14 @@ namespace sh
 {
 	ResourceManager::ResourceManager()
 	{
-		m_textureLoader = new video::TextureLoader();
+		video::TextureLoader::CreateInstance();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	ResourceManager::~ResourceManager()
 	{
-		delete m_textureLoader;
-		m_textureLoader = nullptr;
+		video::TextureLoader::DestroyInstance();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -58,7 +57,7 @@ namespace sh
 				return m_textures[i];
 		}
 
-		video::TexturePtr texture = m_textureLoader->Load(fileName);
+		video::TexturePtr texture = video::TextureLoader::GetInstance()->Load(fileName);
 		texture->SetFileName(fileName);
 		m_textures.push_back(texture);
 		return texture;
@@ -95,7 +94,7 @@ namespace sh
 				facesPathes.push_back(textureFileInfo.absolutePath);
 			}
 		}
-		video::TexturePtr texture = m_textureLoader->LoadCube(facesPathes);
+		video::TexturePtr texture = video::TextureLoader::GetInstance()->LoadCube(facesPathes);
 		
 		return texture;
 	}

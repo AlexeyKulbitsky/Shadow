@@ -3,8 +3,6 @@
 
 #include "Resource.h"
 
-
-
 namespace sh
 {
 	namespace video
@@ -34,16 +32,11 @@ namespace sh
 		video::MaterialPtr GetMaterial(size_t i) { return m_materials[i]; }
 		scene::ModelBasePtr GetModelBase(const String& fileName);
 
-		video::TextureLoader* GetTextureLoader() const { return m_textureLoader; }
-
 	private:
 		std::vector<video::RenderTechniquePtr> m_renderTechniques;
 		std::vector<video::TexturePtr> m_textures;
 		std::vector<scene::ModelBasePtr> m_models;
 		std::vector<video::MaterialPtr> m_materials;
-
-		// Managers for loading assets
-		video::TextureLoader* m_textureLoader;
 	};
 }
 
