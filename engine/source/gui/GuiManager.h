@@ -52,6 +52,7 @@ namespace gui
 		void UpdateMatrices();
 
 		void SetStyle(const StylePtr& style);
+		const StylePtr& GetStyle() const { return m_style; }
 
 		// Events
 		bool ProcessInput(u32 x, u32 y, MouseEventType type);

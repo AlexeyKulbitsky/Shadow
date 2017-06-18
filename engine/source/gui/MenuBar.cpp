@@ -3,6 +3,7 @@
 #include "Menu.h"
 #include "Button.h"
 #include "Sprite.h"
+#include "Style.h"
 #include "GuiManager.h"
 
 #include "../video/Driver.h"
@@ -18,6 +19,7 @@ namespace gui
 
 	MenuBar::MenuBar()
 	{
+		/*
 		m_batchData.resize(4 * 8);
 
 		video::Driver* driver = Device::GetInstance()->GetDriver();
@@ -45,6 +47,19 @@ namespace gui
 		
 
 		m_batchData = std::move(vertices);
+
+		Device::GetInstance()->windowResizeEvent.Connect(std::bind(&MenuBar::OnWindowResized, this,
+			std::placeholders::_1, std::placeholders::_2));
+		*/
+
+		m_batchData.resize(4 * 8);
+
+		m_sprite = GuiManager::GetInstance()->GetStyle()->GetMenuBar()->m_sprite;
+		SetHeight(15U);
+
+		UpdatePosition();
+		UpdateUV(m_sprite->GetUVRect().upperLeftCorner, m_sprite->GetUVRect().lowerRightCorner);
+		UpdateColor(m_sprite->GetColor());
 
 		Device::GetInstance()->windowResizeEvent.Connect(std::bind(&MenuBar::OnWindowResized, this,
 			std::placeholders::_1, std::placeholders::_2));

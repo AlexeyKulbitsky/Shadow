@@ -50,92 +50,58 @@ MainWindow::MainWindow()
 	auto font = sh::FontManager::GetInstance()->GenerateFont("VeraMono.ttf");
 	guiMgr->SetFont(font);
 
-	auto releasedSprite = sh::gui::SpriteManager::GetInstance()->GetSprite("DefaultButton");
-	auto pressedSprite = sh::gui::SpriteManager::GetInstance()->GetSprite("PressedButton");
-	auto redSprite = sh::gui::SpriteManager::GetInstance()->GetSprite("RedButton");
-	auto moveGizmoSprite = sh::gui::SpriteManager::GetInstance()->GetSprite("MoveGizmo");
+	//auto releasedSprite = sh::gui::SpriteManager::GetInstance()->GetSprite("DefaultButton");
+	//auto pressedSprite = sh::gui::SpriteManager::GetInstance()->GetSprite("PressedButton");
+	//auto redSprite = sh::gui::SpriteManager::GetInstance()->GetSprite("RedButton");
+	//auto moveGizmoSprite = sh::gui::SpriteManager::GetInstance()->GetSprite("MoveGizmo");
 
-	m_menuBar.reset(new sh::gui::MenuBar(releasedSprite));
-	sh::gui::ButtonPtr menuButton(new sh::gui::Button(
-		sh::math::Rectu(0, 0, 50, 15),
-		releasedSprite,
-		pressedSprite,
-		redSprite));
+	m_menuBar.reset(new sh::gui::MenuBar());
+	sh::gui::ButtonPtr menuButton(new sh::gui::Button(sh::math::Rectu(0, 0, 50, 15)));
 	menuButton->SetToggleable(true);
 	const auto& fileMenu = m_menuBar->AddMenu("File", menuButton);
 
-	sh::gui::ButtonPtr openSceneButton(new sh::gui::Button(
-		sh::math::Rectu(0, 0, 50, 15),
-		releasedSprite,
-		pressedSprite,
-		redSprite));
+	sh::gui::ButtonPtr openSceneButton(new sh::gui::Button(sh::math::Rectu(0, 0, 50, 15)));
 	openSceneButton->SetText("Open scene...");
 	openSceneButton->OnRelease.Connect(std::bind(&MainWindow::OpenScene, this));
 	fileMenu->AddItem(openSceneButton);
 
-	sh::gui::ButtonPtr saveSceneButton(new sh::gui::Button(
-		sh::math::Rectu(0, 0, 50, 15),
-		releasedSprite,
-		pressedSprite,
-		redSprite));
+	sh::gui::ButtonPtr saveSceneButton(new sh::gui::Button(sh::math::Rectu(0, 0, 50, 15)));
 	saveSceneButton->SetText("Save scene...");
 	saveSceneButton->OnRelease.Connect(std::bind(&MainWindow::SaveScene, this));
 	fileMenu->AddItem(saveSceneButton);
 
-	sh::gui::ButtonPtr exitButton(new sh::gui::Button(
-		sh::math::Rectu(0, 0, 50, 15),
-		releasedSprite,
-		pressedSprite,
-		redSprite));
+	sh::gui::ButtonPtr exitButton(new sh::gui::Button(sh::math::Rectu(0, 0, 50, 15)));
 	exitButton->SetText("Exit");
 	exitButton->OnRelease.Connect(std::bind(&MainWindow::Close, this));
 	fileMenu->AddItem(exitButton);
 
 
 	m_toolBar.reset(new sh::gui::ToolBar());
-	sh::gui::ButtonPtr moveGIzmo(new sh::gui::Button(
-		sh::math::Rectu(0, 0, 50, 15),
-		moveGizmoSprite,
-		pressedSprite,
-		redSprite));
+	sh::gui::ButtonPtr moveGIzmo(new sh::gui::Button(sh::math::Rectu(0, 0, 50, 15)));
 	m_toolBar->AddItem(moveGIzmo);
 
-	sh::gui::LineEditPtr lineEdit(new sh::gui::LineEdit(
-		sh::math::Rectu(0, 50, 150, 65),
-		releasedSprite,
-		pressedSprite));
-
-	sh::gui::FloatLineEditPtr floatLineEdit(new sh::gui::FloatLineEdit(
-		sh::math::Rectu(0, 65, 150, 80),
-		releasedSprite,
-		pressedSprite));
-
 	
-	sh::gui::WindowPtr window(new sh::gui::Window(
-		sh::math::Rectu(100, 100, 300, 300),
-		releasedSprite));
-	window->SetText("Inspector");
+	//sh::gui::WindowPtr window(new sh::gui::Window(sh::math::Rectu(100, 100, 300, 300), releasedSprite));
+	//window->SetText("Inspector");
 
 	sh::gui::VerticalLayoutPtr layout(new sh::gui::VerticalLayout());
 	sh::math::Rectu r(400, 200, 500, 300);
-	sh::gui::ButtonPtr btn1(new sh::gui::Button(r, releasedSprite, pressedSprite, redSprite));
+	sh::gui::ButtonPtr btn1(new sh::gui::Button(r));
 	sh::gui::HorizontalLayoutPtr childLayout(new sh::gui::HorizontalLayout());
-	sh::gui::ButtonPtr btn2(new sh::gui::Button(r, releasedSprite, pressedSprite, redSprite));
-	sh::gui::ButtonPtr btn3(new sh::gui::Button(r, releasedSprite, pressedSprite, redSprite));
-	sh::gui::ButtonPtr btn4(new sh::gui::Button(r, releasedSprite, pressedSprite, redSprite));
+	sh::gui::ButtonPtr btn2(new sh::gui::Button(r));
+	sh::gui::ButtonPtr btn3(new sh::gui::Button(r));
+	sh::gui::ButtonPtr btn4(new sh::gui::Button(r));
 	childLayout->AddWidget(btn2);
 	childLayout->AddWidget(btn3);
 	childLayout->AddWidget(btn4);
-	sh::gui::ButtonPtr btn5(new sh::gui::Button(r, releasedSprite, pressedSprite, redSprite));
+	sh::gui::ButtonPtr btn5(new sh::gui::Button(r));
 	layout->AddWidget(btn1);
 	layout->AddLayout(childLayout);
 	layout->AddWidget(btn5);
 
-	window->SetLayout(layout);
+	//window->SetLayout(layout);
 
-	guiMgr->AddChild(window);
-	guiMgr->AddChild(lineEdit);
-	guiMgr->AddChild(floatLineEdit);
+	//guiMgr->AddChild(window);
 	guiMgr->AddChild(m_toolBar);
 	guiMgr->AddChild(m_menuBar);
 	

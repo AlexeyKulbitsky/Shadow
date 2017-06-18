@@ -3,6 +3,7 @@
 #include "GuiManager.h"
 #include "Sprite.h"
 #include "Text.h"
+#include "Style.h"
 
 #include "../scene/SceneManager.h"
 #include "../scene/Camera.h"
@@ -23,6 +24,24 @@ namespace gui
 	Button::Button()
 	{
 		m_batchData.resize(4 * 8);
+	}
+
+	Button::Button(const math::Rectu rect)
+	{
+		const auto& ref = GuiManager::GetInstance()->GetStyle()->GetButton();
+
+		m_releasedSprite = ref->m_releasedSprite;
+		m_pressedSprite = ref->m_pressedSprite;
+		m_hoveredSprite = ref->m_hoveredSprite;
+
+		m_rect = rect;
+		m_text.reset(new Text(rect));
+
+		m_batchData.resize(4 * 8);
+
+		UpdatePosition();
+		UpdateUV(m_releasedSprite->GetUVRect().upperLeftCorner, m_releasedSprite->GetUVRect().lowerRightCorner);
+		UpdateColor(m_releasedSprite->GetColor());
 	}
 
 	Button::Button(const SpritePtr& defaultSprite,
@@ -159,9 +178,9 @@ namespace gui
 				{
 					if (!m_toggleable)
 					{
-						UpdateUV(m_releasedSprite->GetUVRect().upperLeftCorner, 
-								 m_releasedSprite->GetUVRect().lowerRightCorner);
-						UpdateColor(m_releasedSprite->GetColor());
+						UpdateUV(m_hoveredSprite->GetUVRect().upperLeftCorner, 
+								 m_hoveredSprite->GetUVRect().lowerRightCorner);
+						UpdateColor(m_hoveredSprite->GetColor());
 					}
 
 					OnRelease();

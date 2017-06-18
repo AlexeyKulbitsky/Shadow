@@ -2,6 +2,7 @@
 
 #include "Sprite.h"
 #include "Button.h"
+#include "MenuBar.h"
 
 #include "../Device.h"
 #include "../resources/ResourceManager.h"
@@ -27,6 +28,10 @@ namespace gui
 		pugi::xml_node buttonNode = root.child("button");
 		if (buttonNode)
 			LoadButtonStyle(buttonNode);
+
+		pugi::xml_node menuBarNode = root.child("menubar");
+		if (menuBarNode)
+			LoadMenuBar(menuBarNode);
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -50,6 +55,21 @@ namespace gui
 		}
 		
 		m_button.reset(new Button(sprites[0], sprites[1], sprites[2]));
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	void Style::LoadMenuBar(const pugi::xml_node& node)
+	{
+		pugi::xml_node rectNode = node.child("rect");
+		u32 x1 = rectNode.attribute("x1").as_uint();
+		u32 y1 = rectNode.attribute("y1").as_uint();
+		u32 x2 = rectNode.attribute("x2").as_uint();
+		u32 y2 = rectNode.attribute("y2").as_uint();
+		math::Rectu rect(x1, y1, x2, y2);
+		SpritePtr sprite(new Sprite(m_texture, rect));
+
+		m_menuBar.reset(new MenuBar(sprite));
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////

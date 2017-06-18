@@ -12,7 +12,7 @@ namespace gui
 	class Button : public Widget
 	{
 	public:
-		//Button(const math::Rectu rect);
+		Button(const math::Rectu rect);
 		Button(const SpritePtr& defaultSprite,
 				const SpritePtr& pressedSprite,
 				const SpritePtr& hoveredSprite);

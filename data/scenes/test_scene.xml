@@ -33,4 +33,16 @@
 		</component>
 	</entity>
 	
+	<entity name="test_cube">
+		<component name="transform">
+			<position val="2 2 -2" />
+			<rotation val="0 0 0 1" />
+			<scale val="1 1 1" />
+		</component>
+		<component name="render">
+			<model filename="cube.obj" />
+			<material name="testMaterial"/>
+		</component>
+	</entity>
+	
 </scene>

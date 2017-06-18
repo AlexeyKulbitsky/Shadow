@@ -13,6 +13,10 @@
 			<rect x1="185" y1="69" x2="206" y2="112"/>
 		</hovered>
 	</button>
+	
+	<menubar>
+		<rect x1="254" y1="69" x2="275" y2="112"/>
+	</menubar>
 </style>
 
 

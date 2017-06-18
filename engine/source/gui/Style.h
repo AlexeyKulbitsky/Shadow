@@ -15,13 +15,17 @@ namespace gui
 		void Load(const pugi::xml_node& root);
 
 		const video::TexturePtr& GetTexure() const { return m_texture; }
+		const ButtonPtr& GetButton() const { return m_button; }
+		const MenuBarPtr& GetMenuBar() const { return m_menuBar;}
 
 	private:
 		void LoadButtonStyle(const pugi::xml_node& node);
+		void LoadMenuBar(const pugi::xml_node& node);
 
 	private:
 		video::TexturePtr m_texture;
 		ButtonPtr m_button;
+		MenuBarPtr m_menuBar;
 	};
 
 } // gui
