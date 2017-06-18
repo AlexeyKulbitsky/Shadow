@@ -6,7 +6,7 @@
 
 int main()
 {
-	//TestJobs();
+	TestJobs();
 	
 
 	sh::CreationParameters params;

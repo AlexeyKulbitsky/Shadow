@@ -15,6 +15,8 @@
 #include "../video/VertexDeclaration.h"
 #include "../video/RenderPipeline.h"
 
+#include "../video/TextureLoader/TextureLoader.h"
+
 #include "../scene/SceneManager.h"
 #include "../scene/Camera.h"
 #include "../Device.h"
@@ -175,7 +177,8 @@ namespace gui
 			
 		pugi::xml_node child = doc.first_child();
 		sh::String texFilename = child.attribute("val").as_string();
-		sh::video::TexturePtr texture = sh::Device::GetInstance()->GetResourceManager()->GetTexture(texFilename);
+		//sh::video::TexturePtr texture = sh::Device::GetInstance()->GetResourceManager()->GetTexture(texFilename);
+		sh::video::TexturePtr texture = video::TextureLoader::GetInstance()->GetWhiteTexture();
 		SH_ASSERT(!!texture, "Can not load texture!");
 
 		m_mainBatch.material->GetCommonGpuParams()->SetSampler(ST_FRAGMENT, "diffuse", texture);
