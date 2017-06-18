@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<style name="default">
+	<texture val="ui_editor.png"/>
+
+	<button>
+		<default>
+			<rect x1="208" y1="69" x2="229" y2="112"/>
+		</default>
+		<pressed>
+			<rect x1="231" y1="69" x2="252" y2="112"/>
+		</pressed>
+		<hovered>
+			<rect x1="185" y1="69" x2="206" y2="112"/>
+		</hovered>
+	</button>
+</style>
+
+
+

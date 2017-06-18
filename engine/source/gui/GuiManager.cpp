@@ -4,6 +4,7 @@
 
 #include "Button.h"
 #include "SpriteManager.h"
+#include "Style.h"
 
 #include "../video/Driver.h"
 //#include "../video/Vulkan/VulkanDriver.h"
@@ -219,6 +220,13 @@ namespace gui
 		const auto& mat = sh::Device::GetInstance()->GetSceneManager()->GetCamera()->Get2DProjectionMatrix();
 		m_mainBatch.orthoMatrix.Set(mat);
 		m_textBatch.orthoMatrix.Set(mat);
+	}
+
+	void GuiManager::SetStyle(const StylePtr& style)
+	{ 
+		m_style = style; 
+		m_mainBatch.material->GetCommonGpuParams()->SetSampler(
+			ST_FRAGMENT, "diffuse", m_style->GetTexure());
 	}
 
 	bool GuiManager::ProcessInput(u32 x, u32 y, MouseEventType type)

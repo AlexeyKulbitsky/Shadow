@@ -13,6 +13,9 @@ namespace gui
 	{
 	public:
 		//Button(const math::Rectu rect);
+		Button(const SpritePtr& defaultSprite,
+				const SpritePtr& pressedSprite,
+				const SpritePtr& hoveredSprite);
 		Button(const math::Rectu& rect, 
 			   const SpritePtr& defaultSprite, 
 			   const SpritePtr& pressedSprite,

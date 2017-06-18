@@ -79,6 +79,7 @@ namespace sh
 		DEFINE_CLASS_PTR(FloatLineEdit)
 		DEFINE_CLASS_PTR(MenuBar)
 		DEFINE_CLASS_PTR(Menu)
+		DEFINE_CLASS_PTR(Style)
 		DEFINE_CLASS_PTR(Text)
 		DEFINE_CLASS_PTR(ToolBar)
 		DEFINE_CLASS_PTR(Widget)

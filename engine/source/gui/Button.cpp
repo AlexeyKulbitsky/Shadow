@@ -25,17 +25,23 @@ namespace gui
 		m_batchData.resize(4 * 8);
 	}
 
+	Button::Button(const SpritePtr& defaultSprite,
+		const SpritePtr& pressedSprite,
+		const SpritePtr& hoveredSprite)
+		: m_releasedSprite(defaultSprite)
+		, m_pressedSprite(pressedSprite)
+		, m_hoveredSprite(hoveredSprite)
+	{
+		m_batchData.resize(4 * 8);
+	}
+
 	Button::Button(const math::Rectu& rect,
 				   const SpritePtr& defaultSprite,
 				   const SpritePtr& pressedSprite,
 				   const SpritePtr& hoveredSprite)
+				   : Button(defaultSprite, pressedSprite, hoveredSprite)
 	{
-		m_batchData.resize(4 * 8);
 		m_rect = rect;
-		m_releasedSprite = defaultSprite;
-		m_pressedSprite = pressedSprite;
-		m_hoveredSprite = hoveredSprite;
-
 		m_text.reset(new Text(rect));
 
 		UpdatePosition();

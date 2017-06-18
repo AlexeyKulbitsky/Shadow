@@ -29,6 +29,24 @@ MainWindow::MainWindow()
 		guiMgr->LoadGui(fileInfo.absolutePath.c_str());
 	}
 
+	////////////////////////////////////////////////////////////////////////////
+
+	const auto& styleFileInfo = fileSystem->FindFile("editor_style.xml");
+	if (styleFileInfo.name != "")
+	{
+		pugi::xml_document doc;
+		pugi::xml_parse_result result = doc.load_file(styleFileInfo.absolutePath.c_str());
+		pugi::xml_node root = doc.first_child();
+
+		sh::gui::StylePtr style(new sh::gui::Style());
+		style->Load(root);
+
+		guiMgr->SetStyle(style);
+	}
+
+	////////////////////////////////////////////////////////////////////////////
+
+
 	auto font = sh::FontManager::GetInstance()->GenerateFont("VeraMono.ttf");
 	guiMgr->SetFont(font);
 

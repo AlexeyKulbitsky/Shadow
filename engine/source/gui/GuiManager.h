@@ -51,6 +51,8 @@ namespace gui
 		
 		void UpdateMatrices();
 
+		void SetStyle(const StylePtr& style);
+
 		// Events
 		bool ProcessInput(u32 x, u32 y, MouseEventType type);
 		bool ProcessKeyboardInput(KeyboardEventType type, KeyCode code);
@@ -69,6 +71,8 @@ namespace gui
 		FontPtr m_font;
 
 		std::vector<SPtr<GuiElement>> m_children;
+
+		StylePtr m_style;
 	};
 
 } // gui
