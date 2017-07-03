@@ -82,6 +82,7 @@ namespace sh
 		{
 			scene::Model* model = nullptr;
 
+			// Process if it is usual model
 			RenderComponent* renderComponent = static_cast<RenderComponent*>( entity->GetComponent(Component::Type::Render) );
 			if (renderComponent)
 			{
@@ -93,13 +94,16 @@ namespace sh
 				}
 				model = renderComponent->GetModel().get();
 			}
-				
-			TerrainComponent* terrainComponent = static_cast<TerrainComponent*>(entity->GetComponent(Component::Type::Terrain));
-			if (terrainComponent)
+			// Process if it is terrain
+			else
 			{
-				terrainComponent->GetModel()->SetPosition(math::Vector3f(0.0f));
-				terrainComponent->GetModel()->SetWorldMatrix(math::Matrix4f::Identity());
-				model = terrainComponent->GetModel().get();
+				TerrainComponent* terrainComponent = static_cast<TerrainComponent*>(entity->GetComponent(Component::Type::Terrain));
+				if (terrainComponent)
+				{
+					terrainComponent->GetModel()->SetPosition(math::Vector3f(0.0f));
+					terrainComponent->GetModel()->SetWorldMatrix(math::Matrix4f::Identity());
+					model = terrainComponent->GetModel().get();
+				}
 			}
 
 			size_t meshesCount = model->GetMeshesCount();
@@ -118,8 +122,22 @@ namespace sh
 						case MaterialParamType::MatrixView:
 							param.Set(viewMatrix);
 							break;
+						case MaterialParamType::MatrixViewRotation:
+						{
+							param.Set(camera->GetRotationMatrix());
+						}
+							break;
+						case MaterialParamType::MatrixViewRotationProjection:
+							param.Set((projectionMatrix * camera->GetRotationMatrix()).GetTransposed());
+							break;
 						case MaterialParamType::MatrixProjection:
 							param.Set(projectionMatrix);
+							break;
+						case MaterialParamType::MatrixViewProjection:
+						{
+							math::Matrix4f viewProjection = projectionMatrix * viewMatrix;
+							param.Set(viewProjection);
+						}
 							break;
 						case MaterialParamType::MatrixWorldViewProjection:
 						{
@@ -137,9 +155,6 @@ namespace sh
 		}
 
 		m_batchManager->Submit();
-
-
-		
 	}
 
 	//////////////////////////////////////////////////////////////////

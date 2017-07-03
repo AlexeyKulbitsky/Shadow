@@ -30,12 +30,6 @@ namespace video
 	
 	GpuParamsPtr GpuParams::Create(const GpuPipelineParamsInfoPtr& pipelineParamsInfo)
 	{
-		/*
-		GpuParamsPtr result;
-		result.reset(new GpuParams(pipelineParamsInfo));
-		return result;
-		*/
-
 		return HardwareBufferManager::GetInstance()->CreateGpuParams(pipelineParamsInfo);
 	}
 

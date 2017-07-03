@@ -17,11 +17,12 @@ namespace sh
 			virtual void AddMesh(const scene::MeshPtr& mesh) override;
 			virtual void Submit() override;
 			virtual void Clear() override;
+			virtual void UpdateLight(scene::Light* light) override;
 
 		private:
 			typedef Map<String, GLES20RenderBatchPtr> PerTechniqueRenderBatchesMap;
 
-			PerTechniqueRenderBatchesMap m_renderBatches[(size_t)RenderPipeline::Layer::COUNT];
+			PerTechniqueRenderBatchesMap m_renderBatches[(size_t)RenderLayer::Count];
 		};
 	}
 }

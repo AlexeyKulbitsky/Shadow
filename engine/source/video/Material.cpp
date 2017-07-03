@@ -1,4 +1,5 @@
 #include "Material.h"
+#include "MaterialParams.h"
 #include "RenderTechnique.h"
 #include "RenderPipeline.h"
 #include "../Device.h"
@@ -38,9 +39,30 @@ namespace sh
 				if( name == "sampler" )
 				{
 					String samplerName = paramNode.attribute("name").as_string();
-					String textureFilename = paramNode.attribute("val").as_string();
+					TexturePtr texture;
 
-					TexturePtr texture = resourceManager->GetTexture(textureFilename);
+					pugi::xml_attribute typeAttr = paramNode.attribute("type");
+					if (typeAttr)
+					{
+						String typeName = typeAttr.as_string();
+						if (typeName == "Cube")
+						{
+							std::vector<String> faces(6);
+							std::vector<String> facesNames = { "right", "left", "top", "bottom", "back", "front" };
+							for (u32 i = 0; i < facesNames.size(); ++i)
+							{
+								String face = paramNode.attribute(facesNames[i].c_str()).as_string();
+								faces[i] = face;
+							}
+
+							texture = resourceManager->GetCubeTexture(faces);
+						}
+					}
+					else
+					{
+						String textureFilename = paramNode.attribute("val").as_string();
+						texture = resourceManager->GetTexture(textureFilename);
+					}
 
 					m_commonGpuParams->SetSampler(ST_FRAGMENT, samplerName, texture);
 				}
@@ -128,6 +150,7 @@ namespace sh
 				RenderPipelinePtr pipeline = technique->GetRenderPipeline(i);
 				m_renderPipelines[i] = pipeline;
 				m_commonGpuParams = GpuParams::Create(pipeline->GetParamsInfo());
+				m_params.reset(new MaterialParams(m_commonGpuParams));
 			}
 		}
 

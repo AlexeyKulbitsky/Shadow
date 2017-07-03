@@ -34,7 +34,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		if (device)
 			device->mouseEvent(x, y, MouseEventType::ButtonPressed, MouseCode::ButtonLeft);
 	}
-		break;
+		return 0;
 
 	case WM_LBUTTONUP:
 	{
@@ -44,7 +44,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		if (device)
 			device->mouseEvent(x, y, MouseEventType::ButtonReleased, MouseCode::ButtonLeft);
 	}
-		break;
+		return 0;
 	case WM_MBUTTONDOWN:
 	{
 		int x = LOWORD(lParam);
@@ -53,7 +53,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		if (device)
 			device->mouseEvent(x, y, MouseEventType::ButtonPressed, MouseCode::ButtonWheel);
 	}
-		break;
+		return 0;
 	case WM_MBUTTONUP:
 	{
 		int x = LOWORD(lParam);
@@ -62,7 +62,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		if (device)
 			device->mouseEvent(x, y, MouseEventType::ButtonReleased, MouseCode::ButtonWheel);
 	}
-		break;
+		return 0;
 	case WM_MOUSEMOVE:
 	{
 		bool isShiftPressed = (LOWORD(wParam) & MK_SHIFT) != 0;
@@ -75,7 +75,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		if (device)
 			device->mouseEvent(x, y, MouseEventType::Moved, MouseCode::ButtonLeft);
 	}
-		break;
+		return 0;
 	case WM_MOUSEHWHEEL:
 	case WM_MOUSEWHEEL:
 	{
@@ -91,7 +91,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		if (device)
 			device->mouseWheelEvent(d);
 	}
-		break;
+		return 0;
 	case WM_PAINT:
 		break;
 
@@ -101,19 +101,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_SYSKEYDOWN:
 		break;
 	case WM_SYSKEYUP:
-		break;
+		return 0;
 	case WM_KEYDOWN:
 	{
 		if (device)
 			device->keyboardEvent(KeyboardEventType::KeyPressed, (KeyCode)wParam);
 	}
-		break;
+		return 0;
 	case WM_KEYUP:
 	{
 		if (device)
 			device->keyboardEvent(KeyboardEventType::KeyReleased, (KeyCode)wParam);
 	}
-		break;
+		return 0;
 
 	case WM_SIZE:
 	{
@@ -123,7 +123,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			device->windowResizeEvent(width, height);
 	}
 	return 0;
-
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		return 0;
@@ -311,11 +310,11 @@ bool Win32Device::Run()
 	static char capture[128];
 	static auto t = std::chrono::high_resolution_clock::now();
 
-
 	u32 delta = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - t).count();
 	float fps = 1000.0f / static_cast<float>(delta);
 	sprintf(capture, "Shadow engine: %s API | FPS %.2f | x: %d y: %d", m_driver->GetApiName().c_str(), fps, g_xPoint, g_yPoint);
-	t = std::chrono::system_clock::now();
+	t = std::chrono::high_resolution_clock::now();
+
 	SetWindowText(m_hwnd, capture);
 	//*/
 

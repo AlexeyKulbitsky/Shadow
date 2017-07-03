@@ -31,7 +31,7 @@ namespace video
 
 		m_width = static_cast<u32>(texWidth);
 		m_height = static_cast<u32>(texHeight);
-		m_channelsCount = static_cast<u32>(texChannels);
+		m_channelsCount = 4;//static_cast<u32>(texChannels);
 
 		const u32 size = m_width * m_height * m_channelsCount;
 		m_data.resize(size);

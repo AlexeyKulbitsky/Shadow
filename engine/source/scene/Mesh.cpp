@@ -63,8 +63,6 @@ namespace sh
 			m_renderable->m_transfromsGpuParams = video::GpuParams::Create(renderPipeline->GetAutoParamsInfo());
 
 			m_renderable->m_transformParams.reset(new video::MaterialParams(m_renderable->m_transfromsGpuParams));
-			
-					
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////

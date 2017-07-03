@@ -6,6 +6,9 @@
 #include "../../../scene/SceneManager.h"
 #include "../../Renderable.h"
 #include "../../../Device.h"
+#include "../../MaterialParams.h"
+
+#include "../../../scene/Light.h"
 
 
 namespace sh
@@ -18,9 +21,18 @@ namespace sh
 			m_pipeline = pipeline;
 		}
 
+		//////////////////////////////////////////////////////////////////////////
+
 		void GLES20RenderBatch::SetGpuParams(const GpuParamsPtr& gpuParams)
 		{
 			m_gpuParams = gpuParams;
+		}
+
+		//////////////////////////////////////////////////////////////////////////
+
+		void GLES20RenderBatch::SetMaterialParams(const MaterialParamsPtr& materialParams)
+		{
+			m_materialParams = materialParams;
 		}
 
 		//////////////////////////////////////////////////////////////////////////
@@ -56,6 +68,43 @@ namespace sh
 		void GLES20RenderBatch::Clear()
 		{
 
+		}
+
+		//////////////////////////////////////////////////////////////////////////
+
+		void GLES20RenderBatch::UpdateLight(scene::Light* light)
+		{
+			auto type = light->GetType();
+			switch (type)
+			{
+				case scene::Light::Type::DIRECTIONAL:
+				{
+					for (size_t paramIdx = 0; paramIdx < m_materialParams->GetParamsCount(); ++paramIdx)
+					{
+						auto& param = m_materialParams->GetParam(paramIdx);
+						switch (param.GetType())
+						{
+							case MaterialParamType::DirectionalLightDirection:
+								param.Set(light->GetDirection());
+								break;
+							case MaterialParamType::DirectionalLightColor:
+								param.Set(light->GetColor());
+								break;
+							default:
+								break;
+						}
+					}
+				}
+					break;
+				case scene::Light::Type::POINT:
+					break;
+				case scene::Light::Type::AMBIENT:
+					break;
+				case scene::Light::Type::SPOT:
+					break;
+				default:
+					break;
+			}
 		}
 
 		//////////////////////////////////////////////////////////////////////////

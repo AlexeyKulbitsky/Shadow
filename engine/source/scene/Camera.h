@@ -33,6 +33,7 @@ namespace sh
 			const math::Matrix4f& GetProjectionMatrix();
 			const math::Matrix4f& GetViewProjectionMatrix();
 			const math::Matrix4f& Get2DProjectionMatrix() const { return m_2dProjectionMatrix; }
+			const math::Matrix4f& GetRotationMatrix() const { return m_rotationMatrix; }
 
 			const math::Vector3f& GetFrontVector() const { return m_frontVector; }
 			const math::Vector3f& GetRightVector() const { return m_rightVector; }

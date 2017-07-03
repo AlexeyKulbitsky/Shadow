@@ -7,6 +7,14 @@
 			<sampler name="diffuse" val="statue.jpg"/>
 		</params>
 	</material>	
+	
+	<material name="skyboxMaterial">
+		<technique filename="skybox.xml" />
+		<params>
+			<sampler name="skybox" type="Cube" front="front.jpg" back="back.jpg"
+			right="right.jpg" left="left.jpg" top="top.jpg" bottom="bottom.jpg"/>
+		</params>
+	</material>	
 </materials>
 
 <scene>
@@ -17,10 +25,23 @@
 	<entity name="light_0">
 		<component name="light">
 			<type val="directional" />
-			<direction val="0 0 1" />
-			<color val="1 0 0" />
+			<direction val="0.440831 -0.434961 0.785132" />
+			<color val="1 1 1" />
 		</component>
 	</entity>
+	
+	<entity name="skybox_test">
+		<!--component name="transform">
+			<position val="0 0 -5" />
+			<rotation val="0 0 0 1" />
+			<scale val="1 1 1" />
+		</component-->
+		<component name="render">
+			<model filename="cube.obj" />
+			<material name="skyboxMaterial"/>
+		</component>
+	</entity>
+	
 	<entity name="test_cube">
 		<component name="transform">
 			<position val="0 0 -2" />
@@ -47,7 +68,7 @@
 
 	<entity name="test_terrain">
 		<component name="terrain">
-			<heightmap val="heightmap_1.jpg"/>
+			<heightmap val="heightmap_2.jpg"/>
 		</component>
 	</entity>
 	

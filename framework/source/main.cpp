@@ -6,8 +6,8 @@ using namespace math;
 int main()
 {
 	sh::CreationParameters params;
-	params.width = 640;
-	params.height = 480;
+	params.width = 800;
+	params.height = 600;
 	params.driverType = sh::video::DriverType::OPENGL_ES_2_0;
 	//params.driverType = sh::video::DriverType::VULKAN;
 	//params.driverType = sh::video::DriverType::DIRECTX_11;
@@ -28,55 +28,51 @@ int main()
 	sh::InputManager* inputManager = device->GetInputManager();
 	sh::scene::Camera* camera = sceneMgr->GetCamera();
 
+	const float moveSpeed = 1.0f;
+	const float mouseSens = -0.01f;
 	while (device->Run())
 	{
 		if (inputManager->IsKeyPressed(sh::KeyCode::KEY_KEY_W))
 		{
-			camera->SetPosition(camera->GetPosition() + camera->GetFrontVector() * 0.05f);
+			camera->SetPosition(camera->GetPosition() + camera->GetFrontVector() * moveSpeed);
 		}
 		if (inputManager->IsKeyPressed(sh::KeyCode::KEY_KEY_S))
 		{
-			camera->SetPosition(camera->GetPosition() - camera->GetFrontVector() * 0.05f);
+			camera->SetPosition(camera->GetPosition() - camera->GetFrontVector() * moveSpeed);
 		}
 		if (inputManager->IsKeyPressed(sh::KeyCode::KEY_KEY_D))
 		{
-			camera->SetPosition(camera->GetPosition() + camera->GetRightVector() * 0.05f);
+			camera->SetPosition(camera->GetPosition() + camera->GetRightVector() * moveSpeed);
 		}
 		if (inputManager->IsKeyPressed(sh::KeyCode::KEY_KEY_A))
 		{
-			camera->SetPosition(camera->GetPosition() - camera->GetRightVector() * 0.05f);
+			camera->SetPosition(camera->GetPosition() - camera->GetRightVector() * moveSpeed);
 		}
 
-		sh::math::Quaternionf rot;
-		if (inputManager->IsKeyPressed(sh::KeyCode::KEY_UP))
+		if (inputManager->IsMouseButtonPressed(sh::MouseCode::ButtonLeft))
 		{
-			sh::math::Quaternionf r;
-			r.SetFromAxisAngle(camera->GetRightVector(), -0.01f);
-			camera->SetRotation(r * camera->GetRotation());
+			const auto delta = inputManager->GetMousePositionCurrent() - inputManager->GetMousePositionOld();
+			
+			sh::math::Quaternionf r1;
+			r1.SetFromAxisAngle(camera->GetRightVector(), (float)delta.y * mouseSens);
+			camera->SetRotation(r1 * camera->GetRotation());
+
+			sh::math::Quaternionf r2;
+			r2.SetFromAxisAngle(sceneMgr->GetUpVector(), (float)delta.x * mouseSens);
+			camera->SetRotation(r2 * camera->GetRotation());
+
+			inputManager->SetMousePositionOld(inputManager->GetMousePositionCurrent());
 		}
-		if (inputManager->IsKeyPressed(sh::KeyCode::KEY_DOWN))
-		{
-			sh::math::Quaternionf r;
-			r.SetFromAxisAngle(camera->GetRightVector(), 0.01f);
-			camera->SetRotation(r * camera->GetRotation());
-		}
-		if (inputManager->IsKeyPressed(sh::KeyCode::KEY_RIGHT))
-		{
-			sh::math::Quaternionf r;
-			r.SetFromAxisAngle(camera->GetUpVector(), -0.01f);
-			camera->SetRotation(r * camera->GetRotation());
-		}
-		if (inputManager->IsKeyPressed(sh::KeyCode::KEY_LEFT))
-		{
-			sh::math::Quaternionf r;
-			r.SetFromAxisAngle(camera->GetUpVector(), 0.01f);
-			camera->SetRotation(r * camera->GetRotation());
-		}
+		
 		driver->BeginRendering();
 
 		sceneMgr->Update();
 
 		driver->EndRendering();
+
+		printf("Time: %f\r", static_cast<float>(device->GetTime()));
+		//const auto forward = camera->GetFrontVector();
+		//printf("x:%f y:%f z:%f\r", forward.x, forward.y, forward.z);
 	}
 
 	return 0;

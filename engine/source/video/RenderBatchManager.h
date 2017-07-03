@@ -5,6 +5,11 @@
 
 namespace sh
 {
+	namespace scene
+	{
+		class Light;
+	}
+
 	namespace video
 	{
 		class RenderBatchManager : public Singleton<RenderBatchManager>
@@ -14,6 +19,7 @@ namespace sh
 			virtual void AddMesh(const scene::MeshPtr& mesh) = 0;
 			virtual void Submit() = 0;
 			virtual void Clear() = 0;
+			virtual void UpdateLight(scene::Light* light) = 0;
 		};
 	}
 }

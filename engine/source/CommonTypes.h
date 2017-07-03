@@ -323,16 +323,26 @@ namespace sh
 		MatrixWorldViewProjection,
 		MatrixWorld,
 		MatrixView,
-		MatrixProjection
+		MatrixViewRotation,
+		MatrixViewRotationProjection,
+		MatrixProjection,
+		MatrixViewProjection,
+		DirectionalLightDirection,
+		DirectionalLightColor
 	};
 
 	
 	static const std::map<std::string, MaterialParamType> matParamsMap =
 	{
-		{"matWVP", MaterialParamType::MatrixWorldViewProjection},
-		{"matWorld", MaterialParamType::MatrixWorld},
-		{"matView", MaterialParamType::MatrixView},
-		{"matProjection", MaterialParamType::MatrixProjection}
+		{ "matWVP", MaterialParamType::MatrixWorldViewProjection },
+		{ "matWorld", MaterialParamType::MatrixWorld },
+		{ "matView", MaterialParamType::MatrixView },
+		{ "matViewRotation", MaterialParamType::MatrixViewRotation },
+		{ "matViewRotationProjection", MaterialParamType::MatrixViewRotationProjection },
+		{ "matProjection", MaterialParamType::MatrixProjection },
+		{ "matViewProjection", MaterialParamType::MatrixViewProjection },
+		{ "dLightDirection", MaterialParamType::DirectionalLightDirection },
+		{ "dLightColor", MaterialParamType::DirectionalLightColor }
 	};
 
 	static const std::map<std::string, GpuParamObjectType> samplerTypeMap =

@@ -60,6 +60,20 @@ namespace sh
 			pugi::xml_node pipelineNode = techniqueNode.child("pipeline");
 
 			RenderPipelineDescription pipelineDesc;
+			pugi::xml_attribute layerAttr = pipelineNode.attribute("layer");
+			if (layerAttr)
+			{
+				String layername = layerAttr.as_string();
+				if (layername == "main")
+				{
+					pipelineDesc.layer = RenderLayer::Main;
+				}
+				else if (layername == "background")
+				{
+					pipelineDesc.layer = RenderLayer::Background;
+				}
+			}
+
 			pipelineDesc.depthStencilState = LoadDepthStencilState(pipelineNode);
 			pipelineDesc.rasterizationState = LoadRasterizationState(pipelineNode);
 			pipelineDesc.blendingState = LoadBlendingState(pipelineNode);
@@ -423,6 +437,11 @@ namespace sh
 
 					if (desc.name == "matWVP" ||
 						desc.name == "matWorld" ||
+						desc.name == "matView" ||
+						desc.name == "matProjection" ||
+						desc.name == "matViewRotation" ||
+						desc.name == "matViewRotationProjection" ||
+						desc.name == "matViewProjection" ||
 						perobject)
 					{
 						autoParamsDesc->params[desc.name] = desc;

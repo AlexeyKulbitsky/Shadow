@@ -21,7 +21,7 @@ namespace sh
 		{
 			const MaterialPtr& material = mesh->GetMaterial();
 			String techniqueName = material->GetRenderTechnique()->GetName();
-			RenderPipeline::Layer layer = material->GetRenderPipeline(0)->GetLayer();
+			RenderLayer layer = material->GetRenderPipeline(0)->GetRenderLayer();
 			size_t layerIndex = (size_t)layer;
 
 			if (m_renderBatches[layerIndex].find(techniqueName) == m_renderBatches[layerIndex].end())
@@ -31,6 +31,7 @@ namespace sh
 				renderBatch->SetTechniqueName(techniqueName);
 				renderBatch->SetRenderPipeline(renderPipeline);
 				renderBatch->SetGpuParams(material->GetCommonGpuParams());
+				renderBatch->SetMaterialParams(material->GetParams());
 
 				m_renderBatches[layerIndex][techniqueName] = renderBatch;
 			}
@@ -62,5 +63,16 @@ namespace sh
 		}
 
 		////////////////////////////////////////////////////////////////////////
+
+		void GLES20RenderBatchManager::UpdateLight(scene::Light* light)
+		{
+			for (size_t i = 0; i < (size_t)RenderPipeline::Layer::COUNT; ++i)
+			{
+				for (auto renderBatch : m_renderBatches[i])
+				{
+					renderBatch.second->UpdateLight(light);
+				}
+			}
+		}
 	}
 }

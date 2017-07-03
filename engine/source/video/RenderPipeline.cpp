@@ -90,6 +90,7 @@ namespace sh
 		RenderPipelinePtr RenderPipeline::Create(const RenderPipelineDescription& description)
 		{
 			RenderPipelinePtr result = RenderStateManager::GetInstance()->CreateRenderPipeline(description);
+			result->m_renderLayer = description.layer;
 
 			GpuPipelineParamsDescription paramsDesc;
 			GpuPipelineParamsDescription autoParamsDesc;

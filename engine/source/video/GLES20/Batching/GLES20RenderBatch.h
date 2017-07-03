@@ -14,15 +14,18 @@ namespace sh
 			This class is used to hold render commands with the same material
 			*/
 			GLES20RenderBatch() {}
-			virtual ~GLES20RenderBatch() {}
-			virtual void SetRenderPipeline(const RenderPipelinePtr& pipeline);
-			virtual void SetGpuParams(const GpuParamsPtr& gpuParams);
-			virtual void AddMesh(const scene::MeshPtr& mesh);
-			virtual void Submit();
-			virtual void Clear();
+			~GLES20RenderBatch() {}
+			void SetRenderPipeline(const RenderPipelinePtr& pipeline);
+			void SetGpuParams(const GpuParamsPtr& gpuParams);
+			void SetMaterialParams(const MaterialParamsPtr& materialParams);
+			void AddMesh(const scene::MeshPtr& mesh);
+			void Submit();
+			void Clear();
+			void UpdateLight(scene::Light* light);
 
 			void SetTechniqueName(const String& name) { m_techniqueName = name; }
 			const String& GetTechniqueName() const { return m_techniqueName; }
+
 
 		protected:
 			String m_techniqueName;
@@ -30,6 +33,7 @@ namespace sh
 
 			RenderPipelinePtr m_pipeline;
 			GpuParamsPtr m_gpuParams;
+			MaterialParamsPtr m_materialParams;
 		};
 	}
 }

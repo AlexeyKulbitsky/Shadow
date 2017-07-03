@@ -18,6 +18,8 @@ namespace sh
 
 	}
 
+	////////////////////////////////////////////////////////////////////////////////
+
 	void TerrainComponent::Load(const pugi::xml_node &node)
 	{
 		video::Image heightmap;
@@ -30,51 +32,58 @@ namespace sh
 
 		const u32 width = heightmap.GetWidth();
 		const u32 height = heightmap.GetHeight();
-		const float step = 0.1f;
+		const float step = 1.0f;
 
 		std::vector<float> vertexArray;
 		std::vector<unsigned int> indexArray;
 		u32 verticesCount = 0U;
 
-		f32 maxH = 0.0f;
-		f32 minH = 0.0f;
-
-		for (u32 i = 0U; i < width; ++i)
+		for (u32 i = 0U; i < height; ++i)
 		{
-			for (u32 j = 0U; j < height; ++j)
+			for (u32 j = 0U; j < width; ++j)
 			{
 				video::Color color = heightmap.GetPixel(i, j);
 
-				const f32 height = color.red;
 				const float x = j * step;
+				const float y = color.red * 50.0f;
 				const float z = i * step;
 
+				// Positions
 				vertexArray.push_back(x);
-				vertexArray.push_back(height);
+				vertexArray.push_back(y);
 				vertexArray.push_back(z);
+
+				// Normals
+				vertexArray.push_back(0.0f);
+				vertexArray.push_back(0.0f);
+				vertexArray.push_back(0.0f);
 
 				verticesCount++;
 			}
 		}
 		
-		for (u32 i = 0U; i < width - 1; ++i)
+		for (u32 i = 0U; i < height - 1; ++i)
 		{
-			for (u32 j = 0U; j < height - 1; ++j)
+			for (u32 j = 0U; j < width - 1; ++j)
 			{
-				indexArray.push_back(j * width + i);
-				indexArray.push_back((j + 1) * width + i);
-				indexArray.push_back(j * width + i + 1);
+				indexArray.push_back(i * width + j);
+				indexArray.push_back((i + 1) * width + j);
+				indexArray.push_back(i * width + j + 1);
 				
-				indexArray.push_back(j * width + i + 1);
-				indexArray.push_back((j + 1) * width + i);
-				indexArray.push_back((j + 1) * width + i + 1);
+				indexArray.push_back(i * width + j + 1);
+				indexArray.push_back((i + 1) * width + j);
+				indexArray.push_back((i + 1) * width + j + 1);
 			}
 		}
 
 		sh::video::VertexDeclarationPtr vertexDeclaration = sh::video::VertexDeclarationPtr(new sh::video::VertexDeclaration());
 
 		sh::video::Attribute positionAttribute(AttributeSemantic::POSITION, AttributeType::FLOAT, 3U);
+		sh::video::Attribute normalAttribute(AttributeSemantic::NORMAL, AttributeType::FLOAT, 3U);
 		vertexDeclaration->AddAttribute(positionAttribute);
+		vertexDeclaration->AddAttribute(normalAttribute);
+
+		CalculateNormals(vertexArray, indexArray, vertexDeclaration);
 
 
 		// Create vertex buffer
@@ -115,10 +124,84 @@ namespace sh
 		m_model->SetMaterial(material);
 	}
 
+	////////////////////////////////////////////////////////////////////////////////
+
 	void TerrainComponent::Save(pugi::xml_node &parent)
 	{
 
 	}
+
+	////////////////////////////////////////////////////////////////////////////////
+
+	void TerrainComponent::CalculateNormals(std::vector<float>& vertexArray,
+											const std::vector<u32>& indexArray,
+											const video::VertexDeclarationPtr& vertexDeclaration)
+	{
+		const u32 stride = vertexDeclaration->GetStride() / sizeof(float);
+		auto posAttr = vertexDeclaration->GetAttribute(AttributeSemantic::POSITION);
+		auto normAttr = vertexDeclaration->GetAttribute(AttributeSemantic::NORMAL);
+
+		for (u32 i = 0; i < indexArray.size() - 3; i += 3)
+		{
+			const u32 i0 = indexArray[i];
+			const u32 i1 = indexArray[i + 1];
+			const u32 i2 = indexArray[i + 2];
+
+			u32 index = i0 * stride + posAttr->offset / (u32)posAttr->type;
+			math::Vector3f p0;
+			p0.x = vertexArray[index];
+			p0.y = vertexArray[index + 1];
+			p0.z = vertexArray[index + 2];
+
+			index = i1 * stride + posAttr->offset / (u32)posAttr->type;
+			math::Vector3f p1;
+			p1.x = vertexArray[index];
+			p1.y = vertexArray[index + 1];
+			p1.z = vertexArray[index + 2];
+
+			index = i2 * stride + posAttr->offset / (u32)posAttr->type;
+			math::Vector3f p2;
+			p2.x = vertexArray[index];
+			p2.y = vertexArray[index + 1];
+			p2.z = vertexArray[index + 2];
+
+			math::Vector3f normal = (p0 - p1).Cross(p2 - p1);
+			normal.Normalize();
+
+			index = i0 * stride + normAttr->offset / (u32)normAttr->type;
+			vertexArray[index] += normal.x;
+			vertexArray[index + 1] += normal.y;
+			vertexArray[index + 2] += normal.z;
+
+			index = i1 * stride + normAttr->offset / (u32)normAttr->type;
+			vertexArray[index] += normal.x;
+			vertexArray[index + 1] += normal.y;
+			vertexArray[index + 2] += normal.z;
+
+			index = i2 * stride + normAttr->offset / (u32)normAttr->type;
+			vertexArray[index] += normal.x;
+			vertexArray[index + 1] += normal.y;
+			vertexArray[index + 2] += normal.z;
+		}
+
+		// Normalize all normals
+		for (u32 i = 0; i < indexArray.size() - 3; i += 3)
+		{
+			u32 index = indexArray[i] * stride + normAttr->offset / (u32)normAttr->type;
+			math::Vector3f normal;
+			normal.x = vertexArray[index];
+			normal.y = vertexArray[index + 1];
+			normal.z = vertexArray[index + 2];
+
+			normal.Normalize();
+
+			vertexArray[index] = normal.x;
+			vertexArray[index + 1] = normal.y;
+			vertexArray[index + 2] = normal.z;
+		}
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
 
 
 } // sh

@@ -9,6 +9,14 @@ namespace sh
 {
 	namespace video
 	{
+		enum class RenderLayer
+		{
+			Background = 0,
+			Main,
+
+			Count
+		};
+
 		struct RenderPipelineDescription
 		{
 			BlendingStatePtr blendingState;
@@ -23,6 +31,8 @@ namespace sh
 			ShaderPtr computeShader;
 
 			VertexInputDeclarationPtr vertexDeclaration;
+
+			RenderLayer layer = RenderLayer::Main;
 		};
 
 		class RenderPipeline
@@ -65,6 +75,7 @@ namespace sh
 			const GpuPipelineParamsInfoPtr& GetAutoParamsInfo() const { return m_autoParamsInfo; }
 
 			Layer GetLayer() const { return m_layer; }
+			RenderLayer GetRenderLayer() const { return m_renderLayer; }
 
 			static RenderPipelinePtr Create(const RenderPipelineDescription& description);
 
@@ -80,6 +91,7 @@ namespace sh
 			GpuPipelineParamsInfoPtr m_autoParamsInfo;
 
 			Layer m_layer;
+			RenderLayer m_renderLayer = RenderLayer::Main;
 		};
 	}
 }

@@ -420,6 +420,8 @@ void GLES20Driver::SetGpuParams( const GpuParamsPtr& params, const CommandBuffer
 			glTexParameteri(textureTraget, GL_TEXTURE_MAG_FILTER, s_glTextureFiltering[samplerDesc.second.samplerDesc.magFilter]);
 			glTexParameteri(textureTraget, GL_TEXTURE_WRAP_S, s_glTextureTiling[samplerDesc.second.samplerDesc.tilingU]);
 			glTexParameteri(textureTraget, GL_TEXTURE_WRAP_T, s_glTextureTiling[samplerDesc.second.samplerDesc.tilingV]);
+			if (texture->GetDescription().type == TEX_TYPE_TEXTURE_CUBE)
+				glTexParameteri(textureTraget, GL_TEXTURE_WRAP_R, s_glTextureTiling[samplerDesc.second.samplerDesc.tilingW]);
 
 			glUniform1i(samplerDesc.second.location, counter);
 			

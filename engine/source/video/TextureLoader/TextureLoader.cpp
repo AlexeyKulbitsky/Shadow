@@ -105,13 +105,21 @@ namespace sh
 
 		TexturePtr TextureLoader::LoadSTBCube(const std::vector<String>& faces)
 		{
+			size_t i = 0;
+			int texWidth, texHeight, texChannels;		
+			stbi_uc* pixels = stbi_load(faces[i].c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
+
 			TextureDescription desc;
 			desc.type = TEX_TYPE_TEXTURE_CUBE;
+			desc.format = TextureFormat::RGBA;
+			desc.width = static_cast<u32>(texWidth);
+			desc.height = static_cast<u32>(texHeight);
 			TexturePtr texture = Texture::Create(desc);
 
-			
-			int texWidth, texHeight, texChannels;			
-			for (size_t i = 0; i < faces.size(); ++i)
+			texture->SetFaceData(TextureFace(i), 0, pixels);
+			stbi_image_free(pixels);
+
+			for (i = 1; i < faces.size(); ++i)
 			{
 				stbi_uc* pixels = stbi_load(faces[i].c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
 				

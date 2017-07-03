@@ -61,6 +61,11 @@ namespace video
 		}
 	}
 
+	void VulkanRenderBatchManager::UpdateLight(scene::Light* light)
+	{
+		SH_ASSERT(0, "Unimplemented yet!");
+	}
+
 } // video
 
 } // sh

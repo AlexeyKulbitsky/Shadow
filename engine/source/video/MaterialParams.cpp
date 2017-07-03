@@ -18,10 +18,11 @@ namespace sh
 					continue;
 				for (const auto& param : desc->params)
 				{
-					if (param.second.name == "matWVP")
+					const auto it = matParamsMap.find(param.second.name);
+
+					if (it != matParamsMap.end())
 					{
-						MaterialParam matParam(MaterialParamType::MatrixWorldViewProjection, 
-											   const_cast<u8*>(dataPtr + param.second.offset));
+						MaterialParam matParam(it->second, const_cast<u8*>(dataPtr + param.second.offset));
 						m_params.push_back(matParam);
 					}
 				}

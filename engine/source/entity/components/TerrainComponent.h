@@ -17,6 +17,11 @@ namespace sh
 		const scene::ModelPtr& GetModel() { return m_model; }
 
 	private:
+		void CalculateNormals(std::vector<float>& vertexArray, 
+							  const std::vector<u32>& indexArray,
+							  const video::VertexDeclarationPtr& vertexDeclaration);
+
+	private:
 		scene::ModelPtr m_model;
 	};
 

@@ -1,12 +1,15 @@
 #include "LightSystem.h"
 #include "../Entity.h"
 #include "../components/LightComponent.h"
+#include "../../scene/Light.h"
+
+#include "../../video/RenderBatchManager.h"
 
 namespace sh
 {
 	LightSystem::LightSystem()
 	{
-
+		m_batchManager = video::RenderBatchManager::GetInstance();
 	}
 
 	//////////////////////////////////////////////////////////////////
@@ -47,6 +50,8 @@ namespace sh
 			if (lightComponent->m_needsToRecalculate)
 			{
 				lightComponent->m_needsToRecalculate = false;
+
+				m_batchManager->UpdateLight(lightComponent->m_light);
 			}
 		}
 	}
