@@ -7,7 +7,7 @@ namespace sh
 {
 	Entity::Entity()
 	{
-		for (size_t i = 0; i < static_cast<size_t>(Component::Type::COUNT); ++i)
+		for (size_t i = 0; i < static_cast<size_t>(Component::Type::Count); ++i)
 		{
 			m_components[i] = nullptr;
 		}
@@ -26,7 +26,7 @@ namespace sh
 		pugi::xml_node entityNode = parent.append_child("entity");
 		entityNode.append_attribute("name").set_value(m_name.c_str());
 
-		for (size_t i = 0, sz = static_cast<size_t>( Component::Type::COUNT ); i < sz; ++i)
+		for (size_t i = 0, sz = static_cast<size_t>( Component::Type::Count ); i < sz; ++i)
 		{
 			Component* component = m_components[i];
 			if (component)
@@ -63,10 +63,10 @@ namespace sh
 
 	bool Entity::IntersectsRay(const math::Vector3f& origin, const math::Vector3f& direction)
 	{		
-		if (GetComponent(Component::Type::TRANSFORM) && GetComponent(Component::Type::RENDER))
+		if (GetComponent(Component::Type::Transform) && GetComponent(Component::Type::Render))
 		{
-			TransformComponent* transformComponent = static_cast<TransformComponent*>(GetComponent(Component::Type::TRANSFORM));
-			RenderComponent* renderComponent = static_cast<RenderComponent*>(GetComponent(Component::Type::RENDER));
+			TransformComponent* transformComponent = static_cast<TransformComponent*>(GetComponent(Component::Type::Transform));
+			RenderComponent* renderComponent = static_cast<RenderComponent*>(GetComponent(Component::Type::Render));
 
 			math::Vector3f pos = transformComponent->GetPosition();
 

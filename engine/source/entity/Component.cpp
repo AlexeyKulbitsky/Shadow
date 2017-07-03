@@ -2,6 +2,7 @@
 #include "components/TransformComponent.h"
 #include "components/RenderComponent.h"
 #include "components/LightComponent.h"
+#include "components/TerrainComponent.h"
 
 namespace sh
 {
@@ -9,12 +10,14 @@ namespace sh
 	{
 		switch (type)
 		{
-			case Type::TRANSFORM:
+			case Type::Transform:
 				return new TransformComponent();
-			case Type::RENDER:
+			case Type::Render:
 				return new RenderComponent();
-			case Type::LIGHT:
+			case Type::Light:
 				return new LightComponent();
+			case Type::Terrain:
+				return new TerrainComponent();
 		}
 		return nullptr;
 	}

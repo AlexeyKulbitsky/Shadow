@@ -29,13 +29,13 @@ namespace sh
 	{
 		for (auto entity : m_entities)
 		{
-			TransformComponent* transformComponent = static_cast<TransformComponent*>( entity->GetComponent(Component::Type::TRANSFORM) );
+			TransformComponent* transformComponent = static_cast<TransformComponent*>( entity->GetComponent(Component::Type::Transform) );
 			if (transformComponent->NeedsToRecalculateWorldMatrix())
 			{
 				transformComponent->m_worldMatrix.SetIdentity();
-				math::Vector3f translation = transformComponent->m_position;
-				math::Vector3f scale = transformComponent->m_scale;
-				math::Quaternionf rotation = transformComponent->m_rotation;
+				const math::Vector3f& translation = transformComponent->m_position;
+				const math::Vector3f& scale = transformComponent->m_scale;
+				const math::Quaternionf& rotation = transformComponent->m_rotation;
 
 				transformComponent->m_worldMatrix.SetScale(scale);				
 				transformComponent->m_worldMatrix.SetTranslation(translation);

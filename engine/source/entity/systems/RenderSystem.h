@@ -5,10 +5,6 @@
 
 namespace sh
 {
-	namespace video
-	{
-		class CommandPool;
-	}
 
 	class RenderSystem : public System
 	{

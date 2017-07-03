@@ -51,7 +51,7 @@
 		<constants>
 			
 			<sampler name="diffuse" type="2D">
-				<filtering min="Linear" mag="Linear"/>
+				<filtering min="Nearest" mag="Nearest"/>
 				<tiling U="Repeat" V="Repeat"/>
 			</sampler>
 		</constants>

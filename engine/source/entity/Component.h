@@ -12,11 +12,12 @@ namespace sh
 	public:
 		enum class Type
 		{
-			TRANSFORM = 0,
-			RENDER,
-			LIGHT,
+			Transform = 0,
+			Render,
+			Light,
+			Terrain,
 
-			COUNT
+			Count
 		};
 
 		static Component* Create(Type type);

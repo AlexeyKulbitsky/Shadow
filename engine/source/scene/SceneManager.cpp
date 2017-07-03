@@ -39,15 +39,16 @@ namespace sh
 		SceneManager::SceneManager()
 		{
 			TransformSystem* transformSystem = new TransformSystem();
-			transformSystem->AddComponentType(Component::Type::TRANSFORM);
+			transformSystem->AddComponentType(Component::Type::Transform);
 			m_systems.push_back(transformSystem);
 
 			RenderSystem* renderSystem = new RenderSystem();
-			renderSystem->AddComponentType(Component::Type::RENDER);
+			renderSystem->AddComponentType(Component::Type::Render);
+			renderSystem->AddComponentType(Component::Type::Terrain);
 			m_systems.push_back(renderSystem);
 
 			LightSystem* lightSystem = new LightSystem();
-			lightSystem->AddComponentType(Component::Type::LIGHT);
+			lightSystem->AddComponentType(Component::Type::Light);
 			m_systems.push_back(lightSystem);
 
 			m_picker.reset(new Picker());
@@ -125,11 +126,13 @@ namespace sh
 						Component* component = nullptr;
 
 						if (nameStr == "transform")
-							componentType = Component::Type::TRANSFORM;
+							componentType = Component::Type::Transform;
 						else if (nameStr == "render")
-							componentType = Component::Type::RENDER;
+							componentType = Component::Type::Render;
 						else if (nameStr == "light")
-							componentType = Component::Type::LIGHT;
+							componentType = Component::Type::Light;
+						else if (nameStr == "terrain")
+							componentType = Component::Type::Terrain;
 						else
 							componentNode = componentNode.next_sibling();
 

@@ -15,7 +15,7 @@ namespace sh
 	public:
 		RenderComponent();
 		virtual ~RenderComponent();
-		virtual Type GetType() const override { return Type::RENDER;}
+		virtual Type GetType() const override { return Type::Render;}
 		virtual void Load(const pugi::xml_node &node) override;
 		virtual void Save(pugi::xml_node &parent) override;
 

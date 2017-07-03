@@ -37,7 +37,7 @@ namespace sh
 
 		void Picker::RegisterEntity(sh::Entity* entity)
 		{
-			if (!entity->GetComponent(sh::Component::Type::RENDER))
+			if (!entity->GetComponent(sh::Component::Type::Render))
 				return;
 
 			m_entities.push_back(entity);
@@ -88,7 +88,7 @@ namespace sh
 
 				m_color.Set(color);
 
-				sh::RenderComponent* renderComponent = static_cast<sh::RenderComponent*>(m_entities[i]->GetComponent(sh::Component::Type::RENDER));		
+				sh::RenderComponent* renderComponent = static_cast<sh::RenderComponent*>(m_entities[i]->GetComponent(sh::Component::Type::Render));		
 				const auto& model = renderComponent->GetModel();
 
 				size_t meshesCount = model->GetMeshesCount();
@@ -136,7 +136,7 @@ namespace sh
 
 			for (size_t i = 0, sz = m_entities.size(); i < sz; ++i)
 			{
-				sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_entities[i]->GetComponent(sh::Component::Type::TRANSFORM));		
+				sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_entities[i]->GetComponent(sh::Component::Type::Transform));		
 				const auto& pos = transformComponent->GetPosition();
 
 				int res = math::RayIntersectSphere(rayOrigin, rayDirection, pos, 1.0f, t0, t1);

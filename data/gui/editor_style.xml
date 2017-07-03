@@ -17,6 +17,11 @@
 	<menubar>
 		<rect x1="254" y1="69" x2="275" y2="112"/>
 	</menubar>
+
+	<window>
+		<outrect x1="202" y1="130" x2="236" y2="198"/>
+		<inrect x1="207" y1="135" x2="230" y2="194"/>
+	</window>
 </style>
 
 

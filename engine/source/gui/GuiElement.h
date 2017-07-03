@@ -40,9 +40,9 @@ namespace gui
 		virtual bool ProcessKeyboardInput(KeyboardEventType type, KeyCode code) { return false; }
 
 	protected:
-		void UpdatePosition();
-		void UpdateUV(const math::Vector2f& leftUp, const math::Vector2f& rightDown);
-		void UpdateColor(const math::Vector3f& color);
+		virtual void UpdatePosition();
+		virtual void UpdateUV(const math::Vector2f& leftUp, const math::Vector2f& rightDown);
+		virtual void UpdateColor(const math::Vector3f& color);
 
 	protected:
 		math::Rectu m_rect;

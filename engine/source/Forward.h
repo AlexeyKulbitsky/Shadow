@@ -90,6 +90,7 @@ namespace sh
 	DEFINE_CLASS_PTR(LightComponent)
 	DEFINE_CLASS_PTR(RenderComponent)
 	DEFINE_CLASS_PTR(TransformComponent)
+	DEFINE_CLASS_PTR(TerrainComponent)
 	DEFINE_CLASS_PTR(ComponentFactory)
 	DEFINE_CLASS_PTR(Entity)
 	DEFINE_CLASS_PTR(System)

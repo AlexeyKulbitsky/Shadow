@@ -44,5 +44,11 @@
 			<material name="testMaterial"/>
 		</component>
 	</entity>
+
+	<entity name="test_terrain">
+		<component name="terrain">
+			<heightmap val="heightmap_1.jpg"/>
+		</component>
+	</entity>
 	
 </scene>

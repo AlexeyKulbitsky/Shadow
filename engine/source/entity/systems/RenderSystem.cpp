@@ -2,6 +2,7 @@
 #include "../Entity.h"
 #include "../components/RenderComponent.h"
 #include "../components/TransformComponent.h"
+#include "../components/TerrainComponent.h"
 #include "../../scene/Model.h"
 #include "../../scene/Mesh.h"
 #include "../../scene/SceneManager.h"
@@ -32,12 +33,26 @@ namespace sh
 	{
 		m_entities.push_back(entity);
 
-		RenderComponent* renderComponent = static_cast<RenderComponent*>( entity->GetComponent(Component::Type::RENDER) );
-		const scene::ModelPtr& model = renderComponent->GetModel();
-
-		for (size_t i = 0, sz = model->GetMeshesCount(); i < sz; ++i)
+		RenderComponent* renderComponent = static_cast<RenderComponent*>( entity->GetComponent(Component::Type::Render) );
+		if (renderComponent)
 		{
-			m_batchManager->AddMesh(model->GetMesh(i));
+			const scene::ModelPtr& model = renderComponent->GetModel();
+
+			for (size_t i = 0, sz = model->GetMeshesCount(); i < sz; ++i)
+			{
+				m_batchManager->AddMesh(model->GetMesh(i));
+			}
+		}
+		
+		TerrainComponent* terrainComponent = static_cast<TerrainComponent*>(entity->GetComponent(Component::Type::Terrain));
+		if (terrainComponent)
+		{
+			const scene::ModelPtr& model = terrainComponent->GetModel();
+
+			for (size_t i = 0, sz = model->GetMeshesCount(); i < sz; ++i)
+			{
+				m_batchManager->AddMesh(model->GetMesh(i));
+			}
 		}
 	}
 
@@ -63,22 +78,34 @@ namespace sh
 		sh::math::Matrix4f viewMatrix = camera->GetViewMatrix();
 		sh::math::Matrix4f projectionMatrix = camera->GetProjectionMatrix();
 
-
-
 		for (auto entity : m_entities)
 		{
-			RenderComponent* renderComponent = static_cast<RenderComponent*>( entity->GetComponent(Component::Type::RENDER) );
-			TransformComponent* transformComponent = static_cast<TransformComponent*>( entity->GetComponent(Component::Type::TRANSFORM) );
-			if (transformComponent)
-			{
-				renderComponent->GetModel()->SetPosition(transformComponent->GetPosition());
-				renderComponent->GetModel()->SetWorldMatrix(transformComponent->GetWorldMatrix());
-			}			
+			scene::Model* model = nullptr;
 
-			size_t meshesCount = renderComponent->GetModel()->GetMeshesCount();
+			RenderComponent* renderComponent = static_cast<RenderComponent*>( entity->GetComponent(Component::Type::Render) );
+			if (renderComponent)
+			{
+				TransformComponent* transformComponent = static_cast<TransformComponent*>(entity->GetComponent(Component::Type::Transform));
+				if (transformComponent)
+				{
+					renderComponent->GetModel()->SetPosition(transformComponent->GetPosition());
+					renderComponent->GetModel()->SetWorldMatrix(transformComponent->GetWorldMatrix());
+				}
+				model = renderComponent->GetModel().get();
+			}
+				
+			TerrainComponent* terrainComponent = static_cast<TerrainComponent*>(entity->GetComponent(Component::Type::Terrain));
+			if (terrainComponent)
+			{
+				terrainComponent->GetModel()->SetPosition(math::Vector3f(0.0f));
+				terrainComponent->GetModel()->SetWorldMatrix(math::Matrix4f::Identity());
+				model = terrainComponent->GetModel().get();
+			}
+
+			size_t meshesCount = model->GetMeshesCount();
 			for (size_t i = 0; i < meshesCount; ++i)
 			{
-				const auto& renderable = renderComponent->GetModel()->GetMesh(i)->GetRanderable();
+				const auto& renderable = model->GetMesh(i)->GetRanderable();
 				const auto& params = renderable->GetAutoParams();
 				for (size_t paramIdx = 0; paramIdx < params->GetParamsCount(); ++paramIdx)
 				{

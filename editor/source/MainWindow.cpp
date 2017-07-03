@@ -101,7 +101,8 @@ MainWindow::MainWindow()
 
 	//window->SetLayout(layout);
 
-	//guiMgr->AddChild(window);
+	sh::gui::WindowPtr window(new sh::gui::Window(sh::math::Rectu(100, 100, 300, 300)));
+	guiMgr->AddChild(window);
 	guiMgr->AddChild(m_toolBar);
 	guiMgr->AddChild(m_menuBar);
 	

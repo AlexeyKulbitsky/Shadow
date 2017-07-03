@@ -3,6 +3,7 @@
 #include "Sprite.h"
 #include "Button.h"
 #include "MenuBar.h"
+#include "Window.h"
 
 #include "../Device.h"
 #include "../resources/ResourceManager.h"
@@ -32,6 +33,10 @@ namespace gui
 		pugi::xml_node menuBarNode = root.child("menubar");
 		if (menuBarNode)
 			LoadMenuBar(menuBarNode);
+
+		pugi::xml_node windowNode = root.child("window");
+		if (windowNode)
+			LoadWindow(windowNode);
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -70,6 +75,28 @@ namespace gui
 		SpritePtr sprite(new Sprite(m_texture, rect));
 
 		m_menuBar.reset(new MenuBar(sprite));
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	void Style::LoadWindow(const pugi::xml_node& node)
+	{
+		const u32 rectsCount = 2U;
+		std::array<String, rectsCount> rects = { "outrect", "inrect" };
+		std::array<SpritePtr, rectsCount> sprites;
+
+		for (u32 i = 0U; i < rectsCount; ++i)
+		{
+			pugi::xml_node rectNode = node.child(rects[i].c_str());
+			u32 x1 = rectNode.attribute("x1").as_uint();
+			u32 y1 = rectNode.attribute("y1").as_uint();
+			u32 x2 = rectNode.attribute("x2").as_uint();
+			u32 y2 = rectNode.attribute("y2").as_uint();
+			math::Rectu rect(x1, y1, x2, y2);
+			sprites[i].reset(new Sprite(m_texture, rect));
+		}
+
+		m_window.reset(new Window(sprites[0], sprites[1]));
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////

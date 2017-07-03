@@ -22,7 +22,7 @@ namespace sh
 		bool IntersectsRay(const math::Vector3f& origin, const math::Vector3f& direction);
 
 	private:	
-		Component* m_components[static_cast<size_t>(Component::Type::COUNT)];
+		Component* m_components[static_cast<size_t>(Component::Type::Count)];
 		String m_name = "unnamed";
 	};
 }

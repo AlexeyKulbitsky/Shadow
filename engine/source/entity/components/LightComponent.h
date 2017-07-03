@@ -14,7 +14,7 @@ namespace sh
 	{
 	public:
 		virtual ~LightComponent();
-		virtual Component::Type GetType() const override { return Component::Type::LIGHT; }
+		virtual Component::Type GetType() const override { return Component::Type::Light; }
 		virtual void Load(const pugi::xml_node &node) override;
 		virtual void Save(pugi::xml_node &parent) override;
 

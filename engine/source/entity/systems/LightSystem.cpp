@@ -43,7 +43,7 @@ namespace sh
 	{
 		for (auto entity : m_entities)
 		{
-			LightComponent* lightComponent = static_cast<LightComponent*>(entity->GetComponent(Component::Type::LIGHT));	
+			LightComponent* lightComponent = static_cast<LightComponent*>(entity->GetComponent(Component::Type::Light));	
 			if (lightComponent->m_needsToRecalculate)
 			{
 				lightComponent->m_needsToRecalculate = false;
