@@ -24,6 +24,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	Device* device = Device::GetInstance();
 
+	static int old = 0;
+	
+	SystemParametersInfo(SPI_GETKEYBOARDSPEED, 0, &old, 0);
+	SystemParametersInfo(SPI_SETKEYBOARDSPEED,0, &old, 0);
+	
+	//SystemParametersInfo(SPI_GETKEYBOARDDELAY, 0, &old, 0);
+	//SystemParametersInfo(SPI_SETKEYBOARDDELAY,0, &old, 0);
+
 	switch (message)
 	{
 	case WM_LBUTTONDOWN:
