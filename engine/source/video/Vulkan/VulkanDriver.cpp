@@ -109,10 +109,7 @@ namespace sh
 		{
 			InitVulkanFunctions();
 			m_parameters = parameters;
-			gui::SpriteManager::CreateInstance();
 			VulkanShaderCompiler::CreateInstance();
-
-			
 		}
 
 		VulkanDriver::~VulkanDriver()
@@ -123,8 +120,6 @@ namespace sh
 			CommandBufferManager::DestroyInstance();
 			RenderBatchManager::DestroyInstance();
 			TextureManager::DestroyInstance();
-
-			gui::SpriteManager::DestroyInstance();
 		}
 
 		const String& VulkanDriver::GetApiName() const
@@ -138,7 +133,7 @@ namespace sh
 			return DriverType::VULKAN;
 		}
 
-        void VulkanDriver::SetSurface(void* winId, u32 width, u32 height)
+        void VulkanDriver::SetWindow(void* winId, u32 width, u32 height)
         {
             m_parameters.WinId = winId;
             m_parameters.width = width;

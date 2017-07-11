@@ -206,7 +206,6 @@ namespace sh
 			for (auto& connection : m_connections)
 			{
 				connection(std::forward<Args>(args)...);
-				//connection(args...);
 			}
 		}
 

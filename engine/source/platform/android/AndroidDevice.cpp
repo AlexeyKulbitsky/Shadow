@@ -10,11 +10,6 @@ using namespace sh;
 using namespace video;
 
 
-AndroidDevice::AndroidDevice()
-{
-
-}
-
 ////////////////////////////////////////////////////////////////////////
 
 AndroidDevice::AndroidDevice(const CreationParameters &parameters)
@@ -52,7 +47,7 @@ void AndroidDevice::Init()
 	//m_GLContextManager->InitContext(m_creationParameters);
 	//m_driver->Init();
 
-	m_driver->SetSurface(m_creationParameters.WinId, m_creationParameters.width, m_creationParameters.height);
+	m_driver->SetWindow(m_creationParameters.WinId, m_creationParameters.width, m_creationParameters.height);
 	m_driver->Init();
 
 	Device::Init();
@@ -67,20 +62,14 @@ void AndroidDevice::Update(f32 deltaTime)
 
 ////////////////////////////////////////////////////////////////////////
 
-bool AndroidDevice::Run()
+void AndroidDevice::Run()
 {
-	return true;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 u64 AndroidDevice::GetTime()
 {
-	//static LARGE_INTEGER freq;
-	//static LARGE_INTEGER crt;
-	//QueryPerformanceFrequency(&freq);
-	//QueryPerformanceCounter(&crt);
-	//return (crt.QuadPart * 1000000) / freq.QuadPart;
 	u64 result = 0;
 	return result;
 }

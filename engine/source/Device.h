@@ -21,20 +21,23 @@ namespace sh
 		class SceneManager;
 	}
 
+	class Application;
+
 	class Device
 	{
 	public:
-		Device();
-		Device(const CreationParameters &parameters);	
+		//Device();
+		explicit Device(const CreationParameters &parameters);	
 		virtual ~Device();
 
 		virtual void Init();
-		virtual bool Run() = 0;
+		virtual void Run() = 0;
 		virtual void Update(f32 deltaTime) = 0;
 		virtual u64 GetTime() = 0;
 
-		virtual SHADOW_API video::Driver* SH_CALLCONV GetDriver() { return m_driver; }
-		void SetSceneManager(scene::SceneManager* manager) { m_sceneManager = manager; }
+		void SetApplication(Application* application) { m_application = application; }
+
+		video::Driver* GetDriver() { return m_driver; }
 		scene::SceneManager* GetSceneManager() { return m_sceneManager; }
 		InputManager* GetInputManager() { return m_inputManager.get(); }
 		ResourceManager* GetResourceManager() { return m_resourceManager.get(); }
@@ -62,7 +65,11 @@ namespace sh
 		ResourceManagerUPtr m_resourceManager;
 
 		io::FileSystem* m_fileSystem = nullptr;
-		bool m_needsToClose = false;
+
+		Application* m_application = nullptr;
+
+		u64 m_startTimePoint = 0U;
+		u64 m_lastFrameTimePoint = 0U;
 
 	private:
 		static Device* s_instance;

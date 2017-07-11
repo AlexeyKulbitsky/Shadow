@@ -11,7 +11,11 @@ namespace io
 
 	WindowsFileSystem::WindowsFileSystem()
 	{
-
+		// Get working directory path
+		char buffer[MAX_PATH];
+		GetModuleFileName(NULL, buffer, MAX_PATH);
+		String::size_type pos = String(buffer).find_last_of("\\/");
+		m_workingDirectoryPath = String(buffer).substr(0, pos) + "/";
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -25,26 +29,6 @@ namespace io
 
 	void WindowsFileSystem::Init()
 	{
-		// Get working directory path
-		char buffer[MAX_PATH];
-		GetModuleFileName(NULL, buffer, MAX_PATH);
-		String::size_type pos = String(buffer).find_last_of("\\/");
-		m_workingDirectoryPath = String(buffer).substr(0, pos) + "/";
-
-		//printf("Working dir: %s\n", m_workingDirectoryPath.c_str());
-
-		for (auto it : m_folders)
-		{
-			String absolutePath = m_workingDirectoryPath + "/" + it + "/";
-			CollectFilesFromFolder(absolutePath, true);
-		}
-
-		for (auto it : m_fileList)
-		{
-			//printf("File: %s\n", it.name.c_str());
-			//printf("Path: %s\n", it.absolutePath.c_str());
-			//printf("------------------------------------\n");
-		}
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -58,6 +42,12 @@ namespace io
 
 	void WindowsFileSystem::AddFolder(const String& folder, bool recursive)
 	{
+		if (m_folders.find(folder) != m_folders.end())
+			return;
+
+		String absolutePath = m_workingDirectoryPath + "/" + folder + "/";
+		CollectFilesFromFolder(absolutePath, true);
+
 		m_folders.insert(folder);
 	}
 

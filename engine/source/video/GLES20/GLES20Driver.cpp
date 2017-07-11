@@ -45,8 +45,6 @@ GLES20Driver::GLES20Driver( EGLContextManager* contextManager )
 	CommandBufferManager::CreateInstance<GLES20CommandBufferManager>();
 	RenderBatchManager::CreateInstance<GLES20RenderBatchManager>();
 	TextureManager::CreateInstance<GLES20TextureManager>();
-
-	gui::SpriteManager::CreateInstance();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -58,8 +56,6 @@ GLES20Driver::~GLES20Driver()
 	CommandBufferManager::DestroyInstance();
 	RenderBatchManager::DestroyInstance();
 	TextureManager::DestroyInstance();
-
-	gui::SpriteManager::DestroyInstance();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -157,7 +153,7 @@ void GLES20Driver::EndRendering()
 
 ////////////////////////////////////////////////////////////////////////
 
-void GLES20Driver::SetSurface(void* winId, u32 width, u32 height)
+void GLES20Driver::SetWindow(void* winId, u32 width, u32 height)
 {
 	if (!m_contextManager->IsContextCreated())
 	{

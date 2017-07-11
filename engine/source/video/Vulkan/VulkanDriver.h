@@ -35,7 +35,7 @@ namespace sh
 			virtual const String& GetApiName() const override;
 			virtual DriverType GetType() const override;
 
-			virtual void SetSurface(void* winId, u32 width, u32 height) override;
+			virtual void SetWindow(void* winId, u32 width, u32 height) override;
 
 			virtual bool Init() override;
 			virtual void BeginRendering() override;

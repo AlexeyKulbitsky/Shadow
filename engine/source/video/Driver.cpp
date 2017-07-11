@@ -17,12 +17,10 @@ namespace sh
 
 		Driver::Driver()
 		{
-			FontManager::CreateInstance();
 		}
 
 		Driver::~Driver()
 		{
-			FontManager::DestroyInstance();
 		}
 
 		void Driver::Render(scene::Model* model)
@@ -45,14 +43,6 @@ namespace sh
 			SetDepthStencilState(renderPipeline->GetDepthStencilState());
 			SetRasterizationState(renderPipeline->GetRasterizationState());
 			SetBlendingState(renderPipeline->GetBlendingState());
-//			renderPipeline->GetShaderProgram()->BindProgram();
-//			renderPipeline->GetUniformBuffer()->Upload();
-
-
-			//const RenderCommandPtr& renderCommand = mesh->GetRenderCommand();
-
-			//Render(renderCommand);
-//			renderPipeline->GetShaderProgram()->UnbindProgram();
 		}
 
 		/////////////////////////////////////////////////////////////////////////

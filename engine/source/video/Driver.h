@@ -38,7 +38,8 @@ namespace sh
 			virtual void BeginRendering() = 0;
 			virtual void EndRendering() = 0;
 
-			virtual void SetSurface(void* winId, u32 width, u32 height) {}
+			virtual void SetWindow(void* winId, u32 width, u32 height) {}
+			virtual void SetWindow(void* winId) {}
 			
 			virtual void Render(scene::Model* model);
 			virtual void Render(scene::Mesh* mesh);

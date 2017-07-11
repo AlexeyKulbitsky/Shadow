@@ -8,6 +8,8 @@
 #include "entity/ComponentsFactory.h"
 
 #include "gui/GuiManager.h"
+#include "gui/SpriteManager.h"
+#include "font/FontManager.h"
 
 #include <functional>
 using namespace std::placeholders;
@@ -15,12 +17,6 @@ using namespace std::placeholders;
 namespace sh
 {
 	Device* Device::s_instance = nullptr;
-
-	Device::Device()
-	{
-		m_inputManager.reset(new InputManager());
-		m_resourceManager.reset(new ResourceManager());
-	}
 
 	Device::Device(const CreationParameters &parameters)
 		: m_creationParameters(parameters)
@@ -40,6 +36,9 @@ namespace sh
 
 	void Device::Init()
 	{
+		// File system
+		m_fileSystem->Init();
+
 		// Model loader
 		scene::ModelLoader::CreateInstance<scene::AssimpModelLoader>();
 		//scene::ModelLoader::CreateInstance<scene::TinyObjModelLoader>();
@@ -48,7 +47,7 @@ namespace sh
 		sh::scene::SceneManager* sceneMgr = new sh::scene::SceneManager();
 		sh::ComponentsFactory* factory = new sh::ComponentsFactory();
 		sceneMgr->SetComponentsFactory(factory);
-		SetSceneManager(sceneMgr);
+		m_sceneManager = sceneMgr;
 
 		// Camera
 		sh::scene::Camera* camera = new sh::scene::Camera();
@@ -61,15 +60,17 @@ namespace sh
 		windowResizeEvent.Connect(std::bind(&scene::SceneManager::OnWindowResized, sceneMgr,
 			std::placeholders::_1, std::placeholders::_2));
 
-		// Gui manager
-		sh::gui::GuiManager::CreateInstance();
-		sh::gui::GuiManager::GetInstance()->Init();
+		FontManager::CreateInstance();
+		gui::SpriteManager::CreateInstance();
 	}
 
 
 	void Device::Destroy()
 	{
-		sh::gui::GuiManager::DestroyInstance();
+		gui::SpriteManager::DestroyInstance();
+		FontManager::DestroyInstance();
+
+		io::FileSystem::DestroyInstance();
 
 		delete s_instance;
 		s_instance = nullptr;

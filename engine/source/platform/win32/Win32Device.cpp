@@ -4,6 +4,7 @@
 #include "../../video/GLES20/GLES20Driver.h"
 #include "../../video/Vulkan/VulkanDriver.h"
 #include "../../scene/SceneManager.h"
+#include "../../Application.h"
 
 #include "../../gui/GuiManager.h"
 
@@ -155,11 +156,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
-Win32Device::Win32Device()
-{
-
-}
-
 ////////////////////////////////////////////////////////////////////////
 
 Win32Device::Win32Device(const CreationParameters &parameters)
@@ -288,7 +284,7 @@ Win32Device::~Win32Device()
 
 void Win32Device::Init()
 {
-	m_driver->SetSurface(m_creationParameters.WinId, m_creationParameters.width, m_creationParameters.height);
+	m_driver->SetWindow(m_creationParameters.WinId, m_creationParameters.width, m_creationParameters.height);
 	m_driver->Init();
 	m_driver->SetViewport(0U, 0U, m_creationParameters.width, m_creationParameters.height);
 
@@ -304,19 +300,10 @@ void Win32Device::Update(f32 deltaTime)
 
 ////////////////////////////////////////////////////////////////////////
 
-bool Win32Device::Run()
+void Win32Device::Run()
 {
-	///*
-	static char capture[128];
-	static auto t = std::chrono::high_resolution_clock::now();
-
-	u32 delta = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - t).count();
-	float fps = 1000.0f / static_cast<float>(delta);
-	sprintf(capture, "Shadow engine: %s API | FPS %.2f | x: %d y: %d", m_driver->GetApiName().c_str(), fps, g_xPoint, g_yPoint);
-	t = std::chrono::high_resolution_clock::now();
-
-	SetWindowText(m_hwnd, capture);
-	//*/
+	m_startTimePoint = GetTime();
+	m_lastFrameTimePoint = m_startTimePoint;
 
 	MSG msg;
 	bool done;
@@ -326,10 +313,10 @@ bool Win32Device::Run()
 
 	// Loop until there is a quit message from the window or the user.
 	done = false;
-	//while (!done)
+	while (!done)
 	{
 		// Handle the windows messages.
-		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+		while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
@@ -338,12 +325,15 @@ bool Win32Device::Run()
 		// If windows signals to end the application then exit out.
 		if (msg.message == WM_QUIT)
 		{
-			m_needsToClose = true;
-			//done = true;
+			done = true;
 		}
-	}
+		const u64 currentTimePoint = GetTime();
+		const u64 delta = currentTimePoint - m_lastFrameTimePoint;
 
-	return !m_needsToClose;
+		m_application->Update(delta);
+
+		m_lastFrameTimePoint = currentTimePoint;
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////

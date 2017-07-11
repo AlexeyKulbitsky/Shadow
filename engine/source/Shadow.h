@@ -4,6 +4,7 @@
 #include "CompileConfig.h"
 #include "Device.h"
 #include "Event.h"
+#include "Application.h"
 
 #include "font/Font.h"
 #include "font/FontManager.h"
