@@ -95,13 +95,20 @@ add_subdirectory(../libs/assimp "${CMAKE_CURRENT_BINARY_DIR}/assimp_build")
 include_directories(../libs/assimp/include)
 include_directories("${CMAKE_CURRENT_BINARY_DIR}/assimp_build/include")
 
+if(MSVC12 OR MSVC14)
 set_property(TARGET assimp PROPERTY FOLDER CommonLibs)
 set_property(TARGET IrrXML PROPERTY FOLDER CommonLibs)
 set_property(TARGET zlibstatic PROPERTY FOLDER CommonLibs)
 set_property(TARGET UpdateAssimpLibsDebugSymbolsAndDLLs PROPERTY FOLDER CommonLibs)
 set_property(TARGET uninstall PROPERTY FOLDER CommonLibs)
 set_property(TARGET dist PROPERTY FOLDER CommonLibs)
+endif(MSVC12 OR MSVC14)
 
 add_library(${PROJECT_NAME} ${PROJECT_SOURCE_FILES})
 
-target_link_libraries(${PROJECT_NAME} pugixml freetype glslang SPIRV SPVRemapper assimp ${EGL_LIBRARY} ${GLESV2_LIBRARY})
+if (SHADOW_ANDROID)
+  target_link_libraries(${PROJECT_NAME} pugixml freetype glslang SPIRV SPVRemapper assimp)
+else(SHADOW_ANDROID)
+  target_link_libraries(${PROJECT_NAME} pugixml freetype glslang SPIRV SPVRemapper assimp ${EGL_LIBRARY} ${GLESV2_LIBRARY})
+endif(SHADOW_ANDROID)
+
