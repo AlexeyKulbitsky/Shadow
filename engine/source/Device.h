@@ -26,7 +26,7 @@ namespace sh
 	class Device
 	{
 	public:
-		//Device();
+		Device();
 		explicit Device(const CreationParameters &parameters);	
 		virtual ~Device();
 
@@ -54,6 +54,7 @@ namespace sh
 		Event<void, int> mouseWheelEvent;
 		Event<void, KeyboardEventType, KeyCode> keyboardEvent;
 		Event<void, int, int> windowResizeEvent;
+		Event<void, int, int, void*> sursafeChangedEvent;
 
 	protected:
 		CreationParameters m_creationParameters;

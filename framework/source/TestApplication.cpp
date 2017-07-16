@@ -2,6 +2,15 @@
 
 using namespace sh;
 
+SHADOW_APPLICATION_DECLARATION(TestApp)
+
+
+TestApp::TestApp()
+{
+	int a = 0;
+	a++;
+}
+
 TestApp::TestApp(const sh::CreationParameters& params)
 	: Application(params)
 {

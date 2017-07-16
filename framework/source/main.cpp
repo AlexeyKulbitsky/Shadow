@@ -1,7 +1,9 @@
+#if 0
 #include "TestApplication.h"
 
 int main()
 {
+	sh::Device* device = sh::CreateDevice();
 	sh::CreationParameters params;
 	params.width = 800;
 	params.height = 600;
@@ -16,6 +18,8 @@ int main()
 
 	return 0;
 }
+
+#endif
 
 
 

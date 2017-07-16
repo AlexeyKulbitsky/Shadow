@@ -33,7 +33,7 @@ namespace sh
 
 		FontPtr font(new Font());
 
-		u32 maxDimension = (1 + (face->size->metrics.height >> 6)) * ceilf(sqrtf(128));
+		u32 maxDimension = static_cast<u32>((1 + (face->size->metrics.height >> 6)) * ceilf(sqrtf(128)));
 		u32 textureWidth = 1;
 		while(textureWidth < maxDimension) 
 			textureWidth <<= 1; 
@@ -53,9 +53,9 @@ namespace sh
 				pen_y += ((face->size->metrics.height >> 6) + 1);
 			}
 
-			for(int row = 0; row < bmp->rows; ++row)
+			for(u32 row = 0; row < bmp->rows; ++row)
 			{
-				for(int col = 0; col < bmp->width; ++col)
+				for(u32 col = 0; col < bmp->width; ++col)
 				{
 					int x = pen_x + col;
 					int y = pen_y + row;

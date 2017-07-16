@@ -13,6 +13,7 @@ namespace sh
 	class Win32Device : public Device 
 	{
 	public:
+		Win32Device();
 		explicit Win32Device(const CreationParameters &parameters);
 		virtual ~Win32Device();
 

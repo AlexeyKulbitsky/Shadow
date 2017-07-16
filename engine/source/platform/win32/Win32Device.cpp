@@ -15,6 +15,8 @@
 // Window assert implementation
 #include "Win32Assert.h"
 
+#include "../../Shadow.h"
+
 using namespace sh;
 using namespace video;
 
@@ -27,8 +29,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 	static int old = 0;
 	
-	SystemParametersInfo(SPI_GETKEYBOARDSPEED, 0, &old, 0);
-	SystemParametersInfo(SPI_SETKEYBOARDSPEED,0, &old, 0);
+	//SystemParametersInfo(SPI_GETKEYBOARDSPEED, 0, &old, 0);
+	//SystemParametersInfo(SPI_SETKEYBOARDSPEED,0, &old, 0);
 	
 	//SystemParametersInfo(SPI_GETKEYBOARDDELAY, 0, &old, 0);
 	//SystemParametersInfo(SPI_SETKEYBOARDDELAY,0, &old, 0);
@@ -166,6 +168,104 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 ////////////////////////////////////////////////////////////////////////
 
+Win32Device::Win32Device()
+{
+	io::FileSystem::CreateInstance<io::WindowsFileSystem>();
+	m_fileSystem = io::FileSystem::GetInstance();
+	m_fileSystem->AddFolder(sh::String("../../../data"));
+
+	const auto& info = m_fileSystem->FindFile("config.xml");
+	if (info.name != "")
+	{
+		auto file = m_fileSystem->LoadFile("config.xml");
+		const char* dataPtr = file.GetData().data();
+
+		pugi::xml_document doc;
+		pugi::xml_parse_result result = doc.load_buffer(dataPtr, file.GetData().size());
+
+		auto rootNode = doc.child("config");
+		auto driverNode = rootNode.child("driver");
+		String driverName = driverNode.attribute("type").as_string();
+		if (driverName == "GLES20")
+			m_creationParameters.driverType = video::DriverType::OPENGL_ES_2_0;
+	}
+
+	pempek::assert::implementation::setAssertHandler(_testHandler);
+
+	// get handle to exe file
+	HINSTANCE hInstance = GetModuleHandle(0);
+
+	const fschar_t* ClassName = __TEXT("Win32Device");
+
+	// Register Class
+	WNDCLASSEX wcex;
+	wcex.cbSize = sizeof(WNDCLASSEX);
+	wcex.style = CS_HREDRAW | CS_VREDRAW;
+	wcex.lpfnWndProc = WndProc;
+	wcex.cbClsExtra = 0;
+	wcex.cbWndExtra = 0;
+	wcex.hInstance = hInstance;
+	wcex.hIcon = NULL;
+	wcex.hCursor = 0; // LoadCursor(NULL, IDC_ARROW);
+	wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+	wcex.lpszMenuName = 0;
+	wcex.lpszClassName = ClassName;
+	wcex.hIconSm = 0;
+
+	// if there is an icon, load it
+	wcex.hIcon = (HICON)LoadImage(hInstance, __TEXT("shadow.ico"), IMAGE_ICON, 0, 0, LR_LOADFROMFILE);
+
+	RegisterClassEx(&wcex);
+
+	// calculate client size
+
+	RECT clientSize;
+	clientSize.top = 0;
+	clientSize.left = 0;
+	clientSize.right = m_creationParameters.width;
+	clientSize.bottom = m_creationParameters.height;
+
+	DWORD style = WS_POPUP;
+
+	style = WS_SYSMENU | WS_BORDER | WS_CAPTION | WS_CLIPCHILDREN | WS_CLIPSIBLINGS |
+		WS_SIZEBOX | WS_MAXIMIZEBOX | WS_MINIMIZEBOX;
+
+	AdjustWindowRect(&clientSize, style, FALSE);
+
+	const s32 realWidth = clientSize.right - clientSize.left;
+	const s32 realHeight = clientSize.bottom - clientSize.top;
+
+	s32 windowLeft = 100;
+	s32 windowTop = 100;
+
+	if (windowLeft < 0)
+		windowLeft = 0;
+	if (windowTop < 0)
+		windowTop = 0;	// make sure window menus are in screen on creation
+
+
+						// create window
+	m_hwnd = CreateWindow(ClassName, __TEXT("Shadow engine"), style, windowLeft, windowTop,
+		realWidth, realHeight, NULL, NULL, hInstance, NULL);
+
+
+	m_creationParameters.WinId = m_hwnd;
+
+	ShowWindow(m_hwnd, SW_SHOWNORMAL);
+	UpdateWindow(m_hwnd);
+
+	// fix ugly ATI driver bugs. Thanks to ariaci
+	MoveWindow(m_hwnd, windowLeft, windowTop, realWidth, realHeight, TRUE);
+
+	CreateDriver();
+
+	//m_application = CreateApplication();
+
+	//CallSomeExternFunction();
+}
+
+////////////////////////////////////////////////////////////////////////
+
 Win32Device::Win32Device(const CreationParameters &parameters)
 	:Device(parameters)
 {
@@ -297,6 +397,8 @@ void Win32Device::Init()
 	m_driver->SetViewport(0U, 0U, m_creationParameters.width, m_creationParameters.height);
 
 	Device::Init();
+
+	m_application->Init();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -365,10 +467,6 @@ bool Win32Device::CreateDriver()
 		if (contextManager)
 		{
 			m_driver = new video::GLES20Driver(contextManager);
-
-			contextManager->AttachWindow(m_creationParameters.WinId);
-			//m_driver->Init();
-
 			m_GLContextManager = contextManager;
 		}
 	}
@@ -376,7 +474,6 @@ bool Win32Device::CreateDriver()
 	case video::DriverType::VULKAN:
 	{
 		m_driver = new video::VulkanDriver(m_creationParameters);
-		//m_driver->Init();
 	}
 	break;
 	default:

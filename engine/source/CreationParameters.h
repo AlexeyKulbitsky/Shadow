@@ -8,9 +8,9 @@ namespace sh
 {
 	struct CreationParameters
 	{
-		u32 width;
-		u32 height;
-		video::DriverType driverType;
+		u32 width = 800U;
+		u32 height = 600U;
+		video::DriverType driverType = video::DriverType::OPENGL_ES_2_0;
 		void* WinId = nullptr;
 	};
 }

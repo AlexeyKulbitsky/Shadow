@@ -27,6 +27,19 @@ namespace sh
 		return CreateDevice(parameters);
 	}
 
+	Device* CreateDevice()
+	{
+		Device *device = nullptr;
+
+#if defined SHADOW_WINDOWS
+		device = new Win32Device();
+#elif defined SHADOW_ANDROID
+		device = new AndroidDevice();
+#endif
+		Device::SetInstance(device);
+
+		return device;
+	}
 
 	/*SHADOW_API*/ Device* /*SH_CALLCONV*/ CreateDevice(const CreationParameters& parameters)
 	{

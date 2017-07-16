@@ -18,6 +18,17 @@ namespace sh
 {
 	Device* Device::s_instance = nullptr;
 
+	Device::Device()
+	{
+		m_inputManager.reset(new InputManager());
+
+		mouseEvent.Connect(std::bind(&InputManager::OnMouseEvent, m_inputManager.get(), _1, _2, _3, _4));
+		keyboardEvent.Connect(std::bind(&InputManager::OnKeyboardEvent, m_inputManager.get(), _1, _2));
+
+		m_resourceManager.reset(new ResourceManager());
+		m_resourceManager->Init();
+	}
+
 	Device::Device(const CreationParameters &parameters)
 		: m_creationParameters(parameters)
 	{

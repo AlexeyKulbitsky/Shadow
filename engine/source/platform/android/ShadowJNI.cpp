@@ -1,3 +1,4 @@
+#if 0
 #include <jni.h>
 #include <android/native_window_jni.h>
 #include <android/asset_manager_jni.h>
@@ -6,6 +7,13 @@
 #include <mutex>
 
 #include <io/android/AndroidFileSystem.h>
+#include "AndroidDevice.h"
+
+static AAssetManager *assetManager = nullptr;
+static sh::String assetsDataPath = "";
+static sh::AndroidDevice *androidDevice = nullptr;
+
+////////////////////////////////////////////////
 
 static ANativeWindow *window = 0;
 
@@ -111,7 +119,14 @@ void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_OnCreate(JNIEnv *en
         isDeviceCreated = true;
 
         shadowThread = std::thread(shadowThreadFunction, device);
+
+        //////////////////////////////////////////////////////////////
+
+        assetManager = AAssetManager_fromJava(env, assManager);
+        assetsDataPath = env->GetStringUTFChars(dataPath, NULL);
     }
+
+
 }
 
 void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_OnDestroy(JNIEnv *env, jclass type)
@@ -165,6 +180,29 @@ void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_SurfaceChanged(JNIE
     height = _height;
     shMessage = ShadowMessage::Create;
     shadowMutex.unlock();
+
+    ///////////////////////////////////////////////////////////
+
+    if (!isDeviceCreated)
+    {
+        sh::CreationParameters params;
+        params.width = static_cast<sh::u32>(_width);
+        params.height = static_cast<sh::u32>(_height);
+        params.WinId = ANativeWindow_fromSurface(env, surface);
+        params.driverType = sh::video::DriverType::OPENGL_ES_2_0;
+
+        isDeviceCreated = true;
+    }
+    else
+    {
+        sh::AndroidEvent ev;
+        ev.type = sh::AndroidEvent::Type::SurfaceChanged;
+        ev.event.surfaceChangedEvent.width = _width;
+        ev.event.surfaceChangedEvent.height = _height;
+        ev.event.surfaceChangedEvent.winId = ANativeWindow_fromSurface(env, surface);
+
+        androidDevice->OnEvent(ev);
+    }
 }
 
 void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_SurfaceDestroyed(JNIEnv *env, jclass type, jobject surface)
@@ -175,3 +213,13 @@ void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_SurfaceDestroyed(JN
 }
 
 }
+#endif
+
+#define SHADOW_MAIN_FUNCTION(ApplicationClassType, CreationParams)		\
+void shadowMainFunction()												\
+{																		\
+	ApplicationClassType app(CreationParams);							\
+	app.Init();															\
+	app.Run();															\
+	app.Destroy();														\
+}																		

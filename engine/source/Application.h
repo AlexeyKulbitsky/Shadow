@@ -10,8 +10,9 @@ namespace sh
 	class Application
 	{
 	public:
+		Application() {}
 		explicit Application(const CreationParameters& params);
-		Application() = delete;
+//		Application() = delete;
 		Application(const Application& other) = delete;
 		virtual ~Application() { }
 		

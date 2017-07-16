@@ -5,10 +5,21 @@
 #include "../../video/Vulkan/VulkanDriver.h"
 #include "../../scene/SceneManager.h"
 #include "../../io/android/AndroidFileSystem.h"
+#include "../../Application.h"
 
 using namespace sh;
 using namespace video;
 
+
+////////////////////////////////////////////////////////////////////////
+
+AndroidDevice::AndroidDevice()
+{
+#if defined SHADOW_ANDROID
+	io::FileSystem::CreateInstance<io::AndroidFileSystem>();
+	m_fileSystem = io::FileSystem::GetInstance();
+#endif
+}
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -44,9 +55,6 @@ AndroidDevice::~AndroidDevice()
 
 void AndroidDevice::Init()
 {
-	//m_GLContextManager->InitContext(m_creationParameters);
-	//m_driver->Init();
-
 	m_driver->SetWindow(m_creationParameters.WinId, m_creationParameters.width, m_creationParameters.height);
 	m_driver->Init();
 
@@ -64,6 +72,28 @@ void AndroidDevice::Update(f32 deltaTime)
 
 void AndroidDevice::Run()
 {
+	bool done = false;
+	while (!done)
+	{
+		while (!m_eventsQueue.IsEmpty())
+		{
+			auto event = m_eventsQueue.Pop();
+			if (event.type == AndroidEvent::Type::Exit)
+			{
+				done = true;
+				break;
+			}
+
+			ProcessEvent(event);
+		}
+
+		const u64 currentTimePoint = GetTime();
+		const u64 delta = currentTimePoint - m_lastFrameTimePoint;
+
+		m_application->Update(delta);
+
+		m_lastFrameTimePoint = currentTimePoint;
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -86,7 +116,6 @@ bool AndroidDevice::CreateDriver()
 		if (contextManager)
 		{
 			m_driver = new video::GLES20Driver(contextManager);
-
 			m_GLContextManager = contextManager;
 		}
 	}
@@ -100,6 +129,36 @@ bool AndroidDevice::CreateDriver()
 		break;
 	}
 	return true;
+}
+
+////////////////////////////////////////////////////////////////////////
+
+void AndroidDevice::OnEvent(const AndroidEvent& event)
+{
+	m_eventsQueue.Push(event);
+}
+
+////////////////////////////////////////////////////////////////////////
+
+void AndroidDevice::ProcessEvent(const AndroidEvent& ev)
+{
+	switch (ev.type)
+	{
+	case AndroidEvent::Type::Resize:
+	{
+		windowResizeEvent(ev.event.resizeEvent.width, ev.event.resizeEvent.height);
+	}
+		break;
+	case AndroidEvent::Type::SurfaceChanged:
+	{
+		sursafeChangedEvent(ev.event.surfaceChangedEvent.width,
+			ev.event.surfaceChangedEvent.height,
+			ev.event.surfaceChangedEvent.winId);
+	}
+		break;
+	default:
+		break;
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////

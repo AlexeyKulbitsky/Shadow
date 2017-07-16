@@ -58,10 +58,10 @@ namespace gui
 		{
 			const auto& desc = font->GetGlyphDescription(static_cast<u32>(c));
 			
-			float x1 = xOrigin + desc.x_off;
-			float y1 = yOrigin - desc.y_off;
-			float x2 = xOrigin + desc.x_off + desc.width;
-			float y2 = yOrigin - desc.y_off + desc.height;
+			float x1 = static_cast<float>(xOrigin + desc.x_off);
+			float y1 = static_cast<float>(yOrigin - desc.y_off);
+			float x2 = static_cast<float>(xOrigin + desc.x_off + desc.width);
+			float y2 = static_cast<float>(yOrigin - desc.y_off + desc.height);
 
 			float u1 = (float)desc.x0 / (float)width;
 			float v1 = (float)desc.y0 / (float)height;
