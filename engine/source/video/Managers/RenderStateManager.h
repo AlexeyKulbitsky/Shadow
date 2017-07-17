@@ -14,7 +14,8 @@ namespace video
 
 	class RenderStateManager : public Singleton<RenderStateManager>
 	{
-	public: 
+	public:
+		virtual ~RenderStateManager() {}
 		virtual RenderPipelinePtr CreateRenderPipeline(const RenderPipelineDescription& description) = 0;
 		virtual ShaderPtr CreateShader(const ShaderDescription& description) = 0;
 		virtual SamplerPtr CreateSampler(const SamplerDescription& description) = 0;

@@ -12,8 +12,9 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
-                abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+                abiFilters 'armeabi-v7a', 'arm64-v8a'//, 'x86', 'x86_64'
                 cppFlags "-std=c++11 -frtti -fexceptions"
+                arguments "-DSHADOW_ANDROID=1"
             }
         }
     }
@@ -50,7 +51,7 @@ android {
     }
     externalNativeBuild {
         cmake {
-            path "CMakeLists.txt"
+            path "../../CMakeLists.txt"
         }
     }
 }

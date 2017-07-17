@@ -1,3 +1,4 @@
+#if defined (SHADOW_WINDOWS)
 #include "Win32Device.h"
 #include "../../video/Driver.h"
 #include "../../video/GLContext/EGLContextManager.h"
@@ -483,3 +484,5 @@ bool Win32Device::CreateDriver()
 }
 
 ////////////////////////////////////////////////////////////////////////
+
+#endif

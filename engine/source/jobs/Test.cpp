@@ -23,11 +23,11 @@ void Sum(void* args)
 	for (int i = range->start; i < range->end; ++i)
 	{
 		float f = 12.456798f * i;
-		float sinF = sinf(f);
-		float t = sinF * tanf(sqrt(fabs(sinF)));
-		srand(time(nullptr));
-		float flt = rand() / 10.12f;
-		int a = static_cast<int>(t) * static_cast<int>(flt * 0.000001f);
+		//float sinF = sinf(f);
+		//float t = sinF * tanf(sqrt(fabs(sinF)));
+		//srand(time(nullptr));
+		//float flt = rand() / 10.12f;
+		int a = 0;//static_cast<int>(t) * static_cast<int>(flt * 0.000001f);
 		res += i + a;
 	}
 	range->result = res;

@@ -7,9 +7,16 @@
 //#include <jni.h>
 //#include <android/asset_manager.h>
 
+struct AAssetManager;
+struct AndroidCreationParams : public sh::CreationParameters
+{
+    AAssetManager* assetManager = nullptr;
+    sh::String assetsDataPath = "";
+};
+
 namespace sh
 {
-	class AndroidDevice : public Device 
+	class AndroidDevice : public Device
 	{
 	public:
 		AndroidDevice();
@@ -24,6 +31,9 @@ namespace sh
 		bool CreateDriver();
 
 		void OnEvent(const AndroidEvent& event);
+
+	public:
+		static AndroidCreationParams params;
 
 	private:
 		void ProcessEvent(const AndroidEvent& ev);

@@ -1,3 +1,4 @@
+#if defined (SHADOW_WINDOWS)
 #include "WindowsFileSystem.h"
 
 #include <windows.h>
@@ -158,3 +159,5 @@ namespace io
 } // io
 
 } // sh
+
+#endif

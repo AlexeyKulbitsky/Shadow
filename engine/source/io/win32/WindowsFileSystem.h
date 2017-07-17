@@ -1,6 +1,7 @@
 #ifndef SHADOW_WINDOWS_FILE_SYSTEM_INCLUDE
 #define SHADOW_WINDOWS_FILE_SYSTEM_INCLUDE
 
+#if defined (SHADOW_WINDOWS)
 #include "../FileSystem.h"
 
 namespace sh
@@ -39,5 +40,7 @@ namespace io
 } // io
 
 } // sh
+
+#endif
 
 #endif

@@ -13,6 +13,65 @@ include_directories( ${PROJECT_INCLUDE_DIR} )
 
 file(GLOB_RECURSE PROJECT_SOURCE_FILES "*.h" "*.hpp" "*.cpp")
 
+if (SHADOW_ANDROID)
+
+	set (EXCLUDE_DIR "/win32/")
+	foreach (TMP_PATH ${PROJECT_SOURCE_FILES})
+		string (FIND ${TMP_PATH} ${EXCLUDE_DIR} EXCLUDE_DIR_FOUND)
+		if (NOT ${EXCLUDE_DIR_FOUND} EQUAL -1)
+			list (REMOVE_ITEM PROJECT_SOURCE_FILES ${TMP_PATH})
+		endif ()
+	endforeach(TMP_PATH)
+	
+else (SHADOW_ANDROID)
+
+	set (EXCLUDE_DIR "/android/")
+	foreach (TMP_PATH ${PROJECT_SOURCE_FILES})
+		string (FIND ${TMP_PATH} ${EXCLUDE_DIR} EXCLUDE_DIR_FOUND)
+		if (NOT ${EXCLUDE_DIR_FOUND} EQUAL -1)
+			list (REMOVE_ITEM PROJECT_SOURCE_FILES ${TMP_PATH})
+		endif ()
+	endforeach(TMP_PATH)
+	
+endif(SHADOW_ANDROID)
+
+
+foreach(FILE ${PROJECT_SOURCE_FILES}) 
+    # Get the directory of the source file
+    get_filename_component(PARENT_DIR "${FILE}" DIRECTORY)
+
+    # Remove common directory prefix to make the group
+    string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}" "" GROUP "${PARENT_DIR}")
+
+    # Make sure we are using windows slashes
+    string(REPLACE "/" "\\" GROUP "${GROUP}")
+
+    # Group into "Source Files" and "Header Files"
+ #   if ("${FILE}" MATCHES ".*\\.cpp")
+ #      set(GROUP "Source Files${GROUP}")
+#    elseif("${FILE}" MATCHES ".*\\.h")
+ #      set(GROUP "Header Files${GROUP}")
+ #   endif()
+
+    source_group("${GROUP}" FILES "${FILE}")
+endforeach()
+
+#-----------------------------------------
+
+macro(GroupAllSources curdir)
+
+	foreach(child ${curdir})
+		if(IS_DIRECTORY ${curdir}/${child})
+			GroupAllSources(${curdir}/${child})
+		else()
+			string(REPLACE "/" "\\" groupname ${curdir})
+            string(REPLACE "src" "Common" groupname ${groupname})
+            source_group(${groupname} FILES ${curdir}/${child})
+		endif()
+	endforeach()
+
+endmacro()
+
 #-----------------------------------------
 
 macro(GroupSources curdir)
@@ -22,6 +81,16 @@ ${PROJECT_SOURCE_DIR}/${curdir}/*)
 
     foreach(child ${children})
 
+		if (SHADOW_ANDROID)
+			if (${child} MATCHES "win32")
+				continue()
+			endif()
+		else (SHADOW_ANDROID)
+			if (${child} MATCHES "android")
+				continue()
+			endif()
+		endif(SHADOW_ANDROID)
+	
            if(IS_DIRECTORY ${PROJECT_SOURCE_DIR}/${curdir}/${child})
 
               GroupSources(${curdir}/${child})
@@ -40,7 +109,8 @@ endmacro()
 
 #-----------------------------------------
 
-GroupSources(source)
+#GroupSources(source)
+#GroupAllSources(PROJECT_SOURCE_FILES)
 
 # Add DirectX
 if (WIN32)

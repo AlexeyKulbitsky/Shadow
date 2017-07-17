@@ -1,4 +1,4 @@
-#if 0
+//#if 0
 #include <jni.h>
 #include <android/native_window_jni.h>
 #include <android/asset_manager_jni.h>
@@ -9,8 +9,6 @@
 #include <io/android/AndroidFileSystem.h>
 #include "AndroidDevice.h"
 
-static AAssetManager *assetManager = nullptr;
-static sh::String assetsDataPath = "";
 static sh::AndroidDevice *androidDevice = nullptr;
 
 ////////////////////////////////////////////////
@@ -103,6 +101,7 @@ extern "C"
 
 void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_OnCreate(JNIEnv *env, jclass type, jobject mainActivity, jobject assManager, jstring dataPath)
 {
+	/*
     if (!isDeviceCreated)
     {
         sh::CreationParameters params;
@@ -119,14 +118,11 @@ void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_OnCreate(JNIEnv *en
         isDeviceCreated = true;
 
         shadowThread = std::thread(shadowThreadFunction, device);
-
-        //////////////////////////////////////////////////////////////
-
-        assetManager = AAssetManager_fromJava(env, assManager);
-        assetsDataPath = env->GetStringUTFChars(dataPath, NULL);
     }
+    */
 
-
+	sh::AndroidDevice::params.assetManager = AAssetManager_fromJava(env, assManager);
+	sh::AndroidDevice::params.assetsDataPath = env->GetStringUTFChars(dataPath, NULL);
 }
 
 void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_OnDestroy(JNIEnv *env, jclass type)
@@ -166,30 +162,35 @@ void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_OnStop(JNIEnv *env,
 
 void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_SurfaceCreated(JNIEnv *env, jclass type, jobject surface)
 {
+	/*
     shadowMutex.lock();
     testWindow = ANativeWindow_fromSurface(env, surface);
     testWindow = 0;
     shadowMutex.unlock();
+    */
 }
 
 void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_SurfaceChanged(JNIEnv *env, jclass type, jobject surface, jint _width, jint _height)
 {
+	/*
     shadowMutex.lock();
     window = ANativeWindow_fromSurface(env, surface);
     width = _width;
     height = _height;
     shMessage = ShadowMessage::Create;
     shadowMutex.unlock();
+    */
 
     ///////////////////////////////////////////////////////////
 
     if (!isDeviceCreated)
     {
-        sh::CreationParameters params;
-        params.width = static_cast<sh::u32>(_width);
-        params.height = static_cast<sh::u32>(_height);
-        params.WinId = ANativeWindow_fromSurface(env, surface);
-        params.driverType = sh::video::DriverType::OPENGL_ES_2_0;
+		sh::AndroidDevice::params.width = static_cast<sh::u32>(_width);
+		sh::AndroidDevice::params.height = static_cast<sh::u32>(_height);
+		sh::AndroidDevice::params.WinId = ANativeWindow_fromSurface(env, surface);
+		sh::AndroidDevice::params.driverType = sh::video::DriverType::OPENGL_ES_2_0;
+
+		shadowThread = std::thread(sh::AndroidMainThreadFunction);
 
         isDeviceCreated = true;
     }
@@ -207,19 +208,12 @@ void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_SurfaceChanged(JNIE
 
 void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_SurfaceDestroyed(JNIEnv *env, jclass type, jobject surface)
 {
+	/*
     shadowMutex.lock();
     shMessage = ShadowMessage::None;
     shadowMutex.unlock();
+    */
 }
 
 }
-#endif
-
-#define SHADOW_MAIN_FUNCTION(ApplicationClassType, CreationParams)		\
-void shadowMainFunction()												\
-{																		\
-	ApplicationClassType app(CreationParams);							\
-	app.Init();															\
-	app.Run();															\
-	app.Destroy();														\
-}																		
+//#endif

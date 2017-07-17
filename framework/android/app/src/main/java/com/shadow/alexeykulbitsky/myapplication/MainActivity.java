@@ -18,7 +18,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback
 
     static
     {
-        System.loadLibrary("shadow-lib");
+        System.loadLibrary("framework");
     }
 
     @Override

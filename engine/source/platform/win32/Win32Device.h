@@ -1,6 +1,7 @@
 #ifndef SHADOW_WIN32_DEVICE_INCLUDE
 #define SHADOW_WIN32_DEVICE_INCLUDE
 
+#if defined (SHADOW_WINDOWS)
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <mmsystem.h> // For JOYCAPS
@@ -27,5 +28,7 @@ namespace sh
 		HWND m_hwnd;
 	};
 }
+
+#endif
 
 #endif
