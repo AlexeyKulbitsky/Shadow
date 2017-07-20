@@ -3,12 +3,13 @@ cmake_minimum_required(VERSION 3.4.1)
 project (Framework)
 
 # Add engine
+set(USE_VULKAN_API OFF)
 add_subdirectory(../engine "${CMAKE_CURRENT_BINARY_DIR}/engine_build")
 include_directories(../engine/source)
 
 include_directories( ../libs/pugixml/src )
 include_directories(../libs/freetype/include)
-include_directories(../libs/assimp/include)
+#include_directories(../libs/assimp/include)
 
 file(GLOB FRAMEWORK_SRC "source/*.cpp")
 
@@ -43,11 +44,11 @@ endif (SHADOW_ANDROID)
 
 
 
-if (SHADOW_WINDOWS)
+if (WIN32)
 add_custom_command(TARGET framework POST_BUILD
 					COMMAND ${CMAKE_COMMAND} -E 
 					copy ${CMAKE_CURRENT_BINARY_DIR}/../../libs/egl/bin/release/libEGL.dll ${CMAKE_CURRENT_BINARY_DIR}/$<CONFIGURATION>
 					COMMAND ${CMAKE_COMMAND} -E 
 					copy ${CMAKE_CURRENT_BINARY_DIR}/../../libs/egl/bin/release/libGLESv2.dll ${CMAKE_CURRENT_BINARY_DIR}/$<CONFIGURATION>)
 
-endif (SHADOW_WINDOWS)
+endif (WIN32)

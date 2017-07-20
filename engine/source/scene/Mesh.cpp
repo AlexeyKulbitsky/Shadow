@@ -13,7 +13,6 @@
 #include "../video/MaterialParam.h"
 #include "../video/Renderable.h"
 
-//#include "../video/Vulkan/VulkanRenderPipeline.h"
 
 namespace sh
 {

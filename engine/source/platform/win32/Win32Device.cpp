@@ -1,9 +1,12 @@
-#if defined (SHADOW_WINDOWS)
 #include "Win32Device.h"
 #include "../../video/Driver.h"
 #include "../../video/GLContext/EGLContextManager.h"
 #include "../../video/GLES20/GLES20Driver.h"
+
+#if defined (SHADOW_USE_VULKAN_API)
 #include "../../video/Vulkan/VulkanDriver.h"
+#endif
+
 #include "../../scene/SceneManager.h"
 #include "../../Application.h"
 
@@ -472,11 +475,13 @@ bool Win32Device::CreateDriver()
 		}
 	}
 	break;
+#if defined (SHADOW_USE_VULKAN_API)
 	case video::DriverType::VULKAN:
 	{
 		m_driver = new video::VulkanDriver(m_creationParameters);
 	}
 	break;
+#endif
 	default:
 		break;
 	}
@@ -484,5 +489,3 @@ bool Win32Device::CreateDriver()
 }
 
 ////////////////////////////////////////////////////////////////////////
-
-#endif

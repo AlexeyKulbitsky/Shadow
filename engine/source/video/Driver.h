@@ -20,7 +20,10 @@ namespace sh
 			OPENGL_ES_2_0,
 			OPENGL_ES_3_0,
 			DIRECTX_11,
+
+#if defined (SHADOW_USE_VULKAN_API)
 			VULKAN
+#endif
 		};
 
 		struct RenderPipelineDescription;

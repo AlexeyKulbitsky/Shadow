@@ -1,6 +1,6 @@
 #include "AndroidFileSystem.h"
 
-#if defined SHADOW_ANDROID
+
 
 namespace sh
 {
@@ -63,4 +63,3 @@ namespace io
 
 } // sh
 
-#endif

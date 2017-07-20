@@ -2,7 +2,11 @@
 #include "../../video/Driver.h"
 #include "../../video/GLContext/EGLContextManager.h"
 #include "../../video/GLES20/GLES20Driver.h"
+
+#if defined (SHADOW_USE_VULKAN_API)
 #include "../../video/Vulkan/VulkanDriver.h"
+#endif
+
 #include "../../scene/SceneManager.h"
 #include "../../io/android/AndroidFileSystem.h"
 #include "../../Application.h"
@@ -124,11 +128,13 @@ bool AndroidDevice::CreateDriver()
 		}
 	}
 	break;
+#if defined (SHADOW_USE_VULKAN_API)
 	case video::DriverType::VULKAN:
 	{
 		m_driver = new video::VulkanDriver(m_creationParameters);
 	}
 	break;
+#endif
 	default:
 		break;
 	}

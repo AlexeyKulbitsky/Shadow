@@ -75,9 +75,11 @@ namespace sh
 				case video::DriverType::OPENGL_ES_2_0:
 					m_2dProjectionMatrix.SetOrtho(0.0f, width, height, 0.0f, -1.0f, 1.0f);
 					break;
+#if defined(USE_VULKAN_API)
 				case video::DriverType::VULKAN:
 					m_2dProjectionMatrix.SetOrtho(0.0f, width, 0.0f, height, -1.0f, 1.0f);
 					break;
+#endif
 				default:
 					break;
 			}

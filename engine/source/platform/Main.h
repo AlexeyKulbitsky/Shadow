@@ -11,7 +11,7 @@ int main()																						\
 
 #elif defined (SHADOW_ANDROID)
 
-#define SHADOW_MAIN_FUNCTION(ApplicationType)													\
+#define SHADOW_MAIN_FUNCTION(ApplicationFunction)													\
 void AndroidMainThreadFunction()																\
 {																								\
 	ApplicationFunction;																		\

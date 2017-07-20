@@ -51,8 +51,8 @@ namespace sh
 		m_fileSystem->Init();
 
 		// Model loader
-		scene::ModelLoader::CreateInstance<scene::AssimpModelLoader>();
-		//scene::ModelLoader::CreateInstance<scene::TinyObjModelLoader>();
+		//scene::ModelLoader::CreateInstance<scene::AssimpModelLoader>();
+		scene::ModelLoader::CreateInstance<scene::TinyObjModelLoader>();
 
 		// Scene manager
 		sh::scene::SceneManager* sceneMgr = new sh::scene::SceneManager();

@@ -1,6 +1,6 @@
 #ifndef SHADOW_ASSIMP_MODEL_LOADER_INCLUDE
 #define SHADOW_ASSIMP_MODEL_LOADER_INCLUDE
-
+#if 0
 #include "ModelLoader.h"
 
 struct aiScene;
@@ -29,5 +29,7 @@ namespace scene
 } // scene
 
 } // sh
+
+#endif
 
 #endif

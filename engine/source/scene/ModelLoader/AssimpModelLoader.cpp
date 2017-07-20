@@ -1,5 +1,5 @@
 #include "AssimpModelLoader.h"
-
+#if 0
 #include "../ModelBase.h"
 #include "../MeshBase.h"
 #include "../../video/VertexBuffer.h"
@@ -150,3 +150,5 @@ namespace scene
 } // scene
 
 } // sh
+
+#endif

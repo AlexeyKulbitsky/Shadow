@@ -3,7 +3,7 @@
 
 #include "../FileSystem.h"
 
-#if defined SHADOW_ANDROID
+
 #include <jni.h>
 #include <android/asset_manager.h>
 
@@ -35,5 +35,3 @@ namespace io
 
 #endif
 
-
-#endif

@@ -86,45 +86,6 @@ namespace sh
 	// Create device with more extended configuration
 	/*SHADOW_API*/ Device* /*SH_CALLCONV*/ CreateDevice(const CreationParameters& parameters);
 
-#if 0
-	void CallSomeExternFunction();
-
-#if defined (SHADOW_WINDOWS)
-
-#define SHADOW_MAIN_FUNCTION(ApplicationType)													\
-int main()																						\
-{																								\
-	return ApplicationType;																		\
-} 
-
-#elif defined (SHADOW_ANDROID)
-
-#define SHADOW_MAIN_FUNCTION(ApplicationType)
-
-#endif
-
-	///////////////////////////////////////////////////////////////////////////////
-
-#define SHADOW_APPLICATION_DECLARATION(ApplicationType)											\
-int ApplicationFunction()																		\
-{																								\
-	Device *device = CreateDevice();															\
-	ApplicationType* application = new ApplicationType();										\
-	device->SetApplication(application);														\
-	device->Init();																				\
-	device->Run();																				\
-	device->Destroy();																			\
-	delete application;																			\
-	return 0;																					\
-}																								\
-SHADOW_MAIN_FUNCTION(ApplicationFunction())
-
-#define CALL_EXTRENLA_FUNCTION	\
-void CallSomeExternFunction()	\
-{								\
-	printf("EXECUTED!!!!");		\
-}
-#endif
 }
 
 #endif

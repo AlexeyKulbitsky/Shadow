@@ -7,8 +7,6 @@
 #include "Style.h"
 
 #include "../video/Driver.h"
-//#include "../video/Vulkan/VulkanDriver.h"
-//#include "../video/Vulkan/VulkanCommandBuffer.h"
 #include "../video/VertexBuffer.h"
 #include "../video/IndexBuffer.h"
 #include "../video/Material.h"
@@ -72,28 +70,7 @@ namespace gui
 		m_mainBatch.indexBuffer->SetData(0U, indicesDataSize, indicesPointer);
 		m_mainBatch.indexBuffer->SetIndicesCount(m_mainBatchData.indices.size());
 
-		/*
-		if( driver->GetApiName() == "Vulkan" )
-		{
-			video::VulkanDriver* vulkanDriver = static_cast<video::VulkanDriver*>(driver);
-
-			m_mainBatch.commandBuffer->Begin();
-
-			driver->SetVertexDeclaration(m_mainBatch.inputDeclaration, m_mainBatch.commandBuffer);
-			driver->SetRenderPipeline(m_mainBatch.material->GetRenderPipeline(), m_mainBatch.commandBuffer);
-			driver->SetGpuParams(m_mainBatch.material->GetCommonGpuParams(), m_mainBatch.commandBuffer);
-			driver->SetTopology(Topology::TOP_TRIANGLE_LIST, m_mainBatch.commandBuffer);
-			driver->SetVertexBuffer(m_mainBatch.vertexBuffer, m_mainBatch.commandBuffer);
-			driver->SetIndexBuffer(m_mainBatch.indexBuffer, m_mainBatch.commandBuffer);				
-			driver->DrawIndexed(0, m_mainBatch.indexBuffer->GetIndicesCount(), 1U, m_mainBatch.commandBuffer);
-
-			m_mainBatch.commandBuffer->End();
-
-			video::VulkanCommandBuffer* cmdBuf = static_cast<video::VulkanCommandBuffer*>(m_mainBatch.commandBuffer.get());
-			vulkanDriver->GetPrimaryCommandBuffer()->Append(cmdBuf);
-		}
-		else
-			*/
+		
 		{
 			m_mainBatch.commandBuffer->Begin();
 
@@ -131,28 +108,7 @@ namespace gui
 		m_textBatch.indexBuffer->SetData(0U, indicesDataSize, indicesPointer);
 		m_textBatch.indexBuffer->SetIndicesCount(m_textBatchData.indices.size());
 
-		/*
-		if( driver->GetApiName() == "Vulkan" )
-		{
-			video::VulkanDriver* vulkanDriver = static_cast<video::VulkanDriver*>(driver);
-
-			m_textBatch.commandBuffer->Begin();
-
-			driver->SetVertexDeclaration(m_textBatch.inputDeclaration, m_textBatch.commandBuffer);
-			driver->SetRenderPipeline(m_textBatch.material->GetRenderPipeline(), m_textBatch.commandBuffer);
-			driver->SetGpuParams(m_textBatch.material->GetCommonGpuParams(), m_textBatch.commandBuffer);
-			driver->SetTopology(Topology::TOP_TRIANGLE_LIST, m_textBatch.commandBuffer);
-			driver->SetVertexBuffer(m_textBatch.vertexBuffer, m_textBatch.commandBuffer);
-			driver->SetIndexBuffer(m_textBatch.indexBuffer, m_textBatch.commandBuffer);				
-			driver->DrawIndexed(0, m_textBatch.indexBuffer->GetIndicesCount(), 1U, m_textBatch.commandBuffer);
-
-			m_textBatch.commandBuffer->End();
-
-			video::VulkanCommandBuffer* cmdBuf = static_cast<video::VulkanCommandBuffer*>(m_textBatch.commandBuffer.get());
-			vulkanDriver->GetPrimaryCommandBuffer()->Append(cmdBuf);
-		}
-		else
-			*/
+		
 		{
 			m_textBatch.commandBuffer->Begin();
 
