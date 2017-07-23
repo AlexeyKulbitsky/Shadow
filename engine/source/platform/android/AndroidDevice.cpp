@@ -8,6 +8,7 @@
 #endif
 
 #include "../../scene/SceneManager.h"
+#include "../../scene/Camera.h"
 #include "../../io/android/AndroidFileSystem.h"
 #include "../../Application.h"
 
@@ -27,6 +28,10 @@ AndroidDevice::AndroidDevice()
 	io::FileSystem::CreateInstance<io::AndroidFileSystem>();
 	m_fileSystem = io::FileSystem::GetInstance();
 #endif
+
+    io::AndroidFileSystem* androidFileSystem = static_cast<io::AndroidFileSystem*>(m_fileSystem);
+	androidFileSystem->SetApkPath(params.apkPath);
+	CreateDriver();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -63,10 +68,16 @@ AndroidDevice::~AndroidDevice()
 
 void AndroidDevice::Init()
 {
-	m_driver->SetWindow(m_creationParameters.WinId, m_creationParameters.width, m_creationParameters.height);
+	m_driver->SetWindow(params.WinId, params.width, params.height);
 	m_driver->Init();
 
 	Device::Init();
+
+    m_sceneManager->GetCamera()->SetProjection(3.1415926535f / 3.0f,
+                                               static_cast<f32>(params.width),
+                                               static_cast<f32>(params.height), 0.1f, 1000.0f);
+
+    m_application->Init();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -161,11 +172,33 @@ void AndroidDevice::ProcessEvent(const AndroidEvent& ev)
 		break;
 	case AndroidEvent::Type::SurfaceChanged:
 	{
-		sursafeChangedEvent(ev.event.surfaceChangedEvent.width,
-			ev.event.surfaceChangedEvent.height,
-			ev.event.surfaceChangedEvent.winId);
+		sursafeChangedEvent(
+                ev.event.surfaceChangedEvent.winId,
+                ev.event.surfaceChangedEvent.width,
+			ev.event.surfaceChangedEvent.height);
 	}
 		break;
+    case AndroidEvent::Type::Press:
+    {
+        mouseEvent(ev.event.pressEvent.x,
+                   ev.event.pressEvent.y,
+                   MouseEventType::ButtonPressed, MouseCode::ButtonLeft);
+    }
+        break;
+    case AndroidEvent::Type::Release:
+    {
+        mouseEvent(ev.event.releaseEvent.x,
+                   ev.event.releaseEvent.y,
+                   MouseEventType::ButtonReleased, MouseCode::ButtonLeft);
+    }
+        break;
+    case AndroidEvent::Type::Move:
+    {
+        mouseEvent(ev.event.moveEvent.x,
+                   ev.event.moveEvent.y,
+                   MouseEventType::Moved, MouseCode::ButtonLeft);
+    }
+        break;
 	default:
 		break;
 	}

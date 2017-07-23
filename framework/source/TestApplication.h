@@ -7,7 +7,6 @@ class TestApp : public sh::Application
 {
 public:
 	TestApp();
-	TestApp(const sh::CreationParameters& params);
 	virtual ~TestApp();
 		
 	virtual void Init() override;

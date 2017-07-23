@@ -42,7 +42,7 @@ void MoveGizmo::Render()
 
 	if (m_entity)
 	{
-		sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_entity->GetComponent(sh::Component::Type::TRANSFORM));
+		sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_entity->GetComponent(sh::Component::Type::Transform));
 		if (transformComponent)
 		{
 			sh::math::Matrix4f matrix;
@@ -360,7 +360,7 @@ void MoveGizmo::Move(Axis::Type axis)
 	camera->BuildRay(current.x, current.y, rayOrigin, rayDirCurrent);
 
 
-	sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_entity->GetComponent(sh::Component::Type::TRANSFORM));
+	sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_entity->GetComponent(sh::Component::Type::Transform));
 	sh::math::Vector3f pos = transformComponent->GetPosition();
 	sh::math::Matrix3f rotation = transformComponent->GetRotation().GetAsMatrix3();
 	sh::math::Vector3f axisRotations(0.0f);
@@ -480,7 +480,7 @@ void MoveGizmo::SetModifierActive(Axis::Type idx, bool active)
 
 bool MoveGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
 {
-	sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_entity->GetComponent(sh::Component::Type::TRANSFORM));
+	sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_entity->GetComponent(sh::Component::Type::Transform));
 	if (transformComponent)
 	{
 		sh::math::Matrix4f matrix;

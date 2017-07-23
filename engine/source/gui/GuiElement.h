@@ -19,6 +19,7 @@ namespace gui
 	class GuiElement
 	{
 	public:
+		GuiElement();
 		virtual ~GuiElement() {}
 
 		void SetVisible(bool visible) { m_visible = visible; }

@@ -20,6 +20,7 @@ namespace gui
 		virtual void SetHeight(u32 height) {}
 		virtual void Resize(const math::Rectu& rect) {}
 		virtual void GetGeometry(GuiBatchData& data) {}
+		virtual void GetTextGeometry(GuiBatchData& data) {}
 		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type) { return false; }
 
 	private:
@@ -32,6 +33,7 @@ namespace gui
 	class Layout : public LayoutItem
 	{
 		friend class Widget;
+		friend class Window;
 	public:
 		Layout() {}
 		virtual void AddWidget(const WidgetPtr& widget);
@@ -45,6 +47,7 @@ namespace gui
 		const WidgetPtr& GetWidget(u32 index) { return m_items[index]->GetWidget(); }
 
 		virtual void GetGeometry(GuiBatchData& data) override;
+		virtual void GetTextGeometry(GuiBatchData& data) override;
 		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type) override;
 
 	protected:

@@ -47,6 +47,7 @@ namespace sh
 			void Update(f32 deltaTime = 0.0f);
 
 			void OnWindowResized(int width, int height);
+			void OnSurfaceChanged(void* surface, int width, int height);
 
 		private:
 			static math::Vector3f	s_frontVector;

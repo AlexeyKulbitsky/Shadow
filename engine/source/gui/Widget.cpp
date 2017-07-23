@@ -21,7 +21,7 @@ namespace gui
 
 	void Widget::GetGeometry(GuiBatchData& data)
 	{
-		GuiElement::GetGeometry(data);
+		//GuiElement::GetGeometry(data);
 		if (!m_layout)
 			return;
 
@@ -30,7 +30,11 @@ namespace gui
 
 	void Widget::GetTextGeometry(GuiBatchData& data)
 	{
-		GuiElement::GetTextGeometry(data);
+		//GuiElement::GetTextGeometry(data);
+		if (!m_layout)
+			return;
+
+		m_layout->GetTextGeometry(data);
 	}
 
 	void Widget::SetPosition(u32 x, u32 y)

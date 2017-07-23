@@ -1,7 +1,8 @@
 #ifndef SHADOW_TEXT_INCLUDE
 #define SHADOW_TEXT_INCLUDE
 
-#include "GuiElement.h"
+//#include "GuiElement.h"
+#include "Widget.h"
 
 namespace sh
 {
@@ -9,7 +10,7 @@ namespace sh
 namespace gui
 {
 
-	class Text : public GuiElement
+	class Text : public Widget//GuiElement
 	{
 	public:
 		Text(); 

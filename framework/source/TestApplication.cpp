@@ -2,28 +2,13 @@
 
 using namespace sh;
 
-SHADOW_APPLICATION_DECLARATION(TestApp)
-
 
 TestApp::TestApp()
 {
-	int a = 0;
-	a++;
-}
-
-TestApp::TestApp(const sh::CreationParameters& params)
-	: Application(params)
-{
-	Device* device = Device::GetInstance();
-
-	io::FileSystem* fs = device->GetFileSystem();
-	fs->AddFolder(sh::String("../../../data"));
-	//fs->AddFolder(sh::String("../../../libs"));
 }
 
 TestApp::~TestApp()
 {
-
 }
 
 void TestApp::Init()
@@ -34,6 +19,8 @@ void TestApp::Init()
 
 	auto sceneMgr = device->GetSceneManager();
 	sceneMgr->LoadScene("test_scene.xml");
+	scene::Camera* camera = sceneMgr->GetCamera();
+	camera->SetPosition(camera->GetPosition() + math::Vector3f(0.0f, 0.0f, 20.0f));
 }
 
 void TestApp::Destroy()

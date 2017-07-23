@@ -66,13 +66,6 @@ foreach(FILE ${PROJECT_SOURCE_FILES})
     # Make sure we are using windows slashes
     string(REPLACE "/" "\\" GROUP "${GROUP}")
 
-    # Group into "Source Files" and "Header Files"
- #   if ("${FILE}" MATCHES ".*\\.cpp")
- #      set(GROUP "Source Files${GROUP}")
-#    elseif("${FILE}" MATCHES ".*\\.h")
- #      set(GROUP "Header Files${GROUP}")
- #   endif()
-
     source_group("${GROUP}" FILES "${FILE}")
 endforeach()
 
@@ -160,14 +153,17 @@ if (USE_ASSIMP_API)
     set_property(TARGET zlibstatic PROPERTY FOLDER CommonLibs)
     set_property(TARGET UpdateAssimpLibsDebugSymbolsAndDLLs PROPERTY FOLDER CommonLibs)
     set_property(TARGET uninstall PROPERTY FOLDER CommonLibs)
-    set_property(TARGET dist PROPERTY FOLDER CommonLibs)
+    
   endif(MSVC12 OR MSVC14)
 endif()
 
-
+set_property(TARGET dist PROPERTY FOLDER CommonLibs)
 
 if (SHADOW_ANDROID)
-  target_link_libraries(${PROJECT_NAME} pugixml freetype)
+  add_subdirectory(../libs/minizip "${CMAKE_CURRENT_BINARY_DIR}/minizip_build")
+  include_directories(../libs/minizip)
+
+  target_link_libraries(${PROJECT_NAME} pugixml freetype minizip)
 else(SHADOW_ANDROID)
   target_link_libraries(${PROJECT_NAME} pugixml freetype ${EGL_LIBRARY} ${GLESV2_LIBRARY})
 endif(SHADOW_ANDROID)

@@ -95,24 +95,27 @@ namespace gui
 
 	void Text::SetSize( const math::Vector2u& size )
 	{
-		const auto& pos = m_rect.upperLeftCorner;
-		m_rect.Set(pos.x, pos.y, pos.x + size.x, pos.y + size.y);
+		//const auto& pos = m_rect.upperLeftCorner;
+		//m_rect.Set(pos.x, pos.y, pos.x + size.x, pos.y + size.y);
+		GuiElement::SetSize(size);
 		UpdateTextGeometry();
 	}
 
 	void Text::SetWidth( u32 width )
 	{
-		auto size = m_rect.GetSize();
-		const auto& pos = m_rect.upperLeftCorner;
-		m_rect.Set(pos.x, pos.y, pos.x + width, pos.y + size.y);
+		//auto size = m_rect.GetSize();
+		//const auto& pos = m_rect.upperLeftCorner;
+		//m_rect.Set(pos.x, pos.y, pos.x + width, pos.y + size.y);
+		GuiElement::SetWidth(width);
 		UpdateTextGeometry();
 	}
 
 	void Text::SetHeight( u32 height )
 	{
-		auto size = m_rect.GetSize();
-		const auto& pos = m_rect.upperLeftCorner;
-		m_rect.Set(pos.x, pos.y, pos.x + size.x, pos.y + height);
+		//auto size = m_rect.GetSize();
+		//const auto& pos = m_rect.upperLeftCorner;
+		//m_rect.Set(pos.x, pos.y, pos.x + size.x, pos.y + height);
+		GuiElement::SetHeight(height);
 		UpdateTextGeometry();
 	}
 

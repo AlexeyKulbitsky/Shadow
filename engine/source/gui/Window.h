@@ -13,9 +13,7 @@ namespace gui
 	{
 	public:
 		Window(const math::Rectu& rect);
-		Window(const math::Rectu& rect, const SpritePtr& sprite);
-
-		Window(const SpritePtr& outSprite, const SpritePtr& inSprite);
+		Window(const SpritePtr& outSprite, const SpritePtr& inSprite, const SpritePtr& barSprite);
 
 		void SetText(const String& text);
 
@@ -28,6 +26,7 @@ namespace gui
 		virtual void UpdatePosition() override;
 		virtual void UpdateUV(const math::Vector2f& leftUp, const math::Vector2f& rightDown) override;
 		virtual void UpdateColor(const math::Vector3f& color) override;
+		virtual void UpdateLayout() override;
 
 	private:
 		SpritePtr m_sprite;
@@ -38,6 +37,12 @@ namespace gui
 
 		SpritePtr m_outSprite;
 		SpritePtr m_inSprite;
+		SpritePtr m_barSprite;
+
+		math::Rectu m_barRect;
+		math::Rectu m_inRect;
+
+		u32 m_barWidth = 15U;
 	};
 
 } // gui

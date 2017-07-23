@@ -16,6 +16,9 @@ namespace sh
 		{
 			SurfaceChanged,
 			Resize,
+            Press,
+            Release,
+			Move,
             Exit
 		};
 
@@ -35,6 +38,24 @@ namespace sh
 				int height;
 				void* winId;
 			} surfaceChangedEvent;
+
+            struct
+            {
+                int x;
+                int y;
+            } pressEvent;
+
+            struct
+            {
+                int x;
+                int y;
+            } releaseEvent;
+
+			struct
+			{
+				int x;
+				int y;
+			} moveEvent;
 
 
 		} event;
@@ -62,8 +83,6 @@ namespace sh
 	private:
 		std::queue<AndroidEvent> m_queue;
 		std::mutex m_mutex;
-		std::condition_variable m_condition;
-
     };
 
 

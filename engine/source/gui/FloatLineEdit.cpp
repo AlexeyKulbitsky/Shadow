@@ -7,6 +7,11 @@ namespace sh
 
 namespace gui
 {
+	FloatLineEdit::FloatLineEdit()
+		: LineEdit()
+	{
+		m_text = "0";
+	}
 
 	FloatLineEdit::FloatLineEdit(const math::Rectu& rect, 
 								 const SpritePtr& defaultSprite, 

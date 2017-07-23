@@ -34,16 +34,13 @@ namespace gui
 			if (w)
 			{
 				w->SetPosition(x, y);
-				w->SetHeight(itemHeight);
+				w->SetHeight(itemHeight - 5);
 				w->SetWidth(width);
 				continue;
 			}
 
 			// If this item is layout itself
-			//m_items[i]->SetHeight(itemHeight);
-			//m_items[i]->SetWidth(width);
-
-			m_items[i]->Resize(math::Rectu(x, y, x + width, y + itemHeight));
+			m_items[i]->Resize(math::Rectu(x, y, x + width, y + itemHeight - 5));
 		}
 	}
 

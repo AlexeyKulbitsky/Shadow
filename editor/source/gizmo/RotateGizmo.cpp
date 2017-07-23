@@ -93,7 +93,7 @@ void RotateGizmo::Render()
 	sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
 	if (m_entity)
 	{
-		sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_entity->GetComponent(sh::Component::Type::TRANSFORM));
+		sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_entity->GetComponent(sh::Component::Type::Transform));
 		if (transformComponent)
 		{
 			//sh::math::Matrix4f matrix = transformComponent->GetWorldMatrix();
@@ -312,7 +312,7 @@ void RotateGizmo::Rotate(Axis::Type axis)
 	camera->BuildRay(old.x, old.y, rayOrigin, rayDirOld);
 	camera->BuildRay(current.x, current.y, rayOrigin, rayDirCurrent);
 
-	sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_entity->GetComponent(sh::Component::Type::TRANSFORM));
+	sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_entity->GetComponent(sh::Component::Type::Transform));
 	sh::math::Vector3f pos = transformComponent->GetPosition();
 	sh::math::Matrix3f rotation = transformComponent->GetRotation().GetAsMatrix3();
 	sh::math::Vector3f axisRotations(0.0f);

@@ -137,6 +137,9 @@ namespace sh
 			for (size_t i = 0, sz = m_entities.size(); i < sz; ++i)
 			{
 				sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_entities[i]->GetComponent(sh::Component::Type::Transform));		
+				if (!transformComponent)
+					continue;
+
 				const auto& pos = transformComponent->GetPosition();
 
 				int res = math::RayIntersectSphere(rayOrigin, rayDirection, pos, 1.0f, t0, t1);

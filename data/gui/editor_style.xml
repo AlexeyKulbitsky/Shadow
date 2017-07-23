@@ -4,15 +4,24 @@
 
 	<button>
 		<default>
-			<rect x1="208" y1="69" x2="229" y2="112"/>
+			<rect x1="185" y1="69" x2="206" y2="112"/>
 		</default>
 		<pressed>
 			<rect x1="231" y1="69" x2="252" y2="112"/>
 		</pressed>
 		<hovered>
-			<rect x1="185" y1="69" x2="206" y2="112"/>
+			<rect x1="208" y1="69" x2="229" y2="112"/>
 		</hovered>
 	</button>
+
+	<lineedit>
+		<default>
+			<rect x1="185" y1="69" x2="206" y2="112"/>
+		</default>
+		<edit>
+			<rect x1="231" y1="69" x2="252" y2="112"/>
+		</edit>
+	</lineedit>
 	
 	<menubar>
 		<rect x1="254" y1="69" x2="275" y2="112"/>
@@ -20,7 +29,8 @@
 
 	<window>
 		<outrect x1="202" y1="130" x2="236" y2="198"/>
-		<inrect x1="207" y1="135" x2="230" y2="194"/>
+		<inrect x1="207" y1="166" x2="232" y2="194"/>
+		<barrect x1="207" y1="135" x2="232" y2="165"/>
 	</window>
 </style>
 

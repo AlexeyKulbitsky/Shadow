@@ -103,6 +103,11 @@ namespace gui
 		m_text->SetText(text);
 	}
 
+	void Button::GetGeometry(GuiBatchData& data)
+	{
+		GuiElement::GetGeometry(data);
+	}
+
 	void Button::GetTextGeometry(GuiBatchData& data)
 	{
 		m_text->GetTextGeometry(data);

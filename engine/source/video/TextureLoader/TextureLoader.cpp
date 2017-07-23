@@ -83,7 +83,6 @@ namespace sh
 			const u8* uDataPtr = reinterpret_cast<const u8*>(dataPtr);
 			
 			int texWidth, texHeight, texChannels;
-			//stbi_uc* pixels = stbi_load(path.c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
 			stbi_uc* pixels = stbi_load_from_memory(uDataPtr, file.GetData().size(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
 			SH_ASSERT(pixels, "failed to load texture image!");
 
@@ -106,8 +105,17 @@ namespace sh
 		TexturePtr TextureLoader::LoadSTBCube(const std::vector<String>& faces)
 		{
 			size_t i = 0;
-			int texWidth, texHeight, texChannels;		
-			stbi_uc* pixels = stbi_load(faces[i].c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
+
+			int texWidth, texHeight, texChannels;
+			stbi_uc* pixels = nullptr;
+			{
+				io::File file = io::FileSystem::GetInstance()->LoadFile(faces[i]);
+				const char* dataPtr = file.GetData().data();
+				const u8* uDataPtr = reinterpret_cast<const u8*>(dataPtr);
+				pixels = stbi_load_from_memory(uDataPtr, file.GetData().size(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
+				SH_ASSERT(pixels, "failed to load texture image!");
+			}
+
 
 			TextureDescription desc;
 			desc.type = TEX_TYPE_TEXTURE_CUBE;
@@ -121,13 +129,16 @@ namespace sh
 
 			for (i = 1; i < faces.size(); ++i)
 			{
-				stbi_uc* pixels = stbi_load(faces[i].c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
+				io::File file = io::FileSystem::GetInstance()->LoadFile(faces[i]);
+				const char* dataPtr = file.GetData().data();
+				const u8* uDataPtr = reinterpret_cast<const u8*>(dataPtr);
+				pixels = stbi_load_from_memory(uDataPtr, file.GetData().size(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
+				SH_ASSERT(pixels, "failed to load texture image!");
 				
 				texture->SetFaceData(TextureFace(i), 0, pixels);
 
 				stbi_image_free(pixels);
 			}
-
 
 			return texture;
 		}

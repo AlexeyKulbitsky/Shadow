@@ -12,12 +12,13 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
-                //abiFilters 'armeabi-v7a'//, 'arm64-v8a'//, 'mips'//'arm64-v8a', 'x86', 'x86_64'
+                abiFilters 'armeabi', 'armeabi-v7a'//, 'arm64-v8a'//, 'mips'//'arm64-v8a', 'x86', 'x86_64'
                 cppFlags "-std=c++11 -frtti -fexceptions"
                 arguments "-DSHADOW_ANDROID=1"
             }
         }
     }
+    /*
     buildTypes {
         release {
             minifyEnabled false
@@ -46,8 +47,10 @@ android {
             }
         }
     }
+    */
 	sourceSets {
         main.assets.srcDirs += '../../../Data'
+        main.java.srcDirs += '../../source/platform/android/'
     }
     externalNativeBuild {
         cmake {
@@ -58,9 +61,9 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
+    //androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    //    exclude group: 'com.android.support', module: 'support-annotations'
+    //})
     compile 'com.android.support:appcompat-v7:23.4.0'
-    testCompile 'junit:junit:4.12'
+   // testCompile 'junit:junit:4.12'
 }

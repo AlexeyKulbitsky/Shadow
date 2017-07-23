@@ -58,25 +58,12 @@ namespace sh
 		}
 
 		video::TexturePtr texture = video::TextureLoader::GetInstance()->Load(fileName);
-		texture->SetFileName(fileName);
-		m_textures.push_back(texture);
-		return texture;
-
-#if 0
-		// Find file in file system
-		io::FileSystem* fs = Device::GetInstance()->GetFileSystem();
-		io::FileInfo textureFileInfo = fs->FindFile(fileName);
-
-		// If file exists in file system then load
-		if (textureFileInfo.name != "")
+		if (texture)
 		{
-			video::TexturePtr texture = m_textureLoader->Load(textureFileInfo.absolutePath);
-			texture->SetFileName(textureFileInfo.name);
+			texture->SetFileName(fileName);
 			m_textures.push_back(texture);
-
 			return texture;
 		}
-#endif
 
 		return nullptr;
 	}
@@ -85,16 +72,7 @@ namespace sh
 	{
 		io::FileSystem* fs = Device::GetInstance()->GetFileSystem();
 		
-		std::vector<String> facesPathes;
-		for (auto face : faces)
-		{
-			io::FileInfo textureFileInfo = fs->FindFile(face);
-			if (textureFileInfo.name != "")
-			{
-				facesPathes.push_back(textureFileInfo.absolutePath);
-			}
-		}
-		video::TexturePtr texture = video::TextureLoader::GetInstance()->LoadCube(facesPathes);
+		video::TexturePtr texture = video::TextureLoader::GetInstance()->LoadCube(faces);
 		
 		return texture;
 	}
@@ -117,38 +95,6 @@ namespace sh
 		rt->SetFileName(fileName);
 		m_renderTechniques.push_back(rt);
 		return rt;
-
-#if 0
-
-#if defined SHADOW_WINDOWS
-		// Find file in file system
-		io::FileSystem* fs = Device::GetInstance()->GetFileSystem(); 
-		io::FileInfo rtFileInfo = fs->FindFile(fileName);
-
-		// If file exists in file system then load
-		if (rtFileInfo.name != "")
-		{
-			video::RenderTechniquePtr rt(new video::RenderTechnique());
-			rt->Load(rtFileInfo.absolutePath);
-			rt->SetFileName(rtFileInfo.name);
-			m_renderTechniques.push_back(rt);
-			return rt;
-		}
-#elif defined SHADOW_ANDROID
-		io::FileSystem* fs = Device::GetInstance()->GetFileSystem();
-		std::vector<char> buffer;
-		buffer = fs->ReadFile(fileName);
-
-		video::RenderTechniquePtr rt(new video::RenderTechnique());
-		rt->Load(buffer);
-		rt->SetFileName(fileName);
-		m_renderTechniques.push_back(rt);
-		return rt;
-#endif
-
-#endif
-
-		return nullptr;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -191,24 +137,13 @@ namespace sh
 		}
 
 		scene::ModelBasePtr model = scene::ModelLoader::GetInstance()->Load(fileName);
-		model->SetFileName(fileName);
-		m_models.push_back(model);
-		return model;
-
-#if 0
-		// Find file in file system
-		io::FileSystem* fs = Device::GetInstance()->GetFileSystem();
-		io::FileInfo modelFileInfo = fs->FindFile(fileName);
-
-		// If file exists in file system then load
-		if (modelFileInfo.name != "")
+		if (model)
 		{
-			scene::ModelBasePtr model = scene::ModelLoader::GetInstance()->Load(modelFileInfo.absolutePath);
-			model->SetFileName(modelFileInfo.name);
+			model->SetFileName(fileName);
 			m_models.push_back(model);
 			return model;
 		}
-#endif
+
 		return nullptr;
 	}
 

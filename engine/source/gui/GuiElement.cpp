@@ -10,6 +10,11 @@ namespace sh
 
 namespace gui
 {
+	GuiElement::GuiElement()
+	{
+		m_batchData.resize(4 * 8);
+	}
+
 	void GuiElement::GetGeometry(GuiBatchData& data)
 	{
 		data.vertices.insert(data.vertices.end(), m_batchData.begin(), m_batchData.end());

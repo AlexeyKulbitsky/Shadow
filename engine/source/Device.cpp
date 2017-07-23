@@ -70,6 +70,8 @@ namespace sh
 
 		windowResizeEvent.Connect(std::bind(&scene::SceneManager::OnWindowResized, sceneMgr,
 			std::placeholders::_1, std::placeholders::_2));
+		sursafeChangedEvent.Connect(std::bind(&scene::SceneManager::OnSurfaceChanged, sceneMgr,
+		std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 
 		FontManager::CreateInstance();
 		gui::SpriteManager::CreateInstance();

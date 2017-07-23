@@ -5,7 +5,6 @@
 
 
 #include <jni.h>
-#include <android/asset_manager.h>
 
 namespace sh
 {
@@ -20,13 +19,13 @@ namespace io
 		virtual ~AndroidFileSystem();
 		virtual std::vector<char> ReadFile(const String& filename) override;
 
-		void SetAssetManager(AAssetManager* manager) { m_assetManager = manager; }
-		void SetDataPath(const String& dataPath) { m_dataPath = dataPath; }
+        void SetApkPath(const String& apkPath);
 		virtual File LoadFile(const String& filename) override;
+        virtual const FileInfo& FindFile(const String& fileName) override;
 
 	private:
-		AAssetManager* m_assetManager;
-		String m_dataPath;
+		String m_apkPath;
+		Set<FileInfo> m_fileList;
 	};
 
 } // io

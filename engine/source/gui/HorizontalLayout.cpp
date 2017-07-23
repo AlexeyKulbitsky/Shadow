@@ -32,7 +32,7 @@ namespace gui
 			{
 				w->SetPosition(rect.upperLeftCorner.x + itemWidth * i, rect.upperLeftCorner.y);
 				w->SetHeight(height);
-				w->SetWidth(itemWidth);
+				w->SetWidth(itemWidth - 5);
 				continue;
 			}
 

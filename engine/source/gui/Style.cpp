@@ -4,6 +4,7 @@
 #include "Button.h"
 #include "MenuBar.h"
 #include "Window.h"
+#include "LineEdit.h"
 
 #include "../Device.h"
 #include "../resources/ResourceManager.h"
@@ -37,6 +38,10 @@ namespace gui
 		pugi::xml_node windowNode = root.child("window");
 		if (windowNode)
 			LoadWindow(windowNode);
+
+		pugi::xml_node lineEditNode = root.child("lineedit");
+		if (lineEditNode)
+			LoadLineEdit(lineEditNode);
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -81,8 +86,8 @@ namespace gui
 
 	void Style::LoadWindow(const pugi::xml_node& node)
 	{
-		const u32 rectsCount = 2U;
-		std::array<String, rectsCount> rects = { "outrect", "inrect" };
+		const u32 rectsCount = 3U;
+		std::array<String, rectsCount> rects = { "outrect", "inrect", "barrect" };
 		std::array<SpritePtr, rectsCount> sprites;
 
 		for (u32 i = 0U; i < rectsCount; ++i)
@@ -96,7 +101,29 @@ namespace gui
 			sprites[i].reset(new Sprite(m_texture, rect));
 		}
 
-		m_window.reset(new Window(sprites[0], sprites[1]));
+		m_window.reset(new Window(sprites[0], sprites[1], sprites[2]));
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	void Style::LoadLineEdit(const pugi::xml_node& node)
+	{
+		const u32 rectsCount = 2U;
+		std::array<String, rectsCount> rects = { "default", "edit" };
+		std::array<SpritePtr, rectsCount> sprites;
+
+		for (u32 i = 0U; i < rectsCount; ++i)
+		{
+			pugi::xml_node rectNode = node.child(rects[i].c_str());
+			u32 x1 = rectNode.attribute("x1").as_uint();
+			u32 y1 = rectNode.attribute("y1").as_uint();
+			u32 x2 = rectNode.attribute("x2").as_uint();
+			u32 y2 = rectNode.attribute("y2").as_uint();
+			math::Rectu rect(x1, y1, x2, y2);
+			sprites[i].reset(new Sprite(m_texture, rect));
+		}
+
+		m_lineEdit.reset(new LineEdit(sprites[0], sprites[1]));
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////

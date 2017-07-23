@@ -80,6 +80,10 @@ bool GLES20Driver::Init()
 	sh::Device::GetInstance()->windowResizeEvent.Connect(
 		std::bind(&GLES20Driver::OnWindowResized, this, std::placeholders::_1, std::placeholders::_2));
 
+    sh::Device::GetInstance()->sursafeChangedEvent.Connect(
+            std::bind(&GLES20Driver::SetWindow, this, std::placeholders::_1, std::placeholders::_2,
+    std::placeholders::_3));
+
 	glEnable( GL_DEPTH_TEST );
 	//glEnable(GL_BLEND);
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

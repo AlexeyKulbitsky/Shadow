@@ -60,6 +60,21 @@ namespace gui
 		}
 	}
 
+	void Layout::GetTextGeometry(GuiBatchData& data)
+	{
+		for (u32 i = 0; i < m_items.size(); ++i)
+		{
+			const auto& widget = m_items[i]->GetWidget();
+			if (widget)
+			{
+				widget->GetTextGeometry(data);
+				continue;
+			}
+
+			m_items[i]->GetTextGeometry(data);
+		}
+	}
+
 	bool Layout::ProcessInput(u32 x, u32 y, MouseEventType type)
 	{
 		for (u32 i = 0; i < m_items.size(); ++i)

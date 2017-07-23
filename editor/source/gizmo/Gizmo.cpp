@@ -81,7 +81,7 @@ void Gizmo::Render()
 
 	if (m_entity)
 	{
-		sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_entity->GetComponent(sh::Component::Type::TRANSFORM));
+		sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_entity->GetComponent(sh::Component::Type::Transform));
 		if (transformComponent)
 		{
 			sh::math::Matrix4f matrix;

@@ -3,9 +3,6 @@
 
 namespace sh
 {
-	Application::Application(const CreationParameters& params)
-	{
-	}
 
 	void Application::Init()
 	{

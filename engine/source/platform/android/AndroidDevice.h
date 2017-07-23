@@ -4,14 +4,10 @@
 #include "../../Device.h"
 #include "AndroidEventsQueue.h"
 
-//#include <jni.h>
-//#include <android/asset_manager.h>
 
-struct AAssetManager;
 struct AndroidCreationParams : public sh::CreationParameters
 {
-    AAssetManager* assetManager = nullptr;
-    sh::String assetsDataPath = "";
+	sh::String apkPath = "";
 };
 
 namespace sh
@@ -41,8 +37,6 @@ namespace sh
 	private:
 		AndroidEventsQueue m_eventsQueue;
 	};
-
-	void AndroidMainThreadFunction();
 }
 
 #endif

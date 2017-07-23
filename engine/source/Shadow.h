@@ -52,6 +52,8 @@
 #include "scene/Model.h"
 #include "scene/ModelBase.h"
 #include "scene/Picker.h"
+#include "scene/Node.h"
+#include "scene/Scene.h"
 #include "scene/SceneManager.h"
 #include "scene/ModelLoader/ModelLoader.h"
 #include "scene/ModelLoader/TinyObjModelLoader.h"
@@ -75,8 +77,6 @@
 #include "video/Texture.h"
 #include "video/VertexBuffer.h"
 #include "video/VertexDeclaration.h"
-
-#include "platform/Main.h"
 
 namespace sh
 {

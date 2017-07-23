@@ -88,9 +88,11 @@ namespace io
 
 	std::vector<char> WindowsFileSystem::ReadFile(const String& filename)
 	{
+		// First try to open file by direct path (local folder)
 		std::ifstream file(filename, std::ios::ate | std::ios::binary);
 		if (!file.is_open())
 		{
+			// Else try to find file in local filesystem and open it
 			const auto& info = FindFile(filename);
 			file = std::ifstream(info.absolutePath, std::ios::ate | std::ios::binary);
 		}

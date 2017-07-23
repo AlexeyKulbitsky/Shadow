@@ -2,6 +2,7 @@
 
 #include "GuiManager.h"
 #include "Sprite.h"
+#include "Style.h"
 
 #include "../scene/SceneManager.h"
 #include "../scene/Camera.h"
@@ -16,6 +17,26 @@ namespace sh
 
 namespace gui
 {
+	LineEdit::LineEdit()
+	{
+		const auto& ref = GuiManager::GetInstance()->GetStyle()->GetLineEdit();
+		m_batchData.resize(4 * 8);
+		m_defaultSprite = ref->m_defaultSprite;
+		m_editSprite = ref->m_editSprite;
+
+		UpdatePosition();
+		UpdateUV(m_defaultSprite->GetUVRect().upperLeftCorner, m_defaultSprite->GetUVRect().lowerRightCorner);
+		UpdateColor(m_defaultSprite->GetColor());
+	}
+
+	LineEdit::LineEdit(const SpritePtr& defaultSprite,
+		const SpritePtr& editSprite)
+	{
+		m_batchData.resize(4 * 8);
+		m_defaultSprite = defaultSprite;
+		m_editSprite = editSprite;
+	}
+
 	LineEdit::LineEdit(const math::Rectu& rect, 
 						const SpritePtr& defaultSprite, 
 						 const SpritePtr& editSprite)
@@ -30,6 +51,11 @@ namespace gui
 		UpdateUV(m_defaultSprite->GetUVRect().upperLeftCorner, 
 				 m_defaultSprite->GetUVRect().lowerRightCorner);
 		UpdateColor(m_defaultSprite->GetColor());
+	}
+
+	void LineEdit::GetGeometry(GuiBatchData& data)
+	{
+		GuiElement::GetGeometry(data);
 	}
 
 	bool LineEdit::ProcessInput(u32 x, u32 y, MouseEventType type)

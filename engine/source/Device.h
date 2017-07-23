@@ -54,7 +54,7 @@ namespace sh
 		Event<void, int> mouseWheelEvent;
 		Event<void, KeyboardEventType, KeyCode> keyboardEvent;
 		Event<void, int, int> windowResizeEvent;
-		Event<void, int, int, void*> sursafeChangedEvent;
+		Event<void, void*, int, int> sursafeChangedEvent;
 
 	protected:
 		CreationParameters m_creationParameters;
