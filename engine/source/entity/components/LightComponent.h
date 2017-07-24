@@ -30,8 +30,8 @@ namespace sh
 		const math::Vector3f&  GetColor() const;
 
 	private:
-		scene::Light* m_light;
-		bool m_needsToRecalculate;
+		scene::Light* m_light = nullptr;
+		bool m_needsToRecalculate = true;
 
 		friend class LightSystem;
 	};
