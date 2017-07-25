@@ -140,6 +140,8 @@ find_library(GLESV2_LIBRARY libGLESv2 HINTS ../libs/egl/lib/release)
 
 # Add assimp
 if (USE_ASSIMP_API)
+  add_definitions(-DSHADOW_ASSIMP_LOADER)
+
   set(ASSIMP_BUILD_ASSIMP_TOOLS OFF CACHE BOOL "If the supplementary tools for Assimp are built in addition to the library." FORCE)
   set(ASSIMP_BUILD_TESTS OFF CACHE BOOL "If the test suite for Assimp is built in addition to the library." FORCE)
   add_subdirectory(../libs/assimp "${CMAKE_CURRENT_BINARY_DIR}/assimp_build")

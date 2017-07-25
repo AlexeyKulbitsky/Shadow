@@ -1,6 +1,6 @@
 #ifndef SHADOW_ASSIMP_MODEL_LOADER_INCLUDE
 #define SHADOW_ASSIMP_MODEL_LOADER_INCLUDE
-#if 0
+#if defined (SHADOW_ASSIMP_LOADER)
 #include "ModelLoader.h"
 
 struct aiScene;

@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.4.1)
 
 project (Editor)
 
+set(USE_ASSIMP_API ON)
+
 # Add engine
 add_subdirectory(../engine "${CMAKE_CURRENT_BINARY_DIR}/engine_build")
 include_directories(../engine/source)

@@ -8,6 +8,15 @@ namespace sh
 namespace gui
 {
 
+	Widget::Widget()
+	{
+		m_rect.lowerRightCorner = math::Vector2u(10U, 10U);
+	}
+
+	Widget::~Widget()
+	{
+	}
+
 	void Widget::SetLayout(const LayoutPtr& layout)
 	{
 		m_layout = layout;

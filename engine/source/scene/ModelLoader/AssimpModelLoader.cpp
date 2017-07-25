@@ -1,5 +1,5 @@
 #include "AssimpModelLoader.h"
-#if 0
+#if defined (SHADOW_ASSIMP_LOADER)
 #include "../ModelBase.h"
 #include "../MeshBase.h"
 #include "../../video/VertexBuffer.h"

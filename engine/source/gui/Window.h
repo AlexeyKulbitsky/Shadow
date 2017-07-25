@@ -42,7 +42,7 @@ namespace gui
 		math::Rectu m_barRect;
 		math::Rectu m_inRect;
 
-		u32 m_barWidth = 15U;
+		u32 m_barWidth = 25U;
 	};
 
 } // gui

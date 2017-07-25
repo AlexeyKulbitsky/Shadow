@@ -256,7 +256,7 @@ void MainWindow::Init()
 
 	//window->SetLayout(layout);
 	
-	sh::gui::WindowPtr window(new sh::gui::Window(sh::math::Rectu(100, 100, 300, 300)));
+	sh::gui::WindowPtr window(new sh::gui::Window(sh::math::Rectu(100, 100, 500, 500)));
 	window->SetText("Inspector");
 	sh::gui::VerticalLayoutPtr windowLayout(new sh::gui::VerticalLayout());
 	m_transformWidget.reset(new TransformWidget());

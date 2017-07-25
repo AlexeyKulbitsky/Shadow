@@ -12,6 +12,9 @@ namespace gui
 	class Widget : public GuiElement
 	{
 	public:
+		Widget();
+		virtual ~Widget();
+
 		void SetLayout(const LayoutPtr& layout);
 
 		virtual void Load(const pugi::xml_node& node) override;

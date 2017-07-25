@@ -23,7 +23,19 @@ namespace gui
 {
 	Button::Button()
 	{
+		const auto& ref = GuiManager::GetInstance()->GetStyle()->GetButton();
+
+		m_releasedSprite = ref->m_releasedSprite;
+		m_pressedSprite = ref->m_pressedSprite;
+		m_hoveredSprite = ref->m_hoveredSprite;
+
+		m_rect = sh::math::Rectu(0U, 0U, 10U, 10U);
+		m_text.reset(new Text(m_rect));
 		m_batchData.resize(4 * 8);
+
+		UpdatePosition();
+		UpdateUV(m_releasedSprite->GetUVRect().upperLeftCorner, m_releasedSprite->GetUVRect().lowerRightCorner);
+		UpdateColor(m_releasedSprite->GetColor());
 	}
 
 	Button::Button(const math::Rectu rect)

@@ -28,6 +28,8 @@ namespace gui
 		{
 			// If this item if for holding widget
 			const auto& w = m_items[i]->GetWidget();
+			const u32 x = rect.upperLeftCorner.x + itemWidth * i;
+			const u32 y = rect.upperLeftCorner.y;
 			if (w)
 			{
 				w->SetPosition(rect.upperLeftCorner.x + itemWidth * i, rect.upperLeftCorner.y);
@@ -37,8 +39,11 @@ namespace gui
 			}
 
 			// If this item is layout itself
-			m_items[i]->SetHeight(height);
-			m_items[i]->SetWidth(itemWidth);
+			//m_items[i]->SetHeight(height);
+			//m_items[i]->SetWidth(itemWidth);
+
+			// If this item is layout itself
+			m_items[i]->Resize(math::Rectu(x, y, x + itemWidth, y + height));
 		}
 	}
 

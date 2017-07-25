@@ -9,7 +9,10 @@ TransformWidget::TransformWidget()
 	sh::gui::FloatLineEditPtr xCoordEdit(new sh::gui::FloatLineEdit());
 	sh::gui::FloatLineEditPtr yCoordEdit(new sh::gui::FloatLineEdit());
 	sh::gui::FloatLineEditPtr zCoordEdit(new sh::gui::FloatLineEdit());
-	positionLayout->AddWidget(positionLabel);
+
+	sh::gui::ButtonPtr button(new sh::gui::Button());
+
+	positionLayout->AddWidget(button);
 	positionLayout->AddWidget(xCoordEdit);
 	positionLayout->AddWidget(yCoordEdit);
 	positionLayout->AddWidget(zCoordEdit);
@@ -39,8 +42,8 @@ TransformWidget::TransformWidget()
 	// Common layout
 	sh::gui::VerticalLayoutPtr layout(new sh::gui::VerticalLayout());
 	layout->AddLayout(positionLayout);
-	layout->AddLayout(rotationLayout);
-	layout->AddLayout(scaleLayout);
+	//layout->AddLayout(rotationLayout);
+	//layout->AddLayout(scaleLayout);
 
 	m_widget.reset(new sh::gui::Widget());
 	m_widget->SetLayout(layout);
