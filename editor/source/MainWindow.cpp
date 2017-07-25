@@ -98,6 +98,7 @@ void MainWindow::OnMouseEvent(int x, int y, sh::MouseEventType type, sh::MouseCo
 					const auto& picker = sh::Device::GetInstance()->GetSceneManager()->GetPicker();
 					auto result = picker->TryToPick(x, y, 640, 480);
 					m_gizmo->SetEntity(result);
+					m_inspectorWidget->SetEntity(result);
 				}
 			}
 		}
@@ -201,14 +202,10 @@ void MainWindow::Init()
 
 	////////////////////////////////////////////////////////////////////////////
 
-
 	auto font = sh::FontManager::GetInstance()->GenerateFont("VeraMono.ttf");
 	guiMgr->SetFont(font);
 
-	//auto releasedSprite = sh::gui::SpriteManager::GetInstance()->GetSprite("DefaultButton");
-	//auto pressedSprite = sh::gui::SpriteManager::GetInstance()->GetSprite("PressedButton");
-	//auto redSprite = sh::gui::SpriteManager::GetInstance()->GetSprite("RedButton");
-	//auto moveGizmoSprite = sh::gui::SpriteManager::GetInstance()->GetSprite("MoveGizmo");
+	////////////////////////////////////////////////////////////////////////////
 
 	m_menuBar.reset(new sh::gui::MenuBar());
 	sh::gui::ButtonPtr menuButton(new sh::gui::Button(sh::math::Rectu(0, 0, 50, 15)));
@@ -230,44 +227,15 @@ void MainWindow::Init()
 	exitButton->OnRelease.Connect(std::bind(&MainWindow::Close, this));
 	fileMenu->AddItem(exitButton);
 
-
 	m_toolBar.reset(new sh::gui::ToolBar());
 	sh::gui::ButtonPtr moveGIzmo(new sh::gui::Button(sh::math::Rectu(0, 0, 50, 15)));
 	m_toolBar->AddItem(moveGIzmo);
 
+	m_inspectorWidget.reset(new InspectorWidget());
+	m_moveGizmo->SetTransformWidget(m_inspectorWidget->GetTransformWidget());
 
-	//sh::gui::WindowPtr window(new sh::gui::Window(sh::math::Rectu(100, 100, 300, 300), releasedSprite));
-	//window->SetText("Inspector");
-
-	sh::gui::VerticalLayoutPtr layout(new sh::gui::VerticalLayout());
-	sh::math::Rectu r(400, 200, 500, 300);
-	sh::gui::ButtonPtr btn1(new sh::gui::Button(r));
-	sh::gui::HorizontalLayoutPtr childLayout(new sh::gui::HorizontalLayout());
-	sh::gui::ButtonPtr btn2(new sh::gui::Button(r));
-	sh::gui::ButtonPtr btn3(new sh::gui::Button(r));
-	sh::gui::ButtonPtr btn4(new sh::gui::Button(r));
-	childLayout->AddWidget(btn2);
-	childLayout->AddWidget(btn3);
-	childLayout->AddWidget(btn4);
-	sh::gui::ButtonPtr btn5(new sh::gui::Button(r));
-	layout->AddWidget(btn1);
-	layout->AddLayout(childLayout);
-	layout->AddWidget(btn5);
-
-	//window->SetLayout(layout);
-	
-	sh::gui::WindowPtr window(new sh::gui::Window(sh::math::Rectu(100, 100, 500, 500)));
-	window->SetText("Inspector");
-	sh::gui::VerticalLayoutPtr windowLayout(new sh::gui::VerticalLayout());
-	m_transformWidget.reset(new TransformWidget());
-	windowLayout->AddWidget(m_transformWidget->GetWidget());
-	window->SetLayout(windowLayout);
-
-
-	guiMgr->AddChild(window);
 	//guiMgr->AddChild(m_toolBar);
 	guiMgr->AddChild(m_menuBar);
-	
 }
 
 void MainWindow::Destroy()

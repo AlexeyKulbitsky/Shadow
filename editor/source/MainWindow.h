@@ -3,7 +3,8 @@
 
 #include "gizmo/Gizmo.h"
 #include "gizmo/MoveGizmo.h"
-#include "gui/TransformWidget.h"
+//#include "gui/TransformWidget.h"
+#include "gui/InspectorWidget.h"
 
 #include <Shadow.h>
 
@@ -31,7 +32,8 @@ private:
 	sh::gui::MenuBarPtr m_menuBar;
 	sh::gui::ToolBarPtr m_toolBar;
 
-	sh::SPtr<TransformWidget> m_transformWidget;
+	//sh::SPtr<TransformWidget> m_transformWidget;
+	sh::SPtr<InspectorWidget> m_inspectorWidget;
 
 	// Gizmos
 	sh::SPtr<Gizmo> m_gizmo;

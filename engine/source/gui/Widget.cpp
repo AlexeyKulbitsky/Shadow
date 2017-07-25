@@ -82,7 +82,12 @@ namespace gui
 
 	bool Widget::ProcessKeyboardInput(KeyboardEventType type, KeyCode code)
 	{
-		return GuiElement::ProcessKeyboardInput(type, code);
+		//return GuiElement::ProcessKeyboardInput(type, code);
+
+		if (!m_layout)
+			return false;
+
+		return m_layout->ProcessKeyboardInput(type, code);
 	}
 
 	void Widget::SetMargins(u32 top, u32 right, u32 bottom, u32 left)

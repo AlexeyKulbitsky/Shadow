@@ -22,6 +22,7 @@ namespace gui
 		virtual void GetGeometry(GuiBatchData& data) {}
 		virtual void GetTextGeometry(GuiBatchData& data) {}
 		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type) { return false; }
+		virtual bool ProcessKeyboardInput(KeyboardEventType type, KeyCode code) { return false; }
 
 	private:
 		WidgetPtr m_widget;
@@ -49,6 +50,7 @@ namespace gui
 		virtual void GetGeometry(GuiBatchData& data) override;
 		virtual void GetTextGeometry(GuiBatchData& data) override;
 		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type) override;
+		virtual bool ProcessKeyboardInput(KeyboardEventType type, KeyCode code) override;
 
 	protected:
 		virtual void Resize(const math::Rectu& rect) override {}

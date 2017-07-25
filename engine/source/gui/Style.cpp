@@ -114,7 +114,8 @@ namespace gui
 
 		for (u32 i = 0U; i < rectsCount; ++i)
 		{
-			pugi::xml_node rectNode = node.child(rects[i].c_str());
+			pugi::xml_node stateNode = node.child(rects[i].c_str());
+			pugi::xml_node rectNode = stateNode.child("rect");
 			u32 x1 = rectNode.attribute("x1").as_uint();
 			u32 y1 = rectNode.attribute("y1").as_uint();
 			u32 x2 = rectNode.attribute("x2").as_uint();

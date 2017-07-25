@@ -3,6 +3,8 @@
 
 #include <Shadow.h>
 
+class TransformWidget;
+
 class Gizmo
 {
 public:
@@ -38,10 +40,12 @@ public:
 	bool IsEnabled() const { return m_enabled; }
 	void SetEntity(sh::Entity* entity);
 	sh::Entity* GetEntity() { return m_entity; }
+	void SetTransformWidget(const sh::SPtr<TransformWidget>& widget) { m_transformWidget = widget; }
 
 protected:
 	sh::Entity* m_entity = nullptr;
 	bool m_enabled = false;
+	sh::SPtr<TransformWidget> m_transformWidget;
 
 private:
 	Axis m_axises[3];

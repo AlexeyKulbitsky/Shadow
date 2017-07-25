@@ -1,5 +1,6 @@
 #include "MoveGizmo.h"
 
+#include "../gui/TransformWidget.h"
 
 MoveGizmo::MoveGizmo()
 {
@@ -456,6 +457,9 @@ void MoveGizmo::Move(Axis::Type axis)
 	//direction.y *= -1.0f;
 
 	transformComponent->SetPosition(pos + direction);
+
+	if (m_transformWidget)
+		m_transformWidget->Update();
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -3,6 +3,8 @@
 
 #include <Shadow.h>
 
+#include "Vector3LineEdit.h"
+
 class TransformWidget
 {
 public:
@@ -11,8 +13,22 @@ public:
 
 	const sh::gui::WidgetPtr& GetWidget() const { return m_widget; }
 
+	void SetTransformComponent(sh::TransformComponent* component);
+
+	void Update();
+
+private:
+	void OnPositinChanged(const sh::math::Vector3f& position);
+	void OnRotationChanged(const sh::math::Vector3f& rotation);
+	void OnScaleChanged(const sh::math::Vector3f& scale);
+
 private:
 	sh::gui::WidgetPtr m_widget;
+	Vector3LineEdit m_positionEdit;
+	Vector3LineEdit m_rotationEdit;
+	Vector3LineEdit m_scaleEdit;
+
+	sh::TransformComponent* m_transformComponent = nullptr;
 };
 
 #endif

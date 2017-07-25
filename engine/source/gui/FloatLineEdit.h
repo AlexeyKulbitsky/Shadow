@@ -20,7 +20,7 @@ namespace gui
 		virtual bool ProcessKeyboardInput(KeyboardEventType type, KeyCode code) override;
 	
 		float GetValue() const { return m_value; }
-		void SetValue(float value) { m_value = value; }
+		void SetValue(float value);
 
 		Event<void, float> OnValueChanged;
 

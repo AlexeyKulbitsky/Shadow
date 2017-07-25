@@ -252,6 +252,28 @@ namespace sh
 				}
 			}
 
+			// Fill mode
+			stateNode = parent.child("fillMode");
+			if (!stateNode.empty())
+			{
+				valAttr = stateNode.attribute("val");
+				if (valAttr)
+				{
+					String value = valAttr.as_string();
+					if (value == "solid")
+					{
+						state->fillMode = FM_SOLID;
+					}
+					else if (value == "wireframe")
+					{
+						state->fillMode = FM_WIREFRAME;
+					}
+					else if (value == "ponts")
+					{
+					}
+				}
+			}
+
 			// Point size
 			stateNode = parent.child("pointSize");
 			if (!stateNode.empty())

@@ -2,6 +2,8 @@
 
 #include "Sprite.h"
 
+#include <iomanip>
+
 namespace sh
 {
 
@@ -60,6 +62,20 @@ namespace gui
 			return true;
 		}
 		return false;
+	}
+
+	void FloatLineEdit::SetValue(float value) 
+	{ 
+		m_value = value; 
+
+		std::stringstream s;
+		s << std::fixed << std::setprecision(3) << m_value;
+		SetText(s.str());
+
+		//double pi = 3.1415926;
+		//std::string s(16, '\0');
+		//auto written = std::snprintf(&s[0], s.size(), "%.2f", pi);
+		//s.resize(written);
 	}
 
 	bool FloatLineEdit::CheckFloatFilter(const String& string)
