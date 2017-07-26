@@ -3,7 +3,8 @@
 
 #include "gizmo/Gizmo.h"
 #include "gizmo/MoveGizmo.h"
-//#include "gui/TransformWidget.h"
+#include "gizmo/RotateGizmo.h"
+#include "gizmo/ScaleGizmo.h"
 #include "gui/InspectorWidget.h"
 
 #include <Shadow.h>
@@ -37,8 +38,11 @@ private:
 
 	// Gizmos
 	sh::SPtr<Gizmo> m_gizmo;
+
 	sh::SPtr<Gizmo> m_defaultGizmo;
 	sh::SPtr<MoveGizmo> m_moveGizmo;
+	sh::SPtr<RotateGizmo> m_rotateGizmo;
+	sh::SPtr<ScaleGizmo> m_scaleGizmo;
 
 	sh::Entity* m_cameraTargetEntity = nullptr;
 };

@@ -37,9 +37,11 @@ namespace sh
 				const math::Vector3f& scale = transformComponent->m_scale;
 				const math::Quaternionf& rotation = transformComponent->m_rotation;
 
-				transformComponent->m_worldMatrix.SetScale(scale);				
+				math::Matrix4f scaleMatrix;
+				scaleMatrix.SetIdentity();
+				scaleMatrix.SetScale(scale);
 				transformComponent->m_worldMatrix.SetTranslation(translation);
-				transformComponent->m_worldMatrix = transformComponent->m_worldMatrix * rotation.GetAsMatrix4();
+				transformComponent->m_worldMatrix = transformComponent->m_worldMatrix * rotation.GetAsMatrix4() * scaleMatrix;
 				
 				transformComponent->m_needsToRecalculateWorldMatrix = false;
 			}

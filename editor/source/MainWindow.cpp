@@ -171,6 +171,8 @@ void MainWindow::Init()
 
 	//m_defaultGizmo.reset(new Gizmo());
 	m_moveGizmo.reset(new MoveGizmo());
+	m_rotateGizmo.reset(new RotateGizmo());
+	m_scaleGizmo.reset(new ScaleGizmo());
 
 	m_gizmo = m_moveGizmo;
 
@@ -267,7 +269,8 @@ void MainWindow::Update(sh::u64 delta)
 
 			float yAxisAngle = -(float)delta.x * 0.01f;
 			sh::math::Quaternionf yAxisRot;
-			yAxisRot.SetFromAxisAngle(camera->GetUpVector(), yAxisAngle);
+			//yAxisRot.SetFromAxisAngle(camera->GetUpVector(), yAxisAngle);
+			yAxisRot.SetFromAxisAngle(sh::scene::SceneManager::GetUpVector(), yAxisAngle);
 
 			float xAxisangle = -(float)delta.y * 0.01f;
 			sh::math::Quaternionf xAxisRot;
