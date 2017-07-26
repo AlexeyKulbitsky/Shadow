@@ -14,12 +14,22 @@ public:
 			Y_AXIS,
 			Z_AXIS,
 
-			COUNT
+			COUNT,
+			NONE
 		};
 
-		sh::scene::ModelPtr circleModel = nullptr;
-		sh::video::Uniform* circleColorUniform = nullptr;
-		sh::math::Vector3f localUp;
+		struct ModelInfo
+		{
+			sh::scene::ModelPtr model;
+			sh::math::Vector4f currentColor;
+			sh::math::Vector4f defaultColor;
+			sh::math::Vector4f selectedColor;
+		};
+
+		std::vector<ModelInfo> models;
+		sh::video::GpuParamsPtr params;
+		sh::video::GpuParamVector4f color;
+		sh::video::GpuParamMatrix4f wvpMatrix;
 		bool active = false;
 	};
 
@@ -34,10 +44,16 @@ public:
 	virtual bool IsActive() const override;
 
 private:
+	void CreateCircle(Axis::Type type);
 	void Rotate(Axis::Type axis);
+	void SetModifierActive(Axis::Type idx, bool active);
 
 private:
-	Axis m_axises[4];
+	Axis m_axises[Axis::Type::COUNT];
+	sh::video::MaterialPtr m_material;
+	sh::video::CommandBufferPtr m_commandBuffer;
+	Axis::Type m_activeModifier = Axis::NONE;
+	bool m_mousePressed = false;
 };
 
 #endif

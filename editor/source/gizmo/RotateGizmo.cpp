@@ -1,78 +1,20 @@
 #include "RotateGizmo.h"
 
+#include "../gui/TransformWidget.h"
 
 RotateGizmo::RotateGizmo()
 {
-	//m_axises[0].circleModel = sh::scene::GeometryGenerator::GetCircleModel(sh::math::Vector3f(0.0f), 5.0f, sh::math::Vector3f(0.0f, 0.0f, 1.0f), sh::math::Vector3f(0.0f, 1.0f, 0.0f));
-	m_axises[0].circleModel = sh::scene::GeometryGenerator::GetHalfTorusModel(
-		sh::math::Vector3f(0.0f), 
-		5.0f, 
-		0.1f,
-		8, 
-		32, 
-		sh::math::Vector3f(0.0f, 0.0f, 1.0f), 
-		sh::math::Vector3f(0.0f, 1.0f, 0.0f));
-	//sh::video::UniformBufferPtr uniformBuffer = m_axises[0].circleModel->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
-	//m_axises[0].circleColorUniform = uniformBuffer->GetUniform(sh::String("color"));
-	if (m_axises[0].circleColorUniform)
-	{
-		sh::math::Vector4f color(1.0f, 0.0f, 0.0f, 1.0f);
-	}
+	m_material.reset(new sh::video::Material());
+	m_material->SetRenderTechnique("editor_base_color.xml");
 
-	m_axises[0].localUp = sh::math::Vector3f(0.0f, 1.0f, 0.0f);
+	sh::video::CommandBufferDescription commandBufferDesc;
+	commandBufferDesc.type = sh::COMMAND_BUFFER_TYPE_SECONDARY;
+	m_commandBuffer = sh::video::CommandBuffer::Create(commandBufferDesc);
 
-	////////////////////////////////////////////////
+	CreateCircle(Axis::Type::X_AXIS);
+	CreateCircle(Axis::Type::Y_AXIS);
+	CreateCircle(Axis::Type::Z_AXIS);
 
-	//m_axises[1].circleModel = sh::scene::GeometryGenerator::GetCircleModel(sh::math::Vector3f(0.0f), 5.0f, sh::math::Vector3f(1.0f, 0.0f, 0.0f), sh::math::Vector3f(0.0f, 0.0f, 1.0f));
-	m_axises[1].circleModel = sh::scene::GeometryGenerator::GetHalfTorusModel(
-		sh::math::Vector3f(0.0f), 
-		5.0f, 
-		0.1f,
-		8, 
-		32, 
-		sh::math::Vector3f(1.0f, 0.0f, 0.0f), 
-		sh::math::Vector3f(0.0f, 0.0f, 1.0f));
-//	uniformBuffer = m_axises[1].circleModel->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
-//	m_axises[1].circleColorUniform = uniformBuffer->GetUniform(sh::String("color"));
-	if (m_axises[1].circleColorUniform)
-	{
-		sh::math::Vector4f color(0.0f, 1.0f, 0.0f, 1.0f);
-	}
-
-	/////////////////////////////////////////////////
-
-	//m_axises[2].circleModel = sh::scene::GeometryGenerator::GetCircleModel(sh::math::Vector3f(0.0f), 5.0f, sh::math::Vector3f(1.0f, 0.0f, 0.0f), sh::math::Vector3f(0.0f, 1.0f, 0.0f));
-	m_axises[2].circleModel = sh::scene::GeometryGenerator::GetHalfTorusModel(
-		sh::math::Vector3f(0.0f), 
-		5.0f, 
-		0.1f,
-		8, 
-		32, 
-		sh::math::Vector3f(1.0f, 0.0f, 0.0f), 
-		sh::math::Vector3f(0.0f, 1.0f, 0.0f));
-//	uniformBuffer = m_axises[2].circleModel->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
-//	m_axises[2].circleColorUniform = uniformBuffer->GetUniform(sh::String("color"));
-	if (m_axises[2].circleColorUniform)
-	{
-		sh::math::Vector4f color(0.0f, 0.0f, 1.0f, 1.0f);
-	}
-
-	////////////////////////////////////////////////////////////////////////
-
-	m_axises[3].circleModel = sh::scene::GeometryGenerator::GetTorusModel(
-		sh::math::Vector3f(0.0f), 
-		5.0f, 
-		0.05f,
-		8, 
-		32, 
-		sh::math::Vector3f(1.0f, 0.0f, 0.0f), 
-		sh::math::Vector3f(0.0f, 1.0f, 0.0f));
-//	uniformBuffer = m_axises[3].circleModel->GetMesh(0)->GetMaterial()->GetRenderPipeline()->GetUniformBuffer();
-//	m_axises[3].circleColorUniform = uniformBuffer->GetUniform(sh::String("color"));
-	if (m_axises[3].circleColorUniform)
-	{
-		sh::math::Vector4f color(0.5f, 0.5f, 0.5f, 1.0f);
-	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -85,18 +27,22 @@ RotateGizmo::~RotateGizmo()
 
 void RotateGizmo::Render()
 {
-	if (!m_axises[0].circleModel || !m_axises[1].circleModel || !m_axises[2].circleModel ||
-		!m_entity)
+	if (!m_entity)
+	{
 		return;
+	}
 
 	sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
 	sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
+	sh::math::Matrix4f viewMatrix = camera->GetViewMatrix();
+	sh::math::Matrix4f projectionMatrix = camera->GetProjectionMatrix();
+
+
 	if (m_entity)
 	{
 		sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_entity->GetComponent(sh::Component::Type::Transform));
 		if (transformComponent)
 		{
-			//sh::math::Matrix4f matrix = transformComponent->GetWorldMatrix();
 			sh::math::Matrix4f matrix;
 			matrix.SetIdentity();
 
@@ -107,83 +53,58 @@ void RotateGizmo::Render()
 
 			matrix.SetScale(scale);
 			matrix.SetTranslation(position);
+			matrix = matrix * rotation.GetAsMatrix4();
 
-			//matrix = matrix * rotation.GetAsMatrix4();
-			sh::math::Vector3f axisZ = rotation * sh::scene::SceneManager::GetFrontVector();
-			sh::math::Vector3f axisY = rotation * sh::scene::SceneManager::GetUpVector();
-			sh::math::Vector3f axisX = rotation * sh::scene::SceneManager::GetRightVector();
+			sh::math::Matrix4f wvpMatrix = projectionMatrix * viewMatrix * matrix;
+			wvpMatrix.Transpose();
 
-			sh::math::Vector3f right = axisX; 
-			sh::math::Vector3f up = axisY; 
-			sh::math::Vector3f front = axisZ;
-
-			for (size_t i = 0; i < 3; ++i)
+			for (size_t i = 0; i < Axis::COUNT; ++i)
 			{
-				sh::math::Quaternionf r = rotation;
-
-				sh::math::Vector3f eulerAngles(0.0f);
-				rotation.GetAsEulerXYZ(eulerAngles);
-
-				switch (i)
-				{
-				case 0:
-				{
-					//up = camera->GetFrontVector().Cross(axisX);
-					//front = up.Cross(axisX);
-					//right = up.Cross(front);
-				}
-					break;
-				case 1:
-				{
-					//right = camera->GetFrontVector().Cross(axisY);
-					//front = right.Cross(axisY);
-					//up = right.Cross(front);
-				}
-					break;
-				case 2:
-				{
-					//right = camera->GetUpVector().Cross(axisZ);
-					//up = right.Cross(axisZ);
-					//front = right.Cross(front);
-				}
-					break;
-				}
-				
-
-				sh::math::Matrix4f mat = sh::math::Matrix4f::Identity();
-				mat.m[2][0] = front.x;
-				mat.m[2][1] = front.y;
-				mat.m[2][2] = front.z;
-
-				mat.m[0][0] = right.x;
-				mat.m[0][1] = right.y;
-				mat.m[0][2] = right.z;
-
-				mat.m[1][0] = up.x;
-				mat.m[1][1] = up.y;
-				mat.m[1][2] = up.z;
-
-				sh::math::Matrix4f m = matrix * mat;
-				sh::math::Matrix4f test = rotation.GetAsMatrix4();
-				m_axises[i].circleModel->SetWorldMatrix(m);
-				m_axises[i].circleModel->UpdateTransformationUniforms();
+				m_axises[i].wvpMatrix.Set(wvpMatrix);
 			}
-
-			matrix.SetIdentity();
-			matrix.SetScale(scale);
-			matrix.SetTranslation(position);
-			matrix = matrix * camera->GetRotation().GetAsMatrix4();
-			m_axises[3].circleModel->SetWorldMatrix(matrix);
-			m_axises[3].circleModel->UpdateTransformationUniforms();
 		}
 	}
 
-	driver->Render(m_axises[3].circleModel.get());
+	m_commandBuffer->Begin();
 
-	for (size_t i = 0; i < 3; ++i)
+	driver->SetRenderPipeline(m_material->GetRenderPipeline(), m_commandBuffer);
+
+	for (size_t i = 0; i < Axis::COUNT; ++i)
 	{
-		driver->Render(m_axises[i].circleModel.get());
+		auto& axis = m_axises[i];
+
+		for (size_t modelIdx = 0U; modelIdx < m_axises[i].models.size(); ++modelIdx)
+		{
+			sh::u32 meshesCount = m_axises[i].models[modelIdx].model->GetMeshesCount();
+			for (size_t j = 0; j < meshesCount; ++j)
+			{
+				auto& model = axis.models[modelIdx];
+				const auto& mesh = model.model->GetMesh(j);
+				const auto& renderable = mesh->GetRanderable();
+
+				axis.color.Set(model.currentColor);
+				driver->SetGpuParams(axis.params, m_commandBuffer);
+
+				driver->SetVertexBuffer(renderable->GetVertexBuffer(), m_commandBuffer);
+				driver->SetVertexDeclaration(renderable->GetVertexInputDeclaration(), m_commandBuffer);
+				driver->SetTopology(renderable->GetTopology(), m_commandBuffer);
+				if (renderable->GetIndexBuffer())
+				{
+					driver->SetIndexBuffer(renderable->GetIndexBuffer(), m_commandBuffer);
+					driver->DrawIndexed(0, renderable->GetIndexBuffer()->GetIndicesCount(), 1U, m_commandBuffer);
+				}
+				else
+				{
+					driver->Draw(0, renderable->GetVertexBuffer()->GetVerticesCount(), 1U, m_commandBuffer);
+				}
+
+			}
+		}
 	}
+
+	m_commandBuffer->End();
+
+	driver->SubmitCommandBuffer(m_commandBuffer);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -197,94 +118,113 @@ void RotateGizmo::Process()
 
 void RotateGizmo::OnMousePressed(sh::u32 x, sh::u32 y)
 {
-
+	if (!TryToSelect(x, y, 640, 480))
+	{
+		SetEntity(nullptr);
+		return;
+	}
+	m_mousePressed = true;
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void RotateGizmo::OnMouseReleased(sh::u32 x, sh::u32 y)
 {
-
+	TryToSelect(x, y, 640, 480);
+	m_mousePressed = false;
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void RotateGizmo::OnMouseMoved(sh::u32 x, sh::u32 y)
 {
-	if (m_axises[0].active)
+	for (size_t i = 0; i < static_cast<size_t>(Axis::Type::COUNT); ++i)
 	{
-		Rotate(Axis::Type::X_AXIS);
+		if (m_axises[i].active && m_mousePressed)
+		{
+			Rotate(static_cast<Axis::Type>(i));
+			return;
+		}
 	}
-	else if (m_axises[1].active)
-	{
-		Rotate(Axis::Type::Y_AXIS);
-	}
-	else if (m_axises[2].active)
-	{
-		Rotate(Axis::Type::Z_AXIS);
-	}
+
+	TryToSelect(x, y, 0U, 0U);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 bool RotateGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
 {
-	sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
+	sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_entity->GetComponent(sh::Component::Type::Transform));
+	if (!transformComponent)
+		return false;
 
-	unsigned char data[4];
-	driver->GetPixelData(x, y, width, height, data);
-	sh::math::Vector4f color(1.0f, 1.0f, 1.0f, 1.0f);
-	if (data[0] == 255 && data[1] == 0 && data[2] == 0)
+	sh::math::Matrix4f matrix;
+	sh::math::Matrix4f invMatrix;
+	matrix.SetIdentity();
+
+	sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
+	sh::math::Vector3f rayOrigin(0.0f);
+	sh::math::Vector3f rayDirection(0.0f);
+	camera->BuildRay(x, y, rayOrigin, rayDirection);
+
+	sh::math::Vector3f position = transformComponent->GetPosition();
+	sh::math::Quaternionf rotation = transformComponent->GetRotation();
+	sh::f32 scaleFactor = (camera->GetPosition() - position).GetLength() / 35.0f;
+	sh::math::Vector3f scale(scaleFactor);
+
+	matrix.SetScale(scale);
+	matrix.SetTranslation(position);
+	matrix = matrix * rotation.GetAsMatrix4();
+	invMatrix = matrix.GetInversed();
+
+	sh::math::Vector3f localX = (rotation.GetAsMatrix3() * sh::math::Vector3f(1.0f, 0.0f, 0.0f)).Normalize();
+	sh::math::Vector3f localY = (rotation.GetAsMatrix3() * sh::math::Vector3f(0.0f, 1.0f, 0.0f)).Normalize();
+	sh::math::Vector3f localZ = (rotation.GetAsMatrix3() * sh::math::Vector3f(0.0f, 0.0f, 1.0f)).Normalize();
+
+	sh::math::Planef plane(position, localX);
+	sh::math::Vector3f iPoint(0.0f);
+	bool res = plane.GetIntersectionWithLine(rayOrigin, rayDirection, iPoint);
+	sh::math::Vector3f df = iPoint - position;
+	iPoint = invMatrix * iPoint;
+
+	const sh::f32 radius = 5.0f;
+	Axis::Type oldModifier = m_activeModifier;
+
+	// Rotation around X-axis
+	if ((iPoint.GetLength() > (radius - 0.15f)) && (iPoint.GetLength() < ( radius + 0.15f)))
 	{
-		m_axises[Axis::Type::X_AXIS].active = true;
-
-		color = sh::math::Vector4f(0.0f, 1.0f, 0.0f, 1.0f);
-		m_axises[Axis::Type::Y_AXIS].active = false;
-
-		color = sh::math::Vector4f(0.0f, 0.0f, 1.0f, 1.0f);
-		m_axises[Axis::Type::Z_AXIS].active = false;
-
+		SetModifierActive(oldModifier, false);
+		m_activeModifier = Axis::X_AXIS;
+		SetModifierActive(m_activeModifier, true);
 		return true;
 	}
-	else if (data[0] == 0 && data[1] == 255 && data[2] == 0)
+
+	// Rotation around Y-axis
+	plane.SetPlane(position, localY);
+	res = plane.GetIntersectionWithLine(rayOrigin, rayDirection, iPoint);
+	iPoint = invMatrix * iPoint;
+	if ((iPoint.GetLength() > (radius - 0.15f)) && (iPoint.GetLength() < (radius + 0.15f)))
 	{
-		m_axises[Axis::Type::Y_AXIS].active = true;
-
-		color = sh::math::Vector4f(1.0f, 0.0f, 0.0f, 1.0f);
-		m_axises[Axis::Type::X_AXIS].active = false;
-
-		color = sh::math::Vector4f(0.0f, 0.0f, 1.0f, 1.0f);
-		m_axises[Axis::Type::Z_AXIS].active = false;
-
+		SetModifierActive(oldModifier, false);
+		m_activeModifier = Axis::Y_AXIS;
+		SetModifierActive(m_activeModifier, true);
 		return true;
 	}
-	else if (data[0] == 0 && data[1] == 0 && data[2] == 255)
+
+	// Rotation around Y-axis
+	plane.SetPlane(position, localZ);
+	res = plane.GetIntersectionWithLine(rayOrigin, rayDirection, iPoint);
+	iPoint = invMatrix * iPoint;
+	if ((iPoint.GetLength() > (radius - 0.15f)) && (iPoint.GetLength() < (radius + 0.15f)))
 	{
-		m_axises[Axis::Type::Z_AXIS].active = true;
-
-		color = sh::math::Vector4f(1.0f, 0.0f, 0.0f, 1.0f);
-		m_axises[Axis::Type::X_AXIS].active = false;
-
-		color = sh::math::Vector4f(0.0f, 1.0f, 0.0f, 1.0f);
-		m_axises[Axis::Type::Y_AXIS].active = false;
-
+		SetModifierActive(oldModifier, false);
+		m_activeModifier = Axis::Z_AXIS;
+		SetModifierActive(m_activeModifier, true);
 		return true;
 	}
-	else if (data[0] == 255 && data[1] == 255 && data[2] == 255)
-	{
-		return true;
-	}
-	else
-	{
-		color = sh::math::Vector4f(1.0f, 0.0f, 0.0f, 1.0f);
-		m_axises[Axis::Type::X_AXIS].active = false;
 
-		color = sh::math::Vector4f(0.0f, 1.0f, 0.0f, 1.0f);
-		m_axises[Axis::Type::Y_AXIS].active = false;
-
-		color = sh::math::Vector4f(0.0f, 0.0f, 1.0f, 1.0f);
-		m_axises[Axis::Type::Z_AXIS].active = false;
-	}
+	SetModifierActive(m_activeModifier, false);
+	m_activeModifier = Axis::Type::NONE;
 
 	return false;
 }
@@ -302,8 +242,68 @@ bool RotateGizmo::IsActive() const
 
 //////////////////////////////////////////////////////////////////////////
 
+void RotateGizmo::CreateCircle(Axis::Type type)
+{
+	const auto& info = m_material->GetRenderPipeline()->GetAutoParamsInfo();
+
+	auto& axis = m_axises[(Axis::Type)type];
+	axis.params = sh::video::GpuParams::Create(info);
+	axis.params->GetParam("matWVP", axis.wvpMatrix);
+	axis.params->GetParam("color", axis.color);
+
+	const sh::f32 radius = 5.0f;
+	const sh::f32 ringRadius = 0.15f;
+	const sh::u32 sidesCount = 8U;
+	const sh::u32 ringsCount = 32U;
+
+	sh::math::Vector4f defaultColor;
+	sh::math::Vector4f selectedColor(1.0f);
+	sh::math::Quaternionf rotation;
+	sh::math::Matrix4f transform;
+	transform.SetIdentity();
+
+	switch (type)
+	{
+	case Axis::Type::X_AXIS:
+	{
+		rotation.SetFromAxisAngle(sh::scene::SceneManager::GetUpVector(), sh::math::k_pi_2);
+		defaultColor = sh::math::Vector4f(1.0f, 0.0f, 0.0f, 1.0f);
+	}
+	break;
+	case Axis::Type::Y_AXIS:
+	{
+		rotation.SetFromAxisAngle(sh::scene::SceneManager::GetRightVector(), sh::math::k_pi_2);
+		defaultColor = sh::math::Vector4f(0.0f, 1.0f, 0.0f, 1.0f);
+	}
+	break;
+	case Axis::Type::Z_AXIS:
+	{
+		rotation.SetIndentity();
+		defaultColor = sh::math::Vector4f(0.0f, 0.0f, 1.0f, 1.0f);
+	}
+	break;
+	default:
+		SH_ASSERT(0, "Invalid type for creation Movegizmo axis!!!");
+	}
+
+	transform = rotation.GetAsMatrix4();
+
+	Axis::ModelInfo modelInfo;
+	
+	modelInfo.model = sh::scene::GeometryGenerator::GetHalfTorusModel(radius, ringRadius, sidesCount, ringsCount, transform);
+	modelInfo.model->SetMaterial(m_material);
+	modelInfo.defaultColor = defaultColor;
+	modelInfo.selectedColor = selectedColor;
+	modelInfo.currentColor = defaultColor;
+	axis.models.push_back(modelInfo);
+
+}
+
 void RotateGizmo::Rotate(Axis::Type axis)
 {
+	if (!m_entity)
+		return;
+
 	sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
 	sh::InputManager* inputManager = sh::Device::GetInstance()->GetInputManager();
 	sh::math::Vector2i old = inputManager->GetMousePositionOld();
@@ -315,43 +315,61 @@ void RotateGizmo::Rotate(Axis::Type axis)
 	sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_entity->GetComponent(sh::Component::Type::Transform));
 	sh::math::Vector3f pos = transformComponent->GetPosition();
 	sh::math::Matrix3f rotation = transformComponent->GetRotation().GetAsMatrix3();
-	sh::math::Vector3f axisRotations(0.0f);
 
-	sh::math::Vector3f axisDir(0.0f);
 	sh::math::Vector3f normalDir(0.0f);
 
 	switch (axis)
 	{
 	case Axis::Type::X_AXIS:
-		normalDir = sh::scene::SceneManager::GetRightVector();		
+		normalDir = rotation * sh::math::Vector3f(1.0f, 0.0f, 0.0f);
 		break;
 	case Axis::Type::Y_AXIS:
-		normalDir = sh::scene::SceneManager::GetUpVector();
+		normalDir = rotation * sh::math::Vector3f(0.0f, 1.0f, 0.0f);
 		break;
 	case Axis::Type::Z_AXIS:
-		normalDir = sh::scene::SceneManager::GetFrontVector();
+		normalDir = rotation * sh::math::Vector3f(0.0f, 0.0f, 1.0f);
 		break;
 	}
+	normalDir.Normalize();
 
-	sh::math::Vector3f normal = rotation * normalDir;
-	sh::math::Planef plane(pos, normal);
+	sh::math::Planef plane(pos, normalDir);
 
 	sh::math::Vector3f intersectionOld(0.0f), intersectionCurrent(0.0f);
 	plane.GetIntersectionWithLine(rayOrigin, rayDirOld, intersectionOld);
 	plane.GetIntersectionWithLine(rayOrigin, rayDirCurrent, intersectionCurrent);
-	
-	sh::math::Vector3f vec1 = (intersectionOld - pos).Normalize();
-	sh::math::Vector3f vec2 = (intersectionCurrent - pos).Normalize();
-	sh::f32 angle = sh::math::Acos(vec1.Dot(vec2));
+
+	sh::math::Vector3f oldDirection = (intersectionOld - pos).Normalize();
+	sh::math::Vector3f currentDirection = (intersectionCurrent - pos).Normalize();
 
 	sh::math::Quaternionf rot;
-	rot.RotationFromTo(vec1, vec2);
+	rot.RotationFromTo(oldDirection, currentDirection);
 
-	sh::math::Quaternionf finalRotation =  transformComponent->GetRotation() * rot;
+	sh::math::Quaternionf finalRotation = rot * transformComponent->GetRotation();
 
 	transformComponent->SetRotation(finalRotation);
 
-	inputManager->SetMousePositionOld(current);
+	if (m_transformWidget)
+		m_transformWidget->Update();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void RotateGizmo::SetModifierActive(Axis::Type idx, bool active)
+{
+	if (idx >= Axis::COUNT)
+		return;
+
+
+	auto& axis = m_axises[idx];
+	axis.active = active;
+
+	for (auto& model : axis.models)
+	{
+		if (active)
+			model.currentColor = model.selectedColor;
+		else
+			model.currentColor = model.defaultColor;
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////

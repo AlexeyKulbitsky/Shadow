@@ -175,6 +175,7 @@ void MainWindow::Init()
 	m_scaleGizmo.reset(new ScaleGizmo());
 
 	m_gizmo = m_moveGizmo;
+	m_gizmo = m_rotateGizmo;
 
 	auto fileSystem = sh::Device::GetInstance()->GetFileSystem();
 
@@ -235,6 +236,8 @@ void MainWindow::Init()
 
 	m_inspectorWidget.reset(new InspectorWidget());
 	m_moveGizmo->SetTransformWidget(m_inspectorWidget->GetTransformWidget());
+	m_rotateGizmo->SetTransformWidget(m_inspectorWidget->GetTransformWidget());
+	m_scaleGizmo->SetTransformWidget(m_inspectorWidget->GetTransformWidget());
 
 	//guiMgr->AddChild(m_toolBar);
 	guiMgr->AddChild(m_menuBar);

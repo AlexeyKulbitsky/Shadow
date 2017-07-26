@@ -155,6 +155,68 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////
 
+		ModelPtr GeometryGenerator::GetHalfTorusModel(const f32 radius, const f32 ringRadius, u32 sides, u32 rings, math::Matrix4f transform)
+		{
+			float verticalAngularStride = (math::k_pi) / (float)rings;
+			float horizontalAngularStride = (math::k_pi) / (float)sides;
+
+			u32 numVerticesPerRow = sides + 1;
+			u32 numVerticesPerColumn = rings + 1;
+
+			std::vector<f32> vertexArray;
+			for (u32 verticalIt = 0; verticalIt < numVerticesPerColumn; verticalIt++)
+			{
+				float theta = verticalAngularStride * verticalIt;
+
+				for (u32 horizontalIt = 0; horizontalIt < numVerticesPerRow; horizontalIt++)
+				{
+					float phi = horizontalAngularStride * horizontalIt;
+
+					// position
+					float x = math::Cos(theta) * (radius + ringRadius * math::Cos(phi));
+					float y = math::Sin(theta) * (radius + ringRadius * math::Cos(phi));
+					float z = ringRadius * math::Sin(phi);
+
+					math::Vector4f vt = transform * math::Vector4f(x, y, z, 1.0f);
+
+					vertexArray.push_back(vt.x);
+					vertexArray.push_back(vt.y);
+					vertexArray.push_back(vt.z);
+				}
+			}
+			size_t verticesCount = vertexArray.size() / 3;
+
+			std::vector<u32> indexArray;
+			size_t indicesCount = sides * rings * 6;
+
+			for (u32 verticalIt = 0; verticalIt < rings; verticalIt++)
+			{
+				for (u32 horizontalIt = 0; horizontalIt < sides; horizontalIt++)
+				{
+					short lt = (short)(horizontalIt + verticalIt * (numVerticesPerRow));
+					short rt = (short)((horizontalIt + 1) + verticalIt * (numVerticesPerRow));
+
+					short lb = (short)(horizontalIt + (verticalIt + 1) * (numVerticesPerRow));
+					short rb = (short)((horizontalIt + 1) + (verticalIt + 1) * (numVerticesPerRow));
+
+					indexArray.push_back(lt);
+					indexArray.push_back(rt);
+					indexArray.push_back(lb);
+
+					indexArray.push_back(rt);
+					indexArray.push_back(rb);
+					indexArray.push_back(lb);
+				}
+			}
+
+			// Create vertex declaration
+			sh::video::VertexDeclarationPtr vertexDeclaration = sh::video::VertexDeclarationPtr(new sh::video::VertexDeclaration());
+			sh::video::Attribute positionAttribute(AttributeSemantic::POSITION, AttributeType::FLOAT, 3U);
+			vertexDeclaration->AddAttribute(positionAttribute);
+
+			return CreateModel(vertexArray, indexArray, vertexDeclaration, Topology::TOP_TRIANGLE_LIST);
+		}
+
 		ModelPtr GeometryGenerator::GetHalfTorusModel(const math::Vector3f& start, const f32 radius, const f32 ringRadius, u32 sides, u32 rings, const math::Vector3f& vtx, const math::Vector3f& vty)
 		{
 			float verticalAngularStride = (math::k_pi) / (float)rings;
