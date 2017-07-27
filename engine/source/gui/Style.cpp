@@ -29,7 +29,7 @@ namespace gui
 
 		pugi::xml_node buttonNode = root.child("button");
 		if (buttonNode)
-			LoadButtonStyle(buttonNode);
+			m_button = LoadButton(buttonNode);
 
 		pugi::xml_node menuBarNode = root.child("menubar");
 		if (menuBarNode)
@@ -42,11 +42,26 @@ namespace gui
 		pugi::xml_node lineEditNode = root.child("lineedit");
 		if (lineEditNode)
 			LoadLineEdit(lineEditNode);
+
+		pugi::xml_node customButtonsNode = root.child("buttons");
+		if (customButtonsNode)
+			LoadCustomButtons(customButtonsNode);
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	void Style::LoadButtonStyle(const pugi::xml_node& node)
+	ButtonPtr Style::GetButton(const String& name)
+	{
+		auto it = m_buttonsMap.find(name);
+		if (it == m_buttonsMap.end())
+			return ButtonPtr();
+
+		return m_buttonsMap.at(name);
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	ButtonPtr Style::LoadButton(const pugi::xml_node& node)
 	{
 		const u32 statesCount = 3U;
 		std::array<String, statesCount> states = { "default", "pressed", "hovered" };
@@ -61,10 +76,20 @@ namespace gui
 			u32 x2 = rectNode.attribute("x2").as_uint();
 			u32 y2 = rectNode.attribute("y2").as_uint();
 			math::Rectu rect(x1, y1, x2, y2);
-			sprites[i].reset(new Sprite(m_texture, rect));
+
+			math::Vector3f color(1.0f);
+			pugi::xml_node colorNode = stateNode.child("color");
+			if (colorNode)
+			{
+				color.x = colorNode.attribute("r").as_float();
+				color.y = colorNode.attribute("g").as_float();
+				color.z = colorNode.attribute("b").as_float();
+			}
+			sprites[i].reset(new Sprite(m_texture, rect, color));
 		}
 		
-		m_button.reset(new Button(sprites[0], sprites[1], sprites[2]));
+		ButtonPtr result(new Button(sprites[0], sprites[1], sprites[2]));
+		return result;
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -125,6 +150,22 @@ namespace gui
 		}
 
 		m_lineEdit.reset(new LineEdit(sprites[0], sprites[1]));
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	void Style::LoadCustomButtons(const pugi::xml_node& node)
+	{
+		pugi::xml_node child = node.child("button");
+		while (child)
+		{
+			String name = child.attribute("name").as_string();
+			ButtonPtr button = LoadButton(child);
+
+			m_buttonsMap[name] = button;
+
+			child = child.next_sibling();
+		}
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////

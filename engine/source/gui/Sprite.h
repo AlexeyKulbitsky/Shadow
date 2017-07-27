@@ -13,6 +13,7 @@ namespace gui
 	{
 	public:
 		Sprite(const video::TexturePtr& texture, const math::Rectu& rect);
+		Sprite(const video::TexturePtr& texture, const math::Rectu& rect, const math::Vector3f& color);
 
 		const video::TexturePtr& GetTexture() const { return m_texture; }
 		const math::Rectu& GetRect() const { return m_rect; }

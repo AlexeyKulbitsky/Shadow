@@ -25,15 +25,12 @@ public:
 	void OnKeyboardEvent(sh::KeyboardEventType type, sh::KeyCode code);
 	void OnWindowResized(int width, int height);
 
+	// Application interface
 	virtual void Init() override;
 	virtual void Destroy() override;
 	virtual void Update(sh::u64 delta) override;
 
 private:
-	sh::gui::MenuBarPtr m_menuBar;
-	sh::gui::ToolBarPtr m_toolBar;
-
-	//sh::SPtr<TransformWidget> m_transformWidget;
 	sh::SPtr<InspectorWidget> m_inspectorWidget;
 
 	// Gizmos

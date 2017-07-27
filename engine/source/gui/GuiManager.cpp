@@ -5,6 +5,8 @@
 #include "Button.h"
 #include "SpriteManager.h"
 #include "Style.h"
+#include "MenuBar.h"
+#include "ToolBar.h"
 
 #include "../video/Driver.h"
 #include "../video/VertexBuffer.h"
@@ -55,6 +57,13 @@ namespace gui
 		m_mainBatchData.vertices.clear();
 		m_mainBatchData.indices.clear();
 		m_mainBatchData.verticesCount = 0U;
+
+		if (m_toolBar)
+			m_toolBar->GetGeometry(m_mainBatchData);
+
+		if (m_menuBar)
+			m_menuBar->GetGeometry(m_mainBatchData);
+
 		for (u32 i = 0U; i < m_children.size(); ++i)
 		{
 			m_children[i]->GetGeometry(m_mainBatchData);
@@ -93,6 +102,13 @@ namespace gui
 		m_textBatchData.vertices.clear();
 		m_textBatchData.indices.clear();
 		m_textBatchData.verticesCount = 0U;
+
+		if (m_toolBar)
+			m_toolBar->GetTextGeometry(m_textBatchData);
+
+		if (m_menuBar)
+			m_menuBar->GetTextGeometry(m_textBatchData);
+
 		for (u32 i = 0U; i < m_children.size(); ++i)
 		{
 			m_children[i]->GetTextGeometry(m_textBatchData);
@@ -123,6 +139,22 @@ namespace gui
 			m_textBatch.commandBuffer->End();
 
 			driver->SubmitCommandBuffer(m_textBatch.commandBuffer);
+		}
+	}
+
+	void GuiManager::CreateMenuBar()
+	{
+		if (!m_menuBar)
+		{
+			m_menuBar.reset(new MenuBar());
+		}
+	}
+
+	void GuiManager::CreateToolBar()
+	{
+		if (!m_toolBar)
+		{
+			m_toolBar.reset(new ToolBar());
 		}
 	}
 
@@ -190,6 +222,12 @@ namespace gui
 
 	bool GuiManager::ProcessInput(u32 x, u32 y, MouseEventType type)
 	{
+		if (m_menuBar && m_menuBar->ProcessInput(x, y, type))
+			return true;
+
+		if (m_toolBar && m_toolBar->ProcessInput(x, y, type))
+			return true;
+
 		for (auto& child : m_children)
 		{
 			if (child->ProcessInput(x, y, type))
@@ -200,6 +238,12 @@ namespace gui
 
 	bool GuiManager::ProcessKeyboardInput(KeyboardEventType type, KeyCode code)
 	{
+		if (m_menuBar && m_menuBar->ProcessKeyboardInput(type, code))
+			return true;
+
+		if (m_toolBar && m_toolBar->ProcessKeyboardInput(type, code))
+			return true;
+
 		for (auto& child : m_children)
 		{
 			if (child->ProcessKeyboardInput(type, code))

@@ -39,6 +39,12 @@ namespace gui
 		void Update(u32 delta);
 		void Render();
 
+		void CreateMenuBar();
+		void CreateToolBar();
+
+		const MenuBarPtr& GetMenuBar() const { return m_menuBar; }
+		const ToolBarPtr& GetToolBar() const { return m_toolBar; }
+
 		void LoadGui(const char* filename);
 		void AddChild(const SPtr<GuiElement>& child);
 
@@ -71,6 +77,8 @@ namespace gui
 
 		FontPtr m_font;
 
+		MenuBarPtr m_menuBar;
+		ToolBarPtr m_toolBar;
 		std::vector<SPtr<GuiElement>> m_children;
 
 		StylePtr m_style;

@@ -64,6 +64,8 @@ namespace gui
 		, m_hoveredSprite(hoveredSprite)
 	{
 		m_batchData.resize(4 * 8);
+		m_rect = sh::math::Rectu(0U, 0U, 10U, 10U);
+		m_text.reset(new Text(m_rect));
 	}
 
 	Button::Button(const math::Rectu& rect,

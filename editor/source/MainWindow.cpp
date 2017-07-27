@@ -210,10 +210,16 @@ void MainWindow::Init()
 
 	////////////////////////////////////////////////////////////////////////////
 
-	m_menuBar.reset(new sh::gui::MenuBar());
+	guiMgr->CreateMenuBar();
+	guiMgr->CreateToolBar();
+
+	const auto& menuBar = guiMgr->GetMenuBar();
+	const auto& toolBar = guiMgr->GetToolBar();
+
+	// Menu bar
 	sh::gui::ButtonPtr menuButton(new sh::gui::Button(sh::math::Rectu(0, 0, 50, 15)));
 	menuButton->SetToggleable(true);
-	const auto& fileMenu = m_menuBar->AddMenu("File", menuButton);
+	const auto& fileMenu = menuBar->AddMenu("File", menuButton);
 
 	sh::gui::ButtonPtr openSceneButton(new sh::gui::Button(sh::math::Rectu(0, 0, 50, 15)));
 	openSceneButton->SetText("Open scene...");
@@ -230,17 +236,19 @@ void MainWindow::Init()
 	exitButton->OnRelease.Connect(std::bind(&MainWindow::Close, this));
 	fileMenu->AddItem(exitButton);
 
-	m_toolBar.reset(new sh::gui::ToolBar());
-	sh::gui::ButtonPtr moveGIzmo(new sh::gui::Button(sh::math::Rectu(0, 0, 50, 15)));
-	m_toolBar->AddItem(moveGIzmo);
+	// Tool bar
+	sh::gui::ButtonPtr moveGizmoButton = guiMgr->GetStyle()->GetButton("MoveGizmoButton");
+	sh::gui::ButtonPtr rotateGizmoButton = guiMgr->GetStyle()->GetButton("RotateGizmoButton");
+	sh::gui::ButtonPtr scaleGizmoButton = guiMgr->GetStyle()->GetButton("ScaleGizmoButton");
+	toolBar->AddItem(moveGizmoButton);
+	toolBar->AddItem(rotateGizmoButton);
+	toolBar->AddItem(scaleGizmoButton);
 
+	// Inspector
 	m_inspectorWidget.reset(new InspectorWidget());
 	m_moveGizmo->SetTransformWidget(m_inspectorWidget->GetTransformWidget());
 	m_rotateGizmo->SetTransformWidget(m_inspectorWidget->GetTransformWidget());
 	m_scaleGizmo->SetTransformWidget(m_inspectorWidget->GetTransformWidget());
-
-	//guiMgr->AddChild(m_toolBar);
-	guiMgr->AddChild(m_menuBar);
 }
 
 void MainWindow::Destroy()
