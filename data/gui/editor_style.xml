@@ -81,6 +81,21 @@
 				<color r="0.7" g="0.7" b="0.7"/>
 			</hovered>
 		</button>
+		
+		<button name="ArrowButton">
+			<default>
+				<rect x1="7" y1="160" x2="42" y2="195"/>
+				<color r="1" g="1" b="1"/>
+			</default>
+			<pressed>
+				<rect x1="7" y1="160" x2="42" y2="195"/>
+				<color r="0.5" g="0.5" b="0.5"/>
+			</pressed>
+			<hovered>
+				<rect x1="7" y1="160" x2="42" y2="195"/>
+				<color r="0.7" g="0.7" b="0.7"/>
+			</hovered>
+		</button>
 	</buttons>
 </style>
 

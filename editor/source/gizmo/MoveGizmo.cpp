@@ -61,7 +61,7 @@ void MoveGizmo::Render()
 			sh::math::Matrix4f wvpMatrix = projectionMatrix * viewMatrix * matrix;
 			wvpMatrix.Transpose();
 
-			for (size_t i = 0; i < 6; ++i)
+			for (size_t i = 0; i < Axis::COUNT; ++i)
 			{
 				m_axises[i].wvpMatrix.Set(wvpMatrix);
 			}
@@ -72,7 +72,7 @@ void MoveGizmo::Render()
 
 	driver->SetRenderPipeline(m_material->GetRenderPipeline(), m_commandBuffer);
 
-	for (size_t i = 0; i < 6; ++i)
+	for (size_t i = 0; i < Axis::COUNT; ++i)
 	{
 		auto& axis = m_axises[i];
 

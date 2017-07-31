@@ -27,6 +27,7 @@ namespace gui
 
 		void SetToggleable(bool toggleable) { m_toggleable = toggleable; }
 		void SetText(const String& text);
+		void SetToggled(bool toggled);
 
 		virtual void Load(const pugi::xml_node& node) override;
 		virtual void GetGeometry(GuiBatchData& data) override;

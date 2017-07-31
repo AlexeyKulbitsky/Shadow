@@ -169,13 +169,15 @@ void MainWindow::Init()
 	sh::Device::GetInstance()->keyboardEvent.Connect(std::bind(&MainWindow::OnKeyboardEvent, this, _1, _2));
 
 
-	//m_defaultGizmo.reset(new Gizmo());
+	m_defaultGizmo.reset(new Gizmo());
 	m_moveGizmo.reset(new MoveGizmo());
 	m_rotateGizmo.reset(new RotateGizmo());
 	m_scaleGizmo.reset(new ScaleGizmo());
 
 	m_gizmo = m_moveGizmo;
 	m_gizmo = m_rotateGizmo;
+	m_gizmo = m_scaleGizmo;
+	m_gizmo = m_defaultGizmo;
 
 	auto fileSystem = sh::Device::GetInstance()->GetFileSystem();
 
@@ -237,12 +239,26 @@ void MainWindow::Init()
 	fileMenu->AddItem(exitButton);
 
 	// Tool bar
-	sh::gui::ButtonPtr moveGizmoButton = guiMgr->GetStyle()->GetButton("MoveGizmoButton");
-	sh::gui::ButtonPtr rotateGizmoButton = guiMgr->GetStyle()->GetButton("RotateGizmoButton");
-	sh::gui::ButtonPtr scaleGizmoButton = guiMgr->GetStyle()->GetButton("ScaleGizmoButton");
-	toolBar->AddItem(moveGizmoButton);
-	toolBar->AddItem(rotateGizmoButton);
-	toolBar->AddItem(scaleGizmoButton);
+	m_moveGizmoButton = guiMgr->GetStyle()->GetButton("MoveGizmoButton");
+	m_moveGizmoButton->SetToggleable(true);
+	m_moveGizmoButton->OnToggle.Connect(std::bind(&MainWindow::OnMoveButtonToggled, this, _1));
+
+	m_rotateGizmoButton = guiMgr->GetStyle()->GetButton("RotateGizmoButton");
+	m_rotateGizmoButton->SetToggleable(true);
+	m_rotateGizmoButton->OnToggle.Connect(std::bind(&MainWindow::OnRotateButtonToggled, this, _1));
+
+	m_scaleGizmoButton = guiMgr->GetStyle()->GetButton("ScaleGizmoButton");
+	m_scaleGizmoButton->SetToggleable(true);
+	m_scaleGizmoButton->OnToggle.Connect(std::bind(&MainWindow::OnScaleButtonToggled, this, _1));
+
+	m_arrowButton = guiMgr->GetStyle()->GetButton("ArrowButton");
+	m_arrowButton->SetToggleable(true);
+	m_arrowButton->OnToggle.Connect(std::bind(&MainWindow::OnArrowButtonToggled, this, _1));
+
+	toolBar->AddItem(m_arrowButton);
+	toolBar->AddItem(m_moveGizmoButton);
+	toolBar->AddItem(m_rotateGizmoButton);
+	toolBar->AddItem(m_scaleGizmoButton);
 
 	// Inspector
 	m_inspectorWidget.reset(new InspectorWidget());
@@ -341,3 +357,48 @@ void MainWindow::Update(sh::u64 delta)
 
 	driver->EndRendering();
 }
+
+void MainWindow::OnMoveButtonToggled(bool toggled)
+{
+	if (toggled)
+	{
+		m_rotateGizmoButton->SetToggled(false);
+		m_scaleGizmoButton->SetToggled(false);
+		m_arrowButton->SetToggled(false);
+		m_gizmo = m_moveGizmo;
+	}
+}
+
+void MainWindow::OnRotateButtonToggled(bool toggled)
+{
+	if (toggled)
+	{
+		m_moveGizmoButton->SetToggled(false);
+		m_scaleGizmoButton->SetToggled(false);
+		m_arrowButton->SetToggled(false);
+		m_gizmo = m_rotateGizmo;
+	}
+}
+
+void MainWindow::OnScaleButtonToggled(bool toggled)
+{
+	if (toggled)
+	{
+		m_moveGizmoButton->SetToggled(false);
+		m_rotateGizmoButton->SetToggled(false);
+		m_arrowButton->SetToggled(false);
+		m_gizmo = m_scaleGizmo;
+	}
+}
+
+void MainWindow::OnArrowButtonToggled(bool toggled)
+{
+	if (toggled)
+	{
+		m_moveGizmoButton->SetToggled(false);
+		m_scaleGizmoButton->SetToggled(false);
+		m_rotateGizmoButton->SetToggled(false);
+		m_gizmo = m_defaultGizmo;
+	}
+}
+

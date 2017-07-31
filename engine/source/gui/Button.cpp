@@ -117,6 +117,15 @@ namespace gui
 		m_text->SetText(text);
 	}
 
+	void Button::SetToggled(bool toggled)
+	{
+		if (!m_toggleable)
+			return;
+
+		m_toggled = toggled;
+		OnToggle(m_toggled);
+	}
+
 	void Button::GetGeometry(GuiBatchData& data)
 	{
 		GuiElement::GetGeometry(data);
@@ -164,20 +173,20 @@ namespace gui
 				{
 					if (m_toggleable)
 					{
+						m_toggled = !m_toggled;
+
 						if (m_toggled)
 						{
-							UpdateUV(m_releasedSprite->GetUVRect().upperLeftCorner, 
-									 m_releasedSprite->GetUVRect().lowerRightCorner);
-							UpdateColor(m_releasedSprite->GetColor());
+							UpdateUV(m_pressedSprite->GetUVRect().upperLeftCorner,
+								m_pressedSprite->GetUVRect().lowerRightCorner);
+							UpdateColor(m_pressedSprite->GetColor());
 						}
 						else
 						{
-							UpdateUV(m_pressedSprite->GetUVRect().upperLeftCorner, 
-									 m_pressedSprite->GetUVRect().lowerRightCorner);
-							UpdateColor(m_pressedSprite->GetColor());
+							UpdateUV(m_releasedSprite->GetUVRect().upperLeftCorner,
+								m_releasedSprite->GetUVRect().lowerRightCorner);
+							UpdateColor(m_releasedSprite->GetColor());
 						}
-
-						m_toggled = !m_toggled;
 
 						OnToggle(m_toggled);
 					}
@@ -209,9 +218,12 @@ namespace gui
 					break;
 				case MouseEventType::Moved:
 				{
-					UpdateUV(m_hoveredSprite->GetUVRect().upperLeftCorner, 
-							 m_hoveredSprite->GetUVRect().lowerRightCorner);
-					UpdateColor(m_hoveredSprite->GetColor());
+					if (!m_toggleable || !m_toggled)
+					{
+						UpdateUV(m_hoveredSprite->GetUVRect().upperLeftCorner,
+							m_hoveredSprite->GetUVRect().lowerRightCorner);
+						UpdateColor(m_hoveredSprite->GetColor());
+					}
 
 					OnHover();
 
@@ -224,9 +236,12 @@ namespace gui
 		}
 		else
 		{
-			UpdateUV(m_releasedSprite->GetUVRect().upperLeftCorner, 
-					 m_releasedSprite->GetUVRect().lowerRightCorner);
-			UpdateColor(m_releasedSprite->GetColor());
+			if (!m_toggleable || !m_toggled)
+			{
+				UpdateUV(m_releasedSprite->GetUVRect().upperLeftCorner,
+					m_releasedSprite->GetUVRect().lowerRightCorner);
+				UpdateColor(m_releasedSprite->GetColor());
+			}
 		}
 		
 		return false;

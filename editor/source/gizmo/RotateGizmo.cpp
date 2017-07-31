@@ -290,7 +290,8 @@ void RotateGizmo::CreateCircle(Axis::Type type)
 
 	Axis::ModelInfo modelInfo;
 	
-	modelInfo.model = sh::scene::GeometryGenerator::GetHalfTorusModel(radius, ringRadius, sidesCount, ringsCount, transform);
+	//modelInfo.model = sh::scene::GeometryGenerator::GetHalfTorusModel(radius, ringRadius, sidesCount, ringsCount, transform);
+	modelInfo.model = sh::scene::GeometryGenerator::GetTorusModel(radius, ringRadius, sidesCount, ringsCount, transform);
 	modelInfo.model->SetMaterial(m_material);
 	modelInfo.defaultColor = defaultColor;
 	modelInfo.selectedColor = selectedColor;

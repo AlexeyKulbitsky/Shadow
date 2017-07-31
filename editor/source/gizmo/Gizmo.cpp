@@ -97,8 +97,9 @@ void Gizmo::Render()
 			matrix = matrix * rotation.GetAsMatrix4();
 
 			sh::math::Matrix4f wvpMatrix = projectionMatrix * viewMatrix * matrix;
+			wvpMatrix.Transpose();
 
-			for (size_t i = 0; i < 3; ++i)
+			for (size_t i = 0; i < Axis::COUNT; ++i)
 			{
 				m_axises[i].wvpMtrix.Set(wvpMatrix);
 			}
