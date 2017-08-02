@@ -123,6 +123,20 @@ namespace gui
 			return;
 
 		m_toggled = toggled;
+
+		if (m_toggled)
+		{
+			UpdateUV(m_pressedSprite->GetUVRect().upperLeftCorner,
+				m_pressedSprite->GetUVRect().lowerRightCorner);
+			UpdateColor(m_pressedSprite->GetColor());
+		}
+		else
+		{
+			UpdateUV(m_releasedSprite->GetUVRect().upperLeftCorner,
+				m_releasedSprite->GetUVRect().lowerRightCorner);
+			UpdateColor(m_releasedSprite->GetColor());
+		}
+
 		OnToggle(m_toggled);
 	}
 

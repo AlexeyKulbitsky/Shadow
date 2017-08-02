@@ -41,12 +41,9 @@ public:
 	virtual ~MoveGizmo();
 	virtual void Render() override;
 	virtual void Process() override;
-	virtual void OnMousePressed(sh::u32 x, sh::u32 y) override;
-	virtual void OnMouseReleased(sh::u32 x, sh::u32 y) override;
 	virtual void OnMouseMoved(sh::u32 x, sh::u32 y) override;
-	virtual bool TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height) override;
+	virtual bool TryToSelect(sh::u32 x, sh::u32 y) override;
 	virtual bool IsActive() const override;
-
 
 private:
 	void CreateArrow(Axis::Type type);
@@ -59,7 +56,6 @@ private:
 	sh::video::MaterialPtr m_material;
 	sh::video::CommandBufferPtr m_commandBuffer;
 	Axis::Type m_activeModifier = Axis::NONE;
-	bool m_mousePressed = false;
 };
 
 #endif

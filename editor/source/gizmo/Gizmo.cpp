@@ -153,6 +153,34 @@ void Gizmo::OnMouseEvent(int x, int y, sh::MouseEventType type, sh::MouseCode co
 
 ///////////////////////////////////////////////////////////////////
 
+void Gizmo::OnMousePressed(sh::u32 x, sh::u32 y) 
+{
+	if (!TryToSelect(x, y))
+	{
+		return;
+	}
+	m_mousePressed = true;
+}
+
+///////////////////////////////////////////////////////////////////
+
+void Gizmo::OnMouseReleased(sh::u32 x, sh::u32 y) 
+{
+	if (!TryToSelect(x, y) && !m_mousePressed)
+	{
+		const auto& picker = sh::Device::GetInstance()->GetSceneManager()->GetPicker();
+		auto result = picker->TryToPick(x, y, 640, 480);
+		if (result != m_entity)
+		{
+			SetEntity(nullptr);
+		}
+		return;
+	}
+	m_mousePressed = false;
+}
+
+///////////////////////////////////////////////////////////////////
+
 void Gizmo::SetEntity(sh::Entity* entity)
 {
 	m_entity = entity;

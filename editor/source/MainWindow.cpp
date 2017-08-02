@@ -334,8 +334,8 @@ void MainWindow::Update(sh::u64 delta)
 			else
 			{
 				sh::math::Vector2i delta = current - old;
-				sh::math::Vector3f cameraUpMove = camera->GetUpVector() * delta.y * 0.1f;
-				sh::math::Vector3f cameraRightMove = camera->GetRightVector() * (-delta.x) * 0.1f;
+				sh::math::Vector3f cameraUpMove = camera->GetUpVector() * static_cast<float>(delta.y) * 0.1f;
+				sh::math::Vector3f cameraRightMove = camera->GetRightVector() * static_cast<float>(-delta.x) * 0.1f;
 				sh::math::Vector3f cameraDeltaMove = cameraUpMove + cameraRightMove;
 				//camera->SetPosition(camera->GetPosition() + cameraDeltaMove);
 			}
@@ -376,7 +376,9 @@ void MainWindow::OnRotateButtonToggled(bool toggled)
 		m_moveGizmoButton->SetToggled(false);
 		m_scaleGizmoButton->SetToggled(false);
 		m_arrowButton->SetToggled(false);
+		auto entity = m_gizmo->GetEntity();
 		m_gizmo = m_rotateGizmo;
+		m_gizmo->SetEntity(entity);
 	}
 }
 
@@ -387,7 +389,9 @@ void MainWindow::OnScaleButtonToggled(bool toggled)
 		m_moveGizmoButton->SetToggled(false);
 		m_rotateGizmoButton->SetToggled(false);
 		m_arrowButton->SetToggled(false);
+		auto entity = m_gizmo->GetEntity();
 		m_gizmo = m_scaleGizmo;
+		m_gizmo->SetEntity(entity);
 	}
 }
 
@@ -398,7 +402,9 @@ void MainWindow::OnArrowButtonToggled(bool toggled)
 		m_moveGizmoButton->SetToggled(false);
 		m_scaleGizmoButton->SetToggled(false);
 		m_rotateGizmoButton->SetToggled(false);
+		auto entity = m_gizmo->GetEntity();
 		m_gizmo = m_defaultGizmo;
+		m_gizmo->SetEntity(entity);
 	}
 }
 

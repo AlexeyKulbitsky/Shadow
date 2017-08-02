@@ -119,26 +119,6 @@ void MoveGizmo::Process()
 
 //////////////////////////////////////////////////////////////////////////
 
-void MoveGizmo::OnMousePressed(sh::u32 x, sh::u32 y) 
-{
-	if (!TryToSelect(x, y, 640, 480))
-	{
-		SetEntity(nullptr);
-		return;
-	}
-	m_mousePressed = true;
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-void MoveGizmo::OnMouseReleased(sh::u32 x, sh::u32 y) 
-{
-	TryToSelect(x, y, 640, 480);
-	m_mousePressed = false;
-}
-
-//////////////////////////////////////////////////////////////////////////
-
 void MoveGizmo::OnMouseMoved(sh::u32 x, sh::u32 y) 
 {
 	for (size_t i = 0; i < static_cast<size_t>(Axis::Type::COUNT); ++i)
@@ -150,7 +130,7 @@ void MoveGizmo::OnMouseMoved(sh::u32 x, sh::u32 y)
 		}
 	}
 
-	TryToSelect(x, y, 640, 480);
+	TryToSelect(x, y);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -482,7 +462,7 @@ void MoveGizmo::SetModifierActive(Axis::Type idx, bool active)
 	}
 }
 
-bool MoveGizmo::TryToSelect(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
+bool MoveGizmo::TryToSelect(sh::u32 x, sh::u32 y)
 {
 	sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_entity->GetComponent(sh::Component::Type::Transform));
 	if (transformComponent)
