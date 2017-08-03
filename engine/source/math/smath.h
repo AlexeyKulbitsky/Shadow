@@ -8,6 +8,7 @@
 #include "Sphere.h"
 #include "Plane.h"
 #include "Rect.h"
+#include "AABB.h"
 #include "FunctionsRayIntersect.h"
 
 namespace sh
@@ -67,6 +68,12 @@ namespace sh
 		typedef Rect<unsigned int> Rectu;
 		typedef Rect<float> Rectf;
 		typedef Rect<double> Rectd;
+
+		typedef AABB<short> AABBs;
+		typedef AABB<int> AABBi;
+		typedef AABB<unsigned int> AABBu;
+		typedef AABB<float> AABBf;
+		typedef AABB<double> AABBd;
 	}
 }
 
