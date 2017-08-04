@@ -108,6 +108,9 @@ void MoveGizmo::Render()
 	m_commandBuffer->End();
 
 	driver->SubmitCommandBuffer(m_commandBuffer);
+
+	driver->GetPainter()->DrawLine(sh::math::Vector3f(0.0f), sh::math::Vector3f(10.0f));
+	driver->GetPainter()->Flush();
 }
 
 //////////////////////////////////////////////////////////////////////////

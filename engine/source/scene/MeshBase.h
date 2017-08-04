@@ -19,27 +19,30 @@ namespace sh
 			void SetTopology(sh::Topology topology);
 			void SetVertexBuffer(video::VertexBufferPtr vertexBuffer);
 			void SetIndexBuffer(video::IndexBufferPtr indexBuffer);
+			void SetBoundingBox(const math::AABBf& boundingBox) { m_boundingBox = boundingBox; }
 
-			void AddUniform(video::Uniform* uniform);
-			void AddSampler(video::Sampler* sampler);
+//			void AddUniform(video::Uniform* uniform);
+//			void AddSampler(video::Sampler* sampler);
 
-			size_t GetUniformsCount() const;
-			size_t GetSamplersCount() const;
-			video::Uniform* GetUniform(size_t index);
-			video::Sampler* GetSampler(size_t index);
+//			size_t GetUniformsCount() const;
+//			size_t GetSamplersCount() const;
+//			video::Uniform* GetUniform(size_t index);
+//			video::Sampler* GetSampler(size_t index);
 
 			const video::VertexBufferPtr& GetVertexBuffer() const;
 			const video::IndexBufferPtr& GetIndexBuffer() const;
 			sh::Topology GetTopology();
+			const math::AABBf& GetBoundingBox() const { return m_boundingBox; }
 
 		private:
+			math::AABBf m_boundingBox;
 			video::VertexBufferPtr m_vertexBuffer;
 			video::IndexBufferPtr m_indexBuffer;
 			sh::Topology m_topology;
 			bool m_useIndices;
 
-			std::vector<video::Uniform*> m_uniforms;
-			std::vector<video::Sampler*> m_samplers;
+//			std::vector<video::Uniform*> m_uniforms;
+//			std::vector<video::Sampler*> m_samplers;
 		};
 	}
 }

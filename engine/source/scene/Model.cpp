@@ -7,6 +7,7 @@ namespace sh
 	namespace scene
 	{
 		Model::Model()
+			: m_boundingBox(math::Vector3f(0.0f))
 		{
 			
 		}
@@ -21,6 +22,8 @@ namespace sh
 			{
 				m_meshes[i] = MeshPtr(new Mesh(modelBase->GetMesh(i)));
 			}
+
+			m_boundingBox = modelBase->GetBoundingBox();
 
 			SetFileName(modelBase->GetFileName());
 		}

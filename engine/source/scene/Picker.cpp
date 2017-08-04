@@ -140,9 +140,14 @@ namespace sh
 				if (!transformComponent)
 					continue;
 
-				const auto& pos = transformComponent->GetPosition();
+				sh::RenderComponent* renderComponent = static_cast<sh::RenderComponent*>(m_entities[i]->GetComponent(sh::Component::Type::Render));
+				if (!renderComponent)
+					continue;
 
-				int res = math::RayIntersectSphere(rayOrigin, rayDirection, pos, 1.0f, t0, t1);
+				const auto& pos = transformComponent->GetPosition();
+				const float radius = renderComponent->GetModel()->GetBoundingBox().GetRadius();
+
+				int res = math::RayIntersectSphere(rayOrigin, rayDirection, pos, radius, t0, t1);
 				if (res != 0)
 					return m_entities[i];
 			}

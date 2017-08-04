@@ -56,7 +56,7 @@ namespace sh
 				std::vector<unsigned int> indexArray;
 				sh::video::VertexDeclarationPtr vertexDeclaration = sh::video::VertexDeclarationPtr(new sh::video::VertexDeclaration());
 				size_t verticesCount = 0;
-
+				math::AABBf boundingBox(math::Vector3f(0.0f));
 				
 
 				for (const auto& index : shape.mesh.indices)
@@ -66,6 +66,12 @@ namespace sh
 					vertexArray.push_back(attrib.vertices[3 * index.vertex_index + 1]);
 					vertexArray.push_back(attrib.vertices[3 * index.vertex_index + 2]);
 					
+					boundingBox.AddPoint(
+						attrib.vertices[3 * index.vertex_index + 0],
+						attrib.vertices[3 * index.vertex_index + 1],
+						attrib.vertices[3 * index.vertex_index + 2]
+					);
+
 					// normal
 					vertexArray.push_back(attrib.normals[3 * index.normal_index + 0]);
 					vertexArray.push_back(attrib.normals[3 * index.normal_index + 1]);
@@ -123,6 +129,7 @@ namespace sh
 				mesh->SetVertexBuffer(vertexBuffer);
 				mesh->SetIndexBuffer(indexBuffer);
 				mesh->SetTopology(Topology::TOP_TRIANGLE_LIST);
+				mesh->SetBoundingBox(boundingBox);
 
 				// Set base material
 				int materialId = shape.mesh.material_ids[0];

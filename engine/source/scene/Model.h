@@ -17,6 +17,7 @@ namespace sh
 
 			void SetPosition(const math::Vector3f& pos);
 			const math::Vector3f& GetPosition() const { return m_position; }
+			const math::AABBf& GetBoundingBox() const { return m_boundingBox; }
 			void SetWorldMatrix(const math::Matrix4f& matrix);
 			void UpdateTransformationUniforms();
 			void AddMesh(MeshPtr mesh);
@@ -28,6 +29,7 @@ namespace sh
 		private:
 			std::vector<MeshPtr> m_meshes;
 
+			math::AABBf m_boundingBox;
 			math::Vector3f m_position;
 			math::Quaternionf m_rotation;
 			math::Vector3f m_scale;

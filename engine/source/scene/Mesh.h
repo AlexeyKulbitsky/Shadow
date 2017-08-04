@@ -27,6 +27,7 @@ namespace sh
 		private:
 			MeshBasePtr m_meshBase;
 			math::Matrix4f m_worldMatrix;
+			math::AABBf m_boundingBox;
 
 			sh::video::MaterialPtr m_material;
 

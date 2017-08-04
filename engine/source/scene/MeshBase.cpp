@@ -15,6 +15,7 @@ namespace sh
 	{
 		MeshBase::MeshBase()
 			: m_useIndices(false)
+			, m_boundingBox(math::Vector3f(0.0f))
 		{
 		}
 
@@ -28,11 +29,11 @@ namespace sh
 
 		void MeshBase::Unload()
 		{
-			for (size_t i = 0; i < m_samplers.size(); ++i)
-			{
-				delete m_samplers[i];
-				m_samplers[i] = nullptr;
-			}
+// 			for (size_t i = 0; i < m_samplers.size(); ++i)
+// 			{
+// 				delete m_samplers[i];
+// 				m_samplers[i] = nullptr;
+// 			}
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -59,43 +60,43 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		void MeshBase::AddUniform(video::Uniform* uniform)
-		{
-			m_uniforms.push_back(uniform);
-		}
+// 		void MeshBase::AddUniform(video::Uniform* uniform)
+// 		{
+// 			m_uniforms.push_back(uniform);
+// 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		void MeshBase::AddSampler(video::Sampler* sampler)
-		{
-			m_samplers.push_back(sampler);
-		}
-
-		size_t MeshBase::GetUniformsCount() const
-		{
-			return m_uniforms.size();
-		}
-
-		/////////////////////////////////////////////////////////////////////////////////////
-
-		size_t MeshBase::GetSamplersCount() const
-		{
-			return m_samplers.size();
-		}
+// 		void MeshBase::AddSampler(video::Sampler* sampler)
+// 		{
+// 			m_samplers.push_back(sampler);
+// 		}
+// 
+// 		size_t MeshBase::GetUniformsCount() const
+// 		{
+// 			return m_uniforms.size();
+// 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		video::Uniform* MeshBase::GetUniform(size_t index)
-		{
-			return m_uniforms[index];
-		}
+// 		size_t MeshBase::GetSamplersCount() const
+// 		{
+// 			return m_samplers.size();
+// 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		video::Sampler* MeshBase::GetSampler(size_t index)
-		{
-			return m_samplers[index];
-		}
+// 		video::Uniform* MeshBase::GetUniform(size_t index)
+// 		{
+// 			return m_uniforms[index];
+// 		}
+
+		/////////////////////////////////////////////////////////////////////////////////////
+
+// 		video::Sampler* MeshBase::GetSampler(size_t index)
+// 		{
+// 			return m_samplers[index];
+// 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
 

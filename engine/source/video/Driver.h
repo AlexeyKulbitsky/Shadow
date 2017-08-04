@@ -9,6 +9,7 @@
 #include "Texture.h"
 #include "RenderPipeline.h"
 #include "Sampler.h"
+#include "Painter.h"
 #include "CommandBuffer.h"
 
 namespace sh
@@ -87,6 +88,8 @@ namespace sh
 
 			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) {}
 
+			Painter* GetPainter() { if (!m_painter) m_painter = new Painter(); return m_painter; }
+
 			u32 GetMaxTextureUnits() const { return m_maxTextureUnits; }
 			u32 GetMaxTextureSize() const { return m_maxTextureSize; }
 			u32 GetMaxCubeTextureSize() const { return m_maxCubeTextureSize; }
@@ -109,6 +112,8 @@ namespace sh
 			u32 m_maxTextureUnits;
 			u32 m_maxTextureSize;
 			u32 m_maxCubeTextureSize;
+
+			Painter* m_painter = nullptr;
 		};
 	}
 }

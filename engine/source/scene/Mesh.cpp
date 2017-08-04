@@ -21,6 +21,7 @@ namespace sh
 		Mesh::Mesh(MeshBasePtr meshBase)
 			: m_meshBase(meshBase)
 		{
+			m_boundingBox = meshBase->GetBoundingBox();
 			m_worldMatrix.SetIdentity();
 
 			m_renderable.reset(new video::Renderable());

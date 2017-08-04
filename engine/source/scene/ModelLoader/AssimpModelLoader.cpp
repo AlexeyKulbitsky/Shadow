@@ -58,6 +58,7 @@ namespace scene
 	{
 		std::vector<float> vertexArray;
 		std::vector<unsigned int> indexArray;
+		math::AABBf boundingBox(math::Vector3f(0.0f));
 		
 		for (u32 i = 0; i < mesh->mNumVertices; i++)
 		{
@@ -65,6 +66,12 @@ namespace scene
 			vertexArray.push_back(mesh->mVertices[i].x);
 			vertexArray.push_back(mesh->mVertices[i].y);
 			vertexArray.push_back(mesh->mVertices[i].z);
+
+			boundingBox.AddPoint(
+				mesh->mVertices[i].x,
+				mesh->mVertices[i].y,
+				mesh->mVertices[i].z
+			);
 
 			// Normals
 			if (mesh->HasNormals())
@@ -143,6 +150,7 @@ namespace scene
 		result->SetVertexBuffer(vertexBuffer);
 		result->SetIndexBuffer(indexBuffer);
 		result->SetTopology(Topology::TOP_TRIANGLE_LIST);
+		result->SetBoundingBox(boundingBox);
 		
 		return result;
 	}

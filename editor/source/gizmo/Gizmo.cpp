@@ -8,7 +8,7 @@ Gizmo::Gizmo()
 	m_material->SetRenderTechnique("editor_base_color.xml");
 	const auto& info = m_material->GetRenderPipeline()->GetAutoParamsInfo();
 
-	
+	sh::Device::GetInstance()->GetDriver()->GetPainter()->SetMaterial(m_material);
 
 	float radius = 0.1f;
 	float height = 3.0f;

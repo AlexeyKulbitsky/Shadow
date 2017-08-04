@@ -6,6 +6,7 @@ namespace sh
 	namespace scene
 	{
 		ModelBase::ModelBase()
+			: m_boundingBox(math::Vector3f(0.0f))
 		{
 		}
 
@@ -32,6 +33,8 @@ namespace sh
 		void ModelBase::AddMesh(MeshBasePtr mesh)
 		{
 			m_meshes.push_back(mesh);
+
+			m_boundingBox.AddBox(mesh->GetBoundingBox());
 		}
 
 		//////////////////////////////////////////////////////////////////////////////

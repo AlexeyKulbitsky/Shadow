@@ -2,6 +2,7 @@
 #define SHADOW_PAINTER_INCLUDE
 
 #include "../Globals.h"
+#include "GpuParams.h"
 
 namespace sh
 {
@@ -30,7 +31,24 @@ namespace sh
 
 			std::vector<float> m_linesVertexArray;
 			VertexBufferPtr m_linesBuffer;
-			//RenderCommandPtr m_linesRenderCommand;
+
+			struct LinesRenderable
+			{
+				VertexBufferPtr vertexBuffer;
+				sh::video::GpuParamsPtr params;
+				sh::video::GpuParamMatrix4f wvpMatrix;
+				sh::video::CommandBufferPtr commandBuffer;
+			};
+
+			struct LinesBatch
+			{
+				VertexInputDeclarationPtr inputDeclaration;
+				u32 startIndex = 0U;
+				u32 verticesCount = 0U;
+
+			};
+			LinesRenderable m_linesRenderable;
+			LinesBatch m_linesBatch;
 		};
 	}
 }
