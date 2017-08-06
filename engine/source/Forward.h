@@ -84,6 +84,7 @@ namespace sh
 		DEFINE_CLASS_PTR(ToolBar)
 		DEFINE_CLASS_PTR(Widget)
 		DEFINE_CLASS_PTR(Window)
+		DEFINE_CLASS_PTR(ComboBox)
 	}
 
 	DEFINE_CLASS_PTR(Component)

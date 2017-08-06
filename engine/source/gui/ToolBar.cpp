@@ -1,6 +1,8 @@
 #include "ToolBar.h"
 
 #include "Button.h"
+#include "Sprite.h"
+#include "Style.h"
 #include "GuiManager.h"
 
 #include "../video/Driver.h"
@@ -14,6 +16,8 @@ namespace gui
 
 	ToolBar::ToolBar()
 	{
+		m_batchData.resize(4 * 8);
+
 		video::Driver* driver = Device::GetInstance()->GetDriver();
 
 		const auto& viewPort = driver->GetViewPort();
@@ -21,6 +25,8 @@ namespace gui
 
 		m_rect.Set(0U, 15U, extends.x, 45U);
 
+		m_sprite = GuiManager::GetInstance()->GetStyle()->GetToolBar()->m_sprite;
+		/*
 		math::Vector4f leftUp((float)m_rect.upperLeftCorner.x, (float)m_rect.upperLeftCorner.y, 0.0f, 1.0f);
 		math::Vector4f rightDown((float)m_rect.lowerRightCorner.x, (float)m_rect.lowerRightCorner.y, 0.0f, 1.0f);
 
@@ -38,6 +44,33 @@ namespace gui
 		};
 
 		m_batchData = std::move(vertices);
+		*/
+		UpdatePosition();
+		UpdateUV(m_sprite->GetUVRect().upperLeftCorner, m_sprite->GetUVRect().lowerRightCorner);
+		UpdateColor(m_sprite->GetColor());
+
+		Device::GetInstance()->windowResizeEvent.Connect(std::bind(&ToolBar::OnWindowResized, this,
+			std::placeholders::_1, std::placeholders::_2));
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	ToolBar::ToolBar(const SpritePtr& sprite)
+	{
+		m_batchData.resize(4 * 8);
+
+		video::Driver* driver = Device::GetInstance()->GetDriver();
+
+		const auto& viewPort = driver->GetViewPort();
+		math::Vector2u extends(viewPort.z, viewPort.w);
+
+		m_rect.Set(0U, 15U, extends.x, 45U);
+
+		m_sprite = sprite;
+
+		UpdatePosition();
+		UpdateUV(m_sprite->GetUVRect().upperLeftCorner, m_sprite->GetUVRect().lowerRightCorner);
+		UpdateColor(m_sprite->GetColor());
 
 		Device::GetInstance()->windowResizeEvent.Connect(std::bind(&ToolBar::OnWindowResized, this,
 			std::placeholders::_1, std::placeholders::_2));

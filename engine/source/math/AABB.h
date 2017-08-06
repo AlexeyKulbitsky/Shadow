@@ -2,6 +2,8 @@
 #define SHADOW_AABB_INCLUDE
 
 #include "Vector3.h"
+#include "Vector4.h"
+#include "Matrix4.h"
 
 namespace sh
 {
@@ -64,14 +66,14 @@ namespace math
 			const Vector3<T> middlePoint = GetCenter();
 			const Vector3<T> diagonal = middlePoint - maxPoint;
 
-			edges[0] = vec3<T>(middlePoint.x + diagonal.x, middlePoint.y + diagonal.y, middlePoint.z + diagonal.z);
-			edges[1] = vec3<T>(middlePoint.x + diagonal.x, middlePoint.y - diagonal.y, middlePoint.z + diagonal.z);
-			edges[2] = vec3<T>(middlePoint.x + diagonal.x, middlePoint.y + diagonal.y, middlePoint.z - diagonal.z);
-			edges[3] = vec3<T>(middlePoint.x + diagonal.x, middlePoint.y - diagonal.y, middlePoint.z - diagonal.z);
-			edges[4] = vec3<T>(middlePoint.x - diagonal.x, middlePoint.y + diagonal.y, middlePoint.z + diagonal.z);
-			edges[5] = vec3<T>(middlePoint.x - diagonal.x, middlePoint.y - diagonal.y, middlePoint.z + diagonal.z);
-			edges[6] = vec3<T>(middlePoint.x - diagonal.x, middlePoint.y + diagonal.y, middlePoint.z - diagonal.z);
-			edges[7] = vec3<T>(middlePoint.x - diagonal.x, middlePoint.y - diagonal.y, middlePoint.z - diagonal.z);
+			edges[0] = Vector3<T>(middlePoint.x + diagonal.x, middlePoint.y + diagonal.y, middlePoint.z + diagonal.z);
+			edges[1] = Vector3<T>(middlePoint.x + diagonal.x, middlePoint.y - diagonal.y, middlePoint.z + diagonal.z);
+			edges[2] = Vector3<T>(middlePoint.x + diagonal.x, middlePoint.y + diagonal.y, middlePoint.z - diagonal.z);
+			edges[3] = Vector3<T>(middlePoint.x + diagonal.x, middlePoint.y - diagonal.y, middlePoint.z - diagonal.z);
+			edges[4] = Vector3<T>(middlePoint.x - diagonal.x, middlePoint.y + diagonal.y, middlePoint.z + diagonal.z);
+			edges[5] = Vector3<T>(middlePoint.x - diagonal.x, middlePoint.y - diagonal.y, middlePoint.z + diagonal.z);
+			edges[6] = Vector3<T>(middlePoint.x - diagonal.x, middlePoint.y + diagonal.y, middlePoint.z - diagonal.z);
+			edges[7] = Vector3<T>(middlePoint.x - diagonal.x, middlePoint.y - diagonal.y, middlePoint.z - diagonal.z);
 		}
 
 		bool IsPointInside(const Vector3<T>& point)
@@ -103,6 +105,35 @@ namespace math
 		{
 			AddPoint(box.minPoint);
 			AddPoint(box.maxPoint);
+		}
+
+		void Reset(const Vector3<T>& min, const Vector3<T>& max)
+		{
+			minPoint = min;
+			maxPoint = max;
+		}
+
+		void Transform(const Matrix4<T>& mat)
+		{
+			Vector3<T> edges[8];
+			GetEdges(edges);
+
+			auto v0 = mat * Vector4<T>(edges[0], 1);
+			minPoint = Vector3<T>(v0.x, v0.y, v0.z);
+			maxPoint = Vector3<T>(v0.x, v0.y, v0.z);
+
+			for (u32 i = 1U; i < 8; ++i)
+			{
+				auto v = mat * Vector4<T>(edges[i], 1);
+				AddPoint(v.x, v.y, v.z);
+			}
+		}
+
+		AABB<T> GetTransformed(const Matrix4<T>& mat) const
+		{
+			AABB<T> result(minPoint, maxPoint);
+			result.Transform(mat);
+			return result;
 		}
 
 		Vector3<T> minPoint;

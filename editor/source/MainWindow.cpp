@@ -40,12 +40,39 @@ void MainWindow::OpenScene()
 	{
 		sh::scene::SceneManager* sceneMgr = sh::Device::GetInstance()->GetSceneManager();
 		sceneMgr->LoadScene(ofn.lpstrFile);
+
+		sh::u32 entitiesCount = sceneMgr->GetEntitiesCount();
+		for (sh::u32 i = 0U; i < entitiesCount; ++i)
+		{
+			auto entity = sceneMgr->GetEntity(i);
+			m_hierarchyWidget->AddEntity(entity);
+		}
 	}
 }
 
 void MainWindow::SaveScene()
 {
+	HWND hWnd = (HWND)sh::Device::GetInstance()->GetWinId();
 
+	char szFileName[MAX_PATH] = "";
+
+	OPENFILENAME ofn;
+	ZeroMemory(&ofn, sizeof(ofn));
+	ofn.lStructSize = sizeof(OPENFILENAME);
+	ofn.hwndOwner = hWnd;
+	ofn.lpstrFilter =
+		"XML files (*.xml)\0*.xml\0"
+		"All files (*.*)\0*.*\0";
+	ofn.lpstrFile = szFileName;
+	ofn.nMaxFile = MAX_PATH;
+	ofn.lpstrTitle = "Save scene";
+	ofn.Flags = OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+	ofn.lpstrDefExt = "xml";
+	if (GetSaveFileName(&ofn))
+	{
+		sh::scene::SceneManager* sceneMgr = sh::Device::GetInstance()->GetSceneManager();
+		//sceneMgr->SaveScene(ofn.lpstrFile);
+	}
 }
 
 void MainWindow::Close()
@@ -99,6 +126,7 @@ void MainWindow::OnMouseEvent(int x, int y, sh::MouseEventType type, sh::MouseCo
 					auto result = picker->TryToPick(x, y, 640, 480);
 					m_gizmo->SetEntity(result);
 					m_inspectorWidget->SetEntity(result);
+					m_hierarchyWidget->SetSelectedEntity(result);
 				}
 			}
 		}
@@ -174,9 +202,6 @@ void MainWindow::Init()
 	m_rotateGizmo.reset(new RotateGizmo());
 	m_scaleGizmo.reset(new ScaleGizmo());
 
-	m_gizmo = m_moveGizmo;
-	m_gizmo = m_rotateGizmo;
-	m_gizmo = m_scaleGizmo;
 	m_gizmo = m_defaultGizmo;
 
 	auto fileSystem = sh::Device::GetInstance()->GetFileSystem();
@@ -260,8 +285,27 @@ void MainWindow::Init()
 	toolBar->AddItem(m_rotateGizmoButton);
 	toolBar->AddItem(m_scaleGizmoButton);
 
+	//sh::gui::ComboBoxPtr comboBox(new sh::gui::ComboBox(sh::math::Rectu(50U, 50U, 150U, 70U)));
+	//comboBox->AddItem("Item 1");
+	//comboBox->AddItem("Item 2");
+	//comboBox->AddItem("Item 3");
+	//guiMgr->AddChild(comboBox);
+
 	// Inspector
 	m_inspectorWidget.reset(new InspectorWidget());
+	m_hierarchyWidget.reset(new HierarchyWidget());
+	m_hierarchyWidget->OnEntitySelected.Connect(std::bind(&MainWindow::OnEntityFromListSelected, this, std::placeholders::_1));
+
+	m_defaultGizmo->OnSelectedEntityChanged.Connect(std::bind(&InspectorWidget::SetEntity, m_inspectorWidget, std::placeholders::_1));
+	m_defaultGizmo->OnSelectedEntityChanged.Connect(std::bind(&HierarchyWidget::SetSelectedEntity, m_hierarchyWidget, std::placeholders::_1));
+	m_moveGizmo->OnSelectedEntityChanged.Connect(std::bind(&InspectorWidget::SetEntity, m_inspectorWidget, std::placeholders::_1));
+	m_moveGizmo->OnSelectedEntityChanged.Connect(std::bind(&HierarchyWidget::SetSelectedEntity, m_hierarchyWidget, std::placeholders::_1));
+	m_scaleGizmo->OnSelectedEntityChanged.Connect(std::bind(&InspectorWidget::SetEntity, m_inspectorWidget, std::placeholders::_1));
+	m_scaleGizmo->OnSelectedEntityChanged.Connect(std::bind(&HierarchyWidget::SetSelectedEntity, m_hierarchyWidget, std::placeholders::_1));
+	m_rotateGizmo->OnSelectedEntityChanged.Connect(std::bind(&InspectorWidget::SetEntity, m_inspectorWidget, std::placeholders::_1));
+	m_rotateGizmo->OnSelectedEntityChanged.Connect(std::bind(&HierarchyWidget::SetSelectedEntity, m_hierarchyWidget, std::placeholders::_1));
+	
+	
 	m_moveGizmo->SetTransformWidget(m_inspectorWidget->GetTransformWidget());
 	m_rotateGizmo->SetTransformWidget(m_inspectorWidget->GetTransformWidget());
 	m_scaleGizmo->SetTransformWidget(m_inspectorWidget->GetTransformWidget());
@@ -406,5 +450,11 @@ void MainWindow::OnArrowButtonToggled(bool toggled)
 		m_gizmo = m_defaultGizmo;
 		m_gizmo->SetEntity(entity);
 	}
+}
+
+void MainWindow::OnEntityFromListSelected(sh::Entity* entity)
+{
+	m_gizmo->SetEntity(entity);
+	m_inspectorWidget->SetEntity(entity);
 }
 

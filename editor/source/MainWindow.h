@@ -6,6 +6,7 @@
 #include "gizmo/RotateGizmo.h"
 #include "gizmo/ScaleGizmo.h"
 #include "gui/InspectorWidget.h"
+#include "gui/HierarchyWidget.h"
 
 #include <Shadow.h>
 
@@ -35,8 +36,11 @@ public:
 	void OnScaleButtonToggled(bool toggled);
 	void OnArrowButtonToggled(bool toggled);
 
+	void OnEntityFromListSelected(sh::Entity* entity);
+
 private:
 	sh::SPtr<InspectorWidget> m_inspectorWidget;
+	sh::SPtr<HierarchyWidget> m_hierarchyWidget;
 
 	// Gizmos
 	sh::SPtr<Gizmo> m_gizmo;

@@ -126,6 +126,8 @@ void Gizmo::Render()
 			driver->DrawIndexed(0, renderable->GetIndexBuffer()->GetIndicesCount());
 		}
 	}
+
+	DrawBoundingBox();
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -173,10 +175,21 @@ void Gizmo::OnMouseReleased(sh::u32 x, sh::u32 y)
 		if (result != m_entity)
 		{
 			SetEntity(nullptr);
+			OnSelectedEntityChanged(nullptr);
 		}
 		return;
 	}
 	m_mousePressed = false;
+}
+
+///////////////////////////////////////////////////////////////////
+
+void Gizmo::DrawBoundingBox()
+{
+	auto driver = sh::Device::GetInstance()->GetDriver();
+	auto renderCompoent = static_cast<sh::RenderComponent*>(m_entity->GetComponent(sh::Component::Type::Render));
+	driver->GetPainter()->DrawBox(renderCompoent->GetModel()->GetBoundingBox());
+	driver->GetPainter()->Flush();
 }
 
 ///////////////////////////////////////////////////////////////////

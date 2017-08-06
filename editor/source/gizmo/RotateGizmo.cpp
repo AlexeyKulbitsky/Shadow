@@ -105,6 +105,8 @@ void RotateGizmo::Render()
 	m_commandBuffer->End();
 
 	driver->SubmitCommandBuffer(m_commandBuffer);
+
+	DrawBoundingBox();
 }
 
 //////////////////////////////////////////////////////////////////////////

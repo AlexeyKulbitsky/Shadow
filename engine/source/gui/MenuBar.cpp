@@ -19,39 +19,6 @@ namespace gui
 
 	MenuBar::MenuBar()
 	{
-		/*
-		m_batchData.resize(4 * 8);
-
-		video::Driver* driver = Device::GetInstance()->GetDriver();
-
-		const auto& viewPort = driver->GetViewPort();
-		math::Vector2u extends(viewPort.z, viewPort.w);
-
-		m_rect.Set(0U, 0U, extends.x, 15U);
-
-		math::Vector4f leftUp((float)m_rect.upperLeftCorner.x, (float)m_rect.upperLeftCorner.y, 0.0f, 1.0f);
-		math::Vector4f rightDown((float)m_rect.lowerRightCorner.x, (float)m_rect.lowerRightCorner.y, 0.0f, 1.0f);
-
-		math::Rectf uvRect(60.0f / 256.0f, 32.0f / 128.0f, 74.0f / 256.0f, 46.0f / 128.0f);
-		math::Vector2f uvLeftUp = uvRect.upperLeftCorner;
-		math::Vector2f uvRightDown = uvRect.lowerRightCorner;
-
-		
-		std::vector<float> vertices = 
-		{
-			leftUp.x, leftUp.y, 0.0f,			uvLeftUp.x, uvLeftUp.y,			0.7f, 0.7f, 0.7f,
-			leftUp.x, rightDown.y, 0.0f,		uvLeftUp.x, uvRightDown.y,		0.7f, 0.7f, 0.7f,
-			rightDown.x, rightDown.y, 0.0f,		uvRightDown.x, uvRightDown.y,	0.7f, 0.7f, 0.7f,
-			rightDown.x, leftUp.y, 0.0f,		uvRightDown.x, uvLeftUp.y,		0.7f, 0.7f, 0.7f
-		};
-		
-
-		m_batchData = std::move(vertices);
-
-		Device::GetInstance()->windowResizeEvent.Connect(std::bind(&MenuBar::OnWindowResized, this,
-			std::placeholders::_1, std::placeholders::_2));
-		*/
-
 		m_batchData.resize(4 * 8);
 
 		m_sprite = GuiManager::GetInstance()->GetStyle()->GetMenuBar()->m_sprite;

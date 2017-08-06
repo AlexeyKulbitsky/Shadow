@@ -23,6 +23,26 @@ namespace gui
 	{
 		LayoutItemPtr item(new LayoutItem(widget));
 		m_items.push_back(item);
+
+		if (m_parent)
+			m_parent->UpdateLayout();
+	}
+
+	void Layout::RemoveWidget(const WidgetPtr& widget)
+	{
+		for (auto item = m_items.begin(); item != m_items.end(); ++item)
+		{
+			if ((*item)->GetWidget() == widget)
+			{
+				m_items.erase(item);
+				return;
+			}
+		}
+	}
+
+	void Layout::Clear()
+	{
+		m_items.clear();
 	}
 
 	void Layout::AddLayout(const LayoutPtr& layout)

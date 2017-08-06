@@ -37,7 +37,10 @@ namespace gui
 		friend class Window;
 	public:
 		Layout() {}
+		void SetParent(Widget* parent) { m_parent = parent; }
 		virtual void AddWidget(const WidgetPtr& widget);
+		virtual void RemoveWidget(const WidgetPtr& widget);
+		virtual void Clear();
 		virtual void AddLayout(const LayoutPtr& layout);
 		virtual void SetSize(const math::Vector2u& size) override;
 		virtual void SetWidth(u32 width) override;
@@ -57,6 +60,7 @@ namespace gui
 
 	protected:
 		std::vector<LayoutItemPtr> m_items;
+		Widget* m_parent = nullptr;
 	};
 
 } // gui

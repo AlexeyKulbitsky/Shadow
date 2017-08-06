@@ -35,10 +35,10 @@ namespace sh
 			Vector4<T>& operator-=(T s) { x -= s; y -= s; z -= s; w -= s; return *this; }
 			Vector4<T>& operator-=(const Vector4<T>& v) { x -= v.x; y -= v.y; z -= v.z; w -= v.w; return *this; }
 
-			Vector3<T> operator*(T s) const { return Vector4<T>(x * s, y * s, z * s, w * s); }
-			Vector3<T> operator*(const Vector4<T>& v) const { return Vector4<T>(x * v.x, y * v.y, z * v.z, w * v.w); }
-			Vector3<T>& operator*=(T s) { x *= s; y *= s; z *= s; w *= s; return *this; }
-			Vector3<T>& operator*=(const Vector4<T>& v) { x *= v.x; y *= v.y; z *= v.z; w *= v.w; return *this; }
+			Vector4<T> operator*(T s) const { return Vector4<T>(x * s, y * s, z * s, w * s); }
+			Vector4<T> operator*(const Vector4<T>& v) const { return Vector4<T>(x * v.x, y * v.y, z * v.z, w * v.w); }
+			Vector4<T>& operator*=(T s) { x *= s; y *= s; z *= s; w *= s; return *this; }
+			Vector4<T>& operator*=(const Vector4<T>& v) { x *= v.x; y *= v.y; z *= v.z; w *= v.w; return *this; }
 
 			Vector4<T> operator/(T s) const { return Vector4<T>(x / s, y / s, z / s, w / s); }
 			Vector4<T> operator/(const Vector4<T>& v) const { return Vector4<T>(x / v.x, y / v.y, z / v.z, w / v.w); }

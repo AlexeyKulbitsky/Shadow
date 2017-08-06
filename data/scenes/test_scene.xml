@@ -42,7 +42,7 @@
 		</component>
 	</entity>
 	
-	<entity name="test_cube">
+	<entity name="test_cube_0">
 		<component name="transform">
 			<position val="0 0 -2" />
 			<rotation val="0 0 0 1" />
@@ -54,7 +54,7 @@
 		</component>
 	</entity>
 	
-	<entity name="test_cube">
+	<entity name="test_cube_1">
 		<component name="transform">
 			<position val="2 2 -2" />
 			<rotation val="0 0 0 1" />

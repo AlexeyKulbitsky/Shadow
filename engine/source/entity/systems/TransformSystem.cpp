@@ -1,6 +1,8 @@
 #include "TransformSystem.h"
 #include "../Entity.h"
 #include "../components/TransformComponent.h"
+#include "../components/RenderComponent.h"
+#include "../../scene/Model.h"
 
 namespace sh
 {
@@ -43,6 +45,13 @@ namespace sh
 				transformComponent->m_worldMatrix.SetTranslation(translation);
 				transformComponent->m_worldMatrix = transformComponent->m_worldMatrix * rotation.GetAsMatrix4() * scaleMatrix;
 				
+				RenderComponent* renderComponent = static_cast<RenderComponent*>(entity->GetComponent(Component::Type::Render));
+				if (renderComponent)
+				{
+					auto box = renderComponent->GetModel()->GetInitialBoundingBox().GetTransformed(transformComponent->m_worldMatrix);
+					renderComponent->GetModel()->SetBoundingBox(box);
+				}
+
 				transformComponent->m_needsToRecalculateWorldMatrix = false;
 			}
 		}

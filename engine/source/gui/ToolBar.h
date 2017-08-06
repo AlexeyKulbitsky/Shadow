@@ -13,6 +13,7 @@ namespace gui
 	{
 	public:
 		ToolBar();
+		ToolBar(const SpritePtr& sprite);
 		void AddItem(const ButtonPtr& button); 
 
 		virtual void Load(const pugi::xml_node& node) override;
@@ -23,6 +24,7 @@ namespace gui
 
 	private:
 		std::vector<ButtonPtr> m_buttons;
+		SpritePtr m_sprite;
 	};
 
 } // gui

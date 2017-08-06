@@ -9,7 +9,9 @@ namespace sh
 namespace gui
 {
 
-	class Button : public Widget
+	class Button 
+		: public Widget
+		, public std::enable_shared_from_this<Button>
 	{
 	public:
 		Button(const math::Rectu rect);
@@ -27,7 +29,9 @@ namespace gui
 
 		void SetToggleable(bool toggleable) { m_toggleable = toggleable; }
 		void SetText(const String& text);
+		const String& GetText() const;
 		void SetToggled(bool toggled);
+		bool IsToggled() const { return m_toggled; }
 
 		virtual void Load(const pugi::xml_node& node) override;
 		virtual void GetGeometry(GuiBatchData& data) override;
@@ -42,10 +46,10 @@ namespace gui
 		u32 GetWidth() const;
 		const math::Vector2u& GetPosition() const;
 
-		Event<void> OnPress;
-		Event<void> OnRelease;
-		Event<void> OnHover;
-		Event<void, bool> OnToggle;
+		Event<void, const ButtonPtr&> OnPress;
+		Event<void, const ButtonPtr&> OnRelease;
+		Event<void, const ButtonPtr&> OnHover;
+		Event<void, bool, const ButtonPtr&> OnToggle;
 
 	private:
 		SpritePtr m_pressedSprite;

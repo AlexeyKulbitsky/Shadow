@@ -26,6 +26,7 @@
 #include "gui/Window.h"
 #include "gui/HorizontalLayout.h"
 #include "gui/VerticalLayout.h"
+#include "gui/ComboBox.h"
 
 #include "entity/Component.h"
 #include "entity/ComponentsFactory.h"

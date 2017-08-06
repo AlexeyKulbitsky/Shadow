@@ -20,6 +20,7 @@ namespace gui
 	void Widget::SetLayout(const LayoutPtr& layout)
 	{
 		m_layout = layout;
+		m_layout->SetParent(this);
 		UpdateLayout();
 	}
 

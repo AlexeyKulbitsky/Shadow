@@ -17,15 +17,21 @@ namespace gui
 
 		void SetText(const String& text);
 
+		virtual void SetPosition(u32 x, u32 y) override;
 		virtual void GetGeometry(GuiBatchData& data) override;
 		virtual void GetTextGeometry(GuiBatchData& data) override;
 
 		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type) override;
 
+		bool IsMovable() const { return m_isMovable; }
+		void SetMovable(bool movable) { m_isMovable = movable; }
+
 	protected:
 		virtual void UpdatePosition() override;
 		virtual void UpdateUV(const math::Vector2f& leftUp, const math::Vector2f& rightDown) override;
 		virtual void UpdateColor(const math::Vector3f& color) override;
+
+	public:
 		virtual void UpdateLayout() override;
 
 	private:
@@ -43,6 +49,7 @@ namespace gui
 		math::Rectu m_inRect;
 
 		u32 m_barWidth = 25U;
+		bool m_isMovable = true;
 	};
 
 } // gui

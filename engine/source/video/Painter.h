@@ -20,7 +20,7 @@ namespace sh
 			void DrawQuad();
 			void DrawCircle();
 			void DrawArc();
-			void DrawBox();
+			void DrawBox(const math::AABBf& box);
 			void DrawText();
 
 			void Flush();
@@ -37,6 +37,7 @@ namespace sh
 				VertexBufferPtr vertexBuffer;
 				sh::video::GpuParamsPtr params;
 				sh::video::GpuParamMatrix4f wvpMatrix;
+				sh::video::GpuParamVector4f color;
 				sh::video::CommandBufferPtr commandBuffer;
 			};
 

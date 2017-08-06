@@ -5,6 +5,8 @@
 #include "Layout.h"
 #include "Style.h"
 #include "GuiManager.h"
+#include "MenuBar.h"
+#include "ToolBar.h"
 
 #include "../Device.h"
 
@@ -59,6 +61,14 @@ namespace gui
 	void Window::SetText(const String& text)
 	{
 		m_text->SetText(text);
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////
+
+	void Window::SetPosition(u32 x, u32 y)
+	{
+		Widget::SetPosition(x, y);
+		m_text->SetPosition(x, y);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -171,7 +181,7 @@ namespace gui
 		break;
 		case MouseEventType::Moved:
 		{
-			if (m_dragStarted)
+			if (m_dragStarted && m_isMovable)
 			{
 				sh::Device* device = sh::Device::GetInstance();
 				sh::InputManager* inputManager = device->GetInputManager();
@@ -187,7 +197,15 @@ namespace gui
 					const auto& viewport = device->GetDriver()->GetViewPort();
 					if (newX < 0) newX = 0;
 					if ((newX + m_rect.GetWidth()) > viewport.z) newX = viewport.z - m_rect.GetWidth();
-					if (newY < 0) newY = 0;
+
+					u32 topEdge = 0U;
+					const auto& menuBar = GuiManager::GetInstance()->GetMenuBar();
+					if (menuBar)
+						topEdge += menuBar->GetRect().GetHeight();
+					const auto& toolBar = GuiManager::GetInstance()->GetToolBar();
+					if (toolBar)
+						topEdge += toolBar->GetRect().GetHeight();
+					if (newY < topEdge) newY = topEdge;
 					if ((newY + m_rect.GetHeight()) > viewport.w) newY = viewport.w - m_rect.GetHeight();
 
 					SetPosition(static_cast<u32>(newX), static_cast<u32>(newY));

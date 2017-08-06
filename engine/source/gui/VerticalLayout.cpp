@@ -11,6 +11,11 @@ namespace gui
 		Layout::AddWidget(widget);
 	}
 
+	void VerticalLayout::RemoveWidget(const WidgetPtr& widget)
+	{
+		Layout::RemoveWidget(widget);
+	}
+
 	void VerticalLayout::AddLayout(const LayoutPtr& layout)
 	{
 		Layout::AddLayout(layout);
@@ -18,29 +23,58 @@ namespace gui
 
 	void VerticalLayout::Resize(const math::Rectu& rect)
 	{
+		if (m_items.size() == 0U)
+			return;
+
 		const u32 height = rect.GetHeight();
 		const u32 width = rect.GetWidth();
 		
 
 		const u32 elementCount = m_items.size();
-		const u32 itemHeight = height / elementCount;
+		u32 itemHeight = height / elementCount;
+		u32 offset = 0U;
 
 		for (u32 i = 0; i < m_items.size(); ++i)
 		{
 			// If this item if for holding widget
 			const auto& w = m_items[i]->GetWidget();
 			const u32 x = rect.upperLeftCorner.x;
-			const u32 y = rect.upperLeftCorner.y + itemHeight * i;
+			const u32 y = rect.upperLeftCorner.y + offset;// itemHeight * i;
 			if (w)
 			{
 				w->SetPosition(x, y);
-				w->SetHeight(itemHeight);
 				w->SetWidth(width);
+				const u32 maxHeight = w->GetMaximumHeight();
+				if (maxHeight != 0U)
+				{
+					if (maxHeight < itemHeight)
+					{
+						w->SetHeight(maxHeight);
+						u32 den = elementCount - i - 1;
+						if (den == 0U)
+							continue;
+						itemHeight = (height - offset - maxHeight) / den;
+						offset += maxHeight;
+					}
+					else
+					{
+						w->SetHeight(itemHeight);
+						offset += itemHeight;
+					}
+				}
+				else
+				{
+					w->SetHeight(itemHeight);
+					offset += itemHeight;
+				}
+				
+				
 				continue;
 			}
 
 			// If this item is layout itself
 			m_items[i]->Resize(math::Rectu(x, y, x + width, y + itemHeight));
+			offset += itemHeight;
 		}
 	}
 

@@ -3,6 +3,7 @@
 #include "Sprite.h"
 #include "Button.h"
 #include "MenuBar.h"
+#include "ToolBar.h"
 #include "Window.h"
 #include "LineEdit.h"
 
@@ -34,6 +35,10 @@ namespace gui
 		pugi::xml_node menuBarNode = root.child("menubar");
 		if (menuBarNode)
 			LoadMenuBar(menuBarNode);
+
+		pugi::xml_node toolBarNode = root.child("toolbar");
+		if (toolBarNode)
+			LoadToolBar(toolBarNode);
 
 		pugi::xml_node windowNode = root.child("window");
 		if (windowNode)
@@ -105,6 +110,21 @@ namespace gui
 		SpritePtr sprite(new Sprite(m_texture, rect));
 
 		m_menuBar.reset(new MenuBar(sprite));
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	void Style::LoadToolBar(const pugi::xml_node& node)
+	{
+		pugi::xml_node rectNode = node.child("rect");
+		u32 x1 = rectNode.attribute("x1").as_uint();
+		u32 y1 = rectNode.attribute("y1").as_uint();
+		u32 x2 = rectNode.attribute("x2").as_uint();
+		u32 y2 = rectNode.attribute("y2").as_uint();
+		math::Rectu rect(x1, y1, x2, y2);
+		SpritePtr sprite(new Sprite(m_texture, rect));
+
+		m_toolBar.reset(new ToolBar(sprite));
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////

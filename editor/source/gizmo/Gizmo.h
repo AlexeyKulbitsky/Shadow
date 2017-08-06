@@ -36,11 +36,14 @@ public:
 	virtual void OnMouseMoved(sh::u32 x, sh::u32 y) {}
 	virtual bool TryToSelect(sh::u32 x, sh::u32 y) { return false; }
 	virtual bool IsActive() const { return false; }
+	void DrawBoundingBox();
 
 	bool IsEnabled() const { return m_enabled; }
 	void SetEntity(sh::Entity* entity);
 	sh::Entity* GetEntity() { return m_entity; }
 	void SetTransformWidget(const sh::SPtr<TransformWidget>& widget) { m_transformWidget = widget; }
+
+	sh::Event<void, sh::Entity*> OnSelectedEntityChanged;
 
 protected:
 	sh::Entity* m_entity = nullptr;

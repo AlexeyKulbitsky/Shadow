@@ -50,6 +50,7 @@ namespace sh
 
 			m_linesRenderable.params = sh::video::GpuParams::Create(info);
 			m_linesRenderable.params->GetParam("matWVP", m_linesRenderable.wvpMatrix);
+			m_linesRenderable.params->GetParam("color", m_linesRenderable.color);
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -116,9 +117,25 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		void Painter::DrawBox()
+		void Painter::DrawBox(const math::AABBf& box)
 		{
+			const auto& a = box.minPoint;
+			const auto& b = box.maxPoint;
 
+			DrawLine(math::Vector3f(a.x, a.y, a.z), math::Vector3f(b.x, a.y, a.z));
+			DrawLine(math::Vector3f(b.x, a.y, a.z), math::Vector3f(b.x, b.y, a.z));
+			DrawLine(math::Vector3f(b.x, b.y, a.z), math::Vector3f(a.x, b.y, a.z));
+			DrawLine(math::Vector3f(a.x, b.y, a.z), math::Vector3f(a.x, a.y, a.z));
+
+			DrawLine(math::Vector3f(b.x, b.y, b.z), math::Vector3f(a.x, b.y, b.z));
+			DrawLine(math::Vector3f(a.x, b.y, b.z), math::Vector3f(a.x, a.y, b.z));
+			DrawLine(math::Vector3f(a.x, a.y, b.z), math::Vector3f(b.x, a.y, b.z));
+			DrawLine(math::Vector3f(b.x, a.y, b.z), math::Vector3f(b.x, b.y, b.z));
+
+			DrawLine(math::Vector3f(a.x, a.y, a.z), math::Vector3f(a.x, a.y, b.z));
+			DrawLine(math::Vector3f(a.x, b.y, a.z), math::Vector3f(a.x, b.y, b.z));
+			DrawLine(math::Vector3f(b.x, b.y, a.z), math::Vector3f(b.x, b.y, b.z));
+			DrawLine(math::Vector3f(b.x, a.y, a.z), math::Vector3f(b.x, a.y, b.z));
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -146,6 +163,7 @@ namespace sh
 			sh::math::Matrix4f wvpMatrix = projectionMatrix * viewMatrix;
 			wvpMatrix.Transpose();
 			m_linesRenderable.wvpMatrix.Set(wvpMatrix);
+			m_linesRenderable.color.Set(math::Vector4f(1.0f, 0.0f, 0.0f, 1.0f));
 
 			m_linesRenderable.commandBuffer->Begin();
 
@@ -158,7 +176,11 @@ namespace sh
 
 			m_linesRenderable.commandBuffer->End();
 
+
+			driver->SubmitCommandBuffer(m_linesRenderable.commandBuffer);
+
 			m_linesVertexArray.clear();
+			m_linesBatch.verticesCount = 0U;
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
