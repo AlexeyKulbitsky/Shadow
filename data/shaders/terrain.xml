@@ -20,13 +20,13 @@
 		<source>
 			<![CDATA[
 
-				attribute vec3 aPosition;	
-				attribute vec3 aNormal;	
+				attribute mediump vec3 aPosition;	
+				attribute mediump vec3 aNormal;	
 				
-				uniform mat4 matWVP;
-				uniform mat4 matWorld;
+				uniform mediump mat4 matWVP;
+				uniform mediump mat4 matWorld;
 				
-				varying vec3 vNormal;
+				varying mediump vec3 vNormal;
 				
 				void main() 
 				{

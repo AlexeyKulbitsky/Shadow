@@ -23,7 +23,7 @@ namespace gui
 	LineEdit::LineEdit()
 	{
 		const auto& ref = GuiManager::GetInstance()->GetStyle()->GetLineEdit();
-		m_batchData.resize(4 * 8);
+		m_batchData.resize(4 * 9);
 		m_defaultSprite = ref->m_defaultSprite;
 		m_editSprite = ref->m_editSprite;
 
@@ -35,7 +35,7 @@ namespace gui
 	LineEdit::LineEdit(const SpritePtr& defaultSprite,
 		const SpritePtr& editSprite)
 	{
-		m_batchData.resize(4 * 8);
+		m_batchData.resize(4 * 9);
 		m_defaultSprite = defaultSprite;
 		m_editSprite = editSprite;
 	}
@@ -45,7 +45,7 @@ namespace gui
 						 const SpritePtr& editSprite)
 						 :Text(rect)
 	{
-		m_batchData.resize(4 * 8);
+		m_batchData.resize(4 * 9);
 		//m_rect = rect;
 		m_defaultSprite = defaultSprite;
 		m_editSprite = editSprite;
@@ -58,7 +58,7 @@ namespace gui
 
 	void LineEdit::GetGeometry(GuiBatchData& data)
 	{
-		GuiElement::GetGeometry(data);
+		Widget::GetGeometry(data);
 
 		if (m_inFocus)
 		{

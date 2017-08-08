@@ -8,11 +8,11 @@ namespace gui
 {
 
 	Sprite::Sprite(const video::TexturePtr& texture, const math::Rectu& rect)
-		: Sprite(texture, rect, math::Vector3f(1.0f))
+		: Sprite(texture, rect, math::Vector4f(1.0f))
 	{
 	}
 
-	Sprite::Sprite(const video::TexturePtr& texture, const math::Rectu& rect, const math::Vector3f& color)
+	Sprite::Sprite(const video::TexturePtr& texture, const math::Rectu& rect, const math::Vector4f& color)
 	{
 		m_texture = texture;
 		m_rect = rect;

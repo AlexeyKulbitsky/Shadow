@@ -82,13 +82,14 @@ namespace gui
 			u32 y2 = rectNode.attribute("y2").as_uint();
 			math::Rectu rect(x1, y1, x2, y2);
 
-			math::Vector3f color(1.0f);
+			math::Vector4f color(1.0f);
 			pugi::xml_node colorNode = stateNode.child("color");
 			if (colorNode)
 			{
 				color.x = colorNode.attribute("r").as_float();
 				color.y = colorNode.attribute("g").as_float();
 				color.z = colorNode.attribute("b").as_float();
+				color.w = colorNode.attribute("a").as_float();
 			}
 			sprites[i].reset(new Sprite(m_texture, rect, color));
 		}

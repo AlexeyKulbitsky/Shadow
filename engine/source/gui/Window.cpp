@@ -27,7 +27,7 @@ namespace gui
 		m_bottomMargin = 5U;// ref->m_bottomMargin;
 		m_leftMargin = 5U;// ref->m_leftMargin;
 
-		m_batchData.resize(10 * 8);
+		m_batchData.resize(10 * 9);
 		m_rect = rect;
 		
 
@@ -230,16 +230,16 @@ namespace gui
 		math::Vector4f rightDown((float)m_rect.lowerRightCorner.x, (float)m_rect.lowerRightCorner.y, 0.0f, 1.0f);
 
 		m_batchData[0] = leftUp.x; m_batchData[1] = leftUp.y; m_batchData[2] = 0.0f;
-		m_batchData[8] = leftUp.x; m_batchData[9] = rightDown.y; m_batchData[10] = 0.0f;
-		m_batchData[16] = rightDown.x; m_batchData[17] = rightDown.y; m_batchData[18] = 0.0f;
-		m_batchData[24] = rightDown.x; m_batchData[25] = leftUp.y; m_batchData[26] = 0.0f;
+		m_batchData[9] = leftUp.x; m_batchData[10] = rightDown.y; m_batchData[11] = 0.0f;
+		m_batchData[18] = rightDown.x; m_batchData[19] = rightDown.y; m_batchData[20] = 0.0f;
+		m_batchData[27] = rightDown.x; m_batchData[28] = leftUp.y; m_batchData[29] = 0.0f;
 
-		m_batchData[32] = leftUp.x + m_leftMargin; m_batchData[33] = leftUp.y + m_topMargin; m_batchData[34] = 0.0f;
-		m_batchData[40] = leftUp.x + m_leftMargin; m_batchData[41] = leftUp.y + m_topMargin + m_barWidth; m_batchData[42] = 0.0f;
-		m_batchData[48] = leftUp.x + m_leftMargin; m_batchData[49] = rightDown.y - m_bottomMargin; m_batchData[50] = 0.0f;
-		m_batchData[56] = rightDown.x - m_rightMargin; m_batchData[57] = rightDown.y - m_bottomMargin; m_batchData[58] = 0.0f;
-		m_batchData[64] = rightDown.x - m_rightMargin; m_batchData[65] = leftUp.y + m_topMargin + m_barWidth; m_batchData[66] = 0.0f;
-		m_batchData[72] = rightDown.x - m_rightMargin; m_batchData[73] = leftUp.y + m_topMargin; m_batchData[74] = 0.0f;
+		m_batchData[36] = leftUp.x + m_leftMargin; m_batchData[37] = leftUp.y + m_topMargin; m_batchData[38] = 0.0f;  
+		m_batchData[45] = leftUp.x + m_leftMargin; m_batchData[46] = leftUp.y + m_topMargin + m_barWidth; m_batchData[47] = 0.0f;
+		m_batchData[54] = leftUp.x + m_leftMargin; m_batchData[55] = rightDown.y - m_bottomMargin; m_batchData[56] = 0.0f;
+		m_batchData[63] = rightDown.x - m_rightMargin; m_batchData[64] = rightDown.y - m_bottomMargin; m_batchData[65] = 0.0f;
+		m_batchData[72] = rightDown.x - m_rightMargin; m_batchData[73] = leftUp.y + m_topMargin + m_barWidth; m_batchData[74] = 0.0f;
+		m_batchData[81] = rightDown.x - m_rightMargin; m_batchData[82] = leftUp.y + m_topMargin; m_batchData[83] = 0.0f;
 
 		// Update bar rect for input handling (moving with mouse)
 		m_barRect.upperLeftCorner.x = m_rect.upperLeftCorner.x + m_leftMargin;
@@ -259,35 +259,35 @@ namespace gui
 	void Window::UpdateUV(const math::Vector2f& uvLeftUp, const math::Vector2f& uvRightDown)
 	{
 		m_batchData[3] = uvLeftUp.x; m_batchData[4] = uvLeftUp.y;
-		m_batchData[11] = uvLeftUp.x; m_batchData[12] = uvRightDown.y;
-		m_batchData[19] = uvRightDown.x; m_batchData[20] = uvRightDown.y;
-		m_batchData[27] = uvRightDown.x; m_batchData[28] = uvLeftUp.y;
+		m_batchData[12] = uvLeftUp.x; m_batchData[13] = uvRightDown.y;
+		m_batchData[21] = uvRightDown.x; m_batchData[22] = uvRightDown.y;
+		m_batchData[30] = uvRightDown.x; m_batchData[31] = uvLeftUp.y;
 
 		const auto& inRect = m_inSprite->GetUVRect();
 		const auto& barRect = m_barSprite->GetUVRect();
 
-		m_batchData[35] = barRect.upperLeftCorner.x; m_batchData[36] = barRect.upperLeftCorner.y;
-		m_batchData[43] = barRect.upperLeftCorner.x; m_batchData[44] = barRect.lowerRightCorner.y;
-		m_batchData[51] = inRect.upperLeftCorner.x; m_batchData[52] = inRect.lowerRightCorner.y;
-		m_batchData[59] = inRect.lowerRightCorner.x; m_batchData[60] = inRect.lowerRightCorner.y;
-		m_batchData[67] = barRect.lowerRightCorner.x; m_batchData[68] = barRect.lowerRightCorner.y;
-		m_batchData[75] = barRect.lowerRightCorner.x; m_batchData[76] = barRect.upperLeftCorner.y;
+		m_batchData[39] = barRect.upperLeftCorner.x; m_batchData[40] = barRect.upperLeftCorner.y;
+		m_batchData[48] = barRect.upperLeftCorner.x; m_batchData[49] = barRect.lowerRightCorner.y;
+		m_batchData[57] = inRect.upperLeftCorner.x; m_batchData[58] = inRect.lowerRightCorner.y;
+		m_batchData[66] = inRect.lowerRightCorner.x; m_batchData[67] = inRect.lowerRightCorner.y;
+		m_batchData[75] = barRect.lowerRightCorner.x; m_batchData[76] = barRect.lowerRightCorner.y;
+		m_batchData[84] = barRect.lowerRightCorner.x; m_batchData[85] = barRect.upperLeftCorner.y;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////
 
-	void Window::UpdateColor(const math::Vector3f& color)
+	void Window::UpdateColor(const math::Vector4f& color)
 	{
-		m_batchData[5] = color.x; m_batchData[6] = color.y; m_batchData[7] = color.z;
-		m_batchData[13] = color.x; m_batchData[14] = color.y; m_batchData[15] = color.z;
-		m_batchData[21] = color.x; m_batchData[22] = color.y; m_batchData[23] = color.z;
-		m_batchData[29] = color.x; m_batchData[30] = color.y;  m_batchData[31] = color.z;
-		m_batchData[37] = color.x; m_batchData[38] = color.y; m_batchData[39] = color.z;
-		m_batchData[45] = color.x; m_batchData[46] = color.y; m_batchData[47] = color.z;
-		m_batchData[53] = color.x; m_batchData[54] = color.y; m_batchData[55] = color.z;
-		m_batchData[61] = color.x; m_batchData[62] = color.y;  m_batchData[63] = color.z;
-		m_batchData[69] = color.x; m_batchData[70] = color.y;  m_batchData[71] = color.z;
-		m_batchData[77] = color.x; m_batchData[78] = color.y;  m_batchData[79] = color.z;
+		m_batchData[5] = color.x; m_batchData[6] = color.y; m_batchData[7] = color.z; m_batchData[8] = color.w;
+		m_batchData[14] = color.x; m_batchData[15] = color.y; m_batchData[16] = color.z; m_batchData[17] = color.w;
+		m_batchData[23] = color.x; m_batchData[24] = color.y; m_batchData[25] = color.z; m_batchData[26] = color.w;
+		m_batchData[32] = color.x; m_batchData[33] = color.y; m_batchData[34] = color.z; m_batchData[35] = color.w;
+		m_batchData[41] = color.x; m_batchData[42] = color.y; m_batchData[43] = color.z; m_batchData[44] = color.w;
+		m_batchData[50] = color.x; m_batchData[51] = color.y; m_batchData[52] = color.z; m_batchData[53] = color.w;
+		m_batchData[59] = color.x; m_batchData[60] = color.y; m_batchData[61] = color.z; m_batchData[62] = color.w;
+		m_batchData[68] = color.x; m_batchData[69] = color.y;  m_batchData[70] = color.z; m_batchData[71] = color.w;
+		m_batchData[77] = color.x; m_batchData[78] = color.y;  m_batchData[79] = color.z; m_batchData[80] = color.w;
+		m_batchData[86] = color.x; m_batchData[87] = color.y;  m_batchData[88] = color.z; m_batchData[89] = color.w;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////

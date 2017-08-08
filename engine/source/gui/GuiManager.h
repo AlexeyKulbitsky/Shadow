@@ -9,7 +9,7 @@ namespace sh
 
 namespace gui
 {
-	class GuiElement;
+	class Widget;
 
 	struct GuiBatchData
 	{
@@ -46,12 +46,12 @@ namespace gui
 		const ToolBarPtr& GetToolBar() const { return m_toolBar; }
 
 		void LoadGui(const char* filename);
-		void AddChild(const SPtr<GuiElement>& child);
+		void AddChild(const SPtr<Widget>& child);
 
 		void SetFont(const FontPtr& font);
 		const FontPtr& GetFont() const { return m_font; }
 
-		const SPtr<GuiElement>& GetChild(size_t i) const { return m_children[i]; }
+		const SPtr<Widget>& GetChild(size_t i) const { return m_children[i]; }
 		size_t GetChildrenCount() const { return m_children.size(); }
 		void RemoveAllChildren() { m_children.clear(); }
 		
@@ -79,7 +79,7 @@ namespace gui
 
 		MenuBarPtr m_menuBar;
 		ToolBarPtr m_toolBar;
-		std::vector<SPtr<GuiElement>> m_children;
+		std::vector<SPtr<Widget>> m_children;
 
 		StylePtr m_style;
 	};

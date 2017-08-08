@@ -191,7 +191,7 @@ namespace gui
 		}
 	}
 
-	void GuiManager::AddChild(const SPtr<GuiElement>& child)
+	void GuiManager::AddChild(const SPtr<Widget>& child)
 	{
 		m_children.push_back(child);
 	}
@@ -272,7 +272,7 @@ namespace gui
 		sh::video::VertexDeclarationPtr vertexDeclaration = sh::video::VertexDeclarationPtr(new sh::video::VertexDeclaration());
 		sh::video::Attribute positionAttribute(AttributeSemantic::POSITION, AttributeType::FLOAT, 3U);
 		sh::video::Attribute uvAttribute(AttributeSemantic::UV, AttributeType::FLOAT, 2U);
-		sh::video::Attribute colorAttribute(AttributeSemantic::COLOR, AttributeType::FLOAT, 3U);
+		sh::video::Attribute colorAttribute(AttributeSemantic::COLOR, AttributeType::FLOAT, 4U);
 		vertexDeclaration->AddAttribute(positionAttribute);	
 		vertexDeclaration->AddAttribute(uvAttribute);
 		vertexDeclaration->AddAttribute(colorAttribute);

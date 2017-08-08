@@ -29,7 +29,7 @@ namespace gui
 	protected:
 		virtual void UpdatePosition() override;
 		virtual void UpdateUV(const math::Vector2f& leftUp, const math::Vector2f& rightDown) override;
-		virtual void UpdateColor(const math::Vector3f& color) override;
+		virtual void UpdateColor(const math::Vector4f& color) override;
 
 	public:
 		virtual void UpdateLayout() override;

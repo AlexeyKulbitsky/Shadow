@@ -22,6 +22,7 @@ namespace sh
 namespace gui
 {
 	Button::Button()
+		: Widget()
 	{
 		const auto& ref = GuiManager::GetInstance()->GetStyle()->GetButton();
 
@@ -31,7 +32,6 @@ namespace gui
 
 		m_rect = sh::math::Rectu(0U, 0U, 10U, 10U);
 		m_text.reset(new Text(m_rect));
-		m_batchData.resize(4 * 8);
 
 		UpdatePosition();
 		UpdateUV(m_releasedSprite->GetUVRect().upperLeftCorner, m_releasedSprite->GetUVRect().lowerRightCorner);
@@ -39,6 +39,7 @@ namespace gui
 	}
 
 	Button::Button(const math::Rectu rect)
+		: Widget()
 	{
 		const auto& ref = GuiManager::GetInstance()->GetStyle()->GetButton();
 
@@ -49,8 +50,6 @@ namespace gui
 		m_rect = rect;
 		m_text.reset(new Text(rect));
 
-		m_batchData.resize(4 * 8);
-
 		UpdatePosition();
 		UpdateUV(m_releasedSprite->GetUVRect().upperLeftCorner, m_releasedSprite->GetUVRect().lowerRightCorner);
 		UpdateColor(m_releasedSprite->GetColor());
@@ -59,11 +58,11 @@ namespace gui
 	Button::Button(const SpritePtr& defaultSprite,
 		const SpritePtr& pressedSprite,
 		const SpritePtr& hoveredSprite)
-		: m_releasedSprite(defaultSprite)
+		: Widget()
+		, m_releasedSprite(defaultSprite)
 		, m_pressedSprite(pressedSprite)
 		, m_hoveredSprite(hoveredSprite)
 	{
-		m_batchData.resize(4 * 8);
 		m_rect = sh::math::Rectu(0U, 0U, 10U, 10U);
 		m_text.reset(new Text(m_rect));
 	}
@@ -83,6 +82,7 @@ namespace gui
 	}
 
 	Button::Button(const String& text)
+		: Widget()
 	{
 		const auto& ref = GuiManager::GetInstance()->GetStyle()->GetButton();
 
@@ -93,7 +93,6 @@ namespace gui
 		m_rect = sh::math::Rectu(0U, 0U, 10U, 10U);
 		m_text.reset(new Text(m_rect));
 		m_text->SetText(text);
-		m_batchData.resize(4 * 8);
 
 		UpdatePosition();
 		UpdateUV(m_releasedSprite->GetUVRect().upperLeftCorner, m_releasedSprite->GetUVRect().lowerRightCorner);
@@ -155,12 +154,13 @@ namespace gui
 			UpdateColor(m_releasedSprite->GetColor());
 		}
 
-		OnToggle(m_toggled, shared_from_this());
+		OnToggle(m_toggled, std::static_pointer_cast<Button>(shared_from_this()));
 	}
 
 	void Button::GetGeometry(GuiBatchData& data)
 	{
-		GuiElement::GetGeometry(data);
+		/*GuiElement::GetGeometry(data);*/
+		Widget::GetGeometry(data);
 	}
 
 	void Button::GetTextGeometry(GuiBatchData& data)
@@ -170,27 +170,29 @@ namespace gui
 
 	void Button::SetPosition(u32 x, u32 y)
 	{
-		GuiElement::SetPosition(x, y);
+		/*GuiElement::SetPosition(x, y);*/
+		Widget::SetPosition(x, y);
 		m_text->SetPosition(x, y);
 	}
 
 	void Button::SetSize(const math::Vector2u& size)
 	{
-		GuiElement::SetSize(size);
+		/*GuiElement::SetSize(size);*/
+		Widget::SetSize(size);
 		m_text->SetSize(size);
 	}
 
 	void Button::SetWidth(u32 width)
 	{
-		
-		GuiElement::SetWidth(width);
+		/*GuiElement::SetWidth(width);*/
+		Widget::SetWidth(width);
 		m_text->SetWidth(width);
 	}
 
 	void Button::SetHeight(u32 height)
 	{
-		
-		GuiElement::SetHeight(height);
+		/*GuiElement::SetHeight(height);*/
+		Widget::SetHeight(height);
 		m_text->SetHeight(height);
 	}
 
@@ -220,7 +222,7 @@ namespace gui
 							UpdateColor(m_releasedSprite->GetColor());
 						}
 
-						OnToggle(m_toggled, shared_from_this());
+						OnToggle(m_toggled, std::static_pointer_cast<Button>(shared_from_this()));
 					}
 					else
 					{
@@ -229,7 +231,7 @@ namespace gui
 						UpdateColor(m_pressedSprite->GetColor());
 					}
 
-					OnPress(shared_from_this());
+					OnPress(std::static_pointer_cast<Button>(shared_from_this()));
 
 					return true;
 				}
@@ -243,7 +245,7 @@ namespace gui
 						UpdateColor(m_hoveredSprite->GetColor());
 					}
 
-					OnRelease(shared_from_this());
+					OnRelease(std::static_pointer_cast<Button>(shared_from_this()));
 
 					return true;
 				}
@@ -257,7 +259,7 @@ namespace gui
 						UpdateColor(m_hoveredSprite->GetColor());
 					}
 
-					OnHover(shared_from_this());
+					OnHover(std::static_pointer_cast<Button>(shared_from_this()));
 
 					return false;
 				}
@@ -265,7 +267,7 @@ namespace gui
 				default:
 					break;
 			}
-		}
+		} 
 		else
 		{
 			if (!m_toggleable || !m_toggled)

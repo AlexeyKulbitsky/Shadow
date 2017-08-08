@@ -18,9 +18,8 @@ namespace gui
 {
 
 	MenuBar::MenuBar()
+		: Widget()
 	{
-		m_batchData.resize(4 * 8);
-
 		m_sprite = GuiManager::GetInstance()->GetStyle()->GetMenuBar()->m_sprite;
 		SetHeight(15U);
 
@@ -35,9 +34,8 @@ namespace gui
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	MenuBar::MenuBar(const SpritePtr& sprite)
+		: Widget()
 	{
-		m_batchData.resize(4 * 8);
-
 		m_sprite = sprite;
 		SetHeight(15U);
 
@@ -68,7 +66,7 @@ namespace gui
 
 	void MenuBar::GetGeometry(GuiBatchData& data)
 	{
-		GuiElement::GetGeometry(data);
+		Widget::GetGeometry(data);
 		
 		for (const auto& menu : m_menus)
 		{

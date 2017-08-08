@@ -44,60 +44,60 @@
 		<button name="MoveGizmoButton">
 			<default>
 				<rect x1="7" y1="120" x2="42" y2="155"/>
-				<color r="1" g="1" b="1"/>
+				<color r="1" g="1" b="1" a="1"/>
 			</default>
 			<pressed>
 				<rect x1="7" y1="120" x2="42" y2="155"/>
-				<color r="0.5" g="0.5" b="0.5"/>
+				<color r="0.5" g="0.5" b="0.5" a="1"/>
 			</pressed>
 			<hovered>
 				<rect x1="7" y1="120" x2="42" y2="155"/>
-				<color r="0.7" g="0.7" b="0.7"/>
+				<color r="0.7" g="0.7" b="0.7" a="1"/>
 			</hovered>
 		</button>
 		
 		<button name="RotateGizmoButton">
 			<default>
 				<rect x1="47" y1="120" x2="82" y2="155"/>
-				<color r="1" g="1" b="1"/>
+				<color r="1" g="1" b="1" a="1"/>
 			</default>
 			<pressed>
 				<rect x1="47" y1="120" x2="82" y2="155"/>
-				<color r="0.5" g="0.5" b="0.5"/>
+				<color r="0.5" g="0.5" b="0.5" a="1"/>
 			</pressed>
 			<hovered>
 				<rect x1="47" y1="120" x2="82" y2="155"/>
-				<color r="0.7" g="0.7" b="0.7"/>
+				<color r="0.7" g="0.7" b="0.7" a="1"/>
 			</hovered>
 		</button>
 		
 		<button name="ScaleGizmoButton">
 			<default>
 				<rect x1="87" y1="120" x2="122" y2="155"/>
-				<color r="1" g="1" b="1"/>
+				<color r="1" g="1" b="1" a="1"/>
 			</default>
 			<pressed>
 				<rect x1="87" y1="120" x2="122" y2="155"/>
-				<color r="0.5" g="0.5" b="0.5"/>
+				<color r="0.5" g="0.5" b="0.5" a="1"/>
 			</pressed>
 			<hovered>
 				<rect x1="87" y1="120" x2="122" y2="155"/>
-				<color r="0.7" g="0.7" b="0.7"/>
+				<color r="0.7" g="0.7" b="0.7" a="1"/>
 			</hovered>
 		</button>
 		
 		<button name="ArrowButton">
 			<default>
 				<rect x1="7" y1="160" x2="42" y2="195"/>
-				<color r="1" g="1" b="1"/>
+				<color r="1" g="1" b="1" a="1"/>
 			</default>
 			<pressed>
 				<rect x1="7" y1="160" x2="42" y2="195"/>
-				<color r="0.5" g="0.5" b="0.5"/>
+				<color r="0.5" g="0.5" b="0.5" a="1"/>
 			</pressed>
 			<hovered>
 				<rect x1="7" y1="160" x2="42" y2="195"/>
-				<color r="0.7" g="0.7" b="0.7"/>
+				<color r="0.7" g="0.7" b="0.7" a="1"/>
 			</hovered>
 		</button>
 	</buttons>

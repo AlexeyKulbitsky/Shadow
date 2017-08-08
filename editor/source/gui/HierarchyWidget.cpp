@@ -70,9 +70,9 @@ void HierarchyWidget::OnItemToggled(bool toggled, const sh::gui::ButtonPtr& send
 {
 	if (!toggled)
 	{
-		if (m_currentSelectedItem)
+		if (m_currentSelectedItem == sender)
 		{
-			m_currentSelectedItem = nullptr;
+			//m_currentSelectedItem = nullptr;
 			OnEntitySelected(nullptr);
 		}
 		return;

@@ -9,9 +9,7 @@ namespace sh
 namespace gui
 {
 
-	class Button 
-		: public Widget
-		, public std::enable_shared_from_this<Button>
+	class Button : public Widget
 	{
 	public:
 		Button(const math::Rectu rect);

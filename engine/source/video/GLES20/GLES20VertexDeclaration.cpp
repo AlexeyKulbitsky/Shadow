@@ -45,7 +45,12 @@ namespace sh
 				pugi::xml_attribute typeAttr = attributeNode.attribute("type");
 				name = typeAttr.as_string();
 
-				if (name == "vec3")
+				if (name == "vec4")
+				{
+					attribute.type = GL_FLOAT;
+					attribute.size = 4;
+				}
+				else if (name == "vec3")
 				{
 					attribute.type = GL_FLOAT;
 					attribute.size = 3;

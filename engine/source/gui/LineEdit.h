@@ -1,7 +1,6 @@
 #ifndef SHADOW_LINE_EDIT_INCLUDE
 #define SHADOW_LINE_EDIT_INCLUDE
 
-#include "GuiElement.h"
 #include "Text.h"
 
 namespace sh

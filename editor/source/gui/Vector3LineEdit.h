@@ -3,7 +3,7 @@
 
 #include <gui/FloatLineEdit.h>
 
-class Vector3LineEdit : public sh::gui::GuiElement
+class Vector3LineEdit : public sh::gui::Widget
 {
 public:
 	Vector3LineEdit();

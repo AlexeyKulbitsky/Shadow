@@ -13,23 +13,26 @@ namespace gui
 
 	Text::Text()
 	{
-
+		UpdateColor(math::Vector4f(1.0f, 1.0f, 1.0f, 0.0f));
 	}
 
 	Text::Text(const math::Rectu rect)
 	{
 		m_rect = rect;
+		UpdateColor(math::Vector4f(1.0f, 1.0f, 1.0f, 0.0f));
 	}
 
 	Text::Text(const String& text)
 	{
 		SetText(text);
+		UpdateColor(math::Vector4f(1.0f, 1.0f, 1.0f, 0.0f));
 	}
 
 	Text::Text(const math::Rectu rect, const String& text)
 	{
 		m_rect = rect;
 		SetText(text);
+		UpdateColor(math::Vector4f(1.0f, 1.0f, 1.0f, 0.0f));
 	}
 
 	Text::~Text()
@@ -95,27 +98,19 @@ namespace gui
 
 	void Text::SetSize( const math::Vector2u& size )
 	{
-		//const auto& pos = m_rect.upperLeftCorner;
-		//m_rect.Set(pos.x, pos.y, pos.x + size.x, pos.y + size.y);
-		GuiElement::SetSize(size);
+		Widget::SetSize(size);
 		UpdateTextGeometry();
 	}
 
 	void Text::SetWidth( u32 width )
 	{
-		//auto size = m_rect.GetSize();
-		//const auto& pos = m_rect.upperLeftCorner;
-		//m_rect.Set(pos.x, pos.y, pos.x + width, pos.y + size.y);
-		GuiElement::SetWidth(width);
+		Widget::SetWidth(width);
 		UpdateTextGeometry();
 	}
 
 	void Text::SetHeight( u32 height )
 	{
-		//auto size = m_rect.GetSize();
-		//const auto& pos = m_rect.upperLeftCorner;
-		//m_rect.Set(pos.x, pos.y, pos.x + size.x, pos.y + height);
-		GuiElement::SetHeight(height);
+		Widget::SetHeight(height);
 		UpdateTextGeometry();
 	}
 
