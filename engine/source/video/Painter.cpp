@@ -14,26 +14,31 @@ namespace sh
 	{
 		Painter::Painter()
 		{
-			m_linesVertexArray.reserve(5000);
+			
 			Driver* driver = Device::GetInstance()->GetDriver();
-
-			// Create lines batch
-			video::VertexBufferDecription desc;
-			desc.usage = USAGE_DYNAMIC;
-			m_linesRenderable.vertexBuffer = video::VertexBuffer::Create(desc);
-
-			sh::video::VertexDeclarationPtr vertexDeclaration = sh::video::VertexDeclarationPtr(new sh::video::VertexDeclaration());
-			sh::video::Attribute positionAttribute(AttributeSemantic::POSITION, AttributeType::FLOAT, 3U);
-			sh::video::Attribute colorAttribute(AttributeSemantic::COLOR, AttributeType::FLOAT, 3U);
-			vertexDeclaration->AddAttribute(positionAttribute);
-			vertexDeclaration->AddAttribute(colorAttribute);
-
-			m_linesRenderable.vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
-			m_linesRenderable.vertexBuffer->SetVertexDeclaration(vertexDeclaration);
 
 			sh::video::CommandBufferDescription commandBufferDesc;
 			commandBufferDesc.type = sh::COMMAND_BUFFER_TYPE_SECONDARY;
-			m_linesRenderable.commandBuffer = sh::video::CommandBuffer::Create(commandBufferDesc);
+			m_commandBuffer = sh::video::CommandBuffer::Create(commandBufferDesc);
+
+			// Create lines data
+			m_linesVertexArray.reserve(5000);
+			video::VertexBufferDecription desc;
+			desc.usage = USAGE_DYNAMIC;
+			m_linesVertexBuffer = video::VertexBuffer::Create(desc);
+			m_lines.linesBatches.reserve(100U);
+			m_lines.verticesCount = 0U;
+			
+			// Create triangles data
+			m_trianglesVertexArray.reserve(5000);
+			m_trianglesIndexArray.reserve(5000);
+			m_trianglesVertexBuffer = video::VertexBuffer::Create(desc);
+			video::IndexBufferDescription indexDesc;
+			indexDesc.indexType = IT_32_BIT;
+			indexDesc.usage = USAGE_DYNAMIC;
+			m_trianglesIndexBuffer = video::IndexBuffer::Create(indexDesc);
+			m_triangles.trianglesBatches.reserve(100U);
+			m_triangles.indicesCount = 0U;
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -42,19 +47,21 @@ namespace sh
 		{
 			m_material = material;
 
-			m_linesBatch.inputDeclaration = m_material->GetRenderPipeline()->GetVertexInputDeclaration()->Clone();
-			m_linesBatch.inputDeclaration->Assemble(*(m_linesRenderable.vertexBuffer->GetVertexDeclaration().get()));
-			m_material->GetRenderPipeline()->Init(m_linesBatch.inputDeclaration);
+			m_materials.push_back(material);
 
-			const auto& info = m_material->GetRenderPipeline()->GetAutoParamsInfo();
+			LinesBatch linesBatch;
+			linesBatch.materialIndex = m_materials.size() - 1;
+			linesBatch.startIndex = m_lines.verticesCount;
+			m_lines.linesBatches.push_back(linesBatch);
 
-			m_linesRenderable.params = sh::video::GpuParams::Create(info);
-			m_linesRenderable.params->GetParam("matWVP", m_linesRenderable.wvpMatrix);
-			m_linesRenderable.params->GetParam("color", m_linesRenderable.color);
+			TrianglesBatch trianglesBatch;
+			trianglesBatch.materialIndex = m_materials.size() - 1;
+			trianglesBatch.startIndex = m_triangles.indicesCount;
+			m_triangles.trianglesBatches.push_back(trianglesBatch);
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
-		
+
 		void Painter::SetCamera(const scene::CameraPtr& camera)
 		{
 			m_camera = camera;
@@ -64,27 +71,63 @@ namespace sh
 
 		void Painter::DrawLine(const math::Vector3f& a, const math::Vector3f& b)
 		{
-			// Start point position
-			m_linesVertexArray.push_back(a.x);
-			m_linesVertexArray.push_back(a.y);
-			m_linesVertexArray.push_back(a.z);
+			const auto& declaration = m_material->GetRenderPipeline()->GetVertexInputDeclaration();
+			const u32 attributesCount = declaration->GetAttributesCount();
 
-			// Start point color
-			m_linesVertexArray.push_back(1.0f);
-			m_linesVertexArray.push_back(0.0f);
-			m_linesVertexArray.push_back(0.0f);
+			for (u32 i = 0U; i < attributesCount; ++i)
+			{
+				switch (declaration->GetAttribute(i).semantic)
+				{
+					case AttributeSemantic::POSITION:
+					{
+						// Start point position
+						m_linesVertexArray.push_back(a.x);
+						m_linesVertexArray.push_back(a.y);
+						m_linesVertexArray.push_back(a.z);
+					}
+					break;
+					case AttributeSemantic::COLOR:
+					{
+						// Start point color
+						m_linesVertexArray.push_back(1.0f);
+						m_linesVertexArray.push_back(0.0f);
+						m_linesVertexArray.push_back(0.0f);
+					}
+					break;
+					default:
+						break;
+				}
+			}
 
-			// End point position
-			m_linesVertexArray.push_back(b.x);
-			m_linesVertexArray.push_back(b.y);
-			m_linesVertexArray.push_back(b.z);
 
-			// End point color
-			m_linesVertexArray.push_back(1.0f);
-			m_linesVertexArray.push_back(0.0f);
-			m_linesVertexArray.push_back(0.0f);
+			for (u32 i = 0U; i < attributesCount; ++i)
+			{
+				switch (declaration->GetAttribute(i).semantic)
+				{
+					case AttributeSemantic::POSITION:
+					{
+						// End point position
+						m_linesVertexArray.push_back(b.x);
+						m_linesVertexArray.push_back(b.y);
+						m_linesVertexArray.push_back(b.z);
+					}
+					break;
+					case AttributeSemantic::COLOR:
+					{
+						// End point color
+						m_linesVertexArray.push_back(1.0f);
+						m_linesVertexArray.push_back(0.0f);
+						m_linesVertexArray.push_back(0.0f);
+					}
+					break;
+					default:
+						break;
+				}
+			}
 
-			m_linesBatch.verticesCount += 2U;
+			const u32 idx = m_lines.linesBatches.size() - 1;
+			m_lines.linesBatches[idx].verticesCount += 2U;
+			m_lines.verticesCount += 2U;
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -149,38 +192,160 @@ namespace sh
 
 		void Painter::Flush()
 		{
-			const void* verticesPointer = m_linesVertexArray.data();
-			size_t verticesDataSize = m_linesVertexArray.size() * sizeof(float);
-			m_linesRenderable.vertexBuffer->SetData(0U, verticesDataSize, verticesPointer);
-			m_linesRenderable.vertexBuffer->SetVerticesCount(m_linesBatch.verticesCount);
-
-
 			sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
 			sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
-			sh::math::Matrix4f viewMatrix = camera->GetViewMatrix();
-			sh::math::Matrix4f projectionMatrix = camera->GetProjectionMatrix();
+			const sh::math::Matrix4f& viewMatrix = camera->GetViewMatrix();
+			const sh::math::Matrix4f& projectionMatrix = camera->GetProjectionMatrix();
 
-			sh::math::Matrix4f wvpMatrix = projectionMatrix * viewMatrix;
-			wvpMatrix.Transpose();
-			m_linesRenderable.wvpMatrix.Set(wvpMatrix);
-			m_linesRenderable.color.Set(math::Vector4f(1.0f, 0.0f, 0.0f, 1.0f));
-
-			m_linesRenderable.commandBuffer->Begin();
-
-			driver->SetRenderPipeline(m_material->GetRenderPipeline(), m_linesRenderable.commandBuffer);
-			driver->SetGpuParams(m_linesRenderable.params, m_linesRenderable.commandBuffer);
-			driver->SetVertexBuffer(m_linesRenderable.vertexBuffer, m_linesRenderable.commandBuffer);
-			driver->SetVertexDeclaration(m_linesBatch.inputDeclaration, m_linesRenderable.commandBuffer);
-			driver->SetTopology(TOP_LINE_LIST, m_linesRenderable.commandBuffer);
-			driver->Draw(0, m_linesRenderable.vertexBuffer->GetVerticesCount(), 1U, m_linesRenderable.commandBuffer);
-
-			m_linesRenderable.commandBuffer->End();
+			m_commandBuffer->Begin();
 
 
-			driver->SubmitCommandBuffer(m_linesRenderable.commandBuffer);
+			// Render lines
+			const void* verticesPointer = m_linesVertexArray.data();
+			size_t verticesDataSize = m_linesVertexArray.size() * sizeof(float);
+			m_linesVertexBuffer->SetData(0U, verticesDataSize, verticesPointer);
+			m_linesVertexBuffer->SetVerticesCount(m_lines.verticesCount);
 
+
+			for (u32 i = 0U; i < m_lines.linesBatches.size(); ++i)
+			{
+				const u32 materialIdx = m_lines.linesBatches[i].materialIndex;
+				auto& params = m_materials[materialIdx]->GetAutoParams();
+				for (u32 paramIdx = 0U; paramIdx < params->GetParamsCount(); ++paramIdx)
+				{
+					auto& param = params->GetParam(paramIdx);
+					switch (param.GetType())
+					{
+						case MaterialParamType::MatrixWorld:
+							break;
+						case MaterialParamType::MatrixView:
+							param.Set(viewMatrix);
+							break;
+						case MaterialParamType::MatrixViewRotation:
+						{
+							param.Set(camera->GetRotationMatrix());
+						}
+						break;
+						case MaterialParamType::MatrixViewRotationProjection:
+							param.Set(( projectionMatrix * camera->GetRotationMatrix() ).GetTransposed());
+							break;
+						case MaterialParamType::MatrixProjection:
+							param.Set(projectionMatrix);
+							break;
+						case MaterialParamType::MatrixViewProjection:
+						{
+							math::Matrix4f viewProjection = projectionMatrix * viewMatrix;
+							param.Set(viewProjection);
+						}
+						break;
+						case MaterialParamType::MatrixWorldViewProjection:
+						{
+							math::Matrix4f wvp = projectionMatrix * viewMatrix;
+							wvp.Transpose();
+							param.Set(wvp);
+						}
+						break;
+						default:
+							break;
+					}
+				}
+
+				driver->SetRenderPipeline(m_materials[materialIdx]->GetRenderPipeline(), m_commandBuffer);
+				driver->SetGpuParams(m_materials[materialIdx]->GetCommonGpuParams(), m_commandBuffer);
+				driver->SetGpuParams(m_materials[materialIdx]->GetAutoGpuParams(), m_commandBuffer);
+				driver->SetVertexBuffer(m_linesVertexBuffer, m_commandBuffer);
+				driver->SetVertexDeclaration(m_materials[materialIdx]->GetRenderPipeline()->GetVertexInputDeclaration(), m_commandBuffer);
+				driver->SetTopology(TOP_LINE_LIST, m_commandBuffer);
+				driver->Draw(m_lines.linesBatches[i].startIndex, 
+							 m_lines.linesBatches[i].verticesCount, 1U, m_commandBuffer);
+
+			}
+
+
+
+
+
+			/*
+
+			const void* verticesPointer = m_linesVertexArray.data();
+			size_t verticesDataSize = m_linesVertexArray.size() * sizeof(float);
+			m_linesVertexBuffer->SetData(0U, verticesDataSize, verticesPointer);
+			m_linesVertexBuffer->SetVerticesCount(m_linesBatch.verticesCount);
+
+
+			
+
+
+			auto& params = m_material->GetAutoParams();
+			for (u32 paramIdx = 0U; paramIdx < params->GetParamsCount(); ++paramIdx)
+			{
+				auto& param = params->GetParam(paramIdx);
+				switch (param.GetType())
+				{
+					case MaterialParamType::MatrixWorld:
+						break;
+					case MaterialParamType::MatrixView:
+						param.Set(viewMatrix);
+						break;
+					case MaterialParamType::MatrixViewRotation:
+					{
+						param.Set(camera->GetRotationMatrix());
+					}
+					break;
+					case MaterialParamType::MatrixViewRotationProjection:
+						param.Set(( projectionMatrix * camera->GetRotationMatrix() ).GetTransposed());
+						break;
+					case MaterialParamType::MatrixProjection:
+						param.Set(projectionMatrix);
+						break;
+					case MaterialParamType::MatrixViewProjection:
+					{
+						math::Matrix4f viewProjection = projectionMatrix * viewMatrix;
+						param.Set(viewProjection);
+					}
+					break;
+					case MaterialParamType::MatrixWorldViewProjection:
+					{
+						math::Matrix4f wvp = projectionMatrix * viewMatrix;
+						wvp.Transpose();
+						param.Set(wvp);
+					}
+					break;
+					default:
+						break;
+				}
+			}
+
+
+			m_commandBuffer->Begin();
+
+			driver->SetRenderPipeline(m_material->GetRenderPipeline(), m_commandBuffer);
+			driver->SetGpuParams(m_material->GetCommonGpuParams(), m_commandBuffer);
+			driver->SetGpuParams(m_material->GetAutoGpuParams(), m_commandBuffer);
+			driver->SetVertexBuffer(m_linesVertexBuffer, m_commandBuffer);
+			driver->SetVertexDeclaration(m_material->GetRenderPipeline()->GetVertexInputDeclaration(), m_commandBuffer);
+			driver->SetTopology(TOP_LINE_LIST, m_commandBuffer);
+			driver->Draw(0, m_linesVertexBuffer->GetVerticesCount(), 1U, m_commandBuffer);
+
+			*/
+
+			m_commandBuffer->End();
+
+
+			driver->SubmitCommandBuffer(m_commandBuffer);
+
+			// Clear lines data
 			m_linesVertexArray.clear();
-			m_linesBatch.verticesCount = 0U;
+			m_lines.linesBatches.clear();
+			m_lines.verticesCount = 0U;
+
+			// Clear triangles data
+			m_trianglesVertexArray.clear();
+			m_trianglesIndexArray.clear();
+			m_triangles.trianglesBatches.clear();
+			m_triangles.indicesCount = 0U;
+			
+			//m_linesBatch.verticesCount = 0U;
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////

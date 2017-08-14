@@ -27,29 +27,47 @@ namespace sh
 
 		private:
 			MaterialPtr m_material;
+
+			std::vector<MaterialPtr> m_materials;
 			scene::CameraPtr m_camera;
 
+			sh::video::CommandBufferPtr m_commandBuffer;
+
+			// Lines geometry
 			std::vector<float> m_linesVertexArray;
-			VertexBufferPtr m_linesBuffer;
-
-			struct LinesRenderable
-			{
-				VertexBufferPtr vertexBuffer;
-				sh::video::GpuParamsPtr params;
-				sh::video::GpuParamMatrix4f wvpMatrix;
-				sh::video::GpuParamVector4f color;
-				sh::video::CommandBufferPtr commandBuffer;
-			};
-
+			VertexBufferPtr m_linesVertexBuffer;
 			struct LinesBatch
 			{
-				VertexInputDeclarationPtr inputDeclaration;
 				u32 startIndex = 0U;
 				u32 verticesCount = 0U;
-
+				u32 materialIndex = 0U;
 			};
-			LinesRenderable m_linesRenderable;
-			LinesBatch m_linesBatch;
+			struct Lines
+			{
+				std::vector<LinesBatch> linesBatches;
+				u32 verticesCount;
+			};
+			Lines m_lines;
+
+			// Triangles geometry
+			std::vector<float> m_trianglesVertexArray;
+			std::vector<u32> m_trianglesIndexArray;
+			VertexBufferPtr m_trianglesVertexBuffer;
+			IndexBufferPtr m_trianglesIndexBuffer;
+			struct TrianglesBatch
+			{
+				u32 startIndex = 0U;
+				u32 indicesCount = 0U;
+				u32 materialIndex = 0U;
+			};
+			struct Triangles
+			{
+				std::vector<TrianglesBatch> trianglesBatches;
+				u32 indicesCount;
+			};
+			Triangles m_triangles;
+			
+			
 		};
 	}
 }

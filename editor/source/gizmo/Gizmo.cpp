@@ -8,7 +8,9 @@ Gizmo::Gizmo()
 	m_material->SetRenderTechnique("editor_base_color.xml");
 	const auto& info = m_material->GetRenderPipeline()->GetAutoParamsInfo();
 
-	sh::Device::GetInstance()->GetDriver()->GetPainter()->SetMaterial(m_material);
+	m_aabbMaterial.reset(new sh::video::Material());
+	m_aabbMaterial->SetRenderTechnique("vertex_color.xml");
+	
 
 	float radius = 0.1f;
 	float height = 3.0f;
@@ -186,6 +188,7 @@ void Gizmo::OnMouseReleased(sh::u32 x, sh::u32 y)
 
 void Gizmo::DrawBoundingBox()
 {
+	sh::Device::GetInstance()->GetDriver()->GetPainter()->SetMaterial(m_aabbMaterial);
 	auto driver = sh::Device::GetInstance()->GetDriver();
 	auto renderCompoent = static_cast<sh::RenderComponent*>(m_entity->GetComponent(sh::Component::Type::Render));
 	driver->GetPainter()->DrawBox(renderCompoent->GetModel()->GetBoundingBox());

@@ -149,8 +149,12 @@ namespace sh
 			{			
 				RenderPipelinePtr pipeline = technique->GetRenderPipeline(i);
 				m_renderPipelines[i] = pipeline;
+
 				m_commonGpuParams = GpuParams::Create(pipeline->GetParamsInfo());
-				m_params.reset(new MaterialParams(m_commonGpuParams));
+				m_commonParams.reset(new MaterialParams(m_commonGpuParams));
+
+				m_autoGpuParams = GpuParams::Create(pipeline->GetAutoParamsInfo());
+				m_autoParams.reset(new MaterialParams(m_autoGpuParams));
 			}
 		}
 

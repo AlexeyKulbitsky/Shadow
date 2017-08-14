@@ -6,9 +6,13 @@ namespace sh
 	{
 		void GLES20VertexDeclaration::Load(const pugi::xml_node &node)
 		{
+			// All attributes will be loaded as they are declared in technique
+			// Othewise they can be overriden while assigning material to loaded mesh
+			// In that case this declaration will take offsets and stride from meshe's vetex declaration
 			if (node.empty())
 				return;
 
+			stride = 0U;
 			pugi::xml_node attributeNode = node.first_child();
 			while (!attributeNode.empty())
 			{
@@ -60,6 +64,8 @@ namespace sh
 					attribute.type = GL_FLOAT;
 					attribute.size = 2;
 				}
+				attribute.pointer = reinterpret_cast<const void*>(stride);
+				stride += attribute.size * sizeof(float);
 
 				AddAttribute(attribute);
 

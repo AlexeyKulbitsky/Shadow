@@ -82,6 +82,10 @@ namespace sh
 			size_t m_stride = 0U;
 		};
 
+		struct InputAttribute
+		{
+			AttributeSemantic semantic;
+		};
 
 		class VertexInputDeclaration
 		{
@@ -91,6 +95,8 @@ namespace sh
 			virtual VertexInputDeclarationPtr Clone() { return nullptr; }
 			virtual void Assemble(VertexDeclaration& declaration){}
 			virtual void SetShaderProgram(ShaderProgram* shaderProgram){}
+			virtual u32 GetAttributesCount() const { return 0U; }
+			virtual const InputAttribute& GetAttribute(u32 index) const = 0;
 
 			static VertexInputDeclarationPtr Create();
 		};

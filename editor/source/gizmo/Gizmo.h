@@ -54,6 +54,7 @@ protected:
 private:
 	Axis m_axises[3];
 	sh::video::MaterialPtr m_material;
+	sh::video::MaterialPtr m_aabbMaterial;
 };
 
 #endif

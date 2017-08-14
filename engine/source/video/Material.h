@@ -24,8 +24,15 @@ namespace sh
 			const RenderPipelinePtr& GetRenderPipeline(size_t index = 0U) { return m_renderPipelines[index]; }
 			const String& GetName() const { return m_name; }
 
+			// Common params (usually constant) that will be sent to GPU
 			const GpuParamsPtr& GetCommonGpuParams() const { return m_commonGpuParams; }
-			const MaterialParamsPtr& GetParams() const { return m_params; }
+			// Common params (usually constant) that can be modified by user
+			const MaterialParamsPtr& GetParams() const { return m_commonParams; }
+
+			// Auto params (usually updated each frame such as matrices, etc.) that will be sent to GPU
+			const GpuParamsPtr& GetAutoGpuParams() const { return m_autoGpuParams; }
+			// Auto params (usually updated each frame such as matrices, etc.) that can be modified by user
+			const MaterialParamsPtr& GetAutoParams() const { return m_autoParams; }
 
 		private:
 			String m_name = "default";
@@ -33,7 +40,10 @@ namespace sh
 			std::vector<RenderPipelinePtr> m_renderPipelines;
 
 			GpuParamsPtr m_commonGpuParams;
-			MaterialParamsPtr m_params;
+			MaterialParamsPtr m_commonParams;
+
+			GpuParamsPtr m_autoGpuParams;
+			MaterialParamsPtr m_autoParams;
 		};
 	}
 }

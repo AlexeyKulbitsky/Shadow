@@ -39,21 +39,25 @@ namespace gui
 	void ComboBox::SetPosition(u32 x, u32 y)
 	{
 		m_button->SetPosition(x, y);
+		Widget::SetPosition(x, y);
 	}
 
 	void ComboBox::SetSize(const math::Vector2u& size)
 	{
 		m_button->SetSize(size);
+		Widget::SetSize(size);
 	}
 
 	void ComboBox::SetWidth(u32 width)
 	{
 		m_button->SetWidth(width);
+		Widget::SetWidth(width);
 	}
 
 	void ComboBox::SetHeight(u32 height)
 	{
 		m_button->SetHeight(height);
+		Widget::SetHeight(height);
 	}
 
 	bool ComboBox::ProcessInput(u32 x, u32 y, MouseEventType type)

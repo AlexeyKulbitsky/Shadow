@@ -12,14 +12,14 @@ namespace sh
 		class ShaderProgram;
 		class GLES20ShaderProgram;
 
-		struct GLES20VertexAttribute
+		struct GLES20VertexAttribute : public InputAttribute
 		{
 			u32 index;
 			s32 size;
 			u32 type;
 			const void* pointer;
 
-			AttributeSemantic semantic;
+			//AttributeSemantic semantic;
 			std::string name;
 		};
 
@@ -41,6 +41,8 @@ namespace sh
 			virtual void Init() override;
 			virtual VertexInputDeclarationPtr Clone() override;
 			virtual void Assemble(VertexDeclaration& declatarion) override;
+			virtual u32 GetAttributesCount() const override { return attributes.size(); }
+			virtual const InputAttribute& GetAttribute(u32 index) const { return attributes[index]; }
 
 		private:
 			std::vector<GLES20VertexAttribute> attributes;
