@@ -53,7 +53,8 @@ namespace gui
 	void GuiManager::Render()
 	{
 		video::Driver* driver = Device::GetInstance()->GetDriver();
-		
+		auto painter = driver->GetPainter();
+
 		m_mainBatchData.vertices.clear();
 		m_mainBatchData.indices.clear();
 		m_mainBatchData.verticesCount = 0U;
@@ -64,10 +65,10 @@ namespace gui
 		if (m_menuBar)
 			m_menuBar->GetGeometry(m_mainBatchData);
 
-		for (u32 i = 0U; i < m_children.size(); ++i)
-		{
-			m_children[i]->GetGeometry(m_mainBatchData);
-		}
+		//for (u32 i = 0U; i < m_children.size(); ++i)
+		//{
+		//	m_children[i]->GetGeometry(m_mainBatchData);
+		//}
 
 		const void* verticesPointer = m_mainBatchData.vertices.data();
 		size_t verticesDataSize = m_mainBatchData.vertices.size() * sizeof(float);
@@ -109,10 +110,10 @@ namespace gui
 		if (m_menuBar)
 			m_menuBar->GetTextGeometry(m_textBatchData);
 
-		for (u32 i = 0U; i < m_children.size(); ++i)
-		{
-			m_children[i]->GetTextGeometry(m_textBatchData);
-		}
+		//for (u32 i = 0U; i < m_children.size(); ++i)
+		//{
+		//	m_children[i]->GetTextGeometry(m_textBatchData);
+		//}
 
 		verticesPointer = m_textBatchData.vertices.data();
 		verticesDataSize = m_textBatchData.vertices.size() * sizeof(float);
@@ -140,6 +141,14 @@ namespace gui
 
 			driver->SubmitCommandBuffer(m_textBatch.commandBuffer);
 		}
+
+
+		for (u32 i = 0U; i < m_children.size() - 1; ++i)
+		{
+			m_children[i]->Render(painter);
+		}
+
+		painter->Flush();
 	}
 
 	void GuiManager::CreateMenuBar()
@@ -211,6 +220,9 @@ namespace gui
 		const auto& mat = sh::Device::GetInstance()->GetSceneManager()->GetCamera()->Get2DProjectionMatrix();
 		m_mainBatch.orthoMatrix.Set(mat);
 		m_textBatch.orthoMatrix.Set(mat);
+
+		m_defaultMaterial->GetCommonGpuParams()->SetParam("orthoMat", mat);
+		m_textMaterial->GetCommonGpuParams()->SetParam("orthoMat", mat);
 	}
 
 	void GuiManager::SetStyle(const StylePtr& style)
@@ -269,6 +281,9 @@ namespace gui
 		const auto& mat = sh::Device::GetInstance()->GetSceneManager()->GetCamera()->Get2DProjectionMatrix();
 		m_mainBatch.orthoMatrix.Set(mat);
 
+		m_defaultMaterial = m_mainBatch.material;
+		m_defaultMaterial->GetCommonGpuParams()->SetParam("orthoMat", mat);
+
 		sh::video::VertexDeclarationPtr vertexDeclaration = sh::video::VertexDeclarationPtr(new sh::video::VertexDeclaration());
 		sh::video::Attribute positionAttribute(AttributeSemantic::POSITION, AttributeType::FLOAT, 3U);
 		sh::video::Attribute uvAttribute(AttributeSemantic::UV, AttributeType::FLOAT, 2U);
@@ -310,6 +325,9 @@ namespace gui
 		m_textBatch.material->GetCommonGpuParams()->GetParam("orthoMat", m_textBatch.orthoMatrix);
 		const auto& mat = sh::Device::GetInstance()->GetSceneManager()->GetCamera()->Get2DProjectionMatrix();
 		m_textBatch.orthoMatrix.Set(mat);
+
+		m_textMaterial = m_textBatch.material;
+		m_textMaterial->GetCommonGpuParams()->SetParam("orthoMat", mat);
 
 		sh::video::VertexDeclarationPtr vertexDeclaration = sh::video::VertexDeclarationPtr(new sh::video::VertexDeclaration());
 		sh::video::Attribute positionAttribute(AttributeSemantic::POSITION, AttributeType::FLOAT, 3U);

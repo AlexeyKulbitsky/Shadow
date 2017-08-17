@@ -2,6 +2,12 @@
 
 TransformWidget::TransformWidget()
 {
+	sh::gui::ComboBoxPtr comboBox(new sh::gui::ComboBox());
+	comboBox->AddItem("Item 1");
+	comboBox->AddItem("Item 2");
+	comboBox->AddItem("Item 3");
+	comboBox->AddItem("Item 4");
+
 	// Position part
 	sh::gui::HorizontalLayoutPtr positionLayout(new sh::gui::HorizontalLayout());
 	sh::gui::LabelPtr positionLabel(new sh::gui::Label("Position"));
@@ -25,6 +31,7 @@ TransformWidget::TransformWidget()
 
 	// Common layout
 	sh::gui::VerticalLayoutPtr layout(new sh::gui::VerticalLayout());
+	layout->AddWidget(comboBox);
 	layout->AddLayout(positionLayout);
 	layout->AddLayout(rotationLayout);
 	layout->AddLayout(scaleLayout);

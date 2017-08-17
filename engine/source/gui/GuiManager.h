@@ -60,6 +60,9 @@ namespace gui
 		void SetStyle(const StylePtr& style);
 		const StylePtr& GetStyle() const { return m_style; }
 
+		const video::MaterialPtr& GetDefaultMaterial() const { return m_defaultMaterial; }
+		const video::MaterialPtr& GetTextMaterial() const { return m_textMaterial; }
+
 		// Events
 		bool ProcessInput(u32 x, u32 y, MouseEventType type);
 		bool ProcessKeyboardInput(KeyboardEventType type, KeyCode code);
@@ -82,6 +85,11 @@ namespace gui
 		std::vector<SPtr<Widget>> m_children;
 
 		StylePtr m_style;
+
+		///////////////////////////////////
+
+		video::MaterialPtr m_defaultMaterial;
+		video::MaterialPtr m_textMaterial;
 	};
 
 } // gui

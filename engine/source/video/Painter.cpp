@@ -132,7 +132,7 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		void Painter::DrawRect()
+		void Painter::DrawRect(const math::Rectu& rect, const gui::SpritePtr& sprite)
 		{
 
 		}
@@ -186,6 +186,22 @@ namespace sh
 		void Painter::DrawText()
 		{
 
+		}
+
+		/////////////////////////////////////////////////////////////////////////////////////
+
+		void Painter::DrawTriangleList(const std::vector<float>& vertices, const std::vector<u32>& indices, u32 verticesCount)
+		{
+			m_trianglesVertexArray.insert(m_trianglesVertexArray.end(), vertices.begin(), vertices.end());
+			const u32 idx = m_lines.linesBatches.size() - 1;
+			const u32 startVertex = m_triangles.verticesCount;
+			std::transform(indices.begin(), indices.end(), std::back_inserter(m_trianglesIndexArray),
+						   [startVertex](u32 value){ return value + startVertex; });
+
+			m_triangles.trianglesBatches[idx].verticesCount += verticesCount;
+			m_triangles.trianglesBatches[idx].indicesCount += indices.size();
+			m_triangles.verticesCount += verticesCount;
+			m_triangles.indicesCount += indices.size();
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -263,6 +279,76 @@ namespace sh
 
 
 
+
+
+
+
+
+			// Render triangles
+			verticesPointer = m_trianglesVertexArray.data();
+			const void* indicesPointer = m_trianglesIndexArray.data();
+			verticesDataSize = m_trianglesVertexArray.size() * sizeof(float);
+			size_t indicesDataSize = m_trianglesIndexArray.size() * sizeof(u32);
+			m_trianglesVertexBuffer->SetData(0U, verticesDataSize, verticesPointer);
+			m_trianglesVertexBuffer->SetVerticesCount(m_triangles.verticesCount);
+			m_trianglesIndexBuffer->SetData(0U, indicesDataSize, indicesPointer);
+			m_trianglesIndexBuffer->SetIndicesCount(m_triangles.indicesCount);
+
+			for (u32 i = 0U; i < m_triangles.trianglesBatches.size(); ++i)
+			{
+				const u32 materialIdx = m_triangles.trianglesBatches[i].materialIndex;
+				auto& params = m_materials[materialIdx]->GetAutoParams();
+				for (u32 paramIdx = 0U; paramIdx < params->GetParamsCount(); ++paramIdx)
+				{
+					auto& param = params->GetParam(paramIdx);
+					switch (param.GetType())
+					{
+						case MaterialParamType::MatrixWorld:
+							break;
+						case MaterialParamType::MatrixView:
+							param.Set(viewMatrix);
+							break;
+						case MaterialParamType::MatrixViewRotation:
+						{
+							param.Set(camera->GetRotationMatrix());
+						}
+						break;
+						case MaterialParamType::MatrixViewRotationProjection:
+							param.Set(( projectionMatrix * camera->GetRotationMatrix() ).GetTransposed());
+							break;
+						case MaterialParamType::MatrixProjection:
+							param.Set(projectionMatrix);
+							break;
+						case MaterialParamType::MatrixViewProjection:
+						{
+							math::Matrix4f viewProjection = projectionMatrix * viewMatrix;
+							param.Set(viewProjection);
+						}
+						break;
+						case MaterialParamType::MatrixWorldViewProjection:
+						{
+							math::Matrix4f wvp = projectionMatrix * viewMatrix;
+							wvp.Transpose();
+							param.Set(wvp);
+						}
+						break;
+						default:
+							break;
+					}
+				}
+
+				driver->SetRenderPipeline(m_materials[materialIdx]->GetRenderPipeline(), m_commandBuffer);
+				driver->SetGpuParams(m_materials[materialIdx]->GetCommonGpuParams(), m_commandBuffer);
+				driver->SetGpuParams(m_materials[materialIdx]->GetAutoGpuParams(), m_commandBuffer);
+				driver->SetVertexBuffer(m_trianglesVertexBuffer, m_commandBuffer);
+				driver->SetIndexBuffer(m_trianglesIndexBuffer, m_commandBuffer);
+				driver->SetVertexDeclaration(m_materials[materialIdx]->GetRenderPipeline()->GetVertexInputDeclaration(), m_commandBuffer);
+				driver->SetTopology(TOP_TRIANGLE_LIST, m_commandBuffer);
+				driver->DrawIndexed(m_triangles.trianglesBatches[i].startIndex,
+									m_triangles.trianglesBatches[i].indicesCount,
+									1U,
+									m_commandBuffer);
+			}
 
 
 			/*
@@ -344,6 +430,9 @@ namespace sh
 			m_trianglesIndexArray.clear();
 			m_triangles.trianglesBatches.clear();
 			m_triangles.indicesCount = 0U;
+			m_triangles.verticesCount = 0U;
+
+			m_materials.clear();
 			
 			//m_linesBatch.verticesCount = 0U;
 		}

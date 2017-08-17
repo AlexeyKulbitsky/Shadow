@@ -61,6 +61,9 @@ namespace video
 		template<typename T>
 		void GetParam(const String& name, TGpuParam<T>& param);
 
+		template<typename T>
+		void SetParam(const String& name, const T& value);
+
 		const u8* GetData() const { return m_data; }
 		const SPtr<GpuParamsDescription>& GetDescription(ShaderType shaderType) { return m_paramsDescriptions[shaderType]; }
 
@@ -129,6 +132,14 @@ namespace video
 				return;
 			}
 		}		
+	}
+
+	template<typename T>
+	inline void GpuParams::SetParam(const String& name, const T& value)
+	{
+		TGpuParam<T> param;
+		GetParam(name, param);
+		param.Set(value);
 	}
 
 

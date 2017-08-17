@@ -30,15 +30,16 @@ namespace gui
 		void SetLayout(const LayoutPtr& layout);
 		const LayoutPtr& GetLayout() const { return m_layout; }
 
-		virtual void Load(const pugi::xml_node& node)/* override*/;
-		virtual void GetGeometry(GuiBatchData& data)/* override*/;
-		virtual void GetTextGeometry(GuiBatchData& data)/* override*/;
-		virtual void SetPosition(u32 x, u32 y)/* override*/;
-		virtual void SetSize(const math::Vector2u& size)/* override*/;
-		virtual void SetWidth(u32 width)/* override*/;
-		virtual void SetHeight(u32 height)/* override*/;
-		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type)/* override*/;
-		virtual bool ProcessKeyboardInput(KeyboardEventType type, KeyCode code)/* override*/;
+		virtual void Load(const pugi::xml_node& node);
+		virtual void GetGeometry(GuiBatchData& data);
+		virtual void GetTextGeometry(GuiBatchData& data);
+		virtual void Render(video::Painter* painter) { }
+		virtual void SetPosition(u32 x, u32 y);
+		virtual void SetSize(const math::Vector2u& size);
+		virtual void SetWidth(u32 width);
+		virtual void SetHeight(u32 height);
+		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type);
+		virtual bool ProcessKeyboardInput(KeyboardEventType type, KeyCode code);
 
 		virtual void SetMargins(u32 top, u32 right, u32 bottom, u32 left);
 

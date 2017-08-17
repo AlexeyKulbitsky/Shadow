@@ -80,7 +80,7 @@ namespace gui
 		data.vertices.insert(data.vertices.end(), m_batchData.begin(), m_batchData.end());
 		
 		const u32 count = data.verticesCount;
-		
+
 		data.indices.push_back(count);
 		data.indices.push_back(count + 1);
 		data.indices.push_back(count + 6);
@@ -141,6 +141,21 @@ namespace gui
 		{
 			m_layout->GetTextGeometry(data);
 		}
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////
+
+	void Window::Render(video::Painter* painter)
+	{
+		GuiBatchData mainBatchData;
+		GetGeometry(mainBatchData);
+		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
+		painter->DrawTriangleList(mainBatchData.vertices, mainBatchData.indices, mainBatchData.verticesCount);
+
+		GuiBatchData textBatchData;
+		GetTextGeometry(textBatchData);
+		painter->SetMaterial(GuiManager::GetInstance()->GetTextMaterial());
+		painter->DrawTriangleList(textBatchData.vertices, textBatchData.indices, textBatchData.verticesCount);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////
