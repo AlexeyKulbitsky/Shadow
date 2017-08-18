@@ -2,6 +2,8 @@
 #include "Layout.h"
 #include "GuiManager.h"
 
+#include "../Device.h"
+
 namespace sh
 {
 
@@ -55,6 +57,19 @@ namespace gui
 			return;
 
 		m_layout->GetTextGeometry(data);
+	}
+
+	void Widget::Render(video::Painter* painter)
+	{
+		GuiBatchData mainBatchData;
+		GetGeometry(mainBatchData);
+		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
+		painter->DrawTriangleList(mainBatchData.vertices, mainBatchData.indices, mainBatchData.verticesCount);
+
+		GuiBatchData textBatchData;
+		GetTextGeometry(textBatchData);
+		painter->SetMaterial(GuiManager::GetInstance()->GetTextMaterial());
+		painter->DrawTriangleList(textBatchData.vertices, textBatchData.indices, textBatchData.verticesCount);
 	}
 
 	void Widget::SetPosition(u32 x, u32 y)

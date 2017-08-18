@@ -68,15 +68,15 @@ namespace gui
 		bool ProcessKeyboardInput(KeyboardEventType type, KeyCode code);
 
 	private:
-		void InitMainBatch();
-		void InitTextBatch();
+		//void InitMainBatch();
+		//void InitTextBatch();
 
 	private:
-		GuiBatchData m_mainBatchData;
-		GuiBatch m_mainBatch;
+		//GuiBatchData m_mainBatchData;
+		//GuiBatch m_mainBatch;
 
-		GuiBatchData m_textBatchData;
-		GuiBatch m_textBatch;
+		//GuiBatchData m_textBatchData;
+		//GuiBatch m_textBatch;
 
 		FontPtr m_font;
 

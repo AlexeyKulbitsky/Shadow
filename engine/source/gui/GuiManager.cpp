@@ -41,8 +41,18 @@ namespace gui
 
 	void GuiManager::Init()
 	{
-		InitMainBatch();
-		InitTextBatch();
+		//InitMainBatch();
+		//InitTextBatch();
+		
+		const auto& mat = sh::Device::GetInstance()->GetSceneManager()->GetCamera()->Get2DProjectionMatrix();
+
+		m_defaultMaterial.reset(new video::Material());
+		m_defaultMaterial->SetRenderTechnique("ui_base.xml");
+		m_defaultMaterial->GetCommonGpuParams()->SetParam("orthoMat", mat);
+
+		m_textMaterial.reset(new video::Material());
+		m_textMaterial->SetRenderTechnique("text_base.xml");
+		m_textMaterial->GetCommonGpuParams()->SetParam("orthoMat", mat);
 	}
 
 	void GuiManager::Update(u32 delta)
@@ -55,6 +65,7 @@ namespace gui
 		video::Driver* driver = Device::GetInstance()->GetDriver();
 		auto painter = driver->GetPainter();
 
+#if 0
 		m_mainBatchData.vertices.clear();
 		m_mainBatchData.indices.clear();
 		m_mainBatchData.verticesCount = 0U;
@@ -141,12 +152,18 @@ namespace gui
 
 			driver->SubmitCommandBuffer(m_textBatch.commandBuffer);
 		}
+#endif
 
-
-		for (u32 i = 0U; i < m_children.size() - 1; ++i)
+		for (u32 i = 0U; i < m_children.size(); ++i)
 		{
 			m_children[i]->Render(painter);
 		}
+
+		if (m_toolBar)
+			m_toolBar->Render(painter);
+
+		if (m_menuBar)
+			m_menuBar->Render(painter);
 
 		painter->Flush();
 	}
@@ -178,7 +195,8 @@ namespace gui
 		sh::video::TexturePtr texture = video::TextureLoader::GetInstance()->GetWhiteTexture();
 		SH_ASSERT(!!texture, "Can not load texture!");
 
-		m_mainBatch.material->GetCommonGpuParams()->SetSampler(ST_FRAGMENT, "diffuse", texture);
+		m_defaultMaterial->GetCommonGpuParams()->SetSampler(ST_FRAGMENT, "diffuse", texture);
+		//m_mainBatch.material->GetCommonGpuParams()->SetSampler(ST_FRAGMENT, "diffuse", texture);
 
 		child = doc.child("sprites");
 		SpriteManager::GetInstance()->Load(child);
@@ -212,14 +230,15 @@ namespace gui
 		const auto& texture = m_font->GetTextureAtlas();
 		SH_ASSERT(!!texture, "Can not set empty font to Gui manager!");
 
-		m_textBatch.material->GetCommonGpuParams()->SetSampler(ST_FRAGMENT, "fontAtlas", texture);
+		m_textMaterial->GetCommonGpuParams()->SetSampler(ST_FRAGMENT, "fontAtlas", texture);
+		//m_textBatch.material->GetCommonGpuParams()->SetSampler(ST_FRAGMENT, "fontAtlas", texture);
 	}
 
 	void GuiManager::UpdateMatrices()
 	{
 		const auto& mat = sh::Device::GetInstance()->GetSceneManager()->GetCamera()->Get2DProjectionMatrix();
-		m_mainBatch.orthoMatrix.Set(mat);
-		m_textBatch.orthoMatrix.Set(mat);
+		//m_mainBatch.orthoMatrix.Set(mat);
+		//m_textBatch.orthoMatrix.Set(mat);
 
 		m_defaultMaterial->GetCommonGpuParams()->SetParam("orthoMat", mat);
 		m_textMaterial->GetCommonGpuParams()->SetParam("orthoMat", mat);
@@ -228,8 +247,10 @@ namespace gui
 	void GuiManager::SetStyle(const StylePtr& style)
 	{ 
 		m_style = style; 
-		m_mainBatch.material->GetCommonGpuParams()->SetSampler(
+		m_defaultMaterial->GetCommonGpuParams()->SetSampler(
 			ST_FRAGMENT, "diffuse", m_style->GetTexure());
+		//m_mainBatch.material->GetCommonGpuParams()->SetSampler(
+		//	ST_FRAGMENT, "diffuse", m_style->GetTexure());
 	}
 
 	bool GuiManager::ProcessInput(u32 x, u32 y, MouseEventType type)
@@ -263,6 +284,8 @@ namespace gui
 		}
 		return false;
 	}
+
+#if 0
 
 	void GuiManager::InitMainBatch()
 	{
@@ -332,8 +355,10 @@ namespace gui
 		sh::video::VertexDeclarationPtr vertexDeclaration = sh::video::VertexDeclarationPtr(new sh::video::VertexDeclaration());
 		sh::video::Attribute positionAttribute(AttributeSemantic::POSITION, AttributeType::FLOAT, 3U);
 		sh::video::Attribute uvAttribute(AttributeSemantic::UV, AttributeType::FLOAT, 2U);
+		sh::video::Attribute colorAttribute(AttributeSemantic::COLOR, AttributeType::FLOAT, 4U);
 		vertexDeclaration->AddAttribute(positionAttribute);	
 		vertexDeclaration->AddAttribute(uvAttribute);
+		vertexDeclaration->AddAttribute(colorAttribute);
 
 		m_textBatch.vertexBuffer->SetVertexSize(vertexDeclaration->GetStride());
 		m_textBatch.vertexBuffer->SetVertexDeclaration(vertexDeclaration);
@@ -351,6 +376,8 @@ namespace gui
 		m_textBatchData.vertices.reserve(rectSizeForVertices * 1000U);
 		m_textBatchData.indices.reserve(6 * 1000U);
 	}
+
+#endif
 
 } // gui
 

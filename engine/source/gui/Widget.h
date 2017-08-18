@@ -33,7 +33,7 @@ namespace gui
 		virtual void Load(const pugi::xml_node& node);
 		virtual void GetGeometry(GuiBatchData& data);
 		virtual void GetTextGeometry(GuiBatchData& data);
-		virtual void Render(video::Painter* painter) { }
+		virtual void Render(video::Painter* painter);
 		virtual void SetPosition(u32 x, u32 y);
 		virtual void SetSize(const math::Vector2u& size);
 		virtual void SetWidth(u32 width);

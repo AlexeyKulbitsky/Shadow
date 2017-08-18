@@ -479,7 +479,7 @@ void GLES20Driver::Draw( u32 offset, u32 verticesCount, u32 instancesCount, cons
 
 void GLES20Driver::DrawIndexed( u32 offset, u32 indicesCount, u32 instancesCount, const CommandBufferPtr& )
 {
-	glDrawElements(m_currentTopology, indicesCount, GL_UNSIGNED_INT, (void*)offset);
+	glDrawElements(m_currentTopology, indicesCount, GL_UNSIGNED_INT, (void*)(offset * sizeof(u32)));
 }
 
 ////////////////////////////////////////////////////////////////////////

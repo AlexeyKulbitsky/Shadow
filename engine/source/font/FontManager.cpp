@@ -39,7 +39,7 @@ namespace sh
 			textureWidth <<= 1; 
 		u32 textureHeight = textureWidth; // make square texture with size power of 2
 
-		char* finalBuffer = new char[textureWidth * textureHeight];
+		char* finalBuffer = new char[textureWidth * textureHeight * 4];
 		int pen_x = 0, pen_y = 0;
 
 		for (int i = 0; i < 127; ++i)
@@ -59,7 +59,10 @@ namespace sh
 				{
 					int x = pen_x + col;
 					int y = pen_y + row;
-					finalBuffer[y * textureWidth + x] = bmp->buffer[row * bmp->pitch + col];
+					finalBuffer[y * textureWidth * 4 + x * 4] = bmp->buffer[row * bmp->pitch + col];
+					finalBuffer[y * textureWidth * 4 + x * 4 + 1] = bmp->buffer[row * bmp->pitch + col];
+					finalBuffer[y * textureWidth * 4 + x * 4 + 2] = bmp->buffer[row * bmp->pitch + col];
+					finalBuffer[y * textureWidth * 4 + x * 4 + 3] = bmp->buffer[row * bmp->pitch + col];
 				}
 			}
 
@@ -83,7 +86,7 @@ namespace sh
 		textureDesc.type = TEX_TYPE_TEXTURE_2D;
 		textureDesc.width = textureWidth;
 		textureDesc.height = textureHeight;
-		textureDesc.format = TextureFormat::ALPHA;
+		textureDesc.format = TextureFormat::RGBA;// TextureFormat::ALPHA;
 
 		m_texture = video::Texture::Create(textureDesc);
 		m_texture->SetData(0U, finalBuffer);
