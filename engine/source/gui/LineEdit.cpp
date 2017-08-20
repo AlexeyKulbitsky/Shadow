@@ -103,10 +103,10 @@ namespace gui
 			float u2 = (float)desc.x1 / (float)width;
 			float v2 = (float)desc.y1 / (float)height;
 
-			data.vertices.insert(data.vertices.end(), { x1, y1, 0.0f, u1, v1 });
-			data.vertices.insert(data.vertices.end(), { x1, y2, 0.0f, u1, v2 });
-			data.vertices.insert(data.vertices.end(), { x2, y2, 0.0f, u2, v2 });
-			data.vertices.insert(data.vertices.end(), { x2, y1, 0.0f, u2, v1 });
+			data.vertices.insert(data.vertices.end(), { x1, y1, 0.0f, u1, v1, 0.0f, 0.0f, 0.0f, 1.0f });
+			data.vertices.insert(data.vertices.end(), { x1, y2, 0.0f, u1, v2, 0.0f, 0.0f, 0.0f, 1.0f });
+			data.vertices.insert(data.vertices.end(), { x2, y2, 0.0f, u2, v2, 0.0f, 0.0f, 0.0f, 1.0f });
+			data.vertices.insert(data.vertices.end(), { x2, y1, 0.0f, u2, v1, 0.0f, 0.0f, 0.0f, 1.0f });
 
 			data.indices.push_back(data.verticesCount);
 			data.indices.push_back(data.verticesCount + 1);
@@ -216,7 +216,7 @@ namespace gui
 	void LineEdit::UpdateCursorGeometry()
 	{
 		if (s_cursorBatchData.size() == 0U)
-			s_cursorBatchData.resize(4 * 8);
+			s_cursorBatchData.resize(4 * 9);
 
 		// Updated positions
 		const auto& viewPort = sh::Device::GetInstance()->GetDriver()->GetViewPort();
@@ -225,22 +225,22 @@ namespace gui
 		math::Vector4f rightDown((float)s_cursorRect.lowerRightCorner.x, (float)s_cursorRect.lowerRightCorner.y, 0.0f, 1.0f);
 
 		s_cursorBatchData[0] = leftUp.x; s_cursorBatchData[1] = leftUp.y; s_cursorBatchData[2] = 0.0f;
-		s_cursorBatchData[8] = leftUp.x; s_cursorBatchData[9] = rightDown.y; s_cursorBatchData[10] = 0.0f;
-		s_cursorBatchData[16] = rightDown.x; s_cursorBatchData[17] = rightDown.y; s_cursorBatchData[18] = 0.0f;
-		s_cursorBatchData[24] = rightDown.x; s_cursorBatchData[25] = leftUp.y; s_cursorBatchData[26] = 0.0f;
+		s_cursorBatchData[9] = leftUp.x; s_cursorBatchData[10] = rightDown.y; s_cursorBatchData[11] = 0.0f;
+		s_cursorBatchData[18] = rightDown.x; s_cursorBatchData[19] = rightDown.y; s_cursorBatchData[20] = 0.0f;
+		s_cursorBatchData[27] = rightDown.x; s_cursorBatchData[28] = leftUp.y; s_cursorBatchData[29] = 0.0f;
 
 		// Update UVs
 		s_cursorBatchData[3] = 0.0f; s_cursorBatchData[4] = 0.0f;
-		s_cursorBatchData[11] = 0.0f; s_cursorBatchData[12] = 0.0f;
-		s_cursorBatchData[19] = 0.0f; s_cursorBatchData[20] = 0.0f;
-		s_cursorBatchData[27] = 0.0f; s_cursorBatchData[28] = 0.0f;
+		s_cursorBatchData[12] = 0.0f; s_cursorBatchData[13] = 0.0f;
+		s_cursorBatchData[21] = 0.0f; s_cursorBatchData[22] = 0.0f;
+		s_cursorBatchData[30] = 0.0f; s_cursorBatchData[31] = 0.0f;
 
 		// Update colors
 		math::Vector3f color(0.0f);
-		s_cursorBatchData[5] = color.x; s_cursorBatchData[6] = color.y; s_cursorBatchData[7] = color.z;
-		s_cursorBatchData[13] = color.x; s_cursorBatchData[14] = color.y; s_cursorBatchData[15] = color.z;
-		s_cursorBatchData[21] = color.x; s_cursorBatchData[22] = color.y; s_cursorBatchData[23] = color.z;
-		s_cursorBatchData[29] = color.x; s_cursorBatchData[30] = color.y;  s_cursorBatchData[31] = color.z;
+		s_cursorBatchData[5] = color.x; s_cursorBatchData[6] = color.y; s_cursorBatchData[7] = color.z; s_cursorBatchData[8] = 1.0f;
+		s_cursorBatchData[14] = color.x; s_cursorBatchData[15] = color.y; s_cursorBatchData[16] = color.z; s_cursorBatchData[17] = 1.0f;
+		s_cursorBatchData[23] = color.x; s_cursorBatchData[24] = color.y; s_cursorBatchData[25] = color.z; s_cursorBatchData[26] = 1.0f;
+		s_cursorBatchData[32] = color.x; s_cursorBatchData[33] = color.y;  s_cursorBatchData[34] = color.z; s_cursorBatchData[35] = 1.0f;
 	}
 
 	

@@ -71,7 +71,7 @@ namespace gui
 			float u2 = (float)desc.x1 / (float)width;
 			float v2 = (float)desc.y1 / (float)height;
 
-			data.vertices.insert(data.vertices.end(), {x1, y1, 0.0f, u1, v1, 0.0f, 0.0f, 0.0f, 1.0f});
+			data.vertices.insert(data.vertices.end(), {x1, y1, 0.0f, u1, v1, 0.0f, 0.0f, 0.0f, 1.0f });
 			data.vertices.insert(data.vertices.end(), {x1, y2, 0.0f, u1, v2, 0.0f, 0.0f, 0.0f, 1.0f });
 			data.vertices.insert(data.vertices.end(), {x2, y2, 0.0f, u2, v2, 0.0f, 0.0f, 0.0f, 1.0f });
 			data.vertices.insert(data.vertices.end(), {x2, y1, 0.0f, u2, v1, 0.0f, 0.0f, 0.0f, 1.0f });

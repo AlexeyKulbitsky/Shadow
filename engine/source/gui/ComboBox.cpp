@@ -1,5 +1,7 @@
 #include "ComboBox.h"
 
+#include "GuiManager.h"
+
 namespace sh
 {
 
@@ -22,6 +24,9 @@ namespace gui
 
 	void ComboBox::GetGeometry(GuiBatchData& data)
 	{
+		if (m_isInFocus)
+			return;
+
 		m_button->GetGeometry(data);
 
 		if (m_showList)
@@ -30,10 +35,18 @@ namespace gui
 
 	void ComboBox::GetTextGeometry(GuiBatchData& data)
 	{
+		if (m_isInFocus)
+			return;
+
 		m_button->GetTextGeometry(data);
 
 		if (m_showList)
 			m_layout->GetTextGeometry(data);
+	}
+
+	void ComboBox::Render(video::Painter* painter)
+	{
+		Widget::Render(painter);
 	}
 
 	void ComboBox::SetPosition(u32 x, u32 y)
@@ -123,6 +136,16 @@ namespace gui
 	void ComboBox::OnButtonToggled(bool toggled)
 	{
 		m_showList = toggled;
+		m_isInFocus = toggled;
+
+		if (m_isInFocus)
+		{
+			GuiManager::GetInstance()->SetFocusWidget(shared_from_this());
+		}
+		else
+		{
+			GuiManager::GetInstance()->SetFocusWidget(nullptr);
+		}
 	}
 
 	void ComboBox::OnItemToggled(bool toggled, const ButtonPtr& sender)

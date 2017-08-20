@@ -60,6 +60,9 @@ namespace gui
 		void SetStyle(const StylePtr& style);
 		const StylePtr& GetStyle() const { return m_style; }
 
+		void SetFocusWidget(const SPtr<Widget>& widget) { m_focusWidget = widget; }
+		const SPtr<Widget>& GetFocusWidget() const { return m_focusWidget; }
+
 		const video::MaterialPtr& GetDefaultMaterial() const { return m_defaultMaterial; }
 		const video::MaterialPtr& GetTextMaterial() const { return m_textMaterial; }
 
@@ -68,21 +71,12 @@ namespace gui
 		bool ProcessKeyboardInput(KeyboardEventType type, KeyCode code);
 
 	private:
-		//void InitMainBatch();
-		//void InitTextBatch();
-
-	private:
-		//GuiBatchData m_mainBatchData;
-		//GuiBatch m_mainBatch;
-
-		//GuiBatchData m_textBatchData;
-		//GuiBatch m_textBatch;
-
 		FontPtr m_font;
 
 		MenuBarPtr m_menuBar;
 		ToolBarPtr m_toolBar;
 		std::vector<SPtr<Widget>> m_children;
+		SPtr<Widget> m_focusWidget;
 
 		StylePtr m_style;
 

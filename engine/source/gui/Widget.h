@@ -43,6 +43,9 @@ namespace gui
 
 		virtual void SetMargins(u32 top, u32 right, u32 bottom, u32 left);
 
+		void SetFocus(bool focus) { m_isInFocus = focus; }
+		bool IsInFocus() const { return m_isInFocus; }
+
 		// Method is called when widget contents geometry must be recalculated
 		virtual void UpdateLayout();
 
@@ -64,6 +67,7 @@ namespace gui
 		math::Rectu m_rect;
 		bool m_visible = true;
 		bool m_enabled = true;
+		bool m_isInFocus = false;
 		std::vector<float> m_batchData;
 	};
 

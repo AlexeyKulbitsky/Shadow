@@ -193,7 +193,7 @@ namespace sh
 		void Painter::DrawTriangleList(const std::vector<float>& vertices, const std::vector<u32>& indices, u32 verticesCount)
 		{
 			m_trianglesVertexArray.insert(m_trianglesVertexArray.end(), vertices.begin(), vertices.end());
-			const u32 idx = m_lines.linesBatches.size() - 1;
+			const u32 idx = m_triangles.trianglesBatches.size() - 1;
 			const u32 startVertex = m_triangles.verticesCount;
 			std::transform(indices.begin(), indices.end(), std::back_inserter(m_trianglesIndexArray),
 						   [startVertex](u32 value){ return value + startVertex; });
@@ -217,6 +217,7 @@ namespace sh
 
 
 			// Render lines
+
 			const void* verticesPointer = m_linesVertexArray.data();
 			size_t verticesDataSize = m_linesVertexArray.size() * sizeof(float);
 			m_linesVertexBuffer->SetData(0U, verticesDataSize, verticesPointer);
@@ -276,11 +277,6 @@ namespace sh
 							 m_lines.linesBatches[i].verticesCount, 1U, m_commandBuffer);
 
 			}
-
-
-
-
-
 
 
 
@@ -350,71 +346,6 @@ namespace sh
 									m_commandBuffer);
 			}
 
-
-			/*
-
-			const void* verticesPointer = m_linesVertexArray.data();
-			size_t verticesDataSize = m_linesVertexArray.size() * sizeof(float);
-			m_linesVertexBuffer->SetData(0U, verticesDataSize, verticesPointer);
-			m_linesVertexBuffer->SetVerticesCount(m_linesBatch.verticesCount);
-
-
-			
-
-
-			auto& params = m_material->GetAutoParams();
-			for (u32 paramIdx = 0U; paramIdx < params->GetParamsCount(); ++paramIdx)
-			{
-				auto& param = params->GetParam(paramIdx);
-				switch (param.GetType())
-				{
-					case MaterialParamType::MatrixWorld:
-						break;
-					case MaterialParamType::MatrixView:
-						param.Set(viewMatrix);
-						break;
-					case MaterialParamType::MatrixViewRotation:
-					{
-						param.Set(camera->GetRotationMatrix());
-					}
-					break;
-					case MaterialParamType::MatrixViewRotationProjection:
-						param.Set(( projectionMatrix * camera->GetRotationMatrix() ).GetTransposed());
-						break;
-					case MaterialParamType::MatrixProjection:
-						param.Set(projectionMatrix);
-						break;
-					case MaterialParamType::MatrixViewProjection:
-					{
-						math::Matrix4f viewProjection = projectionMatrix * viewMatrix;
-						param.Set(viewProjection);
-					}
-					break;
-					case MaterialParamType::MatrixWorldViewProjection:
-					{
-						math::Matrix4f wvp = projectionMatrix * viewMatrix;
-						wvp.Transpose();
-						param.Set(wvp);
-					}
-					break;
-					default:
-						break;
-				}
-			}
-
-
-			m_commandBuffer->Begin();
-
-			driver->SetRenderPipeline(m_material->GetRenderPipeline(), m_commandBuffer);
-			driver->SetGpuParams(m_material->GetCommonGpuParams(), m_commandBuffer);
-			driver->SetGpuParams(m_material->GetAutoGpuParams(), m_commandBuffer);
-			driver->SetVertexBuffer(m_linesVertexBuffer, m_commandBuffer);
-			driver->SetVertexDeclaration(m_material->GetRenderPipeline()->GetVertexInputDeclaration(), m_commandBuffer);
-			driver->SetTopology(TOP_LINE_LIST, m_commandBuffer);
-			driver->Draw(0, m_linesVertexBuffer->GetVerticesCount(), 1U, m_commandBuffer);
-
-			*/
-
 			m_commandBuffer->End();
 
 
@@ -433,8 +364,6 @@ namespace sh
 			m_triangles.verticesCount = 0U;
 
 			m_materials.clear();
-			
-			//m_linesBatch.verticesCount = 0U;
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////

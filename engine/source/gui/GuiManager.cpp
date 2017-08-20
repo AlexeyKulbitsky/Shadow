@@ -65,95 +65,6 @@ namespace gui
 		video::Driver* driver = Device::GetInstance()->GetDriver();
 		auto painter = driver->GetPainter();
 
-#if 0
-		m_mainBatchData.vertices.clear();
-		m_mainBatchData.indices.clear();
-		m_mainBatchData.verticesCount = 0U;
-
-		if (m_toolBar)
-			m_toolBar->GetGeometry(m_mainBatchData);
-
-		if (m_menuBar)
-			m_menuBar->GetGeometry(m_mainBatchData);
-
-		//for (u32 i = 0U; i < m_children.size(); ++i)
-		//{
-		//	m_children[i]->GetGeometry(m_mainBatchData);
-		//}
-
-		const void* verticesPointer = m_mainBatchData.vertices.data();
-		size_t verticesDataSize = m_mainBatchData.vertices.size() * sizeof(float);
-		m_mainBatch.vertexBuffer->SetData(0U, verticesDataSize, verticesPointer);
-		m_mainBatch.vertexBuffer->SetVerticesCount(m_mainBatchData.verticesCount);
-
-		const void* indicesPointer = m_mainBatchData.indices.data();
-		size_t indicesDataSize = m_mainBatchData.indices.size() * sizeof(u32);
-		m_mainBatch.indexBuffer->SetData(0U, indicesDataSize, indicesPointer);
-		m_mainBatch.indexBuffer->SetIndicesCount(m_mainBatchData.indices.size());
-
-		
-		{
-			m_mainBatch.commandBuffer->Begin();
-
-			driver->SetRenderPipeline(m_mainBatch.material->GetRenderPipeline(), m_mainBatch.commandBuffer);
-			driver->SetGpuParams(m_mainBatch.material->GetCommonGpuParams(), m_mainBatch.commandBuffer);
-			driver->SetTopology(Topology::TOP_TRIANGLE_LIST, m_mainBatch.commandBuffer);
-			driver->SetVertexBuffer(m_mainBatch.vertexBuffer, m_mainBatch.commandBuffer);
-			driver->SetVertexDeclaration(m_mainBatch.inputDeclaration, m_mainBatch.commandBuffer);
-			driver->SetIndexBuffer(m_mainBatch.indexBuffer, m_mainBatch.commandBuffer);				
-			driver->DrawIndexed(0, m_mainBatch.indexBuffer->GetIndicesCount(), 1U, m_mainBatch.commandBuffer);
-
-			m_mainBatch.commandBuffer->End();
-
-			driver->SubmitCommandBuffer(m_mainBatch.commandBuffer);
-		}
-
-
-		////////////////////////////////////////////////////////////////////////////////////////////
-
-		m_textBatchData.vertices.clear();
-		m_textBatchData.indices.clear();
-		m_textBatchData.verticesCount = 0U;
-
-		if (m_toolBar)
-			m_toolBar->GetTextGeometry(m_textBatchData);
-
-		if (m_menuBar)
-			m_menuBar->GetTextGeometry(m_textBatchData);
-
-		//for (u32 i = 0U; i < m_children.size(); ++i)
-		//{
-		//	m_children[i]->GetTextGeometry(m_textBatchData);
-		//}
-
-		verticesPointer = m_textBatchData.vertices.data();
-		verticesDataSize = m_textBatchData.vertices.size() * sizeof(float);
-		m_textBatch.vertexBuffer->SetData(0U, verticesDataSize, verticesPointer);
-		m_textBatch.vertexBuffer->SetVerticesCount(m_textBatchData.verticesCount);
-
-		indicesPointer = m_textBatchData.indices.data();
-		indicesDataSize = m_textBatchData.indices.size() * sizeof(u32);
-		m_textBatch.indexBuffer->SetData(0U, indicesDataSize, indicesPointer);
-		m_textBatch.indexBuffer->SetIndicesCount(m_textBatchData.indices.size());
-
-		
-		{
-			m_textBatch.commandBuffer->Begin();
-
-			driver->SetRenderPipeline(m_textBatch.material->GetRenderPipeline(), m_textBatch.commandBuffer);
-			driver->SetGpuParams(m_textBatch.material->GetCommonGpuParams(), m_textBatch.commandBuffer);
-			driver->SetTopology(Topology::TOP_TRIANGLE_LIST, m_textBatch.commandBuffer);
-			driver->SetVertexBuffer(m_textBatch.vertexBuffer, m_textBatch.commandBuffer);
-			driver->SetVertexDeclaration(m_textBatch.inputDeclaration, m_textBatch.commandBuffer);
-			driver->SetIndexBuffer(m_textBatch.indexBuffer, m_textBatch.commandBuffer);				
-			driver->DrawIndexed(0, m_textBatch.indexBuffer->GetIndicesCount(), 1U, m_textBatch.commandBuffer);
-
-			m_textBatch.commandBuffer->End();
-
-			driver->SubmitCommandBuffer(m_textBatch.commandBuffer);
-		}
-#endif
-
 		for (u32 i = 0U; i < m_children.size(); ++i)
 		{
 			m_children[i]->Render(painter);
@@ -164,6 +75,13 @@ namespace gui
 
 		if (m_menuBar)
 			m_menuBar->Render(painter);
+
+		if (m_focusWidget)
+		{
+			m_focusWidget->SetFocus(false);
+			m_focusWidget->Render(painter);
+			m_focusWidget->SetFocus(true);
+		}
 
 		painter->Flush();
 	}
