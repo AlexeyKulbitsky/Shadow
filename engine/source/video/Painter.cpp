@@ -45,6 +45,9 @@ namespace sh
 
 		void Painter::SetMaterial(const MaterialPtr& material)
 		{
+			if (m_materials.size() != 0U && m_materials[m_materials.size() - 1U] == material)
+				return;
+
 			m_material = material;
 
 			m_materials.push_back(material);
@@ -135,6 +138,105 @@ namespace sh
 		void Painter::DrawRect(const math::Rectu& rect, const gui::SpritePtr& sprite)
 		{
 
+		}
+
+		/////////////////////////////////////////////////////////////////////////////////////
+
+		void Painter::DrawRect(const Painter::Vertex& upperLeft, const Painter::Vertex& downRight)
+		{
+			const auto& declaration = m_material->GetRenderPipeline()->GetVertexInputDeclaration();
+			const u32 attributesCount = declaration->GetAttributesCount();
+			const u32 idx = m_triangles.trianglesBatches.size() - 1;
+			const u32 startVertex = m_triangles.verticesCount;
+
+			for (u32 corner = 0U; corner < 4U; ++corner)
+			{
+				Vertex vertex;
+
+				switch (corner)
+				{
+					case 0:
+					{
+						vertex = upperLeft;
+					}
+						break;
+					case 1:
+					{
+						vertex.position.x = upperLeft.position.x;
+						vertex.position.y = downRight.position.y;
+						vertex.position.z = 0.0f;
+
+						vertex.uv.x = upperLeft.uv.x;
+						vertex.uv.y = downRight.uv.y;
+
+						vertex.color = upperLeft.color;
+					}
+						break;
+					case 2:
+					{
+						vertex = downRight;
+					}
+						break;
+					case 3:
+					{
+						vertex.position.x = downRight.position.x;
+						vertex.position.y = upperLeft.position.y;
+						vertex.position.z = 0.0f;
+
+						vertex.uv.x = downRight.uv.x;
+						vertex.uv.y = upperLeft.uv.y;
+
+						vertex.color = downRight.color;
+					}
+						break;
+					default:
+						break;
+				}
+
+				for (u32 i = 0U; i < attributesCount; ++i)
+				{
+					switch (declaration->GetAttribute(i).semantic)
+					{
+						case AttributeSemantic::POSITION:
+						{
+							m_trianglesVertexArray.push_back(vertex.position.x);
+							m_trianglesVertexArray.push_back(vertex.position.y);
+							m_trianglesVertexArray.push_back(vertex.position.z);
+						}
+						break;
+						case AttributeSemantic::UV:
+						{
+							m_trianglesVertexArray.push_back(vertex.uv.x);
+							m_trianglesVertexArray.push_back(vertex.uv.y);
+						}
+						break;
+						case AttributeSemantic::COLOR:
+						{
+							m_trianglesVertexArray.push_back(vertex.color.x);
+							m_trianglesVertexArray.push_back(vertex.color.y);
+							m_trianglesVertexArray.push_back(vertex.color.z);
+							m_trianglesVertexArray.push_back(vertex.color.w);
+						}
+						break;
+						default:
+							break;
+					}
+				}
+			}
+
+			
+			m_trianglesIndexArray.push_back(startVertex);
+			m_trianglesIndexArray.push_back(startVertex + 1U);
+			m_trianglesIndexArray.push_back(startVertex + 2U);
+
+			m_trianglesIndexArray.push_back(startVertex);
+			m_trianglesIndexArray.push_back(startVertex + 2U);
+			m_trianglesIndexArray.push_back(startVertex + 3U);
+
+			m_triangles.trianglesBatches[idx].verticesCount += 4U;
+			m_triangles.trianglesBatches[idx].indicesCount += 6U;
+			m_triangles.verticesCount += 4U;
+			m_triangles.indicesCount += 6U;
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////

@@ -55,6 +55,14 @@ namespace gui
 		}
 	}
 
+	void Menu::Render(video::Painter* painter)
+	{
+		for (const auto& button : m_buttons)
+		{
+			button->Render(painter);
+		}
+	}
+
 	void Menu::SetPosition(u32 x, u32 y)
 	{
 

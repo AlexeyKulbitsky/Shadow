@@ -90,6 +90,27 @@ namespace gui
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
+	void MenuBar::Render(video::Painter* painter)
+	{
+		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
+		video::Painter::Vertex upperLeft(m_rect.upperLeftCorner, 
+										 m_sprite->GetUVRect().upperLeftCorner, 
+										 m_sprite->GetColor());
+		video::Painter::Vertex downRight(m_rect.lowerRightCorner,
+										 m_sprite->GetUVRect().lowerRightCorner,
+										 m_sprite->GetColor());
+		painter->DrawRect(upperLeft, downRight);
+
+		for (const auto& menu : m_menus)
+		{
+			menu.first->Render(painter);
+			if (menu.second->IsVisible())
+				menu.second->Render(painter);
+		}
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
+
 	void MenuBar::SetPosition(u32 x, u32 y)
 	{
 		// Position is fixed in left upper corener of viewport

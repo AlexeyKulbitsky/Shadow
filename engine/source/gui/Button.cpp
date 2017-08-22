@@ -26,16 +26,12 @@ namespace gui
 	{
 		const auto& ref = GuiManager::GetInstance()->GetStyle()->GetButton();
 
-		m_releasedSprite = ref->m_releasedSprite;
-		m_pressedSprite = ref->m_pressedSprite;
-		m_hoveredSprite = ref->m_hoveredSprite;
+		m_sprites[Released] = ref->m_sprites[Released];
+		m_sprites[Pressed] = ref->m_sprites[Pressed];
+		m_sprites[Hovered] = ref->m_sprites[Hovered];
 
 		m_rect = sh::math::Rectu(0U, 0U, 10U, 10U);
 		m_text.reset(new Text(m_rect));
-
-		UpdatePosition();
-		UpdateUV(m_releasedSprite->GetUVRect().upperLeftCorner, m_releasedSprite->GetUVRect().lowerRightCorner);
-		UpdateColor(m_releasedSprite->GetColor());
 	}
 
 	Button::Button(const math::Rectu rect)
@@ -43,26 +39,24 @@ namespace gui
 	{
 		const auto& ref = GuiManager::GetInstance()->GetStyle()->GetButton();
 
-		m_releasedSprite = ref->m_releasedSprite;
-		m_pressedSprite = ref->m_pressedSprite;
-		m_hoveredSprite = ref->m_hoveredSprite;
+		m_sprites[Released] = ref->m_sprites[Released];
+		m_sprites[Pressed] = ref->m_sprites[Pressed];
+		m_sprites[Hovered] = ref->m_sprites[Hovered];
 
 		m_rect = rect;
 		m_text.reset(new Text(rect));
 
-		UpdatePosition();
-		UpdateUV(m_releasedSprite->GetUVRect().upperLeftCorner, m_releasedSprite->GetUVRect().lowerRightCorner);
-		UpdateColor(m_releasedSprite->GetColor());
 	}
 
 	Button::Button(const SpritePtr& defaultSprite,
 		const SpritePtr& pressedSprite,
 		const SpritePtr& hoveredSprite)
 		: Widget()
-		, m_releasedSprite(defaultSprite)
-		, m_pressedSprite(pressedSprite)
-		, m_hoveredSprite(hoveredSprite)
 	{
+		m_sprites[Released] = defaultSprite;
+		m_sprites[Pressed] = pressedSprite;
+		m_sprites[Hovered] = hoveredSprite;
+
 		m_rect = sh::math::Rectu(0U, 0U, 10U, 10U);
 		m_text.reset(new Text(m_rect));
 	}
@@ -76,9 +70,6 @@ namespace gui
 		m_rect = rect;
 		m_text.reset(new Text(rect));
 
-		UpdatePosition();
-		UpdateUV(m_releasedSprite->GetUVRect().upperLeftCorner, m_releasedSprite->GetUVRect().lowerRightCorner);
-		UpdateColor(m_releasedSprite->GetColor());
 	}
 
 	Button::Button(const String& text)
@@ -86,17 +77,14 @@ namespace gui
 	{
 		const auto& ref = GuiManager::GetInstance()->GetStyle()->GetButton();
 
-		m_releasedSprite = ref->m_releasedSprite;
-		m_pressedSprite = ref->m_pressedSprite;
-		m_hoveredSprite = ref->m_hoveredSprite;
+		m_sprites[Released] = ref->m_sprites[Released];
+		m_sprites[Pressed] = ref->m_sprites[Pressed];
+		m_sprites[Hovered] = ref->m_sprites[Hovered];
 
 		m_rect = sh::math::Rectu(0U, 0U, 10U, 10U);
 		m_text.reset(new Text(m_rect));
 		m_text->SetText(text);
 
-		UpdatePosition();
-		UpdateUV(m_releasedSprite->GetUVRect().upperLeftCorner, m_releasedSprite->GetUVRect().lowerRightCorner);
-		UpdateColor(m_releasedSprite->GetColor());
 	}
 
 	ButtonPtr Button::Clone() const
@@ -104,9 +92,9 @@ namespace gui
 		ButtonPtr result(new Button());
 		result->m_rect = m_rect;
 
-		result->m_releasedSprite = m_releasedSprite;
-		result->m_pressedSprite = m_pressedSprite;
-		result->m_hoveredSprite = m_hoveredSprite;
+		result->m_sprites[Released] = m_sprites[Released];
+		result->m_sprites[Pressed] = m_sprites[Pressed];
+		result->m_sprites[Hovered] = m_sprites[Hovered];
 
 		result->m_toggleable = m_toggleable;
 
@@ -143,55 +131,50 @@ namespace gui
 
 		if (m_toggled)
 		{
-			UpdateUV(m_pressedSprite->GetUVRect().upperLeftCorner,
-				m_pressedSprite->GetUVRect().lowerRightCorner);
-			UpdateColor(m_pressedSprite->GetColor());
+			m_state = Pressed;
 		}
 		else
 		{
-			UpdateUV(m_releasedSprite->GetUVRect().upperLeftCorner,
-				m_releasedSprite->GetUVRect().lowerRightCorner);
-			UpdateColor(m_releasedSprite->GetColor());
+			m_state = Released;
 		}
 
 		OnToggle(m_toggled, std::static_pointer_cast<Button>(shared_from_this()));
 	}
 
-	void Button::GetGeometry(GuiBatchData& data)
+	void Button::Render(video::Painter* painter)
 	{
-		/*GuiElement::GetGeometry(data);*/
-		Widget::GetGeometry(data);
-	}
+		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
+		video::Painter::Vertex upperLeft(m_rect.upperLeftCorner, 
+										 m_sprites[m_state]->GetUVRect().upperLeftCorner, 
+										 m_sprites[m_state]->GetColor());
+		video::Painter::Vertex downRight(m_rect.lowerRightCorner,
+										 m_sprites[m_state]->GetUVRect().lowerRightCorner,
+										 m_sprites[m_state]->GetColor());
+		painter->DrawRect(upperLeft, downRight);
 
-	void Button::GetTextGeometry(GuiBatchData& data)
-	{
-		m_text->GetTextGeometry(data);
+		m_text->Render(painter);
 	}
 
 	void Button::SetPosition(u32 x, u32 y)
 	{
-		/*GuiElement::SetPosition(x, y);*/
 		Widget::SetPosition(x, y);
 		m_text->SetPosition(x, y);
 	}
 
 	void Button::SetSize(const math::Vector2u& size)
 	{
-		/*GuiElement::SetSize(size);*/
 		Widget::SetSize(size);
 		m_text->SetSize(size);
 	}
 
 	void Button::SetWidth(u32 width)
 	{
-		/*GuiElement::SetWidth(width);*/
 		Widget::SetWidth(width);
 		m_text->SetWidth(width);
 	}
 
 	void Button::SetHeight(u32 height)
 	{
-		/*GuiElement::SetHeight(height);*/
 		Widget::SetHeight(height);
 		m_text->SetHeight(height);
 	}
@@ -211,24 +194,18 @@ namespace gui
 
 						if (m_toggled)
 						{
-							UpdateUV(m_pressedSprite->GetUVRect().upperLeftCorner,
-								m_pressedSprite->GetUVRect().lowerRightCorner);
-							UpdateColor(m_pressedSprite->GetColor());
+							m_state = Pressed;
 						}
 						else
 						{
-							UpdateUV(m_releasedSprite->GetUVRect().upperLeftCorner,
-								m_releasedSprite->GetUVRect().lowerRightCorner);
-							UpdateColor(m_releasedSprite->GetColor());
+							m_state = Released;
 						}
 
 						OnToggle(m_toggled, std::static_pointer_cast<Button>(shared_from_this()));
 					}
 					else
 					{
-						UpdateUV(m_pressedSprite->GetUVRect().upperLeftCorner, 
-								 m_pressedSprite->GetUVRect().lowerRightCorner);
-						UpdateColor(m_pressedSprite->GetColor());
+						m_state = Pressed;
 					}
 
 					OnPress(std::static_pointer_cast<Button>(shared_from_this()));
@@ -240,9 +217,7 @@ namespace gui
 				{
 					if (!m_toggleable)
 					{
-						UpdateUV(m_hoveredSprite->GetUVRect().upperLeftCorner, 
-								 m_hoveredSprite->GetUVRect().lowerRightCorner);
-						UpdateColor(m_hoveredSprite->GetColor());
+						m_state = Hovered;
 					}
 
 					OnRelease(std::static_pointer_cast<Button>(shared_from_this()));
@@ -254,9 +229,7 @@ namespace gui
 				{
 					if (!m_toggleable || !m_toggled)
 					{
-						UpdateUV(m_hoveredSprite->GetUVRect().upperLeftCorner,
-							m_hoveredSprite->GetUVRect().lowerRightCorner);
-						UpdateColor(m_hoveredSprite->GetColor());
+						m_state = Hovered;
 					}
 
 					OnHover(std::static_pointer_cast<Button>(shared_from_this()));
@@ -272,9 +245,7 @@ namespace gui
 		{
 			if (!m_toggleable || !m_toggled)
 			{
-				UpdateUV(m_releasedSprite->GetUVRect().upperLeftCorner,
-					m_releasedSprite->GetUVRect().lowerRightCorner);
-				UpdateColor(m_releasedSprite->GetColor());
+				m_state = Released;
 			}
 		}
 		

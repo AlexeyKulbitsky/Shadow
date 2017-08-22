@@ -90,6 +90,25 @@ namespace gui
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
+	void ToolBar::Render(video::Painter* painter)
+	{
+		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
+		video::Painter::Vertex upperLeft(m_rect.upperLeftCorner, 
+										 m_sprite->GetUVRect().upperLeftCorner, 
+										 m_sprite->GetColor());
+		video::Painter::Vertex downRight(m_rect.lowerRightCorner,
+										 m_sprite->GetUVRect().lowerRightCorner,
+										 m_sprite->GetColor());
+		painter->DrawRect(upperLeft, downRight);
+
+		for (const auto& button : m_buttons)
+		{
+			button->Render(painter);
+		}
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
+
 	bool ToolBar::ProcessInput(u32 x, u32 y, MouseEventType type)
 	{
 		for (const auto& button : m_buttons)

@@ -22,6 +22,7 @@ namespace gui
 		m_layout.reset(new VerticalLayout());
 	}
 
+	/*
 	void ComboBox::GetGeometry(GuiBatchData& data)
 	{
 		if (m_isInFocus)
@@ -43,10 +44,16 @@ namespace gui
 		if (m_showList)
 			m_layout->GetTextGeometry(data);
 	}
+	*/
 
 	void ComboBox::Render(video::Painter* painter)
 	{
-		Widget::Render(painter);
+		if (m_isInFocus)
+			return;
+
+		m_button->Render(painter);
+		if (m_showList)
+			m_layout->Render(painter);
 	}
 
 	void ComboBox::SetPosition(u32 x, u32 y)

@@ -125,10 +125,10 @@ namespace gui
 		
 		data.verticesCount += 10;
 
-		if (m_layout)
-		{
-			m_layout->GetGeometry(data);
-		}
+		//if (m_layout)
+		//{
+		//	m_layout->GetGeometry(data);
+		//}
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -137,10 +137,10 @@ namespace gui
 	{
 		m_text->GetTextGeometry(data);
 
-		if (m_layout)
-		{
-			m_layout->GetTextGeometry(data);
-		}
+		//if (m_layout)
+		//{
+		//	m_layout->GetTextGeometry(data);
+		//}
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -166,6 +166,11 @@ namespace gui
 		painter->DrawTriangleList(textBatchData.vertices, textBatchData.indices, textBatchData.verticesCount);
 	
 		//painter->Flush();
+
+		if (m_layout)
+		{
+			m_layout->Render(painter);
+		}
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////

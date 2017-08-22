@@ -11,6 +11,28 @@ namespace sh
 		class Painter
 		{
 		public:
+			struct Vertex
+			{
+				Vertex(const math::Vector3f& _position, const math::Vector2f& _uv, const math::Vector4f& _color) 
+					: position(_position)
+					, uv(_uv)
+					, color(_color)
+				{ }
+				Vertex(const math::Vector2u& _position, const math::Vector2f& _uv, const math::Vector4f& _color) 
+					: position(_position, 0.0f)
+					, uv(_uv)
+					, color(_color)
+				{ }
+				Vertex() 
+					: position(0.0f) 
+					, uv(0.0f)
+					, color(0.0f)
+				{ }
+				math::Vector3f position;
+				math::Vector2f uv;
+				math::Vector4f color;
+			};
+
 			Painter();
 			void SetMaterial(const MaterialPtr& material);
 			const MaterialPtr& GetMaterial() const { return m_material; }
@@ -18,6 +40,7 @@ namespace sh
 
 			void DrawLine(const math::Vector3f& a, const math::Vector3f& b);
 			void DrawRect(const math::Rectu& rect, const gui::SpritePtr& sprite);
+			void DrawRect(const Vertex& upperLeft, const Vertex& downRight);
 			void DrawQuad();
 			void DrawCircle();
 			void DrawArc();

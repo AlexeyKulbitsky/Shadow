@@ -20,6 +20,20 @@ namespace sh
 			Vector3(const Vector3<T>& v) : x(v.x), y(v.y), z(v.z) {}
 			Vector3(const Vector2<T>& v, T value) : x(v.x), y(v.y), z(value) {}
 
+			template<typename U>
+			Vector3(const Vector3<U>& v) 
+				: x(static_cast<T>(v.x))
+				, y(static_cast<T>(v.y))
+				, z(static_cast<T>(v.z))
+			{ }
+
+			template<typename U>
+			Vector3(const Vector2<U>& v, T value) 
+				: x(static_cast<T>(v.x))
+				, y(static_cast<T>(v.y))
+				, z(value)
+			{ }
+
 			// Operators
 			Vector3<T> operator-() const { return Vector3<T>(-x, -y, -z); }
 			Vector3<T>& operator=(const Vector3<T>& v) { x = v.x; y = v.y; z = v.z; return *this; }
