@@ -147,25 +147,27 @@ namespace gui
 
 	void Window::Render(video::Painter* painter)
 	{
-		GuiBatchData mainBatchData;
-		mainBatchData.indices.reserve(50000U);
-		mainBatchData.vertices.reserve(50000U);
-		mainBatchData.verticesCount = 0U;
-		GetGeometry(mainBatchData);
-		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
-		painter->DrawTriangleList(mainBatchData.vertices, mainBatchData.indices, mainBatchData.verticesCount);
+// 		GuiBatchData mainBatchData;
+// 		mainBatchData.indices.reserve(50000U);
+// 		mainBatchData.vertices.reserve(50000U);
+// 		mainBatchData.verticesCount = 0U;
+// 		GetGeometry(mainBatchData);
+// 		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
+// 		painter->DrawTriangleList(mainBatchData.vertices, mainBatchData.indices, mainBatchData.verticesCount);
 
 		//painter->Flush();
 
-		GuiBatchData textBatchData;
-		textBatchData.indices.reserve(50000U);
-		textBatchData.vertices.reserve(50000U);
-		textBatchData.verticesCount = 0U;
-		GetTextGeometry(textBatchData);
-		painter->SetMaterial(GuiManager::GetInstance()->GetTextMaterial());
-		painter->DrawTriangleList(textBatchData.vertices, textBatchData.indices, textBatchData.verticesCount);
+// 		GuiBatchData textBatchData;
+// 		textBatchData.indices.reserve(50000U);
+// 		textBatchData.vertices.reserve(50000U);
+// 		textBatchData.verticesCount = 0U;
+// 		GetTextGeometry(textBatchData);
+// 		painter->SetMaterial(GuiManager::GetInstance()->GetTextMaterial());
+// 		painter->DrawTriangleList(textBatchData.vertices, textBatchData.indices, textBatchData.verticesCount);
 	
 		//painter->Flush();
+
+		m_text->Render(painter);
 
 		if (m_layout)
 		{

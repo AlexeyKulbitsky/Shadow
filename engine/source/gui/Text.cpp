@@ -46,6 +46,7 @@ namespace gui
 		UpdateTextGeometry();
 	}
 
+	/*
 	void Text::GetTextGeometry(GuiBatchData& data)
 	{
 		const auto& viewPort = sh::Device::GetInstance()->GetDriver()->GetViewPort();
@@ -88,6 +89,7 @@ namespace gui
 			xOrigin += desc.advance;
 		}
 	}
+	*/
 
 	void Text::Render(video::Painter* painter)
 	{

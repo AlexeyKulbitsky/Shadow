@@ -24,20 +24,26 @@ namespace gui
 	{
 		const auto& ref = GuiManager::GetInstance()->GetStyle()->GetLineEdit();
 		m_batchData.resize(4 * 9);
-		m_defaultSprite = ref->m_defaultSprite;
-		m_editSprite = ref->m_editSprite;
+		//m_defaultSprite = ref->m_defaultSprite;
+		//m_editSprite = ref->m_editSprite;
 
-		UpdatePosition();
-		UpdateUV(m_defaultSprite->GetUVRect().upperLeftCorner, m_defaultSprite->GetUVRect().lowerRightCorner);
-		UpdateColor(m_defaultSprite->GetColor());
+		m_sprites[State::Default] = ref->m_sprites[State::Default];
+		m_sprites[State::Edit] = ref->m_sprites[State::Edit];
+
+		//UpdatePosition();
+		//UpdateUV(m_defaultSprite->GetUVRect().upperLeftCorner, m_defaultSprite->GetUVRect().lowerRightCorner);
+		//UpdateColor(m_defaultSprite->GetColor());
 	}
 
 	LineEdit::LineEdit(const SpritePtr& defaultSprite,
 		const SpritePtr& editSprite)
 	{
 		m_batchData.resize(4 * 9);
-		m_defaultSprite = defaultSprite;
-		m_editSprite = editSprite;
+		//m_defaultSprite = defaultSprite;
+		//m_editSprite = editSprite;
+
+		m_sprites[State::Default] = defaultSprite;
+		m_sprites[State::Edit] = editSprite;
 	}
 
 	LineEdit::LineEdit(const math::Rectu& rect, 
@@ -45,24 +51,27 @@ namespace gui
 						 const SpritePtr& editSprite)
 						 :Text(rect)
 	{
-		m_batchData.resize(4 * 9);
+		//m_batchData.resize(4 * 9);
 		//m_rect = rect;
-		m_defaultSprite = defaultSprite;
-		m_editSprite = editSprite;
+		//m_defaultSprite = defaultSprite;
+		//m_editSprite = editSprite;
 
-		UpdatePosition();
-		UpdateUV(m_defaultSprite->GetUVRect().upperLeftCorner, 
-				 m_defaultSprite->GetUVRect().lowerRightCorner);
-		UpdateColor(m_defaultSprite->GetColor());
+		m_sprites[State::Default] = defaultSprite;
+		m_sprites[State::Edit] = editSprite;
+
+		//UpdatePosition();
+		//UpdateUV(m_defaultSprite->GetUVRect().upperLeftCorner, 
+		//		 m_defaultSprite->GetUVRect().lowerRightCorner);
+		//UpdateColor(m_defaultSprite->GetColor());
 	}
 
+	/*
 	void LineEdit::GetGeometry(GuiBatchData& data)
 	{
 		Widget::GetGeometry(data);
 
 		if (m_inFocus)
 		{
-			//s_cursorRect.Set(m_rect.upperLeftCorner, math::Vector2u(m_rect.upperLeftCorner.x + 3U, m_rect.lowerRightCorner.y));
 			UpdateCursorGeometry();
 
 			data.vertices.insert(data.vertices.end(), s_cursorBatchData.begin(), s_cursorBatchData.end());
@@ -126,6 +135,23 @@ namespace gui
 				static_cast<u32>(xOrigin) + 3U, m_rect.lowerRightCorner.y);
 		}
 	}
+	*/
+
+	void LineEdit::Render(video::Painter* painter)
+	{
+		// Render background
+		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
+		video::Painter::Vertex upperLeft(m_rect.upperLeftCorner,
+										m_sprites[m_state]->GetUVRect().upperLeftCorner,
+										m_sprites[m_state]->GetColor());
+		video::Painter::Vertex downRight(m_rect.lowerRightCorner,
+			m_sprites[m_state]->GetUVRect().lowerRightCorner,
+			m_sprites[m_state]->GetColor());
+		painter->DrawRect(upperLeft, downRight);
+
+		// Render text
+		Text::Render(painter);
+	}
 
 	bool LineEdit::ProcessInput(u32 x, u32 y, MouseEventType type)
 	{
@@ -136,17 +162,20 @@ namespace gui
 			{
 				if (m_inFocus)
 				{
-					UpdateUV(m_defaultSprite->GetUVRect().upperLeftCorner, 
-						m_defaultSprite->GetUVRect().lowerRightCorner);
-					UpdateColor(m_defaultSprite->GetColor());
+					//UpdateUV(m_defaultSprite->GetUVRect().upperLeftCorner, 
+					//	m_defaultSprite->GetUVRect().lowerRightCorner);
+					//UpdateColor(m_defaultSprite->GetColor());
 
+					m_state = State::Default;
 					UpdateIfDirty();
 				}
 				else
 				{
-					UpdateUV(m_editSprite->GetUVRect().upperLeftCorner, 
-						 m_editSprite->GetUVRect().lowerRightCorner);
-					UpdateColor(m_editSprite->GetColor());
+					//UpdateUV(m_editSprite->GetUVRect().upperLeftCorner, 
+					//	 m_editSprite->GetUVRect().lowerRightCorner);
+					//UpdateColor(m_editSprite->GetColor());
+
+					m_state = State::Edit;
 				}
 				m_inFocus = !m_inFocus;
 
@@ -156,11 +185,12 @@ namespace gui
 			{
 				if (m_inFocus)
 				{
-					UpdateUV(m_defaultSprite->GetUVRect().upperLeftCorner, 
-							m_defaultSprite->GetUVRect().lowerRightCorner);
-					UpdateColor(m_defaultSprite->GetColor());
+					//UpdateUV(m_defaultSprite->GetUVRect().upperLeftCorner, 
+					//		m_defaultSprite->GetUVRect().lowerRightCorner);
+					//UpdateColor(m_defaultSprite->GetColor());
 					m_inFocus = false;
 
+					m_state = State::Default;
 					UpdateIfDirty();
 
 					return true;
@@ -185,11 +215,11 @@ namespace gui
 			}
 			else if (code == KeyCode::KEY_RETURN)
 			{
-				UpdateUV(m_defaultSprite->GetUVRect().upperLeftCorner, 
-							m_defaultSprite->GetUVRect().lowerRightCorner);
-				UpdateColor(m_defaultSprite->GetColor());
+				//UpdateUV(m_defaultSprite->GetUVRect().upperLeftCorner, 
+				//			m_defaultSprite->GetUVRect().lowerRightCorner);
+				//UpdateColor(m_defaultSprite->GetColor());
 				m_inFocus = false;
-
+				m_state = State::Default;
 				UpdateIfDirty();
 			}
 			else
@@ -213,6 +243,7 @@ namespace gui
 		}
 	}
 
+	/*
 	void LineEdit::UpdateCursorGeometry()
 	{
 		if (s_cursorBatchData.size() == 0U)
@@ -242,7 +273,7 @@ namespace gui
 		s_cursorBatchData[23] = color.x; s_cursorBatchData[24] = color.y; s_cursorBatchData[25] = color.z; s_cursorBatchData[26] = 1.0f;
 		s_cursorBatchData[32] = color.x; s_cursorBatchData[33] = color.y;  s_cursorBatchData[34] = color.z; s_cursorBatchData[35] = 1.0f;
 	}
-
+	*/
 	
 } // gui
 

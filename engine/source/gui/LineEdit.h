@@ -12,6 +12,14 @@ namespace gui
 	class LineEdit : public Text
 	{
 	public:
+		enum State : u32
+		{
+			Default = 0U,
+			Edit,
+
+			Count
+		};
+
 		LineEdit();
 		LineEdit(const SpritePtr& defaultSprite,
 				const SpritePtr& editSprite);
@@ -20,8 +28,9 @@ namespace gui
 			   const SpritePtr& defaultSprite, 
 			   const SpritePtr& editSprite);
 
-		virtual void GetGeometry(GuiBatchData& data) override;
-		virtual void GetTextGeometry(GuiBatchData& data) override;
+		//virtual void GetGeometry(GuiBatchData& data) override;
+		//virtual void GetTextGeometry(GuiBatchData& data) override;
+		virtual void Render(video::Painter* painter) override;
 
 		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type) override;
 		virtual bool ProcessKeyboardInput(KeyboardEventType type, KeyCode code) override;
@@ -30,11 +39,13 @@ namespace gui
 
 	protected:
 		virtual void UpdateIfDirty();
-		static void UpdateCursorGeometry();
+		//static void UpdateCursorGeometry();
 
 	protected:
-		SpritePtr m_defaultSprite;
-		SpritePtr m_editSprite;
+		std::array<SpritePtr, State::Count> m_sprites;
+		State m_state = State::Default;
+		//SpritePtr m_defaultSprite;
+		//SpritePtr m_editSprite;
 
 		bool m_dirty = false;
 		bool m_inFocus = false;

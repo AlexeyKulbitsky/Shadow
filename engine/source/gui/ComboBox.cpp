@@ -22,30 +22,6 @@ namespace gui
 		m_layout.reset(new VerticalLayout());
 	}
 
-	/*
-	void ComboBox::GetGeometry(GuiBatchData& data)
-	{
-		if (m_isInFocus)
-			return;
-
-		m_button->GetGeometry(data);
-
-		if (m_showList)
-			m_layout->GetGeometry(data);
-	}
-
-	void ComboBox::GetTextGeometry(GuiBatchData& data)
-	{
-		if (m_isInFocus)
-			return;
-
-		m_button->GetTextGeometry(data);
-
-		if (m_showList)
-			m_layout->GetTextGeometry(data);
-	}
-	*/
-
 	void ComboBox::Render(video::Painter* painter)
 	{
 		if (m_isInFocus)

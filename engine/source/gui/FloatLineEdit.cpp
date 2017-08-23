@@ -36,11 +36,11 @@ namespace gui
 			}
 			else if (code == KeyCode::KEY_RETURN)
 			{
-				UpdateUV(m_defaultSprite->GetUVRect().upperLeftCorner, 
-							m_defaultSprite->GetUVRect().lowerRightCorner);
-				UpdateColor(m_defaultSprite->GetColor());
+				//UpdateUV(m_defaultSprite->GetUVRect().upperLeftCorner, 
+				//			m_defaultSprite->GetUVRect().lowerRightCorner);
+				//UpdateColor(m_defaultSprite->GetColor());
 				m_inFocus = false;
-
+				m_state = State::Default;
 				UpdateIfDirty();
 			}
 			else
