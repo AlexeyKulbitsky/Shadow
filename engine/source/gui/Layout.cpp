@@ -48,6 +48,9 @@ namespace gui
 	void Layout::AddLayout(const LayoutPtr& layout)
 	{
 		m_items.push_back(layout);
+
+		if (m_parent)
+			m_parent->UpdateLayout();
 	}
 
 	void Layout::SetSize(const math::Vector2u& size)
@@ -64,36 +67,6 @@ namespace gui
 	{
 
 	}
-
-// 	void Layout::GetGeometry(GuiBatchData& data)
-// 	{
-// 		for (u32 i = 0; i < m_items.size(); ++i)
-// 		{
-// 			const auto& widget = m_items[i]->GetWidget();
-// 			if (widget)
-// 			{
-// 				widget->GetGeometry(data);
-// 				continue;
-// 			}
-// 
-// 			m_items[i]->GetGeometry(data);
-// 		}
-// 	}
-// 
-// 	void Layout::GetTextGeometry(GuiBatchData& data)
-// 	{
-// 		for (u32 i = 0; i < m_items.size(); ++i)
-// 		{
-// 			const auto& widget = m_items[i]->GetWidget();
-// 			if (widget)
-// 			{
-// 				widget->GetTextGeometry(data);
-// 				continue;
-// 			}
-// 
-// 			m_items[i]->GetTextGeometry(data);
-// 		}
-// 	}
 
 	void Layout::Render(video::Painter* painter)
 	{

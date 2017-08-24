@@ -22,7 +22,6 @@ namespace gui
 		void SetText(const String& text);
 		const String& GetText() const { return m_text; }
 
-		//virtual void GetTextGeometry(GuiBatchData& data) override;
 		virtual void Render(video::Painter* painter) override;
 		virtual void SetPosition(u32 x, u32 y) override;
 		virtual void SetSize(const math::Vector2u& size) override;
@@ -30,11 +29,7 @@ namespace gui
 		virtual void SetHeight(u32 height) override;
 
 	protected:
-		void UpdateTextGeometry();
-
-	protected:
 		String m_text;
-		std::vector<float> m_textBatchData;
 	};
 
 } // gui

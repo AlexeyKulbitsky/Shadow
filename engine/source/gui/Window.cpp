@@ -69,84 +69,43 @@ namespace gui
 	{
 		Widget::SetPosition(x, y);
 		m_text->SetPosition(x, y);
+
+		// Update bar rect for input handling (moving with mouse)
+		m_barRect.upperLeftCorner.x = m_rect.upperLeftCorner.x + m_leftMargin;
+		m_barRect.upperLeftCorner.y = m_rect.upperLeftCorner.y + m_topMargin;
+		m_barRect.lowerRightCorner.x = m_rect.lowerRightCorner.x - m_rightMargin;
+		m_barRect.lowerRightCorner.y = m_rect.upperLeftCorner.y + m_topMargin + m_barWidth;
+
+		// Update in rect for updating layout representation
+		m_inRect.upperLeftCorner.x = m_rect.upperLeftCorner.x + m_leftMargin;
+		m_inRect.upperLeftCorner.y = m_rect.upperLeftCorner.y + m_topMargin + m_barWidth;
+		m_inRect.lowerRightCorner.x = m_rect.lowerRightCorner.x - m_rightMargin;
+		m_inRect.lowerRightCorner.y = m_rect.lowerRightCorner.y - m_bottomMargin;
 	}
-
-	///////////////////////////////////////////////////////////////////////////////////////
-
-// 	void Window::GetGeometry(GuiBatchData& data)
-// 	{
-// 		//Widget::GetGeometry(data);
-// 
-// 		data.vertices.insert(data.vertices.end(), m_batchData.begin(), m_batchData.end());
-// 		
-// 		const u32 count = data.verticesCount;
-// 
-// 		data.indices.push_back(count);
-// 		data.indices.push_back(count + 1);
-// 		data.indices.push_back(count + 6);
-// 		data.indices.push_back(count);
-// 		data.indices.push_back(count + 6);
-// 		data.indices.push_back(count + 4);
-// 		
-// 		data.indices.push_back(count + 1);
-// 		data.indices.push_back(count + 7);
-// 		data.indices.push_back(count + 6);
-// 		data.indices.push_back(count + 1);
-// 		data.indices.push_back(count + 2);
-// 		data.indices.push_back(count + 7);
-// 		
-// 		data.indices.push_back(count + 2);
-// 		data.indices.push_back(count + 3);
-// 		data.indices.push_back(count + 9);
-// 		data.indices.push_back(count + 2);
-// 		data.indices.push_back(count + 9);
-// 		data.indices.push_back(count + 7);
-// 		
-// 		data.indices.push_back(count + 3);
-// 		data.indices.push_back(count);
-// 		data.indices.push_back(count + 4);
-// 		data.indices.push_back(count + 3);
-// 		data.indices.push_back(count + 4);
-// 		data.indices.push_back(count + 9);
-// 		
-// 		data.indices.push_back(count + 5);
-// 		data.indices.push_back(count + 9);
-// 		data.indices.push_back(count + 4);
-// 		data.indices.push_back(count + 5);
-// 		data.indices.push_back(count + 8);
-// 		data.indices.push_back(count + 9);
-// 
-// 		data.indices.push_back(count + 6);
-// 		data.indices.push_back(count + 8);
-// 		data.indices.push_back(count + 5);
-// 		data.indices.push_back(count + 6);
-// 		data.indices.push_back(count + 7);
-// 		data.indices.push_back(count + 8);
-// 		
-// 		data.verticesCount += 10;
-// 
-// 		//if (m_layout)
-// 		//{
-// 		//	m_layout->GetGeometry(data);
-// 		//}
-// 	}
-
-	///////////////////////////////////////////////////////////////////////////////////////
-
-// 	void Window::GetTextGeometry(GuiBatchData& data)
-// 	{
-// 		m_text->GetTextGeometry(data);
-// 
-// 		//if (m_layout)
-// 		//{
-// 		//	m_layout->GetTextGeometry(data);
-// 		//}
-// 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////
 
 	void Window::Render(video::Painter* painter)
 	{
+		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
+		// Render bar
+		video::Painter::Vertex barUL(m_barRect.upperLeftCorner, 
+								m_barSprite->GetUVRect().upperLeftCorner, 
+								m_barSprite->GetColor());
+		video::Painter::Vertex barBR(m_barRect.lowerRightCorner,
+								m_barSprite->GetUVRect().lowerRightCorner,
+								m_barSprite->GetColor());
+		painter->DrawRect(barUL, barBR);
+
+		// Render layout
+		video::Painter::Vertex layoutUL(m_inRect.upperLeftCorner, 
+								m_inSprite->GetUVRect().upperLeftCorner, 
+								m_inSprite->GetColor());
+		video::Painter::Vertex layoutBR(m_inRect.lowerRightCorner,
+								m_inSprite->GetUVRect().lowerRightCorner,
+								m_inSprite->GetColor());
+		painter->DrawRect(layoutUL, layoutBR);
+
 		m_text->Render(painter);
 
 		if (m_layout)
@@ -261,7 +220,7 @@ namespace gui
 
 		// Update in rect for updating layout representation
 		m_inRect.upperLeftCorner.x = m_rect.upperLeftCorner.x + m_leftMargin;
-		m_inRect.upperLeftCorner.y = m_rect.upperLeftCorner.y + m_topMargin + m_barWidth + m_topMargin;
+		m_inRect.upperLeftCorner.y = m_rect.upperLeftCorner.y + m_topMargin + m_barWidth;
 		m_inRect.lowerRightCorner.x = m_rect.lowerRightCorner.x - m_rightMargin;
 		m_inRect.lowerRightCorner.y = m_rect.lowerRightCorner.y - m_bottomMargin;
 	}

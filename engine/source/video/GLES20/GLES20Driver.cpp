@@ -85,6 +85,7 @@ bool GLES20Driver::Init()
     std::placeholders::_3));
 
 	glEnable( GL_DEPTH_TEST );
+	glEnable(GL_SCISSOR_TEST);
 	//glEnable(GL_BLEND);
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glClearColor( 0.7f, 0.7f, 0.7f, 1.0f );
@@ -179,6 +180,7 @@ void GLES20Driver::SetViewport( u32 x, u32 y, u32 width, u32 height )
 {
 	Driver::SetViewport( x, y, width, height );
 	glViewport( (GLint)x, (GLint)y, (GLint)width, (GLint)height );
+	
 }
 
 
@@ -480,6 +482,17 @@ void GLES20Driver::Draw( u32 offset, u32 verticesCount, u32 instancesCount, cons
 void GLES20Driver::DrawIndexed( u32 offset, u32 indicesCount, u32 instancesCount, const CommandBufferPtr& )
 {
 	glDrawElements(m_currentTopology, indicesCount, GL_UNSIGNED_INT, (void*)(offset * sizeof(u32)));
+}
+
+////////////////////////////////////////////////////////////////////////
+
+void GLES20Driver::SetScissorRect(const math::Rectu& scissor, const CommandBufferPtr&)
+{
+	const s32 height = static_cast<s32>(m_viewPort.w);
+	glScissor(static_cast<s32>(scissor.upperLeftCorner.x),
+			  height - static_cast<s32>(scissor.upperLeftCorner.y + scissor.GetHeight()),
+			  scissor.GetWidth(),
+			  scissor.GetHeight());
 }
 
 ////////////////////////////////////////////////////////////////////////

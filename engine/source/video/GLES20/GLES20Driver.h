@@ -45,7 +45,7 @@ namespace sh
 			virtual void SetBlendingState(const BlendingStatePtr& blendingState) override;
 			virtual void SetRenderPipeline(const RenderPipelinePtr& pipeline, const CommandBufferPtr& commandBuffer = nullptr) override;
 			virtual void SetComputePipeline() override;
-
+			
 			// Rendering
 			virtual void SetGpuParams(const GpuParamsPtr& params, const CommandBufferPtr& commandBuffer = nullptr) override;
 			virtual void SetTopology(Topology topology, const CommandBufferPtr& commandBuffer = nullptr) override;
@@ -54,6 +54,7 @@ namespace sh
 			virtual void SetIndexBuffer(const IndexBufferPtr& buffer, const CommandBufferPtr& commandBuffer = nullptr) override;
 			virtual void Draw(u32 offset, u32 verticesCount, u32 instancesCount = 1U, const CommandBufferPtr& commandBuffer = nullptr) override;
 			virtual void DrawIndexed(u32 offset, u32 indicesCount, u32 instancesCount = 1U, const CommandBufferPtr& commandBuffer = nullptr) override;
+			virtual void SetScissorRect(const math::Rectu& scissor, const CommandBufferPtr& commandBuffer = nullptr) override;
 
 			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) override;
 

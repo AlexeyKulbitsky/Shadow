@@ -32,45 +32,8 @@ namespace gui
 	{
 	}
 
-// 	void Widget::GetGeometry(GuiBatchData& data)
-// 	{
-// 		data.vertices.insert(data.vertices.end(), m_batchData.begin(), m_batchData.end());
-// 
-// 		data.indices.push_back(data.verticesCount);
-// 		data.indices.push_back(data.verticesCount + 1);
-// 		data.indices.push_back(data.verticesCount + 2);
-// 
-// 		data.indices.push_back(data.verticesCount);
-// 		data.indices.push_back(data.verticesCount + 2);
-// 		data.indices.push_back(data.verticesCount + 3);
-// 		data.verticesCount += 4;
-// 
-// 
-// 		if (!m_layout)
-// 			return;
-// 		m_layout->GetGeometry(data);
-// 	}
-// 
-// 	void Widget::GetTextGeometry(GuiBatchData& data)
-// 	{
-// 		if (!m_layout)
-// 			return;
-// 
-// 		m_layout->GetTextGeometry(data);
-// 	}
-
 	void Widget::Render(video::Painter* painter)
 	{
-// 		GuiBatchData mainBatchData;
-// 		GetGeometry(mainBatchData);
-// 		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
-// 		painter->DrawTriangleList(mainBatchData.vertices, mainBatchData.indices, mainBatchData.verticesCount);
-// 
-// 		GuiBatchData textBatchData;
-// 		GetTextGeometry(textBatchData);
-// 		painter->SetMaterial(GuiManager::GetInstance()->GetTextMaterial());
-// 		painter->DrawTriangleList(textBatchData.vertices, textBatchData.indices, textBatchData.verticesCount);
-
 		if (m_layout)
 			m_layout->Render(painter);
 	}

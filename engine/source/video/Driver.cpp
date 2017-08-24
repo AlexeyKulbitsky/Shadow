@@ -53,6 +53,11 @@ namespace sh
 			m_viewPort.y = y;
 			m_viewPort.z = width;
 			m_viewPort.w = height;
+
+			m_vp.upperLeftCorner.x = x;
+			m_vp.upperLeftCorner.y = y;
+			m_vp.lowerRightCorner.x = x + width;
+			m_vp.lowerRightCorner.y = y + height;
 		}
 
 		/////////////////////////////////////////////////////////////////////////

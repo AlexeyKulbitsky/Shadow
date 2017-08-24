@@ -51,6 +51,7 @@ namespace sh
 
 			// Viewport management
 			virtual void SetViewport(u32 x, u32 y, u32 width, u32 height);
+			virtual const math::Rectu& GetViewport() const { return m_vp; }
 			virtual const math::Vector4u& GetViewPort() const { return m_viewPort; }
 			virtual void SetDepthRange(f32 zMin, f32 zMax);
 			virtual const math::Vector2f& GetDepthRange() const { return m_depthRange; }
@@ -74,6 +75,7 @@ namespace sh
 			virtual void SetBlendingState(const BlendingStatePtr& blendingState) { }
 			virtual void SetRenderPipeline(const RenderPipelinePtr& pipeline, const CommandBufferPtr& commandBuffer = nullptr) { }
 			virtual void SetComputePipeline() { }
+			
 
 			// Rendering
 			virtual void SetGpuParams(const GpuParamsPtr& params, const CommandBufferPtr& commandBuffer = nullptr) { }
@@ -84,6 +86,7 @@ namespace sh
 			virtual void SetIndexBuffer(const IndexBufferPtr& buffer, const CommandBufferPtr& commandBuffer = nullptr) { }
 			virtual void Draw(u32 offset, u32 verticesCount, u32 instancesCount = 1U, const CommandBufferPtr& commandBuffer = nullptr) { }
 			virtual void DrawIndexed(u32 offset, u32 indicesCount, u32 instancesCount = 1U, const CommandBufferPtr& commandBuffer = nullptr) { }
+			virtual void SetScissorRect(const math::Rectu& scissor, const CommandBufferPtr& commandBuffer = nullptr) = 0;
 			virtual void SubmitCommandBuffer(const CommandBufferPtr& commandBuffer) { }
 
 			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) {}
@@ -101,6 +104,7 @@ namespace sh
 
 		protected:
 			math::Vector4u m_viewPort;
+			math::Rectu m_vp;
 			math::Vector2f m_depthRange;
 			
 			// Clear values

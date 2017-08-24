@@ -19,8 +19,6 @@ namespace gui
 		virtual void SetWidth(u32 width) {}
 		virtual void SetHeight(u32 height) {}
 		virtual void Resize(const math::Rectu& rect) {}
-		//virtual void GetGeometry(GuiBatchData& data) {}
-		//virtual void GetTextGeometry(GuiBatchData& data) {}
 		virtual void Render(video::Painter* painter) {}
 		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type) { return false; }
 		virtual bool ProcessKeyboardInput(KeyboardEventType type, KeyCode code) { return false; }
@@ -36,6 +34,7 @@ namespace gui
 	{
 		friend class Widget;
 		friend class Window;
+		friend class ScrollWidget;
 	public:
 		Layout() {}
 		void SetParent(Widget* parent) { m_parent = parent; }
@@ -51,8 +50,6 @@ namespace gui
 		const LayoutItemPtr& GetItem(u32 index) { return m_items[index]; }
 		const WidgetPtr& GetWidget(u32 index) { return m_items[index]->GetWidget(); }
 
-		//virtual void GetGeometry(GuiBatchData& data) override;
-		//virtual void GetTextGeometry(GuiBatchData& data) override;
 		virtual void Render(video::Painter* painter) override;
 		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type) override;
 		virtual bool ProcessKeyboardInput(KeyboardEventType type, KeyCode code) override;

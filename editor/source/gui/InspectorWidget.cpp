@@ -12,6 +12,15 @@ InspectorWidget::InspectorWidget()
 	//windowLayout->AddWidget(m_transformWidget->GetWidget());
 	m_window->SetLayout(windowLayout);
 
+	for (sh::u32 i = 0; i < 10; ++i)
+	{
+		std::stringstream s;
+		s << "Button " << i;
+
+		sh::gui::ButtonPtr button(new sh::gui::Button(s.str()));
+		m_window->GetLayout()->AddWidget(button);
+	}
+
 	sh::gui::GuiManager::GetInstance()->AddChild(m_window);
 
 	sh::Device::GetInstance()->windowResizeEvent.Connect(std::bind(&InspectorWidget::OnWindowResized, this,

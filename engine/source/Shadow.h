@@ -19,6 +19,7 @@
 #include "gui/Menu.h"
 #include "gui/ToolBar.h"
 #include "gui/Text.h"
+#include "gui/ScrollWidget.h"
 #include "gui/Sprite.h"
 #include "gui/SpriteManager.h"
 #include "gui/Style.h"

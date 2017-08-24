@@ -78,18 +78,6 @@ namespace gui
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-// 	void ToolBar::GetGeometry(GuiBatchData& data)
-// 	{
-// 		Widget::GetGeometry(data);
-// 
-// 		for (const auto& button : m_buttons)
-// 		{
-// 			button->GetGeometry(data);
-// 		}
-// 	}
-
-	/////////////////////////////////////////////////////////////////////////////////////
-
 	void ToolBar::Render(video::Painter* painter)
 	{
 		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
