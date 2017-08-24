@@ -64,29 +64,29 @@ namespace gui
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	void MenuBar::GetGeometry(GuiBatchData& data)
-	{
-		Widget::GetGeometry(data);
-		
-		for (const auto& menu : m_menus)
-		{
-			menu.first->GetGeometry(data);
-			if (menu.second->IsVisible())
-				menu.second->GetGeometry(data);
-		}
-	}
+// 	void MenuBar::GetGeometry(GuiBatchData& data)
+// 	{
+// 		Widget::GetGeometry(data);
+// 		
+// 		for (const auto& menu : m_menus)
+// 		{
+// 			menu.first->GetGeometry(data);
+// 			if (menu.second->IsVisible())
+// 				menu.second->GetGeometry(data);
+// 		}
+// 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	void MenuBar::GetTextGeometry(GuiBatchData& data)
-	{
-		for (const auto& menu : m_menus)
-		{
-			menu.first->GetTextGeometry(data);
-			if (menu.second->IsVisible())
-				menu.second->GetTextGeometry(data);
-		}
-	}
+// 	void MenuBar::GetTextGeometry(GuiBatchData& data)
+// 	{
+// 		for (const auto& menu : m_menus)
+// 		{
+// 			menu.first->GetTextGeometry(data);
+// 			if (menu.second->IsVisible())
+// 				menu.second->GetTextGeometry(data);
+// 		}
+// 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
 

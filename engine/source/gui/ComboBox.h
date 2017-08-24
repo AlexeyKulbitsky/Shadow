@@ -17,8 +17,6 @@ namespace gui
 		ComboBox();
 		ComboBox(const math::Rectu& rect);
 
-		//virtual void GetGeometry(GuiBatchData& data) override;
-		//virtual void GetTextGeometry(GuiBatchData& data) override;
 		virtual void Render(video::Painter* painter) override;
 		virtual void SetPosition(u32 x, u32 y) override;
 		virtual void SetSize(const math::Vector2u& size) override;

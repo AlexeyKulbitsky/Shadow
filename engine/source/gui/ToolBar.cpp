@@ -78,15 +78,15 @@ namespace gui
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	void ToolBar::GetGeometry(GuiBatchData& data)
-	{
-		Widget::GetGeometry(data);
-
-		for (const auto& button : m_buttons)
-		{
-			button->GetGeometry(data);
-		}
-	}
+// 	void ToolBar::GetGeometry(GuiBatchData& data)
+// 	{
+// 		Widget::GetGeometry(data);
+// 
+// 		for (const auto& button : m_buttons)
+// 		{
+// 			button->GetGeometry(data);
+// 		}
+// 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
 

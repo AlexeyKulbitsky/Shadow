@@ -18,8 +18,8 @@ namespace gui
 		void SetText(const String& text);
 
 		virtual void SetPosition(u32 x, u32 y) override;
-		virtual void GetGeometry(GuiBatchData& data) override;
-		virtual void GetTextGeometry(GuiBatchData& data) override;
+		//virtual void GetGeometry(GuiBatchData& data) override;
+		//virtual void GetTextGeometry(GuiBatchData& data) override;
 		virtual void Render(video::Painter* painter) override;
 
 		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type) override;

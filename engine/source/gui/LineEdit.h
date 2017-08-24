@@ -28,8 +28,6 @@ namespace gui
 			   const SpritePtr& defaultSprite, 
 			   const SpritePtr& editSprite);
 
-		//virtual void GetGeometry(GuiBatchData& data) override;
-		//virtual void GetTextGeometry(GuiBatchData& data) override;
 		virtual void Render(video::Painter* painter) override;
 
 		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type) override;
@@ -44,8 +42,6 @@ namespace gui
 	protected:
 		std::array<SpritePtr, State::Count> m_sprites;
 		State m_state = State::Default;
-		//SpritePtr m_defaultSprite;
-		//SpritePtr m_editSprite;
 
 		bool m_dirty = false;
 		bool m_inFocus = false;

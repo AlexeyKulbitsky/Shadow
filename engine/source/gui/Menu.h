@@ -23,8 +23,8 @@ namespace gui
 
 		void AddItem(const ButtonPtr& button);
 
-		virtual void GetGeometry(GuiBatchData& data) override;
-		virtual void GetTextGeometry(GuiBatchData& data) override;
+		//virtual void GetGeometry(GuiBatchData& data) override;
+		//virtual void GetTextGeometry(GuiBatchData& data) override;
 		virtual void Render(video::Painter* painter) override;
 		virtual void SetPosition(u32 x, u32 y) override;
 		virtual void SetWidth(u32 width) override;

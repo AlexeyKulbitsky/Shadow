@@ -39,21 +39,21 @@ namespace gui
 		m_buttons.push_back(button); 
 	}
 
-	void Menu::GetGeometry(GuiBatchData& data)
-	{
-		for (const auto& button : m_buttons)
-		{
-			button->GetGeometry(data);
-		}
-	}
-
-	void Menu::GetTextGeometry(GuiBatchData& data)
-	{
-		for (const auto& button : m_buttons)
-		{
-			button->GetTextGeometry(data);
-		}
-	}
+// 	void Menu::GetGeometry(GuiBatchData& data)
+// 	{
+// 		for (const auto& button : m_buttons)
+// 		{
+// 			button->GetGeometry(data);
+// 		}
+// 	}
+// 
+// 	void Menu::GetTextGeometry(GuiBatchData& data)
+// 	{
+// 		for (const auto& button : m_buttons)
+// 		{
+// 			button->GetTextGeometry(data);
+// 		}
+// 	}
 
 	void Menu::Render(video::Painter* painter)
 	{

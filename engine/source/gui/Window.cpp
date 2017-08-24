@@ -73,100 +73,80 @@ namespace gui
 
 	///////////////////////////////////////////////////////////////////////////////////////
 
-	void Window::GetGeometry(GuiBatchData& data)
-	{
-		//Widget::GetGeometry(data);
-
-		data.vertices.insert(data.vertices.end(), m_batchData.begin(), m_batchData.end());
-		
-		const u32 count = data.verticesCount;
-
-		data.indices.push_back(count);
-		data.indices.push_back(count + 1);
-		data.indices.push_back(count + 6);
-		data.indices.push_back(count);
-		data.indices.push_back(count + 6);
-		data.indices.push_back(count + 4);
-		
-		data.indices.push_back(count + 1);
-		data.indices.push_back(count + 7);
-		data.indices.push_back(count + 6);
-		data.indices.push_back(count + 1);
-		data.indices.push_back(count + 2);
-		data.indices.push_back(count + 7);
-		
-		data.indices.push_back(count + 2);
-		data.indices.push_back(count + 3);
-		data.indices.push_back(count + 9);
-		data.indices.push_back(count + 2);
-		data.indices.push_back(count + 9);
-		data.indices.push_back(count + 7);
-		
-		data.indices.push_back(count + 3);
-		data.indices.push_back(count);
-		data.indices.push_back(count + 4);
-		data.indices.push_back(count + 3);
-		data.indices.push_back(count + 4);
-		data.indices.push_back(count + 9);
-		
-		data.indices.push_back(count + 5);
-		data.indices.push_back(count + 9);
-		data.indices.push_back(count + 4);
-		data.indices.push_back(count + 5);
-		data.indices.push_back(count + 8);
-		data.indices.push_back(count + 9);
-
-		data.indices.push_back(count + 6);
-		data.indices.push_back(count + 8);
-		data.indices.push_back(count + 5);
-		data.indices.push_back(count + 6);
-		data.indices.push_back(count + 7);
-		data.indices.push_back(count + 8);
-		
-		data.verticesCount += 10;
-
-		//if (m_layout)
-		//{
-		//	m_layout->GetGeometry(data);
-		//}
-	}
+// 	void Window::GetGeometry(GuiBatchData& data)
+// 	{
+// 		//Widget::GetGeometry(data);
+// 
+// 		data.vertices.insert(data.vertices.end(), m_batchData.begin(), m_batchData.end());
+// 		
+// 		const u32 count = data.verticesCount;
+// 
+// 		data.indices.push_back(count);
+// 		data.indices.push_back(count + 1);
+// 		data.indices.push_back(count + 6);
+// 		data.indices.push_back(count);
+// 		data.indices.push_back(count + 6);
+// 		data.indices.push_back(count + 4);
+// 		
+// 		data.indices.push_back(count + 1);
+// 		data.indices.push_back(count + 7);
+// 		data.indices.push_back(count + 6);
+// 		data.indices.push_back(count + 1);
+// 		data.indices.push_back(count + 2);
+// 		data.indices.push_back(count + 7);
+// 		
+// 		data.indices.push_back(count + 2);
+// 		data.indices.push_back(count + 3);
+// 		data.indices.push_back(count + 9);
+// 		data.indices.push_back(count + 2);
+// 		data.indices.push_back(count + 9);
+// 		data.indices.push_back(count + 7);
+// 		
+// 		data.indices.push_back(count + 3);
+// 		data.indices.push_back(count);
+// 		data.indices.push_back(count + 4);
+// 		data.indices.push_back(count + 3);
+// 		data.indices.push_back(count + 4);
+// 		data.indices.push_back(count + 9);
+// 		
+// 		data.indices.push_back(count + 5);
+// 		data.indices.push_back(count + 9);
+// 		data.indices.push_back(count + 4);
+// 		data.indices.push_back(count + 5);
+// 		data.indices.push_back(count + 8);
+// 		data.indices.push_back(count + 9);
+// 
+// 		data.indices.push_back(count + 6);
+// 		data.indices.push_back(count + 8);
+// 		data.indices.push_back(count + 5);
+// 		data.indices.push_back(count + 6);
+// 		data.indices.push_back(count + 7);
+// 		data.indices.push_back(count + 8);
+// 		
+// 		data.verticesCount += 10;
+// 
+// 		//if (m_layout)
+// 		//{
+// 		//	m_layout->GetGeometry(data);
+// 		//}
+// 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////
 
-	void Window::GetTextGeometry(GuiBatchData& data)
-	{
-		m_text->GetTextGeometry(data);
-
-		//if (m_layout)
-		//{
-		//	m_layout->GetTextGeometry(data);
-		//}
-	}
+// 	void Window::GetTextGeometry(GuiBatchData& data)
+// 	{
+// 		m_text->GetTextGeometry(data);
+// 
+// 		//if (m_layout)
+// 		//{
+// 		//	m_layout->GetTextGeometry(data);
+// 		//}
+// 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////
 
 	void Window::Render(video::Painter* painter)
 	{
-// 		GuiBatchData mainBatchData;
-// 		mainBatchData.indices.reserve(50000U);
-// 		mainBatchData.vertices.reserve(50000U);
-// 		mainBatchData.verticesCount = 0U;
-// 		GetGeometry(mainBatchData);
-// 		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
-// 		painter->DrawTriangleList(mainBatchData.vertices, mainBatchData.indices, mainBatchData.verticesCount);
-
-		//painter->Flush();
-
-// 		GuiBatchData textBatchData;
-// 		textBatchData.indices.reserve(50000U);
-// 		textBatchData.vertices.reserve(50000U);
-// 		textBatchData.verticesCount = 0U;
-// 		GetTextGeometry(textBatchData);
-// 		painter->SetMaterial(GuiManager::GetInstance()->GetTextMaterial());
-// 		painter->DrawTriangleList(textBatchData.vertices, textBatchData.indices, textBatchData.verticesCount);
-	
-		//painter->Flush();
-
 		m_text->Render(painter);
 
 		if (m_layout)
