@@ -171,33 +171,17 @@ namespace gui
 		//	ST_FRAGMENT, "diffuse", m_style->GetTexure());
 	}
 
-	bool GuiManager::ProcessInput(u32 x, u32 y, MouseEventType type)
+	bool GuiManager::ProcessEvent(GUIEvent& ev)
 	{
-		if (m_menuBar && m_menuBar->ProcessInput(x, y, type))
+		if (m_menuBar && m_menuBar->ProcessEvent(ev))
 			return true;
 
-		if (m_toolBar && m_toolBar->ProcessInput(x, y, type))
+		if (m_toolBar && m_toolBar->ProcessEvent(ev))
 			return true;
 
 		for (auto& child : m_children)
 		{
-			if (child->ProcessInput(x, y, type))
-				return true;
-		}
-		return false;
-	}
-
-	bool GuiManager::ProcessKeyboardInput(KeyboardEventType type, KeyCode code)
-	{
-		if (m_menuBar && m_menuBar->ProcessKeyboardInput(type, code))
-			return true;
-
-		if (m_toolBar && m_toolBar->ProcessKeyboardInput(type, code))
-			return true;
-
-		for (auto& child : m_children)
-		{
-			if (child->ProcessKeyboardInput(type, code))
+			if (child->ProcessEvent(ev))
 				return true;
 		}
 		return false;

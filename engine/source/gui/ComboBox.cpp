@@ -9,11 +9,11 @@ namespace gui
 {
 
 	ComboBox::ComboBox()
-		: ComboBox(math::Rectu(0U, 0U, 10U, 10U))
+		: ComboBox(math::Recti(0, 0, 10, 10))
 	{
 	}
 
-	ComboBox::ComboBox(const math::Rectu& rect)
+	ComboBox::ComboBox(const math::Recti& rect)
 	{
 		m_button.reset(new Button(rect));
 		m_button->SetToggleable(true);
@@ -32,7 +32,7 @@ namespace gui
 			m_layout->Render(painter);
 	}
 
-	void ComboBox::SetPosition(u32 x, u32 y)
+	void ComboBox::SetPosition(s32 x, s32 y)
 	{
 		m_button->SetPosition(x, y);
 		Widget::SetPosition(x, y);
@@ -56,12 +56,12 @@ namespace gui
 		Widget::SetHeight(height);
 	}
 
-	bool ComboBox::ProcessInput(u32 x, u32 y, MouseEventType type)
+	bool ComboBox::ProcessEvent(GUIEvent& ev)
 	{
-		if (!m_button->ProcessInput(x, y, type))
+		if (!m_button->ProcessEvent(ev))
 		{
 			if (m_showList)
-				return m_layout->ProcessInput(x, y, type);
+				return m_layout->ProcessEvent(ev);
 		}
 		return false;
 	}
@@ -87,7 +87,7 @@ namespace gui
 		u32 x1 = x0 + 150U;
 		u32 y1 = y0 + 15U * childrenCount;
 
-		m_layout->Resize(math::Rectu(x0, y0, x1, y1));
+		m_layout->Resize(math::Recti(x0, y0, x1, y1));
 	}
 
 	void ComboBox::RemoveItem(const String& text)
@@ -168,9 +168,9 @@ namespace gui
 		u32 childrenCount = m_layout->GetItemsCount();
 		u32 x0 = m_button->GetPosition().x;
 		u32 y0 = m_button->GetRect().lowerRightCorner.y;
-		u32 x1 = x0 + 150U;
-		u32 y1 = y0 + 15U * childrenCount;
-		m_layout->Resize(math::Rectu(x0, y0, x1, y1));
+		u32 x1 = x0 + 150;
+		u32 y1 = y0 + 15 * childrenCount;
+		m_layout->Resize(math::Recti(x0, y0, x1, y1));
 	}
 
 } // gui

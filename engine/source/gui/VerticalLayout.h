@@ -21,7 +21,7 @@ namespace gui
 		virtual void SetHeight(u32 height) override;
 
 	public:
-		virtual void Resize(const math::Rectu& rect) override;
+		virtual void Resize(const math::Recti& rect) override;
 	};
 
 } // gui

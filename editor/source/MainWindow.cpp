@@ -82,7 +82,23 @@ void MainWindow::Close()
 
 void MainWindow::OnMouseEvent(int x, int y, sh::MouseEventType type, sh::MouseCode code)
 {
-	if (sh::gui::GuiManager::GetInstance()->ProcessInput(x, y, type))
+	sh::gui::GUIEvent ev;
+	switch (type)
+	{
+	case sh::MouseEventType::ButtonPressed:
+		ev.type = sh::gui::EventType::PointerDown;
+		break;
+	case sh::MouseEventType::ButtonReleased:
+		ev.type = sh::gui::EventType::PointerUp;
+		break;
+	case sh::MouseEventType::Moved:
+		ev.type = sh::gui::EventType::PointerMove;
+		break;
+	}
+	ev.x = x;
+	ev.y = y;
+
+	if (sh::gui::GuiManager::GetInstance()->ProcessEvent(ev))
 		return;
 
 	if (code == sh::MouseCode::ButtonWheel)
@@ -139,8 +155,16 @@ void MainWindow::OnMouseEvent(int x, int y, sh::MouseEventType type, sh::MouseCo
 	}
 }
 
-void MainWindow::OnMouseWeelEvent(int d)
+void MainWindow::OnMouseWeelEvent(int x, int y, int d)
 {
+	sh::gui::GUIEvent ev;
+	ev.type = sh::gui::EventType::Wheel;
+	ev.delta = d;
+	ev.x = x;
+	ev.y = y;
+	if (sh::gui::GuiManager::GetInstance()->ProcessEvent(ev))
+		return;
+
 	float delta = d > 0 ? 0.5f : -0.5f;
 
 	auto camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
@@ -174,7 +198,15 @@ void MainWindow::OnMouseWeelEvent(int d)
 
 void MainWindow::OnKeyboardEvent(sh::KeyboardEventType type, sh::KeyCode code)
 {
-	if (sh::gui::GuiManager::GetInstance()->ProcessKeyboardInput(type, code))
+	sh::gui::GUIEvent ev;
+	if (type == sh::KeyboardEventType::KeyPressed)
+		ev.type = sh::gui::EventType::KeyDown;
+	else
+		ev.type = sh::gui::EventType::KeyUp;
+	ev.keyCode = (int)code;
+
+
+	if (sh::gui::GuiManager::GetInstance()->ProcessEvent(ev))
 		return;
 
 	if (type == sh::KeyboardEventType::KeyPressed)
@@ -193,7 +225,7 @@ void MainWindow::Init()
 	sh::gui::GuiManager::GetInstance()->Init();
 
 	sh::Device::GetInstance()->mouseEvent.Connect(std::bind(&MainWindow::OnMouseEvent, this, _1, _2, _3, _4));
-	sh::Device::GetInstance()->mouseWheelEvent.Connect(std::bind(&MainWindow::OnMouseWeelEvent, this, _1));
+	sh::Device::GetInstance()->mouseWheelEvent.Connect(std::bind(&MainWindow::OnMouseWeelEvent, this, _1, _2, _3));
 	sh::Device::GetInstance()->keyboardEvent.Connect(std::bind(&MainWindow::OnKeyboardEvent, this, _1, _2));
 
 
@@ -244,21 +276,21 @@ void MainWindow::Init()
 	const auto& toolBar = guiMgr->GetToolBar();
 
 	// Menu bar
-	sh::gui::ButtonPtr menuButton(new sh::gui::Button(sh::math::Rectu(0, 0, 50, 15)));
+	sh::gui::ButtonPtr menuButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
 	menuButton->SetToggleable(true);
 	const auto& fileMenu = menuBar->AddMenu("File", menuButton);
 
-	sh::gui::ButtonPtr openSceneButton(new sh::gui::Button(sh::math::Rectu(0, 0, 50, 15)));
+	sh::gui::ButtonPtr openSceneButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
 	openSceneButton->SetText("Open scene...");
 	openSceneButton->OnRelease.Connect(std::bind(&MainWindow::OpenScene, this));
 	fileMenu->AddItem(openSceneButton);
 
-	sh::gui::ButtonPtr saveSceneButton(new sh::gui::Button(sh::math::Rectu(0, 0, 50, 15)));
+	sh::gui::ButtonPtr saveSceneButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
 	saveSceneButton->SetText("Save scene...");
 	saveSceneButton->OnRelease.Connect(std::bind(&MainWindow::SaveScene, this));
 	fileMenu->AddItem(saveSceneButton);
 
-	sh::gui::ButtonPtr exitButton(new sh::gui::Button(sh::math::Rectu(0, 0, 50, 15)));
+	sh::gui::ButtonPtr exitButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
 	exitButton->SetText("Exit");
 	exitButton->OnRelease.Connect(std::bind(&MainWindow::Close, this));
 	fileMenu->AddItem(exitButton);
@@ -314,7 +346,7 @@ void MainWindow::Init()
 
 	sh::gui::ScrollWidgetPtr scroll(new sh::gui::ScrollWidget());
 	scroll->SetPosition(100, 100);
-	scroll->SetSize(sh::math::Vector2u(100, 400));
+	scroll->SetSize(sh::math::Vector2u(100, 200));
 	sh::gui::VerticalLayoutPtr l(new sh::gui::VerticalLayout());
 	scroll->SetLayout(l);
 	for (sh::u32 i = 0; i < 50; ++i)

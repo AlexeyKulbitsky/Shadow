@@ -15,14 +15,14 @@ namespace gui
 	{
 	public:
 		ComboBox();
-		ComboBox(const math::Rectu& rect);
+		ComboBox(const math::Recti& rect);
 
 		virtual void Render(video::Painter* painter) override;
-		virtual void SetPosition(u32 x, u32 y) override;
+		virtual void SetPosition(s32 x, s32 y) override;
 		virtual void SetSize(const math::Vector2u& size) override;
 		virtual void SetWidth(u32 width) override;
 		virtual void SetHeight(u32 height) override;
-		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type) override;
+		virtual bool ProcessEvent(GUIEvent& ev) override;
 
 		void AddItem(const String& text);
 		void RemoveItem(const String& text);

@@ -21,7 +21,7 @@ namespace gui
 		Layout::AddLayout(layout);
 	}
 
-	void HorizontalLayout::Resize(const math::Rectu& rect)
+	void HorizontalLayout::Resize(const math::Recti& rect)
 	{
 		if (m_items.size() == 0U)
 			return;
@@ -67,7 +67,7 @@ namespace gui
 			}
 
 			// If this item is layout itself
-			m_items[i]->Resize(math::Rectu(x, y, x + itemWidth, y + height));
+			m_items[i]->Resize(math::Recti(x, y, x + itemWidth, y + height));
 			offset += itemWidth;
 		}
 	}

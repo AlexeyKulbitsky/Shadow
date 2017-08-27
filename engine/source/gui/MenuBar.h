@@ -18,11 +18,11 @@ namespace gui
 		const MenuPtr& AddMenu(const String& menuName, const ButtonPtr& button);
 
 		virtual void Render(video::Painter* painter) override;
-		virtual void SetPosition(u32 x, u32 y) override;
+		virtual void SetPosition(s32 x, s32 y) override;
 		virtual void SetWidth(u32 width) override;
 		virtual void SetHeight(u32 height) override;
 
-		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type) override;
+		virtual bool ProcessEvent(GUIEvent& ev) override;
 
 		void OnWindowResized(int width, int height);
 

@@ -22,7 +22,7 @@ public:
 	void Close();
 
 	void OnMouseEvent(int x, int y, sh::MouseEventType type, sh::MouseCode code);
-	void OnMouseWeelEvent(int delta);
+	void OnMouseWeelEvent(int x, int y, int delta);
 	void OnKeyboardEvent(sh::KeyboardEventType type, sh::KeyCode code);
 	void OnWindowResized(int width, int height);
 

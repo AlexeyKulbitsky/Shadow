@@ -85,7 +85,7 @@ namespace gui
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	void MenuBar::SetPosition(u32 x, u32 y)
+	void MenuBar::SetPosition(s32 x, s32 y)
 	{
 		// Position is fixed in left upper corener of viewport
 	}
@@ -112,21 +112,21 @@ namespace gui
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	bool MenuBar::ProcessInput(u32 x, u32 y, MouseEventType type)
+	bool MenuBar::ProcessEvent(GUIEvent& ev)
 	{
 		for (const auto& menu : m_menus)
 		{
 			if (menu.second->IsEnabled() &&
-				(type == MouseEventType::ButtonReleased ||
-				type == MouseEventType::Moved) &&
-				menu.second->ProcessInput(x, y, type))
+				(ev.type == EventType::PointerUp ||
+					ev.type == EventType::PointerMove) &&
+				menu.second->ProcessEvent(ev))
 			{
 				menu.second->SetEnabled(false);
 				menu.second->SetVisible(false);
 				return true;
 			}
 
-			if (menu.first->ProcessInput(x, y, type))
+			if (menu.first->ProcessEvent(ev))
 				return true;
 		}
 		return false;

@@ -21,11 +21,11 @@ namespace gui
 			Count
 		};
 
-		Button(const math::Rectu rect);
+		Button(const math::Recti rect);
 		Button(const SpritePtr& defaultSprite,
 				const SpritePtr& pressedSprite,
 				const SpritePtr& hoveredSprite);
-		Button(const math::Rectu& rect, 
+		Button(const math::Recti& rect, 
 			   const SpritePtr& defaultSprite, 
 			   const SpritePtr& pressedSprite,
 			   const SpritePtr& hoveredSprite);
@@ -42,15 +42,15 @@ namespace gui
 
 		virtual void Load(const pugi::xml_node& node) override;
 		virtual void Render(video::Painter* painter) override;
-		virtual void SetPosition(u32 x, u32 y) override;
+		virtual void SetPosition(s32 x, s32 y) override;
 		virtual void SetSize(const math::Vector2u& size) override;
 		virtual void SetWidth(u32 width) override;
 		virtual void SetHeight(u32 height) override;
-		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type) override;
+		virtual bool ProcessEvent(GUIEvent& ev) override;
 
 		u32 GetHeight() const;
 		u32 GetWidth() const;
-		const math::Vector2u& GetPosition() const;
+		const math::Vector2i& GetPosition() const;
 
 		Event<void, const ButtonPtr&> OnPress;
 		Event<void, const ButtonPtr&> OnRelease;

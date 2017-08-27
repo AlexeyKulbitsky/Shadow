@@ -21,7 +21,7 @@ namespace gui
 		Layout::AddLayout(layout);
 	}
 
-	void VerticalLayout::Resize(const math::Rectu& rect)
+	void VerticalLayout::Resize(const math::Recti& rect)
 	{
 		if (m_items.size() == 0U)
 			return;
@@ -73,7 +73,7 @@ namespace gui
 			}
 
 			// If this item is layout itself
-			m_items[i]->Resize(math::Rectu(x, y, x + width, y + itemHeight));
+			m_items[i]->Resize(math::Recti(x, y, x + width, y + itemHeight));
 			offset += itemHeight;
 		}
 	}

@@ -47,7 +47,7 @@ namespace gui
 		}
 	}
 
-	void Menu::SetPosition(u32 x, u32 y)
+	void Menu::SetPosition(s32 x, s32 y)
 	{
 
 	}
@@ -62,11 +62,11 @@ namespace gui
 
 	}
 
-	bool Menu::ProcessInput(u32 x, u32 y, MouseEventType type)
+	bool Menu::ProcessEvent(GUIEvent& ev)
 	{
 		for (const auto& button : m_buttons)
 		{
-			if (button->ProcessInput(x, y, type))
+			if (button->ProcessEvent(ev))
 				return true;
 		}
 		return false;

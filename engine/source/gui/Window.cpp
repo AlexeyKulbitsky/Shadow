@@ -16,7 +16,7 @@ namespace sh
 namespace gui
 {
 
-	Window::Window(const math::Rectu& rect)
+	Window::Window(const math::Recti& rect)
 	{
 		const auto& ref = GuiManager::GetInstance()->GetStyle()->GetWindow();
 		m_outSprite = ref->m_outSprite;
@@ -65,7 +65,7 @@ namespace gui
 
 	///////////////////////////////////////////////////////////////////////////////////////
 
-	void Window::SetPosition(u32 x, u32 y)
+	void Window::SetPosition(s32 x, s32 y)
 	{
 		Widget::SetPosition(x, y);
 		m_text->SetPosition(x, y);
@@ -116,6 +116,7 @@ namespace gui
 
 	///////////////////////////////////////////////////////////////////////////////////////
 
+	/*
 	bool Window::ProcessInput(u32 x, u32 y, MouseEventType type)
 	{
 		if (Widget::ProcessInput(x, y, type))
@@ -190,6 +191,14 @@ namespace gui
 		break;
 		}
 
+		return false;
+	}
+	*/
+
+	bool Window::ProcessEvent(GUIEvent& ev)
+	{
+		if (Widget::ProcessEvent(ev))
+			return true;
 		return false;
 	}
 

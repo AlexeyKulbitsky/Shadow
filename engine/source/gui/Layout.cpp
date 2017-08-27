@@ -83,36 +83,18 @@ namespace gui
 		}
 	}
 
-	bool Layout::ProcessInput(u32 x, u32 y, MouseEventType type)
+	bool Layout::ProcessEvent(GUIEvent& ev)
 	{
 		for (u32 i = 0; i < m_items.size(); ++i)
 		{
 			const auto& widget = m_items[i]->GetWidget();
 			if (widget)
 			{
-				if (widget->ProcessInput(x, y, type))
+				if (widget->ProcessEvent(ev))
 					return true;
 			}
 
-			if (m_items[i]->ProcessInput(x, y, type))
-				return true;
-		}
-
-		return false;
-	}
-
-	bool Layout::ProcessKeyboardInput(KeyboardEventType type, KeyCode code)
-	{
-		for (u32 i = 0; i < m_items.size(); ++i)
-		{
-			const auto& widget = m_items[i]->GetWidget();
-			if (widget)
-			{
-				if (widget->ProcessKeyboardInput(type, code))
-					return true;
-			}
-
-			if (m_items[i]->ProcessKeyboardInput(type, code))
+			if (m_items[i]->ProcessEvent(ev))
 				return true;
 		}
 

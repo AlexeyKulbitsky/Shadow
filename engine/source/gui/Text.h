@@ -13,9 +13,9 @@ namespace gui
 	{
 	public:
 		Text(); 
-		Text(const math::Rectu rect);
+		Text(const math::Recti rect);
 		Text(const String& text);
-		Text(const math::Rectu rect, const String& text);
+		Text(const math::Recti rect, const String& text);
 
 		virtual ~Text();
 
@@ -23,7 +23,7 @@ namespace gui
 		const String& GetText() const { return m_text; }
 
 		virtual void Render(video::Painter* painter) override;
-		virtual void SetPosition(u32 x, u32 y) override;
+		virtual void SetPosition(s32 x, s32 y) override;
 		virtual void SetSize(const math::Vector2u& size) override;
 		virtual void SetWidth(u32 width) override;
 		virtual void SetHeight(u32 height) override;

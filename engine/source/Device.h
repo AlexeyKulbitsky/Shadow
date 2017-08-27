@@ -51,7 +51,7 @@ namespace sh
 		void SetWinId(void* window) { m_creationParameters.WinId = window; }
 
 		Event<void, int, int, MouseEventType, MouseCode> mouseEvent;
-		Event<void, int> mouseWheelEvent;
+		Event<void, int, int, int> mouseWheelEvent;
 		Event<void, KeyboardEventType, KeyCode> keyboardEvent;
 		Event<void, int, int> windowResizeEvent;
 		Event<void, void*, int, int> sursafeChangedEvent;

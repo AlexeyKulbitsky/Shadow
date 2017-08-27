@@ -24,14 +24,13 @@ namespace gui
 		LineEdit(const SpritePtr& defaultSprite,
 				const SpritePtr& editSprite);
 
-		LineEdit(const math::Rectu& rect, 
+		LineEdit(const math::Recti& rect, 
 			   const SpritePtr& defaultSprite, 
 			   const SpritePtr& editSprite);
 
 		virtual void Render(video::Painter* painter) override;
 
-		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type) override;
-		virtual bool ProcessKeyboardInput(KeyboardEventType type, KeyCode code) override;
+		virtual bool ProcessEvent(GUIEvent& ev) override;
 
 		Event<void, const String&> OnTextChanged;
 

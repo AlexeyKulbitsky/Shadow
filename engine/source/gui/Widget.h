@@ -10,6 +10,27 @@ namespace gui
 {
 	struct GuiBatchData;
 
+	enum class EventType : u32
+	{
+		PointerDown,
+		PointerUp,
+		PointerMove,
+		Wheel,
+		KeyDown,
+		KeyUp
+	};
+
+	struct GUIEvent
+	{
+		EventType type;
+		s32 x = 0;
+		s32 y = 0;
+		s32 deltaX = 0;
+		s32 deltaY = 0;
+		s32 delta = 0;
+		s32 keyCode = 0;
+	};
+
 	class Widget : public std::enable_shared_from_this<Widget>
 	{
 	public:
@@ -25,19 +46,18 @@ namespace gui
 		void SetMaximumHeight(u32 height) { m_maximumHeight = height; }
 		u32 GetMaximumHeight() const { return m_maximumHeight; }
 
-		const math::Rectu& GetRect() const { return m_rect; }
+		const math::Recti& GetRect() const { return m_rect; }
 
 		void SetLayout(const LayoutPtr& layout);
 		const LayoutPtr& GetLayout() const { return m_layout; }
 
 		virtual void Load(const pugi::xml_node& node);
 		virtual void Render(video::Painter* painter);
-		virtual void SetPosition(u32 x, u32 y);
+		virtual void SetPosition(s32 x, s32 y);
 		virtual void SetSize(const math::Vector2u& size);
 		virtual void SetWidth(u32 width);
 		virtual void SetHeight(u32 height);
-		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type);
-		virtual bool ProcessKeyboardInput(KeyboardEventType type, KeyCode code);
+		virtual bool ProcessEvent(GUIEvent& ev);
 
 		virtual void SetMargins(u32 top, u32 right, u32 bottom, u32 left);
 
@@ -62,7 +82,7 @@ namespace gui
 		u32 m_maximumHeight = 0U;
 		u32 m_maximumWidth = 0U;
 
-		math::Rectu m_rect;
+		math::Recti m_rect;
 		bool m_visible = true;
 		bool m_enabled = true;
 		bool m_isInFocus = false;

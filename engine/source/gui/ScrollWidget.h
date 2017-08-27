@@ -17,10 +17,11 @@ namespace gui
 		virtual ~ScrollWidget();
 
 		virtual void Render(video::Painter* painter) override;
-		virtual void SetPosition(u32 x, u32 y) override;
+		virtual void SetPosition(s32 x, s32 y) override;
 		virtual void SetSize(const math::Vector2u& size) override;
 		virtual void SetWidth(u32 width) override;
 		virtual void SetHeight(u32 height) override;
+		virtual bool ProcessEvent(GUIEvent& ev) override;
 		virtual void UpdateLayout() override;
 
 	private:

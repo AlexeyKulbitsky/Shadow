@@ -15,18 +15,18 @@ namespace gui
 		m_text = "0";
 	}
 
-	FloatLineEdit::FloatLineEdit(const math::Rectu& rect, 
+	FloatLineEdit::FloatLineEdit(const math::Recti& rect, 
 								 const SpritePtr& defaultSprite, 
 								const SpritePtr& editSprite)
 				  : LineEdit(rect, defaultSprite, editSprite)
 	{
 	}
 
-	bool FloatLineEdit::ProcessKeyboardInput(KeyboardEventType type, KeyCode code)
+	bool FloatLineEdit::ProcessEvent(GUIEvent& ev)
 	{
-		if (m_inFocus && type == KeyboardEventType::KeyPressed)
+		if (m_inFocus && ev.type == EventType::KeyDown)
 		{
-			if (code == KeyCode::KEY_BACK)
+			if (ev.keyCode == (int)KeyCode::KEY_BACK)
 			{
 				if (m_text.size() >= 1)
 				{
@@ -34,7 +34,7 @@ namespace gui
 					m_dirty = true;
 				}
 			}
-			else if (code == KeyCode::KEY_RETURN)
+			else if (ev.keyCode == (int)KeyCode::KEY_RETURN)
 			{
 				m_inFocus = false;
 				m_state = State::Default;
@@ -42,21 +42,25 @@ namespace gui
 			}
 			else
 			{
-				if (code == KeyCode::KEY_MINUS)
+				if (ev.keyCode == (int)KeyCode::KEY_MINUS)
 					m_text += '-';
-				else if (code == KeyCode::KEY_PLUS)
+				else if (ev.keyCode == (int)KeyCode::KEY_PLUS)
 					m_text += '+';
-				else if (code == KeyCode::KEY_PERIOD)
+				else if (ev.keyCode == (int)KeyCode::KEY_PERIOD)
 					m_text += '.';
 				else
-					m_text += (char)code;
+					m_text += (char)ev.keyCode;
 				if (!CheckFloatFilter(m_text))
 					m_text.pop_back();
 				else
 					m_dirty = true;
 			}
-				
+
 			return true;
+		}
+		else
+		{
+			return LineEdit::ProcessEvent(ev);
 		}
 		return false;
 	}

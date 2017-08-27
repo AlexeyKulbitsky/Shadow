@@ -2,7 +2,7 @@
 
 InspectorWidget::InspectorWidget()
 {
-	m_window.reset(new sh::gui::Window(sh::math::Rectu(100, 100, 350, 500)));
+	m_window.reset(new sh::gui::Window(sh::math::Recti(100, 100, 350, 500)));
 	const auto& viewport = sh::Device::GetInstance()->GetDriver()->GetViewPort();
 	UpdateGeometry(viewport.z, viewport.w);
 	m_window->SetText("Inspector");

@@ -1,6 +1,10 @@
 #include "ScrollWidget.h"
 #include "Layout.h"
 
+#include "../video/Painter.h"
+#include "../Device.h"
+#include "../video/Driver.h"
+
 namespace sh
 {
 
@@ -19,10 +23,13 @@ namespace gui
 
 	void ScrollWidget::Render(video::Painter* painter)
 	{
+		painter->SetClipRect(math::Rectu(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y,
+			m_rect.lowerRightCorner.x, m_rect.lowerRightCorner.y));
 		Widget::Render(painter);
+		painter->SetClipRect(Device::GetInstance()->GetDriver()->GetViewport());
 	}
 
-	void ScrollWidget::SetPosition(u32 x, u32 y)
+	void ScrollWidget::SetPosition(s32 x, s32 y)
 	{
 		Widget::SetPosition(x, y);
 	}
@@ -42,6 +49,45 @@ namespace gui
 		Widget::SetHeight(height);
 	}
 
+	bool ScrollWidget::ProcessEvent(GUIEvent& ev)
+	{
+		switch (ev.type)
+		{
+		case EventType::Wheel:
+		{
+			bool inside = m_rect.IsPointInside(ev.x, ev.y);
+			if (inside)
+			{
+				int delta = ev.delta > 0 ? 15 : -15;
+				m_fullRect.lowerRightCorner.y += delta;
+				m_fullRect.upperLeftCorner.y += delta;
+				if (m_fullRect.upperLeftCorner.y > m_rect.upperLeftCorner.y)
+				{
+					int d = m_rect.upperLeftCorner.y - m_fullRect.upperLeftCorner.y;
+					m_fullRect.lowerRightCorner.y += d;
+					m_fullRect.upperLeftCorner.y += d;
+				}
+
+				if (m_fullRect.lowerRightCorner.y < m_rect.lowerRightCorner.y)
+				{
+					int d = m_rect.lowerRightCorner.y - m_fullRect.lowerRightCorner.y;
+					m_fullRect.lowerRightCorner.y += d;
+					m_fullRect.upperLeftCorner.y += d;
+				}
+
+				m_layout->Resize(m_fullRect);
+			}
+		}
+		break;
+		default:
+		{
+			return Widget::ProcessEvent(ev);
+		}
+			break;
+		}
+		return false;
+	}
+
 	void ScrollWidget::UpdateLayout()
 	{
 		if (m_layout)
@@ -58,6 +104,7 @@ namespace gui
 			auto r = m_rect;
 			r.lowerRightCorner.y = r.upperLeftCorner.y + height;
 			m_layout->Resize(r);
+			m_fullRect = r;
 		}
 	}
 

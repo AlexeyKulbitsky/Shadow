@@ -30,11 +30,11 @@ namespace gui
 		m_sprites[Pressed] = ref->m_sprites[Pressed];
 		m_sprites[Hovered] = ref->m_sprites[Hovered];
 
-		m_rect = sh::math::Rectu(0U, 0U, 10U, 10U);
+		m_rect = sh::math::Recti(0, 0, 10, 10);
 		m_text.reset(new Text(m_rect));
 	}
 
-	Button::Button(const math::Rectu rect)
+	Button::Button(const math::Recti rect)
 		: Widget()
 	{
 		const auto& ref = GuiManager::GetInstance()->GetStyle()->GetButton();
@@ -57,11 +57,11 @@ namespace gui
 		m_sprites[Pressed] = pressedSprite;
 		m_sprites[Hovered] = hoveredSprite;
 
-		m_rect = sh::math::Rectu(0U, 0U, 10U, 10U);
+		m_rect = sh::math::Recti(0, 0, 10, 10);
 		m_text.reset(new Text(m_rect));
 	}
 
-	Button::Button(const math::Rectu& rect,
+	Button::Button(const math::Recti& rect,
 				   const SpritePtr& defaultSprite,
 				   const SpritePtr& pressedSprite,
 				   const SpritePtr& hoveredSprite)
@@ -81,7 +81,7 @@ namespace gui
 		m_sprites[Pressed] = ref->m_sprites[Pressed];
 		m_sprites[Hovered] = ref->m_sprites[Hovered];
 
-		m_rect = sh::math::Rectu(0U, 0U, 10U, 10U);
+		m_rect = sh::math::Recti(0, 0, 10, 10);
 		m_text.reset(new Text(m_rect));
 		m_text->SetText(text);
 
@@ -155,7 +155,7 @@ namespace gui
 		m_text->Render(painter);
 	}
 
-	void Button::SetPosition(u32 x, u32 y)
+	void Button::SetPosition(s32 x, s32 y)
 	{
 		Widget::SetPosition(x, y);
 		m_text->SetPosition(x, y);
@@ -179,68 +179,68 @@ namespace gui
 		m_text->SetHeight(height);
 	}
 
-	bool Button::ProcessInput(u32 x, u32 y, MouseEventType type)
+	bool Button::ProcessEvent(GUIEvent& ev)
 	{
-		bool inside = m_rect.IsPointInside(x, y);
+		bool inside = m_rect.IsPointInside(ev.x, ev.y);
 		if (inside)
 		{
-			switch (type)
+			switch (ev.type)
 			{
-				case MouseEventType::ButtonPressed:
+			case EventType::PointerDown:
+			{
+				if (m_toggleable)
 				{
-					if (m_toggleable)
-					{
-						m_toggled = !m_toggled;
+					m_toggled = !m_toggled;
 
-						if (m_toggled)
-						{
-							m_state = Pressed;
-						}
-						else
-						{
-							m_state = Released;
-						}
-
-						OnToggle(m_toggled, std::static_pointer_cast<Button>(shared_from_this()));
-					}
-					else
+					if (m_toggled)
 					{
 						m_state = Pressed;
 					}
-
-					OnPress(std::static_pointer_cast<Button>(shared_from_this()));
-
-					return true;
-				}
-					break;
-				case MouseEventType::ButtonReleased:
-				{
-					if (!m_toggleable)
+					else
 					{
-						m_state = Hovered;
+						m_state = Released;
 					}
 
-					OnRelease(std::static_pointer_cast<Button>(shared_from_this()));
-
-					return true;
+					OnToggle(m_toggled, std::static_pointer_cast<Button>(shared_from_this()));
 				}
-					break;
-				case MouseEventType::Moved:
+				else
 				{
-					if (!m_toggleable || !m_toggled)
-					{
-						m_state = Hovered;
-					}
-
-					OnHover(std::static_pointer_cast<Button>(shared_from_this()));
-
-					return false;
+					m_state = Pressed;
 				}
-				break;
-				default:
-					break;
+
+				OnPress(std::static_pointer_cast<Button>(shared_from_this()));
+
+				return true;
 			}
-		} 
+			break;
+			case EventType::PointerUp:
+			{
+				if (!m_toggleable)
+				{
+					m_state = Hovered;
+				}
+
+				OnRelease(std::static_pointer_cast<Button>(shared_from_this()));
+
+				return true;
+			}
+			break;
+			case EventType::PointerMove:
+			{
+				if (!m_toggleable || !m_toggled)
+				{
+					m_state = Hovered;
+				}
+
+				OnHover(std::static_pointer_cast<Button>(shared_from_this()));
+
+				return false;
+			}
+			break;
+			default:
+				break;
+			}
+		}
 		else
 		{
 			if (!m_toggleable || !m_toggled)
@@ -248,7 +248,7 @@ namespace gui
 				m_state = Released;
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -262,7 +262,7 @@ namespace gui
 		return m_rect.GetWidth();
 	}
 
-	const math::Vector2u& Button::GetPosition() const
+	const math::Vector2i& Button::GetPosition() const
 	{
 		return m_rect.upperLeftCorner;
 	}

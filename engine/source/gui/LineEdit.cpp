@@ -35,7 +35,7 @@ namespace gui
 		m_sprites[State::Edit] = editSprite;
 	}
 
-	LineEdit::LineEdit(const math::Rectu& rect, 
+	LineEdit::LineEdit(const math::Recti& rect, 
 						const SpritePtr& defaultSprite, 
 						 const SpritePtr& editSprite)
 						 :Text(rect)
@@ -71,11 +71,11 @@ namespace gui
 		Text::Render(painter);
 	}
 
-	bool LineEdit::ProcessInput(u32 x, u32 y, MouseEventType type)
+	bool LineEdit::ProcessEvent(GUIEvent& ev)
 	{
-		if (type == MouseEventType::ButtonPressed)
+		if (ev.type == EventType::PointerDown)
 		{
-			bool inside = m_rect.IsPointInside(x, y);
+			bool inside = m_rect.IsPointInside(ev.x, ev.y);
 			if (inside)
 			{
 				if (m_inFocus)
@@ -104,15 +104,9 @@ namespace gui
 				}
 			}
 		}
-		
-		return false;
-	}
-
-	bool LineEdit::ProcessKeyboardInput(KeyboardEventType type, KeyCode code)
-	{
-		if (m_inFocus && type == KeyboardEventType::KeyPressed)
+		else if (m_inFocus && ev.type == EventType::KeyDown)
 		{
-			if (code == KeyCode::KEY_BACK)
+			if (ev.keyCode == (int)KeyCode::KEY_BACK)
 			{
 				if (m_text.size() >= 1)
 				{
@@ -120,7 +114,7 @@ namespace gui
 					m_dirty = true;
 				}
 			}
-			else if (code == KeyCode::KEY_RETURN)
+			else if (ev.keyCode == (int)KeyCode::KEY_RETURN)
 			{
 				m_inFocus = false;
 				m_state = State::Default;
@@ -128,15 +122,14 @@ namespace gui
 			}
 			else
 			{
-				m_text += (char)code;
+				m_text += (char)ev.keyCode;
 				m_dirty = true;
 			}
-				
+
 			return true;
 		}
 		return false;
 	}
-
 	
 	void LineEdit::UpdateIfDirty()
 	{

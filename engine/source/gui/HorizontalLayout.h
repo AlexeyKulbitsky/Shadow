@@ -20,7 +20,7 @@ namespace gui
 		virtual void SetHeight(u32 height) override;
 
 	protected:
-		virtual void Resize(const math::Rectu& rect) override;
+		virtual void Resize(const math::Recti& rect) override;
 		
 	};
 

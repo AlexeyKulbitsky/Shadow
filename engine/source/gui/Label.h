@@ -13,9 +13,9 @@ namespace gui
 	{
 	public:
 		Label(); 
-		Label(const math::Rectu rect);
+		Label(const math::Recti rect);
 		Label(const String& text);
-		Label(const math::Rectu rect, const String& text);
+		Label(const math::Recti rect, const String& text);
 
 		virtual ~Label();
 	};

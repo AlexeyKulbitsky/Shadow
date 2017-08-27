@@ -12,7 +12,7 @@ namespace gui
 
 	Widget::Widget()
 	{
-		m_rect.lowerRightCorner = math::Vector2u(10U, 10U);
+		m_rect.lowerRightCorner = math::Vector2i(10, 10);
 		m_batchData.resize(4 * 9);
 		UpdateColor(math::Vector4f(0.0f));
 	}
@@ -38,7 +38,7 @@ namespace gui
 			m_layout->Render(painter);
 	}
 
-	void Widget::SetPosition(u32 x, u32 y)
+	void Widget::SetPosition(s32 x, s32 y)
 	{
 		auto size = m_rect.GetSize();
 		m_rect.Set(x, y, x + size.x, y + size.y);
@@ -73,20 +73,12 @@ namespace gui
 		UpdateLayout();
 	}
 
-	bool Widget::ProcessInput(u32 x, u32 y, MouseEventType type)
+	bool Widget::ProcessEvent(GUIEvent& ev)
 	{
 		if (!m_layout)
 			return false;
 
-		return m_layout->ProcessInput(x, y, type);
-	}
-
-	bool Widget::ProcessKeyboardInput(KeyboardEventType type, KeyCode code)
-	{
-		if (!m_layout)
-			return false;
-
-		return m_layout->ProcessKeyboardInput(type, code);
+		return m_layout->ProcessEvent(ev);
 	}
 
 	void Widget::SetMargins(u32 top, u32 right, u32 bottom, u32 left)
@@ -106,7 +98,7 @@ namespace gui
 			auto upperLeft = m_rect.upperLeftCorner;
 			auto lowerRight = m_rect.lowerRightCorner;
 
-			math::Rectu finalRect;
+			math::Recti finalRect;
 			finalRect.upperLeftCorner.x = upperLeft.x + m_leftMargin;
 			finalRect.upperLeftCorner.y = upperLeft.y + m_topMargin;
 			finalRect.lowerRightCorner.x = lowerRight.x - m_rightMargin;

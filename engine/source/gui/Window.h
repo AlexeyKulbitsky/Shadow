@@ -12,17 +12,17 @@ namespace gui
 	class Window : public Widget
 	{
 	public:
-		Window(const math::Rectu& rect);
+		Window(const math::Recti& rect);
 		Window(const SpritePtr& outSprite, const SpritePtr& inSprite, const SpritePtr& barSprite);
 
 		void SetText(const String& text);
 
-		virtual void SetPosition(u32 x, u32 y) override;
+		virtual void SetPosition(s32 x, s32 y) override;
 		//virtual void GetGeometry(GuiBatchData& data) override;
 		//virtual void GetTextGeometry(GuiBatchData& data) override;
 		virtual void Render(video::Painter* painter) override;
 
-		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type) override;
+		virtual bool ProcessEvent(GUIEvent& ev) override;
 
 		bool IsMovable() const { return m_isMovable; }
 		void SetMovable(bool movable) { m_isMovable = movable; }
@@ -46,8 +46,8 @@ namespace gui
 		SpritePtr m_inSprite;
 		SpritePtr m_barSprite;
 
-		math::Rectu m_barRect;
-		math::Rectu m_inRect;
+		math::Recti m_barRect;
+		math::Recti m_inRect;
 
 		u32 m_barWidth = 25U;
 		bool m_isMovable = true;

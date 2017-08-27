@@ -16,6 +16,11 @@ namespace math
 		Rect(T x1, T y1, T x2, T y2) : upperLeftCorner(x1, y1), lowerRightCorner(x2, y2) { }
 		Rect(const Vector2<T> upperLeft, const Vector2<T> lowerRight) : upperLeftCorner(upperLeft), lowerRightCorner(lowerRight) { }
 
+		bool operator==(const Rect<T>& other) const 
+		{ 
+			return upperLeftCorner == other.upperLeftCorner &&
+				lowerRightCorner == other.lowerRightCorner;
+		}
 		void Set(T x1, T y1, T x2, T y2)
 		{
 			upperLeftCorner.x = x1;

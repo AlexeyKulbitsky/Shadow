@@ -94,17 +94,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_MOUSEHWHEEL:
 	case WM_MOUSEWHEEL:
 	{
-		int x = LOWORD(lParam);
-		int y = HIWORD(lParam);
+		POINT pt;
+		pt.x = GET_X_LPARAM(lParam);
+		pt.y = GET_Y_LPARAM(lParam);
+		ScreenToClient(hWnd, &pt);
 
-		g_xPoint = x;
-		g_yPoint = y;
+		g_xPoint = pt.x;
+		g_yPoint = pt.y;
 
 		short delta = (short)HIWORD(wParam);
 		int d = delta < 0 ? -1 : 1;
 		
 		if (device)
-			device->mouseWheelEvent(d);
+			device->mouseWheelEvent(pt.x, pt.y, d);
 	}
 		return 0;
 	case WM_PAINT:

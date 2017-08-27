@@ -28,6 +28,8 @@ namespace gui
 		video::GpuParamMatrix4f orthoMatrix;
 	};
 
+	struct GUIEvent;
+
 	class GuiManager : public Singleton <GuiManager>
 	{
 		friend class Button;
@@ -67,8 +69,7 @@ namespace gui
 		const video::MaterialPtr& GetTextMaterial() const { return m_textMaterial; }
 
 		// Events
-		bool ProcessInput(u32 x, u32 y, MouseEventType type);
-		bool ProcessKeyboardInput(KeyboardEventType type, KeyCode code);
+		bool ProcessEvent(GUIEvent& ev);
 
 	private:
 		FontPtr m_font;

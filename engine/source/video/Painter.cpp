@@ -60,6 +60,16 @@ namespace sh
 			TrianglesBatch trianglesBatch;
 			trianglesBatch.materialIndex = m_materials.size() - 1;
 			trianglesBatch.startIndex = m_triangles.indicesCount;
+			if (m_triangles.trianglesBatches.size() == 0U)
+			{
+				trianglesBatch.clipRect = Device::GetInstance()->GetDriver()->GetViewport();
+			}
+			else
+			{
+				const u32 lastBatchIdx = m_triangles.trianglesBatches.size() - 1;
+				trianglesBatch.clipRect = m_triangles.trianglesBatches[lastBatchIdx].clipRect;
+			}
+			
 			m_triangles.trianglesBatches.push_back(trianglesBatch);
 		}
 
@@ -68,6 +78,22 @@ namespace sh
 		void Painter::SetCamera(const scene::CameraPtr& camera)
 		{
 			m_camera = camera;
+		}
+
+		/////////////////////////////////////////////////////////////////////////////////////
+
+		void Painter::SetClipRect(const math::Rectu& rect)
+		{
+			const u32 idx = m_triangles.trianglesBatches.size() - 1U;
+			if (m_triangles.trianglesBatches[idx].clipRect == rect)
+				return;
+
+			const auto& currentBatch = m_triangles.trianglesBatches[idx];
+			TrianglesBatch newBatch;
+			newBatch.materialIndex = currentBatch.materialIndex;
+			newBatch.startIndex = m_triangles.indicesCount;
+			newBatch.clipRect = rect;
+			m_triangles.trianglesBatches.push_back(newBatch);
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -442,6 +468,7 @@ namespace sh
 				driver->SetIndexBuffer(m_trianglesIndexBuffer, m_commandBuffer);
 				driver->SetVertexDeclaration(m_materials[materialIdx]->GetRenderPipeline()->GetVertexInputDeclaration(), m_commandBuffer);
 				driver->SetTopology(TOP_TRIANGLE_LIST, m_commandBuffer);
+				driver->SetScissorRect(m_triangles.trianglesBatches[i].clipRect, m_commandBuffer);
 				driver->DrawIndexed(m_triangles.trianglesBatches[i].startIndex,
 									m_triangles.trianglesBatches[i].indicesCount,
 									1U,
@@ -466,6 +493,10 @@ namespace sh
 			m_triangles.verticesCount = 0U;
 
 			m_materials.clear();
+			// We must have at least one active material any time
+			SetMaterial(m_material);
+			const u32 idx = m_triangles.trianglesBatches.size() - 1;
+			m_triangles.trianglesBatches[idx].clipRect = driver->GetViewport();
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////

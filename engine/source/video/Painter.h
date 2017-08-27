@@ -18,7 +18,7 @@ namespace sh
 					, uv(_uv)
 					, color(_color)
 				{ }
-				Vertex(const math::Vector2u& _position, const math::Vector2f& _uv, const math::Vector4f& _color) 
+				Vertex(const math::Vector2i& _position, const math::Vector2f& _uv, const math::Vector4f& _color) 
 					: position(_position, 0.0f)
 					, uv(_uv)
 					, color(_color)
@@ -37,6 +37,7 @@ namespace sh
 			void SetMaterial(const MaterialPtr& material);
 			const MaterialPtr& GetMaterial() const { return m_material; }
 			void SetCamera(const scene::CameraPtr& camera);
+			void SetClipRect(const math::Rectu& rect);
 
 			void DrawLine(const math::Vector3f& a, const math::Vector3f& b);
 			void DrawRect(const math::Rectu& rect, const gui::SpritePtr& sprite);
@@ -85,6 +86,7 @@ namespace sh
 				u32 indicesCount = 0U;
 				u32 verticesCount = 0U;
 				u32 materialIndex = 0U;
+				math::Rectu clipRect = math::Rectu(0U, 0U, 0U, 0U);
 			};
 			struct Triangles
 			{

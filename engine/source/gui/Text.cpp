@@ -16,7 +16,7 @@ namespace gui
 		UpdateColor(math::Vector4f(1.0f, 1.0f, 1.0f, 0.0f));
 	}
 
-	Text::Text(const math::Rectu rect)
+	Text::Text(const math::Recti rect)
 	{
 		m_rect = rect;
 		UpdateColor(math::Vector4f(1.0f, 1.0f, 1.0f, 0.0f));
@@ -28,7 +28,7 @@ namespace gui
 		UpdateColor(math::Vector4f(1.0f, 1.0f, 1.0f, 0.0f));
 	}
 
-	Text::Text(const math::Rectu rect, const String& text)
+	Text::Text(const math::Recti rect, const String& text)
 	{
 		m_rect = rect;
 		SetText(text);
@@ -84,7 +84,7 @@ namespace gui
 		}
 	}
 
-	void Text::SetPosition( u32 x, u32 y )
+	void Text::SetPosition( s32 x, s32 y )
 	{
 		auto size = m_rect.GetSize();
 		m_rect.Set(x, y, x + size.x, y + size.y);

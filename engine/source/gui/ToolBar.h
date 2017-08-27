@@ -18,7 +18,7 @@ namespace gui
 
 		virtual void Load(const pugi::xml_node& node) override;
 		virtual void Render(video::Painter* painter) override;
-		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type) override;
+		virtual bool ProcessEvent(GUIEvent& ev) override;
 
 		void OnWindowResized(int width, int height);
 

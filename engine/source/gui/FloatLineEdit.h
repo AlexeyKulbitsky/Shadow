@@ -13,11 +13,11 @@ namespace gui
 	{
 	public:
 		FloatLineEdit();
-		FloatLineEdit(const math::Rectu& rect, 
+		FloatLineEdit(const math::Recti& rect, 
 					const SpritePtr& defaultSprite, 
 					const SpritePtr& editSprite);
 
-		virtual bool ProcessKeyboardInput(KeyboardEventType type, KeyCode code) override;
+		virtual bool ProcessEvent(GUIEvent& ev) override;
 	
 		float GetValue() const { return m_value; }
 		void SetValue(float value);

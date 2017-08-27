@@ -18,10 +18,9 @@ namespace gui
 		virtual void SetSize(const math::Vector2u& size) {}
 		virtual void SetWidth(u32 width) {}
 		virtual void SetHeight(u32 height) {}
-		virtual void Resize(const math::Rectu& rect) {}
+		virtual void Resize(const math::Recti& rect) {}
 		virtual void Render(video::Painter* painter) {}
-		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type) { return false; }
-		virtual bool ProcessKeyboardInput(KeyboardEventType type, KeyCode code) { return false; }
+		virtual bool ProcessEvent(GUIEvent& ev) { return false; }
 
 	private:
 		WidgetPtr m_widget;
@@ -51,11 +50,10 @@ namespace gui
 		const WidgetPtr& GetWidget(u32 index) { return m_items[index]->GetWidget(); }
 
 		virtual void Render(video::Painter* painter) override;
-		virtual bool ProcessInput(u32 x, u32 y, MouseEventType type) override;
-		virtual bool ProcessKeyboardInput(KeyboardEventType type, KeyCode code) override;
+		virtual bool ProcessEvent(GUIEvent& ev) override;
 
 	protected:
-		virtual void Resize(const math::Rectu& rect) override {}
+		virtual void Resize(const math::Recti& rect) override {}
 
 	protected:
 		std::vector<LayoutItemPtr> m_items;

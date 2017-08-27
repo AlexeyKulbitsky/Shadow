@@ -97,11 +97,11 @@ namespace gui
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	bool ToolBar::ProcessInput(u32 x, u32 y, MouseEventType type)
+	bool ToolBar::ProcessEvent(GUIEvent& ev)
 	{
 		for (const auto& button : m_buttons)
 		{
-			if (button->ProcessInput(x, y, type))
+			if (button->ProcessEvent(ev))
 				return true;
 		}
 		return false;
