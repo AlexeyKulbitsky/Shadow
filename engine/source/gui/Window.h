@@ -18,8 +18,6 @@ namespace gui
 		void SetText(const String& text);
 
 		virtual void SetPosition(s32 x, s32 y) override;
-		//virtual void GetGeometry(GuiBatchData& data) override;
-		//virtual void GetTextGeometry(GuiBatchData& data) override;
 		virtual void Render(video::Painter* painter) override;
 
 		virtual bool ProcessEvent(GUIEvent& ev) override;
@@ -27,12 +25,6 @@ namespace gui
 		bool IsMovable() const { return m_isMovable; }
 		void SetMovable(bool movable) { m_isMovable = movable; }
 
-	protected:
-		virtual void UpdatePosition() override;
-		virtual void UpdateUV(const math::Vector2f& leftUp, const math::Vector2f& rightDown) override;
-		virtual void UpdateColor(const math::Vector4f& color) override;
-
-	public:
 		virtual void UpdateLayout() override;
 
 	private:

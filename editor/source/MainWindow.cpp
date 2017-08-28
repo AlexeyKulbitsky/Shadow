@@ -344,21 +344,21 @@ void MainWindow::Init()
 
 
 
-	sh::gui::ScrollWidgetPtr scroll(new sh::gui::ScrollWidget());
-	scroll->SetPosition(100, 100);
-	scroll->SetSize(sh::math::Vector2u(100, 200));
-	sh::gui::VerticalLayoutPtr l(new sh::gui::VerticalLayout());
-	scroll->SetLayout(l);
-	for (sh::u32 i = 0; i < 50; ++i)
-	{
-		std::stringstream s;
-		s << "Button " << i;
-
-		sh::gui::ButtonPtr button(new sh::gui::Button(s.str()));
-		button->SetHeight(20);
-		scroll->GetLayout()->AddWidget(button);
-	}
-	guiMgr->AddChild(scroll);
+// 	sh::gui::ScrollWidgetPtr scroll(new sh::gui::ScrollWidget());
+// 	scroll->SetPosition(100, 100);
+// 	scroll->SetSize(sh::math::Vector2u(100, 200));
+// 	sh::gui::VerticalLayoutPtr l(new sh::gui::VerticalLayout());
+// 	scroll->SetLayout(l);
+// 	for (sh::u32 i = 0; i < 50; ++i)
+// 	{
+// 		std::stringstream s;
+// 		s << "Button " << i;
+// 
+// 		sh::gui::ButtonPtr button(new sh::gui::Button(s.str()));
+// 		button->SetHeight(20);
+// 		scroll->GetLayout()->AddWidget(button);
+// 	}
+// 	guiMgr->AddChild(scroll);
 
 }
 
