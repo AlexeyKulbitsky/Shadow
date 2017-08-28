@@ -6,22 +6,31 @@ namespace sh
 namespace gui
 {
 
-	LayoutItem::LayoutItem(const WidgetPtr& widget)
-		: m_widget(widget)
+	void WidgetItem::Resize(const math::Recti& rect)
 	{
+		m_widget->SetPosition(rect.upperLeftCorner.x, rect.upperLeftCorner.y);
+		s32 width = rect.GetWidth();
+		s32 height = rect.GetHeight();
+		
+		if (width < m_widget->GetMinimumWidth())
+			width = m_widget->GetMinimumWidth();
+		if (width > m_widget->GetMaximumWidth())
+			width = m_widget->GetMaximumWidth();
 
-	}
+		if (height < m_widget->GetMinimumHeight())
+			height = m_widget->GetMinimumHeight();
+		if (height > m_widget->GetMaximumHeight())
+			height = m_widget->GetMaximumHeight();
 
-	const WidgetPtr& LayoutItem::GetWidget() const
-	{
-		return m_widget;
+		m_widget->SetWidth(width);
+		m_widget->SetHeight(height);
 	}
 
 	////////////////////////////////////////////////////////////////////
 
 	void Layout::AddWidget(const WidgetPtr& widget)
 	{
-		LayoutItemPtr item(new LayoutItem(widget));
+		LayoutItemPtr item(new WidgetItem(widget));
 		m_items.push_back(item);
 
 		if (m_parent)
@@ -53,17 +62,17 @@ namespace gui
 			m_parent->UpdateLayout();
 	}
 
-	void Layout::SetSize(const math::Vector2u& size)
+	void Layout::SetSize(const math::Vector2i& size)
+	{
+		
+	}
+
+	void Layout::SetWidth(s32 width)
 	{
 
 	}
 
-	void Layout::SetWidth(u32 width)
-	{
-
-	}
-
-	void Layout::SetHeight(u32 height)
+	void Layout::SetHeight(s32 height)
 	{
 
 	}

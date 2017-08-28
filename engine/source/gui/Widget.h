@@ -41,10 +41,22 @@ namespace gui
 		bool IsVisible() const { return m_visible; }
 		void SetEnabled(bool enabled) { m_enabled = enabled; }
 		bool IsEnabled() const { return m_enabled; }
-		void SetMaximumWidth(u32 width) { m_maximumWidth = width; }
-		u32 GetMaximumWidth() const { return m_maximumWidth; }
-		void SetMaximumHeight(u32 height) { m_maximumHeight = height; }
-		u32 GetMaximumHeight() const { return m_maximumHeight; }
+
+		// Maximum size
+		void SetMaximumWidth(u32 width) { m_maxSize.x = width; }
+		void SetMaximumHeight(u32 height) { m_maxSize.y = height; }
+		void SetMaximumSize(const math::Vector2u& size) { m_maxSize = size; }
+		u32 GetMaximumWidth() const { return m_maxSize.x; }
+		u32 GetMaximumHeight() const { return m_maxSize.y; }
+		const math::Vector2u& GetMaximumSize() const { return m_maxSize; }
+
+		// Minimum size
+		void SetMinimumWidth(u32 width) { m_minSize.x = width; }
+		void SetMinimumHeight(u32 height) { m_minSize.y = height; }
+		void SetMinimumSize(const math::Vector2u& size) { m_minSize = size; }
+		u32 GetMinimumWidth() const { return m_minSize.x; }
+		u32 GetMinimumHeight() const { return m_minSize.y; }
+		const math::Vector2u& GetMinimumSize() const { return m_minSize; }
 
 		const math::Recti& GetRect() const { return m_rect; }
 
@@ -54,9 +66,9 @@ namespace gui
 		virtual void Load(const pugi::xml_node& node);
 		virtual void Render(video::Painter* painter);
 		virtual void SetPosition(s32 x, s32 y);
-		virtual void SetSize(const math::Vector2u& size);
-		virtual void SetWidth(u32 width);
-		virtual void SetHeight(u32 height);
+		virtual void SetSize(const math::Vector2i& size);
+		virtual void SetWidth(s32 width);
+		virtual void SetHeight(s32 height);
 		virtual bool ProcessEvent(GUIEvent& ev);
 
 		virtual void SetMargins(u32 top, u32 right, u32 bottom, u32 left);
@@ -68,25 +80,19 @@ namespace gui
 		virtual void UpdateLayout();
 
 	protected:
-		virtual void UpdatePosition();
-		virtual void UpdateUV(const math::Vector2f& leftUp, const math::Vector2f& rightDown);
-		virtual void UpdateColor(const math::Vector4f& color);
-
-	protected:
 		LayoutPtr m_layout;
 		u32 m_topMargin = 0U;
 		u32 m_rightMargin = 0U;
 		u32 m_bottomMargin = 0U;
 		u32 m_leftMargin = 0U;
 
-		u32 m_maximumHeight = 0U;
-		u32 m_maximumWidth = 0U;
+		math::Vector2u m_maxSize = math::Vector2u(std::numeric_limits<s32>::max());
+		math::Vector2u m_minSize = math::Vector2u(0U);
 
 		math::Recti m_rect;
 		bool m_visible = true;
 		bool m_enabled = true;
 		bool m_isInFocus = false;
-		std::vector<float> m_batchData;
 	};
 
 } // gui

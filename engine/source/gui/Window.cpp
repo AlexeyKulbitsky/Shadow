@@ -27,14 +27,8 @@ namespace gui
 		m_bottomMargin = 5U;// ref->m_bottomMargin;
 		m_leftMargin = 5U;// ref->m_leftMargin;
 
-		m_batchData.resize(10 * 9);
 		m_rect = rect;
 		
-
-		UpdatePosition();
-		UpdateUV(m_outSprite->GetUVRect().upperLeftCorner, m_outSprite->GetUVRect().lowerRightCorner);
-		UpdateColor(m_outSprite->GetColor());
-
 		m_text.reset(new Text(m_barRect));
 	}
 
@@ -120,6 +114,77 @@ namespace gui
 	{
 		if (Widget::ProcessEvent(ev))
 			return true;
+
+
+		switch (ev.type)
+		{
+		case EventType::PointerDown:
+		{
+			if (m_barRect.IsPointInside(ev.x, ev.y) && !m_dragStarted)
+			{
+				m_startPos.x = ev.x;
+				m_startPos.y = ev.y;
+				m_dragStarted = true;
+
+				return true;
+			}
+			else
+			{
+				m_dragStarted = false;
+				if (m_inRect.IsPointInside(ev.x, ev.y))
+					return true;
+			}
+		}
+		break;
+		case EventType::PointerUp:
+		{
+			m_dragStarted = false;
+			if (m_barRect.IsPointInside(ev.x, ev.y) || m_inRect.IsPointInside(ev.x, ev.y))
+			{
+				return true;
+			}
+		}
+		break;
+		case EventType::PointerMove:
+		{
+			if (m_dragStarted && m_isMovable)
+			{
+				sh::Device* device = sh::Device::GetInstance();
+				sh::InputManager* inputManager = device->GetInputManager();
+
+				if (inputManager->IsMouseButtonPressed(MouseCode::ButtonLeft))
+				{
+					math::Vector2i delta = math::Vector2i(ev.x, ev.y) - m_startPos;
+					m_startPos.x = ev.x;
+					m_startPos.y = ev.y;
+					s32 newX = static_cast<s32>(m_rect.upperLeftCorner.x) + delta.x;
+					s32 newY = static_cast<s32>(m_rect.upperLeftCorner.y) + delta.y;
+
+					const auto& viewport = device->GetDriver()->GetViewPort();
+					if (newX < 0) newX = 0;
+					if ((newX + m_rect.GetWidth()) > viewport.z) newX = viewport.z - m_rect.GetWidth();
+
+					u32 topEdge = 0U;
+					const auto& menuBar = GuiManager::GetInstance()->GetMenuBar();
+					if (menuBar)
+						topEdge += menuBar->GetRect().GetHeight();
+					const auto& toolBar = GuiManager::GetInstance()->GetToolBar();
+					if (toolBar)
+						topEdge += toolBar->GetRect().GetHeight();
+					if (newY < topEdge) newY = topEdge;
+					if ((newY + m_rect.GetHeight()) > viewport.w) newY = viewport.w - m_rect.GetHeight();
+
+					SetPosition(newX, newY);
+					m_text->SetPosition(newX + m_leftMargin, newY + m_topMargin);
+
+					return true;
+				}
+			}
+		}
+		break;
+		}
+
+
 		return false;
 	}
 

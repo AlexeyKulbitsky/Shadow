@@ -1,7 +1,7 @@
 #ifndef SHADOW_WIN32_DEVICE_INCLUDE
 #define SHADOW_WIN32_DEVICE_INCLUDE
 
-
+#define NOMINMAX
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <mmsystem.h> // For JOYCAPS

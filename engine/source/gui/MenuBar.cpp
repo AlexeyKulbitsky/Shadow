@@ -23,10 +23,6 @@ namespace gui
 		m_sprite = GuiManager::GetInstance()->GetStyle()->GetMenuBar()->m_sprite;
 		SetHeight(15U);
 
-		UpdatePosition();
-		UpdateUV(m_sprite->GetUVRect().upperLeftCorner, m_sprite->GetUVRect().lowerRightCorner);
-		UpdateColor(m_sprite->GetColor());
-
 		Device::GetInstance()->windowResizeEvent.Connect(std::bind(&MenuBar::OnWindowResized, this,
 			std::placeholders::_1, std::placeholders::_2));
 	}
@@ -38,10 +34,6 @@ namespace gui
 	{
 		m_sprite = sprite;
 		SetHeight(15U);
-
-		UpdatePosition();
-		UpdateUV(m_sprite->GetUVRect().upperLeftCorner, m_sprite->GetUVRect().lowerRightCorner);
-		UpdateColor(m_sprite->GetColor());
 
 		Device::GetInstance()->windowResizeEvent.Connect(std::bind(&MenuBar::OnWindowResized, this,
 			std::placeholders::_1, std::placeholders::_2));
@@ -92,22 +84,20 @@ namespace gui
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	void MenuBar::SetWidth(u32 width)
+	void MenuBar::SetWidth(s32 width)
 	{
 		// Width is always stretched to viewport's width
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	void MenuBar::SetHeight(u32 height)
+	void MenuBar::SetHeight(s32 height)
 	{
 		video::Driver* driver = Device::GetInstance()->GetDriver();
 		const auto& viewPort = driver->GetViewPort();
 		math::Vector2u extends(viewPort.z, viewPort.w);
 
 		m_rect.Set(0U, 0U, extends.x, height);
-
-		UpdatePosition();
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -137,7 +127,7 @@ namespace gui
 	void MenuBar::OnWindowResized(int width, int)
 	{
 		m_rect.Set(0U, 0U, width, m_rect.lowerRightCorner.y);
-		UpdatePosition();
+//		UpdatePosition();
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////

@@ -8,12 +8,12 @@ HierarchyWidget::HierarchyWidget()
 	m_window->SetText("Hierarchy");
 	m_layout.reset(new sh::gui::VerticalLayout());
 	m_window->SetLayout(m_layout);
-	m_window->SetMovable(false);
+	//m_window->SetMovable(false);
 
 	sh::gui::GuiManager::GetInstance()->AddChild(m_window);
 
-	sh::Device::GetInstance()->windowResizeEvent.Connect(std::bind(&HierarchyWidget::OnWindowResized, this,
-		std::placeholders::_1, std::placeholders::_2));
+	//sh::Device::GetInstance()->windowResizeEvent.Connect(std::bind(&HierarchyWidget::OnWindowResized, this,
+	//	std::placeholders::_1, std::placeholders::_2));
 }
 
 HierarchyWidget::~HierarchyWidget()

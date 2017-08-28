@@ -26,10 +26,6 @@ namespace gui
 		m_rect.Set(0U, 15U, extends.x, 45U);
 
 		m_sprite = GuiManager::GetInstance()->GetStyle()->GetToolBar()->m_sprite;
-		
-		UpdatePosition();
-		UpdateUV(m_sprite->GetUVRect().upperLeftCorner, m_sprite->GetUVRect().lowerRightCorner);
-		UpdateColor(m_sprite->GetColor());
 
 		Device::GetInstance()->windowResizeEvent.Connect(std::bind(&ToolBar::OnWindowResized, this,
 			std::placeholders::_1, std::placeholders::_2));
@@ -48,10 +44,6 @@ namespace gui
 		m_rect.Set(0U, 15U, extends.x, 45U);
 
 		m_sprite = sprite;
-
-		UpdatePosition();
-		UpdateUV(m_sprite->GetUVRect().upperLeftCorner, m_sprite->GetUVRect().lowerRightCorner);
-		UpdateColor(m_sprite->GetColor());
 
 		Device::GetInstance()->windowResizeEvent.Connect(std::bind(&ToolBar::OnWindowResized, this,
 			std::placeholders::_1, std::placeholders::_2));
@@ -112,7 +104,6 @@ namespace gui
 	void ToolBar::OnWindowResized(int width, int)
 	{
 		m_rect.Set(0U, 15U, width, 45U);
-		UpdatePosition();
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////

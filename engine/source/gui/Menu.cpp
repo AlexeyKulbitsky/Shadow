@@ -52,12 +52,12 @@ namespace gui
 
 	}
 
-	void Menu::SetWidth(u32 width)
+	void Menu::SetWidth(s32 width)
 	{
 
 	}
 
-	void Menu::SetHeight(u32 height)
+	void Menu::SetHeight(s32 height)
 	{
 
 	}

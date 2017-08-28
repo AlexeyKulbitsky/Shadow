@@ -38,19 +38,19 @@ namespace gui
 		Widget::SetPosition(x, y);
 	}
 
-	void ComboBox::SetSize(const math::Vector2u& size)
+	void ComboBox::SetSize(const math::Vector2i& size)
 	{
 		m_button->SetSize(size);
 		Widget::SetSize(size);
 	}
 
-	void ComboBox::SetWidth(u32 width)
+	void ComboBox::SetWidth(s32 width)
 	{
 		m_button->SetWidth(width);
 		Widget::SetWidth(width);
 	}
 
-	void ComboBox::SetHeight(u32 height)
+	void ComboBox::SetHeight(s32 height)
 	{
 		m_button->SetHeight(height);
 		Widget::SetHeight(height);

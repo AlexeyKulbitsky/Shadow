@@ -11,21 +11,21 @@ TransformWidget::TransformWidget()
 	// Position part
 	sh::gui::HorizontalLayoutPtr positionLayout(new sh::gui::HorizontalLayout());
 	sh::gui::LabelPtr positionLabel(new sh::gui::Label("Position"));
-	positionLabel->SetMaximumWidth(75U);
+	//positionLabel->SetMaximumWidth(75U);
 	positionLayout->AddWidget(positionLabel);
 	positionLayout->AddWidget(m_positionEdit.GetWidget());
 
 	// Rotation part
 	sh::gui::HorizontalLayoutPtr rotationLayout(new sh::gui::HorizontalLayout());
 	sh::gui::LabelPtr rotationLabel(new sh::gui::Label("Rotation"));
-	rotationLabel->SetMaximumWidth(75U);
+	//rotationLabel->SetMaximumWidth(75U);
 	rotationLayout->AddWidget(rotationLabel);
 	rotationLayout->AddWidget(m_rotationEdit.GetWidget());
 
 	// Scale part
 	sh::gui::HorizontalLayoutPtr scaleLayout(new sh::gui::HorizontalLayout());
 	sh::gui::LabelPtr scaleLabel(new sh::gui::Label("Scale"));
-	scaleLabel->SetMaximumWidth(75U);
+	//scaleLabel->SetMaximumWidth(75U);
 	scaleLayout->AddWidget(scaleLabel);
 	scaleLayout->AddWidget(m_scaleEdit.GetWidget());
 
@@ -39,7 +39,7 @@ TransformWidget::TransformWidget()
 	m_widget.reset(new sh::gui::Widget());
 	m_widget->SetLayout(layout);
 
-	m_widget->SetMaximumHeight(75U);
+	//m_widget->SetMaximumHeight(75U);
 
 	m_positionEdit.valueChanged.Connect(std::bind(&TransformWidget::OnPositinChanged, this, 
 		std::placeholders::_1));

@@ -13,26 +13,26 @@ namespace gui
 
 	Text::Text()
 	{
-		UpdateColor(math::Vector4f(1.0f, 1.0f, 1.0f, 0.0f));
+//		UpdateColor(math::Vector4f(1.0f, 1.0f, 1.0f, 0.0f));
 	}
 
 	Text::Text(const math::Recti rect)
 	{
 		m_rect = rect;
-		UpdateColor(math::Vector4f(1.0f, 1.0f, 1.0f, 0.0f));
+//		UpdateColor(math::Vector4f(1.0f, 1.0f, 1.0f, 0.0f));
 	}
 
 	Text::Text(const String& text)
 	{
 		SetText(text);
-		UpdateColor(math::Vector4f(1.0f, 1.0f, 1.0f, 0.0f));
+//		UpdateColor(math::Vector4f(1.0f, 1.0f, 1.0f, 0.0f));
 	}
 
 	Text::Text(const math::Recti rect, const String& text)
 	{
 		m_rect = rect;
 		SetText(text);
-		UpdateColor(math::Vector4f(1.0f, 1.0f, 1.0f, 0.0f));
+//		UpdateColor(math::Vector4f(1.0f, 1.0f, 1.0f, 0.0f));
 	}
 
 	Text::~Text()
@@ -90,17 +90,17 @@ namespace gui
 		m_rect.Set(x, y, x + size.x, y + size.y);
 	}
 
-	void Text::SetSize( const math::Vector2u& size )
+	void Text::SetSize( const math::Vector2i& size )
 	{
 		Widget::SetSize(size);
 	}
 
-	void Text::SetWidth( u32 width )
+	void Text::SetWidth( s32 width )
 	{
 		Widget::SetWidth(width);
 	}
 
-	void Text::SetHeight( u32 height )
+	void Text::SetHeight( s32 height )
 	{
 		Widget::SetHeight(height);
 	}

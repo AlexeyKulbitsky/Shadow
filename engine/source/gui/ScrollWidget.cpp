@@ -34,17 +34,17 @@ namespace gui
 		Widget::SetPosition(x, y);
 	}
 
-	void ScrollWidget::SetSize(const math::Vector2u& size)
+	void ScrollWidget::SetSize(const math::Vector2i& size)
 	{
 		Widget::SetSize(size);
 	}
 
-	void ScrollWidget::SetWidth(u32 width)
+	void ScrollWidget::SetWidth(s32 width)
 	{
 		Widget::SetWidth(width);
 	}
 
-	void ScrollWidget::SetHeight(u32 height)
+	void ScrollWidget::SetHeight(s32 height)
 	{
 		Widget::SetHeight(height);
 	}

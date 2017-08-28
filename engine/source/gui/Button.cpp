@@ -161,19 +161,19 @@ namespace gui
 		m_text->SetPosition(x, y);
 	}
 
-	void Button::SetSize(const math::Vector2u& size)
+	void Button::SetSize(const math::Vector2i& size)
 	{
 		Widget::SetSize(size);
 		m_text->SetSize(size);
 	}
 
-	void Button::SetWidth(u32 width)
+	void Button::SetWidth(s32 width)
 	{
 		Widget::SetWidth(width);
 		m_text->SetWidth(width);
 	}
 
-	void Button::SetHeight(u32 height)
+	void Button::SetHeight(s32 height)
 	{
 		Widget::SetHeight(height);
 		m_text->SetHeight(height);
