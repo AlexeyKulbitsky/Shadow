@@ -21,6 +21,7 @@ private:
 	void OnPositinChanged(const sh::math::Vector3f& position);
 	void OnRotationChanged(const sh::math::Vector3f& rotation);
 	void OnScaleChanged(const sh::math::Vector3f& scale);
+	void OnButtonToggled(bool toggled);
 
 private:
 	sh::gui::WidgetPtr m_widget;

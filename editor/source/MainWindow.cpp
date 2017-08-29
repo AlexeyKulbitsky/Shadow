@@ -343,8 +343,8 @@ void MainWindow::Init()
 	m_scaleGizmo->SetTransformWidget(m_inspectorWidget->GetTransformWidget());
 
 
- 	//sh::gui::ScrollWidgetPtr scroll(new sh::gui::ScrollWidget());
-	sh::gui::WidgetPtr scroll(new sh::gui::Widget());
+ 	sh::gui::ScrollWidgetPtr scroll(new sh::gui::ScrollWidget());
+	//sh::gui::WidgetPtr scroll(new sh::gui::Widget());
  	scroll->SetPosition(100, 100);
  	scroll->SetSize(sh::math::Vector2i(100, 200));
  	sh::gui::VerticalLayoutPtr l(new sh::gui::VerticalLayout());
@@ -360,6 +360,17 @@ void MainWindow::Init()
  		scroll->GetLayout()->AddWidget(button);
  	}
  	guiMgr->AddChild(scroll);
+
+	sh::gui::ComboBoxPtr combo(new sh::gui::ComboBox());
+	combo->SetPosition(300, 100);
+	combo->SetWidth(50);
+	combo->SetHeight(25);
+	combo->AddItem("Item 1");
+	combo->AddItem("Item 2");
+	combo->AddItem("Item 3");
+	combo->AddItem("Item 4");
+	combo->AddItem("Item 5");
+	guiMgr->AddChild(combo);
 }
 
 void MainWindow::Destroy()

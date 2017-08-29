@@ -29,11 +29,15 @@ namespace gui
 		const s32 height = rect.GetHeight();
 		const s32 width = rect.GetWidth();
 		const u32 elementCount = m_items.size();
-		s32 itemWidth = width / elementCount;
-		s32 offset = 0U;
+		s32 itemWidth = 0;
+		s32 offset = 0;
 
 		for (u32 i = 0; i < m_items.size(); ++i)
 		{
+			if (offset > width)
+				itemWidth = 0;
+			else
+				itemWidth = (width - offset) / (elementCount - i);
 			const s32 x = rect.upperLeftCorner.x + offset;
 			const s32 y = rect.upperLeftCorner.y;
 			m_items[i]->Resize(math::Recti(x, y, x + itemWidth, y + height));

@@ -51,32 +51,32 @@ namespace gui
 
 	bool ScrollWidget::ProcessEvent(GUIEvent& ev)
 	{
+		bool inside = m_rect.IsPointInside(ev.x, ev.y);
+		if (!inside)
+			return false;
+
 		switch (ev.type)
 		{
 		case EventType::Wheel:
 		{
-			bool inside = m_rect.IsPointInside(ev.x, ev.y);
-			if (inside)
+			int delta = ev.delta > 0 ? 15 : -15;
+			m_fullRect.lowerRightCorner.y += delta;
+			m_fullRect.upperLeftCorner.y += delta;
+			if (m_fullRect.upperLeftCorner.y > m_rect.upperLeftCorner.y)
 			{
-				int delta = ev.delta > 0 ? 15 : -15;
-				m_fullRect.lowerRightCorner.y += delta;
-				m_fullRect.upperLeftCorner.y += delta;
-				if (m_fullRect.upperLeftCorner.y > m_rect.upperLeftCorner.y)
-				{
-					int d = m_rect.upperLeftCorner.y - m_fullRect.upperLeftCorner.y;
-					m_fullRect.lowerRightCorner.y += d;
-					m_fullRect.upperLeftCorner.y += d;
-				}
-
-				if (m_fullRect.lowerRightCorner.y < m_rect.lowerRightCorner.y)
-				{
-					int d = m_rect.lowerRightCorner.y - m_fullRect.lowerRightCorner.y;
-					m_fullRect.lowerRightCorner.y += d;
-					m_fullRect.upperLeftCorner.y += d;
-				}
-
-				m_layout->Resize(m_fullRect);
+				int d = m_rect.upperLeftCorner.y - m_fullRect.upperLeftCorner.y;
+				m_fullRect.lowerRightCorner.y += d;
+				m_fullRect.upperLeftCorner.y += d;
 			}
+
+			if (m_fullRect.lowerRightCorner.y < m_rect.lowerRightCorner.y)
+			{
+				int d = m_rect.lowerRightCorner.y - m_fullRect.lowerRightCorner.y;
+				m_fullRect.lowerRightCorner.y += d;
+				m_fullRect.upperLeftCorner.y += d;
+			}
+
+			m_layout->Resize(m_fullRect);
 		}
 		break;
 		default:
