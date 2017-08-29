@@ -36,11 +36,11 @@ namespace gui
 		{
 			const s32 x = rect.upperLeftCorner.x + offset;
 			const s32 y = rect.upperLeftCorner.y;
-			m_items[i]->Resize(math::Recti(x, y, x + itemWidth, y));
+			m_items[i]->Resize(math::Recti(x, y, x + itemWidth, y + height));
 			offset += m_items[i]->GetWidth();
 		}
 		m_rect.upperLeftCorner = rect.upperLeftCorner;
-		m_rect.lowerRightCorner = rect.upperLeftCorner + math::Vector2i(width, offset);
+		m_rect.lowerRightCorner = rect.upperLeftCorner + math::Vector2i(offset, height);
 	}
 
 	void HorizontalLayout::SetSize(const math::Vector2i& size)
