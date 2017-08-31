@@ -30,6 +30,7 @@ TransformWidget::TransformWidget()
 
 	// Common layout
 	sh::gui::VerticalLayoutPtr layout(new sh::gui::VerticalLayout());
+	layout->SetMargins(2, 2, 2, 2);
 	layout->SetSpacing(2);
 	layout->AddWidget(button);
 	layout->AddLayout(positionLayout);

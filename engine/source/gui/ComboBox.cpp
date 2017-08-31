@@ -58,12 +58,16 @@ namespace gui
 
 	bool ComboBox::ProcessEvent(GUIEvent& ev)
 	{
-		if (!m_button->ProcessEvent(ev))
+		if (m_button->ProcessEvent(ev))
+		{
+			return true;
+		}
+		else
 		{
 			if (m_showList)
 				return m_layout->ProcessEvent(ev);
+			return false;
 		}
-		return false;
 	}
 
 	void ComboBox::AddItem(const String& text)

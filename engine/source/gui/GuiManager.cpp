@@ -65,9 +65,9 @@ namespace gui
 		video::Driver* driver = Device::GetInstance()->GetDriver();
 		auto painter = driver->GetPainter();
 
-		for (u32 i = 0U; i < m_children.size(); ++i)
+		for (auto child = m_children.rbegin(); child != m_children.rend(); ++child)
 		{
-			m_children[i]->Render(painter);
+			(*child)->Render(painter);
 		}
 
 		if (m_toolBar)
@@ -179,10 +179,20 @@ namespace gui
 		if (m_toolBar && m_toolBar->ProcessEvent(ev))
 			return true;
 
-		for (auto& child : m_children)
+		for (auto child = m_children.begin(); child != m_children.end(); ++child)
 		{
-			if (child->ProcessEvent(ev))
+			if ((*child)->ProcessEvent(ev))
+			{
+				if (ev.type == EventType::PointerDown ||
+					ev.type == EventType::PointerDown)
+				{
+					auto childWidget = *child;
+					m_children.erase(child);
+					m_children.push_front(childWidget);
+				}
+				
 				return true;
+			}
 		}
 		return false;
 	}

@@ -1,6 +1,8 @@
 #ifndef SHADOW_EDITOR_EXPANDABLE_WIDGET_INCLUDE
 #define SHADOW_EDITOR_EXPANDABLE_WIDGET_INCLUDE
 
+#include <Shadow.h>
+
 #if 0
 
 #include <QFrame>
@@ -27,5 +29,16 @@ private:
 };
 
 #endif
+
+
+class ExpandableWidget
+{
+public:
+	ExpandableWidget(const sh::String& title);
+
+private:
+	sh::gui::ButtonPtr m_toggleButton;
+
+};
 
 #endif

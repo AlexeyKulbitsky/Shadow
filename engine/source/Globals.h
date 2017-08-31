@@ -16,6 +16,7 @@
 
 #include <vector>
 #include <array>
+#include <list>
 #include <set>
 #include <map>
 #include <sstream>
@@ -33,6 +34,9 @@ namespace sh
 
 	template<typename T>
 	using Set = std::set<T>;
+
+	template<typename T>
+	using List = std::list<T>;
 
 	template<typename T>
 	using SPtr = std::shared_ptr<T>;

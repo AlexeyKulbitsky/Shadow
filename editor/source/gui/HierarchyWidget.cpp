@@ -111,7 +111,7 @@ void HierarchyWidget::UpdateGeometry(sh::u32 screenWidth, sh::u32 screenHeight)
 	if (toolBar)
 		verticalOffset += toolBar->GetRect().GetHeight();
 	m_window->SetPosition(0U, verticalOffset);
-	m_window->SetHeight(screenHeight - verticalOffset);
+	//m_window->SetHeight(screenHeight - verticalOffset);
 }
 
 void HierarchyWidget::SelectEntity(sh::u32 index)

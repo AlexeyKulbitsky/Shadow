@@ -22,13 +22,21 @@ namespace gui
 		m_outSprite = ref->m_outSprite;
 		m_inSprite = ref->m_inSprite;
 		m_barSprite = ref->m_barSprite;
-		m_topMargin = 5U;// ref->m_topMargin;
-		m_rightMargin = 5U;// ref->m_rightMargin;
-		m_bottomMargin = 5U;// ref->m_bottomMargin;
-		m_leftMargin = 5U;// ref->m_leftMargin;
 
 		m_rect = rect;
 		
+		// Update bar rect for input handling (moving with mouse)
+		m_barRect.upperLeftCorner.x = m_rect.upperLeftCorner.x;
+		m_barRect.upperLeftCorner.y = m_rect.upperLeftCorner.y;
+		m_barRect.lowerRightCorner.x = m_rect.lowerRightCorner.x;
+		m_barRect.lowerRightCorner.y = m_rect.upperLeftCorner.y + m_barWidth;
+
+		// Update in rect for updating layout representation
+		m_inRect.upperLeftCorner.x = m_rect.upperLeftCorner.x;
+		m_inRect.upperLeftCorner.y = m_rect.upperLeftCorner.y + m_barWidth;
+		m_inRect.lowerRightCorner.x = m_rect.lowerRightCorner.x;
+		m_inRect.lowerRightCorner.y = m_rect.lowerRightCorner.y;
+
 		m_text.reset(new Text(m_barRect));
 	}
 
@@ -43,11 +51,6 @@ namespace gui
 		const auto& outRect = outSprite->GetRect();
 		const auto& inRect = inSprite->GetRect();
 		const auto& barRect = barSprite->GetRect();
-
-		m_topMargin = barRect.upperLeftCorner.y - outRect.upperLeftCorner.y;
-		m_rightMargin = outRect.lowerRightCorner.x - inRect.lowerRightCorner.x;
-		m_bottomMargin = outRect.lowerRightCorner.y - inRect.lowerRightCorner.y;
-		m_leftMargin = inRect.upperLeftCorner.x - outRect.upperLeftCorner.x;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -61,20 +64,24 @@ namespace gui
 
 	void Window::SetPosition(s32 x, s32 y)
 	{
-		Widget::SetPosition(x, y);
+		auto size = m_rect.GetSize();
+		m_rect.Set(x, y, x + size.x, y + size.y);
+
 		m_text->SetPosition(x, y);
 
 		// Update bar rect for input handling (moving with mouse)
-		m_barRect.upperLeftCorner.x = m_rect.upperLeftCorner.x + m_leftMargin;
-		m_barRect.upperLeftCorner.y = m_rect.upperLeftCorner.y + m_topMargin;
-		m_barRect.lowerRightCorner.x = m_rect.lowerRightCorner.x - m_rightMargin;
-		m_barRect.lowerRightCorner.y = m_rect.upperLeftCorner.y + m_topMargin + m_barWidth;
+		m_barRect.upperLeftCorner.x = m_rect.upperLeftCorner.x;
+		m_barRect.upperLeftCorner.y = m_rect.upperLeftCorner.y;
+		m_barRect.lowerRightCorner.x = m_rect.lowerRightCorner.x;
+		m_barRect.lowerRightCorner.y = m_rect.upperLeftCorner.y + m_barWidth;
 
 		// Update in rect for updating layout representation
-		m_inRect.upperLeftCorner.x = m_rect.upperLeftCorner.x + m_leftMargin;
-		m_inRect.upperLeftCorner.y = m_rect.upperLeftCorner.y + m_topMargin + m_barWidth;
-		m_inRect.lowerRightCorner.x = m_rect.lowerRightCorner.x - m_rightMargin;
-		m_inRect.lowerRightCorner.y = m_rect.lowerRightCorner.y - m_bottomMargin;
+		m_inRect.upperLeftCorner.x = m_rect.upperLeftCorner.x;
+		m_inRect.upperLeftCorner.y = m_rect.upperLeftCorner.y + m_barWidth;
+		m_inRect.lowerRightCorner.x = m_rect.lowerRightCorner.x;
+		m_inRect.lowerRightCorner.y = m_rect.lowerRightCorner.y;
+
+		UpdateLayout();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -175,7 +182,7 @@ namespace gui
 					if ((newY + m_rect.GetHeight()) > viewport.w) newY = viewport.w - m_rect.GetHeight();
 
 					SetPosition(newX, newY);
-					m_text->SetPosition(newX + m_leftMargin, newY + m_topMargin);
+					m_text->SetPosition(newX, newY);
 
 					return true;
 				}

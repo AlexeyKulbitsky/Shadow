@@ -77,6 +77,8 @@ namespace gui
 			}
 
 			m_layout->Resize(m_fullRect);
+
+			return true;
 		}
 		break;
 		default:

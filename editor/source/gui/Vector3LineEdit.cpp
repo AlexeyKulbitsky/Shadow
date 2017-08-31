@@ -6,7 +6,7 @@
 Vector3LineEdit::Vector3LineEdit()
 {
 	sh::gui::HorizontalLayoutPtr layout(new sh::gui::HorizontalLayout());
-	layout->SetSpacing(24);
+	layout->SetSpacing(2);
 	for (auto &lineEdit : m_lineEdits)
 	{
 		lineEdit.reset(new sh::gui::FloatLineEdit());

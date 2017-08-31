@@ -26,8 +26,17 @@ namespace gui
 		if (m_items.size() == 0U)
 			return;
 
-		const s32 height = rect.GetHeight();
-		const s32 width = rect.GetWidth();
+		auto upperLeft = rect.upperLeftCorner;
+		auto lowerRight = rect.lowerRightCorner;
+
+		math::Recti finalRect;
+		finalRect.upperLeftCorner.x = upperLeft.x + m_leftMargin;
+		finalRect.upperLeftCorner.y = upperLeft.y + m_topMargin;
+		finalRect.lowerRightCorner.x = lowerRight.x - m_rightMargin;
+		finalRect.lowerRightCorner.y = lowerRight.y - m_bottomMargin;
+
+		const s32 height = finalRect.GetHeight();
+		const s32 width = finalRect.GetWidth();
 		const u32 elementCount = m_items.size();
 		s32 itemHeight = 0;
 		s32 offset = 0;
@@ -37,14 +46,14 @@ namespace gui
 			if (offset > height)
 				itemHeight = 0;
 			else
-				itemHeight = (height - offset) / (elementCount - i);
-			const s32 x = rect.upperLeftCorner.x;
-			const s32 y = rect.upperLeftCorner.y + offset;
-			m_items[i]->Resize(math::Recti(x, y, x + width, y + itemHeight - m_spacing));
+				itemHeight = (height - offset - m_spacing * (elementCount - i - 1)) / (elementCount - i);
+			const s32 x = finalRect.upperLeftCorner.x;
+			const s32 y = finalRect.upperLeftCorner.y + offset;
+			m_items[i]->Resize(math::Recti(x, y, x + width, y + itemHeight));
 			offset += m_items[i]->GetHeight() + m_spacing;
 		}
-		m_rect.upperLeftCorner = rect.upperLeftCorner;
-		m_rect.lowerRightCorner = rect.upperLeftCorner + math::Vector2i(width, offset);
+		m_rect.upperLeftCorner = finalRect.upperLeftCorner;
+		m_rect.lowerRightCorner = finalRect.upperLeftCorner + math::Vector2i(width, offset);
 	}
 
 	void VerticalLayout::SetSize(const math::Vector2i& size)

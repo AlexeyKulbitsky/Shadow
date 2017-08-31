@@ -71,8 +71,6 @@ namespace gui
 		virtual void SetHeight(s32 height);
 		virtual bool ProcessEvent(GUIEvent& ev);
 
-		virtual void SetMargins(u32 top, u32 right, u32 bottom, u32 left);
-
 		void SetFocus(bool focus) { m_isInFocus = focus; }
 		bool IsInFocus() const { return m_isInFocus; }
 
@@ -81,10 +79,6 @@ namespace gui
 
 	protected:
 		LayoutPtr m_layout;
-		u32 m_topMargin = 0U;
-		u32 m_rightMargin = 0U;
-		u32 m_bottomMargin = 0U;
-		u32 m_leftMargin = 0U;
 
 		math::Vector2u m_maxSize = math::Vector2u(std::numeric_limits<s32>::max());
 		math::Vector2u m_minSize = math::Vector2u(0U);

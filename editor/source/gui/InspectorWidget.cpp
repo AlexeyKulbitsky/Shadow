@@ -73,5 +73,5 @@ void InspectorWidget::UpdateGeometry(sh::u32 screenWidth, sh::u32 screenHeight)
 	if (toolBar)
 		verticalOffset += toolBar->GetRect().GetHeight();
 	m_window->SetPosition(screenWidth - windowWidth, verticalOffset);
-	m_window->SetHeight(screenHeight - verticalOffset);
+	//m_window->SetHeight(screenHeight - verticalOffset);
 }

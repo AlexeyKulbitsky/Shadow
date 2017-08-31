@@ -2,6 +2,14 @@
 
 #include "ExpandableWidget.h"
 
+ExpandableWidget::ExpandableWidget(const sh::String& title)
+{
+	m_toggleButton.reset(new sh::gui::Button(title));
+	m_toggleButton->SetToggleable(true);
+}
+
+
+
 #if 0
 
 ExpandableWidget::ExpandableWidget(const QString & title, const int animationDuration, QWidget *parent) : QWidget(parent), animationDuration(animationDuration)

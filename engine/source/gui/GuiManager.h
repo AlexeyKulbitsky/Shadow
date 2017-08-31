@@ -53,7 +53,7 @@ namespace gui
 		void SetFont(const FontPtr& font);
 		const FontPtr& GetFont() const { return m_font; }
 
-		const SPtr<Widget>& GetChild(size_t i) const { return m_children[i]; }
+		//const SPtr<Widget>& GetChild(size_t i) const { return m_children.; }
 		size_t GetChildrenCount() const { return m_children.size(); }
 		void RemoveAllChildren() { m_children.clear(); }
 		
@@ -76,7 +76,10 @@ namespace gui
 
 		MenuBarPtr m_menuBar;
 		ToolBarPtr m_toolBar;
-		std::vector<SPtr<Widget>> m_children;
+		//std::vector<SPtr<Widget>> m_children;
+
+		List<SPtr<Widget>> m_children;
+
 		SPtr<Widget> m_focusWidget;
 
 		StylePtr m_style;

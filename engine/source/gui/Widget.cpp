@@ -74,30 +74,11 @@ namespace gui
 		return m_layout->ProcessEvent(ev);
 	}
 
-	void Widget::SetMargins(u32 top, u32 right, u32 bottom, u32 left)
-	{
-		m_topMargin = top;
-		m_rightMargin = right;
-		m_bottomMargin = bottom;
-		m_leftMargin = left;
-
-		UpdateLayout();
-	}
-
 	void Widget::UpdateLayout()
 	{
 		if (m_layout)
 		{
-			auto upperLeft = m_rect.upperLeftCorner;
-			auto lowerRight = m_rect.lowerRightCorner;
-
-			math::Recti finalRect;
-			finalRect.upperLeftCorner.x = upperLeft.x + m_leftMargin;
-			finalRect.upperLeftCorner.y = upperLeft.y + m_topMargin;
-			finalRect.lowerRightCorner.x = lowerRight.x - m_rightMargin;
-			finalRect.lowerRightCorner.y = lowerRight.y - m_bottomMargin;
-
-			m_layout->Resize(finalRect);
+			m_layout->Resize(m_rect);
 		}
 	}
 

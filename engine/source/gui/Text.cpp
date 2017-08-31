@@ -13,26 +13,22 @@ namespace gui
 
 	Text::Text()
 	{
-//		UpdateColor(math::Vector4f(1.0f, 1.0f, 1.0f, 0.0f));
 	}
 
 	Text::Text(const math::Recti rect)
 	{
 		m_rect = rect;
-//		UpdateColor(math::Vector4f(1.0f, 1.0f, 1.0f, 0.0f));
 	}
 
 	Text::Text(const String& text)
 	{
 		SetText(text);
-//		UpdateColor(math::Vector4f(1.0f, 1.0f, 1.0f, 0.0f));
 	}
 
 	Text::Text(const math::Recti rect, const String& text)
 	{
 		m_rect = rect;
 		SetText(text);
-//		UpdateColor(math::Vector4f(1.0f, 1.0f, 1.0f, 0.0f));
 	}
 
 	Text::~Text()
