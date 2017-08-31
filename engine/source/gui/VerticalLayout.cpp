@@ -40,8 +40,8 @@ namespace gui
 				itemHeight = (height - offset) / (elementCount - i);
 			const s32 x = rect.upperLeftCorner.x;
 			const s32 y = rect.upperLeftCorner.y + offset;
-			m_items[i]->Resize(math::Recti(x, y, x + width, y + itemHeight));
-			offset += m_items[i]->GetHeight();
+			m_items[i]->Resize(math::Recti(x, y, x + width, y + itemHeight - m_spacing));
+			offset += m_items[i]->GetHeight() + m_spacing;
 		}
 		m_rect.upperLeftCorner = rect.upperLeftCorner;
 		m_rect.lowerRightCorner = rect.upperLeftCorner + math::Vector2i(width, offset);

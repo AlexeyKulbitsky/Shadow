@@ -77,6 +77,14 @@ namespace gui
 
 	}
 
+	void Layout::SetMargins(u32 top, u32 right, u32 bottom, u32 left)
+	{
+		m_topMargin = top;
+		m_rightMargin = right;
+		m_bottomMargin = bottom;
+		m_leftMargin = left;
+	}
+
 	void Layout::Render(video::Painter* painter)
 	{
 		for (u32 i = 0; i < m_items.size(); ++i)

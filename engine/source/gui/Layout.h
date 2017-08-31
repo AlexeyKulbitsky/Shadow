@@ -68,6 +68,13 @@ namespace gui
 		virtual const math::Vector2i& GetSize() const override { return m_rect.GetSize(); }
 		virtual s32 GetWidth() const  override { return m_rect.GetWidth(); }
 		virtual s32 GetHeight() const  override { return m_rect.GetHeight(); }
+		// Sets spacing between elements
+		virtual void SetSpacing(s32 spacing) { m_spacing = spacing; }
+		// Returns actual spacing between elements
+		virtual s32 GetSpacing() const { return m_spacing; }
+		void SetMargins(u32 top, u32 right, u32 bottom, u32 left);
+
+
 		virtual void Render(video::Painter* painter) override;
 		virtual bool ProcessEvent(GUIEvent& ev) override;
 		virtual void Resize(const math::Recti& rect) override {}
@@ -80,6 +87,13 @@ namespace gui
 		std::vector<LayoutItemPtr> m_items;
 		Widget* m_parent = nullptr;
 		math::Recti m_rect;
+
+		u32 m_topMargin = 0U;
+		u32 m_rightMargin = 0U;
+		u32 m_bottomMargin = 0U;
+		u32 m_leftMargin = 0U;
+
+		s32 m_spacing = 0;
 	};
 
 } // gui

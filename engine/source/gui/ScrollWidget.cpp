@@ -99,7 +99,7 @@ namespace gui
 				const auto& w = m_layout->GetWidget(i);
 				if (!w)
 					continue;
-				height += w->GetRect().GetHeight();
+				height += w->GetRect().GetHeight() + m_layout->GetSpacing();
 			}
 			auto r = m_rect;
 			r.lowerRightCorner.y = r.upperLeftCorner.y + height;

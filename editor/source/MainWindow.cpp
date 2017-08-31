@@ -348,6 +348,7 @@ void MainWindow::Init()
  	scroll->SetPosition(100, 100);
  	scroll->SetSize(sh::math::Vector2i(100, 200));
  	sh::gui::VerticalLayoutPtr l(new sh::gui::VerticalLayout());
+	l->SetSpacing(5);
  	scroll->SetLayout(l);
  	for (sh::u32 i = 0; i < 20; ++i)
  	{
