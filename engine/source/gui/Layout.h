@@ -16,7 +16,7 @@ namespace gui
 		virtual void SetSize(const math::Vector2i& size) = 0;
 		virtual void SetWidth(s32 width) = 0;
 		virtual void SetHeight(s32 height) = 0;
-		virtual const math::Vector2i& GetSize() const = 0;
+		virtual const math::Vector2i GetSize() const = 0;
 		virtual s32 GetWidth() const = 0;
 		virtual s32 GetHeight() const = 0;
 		virtual void Resize(const math::Recti& rect) {}
@@ -38,7 +38,7 @@ namespace gui
 		virtual void SetSize(const math::Vector2i& size) override { m_widget->SetSize(size); }
 		virtual void SetWidth(s32 width) override { m_widget->SetWidth(width); }
 		virtual void SetHeight(s32 height) override { m_widget->SetHeight(height); }
-		virtual const math::Vector2i& GetSize() const override { return m_widget->GetRect().GetSize(); }
+		virtual const math::Vector2i GetSize() const override { return m_widget->GetRect().GetSize(); }
 		virtual s32 GetWidth() const  override { return m_widget->GetRect().GetWidth(); }
 		virtual s32 GetHeight() const  override { return m_widget->GetRect().GetHeight(); }
 		virtual void Resize(const math::Recti& rect) override;
@@ -65,7 +65,7 @@ namespace gui
 		virtual void SetSize(const math::Vector2i& size) override;
 		virtual void SetWidth(s32 width) override;
 		virtual void SetHeight(s32 height) override;
-		virtual const math::Vector2i& GetSize() const override { return m_rect.GetSize(); }
+		virtual const math::Vector2i GetSize() const override { return m_rect.GetSize(); }
 		virtual s32 GetWidth() const  override { return m_rect.GetWidth(); }
 		virtual s32 GetHeight() const  override { return m_rect.GetHeight(); }
 		// Sets spacing between elements

@@ -96,12 +96,13 @@ namespace gui
 		{
 			const u32 itemsCount = m_layout->GetItemsCount();
 			u32 height = 0U;
+			if (itemsCount > 1)
+			{
+				height += m_layout->GetSpacing() * (itemsCount - 1);
+			}
 			for (u32 i = 0U; i < itemsCount; ++i)
 			{
-				const auto& w = m_layout->GetWidget(i);
-				if (!w)
-					continue;
-				height += w->GetRect().GetHeight() + m_layout->GetSpacing();
+				height += m_layout->GetItem(i)->GetHeight();
 			}
 			auto r = m_rect;
 			r.lowerRightCorner.y = r.upperLeftCorner.y + height;

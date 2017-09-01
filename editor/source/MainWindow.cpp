@@ -360,7 +360,16 @@ void MainWindow::Init()
 		button->SetHeight(20 + i * 2);
  		scroll->GetLayout()->AddWidget(button);
  	}
- 	guiMgr->AddChild(scroll);
+
+	sh::gui::WindowPtr scrollWindow(new sh::gui::Window(sh::math::Recti(300, 100, 500, 400)));
+	scrollWindow->SetText("Scroll window");
+	sh::gui::VerticalLayoutPtr scrollLayout(new sh::gui::VerticalLayout());
+	scrollLayout->AddWidget(scroll);
+	scrollLayout->SetMargins(5, 5, 5, 5);
+	scrollWindow->SetLayout(scrollLayout);
+
+ 	//guiMgr->AddChild(scroll);
+	guiMgr->AddChild(scrollWindow);
 
 	sh::gui::ComboBoxPtr combo(new sh::gui::ComboBox());
 	combo->SetPosition(300, 100);
