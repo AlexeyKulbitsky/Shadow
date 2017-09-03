@@ -9,6 +9,7 @@ InspectorWidget::InspectorWidget()
 	//m_window->SetMovable(false);
 	sh::gui::VerticalLayoutPtr windowLayout(new sh::gui::VerticalLayout());
 	m_transformWidget.reset(new TransformWidget());
+	m_materialWidget.reset(new MaterialWidget());
 	//windowLayout->AddWidget(m_transformWidget->GetWidget());
 	m_window->SetLayout(windowLayout);
 
@@ -30,10 +31,11 @@ void InspectorWidget::SetEntity(sh::Entity* entity)
 	if (!entity)
 	{
 		m_transformWidget->SetTransformComponent(nullptr);
+		m_materialWidget->SetRenderComponent(nullptr);
 		m_window->GetLayout()->Clear();
 		return;
 	}
-
+	// Transform component editor
 	sh::Component* component = entity->GetComponent(sh::Component::Type::Transform);
 	if (component)
 	{
@@ -51,6 +53,25 @@ void InspectorWidget::SetEntity(sh::Entity* entity)
 		}
 		if (!found)
 			m_window->GetLayout()->AddWidget(m_transformWidget->GetWidget());
+	}
+	// Render component editor
+	component = entity->GetComponent(sh::Component::Type::Render);
+	if (component)
+	{
+		auto renderComponent = static_cast<sh::RenderComponent*>(component);
+		m_materialWidget->SetRenderComponent(renderComponent);
+		sh::u32 count = m_window->GetLayout()->GetItemsCount();
+		bool found = false;
+		for (sh::u32 i = 0U; i < count; ++i)
+		{
+			if (m_materialWidget->GetWidget() == m_window->GetLayout()->GetItem(i)->GetWidget())
+			{
+				found = true;
+				break;
+			}
+		}
+		if (!found)
+			m_window->GetLayout()->AddWidget(m_materialWidget->GetWidget());
 	}
 }
 

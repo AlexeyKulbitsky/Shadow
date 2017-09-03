@@ -63,27 +63,14 @@ namespace gui
 
 	void VerticalLayout::SetWidth(s32 width)
 	{
-
+		m_rect.lowerRightCorner.x = m_rect.upperLeftCorner.x + width;
+		Resize(m_rect);
 	}
 
 	void VerticalLayout::SetHeight(s32 height)
 	{
-		const u32 elementCount = m_items.size();
-		const u32 itemHeight = height / elementCount;
-
-		for (const auto& item : m_items)
-		{
-			// If this item if for holding widget
-			const auto& w = item->GetWidget();
-			if (w)
-			{
-				w->SetHeight(itemHeight);
-				continue;
-			}
-
-			// If this item is layout itself
-			item->SetHeight(itemHeight);
-		}
+		m_rect.lowerRightCorner.y = m_rect.upperLeftCorner.y + height;
+		Resize(m_rect);
 	}
 
 } // gui

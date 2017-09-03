@@ -4,6 +4,7 @@
 #include <Shadow.h>
 
 #include "TransformWidget.h"
+#include "MaterialWidget.h"
 
 class InspectorWidget
 {
@@ -24,6 +25,7 @@ private:
 	sh::Entity* m_entity = nullptr;
 
 	sh::SPtr<TransformWidget> m_transformWidget;
+	sh::SPtr<MaterialWidget> m_materialWidget;
 	sh::gui::WindowPtr m_window;
 };
 
