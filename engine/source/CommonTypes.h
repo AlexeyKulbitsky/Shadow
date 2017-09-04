@@ -317,7 +317,7 @@ namespace sh
 		COMMAND_BUFFER_TYPE_SECONDARY
 	};
 
-	enum class MaterialParamType : int
+	enum class MaterialParamUsage : int
 	{
 		Undefined = -1,
 		MatrixWorldViewProjection,
@@ -332,17 +332,17 @@ namespace sh
 	};
 
 	
-	static const std::map<std::string, MaterialParamType> matParamsMap =
+	static const std::map<std::string, MaterialParamUsage> matParamsMap =
 	{
-		{ "matWVP", MaterialParamType::MatrixWorldViewProjection },
-		{ "matWorld", MaterialParamType::MatrixWorld },
-		{ "matView", MaterialParamType::MatrixView },
-		{ "matViewRotation", MaterialParamType::MatrixViewRotation },
-		{ "matViewRotationProjection", MaterialParamType::MatrixViewRotationProjection },
-		{ "matProjection", MaterialParamType::MatrixProjection },
-		{ "matViewProjection", MaterialParamType::MatrixViewProjection },
-		{ "dLightDirection", MaterialParamType::DirectionalLightDirection },
-		{ "dLightColor", MaterialParamType::DirectionalLightColor }
+		{ "matWVP", MaterialParamUsage::MatrixWorldViewProjection },
+		{ "matWorld", MaterialParamUsage::MatrixWorld },
+		{ "matView", MaterialParamUsage::MatrixView },
+		{ "matViewRotation", MaterialParamUsage::MatrixViewRotation },
+		{ "matViewRotationProjection", MaterialParamUsage::MatrixViewRotationProjection },
+		{ "matProjection", MaterialParamUsage::MatrixProjection },
+		{ "matViewProjection", MaterialParamUsage::MatrixViewProjection },
+		{ "dLightDirection", MaterialParamUsage::DirectionalLightDirection },
+		{ "dLightColor", MaterialParamUsage::DirectionalLightColor }
 	};
 
 	static const std::map<std::string, GpuParamObjectType> samplerTypeMap =

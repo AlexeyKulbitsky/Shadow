@@ -14,7 +14,7 @@ namespace video
 		friend class MaterialParams;
 		friend class Material;
 	public:
-		MaterialParamType GetType() const { return m_type; }
+		MaterialParamUsage GetUsage() const { return m_usage; }
 
 		template<typename T>
 		void Set(const T& value, u32 arrayIndex = 0U)
@@ -26,11 +26,11 @@ namespace video
 		}
 
 	//private:
-		MaterialParam(MaterialParamType type, u8* dataPtr) : m_type(type), m_dataPtr(dataPtr) { }
+		MaterialParam(MaterialParamUsage usage, u8* dataPtr) : m_usage(usage), m_dataPtr(dataPtr) { }
 
 	private:
 		String m_name;
-		MaterialParamType m_type = MaterialParamType::Undefined;
+		MaterialParamUsage m_usage = MaterialParamUsage::Undefined;
 		u8* m_dataPtr = nullptr;
 	};
 

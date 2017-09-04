@@ -359,31 +359,31 @@ namespace sh
 				for (u32 paramIdx = 0U; paramIdx < params->GetParamsCount(); ++paramIdx)
 				{
 					auto& param = params->GetParam(paramIdx);
-					switch (param.GetType())
+					switch (param.GetUsage())
 					{
-						case MaterialParamType::MatrixWorld:
+						case MaterialParamUsage::MatrixWorld:
 							break;
-						case MaterialParamType::MatrixView:
+						case MaterialParamUsage::MatrixView:
 							param.Set(viewMatrix);
 							break;
-						case MaterialParamType::MatrixViewRotation:
+						case MaterialParamUsage::MatrixViewRotation:
 						{
 							param.Set(camera->GetRotationMatrix());
 						}
 						break;
-						case MaterialParamType::MatrixViewRotationProjection:
+						case MaterialParamUsage::MatrixViewRotationProjection:
 							param.Set(( projectionMatrix * camera->GetRotationMatrix() ).GetTransposed());
 							break;
-						case MaterialParamType::MatrixProjection:
+						case MaterialParamUsage::MatrixProjection:
 							param.Set(projectionMatrix);
 							break;
-						case MaterialParamType::MatrixViewProjection:
+						case MaterialParamUsage::MatrixViewProjection:
 						{
 							math::Matrix4f viewProjection = projectionMatrix * viewMatrix;
 							param.Set(viewProjection);
 						}
 						break;
-						case MaterialParamType::MatrixWorldViewProjection:
+						case MaterialParamUsage::MatrixWorldViewProjection:
 						{
 							math::Matrix4f wvp = projectionMatrix * viewMatrix;
 							wvp.Transpose();
@@ -425,31 +425,31 @@ namespace sh
 				for (u32 paramIdx = 0U; paramIdx < params->GetParamsCount(); ++paramIdx)
 				{
 					auto& param = params->GetParam(paramIdx);
-					switch (param.GetType())
+					switch (param.GetUsage())
 					{
-						case MaterialParamType::MatrixWorld:
+						case MaterialParamUsage::MatrixWorld:
 							break;
-						case MaterialParamType::MatrixView:
+						case MaterialParamUsage::MatrixView:
 							param.Set(viewMatrix);
 							break;
-						case MaterialParamType::MatrixViewRotation:
+						case MaterialParamUsage::MatrixViewRotation:
 						{
 							param.Set(camera->GetRotationMatrix());
 						}
 						break;
-						case MaterialParamType::MatrixViewRotationProjection:
+						case MaterialParamUsage::MatrixViewRotationProjection:
 							param.Set(( projectionMatrix * camera->GetRotationMatrix() ).GetTransposed());
 							break;
-						case MaterialParamType::MatrixProjection:
+						case MaterialParamUsage::MatrixProjection:
 							param.Set(projectionMatrix);
 							break;
-						case MaterialParamType::MatrixViewProjection:
+						case MaterialParamUsage::MatrixViewProjection:
 						{
 							math::Matrix4f viewProjection = projectionMatrix * viewMatrix;
 							param.Set(viewProjection);
 						}
 						break;
-						case MaterialParamType::MatrixWorldViewProjection:
+						case MaterialParamUsage::MatrixWorldViewProjection:
 						{
 							math::Matrix4f wvp = projectionMatrix * viewMatrix;
 							wvp.Transpose();

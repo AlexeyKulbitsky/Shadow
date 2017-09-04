@@ -27,7 +27,7 @@ namespace sh
 					}
 					else
 					{
-						MaterialParam matParam(MaterialParamType::Undefined, const_cast<u8*>(dataPtr + param.second.offset));
+						MaterialParam matParam(MaterialParamUsage::Undefined, const_cast<u8*>(dataPtr + param.second.offset));
 						m_params.push_back(matParam);
 					}
 				}
