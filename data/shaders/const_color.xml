@@ -32,7 +32,7 @@
 
 		<fragmentShader>
 		<constants>
-			
+			<constant name="addColor" type="vec3"/>
 			<sampler name="diffuse" type="2D">
 				<filtering min="Linear" mag="Linear"/>
 				<tiling U="Repeat" V="Repeat"/>
@@ -44,12 +44,13 @@
 				precision mediump float;
 
 				uniform sampler2D diffuse;
+				uniform vec3 addColor;
 				varying vec2 vUV;
 
 
 				void main() 
 				{				
-					vec4 color = texture2D(diffuse, vUV);
+					vec4 color = texture2D(diffuse, vUV) + vec4(addColor, 1.0);
 					gl_FragColor = color;
 				} 
 		

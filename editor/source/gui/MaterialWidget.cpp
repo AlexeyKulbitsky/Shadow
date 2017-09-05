@@ -36,7 +36,15 @@ void MaterialWidget::SetRenderComponent(sh::RenderComponent* component)
 	for (sh::u32 i = 0; i < paramsCount; ++i)
 	{
 		auto param = params->GetParam(i);
-		sh::gui::ButtonPtr button(new sh::gui::Button("param"));
+
+		if (param.GetType() == sh::MaterialParamType::Float3)
+		{
+			sh::math::Vector3f value;
+			param.Get(value);
+			value = sh::math::Vector3f(0.2f);
+			param.Set(value);
+		}
+		sh::gui::ButtonPtr button(new sh::gui::Button(param.GetName()));
 		m_layout->AddWidget(button);
 	}
 }

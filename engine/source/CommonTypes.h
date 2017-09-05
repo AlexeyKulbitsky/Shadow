@@ -331,6 +331,19 @@ namespace sh
 		DirectionalLightColor
 	};
 
+	enum class MaterialParamType
+	{
+		Matrix4,
+		Matrix3,
+		Float4,
+		Float3,
+		Float2,
+		Float,
+		Int4,
+		Int3,
+		Int2,
+		Int
+	};
 	
 	static const std::map<std::string, MaterialParamUsage> matParamsMap =
 	{
