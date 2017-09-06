@@ -64,8 +64,8 @@ namespace sh
 					attribute.type = GL_FLOAT;
 					attribute.size = 2;
 				}
-				attribute.pointer = reinterpret_cast<const void*>(stride);
-				stride += attribute.size * sizeof(float);
+				//attribute.pointer = reinterpret_cast<const void*>(stride);
+				//stride += attribute.size * sizeof(float);
 
 				AddAttribute(attribute);
 

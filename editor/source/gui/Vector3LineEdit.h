@@ -8,8 +8,6 @@ class Vector3LineEdit : public sh::gui::Widget
 public:
 	Vector3LineEdit();
 
-	const sh::gui::WidgetPtr& GetWidget() const { return m_widget; }
-
 	const sh::math::Vector3f& GetValue() const { return m_value; }
 	void SetValue(const sh::math::Vector3f& value);
 
@@ -19,15 +17,14 @@ public:
 	sh::Event<void, float> zValueChanged;
 	sh::Event<void, const sh::math::Vector3f&> valueChanged;
 
-private:
+protected:
 	void OnXvalueChanged(float value);
 	void OnYvalueChanged(float value);
 	void OnZvalueChanged(float value);
 
-private:
+protected:
 	sh::math::Vector3f m_value = sh::math::Vector3f(0.0f);
 
-	sh::gui::WidgetPtr m_widget;
 	std::array<sh::gui::FloatLineEditPtr, 3U> m_lineEdits;
 };
 

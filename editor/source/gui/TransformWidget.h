@@ -25,9 +25,9 @@ private:
 
 private:
 	sh::gui::WidgetPtr m_widget;
-	Vector3LineEdit m_positionEdit;
-	Vector3LineEdit m_rotationEdit;
-	Vector3LineEdit m_scaleEdit;
+	sh::SPtr<Vector3LineEdit> m_positionEdit;
+	sh::SPtr<Vector3LineEdit> m_rotationEdit;
+	sh::SPtr<Vector3LineEdit> m_scaleEdit;
 
 	sh::TransformComponent* m_transformComponent = nullptr;
 };

@@ -113,30 +113,30 @@ namespace sh
 				const auto& params = renderable->GetAutoParams();
 				for (size_t paramIdx = 0; paramIdx < params->GetParamsCount(); ++paramIdx)
 				{
-					auto& param = params->GetParam(paramIdx);
-					switch (param.GetUsage())
+					auto param = params->GetParam(paramIdx);
+					switch (param->GetUsage())
 					{
 						case MaterialParamUsage::MatrixWorld:
-							param.Set(renderable->GetMatrix());
+							param->Set(renderable->GetMatrix());
 							break;
 						case MaterialParamUsage::MatrixView:
-							param.Set(viewMatrix);
+							param->Set(viewMatrix);
 							break;
 						case MaterialParamUsage::MatrixViewRotation:
 						{
-							param.Set(camera->GetRotationMatrix());
+							param->Set(camera->GetRotationMatrix());
 						}
 							break;
 						case MaterialParamUsage::MatrixViewRotationProjection:
-							param.Set((projectionMatrix * camera->GetRotationMatrix()).GetTransposed());
+							param->Set((projectionMatrix * camera->GetRotationMatrix()).GetTransposed());
 							break;
 						case MaterialParamUsage::MatrixProjection:
-							param.Set(projectionMatrix);
+							param->Set(projectionMatrix);
 							break;
 						case MaterialParamUsage::MatrixViewProjection:
 						{
 							math::Matrix4f viewProjection = projectionMatrix * viewMatrix;
-							param.Set(viewProjection);
+							param->Set(viewProjection);
 						}
 							break;
 						case MaterialParamUsage::MatrixWorldViewProjection:
@@ -144,7 +144,7 @@ namespace sh
 							math::Matrix4f wvp = projectionMatrix * viewMatrix * renderable->GetMatrix();
 							//wvp.m[1][1] *= -1.0f;
 							wvp.Transpose();
-							param.Set(wvp);
+							param->Set(wvp);
 						}
 							break;
 						default:

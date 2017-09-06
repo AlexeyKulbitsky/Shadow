@@ -12,21 +12,24 @@ TransformWidget::TransformWidget()
 	sh::gui::LabelPtr positionLabel(new sh::gui::Label("Position"));
 	positionLabel->SetMaximumWidth(75U);
 	positionLayout->AddWidget(positionLabel);
-	positionLayout->AddWidget(m_positionEdit.GetWidget());
+	m_positionEdit.reset(new Vector3LineEdit());
+	positionLayout->AddWidget(m_positionEdit);
 
 	// Rotation part
 	sh::gui::HorizontalLayoutPtr rotationLayout(new sh::gui::HorizontalLayout());
 	sh::gui::LabelPtr rotationLabel(new sh::gui::Label("Rotation"));
 	rotationLabel->SetMaximumWidth(75U);
 	rotationLayout->AddWidget(rotationLabel);
-	rotationLayout->AddWidget(m_rotationEdit.GetWidget());
+	m_rotationEdit.reset(new Vector3LineEdit());
+	rotationLayout->AddWidget(m_rotationEdit);
 
 	// Scale part
 	sh::gui::HorizontalLayoutPtr scaleLayout(new sh::gui::HorizontalLayout());
 	sh::gui::LabelPtr scaleLabel(new sh::gui::Label("Scale"));
 	scaleLabel->SetMaximumWidth(75U);
 	scaleLayout->AddWidget(scaleLabel);
-	scaleLayout->AddWidget(m_scaleEdit.GetWidget());
+	m_scaleEdit.reset(new Vector3LineEdit());
+	scaleLayout->AddWidget(m_scaleEdit);
 
 	// Common layout
 	sh::gui::VerticalLayoutPtr layout(new sh::gui::VerticalLayout());
@@ -44,11 +47,11 @@ TransformWidget::TransformWidget()
 
 	//m_widget->SetMaximumHeight(75U);
 
-	m_positionEdit.valueChanged.Connect(std::bind(&TransformWidget::OnPositinChanged, this, 
+	m_positionEdit->valueChanged.Connect(std::bind(&TransformWidget::OnPositinChanged, this, 
 		std::placeholders::_1));
-	m_rotationEdit.valueChanged.Connect(std::bind(&TransformWidget::OnRotationChanged, this,
+	m_rotationEdit->valueChanged.Connect(std::bind(&TransformWidget::OnRotationChanged, this,
 		std::placeholders::_1));
-	m_scaleEdit.valueChanged.Connect(std::bind(&TransformWidget::OnScaleChanged, this,
+	m_scaleEdit->valueChanged.Connect(std::bind(&TransformWidget::OnScaleChanged, this,
 		std::placeholders::_1));
 }
 
@@ -71,11 +74,11 @@ void TransformWidget::SetTransformComponent(sh::TransformComponent* component)
 
 void TransformWidget::Update()
 {
-	m_positionEdit.SetValue(m_transformComponent->GetPosition());
+	m_positionEdit->SetValue(m_transformComponent->GetPosition());
 	sh::math::Vector3f eulerRotations;
 	m_transformComponent->GetRotation().GetAsEulerXYZ(eulerRotations);
-	m_rotationEdit.SetValue(sh::math::Degrees(eulerRotations));
-	m_scaleEdit.SetValue(m_transformComponent->GetScale());
+	m_rotationEdit->SetValue(sh::math::Degrees(eulerRotations));
+	m_scaleEdit->SetValue(m_transformComponent->GetScale());
 }
 
 void TransformWidget::OnPositinChanged(const sh::math::Vector3f& position)

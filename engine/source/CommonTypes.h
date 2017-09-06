@@ -270,6 +270,7 @@ namespace sh
 
 	enum class AttributeSemantic
 	{
+		UNDEFINED = -1,
 		POSITION = 0,
 		COLOR,
 		UV,
@@ -278,6 +279,16 @@ namespace sh
 		TANGENT,
 
 		COUNT
+	};
+
+	static const std::map<std::string, AttributeSemantic> attributeSemanticMap =
+	{
+		{ "position", AttributeSemantic::POSITION },
+		{ "color", AttributeSemantic::COLOR },
+		{ "uv", AttributeSemantic::UV },
+		{ "normal", AttributeSemantic::NORMAL },
+		{ "binormal", AttributeSemantic::BINORMAL },
+		{ "tangent", AttributeSemantic::TANGENT }
 	};
 
 	enum class AttributeType

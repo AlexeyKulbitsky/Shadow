@@ -146,6 +146,114 @@ namespace sh
 				attributes[i].index = glGetAttribLocation(m_programID, attributes[i].name.c_str());
 			}
 
+
+			
+			const u32 bufferSize = 256;
+			char buffer[bufferSize];
+
+			// [Test] Reading attributes and locations directly from shader
+			SPtr<GLES20VertexDeclaration> vertexDeclaration(new GLES20VertexDeclaration());
+
+			s32 attributesCount = 0;
+			glGetProgramiv(m_programID, GL_ACTIVE_ATTRIBUTES, &attributesCount);
+			for (s32 i = 0; i < attributesCount; ++i)
+			{
+				GLsizei readedBytes = 0;
+				s32 attributeSize = 0;
+				GLenum attributeType;
+				glGetActiveAttrib(m_programID, i, bufferSize, &readedBytes, &attributeSize, &attributeType, buffer);
+
+				GLES20VertexAttribute attribute;
+				attribute.index = i;
+				attribute.name = buffer;
+				attribute.type = GL_FLOAT;
+				attribute.semantic = AttributeSemantic::UNDEFINED;
+
+				switch (attributeType)
+				{
+					case GL_FLOAT:
+						attribute.size = 1;
+						break;
+					case GL_FLOAT_VEC2:
+						attribute.size = 2;
+						break;
+					case GL_FLOAT_VEC3:
+						attribute.size = 3;
+						break;
+					case GL_FLOAT_VEC4:
+						attribute.size = 4;
+						break;
+					case GL_FLOAT_MAT2:
+						attribute.size = 4;
+						break;
+					case GL_FLOAT_MAT3:
+						attribute.size = 9;
+						break;
+					case GL_FLOAT_MAT4:
+						attribute.size = 16;
+						break;
+					default:
+						break;
+				}
+
+				auto it = attributeSemanticMap.find(buffer);
+				if (it != attributeSemanticMap.end())
+				{
+					attribute.semantic = it->second;
+				}
+
+				vertexDeclaration->AddAttribute(attribute);
+			}
+
+			// [Test] Reading uniforms and locations directly from shader
+			s32 uniformsCount = 0;
+			glGetProgramiv(m_programID, GL_ACTIVE_UNIFORMS, &uniformsCount);
+			for (s32 i = 0; i < uniformsCount; ++i)
+			{
+				GLsizei readedBytes = 0;
+				s32 uniformSize = 0;
+				GLenum uniformType;
+				glGetActiveUniform(m_programID, i, bufferSize, &readedBytes, &uniformSize, &uniformType, buffer);
+				switch (uniformType)
+				{
+					case GL_FLOAT:
+						break;
+					case GL_FLOAT_VEC2:
+						break;
+					case GL_FLOAT_VEC3:
+						break;
+					case GL_FLOAT_VEC4:
+						break;
+					case GL_INT:
+						break;
+					case GL_INT_VEC2:
+						break;
+					case GL_INT_VEC3:
+						break;
+					case GL_INT_VEC4:
+						break;
+					case GL_BOOL:
+						break;
+					case GL_BOOL_VEC2:
+						break;
+					case GL_BOOL_VEC3:
+						break;
+					case GL_BOOL_VEC4:
+						break;
+					case GL_FLOAT_MAT2:
+						break;
+					case GL_FLOAT_MAT3:
+						break;
+					case GL_FLOAT_MAT4:
+						break;
+					case GL_SAMPLER_2D:
+						break;
+					case GL_SAMPLER_CUBE:
+						break;
+					default:
+						break;
+				}
+			}
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////

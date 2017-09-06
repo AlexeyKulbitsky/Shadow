@@ -16,7 +16,7 @@ namespace video
 		MaterialParams(const GpuParamsPtr& gpuParams);
 
 		u32 GetParamsCount() const { return m_params.size(); }
-		MaterialParam& GetParam(u32 idx) { return m_params[idx]; }
+		MaterialParam* GetParam(u32 idx) { return &m_params[idx]; }
 		const std::vector<MaterialParam>& GetParams() const { return m_params; }
 
 	private:

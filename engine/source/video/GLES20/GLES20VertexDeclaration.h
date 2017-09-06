@@ -29,6 +29,8 @@ namespace sh
 			void AddAttribute(const GLES20VertexAttribute& attribute)
 			{
 				attributes.push_back(attribute);
+				attributes[attributes.size() - 1].pointer = reinterpret_cast<const void*>(stride);
+				stride += attribute.size * sizeof(float);
 			}
 
 			const std::vector<GLES20VertexAttribute>& GetAttributes() const { return attributes; }

@@ -81,14 +81,14 @@ namespace sh
 				{
 					for (size_t paramIdx = 0; paramIdx < m_materialParams->GetParamsCount(); ++paramIdx)
 					{
-						auto& param = m_materialParams->GetParam(paramIdx);
-						switch (param.GetUsage())
+						auto param = m_materialParams->GetParam(paramIdx);
+						switch (param->GetUsage())
 						{
 							case MaterialParamUsage::DirectionalLightDirection:
-								param.Set(light->GetDirection());
+								param->Set(light->GetDirection());
 								break;
 							case MaterialParamUsage::DirectionalLightColor:
-								param.Set(light->GetColor());
+								param->Set(light->GetColor());
 								break;
 							default:
 								break;

@@ -13,8 +13,7 @@ Vector3LineEdit::Vector3LineEdit()
 
 		layout->AddWidget(lineEdit);
 	}
-	m_widget.reset(new sh::gui::Widget());
-	m_widget->SetLayout(layout);
+	SetLayout(layout);
 
 	m_lineEdits[0]->OnValueChanged.Connect(std::bind(&Vector3LineEdit::OnXvalueChanged, this, std::placeholders::_1));
 	m_lineEdits[1]->OnValueChanged.Connect(std::bind(&Vector3LineEdit::OnYvalueChanged, this, std::placeholders::_1));
