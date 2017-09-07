@@ -90,7 +90,7 @@ namespace sh
 		class VertexInputDeclaration
 		{
 		public:
-			virtual void Load(const pugi::xml_node &node){}
+			//virtual void Load(const pugi::xml_node &node){}
 			virtual void Init(){}
 			virtual VertexInputDeclarationPtr Clone() { return nullptr; }
 			virtual void Assemble(VertexDeclaration& declaration){}

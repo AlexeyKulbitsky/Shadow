@@ -12,12 +12,6 @@
 		<dstFactor val="InvSrcAlpha"/>
 		<operation val="Add"/>
 	</blendingState>
-
-	<attributes>
-		<position type="vec3" name="aPosition" location="0"/>
-		<uv type="vec2" name="aUV" location="1"/>
-		<color type="vec3" name="aColor" location="2"/>
-	</attributes>
 	
 	<shader language="GLSL" api="GLES20">
 		<vertexShader>
@@ -27,14 +21,14 @@
 		<source>
 			<![CDATA[
 
-				attribute vec3 aPosition;				
+				attribute vec3 position;				
 				
 				uniform mat4 orthoMat;
 				
 				
 				void main() 
 				{
-					gl_Position = orthoMat * vec4(aPosition, 1.0);
+					gl_Position = orthoMat * vec4(position, 1.0);
 				}
 				
 			]]>

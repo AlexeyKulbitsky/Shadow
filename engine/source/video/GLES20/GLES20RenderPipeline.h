@@ -26,6 +26,8 @@ namespace sh
 		private:
 			void LoadConstants(const pugi::xml_node &node);
 			void LoadShaders(const pugi::xml_node &node);
+			void ParseAttributes();
+			void ParseUniforms();
 			GLES20RenderPipeline(const RenderPipelineDescription& description);
 
 		protected:			

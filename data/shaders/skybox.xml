@@ -10,10 +10,6 @@
 		<cullFace val="none"/>
 	</rasterizationState>
 	
-	<attributes>
-		<position type="vec3" name="aPosition" location="0"/>
-	</attributes>
-	
 	<shader language="GLSL" api="GLES20">
 		<vertexShader>
 		<constants>
@@ -22,16 +18,16 @@
 		<source>
 			<![CDATA[
 
-				attribute vec3 aPosition;	
+				attribute vec3 position;	
 				uniform mat4 matViewRotationProjection;
 				
 				varying vec3 vUV;
 				
 				void main() 
 				{
-					vec4 pos = matViewRotationProjection * vec4(aPosition, 1.0);
+					vec4 pos = matViewRotationProjection * vec4(position, 1.0);
 					gl_Position = pos;
-					vUV = aPosition;
+					vUV = position;
 				}
 				
 			]]>

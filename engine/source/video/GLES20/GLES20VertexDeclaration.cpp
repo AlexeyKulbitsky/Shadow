@@ -4,76 +4,13 @@ namespace sh
 {
 	namespace video
 	{
-		void GLES20VertexDeclaration::Load(const pugi::xml_node &node)
+
+		void GLES20VertexDeclaration::AddAttribute(const GLES20VertexAttribute& attribute)
 		{
-			// All attributes will be loaded as they are declared in technique
-			// Othewise they can be overriden while assigning material to loaded mesh
-			// In that case this declaration will take offsets and stride from meshe's vetex declaration
-			if (node.empty())
-				return;
-
-			stride = 0U;
-			pugi::xml_node attributeNode = node.first_child();
-			while (!attributeNode.empty())
-			{
-				GLES20VertexAttribute attribute;
-
-				std::string name = attributeNode.name();
-				if (name == "position")
-				{
-					attribute.semantic = AttributeSemantic::POSITION;
-					printf("Postion attribute\n");
-				}
-				else if (name == "normal")
-				{
-					attribute.semantic = AttributeSemantic::NORMAL;
-					printf("Normal attribute\n");
-				}
-				else if (name == "color")
-				{
-					attribute.semantic = AttributeSemantic::COLOR;
-					printf("Color attribute\n");
-				}
-				else if (name == "uv")
-				{
-					attribute.semantic = AttributeSemantic::UV;
-					printf("UV attribute\n");
-				}
-				else
-				{
-					printf("Unknown attribute\n");
-				}
-
-				attribute.name = attributeNode.attribute("name").as_string();
-
-				pugi::xml_attribute typeAttr = attributeNode.attribute("type");
-				name = typeAttr.as_string();
-
-				if (name == "vec4")
-				{
-					attribute.type = GL_FLOAT;
-					attribute.size = 4;
-				}
-				else if (name == "vec3")
-				{
-					attribute.type = GL_FLOAT;
-					attribute.size = 3;
-				}
-				else if (name == "vec2")
-				{
-					attribute.type = GL_FLOAT;
-					attribute.size = 2;
-				}
-				//attribute.pointer = reinterpret_cast<const void*>(stride);
-				//stride += attribute.size * sizeof(float);
-
-				AddAttribute(attribute);
-
-				attributeNode = attributeNode.next_sibling();
-			}
+			m_attributes.push_back(attribute);
+			m_attributes[m_attributes.size() - 1].pointer = reinterpret_cast<const void*>(m_stride);
+			m_stride += attribute.size * sizeof(float);
 		}
-
-		/////////////////////////////////////////////////////////////////////////////////
 
 		void GLES20VertexDeclaration::Init()
 		{
@@ -94,23 +31,23 @@ namespace sh
 
 		void GLES20VertexDeclaration::Assemble(VertexDeclaration& declatarion)
 		{
-			for (size_t i = 0; i < attributes.size(); ++i)
+			for (size_t i = 0; i < m_attributes.size(); ++i)
 			{
-				Attribute* attr = declatarion.GetAttribute(attributes[i].semantic);
+				Attribute* attr = declatarion.GetAttribute(m_attributes[i].semantic);
 				if (!attr)
 					continue;
 				const void* tempPointer = (const void*)(attr->offset);
-				attributes[i].pointer = tempPointer;
+				m_attributes[i].pointer = tempPointer;
 			}
-			stride = declatarion.GetStride();
+			m_stride = declatarion.GetStride();
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////
 
 		GLES20VertexDeclaration& GLES20VertexDeclaration::operator=(const GLES20VertexDeclaration& other)
 		{
-			attributes = other.attributes;
-			stride = other.stride;
+			m_attributes = other.m_attributes;
+			m_stride = other.m_stride;
 			return *this;
 		}
 	}

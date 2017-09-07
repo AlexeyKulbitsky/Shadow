@@ -5,11 +5,6 @@
 	<!--rasterizationState>
 		<cullFace val="none"/>
 	</rasterizationState-->
-
-	<attributes>
-		<position type="vec3" name="aPosition" location="0"/>
-		<normal type="vec3" name="aNormal" location="1"/>
-	</attributes>
 	
 	<shader language="GLSL" api="GLES20">
 		<vertexShader>
@@ -20,8 +15,8 @@
 		<source>
 			<![CDATA[
 
-				attribute mediump vec3 aPosition;	
-				attribute mediump vec3 aNormal;	
+				attribute mediump vec3 position;	
+				attribute mediump vec3 normal;	
 				
 				uniform mediump mat4 matWVP;
 				uniform mediump mat4 matWorld;
@@ -30,8 +25,8 @@
 				
 				void main() 
 				{
-					gl_Position = matWVP * vec4(aPosition, 1.0);
-					vec4 tmpNormal = matWorld * vec4(aNormal, 0.0);
+					gl_Position = matWVP * vec4(position, 1.0);
+					vec4 tmpNormal = matWorld * vec4(normal, 0.0);
 					vNormal = tmpNormal.xyz;
 				}
 				

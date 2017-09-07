@@ -16,10 +16,6 @@
 	<rasterizationState>
 		<cullFace val="none"/>
 	</rasterizationState>
-
-	<attributes>
-		<position type="vec3" name="aPosition" location="0"/>
-	</attributes>
 	
 	<shader language="GLSL" api="GLES20">
 		<vertexShader>
@@ -29,12 +25,12 @@
 		<source>
 			<![CDATA[
 
-				attribute vec3 aPosition;				
+				attribute vec3 position;				
 				uniform mat4 matWVP;
 				
 				void main() 
 				{
-					gl_Position = matWVP * vec4(aPosition, 1.0);
+					gl_Position = matWVP * vec4(position, 1.0);
 				}
 				
 			]]>

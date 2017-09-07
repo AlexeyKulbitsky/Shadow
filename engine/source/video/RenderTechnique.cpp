@@ -78,15 +78,6 @@ namespace sh
 			pipelineDesc.rasterizationState = LoadRasterizationState(pipelineNode);
 			pipelineDesc.blendingState = LoadBlendingState(pipelineNode);
 
-			// Load attributes
-			pugi::xml_node attributesNode = pipelineNode.child("attributes");
-			if (!attributesNode.empty())
-			{
-				VertexInputDeclarationPtr vertDeclaration = VertexInputDeclaration::Create();
-				vertDeclaration->Load(attributesNode);
-				pipelineDesc.vertexDeclaration = vertDeclaration;
-			}
-
 			// Load shaders
 			pugi::xml_node shadersNode = pipelineNode.child("shader");
 			String language = shadersNode.attribute("language").as_string();
