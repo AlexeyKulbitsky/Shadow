@@ -8,10 +8,7 @@
 	
 	<shader language="GLSL" api="GLES20">
 		<vertexShader>
-		<constants>
-			<constant name="matWVP" type="mat4" />
-			<constant name="matWorld" type="mat4"/>
-		</constants>
+		
 		<source>
 			<![CDATA[
 
@@ -35,10 +32,7 @@
 		</vertexShader>
 
 		<fragmentShader>
-		<constants>
-			<constant name="dLightDirection" type="vec3"/>
-			<constant name="dLightColor" type="vec3"/>
-		</constants>
+		
 		<source>
 			<![CDATA[
 

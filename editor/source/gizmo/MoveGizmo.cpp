@@ -139,11 +139,11 @@ void MoveGizmo::OnMouseMoved(sh::u32 x, sh::u32 y)
 
 void MoveGizmo::CreateArrow(Axis::Type type)
 {
-	const auto& info = m_material->GetRenderPipeline()->GetAutoParamsInfo();
+	const auto& info = m_material->GetRenderPipeline()->GetParamsInfo();
 
 	auto& axis = m_axises[(Axis::Type)type];
 	axis.params = sh::video::GpuParams::Create(info);
-	axis.params->GetParam("matWVP", axis.wvpMatrix);
+	axis.params->GetParam("matrixWVP", axis.wvpMatrix);
 	axis.params->GetParam("color", axis.color);
 
 	float radius = 0.1f;
@@ -212,10 +212,10 @@ void MoveGizmo::CreateArrow(Axis::Type type)
 
 void MoveGizmo::CreatePlane(Axis::Type type)
 {
-	const auto& info = m_material->GetRenderPipeline()->GetAutoParamsInfo();
+	const auto& info = m_material->GetRenderPipeline()->GetParamsInfo();
 	auto& axis = m_axises[type];
 	axis.params = sh::video::GpuParams::Create(info);
-	axis.params->GetParam("matWVP", axis.wvpMatrix);
+	axis.params->GetParam("matrixWVP", axis.wvpMatrix);
 	axis.params->GetParam("color", axis.color);
 
 	float radius = 0.1f;

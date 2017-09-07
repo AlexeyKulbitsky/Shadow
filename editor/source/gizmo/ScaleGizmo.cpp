@@ -229,11 +229,11 @@ bool ScaleGizmo::IsActive() const
 
 void ScaleGizmo::CreateArrow(Axis::Type type)
 {
-	const auto& info = m_material->GetRenderPipeline()->GetAutoParamsInfo();
+	const auto& info = m_material->GetRenderPipeline()->GetParamsInfo();
 
 	auto& axis = m_axises[(Axis::Type)type];
 	axis.params = sh::video::GpuParams::Create(info);
-	axis.params->GetParam("matWVP", axis.wvpMatrix);
+	axis.params->GetParam("matrixWVP", axis.wvpMatrix);
 	axis.params->GetParam("color", axis.color);
 
 	float radius = 0.1f;

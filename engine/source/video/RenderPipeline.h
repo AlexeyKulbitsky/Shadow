@@ -30,8 +30,6 @@ namespace sh
 			ShaderPtr tesselationEvaluationShader;
 			ShaderPtr computeShader;
 
-			VertexInputDeclarationPtr vertexDeclaration;
-
 			RenderLayer layer = RenderLayer::Main;
 		};
 
@@ -86,6 +84,7 @@ namespace sh
 			String m_name;
 
 			RenderPipelineDescription m_description;
+			VertexInputDeclarationPtr m_vertexDeclaration;
 
 			GpuPipelineParamsInfoPtr m_paramsInfo;
 			GpuPipelineParamsInfoPtr m_autoParamsInfo;

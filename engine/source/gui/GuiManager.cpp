@@ -113,7 +113,7 @@ namespace gui
 		sh::video::TexturePtr texture = video::TextureLoader::GetInstance()->GetWhiteTexture();
 		SH_ASSERT(!!texture, "Can not load texture!");
 
-		m_defaultMaterial->GetCommonGpuParams()->SetSampler(ST_FRAGMENT, "diffuse", texture);
+		m_defaultMaterial->GetCommonGpuParams()->SetSampler("diffuse", texture);
 		//m_mainBatch.material->GetCommonGpuParams()->SetSampler(ST_FRAGMENT, "diffuse", texture);
 
 		child = doc.child("sprites");
@@ -148,7 +148,7 @@ namespace gui
 		const auto& texture = m_font->GetTextureAtlas();
 		SH_ASSERT(!!texture, "Can not set empty font to Gui manager!");
 
-		m_textMaterial->GetCommonGpuParams()->SetSampler(ST_FRAGMENT, "fontAtlas", texture);
+		m_textMaterial->GetCommonGpuParams()->SetSampler("fontAtlas", texture);
 		//m_textBatch.material->GetCommonGpuParams()->SetSampler(ST_FRAGMENT, "fontAtlas", texture);
 	}
 
@@ -165,8 +165,7 @@ namespace gui
 	void GuiManager::SetStyle(const StylePtr& style)
 	{ 
 		m_style = style; 
-		m_defaultMaterial->GetCommonGpuParams()->SetSampler(
-			ST_FRAGMENT, "diffuse", m_style->GetTexure());
+		m_defaultMaterial->GetCommonGpuParams()->SetSampler("diffuse", m_style->GetTexure());
 		//m_mainBatch.material->GetCommonGpuParams()->SetSampler(
 		//	ST_FRAGMENT, "diffuse", m_style->GetTexure());
 	}

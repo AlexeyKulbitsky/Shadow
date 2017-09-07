@@ -4,9 +4,7 @@
 
 	<shader language="GLSL" api="GLES20">
 		<vertexShader>
-		<constants>
-			<constant name="matWVP" type="mat4" />
-		</constants>
+		
 		<source>
 			<![CDATA[
 

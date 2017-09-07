@@ -38,7 +38,7 @@ namespace sh
 
 		///////////////////////////////////////////////////////////////////////////////////
 
-		const VertexInputDeclarationPtr& GLES20RenderPipeline::GetVertexInputDeclaration() const { return m_description.vertexDeclaration; }
+		const VertexInputDeclarationPtr& GLES20RenderPipeline::GetVertexInputDeclaration() const { return m_vertexDeclaration; }
 		
 		///////////////////////////////////////////////////////////////////////////////////
 
@@ -111,13 +111,18 @@ namespace sh
 
 				vertexDeclaration->AddAttribute(attribute);
 			}
-			m_description.vertexDeclaration = vertexDeclaration;
+			m_vertexDeclaration = vertexDeclaration;
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////
 
 		void GLES20RenderPipeline::ParseUniforms()
 		{
+			SPtr<GpuParamsDescription> paramsDescription(new GpuParamsDescription());
+			SPtr<GpuParamsDescription> autoParamsDescription(new GpuParamsDescription());
+
+			
+
 			const u32 bufferSize = 256;
 			char buffer[bufferSize];
 
@@ -130,46 +135,254 @@ namespace sh
 				s32 uniformSize = 0;
 				GLenum uniformType;
 				glGetActiveUniform(m_programID, i, bufferSize, &readedBytes, &uniformSize, &uniformType, buffer);
+				GLint location = glGetUniformLocation(m_programID, buffer);
+
 				switch (uniformType)
 				{
-				case GL_FLOAT:
+					case GL_FLOAT:
+					{
+						GpuParamDataDescription desc;
+						desc.name = buffer;
+						desc.type = GPDT_FLOAT1;
+						desc.size = sizeof(float);
+						desc.location = location;
+
+						if (matParamsMap.find(desc.name) != matParamsMap.end())
+							autoParamsDescription->params[desc.name] = desc;
+						else
+							paramsDescription->params[desc.name] = desc;
+					}
+					
 					break;
 				case GL_FLOAT_VEC2:
+					{
+						GpuParamDataDescription desc;
+						desc.name = buffer;
+						desc.type = GPDT_FLOAT2;
+						desc.size = sizeof(float) * 2;
+						desc.location = location;
+
+						if (matParamsMap.find(desc.name) != matParamsMap.end())
+							autoParamsDescription->params[desc.name] = desc;
+						else
+							paramsDescription->params[desc.name] = desc;
+					}
 					break;
 				case GL_FLOAT_VEC3:
+					{
+						GpuParamDataDescription desc;
+						desc.name = buffer;
+						desc.type = GPDT_FLOAT3;
+						desc.size = sizeof(float) * 3;
+						desc.location = location;
+
+						if (matParamsMap.find(desc.name) != matParamsMap.end())
+							autoParamsDescription->params[desc.name] = desc;
+						else
+							paramsDescription->params[desc.name] = desc;
+					}
 					break;
 				case GL_FLOAT_VEC4:
+					{
+						GpuParamDataDescription desc;
+						desc.name = buffer;
+						desc.type = GPDT_FLOAT4;
+						desc.size = sizeof(float) * 4;
+						desc.location = location;
+
+						if (matParamsMap.find(desc.name) != matParamsMap.end())
+							autoParamsDescription->params[desc.name] = desc;
+						else
+							paramsDescription->params[desc.name] = desc;
+					}
 					break;
 				case GL_INT:
+					{
+						GpuParamDataDescription desc;
+						desc.name = buffer;
+						desc.type = GPDT_INT1;
+						desc.size = sizeof(s32);
+						desc.location = location;
+
+						if (matParamsMap.find(desc.name) != matParamsMap.end())
+							autoParamsDescription->params[desc.name] = desc;
+						else
+							paramsDescription->params[desc.name] = desc;
+					}
 					break;
 				case GL_INT_VEC2:
+					{
+						GpuParamDataDescription desc;
+						desc.name = buffer;
+						desc.type = GPDT_INT2;
+						desc.size = sizeof(s32) * 2;
+						desc.location = location;
+
+						if (matParamsMap.find(desc.name) != matParamsMap.end())
+							autoParamsDescription->params[desc.name] = desc;
+						else
+							paramsDescription->params[desc.name] = desc;
+					}
 					break;
 				case GL_INT_VEC3:
+					{
+						GpuParamDataDescription desc;
+						desc.name = buffer;
+						desc.type = GPDT_INT3;
+						desc.size = sizeof(s32) * 3;
+						desc.location = location;
+
+						if (matParamsMap.find(desc.name) != matParamsMap.end())
+							autoParamsDescription->params[desc.name] = desc;
+						else
+							paramsDescription->params[desc.name] = desc;
+					}
 					break;
 				case GL_INT_VEC4:
+					{
+						GpuParamDataDescription desc;
+						desc.name = buffer;
+						desc.type = GPDT_INT4;
+						desc.size = sizeof(s32) * 4;
+						desc.location = location;
+
+						if (matParamsMap.find(desc.name) != matParamsMap.end())
+							autoParamsDescription->params[desc.name] = desc;
+						else
+							paramsDescription->params[desc.name] = desc;
+					}
 					break;
 				case GL_BOOL:
+					{
+						GpuParamDataDescription desc;
+						desc.name = buffer;
+						desc.type = GPDT_BOOL1;
+						desc.size = sizeof(bool);
+						desc.location = location;
+
+						if (matParamsMap.find(desc.name) != matParamsMap.end())
+							autoParamsDescription->params[desc.name] = desc;
+						else
+							paramsDescription->params[desc.name] = desc;
+					}
 					break;
 				case GL_BOOL_VEC2:
+					{
+						GpuParamDataDescription desc;
+						desc.name = buffer;
+						desc.type = GPDT_BOOL2;
+						desc.size = sizeof(bool) * 2;
+						desc.location = location;
+
+						if (matParamsMap.find(desc.name) != matParamsMap.end())
+							autoParamsDescription->params[desc.name] = desc;
+						else
+							paramsDescription->params[desc.name] = desc;
+					}
 					break;
 				case GL_BOOL_VEC3:
+					{
+						GpuParamDataDescription desc;
+						desc.name = buffer;
+						desc.type = GPDT_BOOL3;
+						desc.size = sizeof(bool) * 3;
+						desc.location = location;
+
+						if (matParamsMap.find(desc.name) != matParamsMap.end())
+							autoParamsDescription->params[desc.name] = desc;
+						else
+							paramsDescription->params[desc.name] = desc;
+					}
 					break;
 				case GL_BOOL_VEC4:
+					{
+						GpuParamDataDescription desc;
+						desc.name = buffer;
+						desc.type = GPDT_BOOL4;
+						desc.size = sizeof(bool) * 4;
+						desc.location = location;
+
+						if (matParamsMap.find(desc.name) != matParamsMap.end())
+							autoParamsDescription->params[desc.name] = desc;
+						else
+							paramsDescription->params[desc.name] = desc;
+					}
 					break;
 				case GL_FLOAT_MAT2:
+					{
+						GpuParamDataDescription desc;
+						desc.name = buffer;
+						desc.type = GPDT_MATRIX2;
+						desc.size = sizeof(float) * 4;
+						desc.location = location;
+
+						if (matParamsMap.find(desc.name) != matParamsMap.end())
+							autoParamsDescription->params[desc.name] = desc;
+						else
+							paramsDescription->params[desc.name] = desc;
+					}
 					break;
 				case GL_FLOAT_MAT3:
+					{
+						GpuParamDataDescription desc;
+						desc.name = buffer;
+						desc.type = GPDT_MATRIX3;
+						desc.size = sizeof(float) * 9;
+						desc.location = location;
+
+						if (matParamsMap.find(desc.name) != matParamsMap.end())
+							autoParamsDescription->params[desc.name] = desc;
+						else
+							paramsDescription->params[desc.name] = desc;
+					}
 					break;
 				case GL_FLOAT_MAT4:
+					{
+						GpuParamDataDescription desc;
+						desc.name = buffer;
+						desc.type = GPDT_MATRIX4;
+						desc.size = sizeof(float) * 16;
+						desc.location = location;
+
+						if (matParamsMap.find(desc.name) != matParamsMap.end())
+							autoParamsDescription->params[desc.name] = desc;
+						else
+							paramsDescription->params[desc.name] = desc;
+					}
 					break;
 				case GL_SAMPLER_2D:
+				{
+					GpuParamObjectDescription desc;
+					desc.name = buffer;
+					desc.type = GPOT_SAMPLER_2D;
+					desc.binding = location;
+
+					paramsDescription->samplers[desc.name] = desc;
+				}
 					break;
 				case GL_SAMPLER_CUBE:
+				{
+					GpuParamObjectDescription desc;
+					desc.name = buffer;
+					desc.type = GPOT_SAMPLER_CUBE;
+					desc.binding = location;
+
+					paramsDescription->samplers[desc.name] = desc;
+				}
 					break;
 				default:
 					break;
 				}
 			}
+
+			GpuPipelineParamsDescription pipelineParamsDescription;
+			GpuPipelineParamsDescription autoPipelineParamsDescription;
+
+			pipelineParamsDescription.vertexParams = paramsDescription;
+			autoPipelineParamsDescription.vertexParams = autoParamsDescription;
+
+			m_paramsInfo = GpuPipelineParamsInfo::Create(pipelineParamsDescription);
+			m_autoParamsInfo = GpuPipelineParamsInfo::Create(autoPipelineParamsDescription);
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////
@@ -201,64 +414,8 @@ namespace sh
 				SH_ASSERT(0, "Error while linking GLES20 shader program! Error message: %s", log);
 			}
 
-			// For GLES20 there are only two type of shaders : vertex and fragment
-			// Vertex shader
-			auto vertexParams = m_description.vertexShader->GetParamsDescription();
-			for (auto& param : vertexParams->params)
-			{
-				GLint location = glGetUniformLocation(m_programID, param.second.name.c_str());
-				if (location != -1)
-				{
-					param.second.location = location;
-				}
-			}
-			for (auto& sampler : vertexParams->samplers)
-			{
-				GLint location = glGetUniformLocation(m_programID, sampler.second.name.c_str());
-				if (location != -1)
-				{
-					sampler.second.location = location;
-				}
-			}
-			auto autoVertexParams = m_description.vertexShader->GetAutoParamsDescription();
-			for (auto& param : autoVertexParams->params)
-			{
-				GLint location = glGetUniformLocation(m_programID, param.second.name.c_str());
-				if (location != -1)
-				{
-					param.second.location = location;
-				}
-			}
-
-			// Fragment shader
-			auto fragmentParams = m_description.fragmentShader->GetParamsDescription();
-			for (auto& param : fragmentParams->params)
-			{
-				GLint location = glGetUniformLocation(m_programID, param.second.name.c_str());
-				if (location != -1)
-				{
-					param.second.location = location;
-				}
-			}
-			for (auto& sampler : fragmentParams->samplers)
-			{
-				GLint location = glGetUniformLocation(m_programID, sampler.second.name.c_str());
-				if (location != -1)
-				{
-					sampler.second.location = location;
-				}
-			}
-			auto autoFragmentParams = m_description.fragmentShader->GetAutoParamsDescription();
-			for (auto& param : autoFragmentParams->params)
-			{
-				GLint location = glGetUniformLocation(m_programID, param.second.name.c_str());
-				if (location != -1)
-				{
-					param.second.location = location;
-				}
-			}
-
 			ParseAttributes();
+			ParseUniforms();
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////

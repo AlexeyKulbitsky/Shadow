@@ -310,8 +310,13 @@ namespace sh
 		GPDT_INT2,
 		GPDT_INT3,
 		GPDT_INT4,
+		GPDT_BOOL1,
+		GPDT_BOOL2,
+		GPDT_BOOL3,
+		GPDT_BOOL4,
 		GPDT_MATRIX4,
-		GPDT_MATRIX3
+		GPDT_MATRIX3,
+		GPDT_MATRIX2
 	};
 
 	enum GpuParamObjectType

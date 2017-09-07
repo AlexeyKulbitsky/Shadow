@@ -6,7 +6,7 @@ Gizmo::Gizmo()
 {
 	m_material.reset(new sh::video::Material());
 	m_material->SetRenderTechnique("editor_base_color.xml");
-	const auto& info = m_material->GetRenderPipeline()->GetAutoParamsInfo();
+	const auto& info = m_material->GetRenderPipeline()->GetParamsInfo();
 
 	m_aabbMaterial.reset(new sh::video::Material());
 	m_aabbMaterial->SetRenderTechnique("vertex_color.xml");
@@ -29,7 +29,7 @@ Gizmo::Gizmo()
 	m_axises[0].lineModel = sh::scene::GeometryGenerator::GetCylinderModel(height, radius, numberOfSides, transform);
 	m_axises[0].lineModel->SetMaterial(m_material);
 	m_axises[0].params = sh::video::GpuParams::Create(info);
-	m_axises[0].params->GetParam("matWVP", m_axises[0].wvpMtrix);
+	m_axises[0].params->GetParam("matrixWVP", m_axises[0].wvpMtrix);
 	m_axises[0].params->GetParam("color", m_axises[0].color);
 	m_axises[0].color.Set(sh::math::Vector4f(1.0f, 0.0f, 0.0f, 1.0f));
 
@@ -41,7 +41,7 @@ Gizmo::Gizmo()
 	m_axises[1].lineModel = sh::scene::GeometryGenerator::GetCylinderModel(height, radius, numberOfSides, transform);
 	m_axises[1].lineModel->SetMaterial(m_material);
 	m_axises[1].params = sh::video::GpuParams::Create(info);
-	m_axises[1].params->GetParam("matWVP", m_axises[1].wvpMtrix);
+	m_axises[1].params->GetParam("matrixWVP", m_axises[1].wvpMtrix);
 	m_axises[1].params->GetParam("color", m_axises[1].color);
 	m_axises[1].color.Set(sh::math::Vector4f(0.0f, 1.0f, 0.0f, 1.0f));
 
@@ -55,7 +55,7 @@ Gizmo::Gizmo()
 	m_axises[2].lineModel = sh::scene::GeometryGenerator::GetCylinderModel(height, radius, numberOfSides, transform);
 	m_axises[2].lineModel->SetMaterial(m_material);
 	m_axises[2].params = sh::video::GpuParams::Create(info);
-	m_axises[2].params->GetParam("matWVP", m_axises[2].wvpMtrix);
+	m_axises[2].params->GetParam("matrixWVP", m_axises[2].wvpMtrix);
 	m_axises[2].params->GetParam("color", m_axises[2].color);
 	m_axises[2].color.Set(sh::math::Vector4f(0.0f, 0.0f, 1.0f, 1.0f));
 }

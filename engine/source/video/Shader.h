@@ -14,8 +14,8 @@ namespace video
 		String entryPoint;
 		String language;
 		ShaderType type;
-		SPtr<GpuParamsDescription> paramsDescription;
-		SPtr<GpuParamsDescription> autoParamsDescription;
+		//SPtr<GpuParamsDescription> paramsDescription;
+		//SPtr<GpuParamsDescription> autoParamsDescription;
 	};
 
 	class Shader

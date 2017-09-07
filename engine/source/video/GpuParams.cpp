@@ -27,6 +27,36 @@ namespace video
 		}
 		m_samplers[it->first]->Set(texture);
 	}
+
+	const SamplerPtr GpuParams::GetSampler(const String& name) const
+	{
+		auto it = m_samplers.find(name);
+		if (it == m_samplers.end())
+		{
+			return it->second;
+		}
+		return SamplerPtr();
+	}
+
+	void GpuParams::SetSampler(const String& name, const SamplerPtr& sampler)
+	{
+		auto it = m_samplers.find(name);
+		if (it != m_samplers.end())
+		{
+			it->second = sampler;
+			return;
+		}
+	}
+
+	void GpuParams::SetSampler(const String& name, const TexturePtr& texture)
+	{
+		auto it = m_samplers.find(name);
+		if (it != m_samplers.end())
+		{
+			it->second->Set(texture);
+			return;
+		}
+	}
 	
 	GpuParamsPtr GpuParams::Create(const GpuPipelineParamsInfoPtr& pipelineParamsInfo)
 	{
@@ -62,15 +92,17 @@ namespace video
 			// Collect samplers
 			for(auto& sampler : m_paramsDescriptions[i]->samplers)
 			{
-				m_samplers[sampler.first] = Sampler::Create(sampler.second.samplerDesc);
+				SamplerDescription samplerDescription;
+				m_samplers[sampler.first] = Sampler::Create(samplerDescription);
 			}
 			samplersCount += m_paramsDescriptions[i]->samplers.size();
 		}
 
 		totalSize += paramsSize;
-		totalSize += sizeof(Sampler*) * samplersCount;
+		//totalSize += sizeof(Sampler*) * samplersCount;
 		m_data = new u8[totalSize];
-		samplers = reinterpret_cast<Sampler*>(m_data + sizeof(Sampler*) * samplersCount);
+		std::memset(m_data, 0, totalSize);
+		//samplers = reinterpret_cast<Sampler*>(m_data + sizeof(Sampler*) * samplersCount);
 	}
 
 } // video

@@ -92,47 +92,6 @@ namespace sh
 			RenderPipelinePtr result = RenderStateManager::GetInstance()->CreateRenderPipeline(description);
 			result->m_renderLayer = description.layer;
 
-			GpuPipelineParamsDescription paramsDesc;
-			GpuPipelineParamsDescription autoParamsDesc;
-
-			if (result->m_description.vertexShader)
-			{
-				paramsDesc.vertexParams = result->m_description.vertexShader->GetParamsDescription();
-				autoParamsDesc.vertexParams = result->m_description.vertexShader->GetAutoParamsDescription();
-			}
-
-			if (result->m_description.fragmentShader)
-			{
-				paramsDesc.fragmentParams = result->m_description.fragmentShader->GetParamsDescription();
-				autoParamsDesc.fragmentParams = result->m_description.fragmentShader->GetAutoParamsDescription();
-			}
-
-			if (result->m_description.geometryShader)
-			{
-				paramsDesc.geometryParams = result->m_description.geometryShader->GetParamsDescription();
-				autoParamsDesc.geometryParams = result->m_description.geometryShader->GetAutoParamsDescription();
-			}
-
-			if (result->m_description.tesselationControlShader)
-			{
-				paramsDesc.tesselationControlParams = result->m_description.tesselationControlShader->GetParamsDescription();
-				autoParamsDesc.tesselationControlParams = result->m_description.tesselationControlShader->GetAutoParamsDescription();
-			}
-
-			if (result->m_description.tesselationEvaluationShader)
-			{
-				paramsDesc.tesselationEvaluationParams = result->m_description.tesselationEvaluationShader->GetParamsDescription();
-				autoParamsDesc.tesselationEvaluationParams = result->m_description.tesselationEvaluationShader->GetAutoParamsDescription();
-			}
-
-			if (result->m_description.computeShader)
-			{
-				paramsDesc.computeParams = result->m_description.computeShader->GetParamsDescription();
-				autoParamsDesc.computeParams = result->m_description.computeShader->GetAutoParamsDescription();
-			}
-			result->m_paramsInfo = GpuPipelineParamsInfo::Create(paramsDesc);
-			result->m_autoParamsInfo = GpuPipelineParamsInfo::Create(autoParamsDesc);
-
 			return result;
 		}
 

@@ -19,18 +19,16 @@
 	
 	<shader language="GLSL" api="GLES20">
 		<vertexShader>
-		<constants>
-			<constant name="matWVP" type="mat4" />
-		</constants>
+		
 		<source>
 			<![CDATA[
 
 				attribute vec3 position;				
-				uniform mat4 matWVP;
+				uniform mat4 matrixWVP;
 				
 				void main() 
 				{
-					gl_Position = matWVP * vec4(position, 1.0);
+					gl_Position = matrixWVP * vec4(position, 1.0);
 				}
 				
 			]]>
@@ -38,9 +36,7 @@
 		</vertexShader>
 
 		<fragmentShader>
-		<constants>
-			<constant name="color" type="vec4" usage="object" />
-		</constants>
+		
 		<source>
 			<![CDATA[
 

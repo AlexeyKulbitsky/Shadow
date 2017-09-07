@@ -97,11 +97,6 @@ namespace sh
 			if (vertexShaderSrcNode)
 			{
 				pugi::xml_node constantsNode = vertexShaderSrcNode.child("constants");
-				SPtr<GpuParamsDescription> paramsDescription;
-				SPtr<GpuParamsDescription> autoParamsDescription;
-				LoadParamsDescription(constantsNode,
-									  paramsDescription,
-									  autoParamsDescription);
 				pugi::xml_node sourceNode = vertexShaderSrcNode.child("source");
 				
 				ShaderDescription shaderDesc;
@@ -109,8 +104,6 @@ namespace sh
 				shaderDesc.entryPoint = "main";
 				shaderDesc.language = language;
 				shaderDesc.type = ST_VERTEX;
-				shaderDesc.paramsDescription = paramsDescription;
-				shaderDesc.autoParamsDescription = autoParamsDescription;
 				pipelineDesc.vertexShader = Shader::Create(shaderDesc);
 			}
 
@@ -121,9 +114,6 @@ namespace sh
 				pugi::xml_node constantsNode = fragmentShaderSrcNode.child("constants");
 				SPtr<GpuParamsDescription> paramsDescription;
 				SPtr<GpuParamsDescription> autoParamsDescription;
-				LoadParamsDescription(constantsNode,
-									  paramsDescription,
-									  autoParamsDescription);
 				pugi::xml_node sourceNode = fragmentShaderSrcNode.child("source");
 
 				ShaderDescription shaderDesc;
@@ -131,12 +121,8 @@ namespace sh
 				shaderDesc.entryPoint = "main";
 				shaderDesc.language = language;
 				shaderDesc.type = ST_FRAGMENT;
-				shaderDesc.paramsDescription = paramsDescription;
-				shaderDesc.autoParamsDescription = autoParamsDescription;
 				pipelineDesc.fragmentShader = Shader::Create(shaderDesc);
 			}
-
-			
 
 			m_renderPipelines.push_back(RenderPipeline::Create(pipelineDesc));
 		}
@@ -373,137 +359,6 @@ namespace sh
 			}
 
 			return state;
-		}
-
-		//////////////////////////////////////////////////////////////////////////////////////
-
-		void RenderTechnique::LoadParamsDescription(const pugi::xml_node& node,
-													SPtr<GpuParamsDescription>& paramsDesc,
-													SPtr<GpuParamsDescription>& autoParamsDesc)
-		{
-			paramsDesc.reset(new GpuParamsDescription);
-			autoParamsDesc.reset(new GpuParamsDescription);
-
-			pugi::xml_node childNode = node.first_child();
-
-			while (childNode)
-			{
-				String name = childNode.name();
-
-				if (name == "constant")
-				{
-					GpuParamDataDescription desc;
-
-					// Read type
-					pugi::xml_attribute typeAttr = childNode.attribute("type");
-					if (typeAttr)
-					{
-						String typeStr = typeAttr.as_string();
-						if (typeStr == "float")
-						{
-							desc.type = GPDT_FLOAT1;
-							desc.size = sizeof(float);
-						}
-						else if (typeStr == "vec2")
-						{
-							desc.type = GPDT_FLOAT2;
-							desc.size = sizeof(math::Vector2f);
-						}
-						else if (typeStr == "vec3")
-						{
-							desc.type = GPDT_FLOAT3;
-							desc.size = sizeof(math::Vector3f);
-						}
-						else if (typeStr == "vec4")
-						{
-							desc.type = GPDT_FLOAT4;
-							desc.size = sizeof(math::Vector4f);
-						}
-						else if (typeStr == "mat3")
-						{
-							desc.type = GPDT_MATRIX3;
-							desc.size = sizeof(math::Matrix3f);
-						}
-						else if (typeStr == "mat4")
-						{
-							desc.type = GPDT_MATRIX4;
-							desc.size = sizeof(math::Matrix4f);
-						}
-
-					}
-
-					// Read name
-					pugi::xml_attribute nameAttr = childNode.attribute("name");
-					if (nameAttr)
-					{
-						String constantName = nameAttr.as_string();
-						desc.name = constantName;
-					}
-
-					pugi::xml_attribute usageAttr = childNode.attribute("usage");
-					bool perobject = false;
-					if (usageAttr)
-					{
-						if (usageAttr.as_string() == String("object"))
-							perobject = true;
-					}
-
-					if (desc.name == "matWVP" ||
-						desc.name == "matWorld" ||
-						desc.name == "matView" ||
-						desc.name == "matProjection" ||
-						desc.name == "matViewRotation" ||
-						desc.name == "matViewRotationProjection" ||
-						desc.name == "matViewProjection" ||
-						perobject)
-					{
-						autoParamsDesc->params[desc.name] = desc;
-					}
-					else
-					{
-						paramsDesc->params[desc.name] = desc;
-					}
-					// Add param to map
-					
-				}
-				else if( name == "sampler" )
-				{
-					GpuParamSamplerDescription desc;
-					desc.name = childNode.attribute("name").as_string();
-					String typeStr = childNode.attribute("type").as_string();
-					desc.samplerDesc.type = samplerTypeMap.at(typeStr);
-					pugi::xml_node filteringNode = childNode.child("filtering");
-					if (filteringNode)
-					{
-						pugi::xml_attribute attr = filteringNode.attribute("min");
-						if (attr)
-							desc.samplerDesc.minFilter = textureFilteringMap.at(attr.as_string());
-						attr = filteringNode.attribute("mag");
-						if (attr)
-							desc.samplerDesc.magFilter = textureFilteringMap.at(attr.as_string());
-						attr = filteringNode.attribute("mip");
-						if (attr)
-							desc.samplerDesc.mipFilter = textureFilteringMap.at(attr.as_string());
-					}
-					pugi::xml_node tilingNode = childNode.child("tiling");
-					if (tilingNode)
-					{
-						pugi::xml_attribute attr = tilingNode.attribute("U");
-						if (attr)
-							desc.samplerDesc.tilingU = textureTilingMap.at(attr.as_string());
-						attr = tilingNode.attribute("V");
-						if (attr)
-							desc.samplerDesc.tilingV = textureTilingMap.at(attr.as_string());
-						attr = tilingNode.attribute("W");
-						if (attr)
-							desc.samplerDesc.tilingW = textureTilingMap.at(attr.as_string());
-					}
-
-					paramsDesc->samplers[desc.name] = desc;
-				}
-
-				childNode = childNode.next_sibling();
-			}
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////

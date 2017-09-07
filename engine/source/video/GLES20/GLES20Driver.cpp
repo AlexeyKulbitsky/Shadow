@@ -417,15 +417,15 @@ void GLES20Driver::SetGpuParams( const GpuParamsPtr& params, const CommandBuffer
 			GLenum textureTraget = s_glTextureType[texture->GetDescription().type];
 			glBindTexture(textureTraget, texture->GetGLId()); 
 
-			
-			glTexParameteri(textureTraget, GL_TEXTURE_MIN_FILTER, s_glTextureFiltering[samplerDesc.second.samplerDesc.minFilter]);
-			glTexParameteri(textureTraget, GL_TEXTURE_MAG_FILTER, s_glTextureFiltering[samplerDesc.second.samplerDesc.magFilter]);
-			glTexParameteri(textureTraget, GL_TEXTURE_WRAP_S, s_glTextureTiling[samplerDesc.second.samplerDesc.tilingU]);
-			glTexParameteri(textureTraget, GL_TEXTURE_WRAP_T, s_glTextureTiling[samplerDesc.second.samplerDesc.tilingV]);
+			const auto& description = sampler->GetDescription();
+			glTexParameteri(textureTraget, GL_TEXTURE_MIN_FILTER, s_glTextureFiltering[description.minFilter]);
+			glTexParameteri(textureTraget, GL_TEXTURE_MAG_FILTER, s_glTextureFiltering[description.magFilter]);
+			glTexParameteri(textureTraget, GL_TEXTURE_WRAP_S, s_glTextureTiling[description.tilingU]);
+			glTexParameteri(textureTraget, GL_TEXTURE_WRAP_T, s_glTextureTiling[description.tilingV]);
 			if (texture->GetDescription().type == TEX_TYPE_TEXTURE_CUBE)
-				glTexParameteri(textureTraget, GL_TEXTURE_WRAP_R, s_glTextureTiling[samplerDesc.second.samplerDesc.tilingW]);
-
-			glUniform1i(samplerDesc.second.location, counter);
+				glTexParameteri(textureTraget, GL_TEXTURE_WRAP_R, s_glTextureTiling[description.tilingW]);
+			
+			glUniform1i(samplerDesc.second.binding, counter);
 			
 		}
 	}

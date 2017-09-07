@@ -68,7 +68,12 @@ namespace video
 		const SPtr<GpuParamsDescription>& GetDescription(ShaderType shaderType) { return m_paramsDescriptions[shaderType]; }
 
 		const Map<String, SamplerPtr>& GetSamplers() const { return m_samplers; }
+		// Sets texture for sampler in specified shader
 		void SetSampler(ShaderType shaderType, const String& name, const TexturePtr& texture);
+
+		const SamplerPtr GetSampler(const String& name) const;
+		void SetSampler(const String& name, const SamplerPtr& sampler);
+		void SetSampler(const String& name, const TexturePtr& texture);
 
 		//static GpuParamsPtr Create(const GpuPipelineParamsDescription& pipelineParamsInfo);
 		//static GpuParamsPtr Create(const RenderPipelinePtr& pipeline);
@@ -83,7 +88,7 @@ namespace video
 		std::array<SPtr<GpuParamsDescription>, 6U> m_paramsDescriptions;
 		u8* m_data = nullptr;
 		Map<String, SamplerPtr> m_samplers;
-		Sampler* samplers;
+		//Sampler* samplers;
 
 	};
 

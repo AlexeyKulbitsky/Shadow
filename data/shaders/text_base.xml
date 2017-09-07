@@ -15,9 +15,7 @@
 	
 	<shader language="GLSL" api="GLES20">
 		<vertexShader>
-		<constants>
-			<constant name="orthoMat" type="mat4"/>
-		</constants>
+		
 		<source>
 			<![CDATA[
 
@@ -42,13 +40,7 @@
 		</vertexShader>
 
 		<fragmentShader>
-		<constants>
-			
-			<sampler name="fontAtlas" type="2D">
-				<filtering min="Linear" mag="Linear"/>
-				<tiling U="Repeat" V="Repeat"/>
-			</sampler>
-		</constants>
+		
 		<source>
 			<![CDATA[
 

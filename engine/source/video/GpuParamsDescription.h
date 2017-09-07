@@ -18,14 +18,6 @@ namespace video
 		u32 location;
 	};
 
-	struct GpuParamSamplerDescription
-	{
-		String name;
-		SamplerDescription samplerDesc;
-
-		u32 location;
-	};
-
 	struct GpuParamObjectDescription
 	{
 		String name;
@@ -40,8 +32,7 @@ namespace video
 	struct GpuParamsDescription
 	{
 		Map<String, GpuParamDataDescription> params;
-		Map<String, GpuParamSamplerDescription> samplers;
-		Map<String, GpuParamObjectDescription> _samplers;
+		Map<String, GpuParamObjectDescription> samplers;
 	};
 
 } // video

@@ -12,9 +12,7 @@
 	
 	<shader language="GLSL" api="GLES20">
 		<vertexShader>
-		<constants>
-			<constant name="matViewRotationProjection" type="mat4" />
-		</constants>
+		
 		<source>
 			<![CDATA[
 
@@ -35,13 +33,7 @@
 		</vertexShader>
 
 		<fragmentShader>
-		<constants>
-			
-			<sampler name="skybox" type="Cube">
-				<filtering min="Nearest" mag="Nearest"/>
-				<tiling U="ClampToEdge" V="ClampToEdge" W="ClampToEdge"/>
-			</sampler>
-		</constants>
+		
 		<source>
 			<![CDATA[
 

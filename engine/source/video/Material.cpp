@@ -64,7 +64,7 @@ namespace sh
 						texture = resourceManager->GetTexture(textureFilename);
 					}
 
-					m_commonGpuParams->SetSampler(ST_FRAGMENT, samplerName, texture);
+					m_commonGpuParams->SetSampler(samplerName, texture);
 				}
 
 				paramNode = paramNode.next_sibling();

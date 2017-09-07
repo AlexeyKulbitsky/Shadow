@@ -10,12 +10,12 @@ namespace sh
 	{
 		struct SamplerDescription
 		{
-			GpuParamObjectType type;
-			TextureFiltering minFilter = TEX_FILT_NONE;
-			TextureFiltering magFilter = TEX_FILT_NONE;
+			GpuParamObjectType type = GPOT_SAMPLER_2D;
+			TextureFiltering minFilter = TEX_FILT_LINEAR;
+			TextureFiltering magFilter = TEX_FILT_LINEAR;
 			TextureFiltering mipFilter = TEX_FILT_NONE;
-			TextureTiling tilingU = TEX_TILING_NONE;
-			TextureTiling tilingV = TEX_TILING_NONE;
+			TextureTiling tilingU = TEX_TILING_REPEAT;
+			TextureTiling tilingV = TEX_TILING_REPEAT;
 			TextureTiling tilingW = TEX_TILING_NONE;
 		};
 

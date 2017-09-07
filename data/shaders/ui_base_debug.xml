@@ -15,9 +15,7 @@
 	
 	<shader language="GLSL" api="GLES20">
 		<vertexShader>
-		<constants>
-			<constant name="orthoMat" type="mat4"/>
-		</constants>
+		
 		<source>
 			<![CDATA[
 
