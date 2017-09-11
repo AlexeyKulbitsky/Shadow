@@ -358,7 +358,9 @@ namespace sh
 		Int4,
 		Int3,
 		Int2,
-		Int
+		Int,
+		Sampler2D,
+		SamplerCube
 	};
 	
 	static const std::map<std::string, MaterialParamUsage> matParamsMap =

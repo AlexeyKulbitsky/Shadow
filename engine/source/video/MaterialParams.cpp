@@ -9,6 +9,14 @@ namespace sh
 	{
 		MaterialParams::MaterialParams(const GpuParamsPtr& gpuParams)
 		{
+			ReadDataParams(gpuParams);
+			ReadSamplers(gpuParams);
+		}
+
+		/////////////////////////////////////////////////////////////////////////////////////////////
+
+		void MaterialParams::ReadDataParams(const GpuParamsPtr& gpuParams)
+		{
 			const u8* dataPtr = gpuParams->GetData();
 
 			for (size_t shaderIdx = 0; shaderIdx < 6U; ++shaderIdx)
@@ -72,6 +80,15 @@ namespace sh
 			}
 		}
 
+		/////////////////////////////////////////////////////////////////////////////////////////////
+
+		void MaterialParams::ReadSamplers(const GpuParamsPtr& gpuParams)
+		{
+			const auto& samplers = gpuParams->GetSamplers();
+
+		}
+
+		/////////////////////////////////////////////////////////////////////////////////////////////
 
 	} // video
 

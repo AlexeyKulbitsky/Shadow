@@ -20,6 +20,10 @@ namespace video
 		const std::vector<MaterialParam>& GetParams() const { return m_params; }
 
 	private:
+		void ReadDataParams(const GpuParamsPtr& gpuParams);
+		void ReadSamplers(const GpuParamsPtr& gpuParams);
+
+	private:
 		std::vector<MaterialParam> m_params;
 	};
 

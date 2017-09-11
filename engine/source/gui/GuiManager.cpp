@@ -165,9 +165,19 @@ namespace gui
 	void GuiManager::SetStyle(const StylePtr& style)
 	{ 
 		m_style = style; 
-		m_defaultMaterial->GetCommonGpuParams()->SetSampler("diffuse", m_style->GetTexure());
-		//m_mainBatch.material->GetCommonGpuParams()->SetSampler(
-		//	ST_FRAGMENT, "diffuse", m_style->GetTexure());
+
+		video::SamplerDescription samplerDesc;
+		samplerDesc.type = GPOT_SAMPLER_2D;
+		samplerDesc.tilingU = TEX_TILING_CLAMP_TO_EDGE;
+		samplerDesc.tilingV = TEX_TILING_CLAMP_TO_EDGE;
+		samplerDesc.magFilter = TEX_FILT_NEAREST;
+		samplerDesc.minFilter = TEX_FILT_NEAREST;
+
+		auto sampler = video::Sampler::Create(samplerDesc);
+		sampler->Set(m_style->GetTexure());
+		m_defaultMaterial->GetCommonGpuParams()->SetSampler("diffuse", sampler);
+
+		//m_defaultMaterial->GetCommonGpuParams()->SetSampler("diffuse", m_style->GetTexure());
 	}
 
 	bool GuiManager::ProcessEvent(GUIEvent& ev)
