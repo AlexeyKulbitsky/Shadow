@@ -10,21 +10,21 @@ namespace video
 {
 	struct GpuParamDataDescription
 	{
-		String name;
+		String name = "";
 		GpuParamDataType type;
 
-		u32 size;
-		u32 offset;
-		u32 location;
+		u32 size = 0U;
+		u32 offset = 0U;
+		u32 location = 0U;
 	};
 
 	struct GpuParamObjectDescription
 	{
-		String name;
+		String name = "";
 		GpuParamObjectType type;
 
-		u32 set;
-		u32 binding;
+		u32 set = 0U;
+		u32 binding = 0U;
 	};
 
 	////////////////////////////////////////////////////

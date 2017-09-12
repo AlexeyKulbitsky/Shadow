@@ -19,43 +19,62 @@ namespace video
 
 	void GpuParams::SetSampler(ShaderType shaderType, const String& name, const TexturePtr& texture)
 	{
-		auto it = m_paramsDescriptions[shaderType]->samplers.find(name);
-		if (it == m_paramsDescriptions[shaderType]->samplers.end())
-		{
-			SH_ASSERT(0, "Can not find sampler!");
-			return;
-		}
-		m_samplers[it->first]->Set(texture);
+		const auto& desc = m_paramsInfo->GetParamsDescription(shaderType);
+		auto it = desc->samplers.find(name);
+		if (it != desc->samplers.end())
+			m_samplers[m_paramsInfo->GetIndex(it->second.set, it->second.binding)]->Set(texture);
 	}
 
 	const SamplerPtr GpuParams::GetSampler(const String& name) const
 	{
-		auto it = m_samplers.find(name);
-		if (it == m_samplers.end())
+		for (u32 i = 0U; i < 6U; ++i)
 		{
-			return it->second;
+			const auto& desc = m_paramsInfo->GetParamsDescription(ShaderType(i));
+			auto it = desc->samplers.find(name);
+			if (it != desc->samplers.end())
+				return m_samplers[m_paramsInfo->GetIndex(it->second.set, it->second.binding)];
 		}
 		return SamplerPtr();
 	}
 
+	const SamplerPtr GpuParams::GetSampler(const u32 set, const u32 binding)
+	{
+		const u32 index = m_paramsInfo->GetIndex(set, binding);
+		return m_samplers[index];
+	}
+
 	void GpuParams::SetSampler(const String& name, const SamplerPtr& sampler)
 	{
-		auto it = m_samplers.find(name);
-		if (it != m_samplers.end())
+		for (u32 i = 0U; i < 6U; ++i)
 		{
-			it->second = sampler;
-			return;
+			const auto& desc = m_paramsInfo->GetParamsDescription(ShaderType(i));
+			auto it = desc->samplers.find(name);
+			if (it != desc->samplers.end())
+			{
+				m_samplers[m_paramsInfo->GetIndex(it->second.set, it->second.binding)] = sampler;
+				return;
+			}
 		}
 	}
 
 	void GpuParams::SetSampler(const String& name, const TexturePtr& texture)
 	{
-		auto it = m_samplers.find(name);
-		if (it != m_samplers.end())
+		for (u32 i = 0U; i < 6U; ++i)
 		{
-			it->second->Set(texture);
-			return;
+			const auto& desc = m_paramsInfo->GetParamsDescription(ShaderType(i));
+			auto it = desc->samplers.find(name);
+			if (it != desc->samplers.end())
+			{
+				m_samplers[m_paramsInfo->GetIndex(it->second.set, it->second.binding)]->Set(texture);
+				return;
+			}
 		}
+	}
+
+	void GpuParams::SetSampler(const SamplerPtr& sampler, const u32 set, const u32 binding)
+	{
+		const u32 index = m_paramsInfo->GetIndex(set, binding);
+		m_samplers[index] = sampler;
 	}
 	
 	GpuParamsPtr GpuParams::Create(const GpuPipelineParamsInfoPtr& pipelineParamsInfo)
@@ -64,45 +83,58 @@ namespace video
 	}
 
 	GpuParams::GpuParams(const GpuPipelineParamsInfoPtr& pipelineParamsInfo)
+		: m_paramsInfo(pipelineParamsInfo)
 	{
-		m_paramsDescriptions[ST_VERTEX] = pipelineParamsInfo->GetParamsDescription(ST_VERTEX);
-		m_paramsDescriptions[ST_FRAGMENT] = pipelineParamsInfo->GetParamsDescription(ST_FRAGMENT);
-		m_paramsDescriptions[ST_GEOMETRY] = pipelineParamsInfo->GetParamsDescription(ST_GEOMETRY);
-		m_paramsDescriptions[ST_TESSELATION_EVALUATION] = pipelineParamsInfo->GetParamsDescription(ST_TESSELATION_EVALUATION);
-		m_paramsDescriptions[ST_TESSELATION_CONTROL] = pipelineParamsInfo->GetParamsDescription(ST_TESSELATION_CONTROL);
-		m_paramsDescriptions[ST_COMPUTE] = pipelineParamsInfo->GetParamsDescription(ST_COMPUTE);
+		//m_paramsDescriptions[ST_VERTEX] = pipelineParamsInfo->GetParamsDescription(ST_VERTEX);
+		//m_paramsDescriptions[ST_FRAGMENT] = pipelineParamsInfo->GetParamsDescription(ST_FRAGMENT);
+		//m_paramsDescriptions[ST_GEOMETRY] = pipelineParamsInfo->GetParamsDescription(ST_GEOMETRY);
+		//m_paramsDescriptions[ST_TESSELATION_EVALUATION] = pipelineParamsInfo->GetParamsDescription(ST_TESSELATION_EVALUATION);
+		//m_paramsDescriptions[ST_TESSELATION_CONTROL] = pipelineParamsInfo->GetParamsDescription(ST_TESSELATION_CONTROL);
+		//m_paramsDescriptions[ST_COMPUTE] = pipelineParamsInfo->GetParamsDescription(ST_COMPUTE);
+
+		u32 samplersCount = m_paramsInfo->GetElementsCount(GpuPipelineParamsInfo::ParamType::Sampler);
+		m_samplers.resize(samplersCount);
 
 		
-		u32 totalSize = 0U;
 		u32 paramsSize = 0U;
-		u32 samplersCount = 0U;
-		// For each params description in each stage
-		for( size_t i = 0; i < 6; ++i )
+		for (size_t i = 0; i < 6; ++i)
 		{
-			if(!m_paramsDescriptions[i] )
+			const auto& paramsDescription = m_paramsInfo->GetParamsDescription(static_cast<ShaderType>(i));
+			if (!paramsDescription)
 				continue;
 
 			// Collect data params
-			for( auto& param : m_paramsDescriptions[i]->params )
+			for (auto& param : paramsDescription->params)
 			{
 				param.second.offset = paramsSize;
 				paramsSize += param.second.size;
 			}
 
-			// Collect samplers
-			for(auto& sampler : m_paramsDescriptions[i]->samplers)
+			// Collest samplers
+			for (auto& sampler : paramsDescription->samplers)
 			{
 				SamplerDescription samplerDescription;
-				m_samplers[sampler.first] = Sampler::Create(samplerDescription);
-			}
-			samplersCount += m_paramsDescriptions[i]->samplers.size();
-		}
+				samplerDescription.type = sampler.second.type;
 
-		totalSize += paramsSize;
-		//totalSize += sizeof(Sampler*) * samplersCount;
-		m_data = new u8[totalSize];
-		std::memset(m_data, 0, totalSize);
-		//samplers = reinterpret_cast<Sampler*>(m_data + sizeof(Sampler*) * samplersCount);
+				switch (sampler.second.type)
+				{
+				case GPOT_SAMPLER_1D:
+					break;
+				case GPOT_SAMPLER_2D:
+					break;
+				case GPOT_SAMPLER_3D:
+					break;
+				case GPOT_SAMPLER_CUBE:
+					break;
+				default:
+					break;
+				}
+				const u32 index = m_paramsInfo->GetIndex(sampler.second.set, sampler.second.binding);
+				m_samplers[index] = Sampler::Create(samplerDescription);
+			}
+		}
+		m_data = new u8[paramsSize];
+		std::memset(m_data, 0, paramsSize);
 	}
 
 } // video

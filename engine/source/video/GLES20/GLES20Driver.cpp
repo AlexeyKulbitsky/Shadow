@@ -358,64 +358,67 @@ void GLES20Driver::SetGpuParams( const GpuParamsPtr& params, const CommandBuffer
 {
 	const u8* data = params->GetData();
 	const auto& samplers = params->GetSamplers();
+	const auto& paramsInfo = params->GetParamsInfo();
 
-	for( size_t i = 0; i < 2U; ++i )
+	for (size_t i = 0; i < 2U; ++i)
 	{
-		ShaderType shaderType = static_cast<ShaderType>( i );
+		ShaderType shaderType = static_cast<ShaderType>(i);
 
-		const SPtr<GpuParamsDescription>& desc = params->GetDescription( shaderType );
-		if( !desc )
+		const SPtr<GpuParamsDescription>& desc = paramsInfo->GetParamsDescription(shaderType);
+		if (!desc)
 			continue;
 
 		// Upload single params
-		for( const auto& param : desc->params )
+		for (const auto& param : desc->params)
 		{
-			const GLfloat* dataPtr = reinterpret_cast<const float*>( data + param.second.offset );
+			const GLfloat* dataPtr = reinterpret_cast<const float*>(data + param.second.offset);
 
-			switch( param.second.type )
+			switch (param.second.type)
 			{
-				case GPDT_FLOAT1:
-				{
-					glUniform1fv( param.second.location, 1, dataPtr );
-				}
-				break;
-				case GPDT_FLOAT2:
-				{
-					glUniform2fv( param.second.location, 1, dataPtr );
-				}
-				break;
-				case GPDT_FLOAT3:
-				{
-					glUniform3fv( param.second.location, 1, dataPtr );
-				}
-				break;
-				case GPDT_FLOAT4:
-				{
-					glUniform4fv( param.second.location, 1, dataPtr );
-				}
-				break;
-				case GPDT_MATRIX3:
-				{
-					glUniformMatrix3fv( param.second.location, 1, GL_FALSE, dataPtr );
-				}
-				break;
-				case GPDT_MATRIX4:
-				{
-					glUniformMatrix4fv( param.second.location, 1, GL_FALSE, dataPtr );
-				}
-				break;
+			case GPDT_FLOAT1:
+			{
+				glUniform1fv(param.second.location, 1, dataPtr);
+			}
+			break;
+			case GPDT_FLOAT2:
+			{
+				glUniform2fv(param.second.location, 1, dataPtr);
+			}
+			break;
+			case GPDT_FLOAT3:
+			{
+				glUniform3fv(param.second.location, 1, dataPtr);
+			}
+			break;
+			case GPDT_FLOAT4:
+			{
+				glUniform4fv(param.second.location, 1, dataPtr);
+			}
+			break;
+			case GPDT_MATRIX3:
+			{
+				glUniformMatrix3fv(param.second.location, 1, GL_FALSE, dataPtr);
+			}
+			break;
+			case GPDT_MATRIX4:
+			{
+				glUniformMatrix4fv(param.second.location, 1, GL_FALSE, dataPtr);
+			}
+			break;
 			}
 		}
-		
+
 		// Upload samplers
 		int counter = 0;
 		for (const auto& samplerDesc : desc->samplers)
 		{
-			const auto& sampler = samplers.at(samplerDesc.first);
+			const u32 index = paramsInfo->GetIndex(samplerDesc.second.set, samplerDesc.second.binding);
+			const auto& sampler = samplers[index];
+
 			GLES20Texture* texture = static_cast<GLES20Texture*>(sampler->GetTexture().get());
 			glActiveTexture(GL_TEXTURE0 + counter);
 			GLenum textureTraget = s_glTextureType[texture->GetDescription().type];
-			glBindTexture(textureTraget, texture->GetGLId()); 
+			glBindTexture(textureTraget, texture->GetGLId());
 
 			const auto& description = sampler->GetDescription();
 			glTexParameteri(textureTraget, GL_TEXTURE_MIN_FILTER, s_glTextureFiltering[description.minFilter]);
@@ -424,9 +427,8 @@ void GLES20Driver::SetGpuParams( const GpuParamsPtr& params, const CommandBuffer
 			glTexParameteri(textureTraget, GL_TEXTURE_WRAP_T, s_glTextureTiling[description.tilingV]);
 			if (texture->GetDescription().type == TEX_TYPE_TEXTURE_CUBE)
 				glTexParameteri(textureTraget, GL_TEXTURE_WRAP_R, s_glTextureTiling[description.tilingW]);
-			
+
 			glUniform1i(samplerDesc.second.binding, counter);
-			
 		}
 	}
 }

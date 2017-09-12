@@ -18,10 +18,10 @@ namespace sh
 		void MaterialParams::ReadDataParams(const GpuParamsPtr& gpuParams)
 		{
 			const u8* dataPtr = gpuParams->GetData();
-
+			const auto& paramsInfo = gpuParams->GetParamsInfo();
 			for (size_t shaderIdx = 0; shaderIdx < 6U; ++shaderIdx)
 			{
-				const auto& desc = gpuParams->GetDescription((ShaderType)shaderIdx);
+				const auto& desc = paramsInfo->GetParamsDescription((ShaderType)shaderIdx);
 				if (!desc)
 					continue;
 				for (const auto& param : desc->params)
@@ -84,8 +84,31 @@ namespace sh
 
 		void MaterialParams::ReadSamplers(const GpuParamsPtr& gpuParams)
 		{
-			const auto& samplers = gpuParams->GetSamplers();
+			const auto& paramsInfo = gpuParams->GetParamsInfo();
+			for (size_t shaderIdx = 0; shaderIdx < 6U; ++shaderIdx)
+			{
+				const auto& desc = paramsInfo->GetParamsDescription((ShaderType)shaderIdx);
+				if (!desc)
+					continue;
 
+				for (const auto& samplerDesc : desc->samplers)
+				{
+					MaterialParamType type;
+					switch (samplerDesc.second.type)
+					{
+					case GPOT_SAMPLER_2D:
+						type = MaterialParamType::Sampler2D;
+						break;
+					case GPOT_SAMPLER_CUBE:
+						type = MaterialParamType::SamplerCube;
+					default:
+						break;
+					}
+					MaterialSamplerParam samplerParam(gpuParams.get(), samplerDesc.first,
+						type, samplerDesc.second.set, samplerDesc.second.binding);
+					m_samplerParams.push_back(samplerParam);
+				}
+			}
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////////////

@@ -5,6 +5,8 @@
 
 #include "Vector3LineEdit.h"
 
+#include "ParamEdit.h"
+
 class TransformWidget
 {
 public:
@@ -28,6 +30,8 @@ private:
 	sh::SPtr<Vector3LineEdit> m_positionEdit;
 	sh::SPtr<Vector3LineEdit> m_rotationEdit;
 	sh::SPtr<Vector3LineEdit> m_scaleEdit;
+
+	sh::SPtr<ParamEdit<sh::math::Vector3f>> m_testEdit;
 
 	sh::TransformComponent* m_transformComponent = nullptr;
 };

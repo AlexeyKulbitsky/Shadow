@@ -65,18 +65,19 @@ namespace video
 		void SetParam(const String& name, const T& value);
 
 		const u8* GetData() const { return m_data; }
-		const SPtr<GpuParamsDescription>& GetDescription(ShaderType shaderType) { return m_paramsDescriptions[shaderType]; }
 
-		const Map<String, SamplerPtr>& GetSamplers() const { return m_samplers; }
+		const std::vector<SamplerPtr>& GetSamplers() const { return m_samplers; }
 		// Sets texture for sampler in specified shader
 		void SetSampler(ShaderType shaderType, const String& name, const TexturePtr& texture);
 
 		const SamplerPtr GetSampler(const String& name) const;
+		const SamplerPtr GetSampler(const u32 set, const u32 binding);
+
 		void SetSampler(const String& name, const SamplerPtr& sampler);
 		void SetSampler(const String& name, const TexturePtr& texture);
+		void SetSampler(const SamplerPtr& sampler, const u32 set, const u32 binding);
 
-		//static GpuParamsPtr Create(const GpuPipelineParamsDescription& pipelineParamsInfo);
-		//static GpuParamsPtr Create(const RenderPipelinePtr& pipeline);
+		const GpuPipelineParamsInfoPtr& GetParamsInfo() const { return m_paramsInfo; }
 
 		static GpuParamsPtr Create(const GpuPipelineParamsInfoPtr& pipelineParamsInfo);
 
@@ -84,12 +85,10 @@ namespace video
 		GpuParams(const GpuPipelineParamsInfoPtr& pipelineParamsInfo);
 
 	private:
+		GpuPipelineParamsInfoPtr m_paramsInfo;
 
-		std::array<SPtr<GpuParamsDescription>, 6U> m_paramsDescriptions;
 		u8* m_data = nullptr;
-		Map<String, SamplerPtr> m_samplers;
-		//Sampler* samplers;
-
+		std::vector<SamplerPtr> m_samplers;
 	};
 
 	///////////////////////////////////////////////////////
@@ -125,13 +124,15 @@ namespace video
 	template<typename T>
 	inline void GpuParams::GetParam(const String& name, TGpuParam<T>& param)
 	{
+
 		for( size_t i = 0; i < 6U; ++i )
 		{
-			if(!m_paramsDescriptions[i])
+			const auto& description = m_paramsInfo->GetParamsDescription(ShaderType(i));
+			if(!description)
 				continue;
 
-			auto it = m_paramsDescriptions[i]->params.find(name);
-			if (it != m_paramsDescriptions[i]->params.end())
+			auto it = description->params.find(name);
+			if (it != description->params.end())
 			{
 				param = TGpuParam<T>(this, &(it->second));
 				return;

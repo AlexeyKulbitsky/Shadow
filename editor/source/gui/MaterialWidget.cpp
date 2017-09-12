@@ -1,5 +1,7 @@
 #include "MaterialWidget.h"
 
+#include "materialview/MaterialParamSamplerView.h"
+
 MaterialParamVector3Editor::MaterialParamVector3Editor(sh::video::MaterialParam* param) : m_param(param) 
 {
 	sh::gui::HorizontalLayoutPtr layout(new sh::gui::HorizontalLayout());
@@ -75,6 +77,14 @@ void MaterialWidget::SetRenderComponent(sh::RenderComponent* component)
 			default:
 				break;
 		}
+		m_layout->AddWidget(widget);
+	}
+
+	const auto& samplerParams = params->GetSamplerParams();
+	for (const auto& samplerParam : samplerParams)
+	{
+		sh::gui::WidgetPtr widget;
+		widget.reset(new MaterialParamSamplerView(const_cast<sh::video::MaterialSamplerParam*>(&samplerParam)));
 		m_layout->AddWidget(widget);
 	}
 }

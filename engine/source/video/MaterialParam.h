@@ -46,6 +46,28 @@ namespace video
 		u8* m_dataPtr = nullptr;
 	};
 
+	/////////////////////////////////////////////////////////////////////////////
+
+	class MaterialSamplerParam
+	{
+		friend class MaterialParams;
+		friend class Material;
+	public:
+		MaterialSamplerParam(GpuParams* parentParams, const String& name, MaterialParamType type, const u32 set, const u32 binding);
+
+		SamplerPtr GetSampler() const;
+		void SetSampler(const SamplerPtr& sampler);
+		const String& GetName() const { return m_name; }
+		MaterialParamType GetType() const { return m_type; }
+
+	private:
+		String m_name;
+		u32 m_set = 0U;
+		u32 m_binding = 0U;
+		MaterialParamType m_type;
+		GpuParams* m_parentParams = nullptr;
+	};
+
 } // video
 
 } // sh
