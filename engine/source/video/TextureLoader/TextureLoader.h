@@ -17,6 +17,7 @@ namespace sh
 			TexturePtr LoadCube(const std::vector<String>& faces);
 
 			const TexturePtr& GetWhiteTexture();
+			const std::vector<String>& GetAvalilableExtensions() const { return m_availableExtensions; }
 
 		private:
 			TexturePtr LoadSTB(const String& path);
@@ -24,6 +25,7 @@ namespace sh
 
 		private:
 			TexturePtr m_whiteTexture;
+			std::vector<String> m_availableExtensions;
 		};
 	}
 }

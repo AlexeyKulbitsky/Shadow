@@ -30,6 +30,7 @@ namespace io
 
 	private:
 		void CollectFilesFromFolder(const String& folder, bool recursive = true);
+		void UpdateFileGroups();
 
 	private:
 		Set<String> m_folders;

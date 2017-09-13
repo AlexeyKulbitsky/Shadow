@@ -5,6 +5,7 @@
 		<technique filename="const_color.xml" />
 		<params>
 			<sampler name="diffuse" val="statue.jpg"/>
+			<sampler name="normalMap" val="arm_showroom_ddn.png"/>
 		</params>
 	</material>	
 	

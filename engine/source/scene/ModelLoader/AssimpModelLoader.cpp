@@ -22,7 +22,8 @@ namespace scene
 		io::File file = io::FileSystem::GetInstance()->LoadFile(path);
 
 		Assimp::Importer importer;
-		const aiScene* scene = importer.ReadFileFromMemory(file.GetData().data(), file.GetData().size(), aiProcess_Triangulate | aiProcess_FlipUVs);
+		const aiScene* scene = importer.ReadFileFromMemory(file.GetData().data(), file.GetData().size(), 
+			aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 		{
@@ -59,6 +60,10 @@ namespace scene
 		std::vector<float> vertexArray;
 		std::vector<unsigned int> indexArray;
 		math::AABBf boundingBox(math::Vector3f(0.0f));
+
+		const bool hasNormals = mesh->HasNormals();
+		const bool hasUVs = mesh->HasTextureCoords(0);
+		const bool hasTangentsBitangents = mesh->HasTangentsAndBitangents();
 		
 		for (u32 i = 0; i < mesh->mNumVertices; i++)
 		{
@@ -74,12 +79,14 @@ namespace scene
 			);
 
 			// Normals
-			if (mesh->HasNormals())
+			if (hasNormals)
 			{
 				vertexArray.push_back(mesh->mNormals[i].x);
 				vertexArray.push_back(mesh->mNormals[i].y);
 				vertexArray.push_back(mesh->mNormals[i].z);
 			}
+
+			
 
 			// Color
 			//if (mesh->HasVertexColors(0))
@@ -92,13 +99,26 @@ namespace scene
 			vertexArray.push_back(0.0f);
 			vertexArray.push_back(0.0f);
 			vertexArray.push_back(0.0f);
-			
 
 			// UV
-			if (mesh->HasTextureCoords(0))
+			if (hasUVs)
 			{
 				vertexArray.push_back(mesh->mTextureCoords[0][i].x);
 				vertexArray.push_back(mesh->mTextureCoords[0][i].y);
+			}
+
+			// Tangents and bitangents
+			if (hasTangentsBitangents)
+			{
+				// Tangents
+				vertexArray.push_back(mesh->mTangents[i].x);
+				vertexArray.push_back(mesh->mTangents[i].y);
+				vertexArray.push_back(mesh->mTangents[i].z);
+
+				// Bitangents
+				vertexArray.push_back(mesh->mBitangents[i].x);
+				vertexArray.push_back(mesh->mBitangents[i].y);
+				vertexArray.push_back(mesh->mBitangents[i].z);
 			}
 		}
 
@@ -114,14 +134,27 @@ namespace scene
 		size_t verticesCount = mesh->mNumVertices;
 
 		sh::video::Attribute positionAttribute(AttributeSemantic::POSITION, AttributeType::FLOAT, 3U);
-		sh::video::Attribute normalAttribute(AttributeSemantic::NORMAL, AttributeType::FLOAT, 3U);
-		sh::video::Attribute colorAttribute(AttributeSemantic::COLOR, AttributeType::FLOAT, 3U);
-		sh::video::Attribute uvAttribute(AttributeSemantic::UV, AttributeType::FLOAT, 2U);
 		vertexDeclaration->AddAttribute(positionAttribute);
-		vertexDeclaration->AddAttribute(normalAttribute);
+		if (hasNormals)
+		{
+			sh::video::Attribute normalAttribute(AttributeSemantic::NORMAL, AttributeType::FLOAT, 3U);
+			vertexDeclaration->AddAttribute(normalAttribute);
+		}
+		sh::video::Attribute colorAttribute(AttributeSemantic::COLOR, AttributeType::FLOAT, 3U);
 		vertexDeclaration->AddAttribute(colorAttribute);
-		vertexDeclaration->AddAttribute(uvAttribute);
-
+		if (hasUVs)
+		{
+			sh::video::Attribute uvAttribute(AttributeSemantic::UV, AttributeType::FLOAT, 2U);
+			vertexDeclaration->AddAttribute(uvAttribute);
+		}
+		if (hasTangentsBitangents)
+		{
+			sh::video::Attribute tangentAttribute(AttributeSemantic::TANGENT, AttributeType::FLOAT, 3U);
+			sh::video::Attribute binormalAttribute(AttributeSemantic::BINORMAL, AttributeType::FLOAT, 3U);
+			vertexDeclaration->AddAttribute(tangentAttribute);
+			vertexDeclaration->AddAttribute(binormalAttribute);
+		}
+		
 		sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
 
 		// Create vertex buffer

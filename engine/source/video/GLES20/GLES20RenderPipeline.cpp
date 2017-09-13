@@ -147,7 +147,7 @@ namespace sh
 						desc.size = sizeof(float);
 						desc.location = location;
 
-						if (matParamsMap.find(desc.name) != matParamsMap.end())
+						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
 							autoParamsDescription->params[desc.name] = desc;
 						else
 							paramsDescription->params[desc.name] = desc;
@@ -162,7 +162,7 @@ namespace sh
 						desc.size = sizeof(float) * 2;
 						desc.location = location;
 
-						if (matParamsMap.find(desc.name) != matParamsMap.end())
+						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
 							autoParamsDescription->params[desc.name] = desc;
 						else
 							paramsDescription->params[desc.name] = desc;
@@ -176,7 +176,7 @@ namespace sh
 						desc.size = sizeof(float) * 3;
 						desc.location = location;
 
-						if (matParamsMap.find(desc.name) != matParamsMap.end())
+						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
 							autoParamsDescription->params[desc.name] = desc;
 						else
 							paramsDescription->params[desc.name] = desc;
@@ -190,7 +190,7 @@ namespace sh
 						desc.size = sizeof(float) * 4;
 						desc.location = location;
 
-						if (matParamsMap.find(desc.name) != matParamsMap.end())
+						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
 							autoParamsDescription->params[desc.name] = desc;
 						else
 							paramsDescription->params[desc.name] = desc;
@@ -204,7 +204,7 @@ namespace sh
 						desc.size = sizeof(s32);
 						desc.location = location;
 
-						if (matParamsMap.find(desc.name) != matParamsMap.end())
+						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
 							autoParamsDescription->params[desc.name] = desc;
 						else
 							paramsDescription->params[desc.name] = desc;
@@ -218,7 +218,7 @@ namespace sh
 						desc.size = sizeof(s32) * 2;
 						desc.location = location;
 
-						if (matParamsMap.find(desc.name) != matParamsMap.end())
+						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
 							autoParamsDescription->params[desc.name] = desc;
 						else
 							paramsDescription->params[desc.name] = desc;
@@ -232,7 +232,7 @@ namespace sh
 						desc.size = sizeof(s32) * 3;
 						desc.location = location;
 
-						if (matParamsMap.find(desc.name) != matParamsMap.end())
+						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
 							autoParamsDescription->params[desc.name] = desc;
 						else
 							paramsDescription->params[desc.name] = desc;
@@ -246,7 +246,7 @@ namespace sh
 						desc.size = sizeof(s32) * 4;
 						desc.location = location;
 
-						if (matParamsMap.find(desc.name) != matParamsMap.end())
+						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
 							autoParamsDescription->params[desc.name] = desc;
 						else
 							paramsDescription->params[desc.name] = desc;
@@ -260,7 +260,7 @@ namespace sh
 						desc.size = sizeof(bool);
 						desc.location = location;
 
-						if (matParamsMap.find(desc.name) != matParamsMap.end())
+						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
 							autoParamsDescription->params[desc.name] = desc;
 						else
 							paramsDescription->params[desc.name] = desc;
@@ -274,7 +274,7 @@ namespace sh
 						desc.size = sizeof(bool) * 2;
 						desc.location = location;
 
-						if (matParamsMap.find(desc.name) != matParamsMap.end())
+						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
 							autoParamsDescription->params[desc.name] = desc;
 						else
 							paramsDescription->params[desc.name] = desc;
@@ -288,7 +288,7 @@ namespace sh
 						desc.size = sizeof(bool) * 3;
 						desc.location = location;
 
-						if (matParamsMap.find(desc.name) != matParamsMap.end())
+						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
 							autoParamsDescription->params[desc.name] = desc;
 						else
 							paramsDescription->params[desc.name] = desc;
@@ -302,7 +302,7 @@ namespace sh
 						desc.size = sizeof(bool) * 4;
 						desc.location = location;
 
-						if (matParamsMap.find(desc.name) != matParamsMap.end())
+						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
 							autoParamsDescription->params[desc.name] = desc;
 						else
 							paramsDescription->params[desc.name] = desc;
@@ -316,7 +316,7 @@ namespace sh
 						desc.size = sizeof(float) * 4;
 						desc.location = location;
 
-						if (matParamsMap.find(desc.name) != matParamsMap.end())
+						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
 							autoParamsDescription->params[desc.name] = desc;
 						else
 							paramsDescription->params[desc.name] = desc;
@@ -330,7 +330,7 @@ namespace sh
 						desc.size = sizeof(float) * 9;
 						desc.location = location;
 
-						if (matParamsMap.find(desc.name) != matParamsMap.end())
+						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
 							autoParamsDescription->params[desc.name] = desc;
 						else
 							paramsDescription->params[desc.name] = desc;
@@ -344,7 +344,7 @@ namespace sh
 						desc.size = sizeof(float) * 16;
 						desc.location = location;
 
-						if (matParamsMap.find(desc.name) != matParamsMap.end())
+						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
 							autoParamsDescription->params[desc.name] = desc;
 						else
 							paramsDescription->params[desc.name] = desc;

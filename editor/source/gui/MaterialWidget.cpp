@@ -67,6 +67,8 @@ void MaterialWidget::SetRenderComponent(sh::RenderComponent* component)
 	for (sh::u32 i = 0; i < paramsCount; ++i)
 	{
 		auto param = params->GetParam(i);
+		if (param->GetUsage() != sh::MaterialParamUsage::Undefined)
+			continue;
 
 		sh::gui::WidgetPtr widget;
 		switch (param->GetType())

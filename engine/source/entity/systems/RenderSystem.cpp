@@ -117,7 +117,7 @@ namespace sh
 					switch (param->GetUsage())
 					{
 						case MaterialParamUsage::MatrixWorld:
-							param->Set(renderable->GetMatrix());
+							param->Set(renderable->GetMatrix().GetTransposed());
 							break;
 						case MaterialParamUsage::MatrixView:
 							param->Set(viewMatrix);

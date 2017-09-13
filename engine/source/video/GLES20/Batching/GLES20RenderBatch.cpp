@@ -46,6 +46,8 @@ namespace sh
 
 		void GLES20RenderBatch::Submit()
 		{
+			UpdateParams();
+
 			Driver* driver = Device::GetInstance()->GetDriver();
 
 			driver->SetRenderPipeline(m_pipeline);
@@ -108,6 +110,27 @@ namespace sh
 		}
 
 		//////////////////////////////////////////////////////////////////////////
+
+		void GLES20RenderBatch::UpdateParams()
+		{
+			auto camera = Device::GetInstance()->GetSceneManager()->GetCamera();
+
+			for (size_t paramIdx = 0; paramIdx < m_materialParams->GetParamsCount(); ++paramIdx)
+			{
+				auto param = m_materialParams->GetParam(paramIdx);
+				switch (param->GetUsage())
+				{
+				case MaterialParamUsage::CameraPosition:
+				{
+					if (param->GetType() == MaterialParamType::Float3)
+						param->Set(camera->GetPosition());
+				}
+					break;
+				default:
+					break;
+				}
+			}
+		}
 
 	}
 }

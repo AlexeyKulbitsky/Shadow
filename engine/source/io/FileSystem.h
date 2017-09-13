@@ -54,6 +54,11 @@ namespace sh
 			virtual bool SaveFile(const String& data, const String& fileName) { return false; }
 			virtual std::vector<char> ReadFile(const String& filename) { return std::vector<char>(); }
 			virtual File LoadFile(const String& filename) { return File(); }
+
+			const std::vector<String>& GetImageFileNames() const { return m_imageFileNames; }
+
+		protected:
+			std::vector<String> m_imageFileNames;
 		};
 	}
 }

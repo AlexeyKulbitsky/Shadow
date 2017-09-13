@@ -359,6 +359,7 @@ void GLES20Driver::SetGpuParams( const GpuParamsPtr& params, const CommandBuffer
 	const u8* data = params->GetData();
 	const auto& samplers = params->GetSamplers();
 	const auto& paramsInfo = params->GetParamsInfo();
+	int samplerCounter = 0;
 
 	for (size_t i = 0; i < 2U; ++i)
 	{
@@ -409,14 +410,14 @@ void GLES20Driver::SetGpuParams( const GpuParamsPtr& params, const CommandBuffer
 		}
 
 		// Upload samplers
-		int counter = 0;
+		
 		for (const auto& samplerDesc : desc->samplers)
 		{
 			const u32 index = paramsInfo->GetIndex(samplerDesc.second.set, samplerDesc.second.binding);
 			const auto& sampler = samplers[index];
 
 			GLES20Texture* texture = static_cast<GLES20Texture*>(sampler->GetTexture().get());
-			glActiveTexture(GL_TEXTURE0 + counter);
+			glActiveTexture(GL_TEXTURE0 + samplerCounter);
 			GLenum textureTraget = s_glTextureType[texture->GetDescription().type];
 			glBindTexture(textureTraget, texture->GetGLId());
 
@@ -428,7 +429,8 @@ void GLES20Driver::SetGpuParams( const GpuParamsPtr& params, const CommandBuffer
 			if (texture->GetDescription().type == TEX_TYPE_TEXTURE_CUBE)
 				glTexParameteri(textureTraget, GL_TEXTURE_WRAP_R, s_glTextureTiling[description.tilingW]);
 
-			glUniform1i(samplerDesc.second.binding, counter);
+			glUniform1i(samplerDesc.second.binding, samplerCounter);
+			samplerCounter++;
 		}
 	}
 }

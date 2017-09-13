@@ -16,7 +16,6 @@ namespace io
 		friend class AndroidFileSystem;
 	public:
 		const std::vector<char>& GetData() const { return m_data; }
-		//char* GetData() { return m_data.data(); }
 
 	private:
 		std::vector<char> m_data;

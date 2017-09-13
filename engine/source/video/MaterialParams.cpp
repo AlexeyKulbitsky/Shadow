@@ -26,7 +26,7 @@ namespace sh
 					continue;
 				for (const auto& param : desc->params)
 				{
-					const auto it = matParamsMap.find(param.second.name);
+					
 
 					MaterialParamType type;
 					switch (param.second.type)
@@ -65,10 +65,16 @@ namespace sh
 						break;
 					}
 
-					
-					if (it != matParamsMap.end())
+					auto autoParamsIt = materialAutoParamsMap.find(param.second.name);
+					auto commonParamsIt = materialCommonParamsMap.find(param.second.name);
+					if (autoParamsIt != materialAutoParamsMap.end())
 					{
-						MaterialParam matParam(param.second.name, type, it->second, const_cast<u8*>(dataPtr + param.second.offset));
+						MaterialParam matParam(param.second.name, type, autoParamsIt->second, const_cast<u8*>(dataPtr + param.second.offset));
+						m_params.push_back(matParam);
+					}
+					else if (commonParamsIt != materialCommonParamsMap.end())
+					{
+						MaterialParam matParam(param.second.name, type, commonParamsIt->second, const_cast<u8*>(dataPtr + param.second.offset));
 						m_params.push_back(matParam);
 					}
 					else

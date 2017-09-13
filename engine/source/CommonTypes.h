@@ -344,7 +344,8 @@ namespace sh
 		MatrixProjection,
 		MatrixViewProjection,
 		DirectionalLightDirection,
-		DirectionalLightColor
+		DirectionalLightColor,
+		CameraPosition
 	};
 
 	enum class MaterialParamType
@@ -363,7 +364,7 @@ namespace sh
 		SamplerCube
 	};
 	
-	static const std::map<std::string, MaterialParamUsage> matParamsMap =
+	static const std::map<std::string, MaterialParamUsage> materialAutoParamsMap =
 	{
 		{ "matWVP", MaterialParamUsage::MatrixWorldViewProjection },
 		{ "matWorld", MaterialParamUsage::MatrixWorld },
@@ -371,9 +372,14 @@ namespace sh
 		{ "matViewRotation", MaterialParamUsage::MatrixViewRotation },
 		{ "matViewRotationProjection", MaterialParamUsage::MatrixViewRotationProjection },
 		{ "matProjection", MaterialParamUsage::MatrixProjection },
-		{ "matViewProjection", MaterialParamUsage::MatrixViewProjection },
+		{ "matViewProjection", MaterialParamUsage::MatrixViewProjection }
+	};
+
+	static const std::map<std::string, MaterialParamUsage> materialCommonParamsMap =
+	{
 		{ "dLightDirection", MaterialParamUsage::DirectionalLightDirection },
-		{ "dLightColor", MaterialParamUsage::DirectionalLightColor }
+		{ "dLightColor", MaterialParamUsage::DirectionalLightColor },
+		{ "cameraPosition", MaterialParamUsage::CameraPosition }
 	};
 
 	static const std::map<std::string, GpuParamObjectType> samplerTypeMap =

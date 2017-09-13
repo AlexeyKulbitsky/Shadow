@@ -26,6 +26,8 @@ namespace sh
 			void SetTechniqueName(const String& name) { m_techniqueName = name; }
 			const String& GetTechniqueName() const { return m_techniqueName; }
 
+		private:
+			void UpdateParams();
 
 		protected:
 			String m_techniqueName;

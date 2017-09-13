@@ -3,8 +3,7 @@
 MaterialParamSamplerView::MaterialParamSamplerView(sh::video::MaterialSamplerParam* param)
 	: m_param(param)
 {
-	m_textureNames.push_back("statue.jpg");
-	m_textureNames.push_back("Container.png");
+	m_textureNames = sh::io::FileSystem::GetInstance()->GetImageFileNames();
 
 	auto sampler = m_param->GetSampler();
 	auto texture = sampler->GetTexture();
@@ -14,13 +13,17 @@ MaterialParamSamplerView::MaterialParamSamplerView(sh::video::MaterialSamplerPar
 
 	// Sampler 
 	sh::gui::HorizontalLayoutPtr samplerLayout(new sh::gui::HorizontalLayout());
-	sh::gui::LabelPtr samplerLabel(new sh::gui::Label("Texture"));
+	sh::gui::LabelPtr samplerLabel(new sh::gui::Label(m_param->GetName()));
 	sh::gui::ComboBoxPtr samplerComboBox(new sh::gui::ComboBox());
 
-	for (const auto& name : m_textureNames)
+	sh::u32 index = 0U;
+	for (sh::u32 i = 0U; i < m_textureNames.size(); ++i)
 	{
-		samplerComboBox->AddItem(name);
+		samplerComboBox->AddItem(m_textureNames[i]);
+		if (texture->GetFileName() == m_textureNames[i])
+			index = i;
 	}
+	samplerComboBox->SetSelectedItem(index);
 	samplerComboBox->OnItemChanged.Connect(std::bind(&MaterialParamSamplerView::TextureChanged, this,
 		std::placeholders::_1));
 
@@ -35,6 +38,9 @@ MaterialParamSamplerView::MaterialParamSamplerView(sh::video::MaterialSamplerPar
 	tilingUComboBox->AddItem("Repeat");
 	tilingUComboBox->AddItem("Mirrored repeat");
 	tilingUComboBox->AddItem("Clamp to edge");
+	tilingUComboBox->SetSelectedItem(static_cast<sh::u32>(desc.tilingU));
+	tilingUComboBox->OnItemChanged.Connect(std::bind(&MaterialParamSamplerView::TilingUChanged, this,
+		std::placeholders::_1));
 	tilingULayout->AddWidget(tilingULabel);
 	tilingULayout->AddWidget(tilingUComboBox);
 	layout->AddLayout(tilingULayout);
@@ -46,6 +52,9 @@ MaterialParamSamplerView::MaterialParamSamplerView(sh::video::MaterialSamplerPar
 	tilingVComboBox->AddItem("Repeat");
 	tilingVComboBox->AddItem("Mirrored repeat");
 	tilingVComboBox->AddItem("Clamp to edge");
+	tilingVComboBox->SetSelectedItem(static_cast<sh::u32>(desc.tilingV));
+	tilingVComboBox->OnItemChanged.Connect(std::bind(&MaterialParamSamplerView::TilingVChanged, this,
+		std::placeholders::_1));
 	tilingVLayout->AddWidget(tilingVLabel);
 	tilingVLayout->AddWidget(tilingVComboBox);
 	layout->AddLayout(tilingVLayout);
@@ -56,6 +65,7 @@ MaterialParamSamplerView::MaterialParamSamplerView(sh::video::MaterialSamplerPar
 	sh::gui::ComboBoxPtr minFilterComboBox(new sh::gui::ComboBox());
 	minFilterComboBox->AddItem("Nearest");
 	minFilterComboBox->AddItem("Linear");
+	minFilterComboBox->SetSelectedItem(static_cast<sh::u32>(desc.minFilter));
 	minFilterComboBox->OnItemChanged.Connect(std::bind(&MaterialParamSamplerView::MinFilterChanged, this,
 		std::placeholders::_1));
 	minFilterLayout->AddWidget(minFilterLabel);
@@ -68,11 +78,25 @@ MaterialParamSamplerView::MaterialParamSamplerView(sh::video::MaterialSamplerPar
 	sh::gui::ComboBoxPtr magFilterComboBox(new sh::gui::ComboBox());
 	magFilterComboBox->AddItem("Nearest");
 	magFilterComboBox->AddItem("Linear");
+	magFilterComboBox->SetSelectedItem(static_cast<sh::u32>(desc.magFilter));
 	magFilterComboBox->OnItemChanged.Connect(std::bind(&MaterialParamSamplerView::MagFilterChanged, this,
 		std::placeholders::_1));
 	magFilterLayout->AddWidget(magFilterLabel);
 	magFilterLayout->AddWidget(magFilterComboBox);
 	layout->AddLayout(magFilterLayout);
+
+	// Mip filter
+	sh::gui::HorizontalLayoutPtr mipFilterLayout(new sh::gui::HorizontalLayout());
+	sh::gui::LabelPtr mipFilterLabel(new sh::gui::Label("Mip filter"));
+	sh::gui::ComboBoxPtr mipFilterComboBox(new sh::gui::ComboBox());
+	mipFilterComboBox->AddItem("Nearest");
+	mipFilterComboBox->AddItem("Linear");
+	mipFilterComboBox->SetSelectedItem(static_cast<sh::u32>(desc.mipFilter));
+	mipFilterComboBox->OnItemChanged.Connect(std::bind(&MaterialParamSamplerView::MipFilterChanged, this,
+		std::placeholders::_1));
+	mipFilterLayout->AddWidget(mipFilterLabel);
+	mipFilterLayout->AddWidget(mipFilterComboBox);
+	layout->AddLayout(mipFilterLayout);
 
 	SetLayout(layout);
 	SetMaximumHeight(100);
@@ -87,6 +111,32 @@ void MaterialParamSamplerView::TextureChanged(sh::u32 index)
 
 	auto sampler = m_param->GetSampler();
 	sampler->Set(texture);
+}
+
+void MaterialParamSamplerView::TilingUChanged(sh::u32 tiling)
+{
+	sh::TextureTiling tile = static_cast<sh::TextureTiling>(tiling);
+	auto sampler = m_param->GetSampler();
+	auto texture = sampler->GetTexture();
+	auto desc = sampler->GetDescription();
+	desc.tilingU = tile;
+
+	auto newSampler = sh::video::Sampler::Create(desc);
+	newSampler->Set(texture);
+	m_param->SetSampler(newSampler);
+}
+
+void MaterialParamSamplerView::TilingVChanged(sh::u32 tiling)
+{
+	sh::TextureTiling tile = static_cast<sh::TextureTiling>(tiling);
+	auto sampler = m_param->GetSampler();
+	auto texture = sampler->GetTexture();
+	auto desc = sampler->GetDescription();
+	desc.tilingV = tile;
+
+	auto newSampler = sh::video::Sampler::Create(desc);
+	newSampler->Set(texture);
+	m_param->SetSampler(newSampler);
 }
 
 void MaterialParamSamplerView::MagFilterChanged(sh::u32 filtering)
@@ -109,6 +159,19 @@ void MaterialParamSamplerView::MinFilterChanged(sh::u32 filtering)
 	auto texture = sampler->GetTexture();
 	auto desc = sampler->GetDescription();
 	desc.minFilter = filter;
+
+	auto newSampler = sh::video::Sampler::Create(desc);
+	newSampler->Set(texture);
+	m_param->SetSampler(newSampler);
+}
+
+void MaterialParamSamplerView::MipFilterChanged(sh::u32 filtering)
+{
+	sh::TextureFiltering filter = static_cast<sh::TextureFiltering>(filtering);
+	auto sampler = m_param->GetSampler();
+	auto texture = sampler->GetTexture();
+	auto desc = sampler->GetDescription();
+	desc.mipFilter = filter;
 
 	auto newSampler = sh::video::Sampler::Create(desc);
 	newSampler->Set(texture);

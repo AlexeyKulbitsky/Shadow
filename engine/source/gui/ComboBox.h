@@ -27,6 +27,8 @@ namespace gui
 		void AddItem(const String& text);
 		void RemoveItem(const String& text);
 		void RemoveItem(u32 index);
+		void SetSelectedItem(const String& item);
+		void SetSelectedItem(const u32 index);
 
 		Event<void, u32> OnItemChanged;
 

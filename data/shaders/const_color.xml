@@ -8,16 +8,35 @@
 		<source>
 			<![CDATA[
 
-				attribute vec3 position;				
+				attribute vec3 position;	
+				attribute vec3 normal;			
 				attribute vec2 uv;
+				attribute vec3 tangent;
+				attribute vec3 binormal;
+
 				uniform mat4 matWVP;
+				uniform mat4 matWorld;
+				uniform vec3 cameraPosition;
 				
 				varying vec2 vUV;
+				varying vec3 eyeVec;
+				varying vec3 vNormal;
+				varying mat3 vTBNmatrix;
 				
 				void main() 
 				{
 					gl_Position = matWVP * vec4(position, 1.0);
+					vec4 posWorld = matWorld * vec4(position, 1.0);
+					eyeVec = normalize(cameraPosition - posWorld.xyz);
+					vec4 T = normalize(matWorld * vec4(tangent, 0.0));
+					vec4 B = normalize(matWorld * vec4(binormal, 0.0));
+					vec4 N = normalize(matWorld * vec4(normal, 0.0));
+					vTBNmatrix = mat3(T.xyz, B.xyz, N.xyz);
+					vNormal = N.xyz;
 					vUV = uv;
+
+					
+					
 				}
 				
 			]]>
@@ -32,14 +51,37 @@
 				precision mediump float;
 
 				uniform sampler2D diffuse;
+				uniform sampler2D normalMap;
+				uniform vec3 dLightDirection;
+				uniform vec3 dLightColor;
 				uniform vec3 addColor;
-				varying vec2 vUV;
 
+				varying vec2 vUV;
+				varying vec3 eyeVec;	
+				varying vec3 vNormal;
+				varying mat3 vTBNmatrix;
 
 				void main() 
 				{				
-					vec4 color = texture2D(diffuse, vUV) + vec4(addColor, 1.0);
-					gl_FragColor = color;
+
+					vec3 V = normalize(eyeVec);
+					vec3 N = texture2D(normalMap, vUV).rgb;
+					N = normalize(N);
+					N = normalize(N * 2.0 - 1.0);
+					N = normalize(vTBNmatrix * N);
+
+					vec3 L = normalize(-dLightDirection);
+					vec3 R = reflect(-V, N);
+					float NdL = dot(N, L);
+
+					const float specPower = 90.0;
+					const vec3 specColor = vec3(0.7, 0.7, 0.0);
+					vec3 diff = dLightColor * max(NdL, 0.0);
+					vec3 spec = specColor * pow(max(dot(L, R), 0.0), specPower);
+
+					vec3 objectColor = texture2D(diffuse, vUV).xyz;
+					vec3 finalColor = objectColor * (diff + spec) + addColor;
+					gl_FragColor = vec4(finalColor, 1.0);
 				} 
 		
 			]]>	

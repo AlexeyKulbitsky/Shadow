@@ -1,5 +1,7 @@
 #include "WindowsFileSystem.h"
 
+#include "../../video/TextureLoader/TextureLoader.h"
+
 #include <windows.h>
 #include <fstream>
 
@@ -49,6 +51,8 @@ namespace io
 		CollectFilesFromFolder(absolutePath, true);
 
 		m_folders.insert(folder);
+
+		UpdateFileGroups();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -154,8 +158,26 @@ namespace io
 			} while (FindNextFile(hFind, &FindFileData));
 			FindClose(hFind);
 		}
-
 	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	void WindowsFileSystem::UpdateFileGroups()
+	{
+		m_imageFileNames.clear();
+		const auto& imageExtensions = video::TextureLoader::GetInstance()->GetAvalilableExtensions();
+
+		for (const auto& file : m_fileList)
+		{
+			size_t pos = file.name.find_last_of('.');
+			auto extension = file.name.substr(pos + 1);
+			auto res = std::find(imageExtensions.begin(), imageExtensions.end(), extension);
+			if (res != imageExtensions.end())
+				m_imageFileNames.push_back(file.name);
+		}
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 } // io
 

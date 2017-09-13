@@ -120,6 +120,20 @@ namespace gui
 		UpdateLayout();
 	}
 
+	void ComboBox::SetSelectedItem(const String& item)
+	{
+
+	}
+
+	void ComboBox::SetSelectedItem(const u32 index)
+	{
+		if (index >= m_layout->GetItemsCount())
+			return;
+
+		const auto& button = std::static_pointer_cast<Button>(m_layout->GetWidget(index));
+		button->SetToggled(true);
+	}
+
 	void ComboBox::OnButtonToggled(bool toggled)
 	{
 		m_showList = toggled;

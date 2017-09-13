@@ -15,7 +15,9 @@ namespace sh
 	{
 		TextureLoader::TextureLoader()
 		{
-			
+			m_availableExtensions.push_back("png");
+			m_availableExtensions.push_back("jpg");
+			m_availableExtensions.push_back("tga");
 		}
 
 		//////////////////////////////////////////////////////////////
