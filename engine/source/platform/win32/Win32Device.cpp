@@ -26,6 +26,9 @@ using namespace video;
 
 
 int g_xPoint, g_yPoint;
+#include <shellapi.h>
+
+void ProcessDropMessage(HDROP dropInfo);
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -41,6 +44,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 	switch (message)
 	{
+		case WM_DROPFILES:
+		{
+			HDROP hDropInfo = (HDROP)wParam;
+			ProcessDropMessage(hDropInfo);
+		}
+		return 0;
 	case WM_LBUTTONDOWN:
 	{
 		int x = LOWORD(lParam);
@@ -251,7 +260,11 @@ Win32Device::Win32Device()
 
 
 						// create window
-	m_hwnd = CreateWindow(ClassName, __TEXT("Shadow engine"), style, windowLeft, windowTop,
+	//m_hwnd = CreateWindow(ClassName, __TEXT("Shadow engine"), style, windowLeft, windowTop,
+	//	realWidth, realHeight, NULL, NULL, hInstance, NULL);
+
+	DWORD exStyle = WS_EX_ACCEPTFILES;
+	m_hwnd = CreateWindowEx(exStyle, ClassName, __TEXT("Shadow engine"), style, windowLeft, windowTop,
 		realWidth, realHeight, NULL, NULL, hInstance, NULL);
 
 
@@ -491,3 +504,22 @@ bool Win32Device::CreateDriver()
 }
 
 ////////////////////////////////////////////////////////////////////////
+
+void ProcessDropMessage(HDROP dropInfo)
+{
+	char sItem[MAX_PATH];
+	for (int i = 0; DragQueryFile(dropInfo, i, (LPSTR)sItem, sizeof(sItem)); i++)
+	{
+		//Is the item a file or a directory?
+		if (GetFileAttributes(sItem) &FILE_ATTRIBUTE_DIRECTORY)
+		{
+			printf("Folder %s\n", sItem);
+		}
+		else 
+		{
+			printf("File %s\n", sItem);
+		}
+
+	}
+	DragFinish(dropInfo);
+}
