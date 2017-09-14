@@ -74,6 +74,9 @@ namespace gui
 		void SetFocus(bool focus) { m_isInFocus = focus; }
 		bool IsInFocus() const { return m_isInFocus; }
 
+		void SetMaterial(const video::MaterialPtr& material) { m_material = material; }
+		const video::MaterialPtr& GetMaterial() const { return m_material; }
+
 		// Method is called when widget contents geometry must be recalculated
 		virtual void UpdateLayout();
 
@@ -82,6 +85,8 @@ namespace gui
 
 		math::Vector2u m_maxSize = math::Vector2u(std::numeric_limits<s32>::max());
 		math::Vector2u m_minSize = math::Vector2u(0U);
+
+		video::MaterialPtr m_material;
 
 		math::Recti m_rect;
 		bool m_visible = true;

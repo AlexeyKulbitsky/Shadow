@@ -35,6 +35,8 @@ namespace sh
 
 			Painter();
 			void SetMaterial(const MaterialPtr& material);
+
+			// Get current active material
 			const MaterialPtr& GetMaterial() const { return m_material; }
 			void SetCamera(const scene::CameraPtr& camera);
 			void SetClipRect(const math::Rectu& rect);
