@@ -29,7 +29,7 @@ namespace io
 		virtual File LoadFile(const String& filename) override;
 
 	private:
-		void CollectFilesFromFolder(const String& folder, bool recursive = true);
+		void CollectFilesFromFolder(const String& folder, const SPtr<FolderInfo>& root, bool recursive = true);
 		void UpdateFileGroups();
 
 	private:

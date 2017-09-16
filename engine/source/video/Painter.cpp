@@ -52,25 +52,68 @@ namespace sh
 
 			m_materials.push_back(material);
 
-			LinesBatch linesBatch;
-			linesBatch.materialIndex = m_materials.size() - 1;
-			linesBatch.startIndex = m_lines.verticesCount;
-			m_lines.linesBatches.push_back(linesBatch);
-
-			TrianglesBatch trianglesBatch;
-			trianglesBatch.materialIndex = m_materials.size() - 1;
-			trianglesBatch.startIndex = m_triangles.indicesCount;
-			if (m_triangles.trianglesBatches.size() == 0U)
+			// Check if previous lines batch has or not anything to render
+			// If not then remove it from render list to avoid useless operations
+			if (m_lines.linesBatches.size() > 0U && 
+				m_lines.linesBatches[m_lines.linesBatches.size() - 1].verticesCount == 0U)
 			{
-				trianglesBatch.clipRect = Device::GetInstance()->GetDriver()->GetViewport();
+				const u32 linesIdx = m_lines.linesBatches.size() - 1;
+
+				m_lines.linesBatches[linesIdx].materialIndex = m_materials.size() - 1;
+				m_lines.linesBatches[linesIdx].startIndex = m_lines.verticesCount;
+				m_lines.linesBatches[linesIdx].verticesCount = 0U;
 			}
+			// If has then create new batch
 			else
 			{
-				const u32 lastBatchIdx = m_triangles.trianglesBatches.size() - 1;
-				trianglesBatch.clipRect = m_triangles.trianglesBatches[lastBatchIdx].clipRect;
+				LinesBatch linesBatch;
+				linesBatch.materialIndex = m_materials.size() - 1;
+				linesBatch.startIndex = m_lines.verticesCount;
+				// If it is first batch then use viewport (no scissor rect)
+				if (m_lines.linesBatches.size() == 0U)
+				{
+					linesBatch.clipRect = Device::GetInstance()->GetDriver()->GetViewport();
+				}
+				// Otherwise use previous clip rect
+				else
+				{
+					const u32 lastBatchIdx = m_lines.linesBatches.size() - 1;
+					linesBatch.clipRect = m_triangles.trianglesBatches[lastBatchIdx].clipRect;
+				}
+				m_lines.linesBatches.push_back(linesBatch);
 			}
 			
-			m_triangles.trianglesBatches.push_back(trianglesBatch);
+			// Check if previous triangles batch has or not anything to render
+			// If not then remove it from render list to avoid useless operations
+			if (m_triangles.trianglesBatches.size() > 0U &&
+				m_triangles.trianglesBatches[m_triangles.trianglesBatches.size() - 1].verticesCount == 0U)
+			{
+				const u32 trianglesIdx = m_triangles.trianglesBatches.size() - 1;
+
+				m_triangles.trianglesBatches[trianglesIdx].materialIndex = m_materials.size() - 1;
+				m_triangles.trianglesBatches[trianglesIdx].startIndex = m_triangles.indicesCount;
+				m_triangles.trianglesBatches[trianglesIdx].verticesCount = 0U;
+				m_triangles.trianglesBatches[trianglesIdx].indicesCount = 0U;
+			}
+			// If has then create new batch
+			else
+			{
+				TrianglesBatch trianglesBatch;
+				trianglesBatch.materialIndex = m_materials.size() - 1;
+				trianglesBatch.startIndex = m_triangles.indicesCount;
+				// If it is first batch then use viewport (no scissor rect)
+				if (m_triangles.trianglesBatches.size() == 0U)
+				{
+					trianglesBatch.clipRect = Device::GetInstance()->GetDriver()->GetViewport();
+				}
+				// Otherwise use previous clip rect
+				else
+				{
+					const u32 lastBatchIdx = m_triangles.trianglesBatches.size() - 1;
+					trianglesBatch.clipRect = m_triangles.trianglesBatches[lastBatchIdx].clipRect;
+				}
+				m_triangles.trianglesBatches.push_back(trianglesBatch);
+			}
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -84,16 +127,51 @@ namespace sh
 
 		void Painter::SetClipRect(const math::Rectu& rect)
 		{
-			const u32 idx = m_triangles.trianglesBatches.size() - 1U;
-			if (m_triangles.trianglesBatches[idx].clipRect == rect)
-				return;
+			// Set clip rect for lines batches
+			const u32 linessIdx = m_lines.linesBatches.size() - 1U;
+			if (m_lines.linesBatches[linessIdx].clipRect != rect)
+			{
+				if (m_lines.linesBatches[linessIdx].verticesCount == 0U)
+				{
+					m_lines.linesBatches[linessIdx].clipRect = rect;
+				}
+				else
+				{
+					const auto& currentBatch = m_lines.linesBatches[linessIdx];
+					LinesBatch newBatch;
+					newBatch.materialIndex = currentBatch.materialIndex;
+					newBatch.startIndex = m_lines.verticesCount;
+					newBatch.clipRect = rect;
+					m_lines.linesBatches.push_back(newBatch);
+				}
+			}
 
-			const auto& currentBatch = m_triangles.trianglesBatches[idx];
-			TrianglesBatch newBatch;
-			newBatch.materialIndex = currentBatch.materialIndex;
-			newBatch.startIndex = m_triangles.indicesCount;
-			newBatch.clipRect = rect;
-			m_triangles.trianglesBatches.push_back(newBatch);
+			// Set clip rect for triangles batches
+			const u32 triangleIdx = m_triangles.trianglesBatches.size() - 1U;
+			if (m_triangles.trianglesBatches[triangleIdx].clipRect != rect)
+			{
+				if (m_triangles.trianglesBatches[triangleIdx].verticesCount == 0U)
+				{
+					m_triangles.trianglesBatches[triangleIdx].clipRect = rect;
+				}
+				else
+				{
+					const auto& currentBatch = m_triangles.trianglesBatches[triangleIdx];
+					TrianglesBatch newBatch;
+					newBatch.materialIndex = currentBatch.materialIndex;
+					newBatch.startIndex = m_triangles.indicesCount;
+					newBatch.clipRect = rect;
+					m_triangles.trianglesBatches.push_back(newBatch);
+				}
+			}
+		}
+
+		/////////////////////////////////////////////////////////////////////////////////////
+
+		const math::Rectu& Painter::GetClipRect() const
+		{
+			const u32 idx = m_triangles.trianglesBatches.size() - 1U;
+			return m_triangles.trianglesBatches[idx].clipRect;
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -345,15 +423,15 @@ namespace sh
 
 
 			// Render lines
-
+			// Upload vertex data to lines vertex buffer
 			const void* verticesPointer = m_linesVertexArray.data();
 			size_t verticesDataSize = m_linesVertexArray.size() * sizeof(float);
 			m_linesVertexBuffer->SetData(0U, verticesDataSize, verticesPointer);
 			m_linesVertexBuffer->SetVerticesCount(m_lines.verticesCount);
-
-
+			
 			for (u32 i = 0U; i < m_lines.linesBatches.size(); ++i)
 			{
+				// Update current batch material params
 				const u32 materialIdx = m_lines.linesBatches[i].materialIndex;
 				auto& params = m_materials[materialIdx]->GetAutoParams();
 				for (u32 paramIdx = 0U; paramIdx < params->GetParamsCount(); ++paramIdx)
@@ -395,20 +473,22 @@ namespace sh
 					}
 				}
 
+				// Render current line batch
 				driver->SetRenderPipeline(m_materials[materialIdx]->GetRenderPipeline(), m_commandBuffer);
 				driver->SetGpuParams(m_materials[materialIdx]->GetCommonGpuParams(), m_commandBuffer);
 				driver->SetGpuParams(m_materials[materialIdx]->GetAutoGpuParams(), m_commandBuffer);
 				driver->SetVertexBuffer(m_linesVertexBuffer, m_commandBuffer);
 				driver->SetVertexDeclaration(m_materials[materialIdx]->GetRenderPipeline()->GetVertexInputDeclaration(), m_commandBuffer);
 				driver->SetTopology(TOP_LINE_LIST, m_commandBuffer);
+				driver->SetScissorRect(m_lines.linesBatches[i].clipRect, m_commandBuffer);
 				driver->Draw(m_lines.linesBatches[i].startIndex, 
 							 m_lines.linesBatches[i].verticesCount, 1U, m_commandBuffer);
 
 			}
 
 
-
 			// Render triangles
+			// Upload vertex data to triagles vertex and index buffers
 			verticesPointer = m_trianglesVertexArray.data();
 			const void* indicesPointer = m_trianglesIndexArray.data();
 			verticesDataSize = m_trianglesVertexArray.size() * sizeof(float);
@@ -420,6 +500,7 @@ namespace sh
 
 			for (u32 i = 0U; i < m_triangles.trianglesBatches.size(); ++i)
 			{
+				// Update current batch material params
 				const u32 materialIdx = m_triangles.trianglesBatches[i].materialIndex;
 				auto& params = m_materials[materialIdx]->GetAutoParams();
 				for (u32 paramIdx = 0U; paramIdx < params->GetParamsCount(); ++paramIdx)
@@ -461,6 +542,7 @@ namespace sh
 					}
 				}
 
+				// Render current triangle batch
 				driver->SetRenderPipeline(m_materials[materialIdx]->GetRenderPipeline(), m_commandBuffer);
 				driver->SetGpuParams(m_materials[materialIdx]->GetCommonGpuParams(), m_commandBuffer);
 				driver->SetGpuParams(m_materials[materialIdx]->GetAutoGpuParams(), m_commandBuffer);
@@ -477,7 +559,6 @@ namespace sh
 
 			m_commandBuffer->End();
 
-
 			driver->SubmitCommandBuffer(m_commandBuffer);
 
 			// Clear lines data
@@ -493,10 +574,9 @@ namespace sh
 			m_triangles.verticesCount = 0U;
 
 			m_materials.clear();
+
 			// We must have at least one active material any time
 			SetMaterial(m_material);
-			const u32 idx = m_triangles.trianglesBatches.size() - 1;
-			m_triangles.trianglesBatches[idx].clipRect = driver->GetViewport();
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////

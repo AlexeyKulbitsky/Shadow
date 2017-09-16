@@ -100,6 +100,22 @@
 				<color r="0.7" g="0.7" b="0.7" a="1"/>
 			</hovered>
 		</button>
+
+		<button name="TreeButton">
+			<default>
+				<rect x1="48" y1="160" x2="87" y2="194"/>
+				<color r="1" g="1" b="1" a="1"/>
+			</default>
+			<pressed>
+				<rect x1="94" y1="158" x2="130" y2="197"/>
+				<color r="0.5" g="0.5" b="0.5" a="1"/>
+			</pressed>
+			<hovered>
+				<rect x1="140" y1="158" x2="180" y2="198"/>
+				<color r="0.7" g="0.7" b="0.7" a="1"/>
+			</hovered>
+		</button>
+
 	</buttons>
 </style>
 

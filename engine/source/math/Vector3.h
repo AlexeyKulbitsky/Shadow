@@ -37,6 +37,8 @@ namespace sh
 			// Operators
 			Vector3<T> operator-() const { return Vector3<T>(-x, -y, -z); }
 			Vector3<T>& operator=(const Vector3<T>& v) { x = v.x; y = v.y; z = v.z; return *this; }
+			bool operator==(const Vector3<T>& v) const { return v.x == x && v.y == y && v.z == z; }
+			bool operator!=(const Vector3<T>& v) const { return v.x != x && v.y != y && v.z != z; }
 
 			Vector3<T> operator+(T s) const { return Vector3<T>(x + s, y + s, z + s); }
 			Vector3<T> operator+(const Vector3<T>& v) const { return Vector3<T>(x + v.x, y + v.y, z + v.z); }

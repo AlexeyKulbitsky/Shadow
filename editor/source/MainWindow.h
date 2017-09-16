@@ -7,6 +7,7 @@
 #include "gizmo/ScaleGizmo.h"
 #include "gui/InspectorWidget.h"
 #include "gui/HierarchyWidget.h"
+#include "gui/AssetsWidget.h"
 
 #include <Shadow.h>
 
@@ -41,6 +42,7 @@ public:
 private:
 	sh::SPtr<InspectorWidget> m_inspectorWidget;
 	sh::SPtr<HierarchyWidget> m_hierarchyWidget;
+	sh::SPtr<AssetsWidget> m_assetsWidget;
 
 	// Gizmos
 	sh::SPtr<Gizmo> m_gizmo;

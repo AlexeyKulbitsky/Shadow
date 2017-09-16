@@ -36,6 +36,12 @@ namespace gui
 			m_layout->Render(painter);
 	}
 
+	void Widget::SetRect(const math::Recti& rect)
+	{
+		m_rect = rect;
+		UpdateLayout();
+	}
+
 	void Widget::SetPosition(s32 x, s32 y)
 	{
 		auto size = m_rect.GetSize();

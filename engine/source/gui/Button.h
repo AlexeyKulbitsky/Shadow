@@ -31,6 +31,7 @@ namespace gui
 			   const SpritePtr& hoveredSprite);
 		Button();
 		Button(const String& text);
+		
 
 		ButtonPtr Clone() const;
 

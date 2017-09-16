@@ -21,6 +21,13 @@ namespace math
 			return upperLeftCorner == other.upperLeftCorner &&
 				lowerRightCorner == other.lowerRightCorner;
 		}
+
+		bool operator!=(const Rect<T>& other) const 
+		{
+			return upperLeftCorner != other.upperLeftCorner &&
+				lowerRightCorner != other.lowerRightCorner;
+		}
+
 		void Set(T x1, T y1, T x2, T y2)
 		{
 			upperLeftCorner.x = x1;

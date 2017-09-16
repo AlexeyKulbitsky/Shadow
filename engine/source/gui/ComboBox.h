@@ -4,6 +4,7 @@
 #include "Widget.h"
 #include "Button.h"
 #include "VerticalLayout.h"
+#include "ScrollWidget.h"
 
 namespace sh
 {
@@ -41,6 +42,7 @@ namespace gui
 		ButtonPtr m_button;
 		ButtonPtr m_currentSelectedItem;
 		VerticalLayoutPtr m_layout;
+		ScrollWidgetPtr m_scrollWidget;
 
 		bool m_showList = false;
 	};

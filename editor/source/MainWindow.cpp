@@ -325,6 +325,7 @@ void MainWindow::Init()
 
 	// Inspector
 	m_inspectorWidget.reset(new InspectorWidget());
+	m_assetsWidget.reset(new AssetsWidget());
 	m_hierarchyWidget.reset(new HierarchyWidget());
 	m_hierarchyWidget->OnEntitySelected.Connect(std::bind(&MainWindow::OnEntityFromListSelected, this, std::placeholders::_1));
 
@@ -341,46 +342,7 @@ void MainWindow::Init()
 	m_moveGizmo->SetTransformWidget(m_inspectorWidget->GetTransformWidget());
 	m_rotateGizmo->SetTransformWidget(m_inspectorWidget->GetTransformWidget());
 	m_scaleGizmo->SetTransformWidget(m_inspectorWidget->GetTransformWidget());
-
-
- 	sh::gui::ScrollWidgetPtr scroll(new sh::gui::ScrollWidget());
-	//sh::gui::WidgetPtr scroll(new sh::gui::Widget());
- 	scroll->SetPosition(100, 100);
- 	scroll->SetSize(sh::math::Vector2i(100, 200));
- 	sh::gui::VerticalLayoutPtr l(new sh::gui::VerticalLayout());
-	l->SetSpacing(5);
- 	scroll->SetLayout(l);
- 	for (sh::u32 i = 0; i < 20; ++i)
- 	{
- 		std::stringstream s;
- 		s << "Button " << i;
- 
- 		sh::gui::ButtonPtr button(new sh::gui::Button(s.str()));
-		button->SetMinimumHeight(20U);
-		button->SetHeight(20 + i * 2);
- 		scroll->GetLayout()->AddWidget(button);
- 	}
-
-	sh::gui::WindowPtr scrollWindow(new sh::gui::Window(sh::math::Recti(300, 100, 500, 400)));
-	scrollWindow->SetText("Scroll window");
-	sh::gui::VerticalLayoutPtr scrollLayout(new sh::gui::VerticalLayout());
-	scrollLayout->AddWidget(scroll);
-	scrollLayout->SetMargins(5, 5, 5, 5);
-	scrollWindow->SetLayout(scrollLayout);
-
- 	//guiMgr->AddChild(scroll);
-	guiMgr->AddChild(scrollWindow);
-
-	sh::gui::ComboBoxPtr combo(new sh::gui::ComboBox());
-	combo->SetPosition(300, 100);
-	combo->SetWidth(50);
-	combo->SetHeight(25);
-	combo->AddItem("Item 1");
-	combo->AddItem("Item 2");
-	combo->AddItem("Item 3");
-	combo->AddItem("Item 4");
-	combo->AddItem("Item 5");
-	guiMgr->AddChild(combo);
+	
 }
 
 void MainWindow::Destroy()

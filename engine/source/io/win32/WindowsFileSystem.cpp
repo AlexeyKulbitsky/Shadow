@@ -48,7 +48,9 @@ namespace io
 			return;
 
 		String absolutePath = m_workingDirectoryPath + "/" + folder + "/";
-		CollectFilesFromFolder(absolutePath, true);
+		m_root.reset(new FolderInfo(folder, absolutePath));
+
+		CollectFilesFromFolder(absolutePath, m_root, true);
 
 		m_folders.insert(folder);
 
@@ -124,7 +126,7 @@ namespace io
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	void WindowsFileSystem::CollectFilesFromFolder(const String& folder, bool recursive)
+	void WindowsFileSystem::CollectFilesFromFolder(const String& folder, const SPtr<FolderInfo>& root, bool recursive)
 	{
 
 		WIN32_FIND_DATA FindFileData;
@@ -144,6 +146,9 @@ namespace io
 					info.name = FindFileData.cFileName;
 					info.absolutePath = originalPath + info.name;
 					m_fileList.insert(info);
+
+					SPtr<FileInfo> fileInfo(new FileInfo(FindFileData.cFileName, info.absolutePath));
+					root->children.push_back(fileInfo);
 				}
 				else
 				{
@@ -152,7 +157,11 @@ namespace io
 						recursive)
 					{
 						String chilfFolderAbsolutePath = originalPath + FindFileData.cFileName;
-						CollectFilesFromFolder(chilfFolderAbsolutePath, true);
+
+						SPtr<FolderInfo> folderInfo(new FolderInfo(FindFileData.cFileName, chilfFolderAbsolutePath + "/"));
+						root->children.push_back(folderInfo);
+
+						CollectFilesFromFolder(chilfFolderAbsolutePath, folderInfo, true);
 					}
 				}
 			} while (FindNextFile(hFind, &FindFileData));

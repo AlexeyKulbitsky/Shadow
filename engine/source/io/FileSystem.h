@@ -8,13 +8,28 @@ namespace sh
 {
 	namespace io
 	{
-		struct FileInfo
+		struct FileSystemComponent
 		{
+			enum class Type
+			{
+				File,
+				Folder
+			};
+
+			FileSystemComponent(const String& _name, const String& _absolutePath) : name(_name), absolutePath(_absolutePath) {}
+
+			virtual Type GetType() const = 0;
+
 			String name;
 			String absolutePath;
+		};
 
-			FileInfo(const String& _name, const String& _absolutePath) : name(_name) , absolutePath(_absolutePath) {}
-			FileInfo(const FileInfo& other) : name(other.name) , absolutePath(other.absolutePath) {}
+
+
+		struct FileInfo : public FileSystemComponent
+		{
+			FileInfo(const String& name, const String& absolutePath) : FileSystemComponent(name, absolutePath) {}
+			FileInfo(const FileInfo& other) : FileSystemComponent(other.name, other.absolutePath) {}
 			FileInfo() : FileInfo("", "") {}
 			FileInfo(const String& name) : FileInfo(name, "") {}
 
@@ -27,6 +42,17 @@ namespace sh
 			{
 				return name == other.name;
 			}
+
+			virtual Type GetType() const override final { return Type::File; }
+		};
+
+		struct FolderInfo : public FileSystemComponent
+		{
+			FolderInfo(const String& name, const String& absolutePath) : FileSystemComponent(name, absolutePath) {}
+
+			virtual Type GetType() const override final { return Type::Folder; }
+
+			std::vector<SPtr<FileSystemComponent>> children;
 		};
 
 		class FileSystem : public Singleton<FileSystem>
@@ -59,6 +85,7 @@ namespace sh
 
 		protected:
 			std::vector<String> m_imageFileNames;
+			SPtr<FolderInfo> m_root;
 		};
 	}
 }

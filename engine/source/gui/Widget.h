@@ -65,6 +65,7 @@ namespace gui
 
 		virtual void Load(const pugi::xml_node& node);
 		virtual void Render(video::Painter* painter);
+		virtual void SetRect(const math::Recti& rect);
 		virtual void SetPosition(s32 x, s32 y);
 		virtual void SetSize(const math::Vector2i& size);
 		virtual void SetWidth(s32 width);

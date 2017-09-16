@@ -23,6 +23,7 @@ namespace sh
 			Vector2<T> operator-() const { return Vector2<T>(-x, -y); }
 			Vector2<T>& operator=(const Vector2<T>& v) { x = v.x; y = v.y; return *this; }
 			bool operator==(const Vector2<T>& v) const { return v.x == x && v.y == y; }
+			bool operator!=(const Vector2<T>& v) const { return v.x != x && v.y != y; }
 
 			Vector2<T> operator+(T s) const { return Vector2<T>(x + s, y + s); }
 			Vector2<T> operator+(const Vector2<T>& v) const { return Vector2<T>(x + v.x, y + v.y); }

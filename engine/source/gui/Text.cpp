@@ -44,6 +44,10 @@ namespace gui
 	void Text::Render(video::Painter* painter)
 	{
 		painter->SetMaterial(GuiManager::GetInstance()->GetTextMaterial());
+		const auto cachedClipRect = painter->GetClipRect();
+
+		painter->SetClipRect(math::Rectu(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y,
+			m_rect.lowerRightCorner.x, m_rect.lowerRightCorner.y));
 
 		const auto& viewPort = sh::Device::GetInstance()->GetDriver()->GetViewPort();
 
@@ -78,6 +82,7 @@ namespace gui
 
 			xOrigin += desc.advance;
 		}
+		painter->SetClipRect(cachedClipRect);
 	}
 
 	void Text::SetPosition( s32 x, s32 y )

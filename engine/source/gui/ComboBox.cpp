@@ -20,6 +20,11 @@ namespace gui
 		m_button->OnToggle.Connect(std::bind(&ComboBox::OnButtonToggled, this, std::placeholders::_1));
 
 		m_layout.reset(new VerticalLayout());
+		math::Recti scrollRect(rect.upperLeftCorner.x, rect.lowerRightCorner.y,
+			rect.lowerRightCorner.x, rect.lowerRightCorner.y + rect.GetHeight() + 200);
+		m_scrollWidget.reset(new ScrollWidget());
+		m_scrollWidget->SetLayout(m_layout);
+		m_scrollWidget->SetRect(scrollRect);
 	}
 
 	void ComboBox::Render(video::Painter* painter)
@@ -29,31 +34,32 @@ namespace gui
 
 		m_button->Render(painter);
 		if (m_showList)
-			m_layout->Render(painter);
+		{
+			m_scrollWidget->Render(painter);
+		}
 	}
 
 	void ComboBox::SetPosition(s32 x, s32 y)
 	{
 		m_button->SetPosition(x, y);
-		Widget::SetPosition(x, y);
+		m_scrollWidget->SetPosition(x, y + m_button->GetRect().GetHeight());
 	}
 
 	void ComboBox::SetSize(const math::Vector2i& size)
 	{
 		m_button->SetSize(size);
-		Widget::SetSize(size);
+		m_scrollWidget->SetWidth(size.x);
 	}
 
 	void ComboBox::SetWidth(s32 width)
 	{
 		m_button->SetWidth(width);
-		Widget::SetWidth(width);
+		m_scrollWidget->SetWidth(width);
 	}
 
 	void ComboBox::SetHeight(s32 height)
 	{
 		m_button->SetHeight(height);
-		Widget::SetHeight(height);
 	}
 
 	bool ComboBox::ProcessEvent(GUIEvent& ev)
@@ -65,7 +71,10 @@ namespace gui
 		else
 		{
 			if (m_showList)
-				return m_layout->ProcessEvent(ev);
+			{
+				m_scrollWidget->ProcessEvent(ev);
+				return true;
+			}
 			return false;
 		}
 	}
@@ -74,9 +83,11 @@ namespace gui
 	{
 		ButtonPtr button(new Button(text));
 		button->SetToggleable(true);
+		button->SetHeight(20);
 		button->OnToggle.Connect(std::bind(&ComboBox::OnItemToggled, this, 
 			std::placeholders::_1, std::placeholders::_2));
 		m_layout->AddWidget(button);
+		
 		
 		u32 childrenCount = m_layout->GetItemsCount();
 
@@ -86,12 +97,9 @@ namespace gui
 			m_currentSelectedItem = button;
 			m_currentSelectedItem->SetToggled(true);
 		}
-		u32 x0 = m_button->GetPosition().x;
-		u32 y0 = m_button->GetRect().lowerRightCorner.y;
-		u32 x1 = x0 + 150U;
-		u32 y1 = y0 + 15U * childrenCount;
 
-		m_layout->Resize(math::Recti(x0, y0, x1, y1));
+		//m_scrollWidget->SetRect(math::Recti(x0, y0, x1, y1));
+		m_scrollWidget->UpdateLayout();
 	}
 
 	void ComboBox::RemoveItem(const String& text)
@@ -103,7 +111,7 @@ namespace gui
 			if (button->GetText() == text)
 			{
 				m_layout->RemoveWidget(button);
-				UpdateLayout();
+				m_scrollWidget->UpdateLayout();
 				return;
 			}
 		}
@@ -117,7 +125,7 @@ namespace gui
 
 		const auto& widget = m_layout->GetWidget(index);
 		m_layout->RemoveWidget(widget);
-		UpdateLayout();
+		m_scrollWidget->UpdateLayout();
 	}
 
 	void ComboBox::SetSelectedItem(const String& item)
@@ -188,7 +196,7 @@ namespace gui
 		u32 y0 = m_button->GetRect().lowerRightCorner.y;
 		u32 x1 = x0 + 150;
 		u32 y1 = y0 + 15 * childrenCount;
-		m_layout->Resize(math::Recti(x0, y0, x1, y1));
+		//m_layout->Resize(math::Recti(x0, y0, x1, y1));
 	}
 
 } // gui

@@ -96,6 +96,8 @@ namespace gui
 		result->m_sprites[Pressed] = m_sprites[Pressed];
 		result->m_sprites[Hovered] = m_sprites[Hovered];
 
+		result->m_minSize = m_minSize;
+		result->m_maxSize = m_maxSize;
 		result->m_toggleable = m_toggleable;
 
 		return result;

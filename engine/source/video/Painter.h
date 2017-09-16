@@ -34,12 +34,13 @@ namespace sh
 			};
 
 			Painter();
+			// Set current active material
 			void SetMaterial(const MaterialPtr& material);
-
 			// Get current active material
 			const MaterialPtr& GetMaterial() const { return m_material; }
 			void SetCamera(const scene::CameraPtr& camera);
 			void SetClipRect(const math::Rectu& rect);
+			const math::Rectu& GetClipRect() const;
 
 			void DrawLine(const math::Vector3f& a, const math::Vector3f& b);
 			void DrawRect(const math::Rectu& rect, const gui::SpritePtr& sprite);
@@ -69,6 +70,7 @@ namespace sh
 				u32 startIndex = 0U;
 				u32 verticesCount = 0U;
 				u32 materialIndex = 0U;
+				math::Rectu clipRect = math::Rectu(0U, 0U, 0U, 0U);
 			};
 			struct Lines
 			{
