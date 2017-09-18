@@ -67,6 +67,7 @@ namespace gui
 		virtual void Render(video::Painter* painter);
 		virtual void SetRect(const math::Recti& rect);
 		virtual void SetPosition(s32 x, s32 y);
+		const sh::math::Vector2i& GetPosition() const { return m_rect.upperLeftCorner; }
 		virtual void SetSize(const math::Vector2i& size);
 		virtual void SetWidth(s32 width);
 		virtual void SetHeight(s32 height);

@@ -82,6 +82,7 @@ namespace sh
 			virtual File LoadFile(const String& filename) { return File(); }
 
 			const std::vector<String>& GetImageFileNames() const { return m_imageFileNames; }
+			const SPtr<FolderInfo> GetRoot() const { return m_root; }
 
 		protected:
 			std::vector<String> m_imageFileNames;
