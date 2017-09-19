@@ -5,6 +5,9 @@ TreeItem::TreeItem(const sh::String& name, TreeItem* parent)
 	: m_parent(parent)
 {  
 	sh::gui::ButtonPtr button(new sh::gui::Button(name));
+	button->SetToggleable(true);
+
+	button->OnToggle.Connect(std::bind(&TreeItem::OnToggled, this, std::placeholders::_1));
 	sh::gui::HorizontalLayoutPtr layout(new sh::gui::HorizontalLayout());
 	layout->AddWidget(button);
 	SetMinimumHeight(15U);
@@ -29,9 +32,41 @@ void TreeItem::AddChild(const sh::SPtr<TreeItem>& child)
 	m_children.push_back(child);
 }
 
+void TreeItem::SetExpanded(bool expanded)
+{ 
+	m_expanded = expanded; 
+	for (auto& child : m_children)
+	{
+		child->SetExpanded(expanded);
+	}
+}
+
+void TreeItem::SetVisibility(bool yes)
+{
+	SetVisible(yes);
+	if (yes)
+	{
+		SetMaximumHeight(15U);
+	}
+	else
+	{
+		SetMaximumHeight(0U);
+	}
+	for (auto& child : m_children)
+	{
+		child->SetVisibility(yes);
+	}
+}
+
 void TreeItem::OnToggled(bool toggled)
 {
+	SetExpanded(!toggled);
+	for (auto& child : m_children)
+	{
+		child->SetVisibility(!toggled);
+	}
 
+	m_treeWidget->UpdateLayout();
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -53,12 +88,55 @@ sh::SPtr<TreeItem> TreeWidget::AddItem(const sh::String& name, TreeItem* parent)
 
 void TreeWidget::Render(sh::video::Painter* painter)
 {
-	ScrollWidget::Render(painter);
+	painter->SetClipRect(sh::math::Rectu(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y,
+		m_rect.lowerRightCorner.x, m_rect.lowerRightCorner.y));
+	
+	if (m_layout)
+	{
+		const sh::u32 itemsCount = m_layout->GetItemsCount();
+		for (sh::u32 i = 0U; i < itemsCount; ++i)
+		{
+			auto treeItem = std::static_pointer_cast<TreeItem>(m_layout->GetWidget(i));
+			if (treeItem->IsVisible())
+				treeItem->Render(painter);
+		}
+	}
+
+
+	painter->SetClipRect(sh::Device::GetInstance()->GetDriver()->GetViewport());
+
+	
 }
 
 void TreeWidget::UpdateLayout()
 {
-	ScrollWidget::UpdateLayout();
+	if (m_layout)
+	{
+		const sh::u32 itemsCount = m_layout->GetItemsCount();
+		sh::u32 height = 0U;
+		auto startPos = m_rect.upperLeftCorner;
+
+// 		if (itemsCount > 1)
+// 		{
+// 			height += m_layout->GetSpacing() * (itemsCount - 1);
+// 		}
+		for (sh::u32 i = 0U; i < itemsCount; ++i)
+		{
+			auto treeItem = std::static_pointer_cast<TreeItem>(m_layout->GetWidget(i));
+			if (!treeItem->IsVisible())
+				continue;
+
+			treeItem->SetPosition(startPos.x, startPos.y + height);
+			height += m_layout->GetItem(i)->GetHeight();
+		}
+		auto r = m_rect;
+		r.lowerRightCorner.y = r.upperLeftCorner.y + height;
+		m_layout->Resize(r);
+		m_fullRect = r;
+
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	}
 }
 
 

@@ -50,7 +50,8 @@ namespace gui
 			const s32 x = finalRect.upperLeftCorner.x;
 			const s32 y = finalRect.upperLeftCorner.y + offset;
 			m_items[i]->Resize(math::Recti(x, y, x + width, y + itemHeight));
-			offset += m_items[i]->GetHeight() + m_spacing;
+			if (m_items[i]->GetHeight() != 0)
+				offset += m_items[i]->GetHeight() + m_spacing;
 		}
 		m_rect.upperLeftCorner = finalRect.upperLeftCorner;
 		m_rect.lowerRightCorner = finalRect.upperLeftCorner + math::Vector2i(width, offset);

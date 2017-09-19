@@ -14,12 +14,13 @@ public:
 	void AddChild(const sh::SPtr<TreeItem>& child);
 	sh::s32 GetOffset() const { return m_offset; }
 	bool IsExpanded() const { return m_expanded; }
-	void SetExpanded(bool expanded) { m_expanded = expanded; }
+	void SetExpanded(bool expanded);// { m_expanded = expanded; }
+	void SetVisibility(bool yes);
 	void OnToggled(bool toggled);
 
 private:
 	sh::s32 m_offset = 0;
-	bool m_expanded = false;
+	bool m_expanded = true;
 	TreeItem* m_parent = nullptr;
 	TreeWidget* m_treeWidget = nullptr;
 	std::vector<sh::SPtr<TreeItem>> m_children;

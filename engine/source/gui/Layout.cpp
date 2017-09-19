@@ -90,7 +90,7 @@ namespace gui
 		for (u32 i = 0; i < m_items.size(); ++i)
 		{
 			const auto& widget = m_items[i]->GetWidget();
-			if (widget)
+			if (widget && widget->IsVisible())
 			{
 				widget->Render(painter);
 				continue;

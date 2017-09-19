@@ -24,7 +24,7 @@ namespace gui
 		virtual bool ProcessEvent(GUIEvent& ev) override;
 		virtual void UpdateLayout() override;
 
-	private:
+	protected:
 		math::Recti m_fullRect;
 	};
 

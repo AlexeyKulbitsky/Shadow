@@ -9,7 +9,6 @@ using namespace video;
 
 EGLContextManager::EGLContextManager()
 {
-
 }
 
 EGLContextManager::~EGLContextManager()
