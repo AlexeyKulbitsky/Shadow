@@ -26,6 +26,7 @@ namespace gui
 
 	protected:
 		math::Recti m_fullRect;
+		s32 m_scrollSpeed = 15;
 	};
 
 } // gui

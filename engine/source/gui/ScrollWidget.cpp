@@ -59,7 +59,12 @@ namespace gui
 		{
 		case EventType::Wheel:
 		{
-			int delta = ev.delta > 0 ? 15 : -15;
+			const s32 fullRectHeight = m_fullRect.GetHeight();
+			const s32 rectHeight = m_rect.GetHeight();
+			if (fullRectHeight < rectHeight)
+				return true;
+
+			int delta = ev.delta > 0 ? m_scrollSpeed : -m_scrollSpeed;
 			m_fullRect.lowerRightCorner.y += delta;
 			m_fullRect.upperLeftCorner.y += delta;
 			if (m_fullRect.upperLeftCorner.y > m_rect.upperLeftCorner.y)

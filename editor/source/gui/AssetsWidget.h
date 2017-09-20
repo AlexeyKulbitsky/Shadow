@@ -14,8 +14,7 @@ public:
 	void AddChild(const sh::SPtr<TreeItem>& child);
 	sh::s32 GetOffset() const { return m_offset; }
 	bool IsExpanded() const { return m_expanded; }
-	void SetExpanded(bool expanded);// { m_expanded = expanded; }
-	void SetVisibility(bool yes);
+	void SetExpanded(bool expanded);
 	void OnToggled(bool toggled);
 
 private:
@@ -36,7 +35,7 @@ public:
 	virtual void UpdateLayout() override;
 
 private:
-	sh::gui::VerticalLayoutPtr m_layout;
+	//sh::gui::VerticalLayoutPtr m_layout;
 };
 
 ///////////////////////////////////////////////////////////////////////

@@ -1,6 +1,5 @@
 #include "AssetsWidget.h"
 
-
 TreeItem::TreeItem(const sh::String& name, TreeItem* parent) 
 	: m_parent(parent)
 {  
@@ -13,7 +12,6 @@ TreeItem::TreeItem(const sh::String& name, TreeItem* parent)
 	SetMinimumHeight(15U);
 	SetMaximumHeight(20U);
 	SetLayout(layout);
-
 
 	if (parent)
 	{
@@ -35,37 +33,11 @@ void TreeItem::AddChild(const sh::SPtr<TreeItem>& child)
 void TreeItem::SetExpanded(bool expanded)
 { 
 	m_expanded = expanded; 
-	for (auto& child : m_children)
-	{
-		child->SetExpanded(expanded);
-	}
-}
-
-void TreeItem::SetVisibility(bool yes)
-{
-	SetVisible(yes);
-	if (yes)
-	{
-		SetMaximumHeight(15U);
-	}
-	else
-	{
-		SetMaximumHeight(0U);
-	}
-	for (auto& child : m_children)
-	{
-		child->SetVisibility(yes);
-	}
 }
 
 void TreeItem::OnToggled(bool toggled)
 {
 	SetExpanded(!toggled);
-	for (auto& child : m_children)
-	{
-		child->SetVisibility(!toggled);
-	}
-
 	m_treeWidget->UpdateLayout();
 }
 
@@ -102,10 +74,7 @@ void TreeWidget::Render(sh::video::Painter* painter)
 		}
 	}
 
-
 	painter->SetClipRect(sh::Device::GetInstance()->GetDriver()->GetViewport());
-
-	
 }
 
 void TreeWidget::UpdateLayout()
@@ -116,26 +85,45 @@ void TreeWidget::UpdateLayout()
 		sh::u32 height = 0U;
 		auto startPos = m_rect.upperLeftCorner;
 
-// 		if (itemsCount > 1)
-// 		{
-// 			height += m_layout->GetSpacing() * (itemsCount - 1);
-// 		}
 		for (sh::u32 i = 0U; i < itemsCount; ++i)
 		{
 			auto treeItem = std::static_pointer_cast<TreeItem>(m_layout->GetWidget(i));
-			if (!treeItem->IsVisible())
+
+			TreeItem* parent = treeItem->GetParent();
+			bool expanded = true;
+			while(parent)
+			{
+				if (!parent->IsExpanded())
+				{
+					expanded = false;
+					break;
+				}
+				parent = parent->GetParent();
+			}
+
+			if (!expanded)
+			{
+				treeItem->SetVisible(false);
+				treeItem->SetMaximumHeight(0U);
+				treeItem->SetHeight(0U);
 				continue;
+			}
+			else
+			{
+				treeItem->SetVisible(true);
+				treeItem->SetMaximumHeight(15U);
+				treeItem->SetHeight(15U);
+			}
 
 			treeItem->SetPosition(startPos.x, startPos.y + height);
-			height += m_layout->GetItem(i)->GetHeight();
+			height += m_layout->GetItem(i)->GetHeight() + m_layout->GetSpacing();
 		}
 		auto r = m_rect;
 		r.lowerRightCorner.y = r.upperLeftCorner.y + height;
 		m_layout->Resize(r);
 		m_fullRect = r;
 
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+		m_scrollSpeed = height / 25;
 	}
 }
 
@@ -188,8 +176,8 @@ AssetsWidget::AssetsWidget()
 	
 
 	auto root = sh::io::FileSystem::GetInstance()->GetRoot();
-	sh::SPtr<TreeItem> rootTreeItem(new TreeItem(root->name, nullptr));
 	sh::SPtr<TreeWidget> treeWidget(new TreeWidget());
+	sh::SPtr<TreeItem> rootTreeItem = treeWidget->AddItem(root->name, nullptr);
 
 	Local::Parse(root, treeWidget, rootTreeItem);
 
