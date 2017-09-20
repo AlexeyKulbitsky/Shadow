@@ -3,17 +3,20 @@
 
 #include <Shadow.h>
 
-#include "Vector3LineEdit.h"
-
-class MaterialParamVector3Editor : public sh::gui::Widget
+class MeshMaterialParam : public sh::gui::Widget
 {
 public:
-	MaterialParamVector3Editor(sh::video::MaterialParam* param);
-	void SetValue(const sh::math::Vector3f& value);
+	MeshMaterialParam(const sh::scene::MeshPtr& mesh);
 
 private:
-	sh::video::MaterialParam* m_param = nullptr;
+	void MaterialChanged(sh::u32 index);
+
+private:
+	std::vector<sh::String> m_materialNames;
+	sh::scene::Mesh* m_mesh = nullptr;
 };
+
+////////////////////////////////////////////////////////////////////////
 
 class MaterialWidget
 {
@@ -29,7 +32,6 @@ private:
 	void OnButtonToggled(bool toggled);
 
 private:
-	sh::gui::ButtonPtr m_expandableButton;
 	sh::gui::WidgetPtr m_widget;
 	sh::gui::VerticalLayoutPtr m_layout;
 	sh::RenderComponent* m_renderComponent = nullptr;

@@ -17,6 +17,7 @@ namespace sh
 			const math::Matrix4f& GetWorldMatrix() const { return m_worldMatrix; }
 			void SetMaterial(const sh::video::MaterialPtr& material);
 			const video::MaterialPtr& GetMaterial();
+			const String& GetName() const;
 
 			const video::RenderablePtr& GetRanderable() const { return m_renderable; }
 

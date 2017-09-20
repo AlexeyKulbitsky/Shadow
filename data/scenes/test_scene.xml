@@ -1,28 +1,6 @@
 <?xml version="1.0"?>
 
-<materials>
-	<material name="testMaterial">
-		<technique filename="const_color.xml" />
-		<params>
-			<sampler name="diffuse" val="statue.jpg"/>
-			<sampler name="normalMap" val="arm_showroom_ddn.png"/>
-		</params>
-	</material>	
-	
-	<material name="skyboxMaterial">
-		<technique filename="skybox.xml" />
-		<params>
-			<sampler name="skybox" type="Cube" front="front.jpg" back="back.jpg"
-			right="right.jpg" left="left.jpg" top="top.jpg" bottom="bottom.jpg"/>
-		</params>
-	</material>	
-</materials>
-
 <scene>
-	<material name="testMaterial">
-		<technique filename="const_color.xml" />
-	</material>
-
 	<entity name="light_0">
 		<component name="light">
 			<type val="directional" />
@@ -39,7 +17,7 @@
 		</component-->
 		<component name="render">
 			<model filename="cube.obj" />
-			<material name="skyboxMaterial"/>
+			<material filename="skyboxMaterial.mat"/>
 		</component>
 	</entity>
 	
@@ -51,7 +29,7 @@
 		</component>
 		<component name="render">
 			<model filename="cube.obj" />
-			<material name="testMaterial"/>
+			<material filename="testMaterial.mat"/>
 		</component>
 	</entity>
 	
@@ -63,7 +41,19 @@
 		</component>
 		<component name="render">
 			<model filename="cube.obj" />
-			<material name="testMaterial"/>
+			<material filename="testMaterial.mat"/>
+		</component>
+	</entity>
+	
+	<entity name="nanosuit">
+		<component name="transform">
+			<position val="2 2 -2" />
+			<rotation val="0 0 0 1" />
+			<scale val="1 1 1" />
+		</component>
+		<component name="render">
+			<model filename="nanosuit.obj" />
+			<material filename="testMaterial.mat"/>
 		</component>
 	</entity>
 

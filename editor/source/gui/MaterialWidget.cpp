@@ -2,48 +2,55 @@
 
 #include "materialview/MaterialParamSamplerView.h"
 
-MaterialParamVector3Editor::MaterialParamVector3Editor(sh::video::MaterialParam* param) : m_param(param) 
+MeshMaterialParam::MeshMaterialParam(const sh::scene::MeshPtr& mesh)
 {
+	m_mesh = mesh.get();
+	const auto& material = m_mesh->GetMaterial();
+
+	m_materialNames = sh::io::FileSystem::GetInstance()->GetMaterialFileNames();
+
+	sh::gui::ComboBoxPtr comboBox(new sh::gui::ComboBox());
+
+	sh::u32 index = 0U;
+	for (sh::u32 i = 0U; i < m_materialNames.size(); ++i)
+	{
+		comboBox->AddItem(m_materialNames[i]);
+		if (material->GetFileName() == m_materialNames[i])
+			index = i;
+	}
+	comboBox->SetSelectedItem(index);
+
+	comboBox->OnItemChanged.Connect(std::bind(&MeshMaterialParam::MaterialChanged, this,
+		std::placeholders::_1));
+
 	sh::gui::HorizontalLayoutPtr layout(new sh::gui::HorizontalLayout());
-	sh::gui::LabelPtr label(new sh::gui::Label(m_param->GetName()));
-	label->SetMaximumWidth(75U);
+	sh::gui::LabelPtr label(new sh::gui::Label(mesh->GetName()));
+
 	layout->AddWidget(label);
-	sh::SPtr<Vector3LineEdit> editWidget(new Vector3LineEdit());
-	layout->AddWidget(editWidget);
+	layout->AddWidget(comboBox);
 	SetLayout(layout);
-	SetMaximumHeight(20);
 
-	sh::math::Vector3f value;
-	m_param->Get(value);
-	editWidget->SetValue(value);
-
-	editWidget->valueChanged.Connect(
-		std::bind(&MaterialParamVector3Editor::SetValue, this, std::placeholders::_1));
+	SetMaximumHeight(20U);
 }
 
-void MaterialParamVector3Editor::SetValue(const sh::math::Vector3f& value)
+void MeshMaterialParam::MaterialChanged(sh::u32 index)
 {
-	if (m_param)
-		m_param->Set(value);
-}
+	const auto& name = m_materialNames[index];
+	
+	sh::ResourceManager* resourceManager = sh::Device::GetInstance()->GetResourceManager();
+	auto material = resourceManager->GetMaterial(name);
 
-///////////////////////////////////////////////////////////////////////////////////
+	m_mesh->SetMaterial(material);
+}
 
 
 MaterialWidget::MaterialWidget()
 {
-	m_expandableButton.reset(new sh::gui::Button("Material"));
-	m_expandableButton->SetToggleable(true);
-	m_expandableButton->SetMaximumHeight(20);
-	m_expandableButton->OnToggle.Connect(std::bind(&MaterialWidget::OnButtonToggled, this, 
-		std::placeholders::_1));
-
 	m_layout.reset(new sh::gui::VerticalLayout());
 	m_layout->SetMargins(2, 2, 2, 2);
 	m_layout->SetSpacing(2);
 
 	m_widget.reset(new sh::gui::Widget());
-	//m_widget->SetMaximumHeight(80);
 	m_widget->SetLayout(m_layout);
 }
 
@@ -61,33 +68,14 @@ void MaterialWidget::SetRenderComponent(sh::RenderComponent* component)
 		return;
 	}
 	m_layout->Clear();
-	m_layout->AddWidget(m_expandableButton);
-	const auto& params = component->GetModel()->GetMesh(0U)->GetMaterial()->GetParams();
-	sh::u32 paramsCount = params->GetParamsCount();
-	for (sh::u32 i = 0; i < paramsCount; ++i)
-	{
-		auto param = params->GetParam(i);
-		if (param->GetUsage() != sh::MaterialParamUsage::Undefined)
-			continue;
 
-		sh::gui::WidgetPtr widget;
-		switch (param->GetType())
-		{
-			case sh::MaterialParamType::Float3:
-				widget.reset(new MaterialParamVector3Editor(param));
-				break;
-			default:
-				break;
-		}
-		m_layout->AddWidget(widget);
-	}
-
-	const auto& samplerParams = params->GetSamplerParams();
-	for (const auto& samplerParam : samplerParams)
+	const auto& model = component->GetModel();
+	size_t meshesCount = model->GetMeshesCount();
+	for (size_t i = 0U; i < meshesCount; ++i)
 	{
-		sh::gui::WidgetPtr widget;
-		widget.reset(new MaterialParamSamplerView(const_cast<sh::video::MaterialSamplerParam*>(&samplerParam)));
-		m_layout->AddWidget(widget);
+		const auto& mesh = model->GetMesh(i);
+		sh::SPtr<MeshMaterialParam> param(new MeshMaterialParam(mesh));
+		m_layout->AddWidget(param);
 	}
 }
 

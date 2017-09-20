@@ -49,6 +49,7 @@ namespace gui
 		button->SetText(title);
 		button->OnToggle.Connect(std::bind(&Menu::SetEnabled, menu.get(), std::placeholders::_1));
 		button->OnToggle.Connect(std::bind(&Menu::SetVisible, menu.get(), std::placeholders::_1));
+		menu->SetPosition(0, 15);
 
 		m_menus.push_back(std::make_pair(button, menu));
 		return m_menus[m_menus.size() - 1].second;

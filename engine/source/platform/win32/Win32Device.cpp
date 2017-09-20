@@ -69,6 +69,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			device->mouseEvent(x, y, MouseEventType::ButtonReleased, MouseCode::ButtonLeft);
 	}
 		return 0;
+
+	case WM_RBUTTONDOWN:
+	{
+		int x = LOWORD(lParam);
+		int y = HIWORD(lParam);
+
+		if (device)
+			device->mouseEvent(x, y, MouseEventType::ButtonPressed, MouseCode::ButtonRight);
+	}
+		return 0;
+
+	case WM_RBUTTONUP:
+	{
+		int x = LOWORD(lParam);
+		int y = HIWORD(lParam);
+
+		if (device)
+			device->mouseEvent(x, y, MouseEventType::ButtonReleased, MouseCode::ButtonRight);
+	}
+		return 0;
 	case WM_MBUTTONDOWN:
 	{
 		int x = LOWORD(lParam);

@@ -29,6 +29,7 @@ namespace gui
 		s32 deltaY = 0;
 		s32 delta = 0;
 		s32 keyCode = 0;
+		MouseCode mouseButtonCode = MouseCode::ButtonLeft;
 	};
 
 	class Widget : public std::enable_shared_from_this<Widget>

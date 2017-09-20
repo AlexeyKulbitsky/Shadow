@@ -81,20 +81,8 @@ namespace sh
 			std::vector<char> buffer = io::FileSystem::GetInstance()->ReadFile(filename);
 
 			pugi::xml_document doc;
-			//pugi::xml_parse_result result = doc.load_file(filename);
 			pugi::xml_parse_result result = doc.load_buffer(buffer.data(), buffer.size());
 			
-			// Read materials
-			pugi::xml_node materialsNode = doc.child("materials");
-			pugi::xml_node materialNode = materialsNode.first_child();
-			while (materialNode)
-			{
-				video::MaterialPtr material(new video::Material());
-				material->Load(materialNode);
-				resourceManager->AddMaterial(material);
-				materialNode = materialNode.next_sibling();
-			}
-
 			// Read scene
 			pugi::xml_node scene = doc.child("scene");
 			pugi::xml_node sceneNode = scene.first_child();					

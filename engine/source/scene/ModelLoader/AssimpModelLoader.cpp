@@ -184,6 +184,7 @@ namespace scene
 		result->SetIndexBuffer(indexBuffer);
 		result->SetTopology(Topology::TOP_TRIANGLE_LIST);
 		result->SetBoundingBox(boundingBox);
+		result->SetName(mesh->mName.C_Str());
 		
 		return result;
 	}

@@ -188,6 +188,17 @@ namespace gui
 		if (m_toolBar && m_toolBar->ProcessEvent(ev))
 			return true;
 
+		if (m_focusWidget)
+		{
+			if (m_focusWidget->IsInFocus())
+				return m_focusWidget->ProcessEvent(ev);
+			else
+			{
+				SetFocusWidget(nullptr);
+				return true;
+			}
+		}
+
 		for (auto child = m_children.begin(); child != m_children.end(); ++child)
 		{
 			if ((*child)->ProcessEvent(ev))

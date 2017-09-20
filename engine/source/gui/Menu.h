@@ -22,6 +22,7 @@ namespace gui
 		const String& GetTitle() const { return m_title; }
 
 		void AddItem(const ButtonPtr& button);
+		void AddItem(const String& name);
 
 		virtual void Render(video::Painter* painter) override;
 		virtual void SetPosition(s32 x, s32 y) override;

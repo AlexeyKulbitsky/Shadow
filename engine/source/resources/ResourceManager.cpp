@@ -117,11 +117,30 @@ namespace sh
 	{
 		for (size_t i = 0U, sz = m_materials.size(); i < sz; ++i)
 		{
-			if (m_materials[i]->GetName() == materialName)
+			if (m_materials[i]->GetFileName() == materialName)
 			{
 				return m_materials[i];
 			}
 		}
+
+		io::FileSystem* fs = Device::GetInstance()->GetFileSystem();
+		io::File file = fs->LoadFile(materialName);
+
+		pugi::xml_document doc;
+		pugi::xml_parse_result result = doc.load_buffer(file.GetData().data(), file.GetData().size());
+			
+		// Read material
+		pugi::xml_node materialNode = doc.child("material");
+		while (materialNode)
+		{
+			video::MaterialPtr material(new video::Material());
+			material->Load(materialNode);
+			material->SetFileName(materialName);
+			m_materials.push_back(material);
+
+			return material;
+		}
+
 		return nullptr;
 	}
 

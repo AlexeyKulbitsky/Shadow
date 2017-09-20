@@ -1,7 +1,8 @@
 #include "AssetsWidget.h"
 
 TreeItem::TreeItem(const sh::String& name, TreeItem* parent) 
-	: m_parent(parent)
+	: m_name(name)
+	, m_parent(parent)
 {  
 	sh::gui::ButtonPtr button(new sh::gui::Button(name));
 	button->SetToggleable(true);
@@ -37,8 +38,39 @@ void TreeItem::SetExpanded(bool expanded)
 
 void TreeItem::OnToggled(bool toggled)
 {
+	if (m_children.size() == 0U)
+	{
+		m_treeWidget->itemToggled(m_name, toggled);
+	}
 	SetExpanded(!toggled);
 	m_treeWidget->UpdateLayout();
+}
+
+bool TreeItem::ProcessEvent(sh::gui::GUIEvent& ev)
+{
+	if (ev.type == sh::gui::EventType::PointerDown &&
+		ev.mouseButtonCode == sh::MouseCode::ButtonRight)
+		return false;
+
+	if (ev.type == sh::gui::EventType::PointerUp &&
+		ev.mouseButtonCode == sh::MouseCode::ButtonRight &&
+		m_rect.IsPointInside(ev.x, ev.y))
+	{
+		sh::gui::MenuPtr menu(new sh::gui::Menu());
+		menu->AddItem("Item 1");
+		menu->AddItem("Item 2");
+		menu->AddItem("Item 3");
+		menu->AddItem("Item 4");
+		menu->AddItem("Item 5");
+		menu->SetPosition(ev.x, ev.y);
+		sh::gui::GuiManager::GetInstance()->SetFocusWidget(menu);
+
+		return true;
+	}
+	else
+	{
+		return Widget::ProcessEvent(ev);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -120,6 +152,24 @@ void TreeWidget::UpdateLayout()
 		}
 		auto r = m_rect;
 		r.lowerRightCorner.y = r.upperLeftCorner.y + height;
+
+
+		sh::s32 delta = m_fullRect.upperLeftCorner.y - r.upperLeftCorner.y;
+		r.lowerRightCorner.y += delta;
+		r.upperLeftCorner.y += delta;
+		if (r.lowerRightCorner.y < m_rect.lowerRightCorner.y)
+		{
+			sh::s32 delta = m_rect.lowerRightCorner.y - r.lowerRightCorner.y;
+			r.lowerRightCorner.y += delta;
+			r.upperLeftCorner.y += delta;
+		}
+		if (r.upperLeftCorner.y > m_rect.upperLeftCorner.y)
+		{
+			sh::s32 delta = m_rect.upperLeftCorner.y - r.upperLeftCorner.y;
+			r.lowerRightCorner.y += delta;
+			r.upperLeftCorner.y += delta;
+		}
+
 		m_layout->Resize(r);
 		m_fullRect = r;
 
@@ -154,6 +204,10 @@ AssetsWidget::AssetsWidget()
 
 	//////////////////////////////////////////////////
 
+	m_materialEditor.reset(new MaterialEditor());
+	guiMgr->AddChild(m_materialEditor);
+
+
 	struct Local
 	{
 		static void Parse(const sh::SPtr<sh::io::FileSystemComponent>& item, 
@@ -182,8 +236,29 @@ AssetsWidget::AssetsWidget()
 	Local::Parse(root, treeWidget, rootTreeItem);
 
 	windowLayout->AddWidget(treeWidget);
+
+	treeWidget->itemToggled.Connect(std::bind(&AssetsWidget::OnTreeItemToggled, this,
+		std::placeholders::_1, std::placeholders::_2));
+
+	
 }
 
 AssetsWidget::~AssetsWidget()
 {
+}
+
+void AssetsWidget::OnTreeItemToggled(const sh::String& name, bool toggled)
+{
+	size_t pos = name.find_last_of('.');
+	auto extension = name.substr(pos + 1);
+
+	if (extension == "mat" && toggled)
+	{
+		auto material = sh::Device::GetInstance()->GetResourceManager()->GetMaterial(name);
+		m_materialEditor->SetMaterial(material);
+	}
+	else
+	{
+		m_materialEditor->SetMaterial(nullptr);
+	}
 }

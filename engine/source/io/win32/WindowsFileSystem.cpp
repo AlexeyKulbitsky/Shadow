@@ -180,9 +180,17 @@ namespace io
 		{
 			size_t pos = file.name.find_last_of('.');
 			auto extension = file.name.substr(pos + 1);
+
+			// Check for image
 			auto res = std::find(imageExtensions.begin(), imageExtensions.end(), extension);
 			if (res != imageExtensions.end())
 				m_imageFileNames.push_back(file.name);
+
+			// Check for material
+			if (extension == "mat")
+			{
+				m_materialFileNames.push_back(file.name);
+			}
 		}
 	}
 

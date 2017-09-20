@@ -9,7 +9,7 @@ namespace sh
 {
 	namespace video
 	{
-		class Material
+		class Material : public Resource
 		{
 		public:
 			Material() {}

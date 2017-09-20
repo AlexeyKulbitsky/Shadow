@@ -47,7 +47,7 @@ namespace sh
 		pugi::xml_node materialNode = node.child("material");
 		if (materialNode)
 		{
-			pugi::xml_attribute nameAttribute = materialNode.attribute("name");
+			pugi::xml_attribute nameAttribute = materialNode.attribute("filename");
 			SH_ASSERT(nameAttribute);
 
 			String materialName(nameAttribute.as_string());
@@ -61,9 +61,9 @@ namespace sh
 				sh::scene::MeshPtr mesh = model->GetMesh(i);
 				mesh->SetMaterial(material);
 			}		
-
-			m_model = model;
 		}
+
+		m_model = model;
 	}
 
 	////////////////////////////////////////////////////////////////

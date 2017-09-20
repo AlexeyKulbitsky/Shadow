@@ -97,6 +97,7 @@ void MainWindow::OnMouseEvent(int x, int y, sh::MouseEventType type, sh::MouseCo
 	}
 	ev.x = x;
 	ev.y = y;
+	ev.mouseButtonCode = code;
 
 	if (sh::gui::GuiManager::GetInstance()->ProcessEvent(ev))
 		return;
@@ -327,6 +328,10 @@ void MainWindow::Init()
 	m_inspectorWidget.reset(new InspectorWidget());
 	m_assetsWidget.reset(new AssetsWidget());
 	m_hierarchyWidget.reset(new HierarchyWidget());
+
+
+	
+
 	m_hierarchyWidget->OnEntitySelected.Connect(std::bind(&MainWindow::OnEntityFromListSelected, this, std::placeholders::_1));
 
 	m_defaultGizmo->OnSelectedEntityChanged.Connect(std::bind(&InspectorWidget::SetEntity, m_inspectorWidget, std::placeholders::_1));

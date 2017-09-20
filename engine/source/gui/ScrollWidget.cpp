@@ -31,6 +31,10 @@ namespace gui
 
 	void ScrollWidget::SetPosition(s32 x, s32 y)
 	{
+		const s32 newX = m_fullRect.upperLeftCorner.x + (x - m_rect.upperLeftCorner.x);
+		const s32 newY = m_fullRect.upperLeftCorner.y + (y - m_rect.upperLeftCorner.y);
+		auto size = m_fullRect.GetSize();
+		m_fullRect.Set(newX, newY, newX + size.x, newY + size.y);
 		Widget::SetPosition(x, y);
 	}
 
