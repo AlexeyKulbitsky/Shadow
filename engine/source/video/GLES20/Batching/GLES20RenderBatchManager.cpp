@@ -41,6 +41,18 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////
 
+		void GLES20RenderBatchManager::RemoveMesh(const scene::MeshPtr& mesh)
+		{
+			const MaterialPtr& material = mesh->GetMaterial();
+			String techniqueName = material->GetRenderTechnique()->GetName();
+			RenderLayer layer = material->GetRenderPipeline(0)->GetRenderLayer();
+			size_t layerIndex = (size_t)layer;
+
+			m_renderBatches[layerIndex][techniqueName]->RemoveMesh(mesh);
+		}
+
+		////////////////////////////////////////////////////////////////////////
+
 		void GLES20RenderBatchManager::Submit()
 		{
 			for (size_t i = 0; i < (size_t)RenderPipeline::Layer::COUNT; ++i)

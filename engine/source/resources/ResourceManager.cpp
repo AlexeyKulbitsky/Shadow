@@ -103,7 +103,7 @@ namespace sh
 	{
 		for (size_t i = 0U, sz = m_materials.size(); i < sz; ++i)
 		{
-			if (m_materials[i]->GetName() == material->GetName())
+			if (m_materials[i]->GetFileName() == material->GetFileName())
 			{
 				return;
 			}
@@ -148,7 +148,7 @@ namespace sh
 
 	scene::ModelBasePtr ResourceManager::GetModelBase(const String& fileName)
 	{
-		// Check if Modell already exists in models pool
+		// Check if Model already exists in models pool
 		for (size_t i = 0, sz = m_models.size(); i < sz; ++i)
 		{
 			if (m_models[i]->GetFileName() == fileName)
@@ -165,5 +165,19 @@ namespace sh
 
 		return nullptr;
 	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	const video::MaterialPtr& ResourceManager::GetDefaultMaterial()
+	{
+		if (!m_defaultMaterial)
+		{
+			m_defaultMaterial.reset(new video::Material());
+			m_defaultMaterial->SetRenderTechnique("default.xml");
+		}
+		return m_defaultMaterial;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }

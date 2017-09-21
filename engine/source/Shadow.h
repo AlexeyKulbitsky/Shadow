@@ -72,6 +72,7 @@
 #include "video/Painter.h"
 #include "video/RasterizationState.h"
 #include "video/Renderable.h"
+#include "video/RenderBatchManager.h"
 #include "video/RenderPipeline.h"
 #include "video/RenderTarget.h"
 #include "video/RenderTechnique.h"

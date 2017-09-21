@@ -126,9 +126,9 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////
 
-		void Material::Save(pugi::xml_node &parent)
+		void Material::Save(pugi::xml_node &materialNode)
 		{
-			pugi::xml_node materialNode = parent.append_child("material");
+			//pugi::xml_node materialNode = parent;// .append_child("material");
 			materialNode.append_attribute("name").set_value(m_name.c_str());
 			pugi::xml_node techniqueNode = materialNode.append_child("technique");
 			techniqueNode.append_attribute("filename").set_value(GetRenderTechnique()->GetFileName().c_str());

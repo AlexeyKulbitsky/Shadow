@@ -14,6 +14,7 @@ namespace gui
 	public:
 		Menu();
 		Menu(const String& title);
+		virtual ~Menu();
 
 		void Show();
 		void Hide();
@@ -30,6 +31,12 @@ namespace gui
 		virtual void SetHeight(s32 height) override;
 
 		virtual bool ProcessEvent(GUIEvent& ev) override;
+
+		Event<void, const String&> itemSelected;
+		Event<void, size_t> itemIndexSelected;
+
+	private:
+		void OnButtonReleased(const ButtonPtr& sender);
 
 	private:
 		String m_title;

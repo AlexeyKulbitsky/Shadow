@@ -138,6 +138,14 @@ include_directories(../libs/egl/include)
 find_library(EGL_LIBRARY libEGL HINTS ../libs/egl/lib/release)
 find_library(GLESV2_LIBRARY libGLESv2 HINTS ../libs/egl/lib/release)
 
+# Add GLEW
+if (WIN32)
+  set(BUILD_UTILS OFF CACHE BOOL "utilities" FORCE)
+  add_subdirectory(../libs/glew/build/cmake "${CMAKE_CURRENT_BINARY_DIR}/glew_build")
+  include_directories(../libs/glew/include)
+  #target_link_libraries(${PROJECT_NAME} glew_s)
+endif(WIN32)
+
 # Add assimp
 if (USE_ASSIMP_API)
   add_definitions(-DSHADOW_ASSIMP_LOADER)

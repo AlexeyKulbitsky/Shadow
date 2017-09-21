@@ -15,6 +15,8 @@ private:
 	sh::video::MaterialParam* m_param = nullptr;
 };
 
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 class MaterialEditor : public sh::gui::Window
 {
 public:
@@ -22,7 +24,11 @@ public:
 	void SetMaterial(const sh::video::MaterialPtr& material);
 
 private:
+	void OnRenderTechniqueChanged(sh::u32 index);
+
+private:
 	sh::video::Material* m_material = nullptr;
+	std::vector<sh::String> m_rtNames;
 };
 
 #endif

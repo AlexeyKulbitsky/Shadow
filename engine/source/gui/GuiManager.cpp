@@ -21,6 +21,8 @@
 #include "../scene/Camera.h"
 #include "../Device.h"
 
+#include <iostream>
+
 
 using namespace std::placeholders;
 
@@ -47,11 +49,11 @@ namespace gui
 		const auto& mat = sh::Device::GetInstance()->GetSceneManager()->GetCamera()->Get2DProjectionMatrix();
 
 		m_defaultMaterial.reset(new video::Material());
-		m_defaultMaterial->SetRenderTechnique("ui_base.xml");
+		m_defaultMaterial->SetRenderTechnique("ui_base.rt");
 		m_defaultMaterial->GetCommonGpuParams()->SetParam("orthoMat", mat);
 
 		m_textMaterial.reset(new video::Material());
-		m_textMaterial->SetRenderTechnique("text_base.xml");
+		m_textMaterial->SetRenderTechnique("text_base.rt");
 		m_textMaterial->GetCommonGpuParams()->SetParam("orthoMat", mat);
 	}
 
@@ -76,7 +78,7 @@ namespace gui
 		if (m_menuBar)
 			m_menuBar->Render(painter);
 
-		if (m_focusWidget)
+		if (m_focusWidget && m_focusWidget->IsInFocus())
 		{
 			m_focusWidget->SetFocus(false);
 			m_focusWidget->Render(painter);
@@ -191,7 +193,9 @@ namespace gui
 		if (m_focusWidget)
 		{
 			if (m_focusWidget->IsInFocus())
+			{
 				return m_focusWidget->ProcessEvent(ev);
+			}
 			else
 			{
 				SetFocusWidget(nullptr);

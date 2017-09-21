@@ -37,6 +37,15 @@ namespace gui
 			m_parent->UpdateLayout();
 	}
 
+	void Layout::InsertWidget(u32 index, const WidgetPtr& widget)
+	{
+		LayoutItemPtr item(new WidgetItem(widget));
+		m_items.insert(m_items.begin() + index, item);
+
+		if (m_parent)
+			m_parent->UpdateLayout();
+	}
+
 	void Layout::RemoveWidget(const WidgetPtr& widget)
 	{
 		for (auto item = m_items.begin(); item != m_items.end(); ++item)

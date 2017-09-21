@@ -1,5 +1,5 @@
 <material name="skyboxMaterial">
-	<technique filename="skybox.xml" />
+	<technique filename="skybox.rt" />
 	<params>
 		<sampler name="skybox" type="Cube" front="front.jpg" back="back.jpg"
 		right="right.jpg" left="left.jpg" top="top.jpg" bottom="bottom.jpg"/>

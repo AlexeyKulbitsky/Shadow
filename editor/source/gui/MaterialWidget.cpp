@@ -4,7 +4,7 @@
 
 MeshMaterialParam::MeshMaterialParam(const sh::scene::MeshPtr& mesh)
 {
-	m_mesh = mesh.get();
+	m_mesh = mesh;
 	const auto& material = m_mesh->GetMaterial();
 
 	m_materialNames = sh::io::FileSystem::GetInstance()->GetMaterialFileNames();
@@ -40,7 +40,12 @@ void MeshMaterialParam::MaterialChanged(sh::u32 index)
 	sh::ResourceManager* resourceManager = sh::Device::GetInstance()->GetResourceManager();
 	auto material = resourceManager->GetMaterial(name);
 
+	auto rbManager = sh::video::RenderBatchManager::GetInstance();
+	rbManager->RemoveMesh(m_mesh);
+
 	m_mesh->SetMaterial(material);
+
+	rbManager->AddMesh(m_mesh);
 }
 
 

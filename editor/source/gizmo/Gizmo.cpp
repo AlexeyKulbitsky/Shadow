@@ -5,11 +5,11 @@
 Gizmo::Gizmo()
 {
 	m_material.reset(new sh::video::Material());
-	m_material->SetRenderTechnique("editor_base_color.xml");
+	m_material->SetRenderTechnique("editor_base_color.rt");
 	const auto& info = m_material->GetRenderPipeline()->GetParamsInfo();
 
 	m_aabbMaterial.reset(new sh::video::Material());
-	m_aabbMaterial->SetRenderTechnique("vertex_color.xml");
+	m_aabbMaterial->SetRenderTechnique("vertex_color.rt");
 	
 
 	float radius = 0.1f;

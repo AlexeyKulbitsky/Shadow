@@ -13,7 +13,7 @@ private:
 
 private:
 	std::vector<sh::String> m_materialNames;
-	sh::scene::Mesh* m_mesh = nullptr;
+	sh::scene::MeshPtr m_mesh;
 };
 
 ////////////////////////////////////////////////////////////////////////

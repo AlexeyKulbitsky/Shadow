@@ -32,11 +32,14 @@ namespace sh
 		video::MaterialPtr GetMaterial(size_t i) { return m_materials[i]; }
 		scene::ModelBasePtr GetModelBase(const String& fileName);
 
+		const video::MaterialPtr& GetDefaultMaterial();
+
 	private:
 		std::vector<video::RenderTechniquePtr> m_renderTechniques;
 		std::vector<video::TexturePtr> m_textures;
 		std::vector<scene::ModelBasePtr> m_models;
 		std::vector<video::MaterialPtr> m_materials;
+		video::MaterialPtr m_defaultMaterial;
 	};
 }
 

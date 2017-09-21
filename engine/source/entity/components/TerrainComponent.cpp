@@ -119,7 +119,7 @@ namespace sh
 		m_model.reset(new scene::Model(modelBase));
 
 		video::MaterialPtr material(new video::Material());
-		material->SetRenderTechnique("terrain.xml");
+		material->SetRenderTechnique("terrain.rt");
 
 		m_model->SetMaterial(material);
 	}

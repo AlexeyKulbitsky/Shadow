@@ -47,6 +47,35 @@ void MaterialEditor::SetMaterial(const sh::video::MaterialPtr& material)
 	if (!m_material)
 		return;
 
+	////////////////////////////////////////////////////////////////////////////////
+
+	m_rtNames = sh::io::FileSystem::GetInstance()->GetRenderTechniqueFileNames();
+
+	sh::gui::HorizontalLayoutPtr rtLayout(new sh::gui::HorizontalLayout());
+	sh::gui::LabelPtr rtLabel(new sh::gui::Label("Render technique"));
+	sh::gui::ComboBoxPtr rtComboBox(new sh::gui::ComboBox());
+
+	sh::u32 index = 0U;
+	for (sh::u32 i = 0U; i < m_rtNames.size(); ++i)
+	{
+		rtComboBox->AddItem(m_rtNames[i]);
+		if (m_material->GetRenderTechnique()->GetFileName() == m_rtNames[i])
+			index = i;
+	}
+
+	rtComboBox->SetSelectedItem(index);
+	rtComboBox->OnItemChanged.Connect(std::bind(&MaterialEditor::OnRenderTechniqueChanged, this,
+		std::placeholders::_1));
+
+	rtLayout->AddWidget(rtLabel);
+	rtLayout->AddWidget(rtComboBox);
+	sh::gui::WidgetPtr rtWidget(new sh::gui::Widget());
+	rtWidget->SetMaximumHeight(20U);
+	rtWidget->SetLayout(rtLayout);
+	m_layout->AddWidget(rtWidget);
+
+	////////////////////////////////////////////////////////////////////////////////
+
 	const auto& params = material->GetParams();
 	sh::u32 paramsCount = params->GetParamsCount();
 	for (sh::u32 i = 0; i < paramsCount; ++i)
@@ -74,4 +103,10 @@ void MaterialEditor::SetMaterial(const sh::video::MaterialPtr& material)
 		widget.reset(new MaterialParamSamplerView(const_cast<sh::video::MaterialSamplerParam*>(&samplerParam)));
 		m_layout->AddWidget(widget);
 	}
+}
+
+void MaterialEditor::OnRenderTechniqueChanged(sh::u32 index)
+{
+	const auto& name = m_rtNames[index];
+	m_material->SetRenderTechnique(name);
 }

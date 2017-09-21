@@ -25,25 +25,21 @@ namespace gui
 		VerticalLayoutPtr layout(new VerticalLayout());
 		SetLayout(layout);
 	}
+	
+	Menu::~Menu()
+	{
+	}
 
 	void Menu::Show()
 	{
-		int a = 0; 
-		a++;
 	}
 
 	void Menu::Hide()
 	{
-		int a = 0; 
-		a++;
 	}
 
 	void Menu::AddItem(const ButtonPtr& button) 
 	{ 
-		//u32 size = m_buttons.size();
-		//button->SetPosition(0, button->GetHeight() * (size + 1));
-		//button->SetWidth(100U);
-		//m_buttons.push_back(button); 
 		button->SetMaximumHeight(20);
 		m_layout->AddWidget(button);
 	}
@@ -52,15 +48,12 @@ namespace gui
 	{
 		ButtonPtr button(new Button(name));
 		button->SetHeight(20);
+		button->OnRelease.Connect(std::bind(&Menu::OnButtonReleased, this, std::placeholders::_1));
 		AddItem(button);
 	}
 
 	void Menu::Render(video::Painter* painter)
 	{
-		//for (const auto& button : m_buttons)
-		//{
-		//	button->Render(painter);
-		//}
 		Widget::Render(painter);
 	}
 
@@ -81,8 +74,8 @@ namespace gui
 
 	bool Menu::ProcessEvent(GUIEvent& ev)
 	{
-		if (!m_isInFocus)
-			return false;
+		//if (!m_isInFocus)
+		//	return false;
 
 		if (ev.type == EventType::PointerDown && 
 			!m_rect.IsPointInside(ev.x, ev.y))
@@ -91,6 +84,22 @@ namespace gui
 			return true;
 		}
 		return Widget::ProcessEvent(ev);
+	}
+
+	void Menu::OnButtonReleased(const ButtonPtr& sender)
+	{
+		u32 itemsCount = m_layout->GetItemsCount();
+		for (u32 i = 0U; i < itemsCount; ++i)
+		{
+			const auto& button = std::static_pointer_cast<Button>(m_layout->GetWidget(i));
+			if (button == sender)
+			{
+				itemSelected(sender->GetText());
+				itemIndexSelected(i);
+				SetFocus(false);
+				return;
+			}
+		}
 	}
 
 } // gui

@@ -1,0 +1,44 @@
+<technique name="Default">
+
+<pipeline name="firstPass" layer="main">	
+	
+	<shader language="GLSL" api="GLES20">
+		<vertexShader>
+		
+		<source>
+			<![CDATA[
+
+				attribute vec3 position;			
+				uniform mat4 matWVP;
+				
+				void main() 
+				{
+					gl_Position = matWVP * vec4(position, 1.0);
+				}
+				
+			]]>
+		</source>
+		</vertexShader>
+
+		<fragmentShader>
+		
+		<source>
+			<![CDATA[
+
+				precision mediump float;
+				
+				uniform vec3 col;
+				
+				void main() 
+				{				
+					gl_FragColor = vec4(col, 1.0);
+				} 
+		
+			]]>	
+		</source>
+		</fragmentShader>
+	</shader>
+
+</pipeline>
+
+</technique>

@@ -15,6 +15,7 @@ namespace sh
 		public:
 			virtual ~GLES20RenderBatchManager();
 			virtual void AddMesh(const scene::MeshPtr& mesh) override;
+			virtual void RemoveMesh(const scene::MeshPtr& mesh) override;
 			virtual void Submit() override;
 			virtual void Clear() override;
 			virtual void UpdateLight(scene::Light* light) override;

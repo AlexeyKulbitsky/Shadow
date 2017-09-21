@@ -19,6 +19,7 @@ namespace sh
 			void SetGpuParams(const GpuParamsPtr& gpuParams);
 			void SetMaterialParams(const MaterialParamsPtr& materialParams);
 			void AddMesh(const scene::MeshPtr& mesh);
+			void RemoveMesh(const scene::MeshPtr& mesh);
 			void Submit();
 			void Clear();
 			void UpdateLight(scene::Light* light);

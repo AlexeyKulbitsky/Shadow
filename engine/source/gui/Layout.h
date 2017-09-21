@@ -58,6 +58,7 @@ namespace gui
 		Layout() {}
 		void SetParent(Widget* parent) { m_parent = parent; }
 		virtual void AddWidget(const WidgetPtr& widget);
+		virtual void InsertWidget(u32 index, const WidgetPtr& widget);
 		virtual void RemoveWidget(const WidgetPtr& widget);
 		virtual void Clear();
 		virtual void AddLayout(const LayoutPtr& layout);

@@ -81,13 +81,20 @@ namespace sh
 			virtual std::vector<char> ReadFile(const String& filename) { return std::vector<char>(); }
 			virtual File LoadFile(const String& filename) { return File(); }
 
+			void UpdateResourceGroups();
+
 			const std::vector<String>& GetImageFileNames() const { return m_imageFileNames; }
 			const std::vector<String>& GetMaterialFileNames() const { return m_materialFileNames; }
+			const std::vector<String>& GetRenderTechniqueFileNames() const { return m_renderTechniqueFileNames; }
 			const SPtr<FolderInfo> GetRoot() const { return m_root; }
+
+		private:
+			void UpdateRecursive(const SPtr<FolderInfo>& fsComponent, const std::vector<String>& imageExtensions);
 
 		protected:
 			std::vector<String> m_imageFileNames;
 			std::vector<String> m_materialFileNames;
+			std::vector<String> m_renderTechniqueFileNames;
 			SPtr<FolderInfo> m_root;
 		};
 	}

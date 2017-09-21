@@ -1,10 +1,10 @@
 #include "AssetsWidget.h"
 
-TreeItem::TreeItem(const sh::String& name, TreeItem* parent) 
-	: m_name(name)
+TreeItem::TreeItem(sh::io::FileSystemComponent* fsItem, TreeItem* parent)
+	: m_item(fsItem)
 	, m_parent(parent)
 {  
-	sh::gui::ButtonPtr button(new sh::gui::Button(name));
+	sh::gui::ButtonPtr button(new sh::gui::Button(m_item->name));
 	button->SetToggleable(true);
 
 	button->OnToggle.Connect(std::bind(&TreeItem::OnToggled, this, std::placeholders::_1));
@@ -40,7 +40,7 @@ void TreeItem::OnToggled(bool toggled)
 {
 	if (m_children.size() == 0U)
 	{
-		m_treeWidget->itemToggled(m_name, toggled);
+		m_treeWidget->itemToggled(m_item->name, toggled);
 	}
 	SetExpanded(!toggled);
 	m_treeWidget->UpdateLayout();
@@ -52,17 +52,20 @@ bool TreeItem::ProcessEvent(sh::gui::GUIEvent& ev)
 		ev.mouseButtonCode == sh::MouseCode::ButtonRight)
 		return false;
 
-	if (ev.type == sh::gui::EventType::PointerUp &&
+	if (m_item->GetType() == sh::io::FileSystemComponent::Type::Folder &&
+		ev.type == sh::gui::EventType::PointerUp &&
 		ev.mouseButtonCode == sh::MouseCode::ButtonRight &&
 		m_rect.IsPointInside(ev.x, ev.y))
 	{
 		sh::gui::MenuPtr menu(new sh::gui::Menu());
-		menu->AddItem("Item 1");
+		menu->AddItem("Add material");
 		menu->AddItem("Item 2");
 		menu->AddItem("Item 3");
 		menu->AddItem("Item 4");
 		menu->AddItem("Item 5");
 		menu->SetPosition(ev.x, ev.y);
+		menu->SetFocus(true);
+		menu->itemSelected.Connect(std::bind(&TreeItem::OnMenuItemSelected, this, std::placeholders::_1));
 		sh::gui::GuiManager::GetInstance()->SetFocusWidget(menu);
 
 		return true;
@@ -70,6 +73,47 @@ bool TreeItem::ProcessEvent(sh::gui::GUIEvent& ev)
 	else
 	{
 		return Widget::ProcessEvent(ev);
+	}
+}
+
+void TreeItem::OnMenuItemSelected(const sh::String& itemName)
+{
+	if (itemName == "Add material")
+	{
+		static size_t matCounter = 0U;
+		std::stringstream ss;
+		ss << "New_material_" << matCounter++ << ".mat";
+
+		sh::String materialName(ss.str());
+		sh::io::FileSystemComponent* fsItem = new sh::io::FileInfo(materialName, m_item->absolutePath);
+
+		if (m_item->GetType() == sh::io::FileSystemComponent::Type::Folder)
+		{
+			sh::io::FolderInfo* folderInfo = static_cast<sh::io::FolderInfo*>(m_item);
+			folderInfo->children.push_back(sh::SPtr<sh::io::FileSystemComponent>(fsItem));
+		}
+		
+		auto item = m_treeWidget->AddItem(fsItem, this);
+		//item->AddChild(item);
+		sh::video::MaterialPtr material(new sh::video::Material());
+		material->SetRenderTechnique("default.rt");
+		material->SetFileName(materialName);
+		sh::Device::GetInstance()->GetResourceManager()->AddMaterial(material);
+
+		pugi::xml_document doc;
+		pugi::xml_node materialNode = doc.append_child("material");
+		material->Save(materialNode);
+		const sh::String path = m_item->absolutePath + "/" + materialName;
+		doc.save_file(path.c_str());
+
+ 		sh::io::FileSystem* fs = sh::Device::GetInstance()->GetFileSystem();
+		fs->UpdateResourceGroups();
+// 		sh::io::File file = fs->LoadFile(materialName);
+// 
+// 		pugi::xml_document doc;
+// 		pugi::xml_parse_result result = doc.load_buffer(file.GetData().data(), file.GetData().size());
+
+		m_treeWidget->UpdateLayout();
 	}
 }
 
@@ -82,11 +126,42 @@ TreeWidget::TreeWidget()
 	SetLayout(m_layout);
 }
 
-sh::SPtr<TreeItem> TreeWidget::AddItem(const sh::String& name, TreeItem* parent)
+sh::SPtr<TreeItem> TreeWidget::AddItem(sh::io::FileSystemComponent* fsItem, TreeItem* parent)
 {
-	sh::SPtr<TreeItem> childItem(new TreeItem(name, parent));
+	sh::u32 indexToInsert = 0U;
+	if (parent)
+	{
+		struct Local
+		{
+			static TreeItem* GetLastItemToIsert(TreeItem* parent)
+			{
+				if (parent->m_children.size() == 0)
+					return parent;
+
+				const size_t lastChildIndex = parent->m_children.size() - 1;
+				return GetLastItemToIsert(parent->m_children[lastChildIndex].get());
+			}
+		};
+
+		auto lastChildToInsert = Local::GetLastItemToIsert(parent);
+		auto itemsCount = m_layout->GetItemsCount();
+		for (sh::u32 i = 0U; i < itemsCount; ++i)
+		{
+			auto treeItem = static_cast<TreeItem*>(m_layout->GetWidget(i).get());
+			if (treeItem == lastChildToInsert)
+			{
+				indexToInsert = i + 1;
+				break;
+			}
+		}
+	}
+
+	sh::SPtr<TreeItem> childItem(new TreeItem(fsItem, parent));
 	childItem->m_treeWidget = this;
-	m_layout->AddWidget(childItem);
+	m_layout->InsertWidget(indexToInsert, childItem);
+
+	if (parent)
+		parent->AddChild(childItem);
 	return childItem;
 }
 
@@ -219,8 +294,8 @@ AssetsWidget::AssetsWidget()
 				auto folder = std::static_pointer_cast<sh::io::FolderInfo>(item);
 				for (const auto& child : folder->children)
 				{
-					sh::SPtr<TreeItem> childItem = treeWidget->AddItem(child->name, treeItem.get());
-					treeItem->AddChild(childItem);
+					sh::SPtr<TreeItem> childItem = treeWidget->AddItem(child.get(), treeItem.get());
+					//treeItem->AddChild(childItem);
 					Parse(child, treeWidget, childItem);
 				}
 			}
@@ -231,7 +306,7 @@ AssetsWidget::AssetsWidget()
 
 	auto root = sh::io::FileSystem::GetInstance()->GetRoot();
 	sh::SPtr<TreeWidget> treeWidget(new TreeWidget());
-	sh::SPtr<TreeItem> rootTreeItem = treeWidget->AddItem(root->name, nullptr);
+	sh::SPtr<TreeItem> rootTreeItem = treeWidget->AddItem(root.get(), nullptr);
 
 	Local::Parse(root, treeWidget, rootTreeItem);
 
