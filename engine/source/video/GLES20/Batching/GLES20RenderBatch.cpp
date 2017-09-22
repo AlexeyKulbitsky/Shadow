@@ -46,14 +46,13 @@ namespace sh
 
 		void GLES20RenderBatch::RemoveMesh(const scene::MeshPtr& mesh)
 		{
-			u32 counter = 0;
-			for (auto it = m_renderables.begin(); it != m_renderables.end(); ++it)
+			for (u32 i = 0U; i < m_renderables.size(); ++i)
 			{
-				if ((*it) == mesh->GetRanderable())
+				if (m_renderables[i] == mesh->GetRanderable())
 				{
-					m_renderables.erase(it);
+					m_renderables.erase(m_renderables.begin() + i);
+					return;
 				}
-				counter++;
 			}
 		}
 

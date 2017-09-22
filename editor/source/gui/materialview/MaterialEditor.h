@@ -3,13 +3,51 @@
 
 #include <Shadow.h>
 
+#include "../Vector2LineEdit.h"
 #include "../Vector3LineEdit.h"
+#include "../Vector4LineEdit.h"
+
+class MaterialParamFloatEditor : public sh::gui::Widget
+{
+public:
+	MaterialParamFloatEditor(sh::video::MaterialParam* param);
+	void SetValue(float value);
+
+private:
+	sh::video::MaterialParam* m_param = nullptr;
+};
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+class MaterialParamVector2Editor : public sh::gui::Widget
+{
+public:
+	MaterialParamVector2Editor(sh::video::MaterialParam* param);
+	void SetValue(const sh::math::Vector2f& value);
+
+private:
+	sh::video::MaterialParam* m_param = nullptr;
+};
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 class MaterialParamVector3Editor : public sh::gui::Widget
 {
 public:
 	MaterialParamVector3Editor(sh::video::MaterialParam* param);
 	void SetValue(const sh::math::Vector3f& value);
+
+private:
+	sh::video::MaterialParam* m_param = nullptr;
+};
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+class MaterialParamVector4Editor : public sh::gui::Widget
+{
+public:
+	MaterialParamVector4Editor(sh::video::MaterialParam* param);
+	void SetValue(const sh::math::Vector4f& value);
 
 private:
 	sh::video::MaterialParam* m_param = nullptr;
@@ -25,8 +63,11 @@ public:
 
 private:
 	void OnRenderTechniqueChanged(sh::u32 index);
+	void ResetLayout();
 
 private:
+	sh::gui::ComboBoxPtr m_comboBox;
+	sh::gui::WidgetPtr m_rtWidget;
 	sh::video::Material* m_material = nullptr;
 	std::vector<sh::String> m_rtNames;
 };

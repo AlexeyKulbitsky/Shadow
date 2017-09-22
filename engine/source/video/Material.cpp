@@ -69,59 +69,6 @@ namespace sh
 
 				paramNode = paramNode.next_sibling();
 			}
-
-			// Read uniforms
-
-			// Read samplers
-			/*
-			pugi::xml_node samplersNode = node.child("samplers");
-			if (samplersNode)
-			{
-				pugi::xml_node samplNode = samplersNode.first_child();
-
-				while (!samplNode.empty())
-				{
-					pugi::xml_attribute typeAttr = samplNode.attribute("type");
-					String typeName = typeAttr.as_string();
-
-					pugi::xml_attribute nameAttr = samplNode.attribute("name");
-					std::string name = nameAttr.as_string();
-
-					sh::video::Sampler* sampler = uniformBuffer->GetSampler(name);
-					sh::video::TexturePtr texture = nullptr;
-					if (typeName == "2D")
-					{
-						pugi::xml_attribute fileNameAttr = samplNode.attribute("filename");
-						std::string fileName = fileNameAttr.as_string();
-						texture = resourceManager->GetTexture(fileName);
-					}
-					else if (typeName == "cube")
-					{
-						pugi::xml_attribute right = samplNode.attribute("right");
-						pugi::xml_attribute left = samplNode.attribute("left");
-						pugi::xml_attribute top = samplNode.attribute("top");
-						pugi::xml_attribute bottom = samplNode.attribute("bottom");
-						pugi::xml_attribute back = samplNode.attribute("back");
-						pugi::xml_attribute front = samplNode.attribute("front");
-
-						std::vector<String> faces;
-						faces.push_back(right.as_string());
-						faces.push_back(left.as_string());
-						faces.push_back(top.as_string());
-						faces.push_back(bottom.as_string());
-						faces.push_back(back.as_string());
-						faces.push_back(front.as_string());
-
-						texture = resourceManager->GetCubeTexture(faces);
-					}
-													
-
-					sampler->Set(texture);
-
-					samplNode = samplNode.next_sibling();
-				}
-			}
-			*/
 		}
 
 		////////////////////////////////////////////////////////////////
@@ -132,6 +79,18 @@ namespace sh
 			materialNode.append_attribute("name").set_value(m_name.c_str());
 			pugi::xml_node techniqueNode = materialNode.append_child("technique");
 			techniqueNode.append_attribute("filename").set_value(GetRenderTechnique()->GetFileName().c_str());
+
+
+			const auto& paramsInfo = m_commonGpuParams->GetParamsInfo();
+			for (size_t i = 0; i < 6; ++i)
+			{
+				const auto& paramsDescription = paramsInfo->GetParamsDescription(ShaderType(i));
+				for (const auto& samplerDesc : paramsDescription->samplers)
+				{
+					const auto sampler = m_commonGpuParams->GetSampler(samplerDesc.second.name);
+					const auto& fileName = sampler->GetTexture()->GetFileName();
+				}
+			}
 		}
 
 		////////////////////////////////////////////////////////////////
