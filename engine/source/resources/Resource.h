@@ -10,9 +10,10 @@ namespace sh
 	public:
 		enum class Group
 		{
-			TEXTURES = 0,
-			MODELS = 1,
-			TECHNIQUES = 2,
+			Textures = 0,
+			Models = 1,
+			Techniques = 2,
+			Materials = 3,
 
 			COUNT
 		};

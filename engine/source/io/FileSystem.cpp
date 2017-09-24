@@ -22,9 +22,9 @@ namespace sh
 
 		void FileSystem::UpdateResourceGroups()
 		{
-			m_imageFileNames.clear();
-			m_materialFileNames.clear();
-			m_renderTechniqueFileNames.clear();
+			m_imageFileInfos.clear();
+			m_materialFileInfos.clear();
+			m_renderTechniqueFileInfos.clear();
 			const auto& imageExtensions = video::TextureLoader::GetInstance()->GetAvalilableExtensions();
 			
 			UpdateRecursive(m_root, imageExtensions);
@@ -46,18 +46,20 @@ namespace sh
 					// Check for image
 					auto res = std::find(imageExtensions.begin(), imageExtensions.end(), extension);
 					if (res != imageExtensions.end())
-						m_imageFileNames.push_back(child->name);
+					{
+						m_imageFileInfos.push_back(std::static_pointer_cast<FileInfo>(child));
+					}
 
 					// Check for material
 					if (extension == "mat")
 					{
-						m_materialFileNames.push_back(child->name);
+						m_materialFileInfos.push_back(std::static_pointer_cast<FileInfo>(child));
 					}
 
 					// Check for render technique
 					if (extension == "rt")
 					{
-						m_renderTechniqueFileNames.push_back(child->name);
+						m_renderTechniqueFileInfos.push_back(std::static_pointer_cast<FileInfo>(child));
 					}
 				}
 				break;

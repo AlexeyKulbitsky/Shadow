@@ -363,6 +363,22 @@ namespace sh
 		Sampler2D,
 		SamplerCube
 	};
+
+	static std::string const materialParamTypeStringArray[] =
+	{
+		"Matrix4",
+		"Matrix3",
+		"Float4",
+		"Float3",
+		"Float2",
+		"Float",
+		"Int4",
+		"Int3",
+		"Int2",
+		"Int",
+		"Sampler2D",
+		"SamplerCube"
+	};
 	
 	static const std::map<std::string, MaterialParamUsage> materialAutoParamsMap =
 	{
@@ -389,11 +405,27 @@ namespace sh
 		{ "3D", GPOT_SAMPLER_3D },
 		{ "Cube", GPOT_SAMPLER_CUBE }
 	};
+
+	static std::string const samplerTypeStringArray[] = 
+	{
+		"1D",
+		"2D",
+		"3D",
+		"Cube"
+	};
 	
 	static const std::map<std::string, TextureFiltering> textureFilteringMap =
 	{
 		{ "Nearest", TEX_FILT_NEAREST },
-		{ "Linear", TEX_FILT_LINEAR }
+		{ "Linear", TEX_FILT_LINEAR },
+		{ "None", TEX_FILT_NONE }
+	};
+
+	static std::string const textureFilteringStringArray[] = 
+	{
+		"Nearest",
+		"Linear",
+		"None"
 	};
 
 	static const std::map<std::string, TextureTiling> textureTilingMap =
@@ -401,6 +433,13 @@ namespace sh
 		{ "Repeat", TEX_TILING_REPEAT },
 		{ "MirroredRepeat", TEX_TILING_MIRRORED_REPEAT },
 		{ "ClampToEdge", TEX_TILING_CLAMP_TO_EDGE }
+	};
+
+	static std::string const textureTilingStringArray[] = 
+	{
+		"Repeat",
+		"MirroredRepeat",
+		"ClampToEdge"
 	};
 }
 

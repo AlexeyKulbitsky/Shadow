@@ -81,9 +81,29 @@ void TreeItem::OnMenuItemSelected(const sh::String& itemName)
 	if (itemName == "Add material")
 	{
 		static size_t matCounter = 0U;
+		sh::io::FileSystem* fs = sh::Device::GetInstance()->GetFileSystem();
 		std::stringstream ss;
-		ss << "New_material_" << matCounter++ << ".mat";
+		const auto& materialFileNames = fs->GetMaterialFileInfos();
+		bool isMaterialnameFree = false;
 
+		// Find free material name
+		while (!isMaterialnameFree)
+		{
+			isMaterialnameFree = true;
+			ss.str(std::string());
+			ss << "New_material_" << matCounter++ << ".mat";
+			const std::string s(ss.str());
+			for (const auto& materialFilename : materialFileNames)
+			{
+				if (s == materialFilename.lock()->name)
+				{
+					isMaterialnameFree = false;
+					break;
+				}
+			}
+		}
+		
+		// Create new fileentry description
 		sh::String materialName(ss.str());
 		sh::io::FileSystemComponent* fsItem = new sh::io::FileInfo(materialName, m_item->absolutePath);
 
@@ -94,24 +114,23 @@ void TreeItem::OnMenuItemSelected(const sh::String& itemName)
 		}
 		
 		auto item = m_treeWidget->AddItem(fsItem, this);
-		//item->AddChild(item);
+
+		// Create material and add to Resource manager
 		sh::video::MaterialPtr material(new sh::video::Material());
-		material->SetRenderTechnique("default.rt");
+		material->SetRenderTechnique("const_color.rt");
 		material->SetFileName(materialName);
 		sh::Device::GetInstance()->GetResourceManager()->AddMaterial(material);
 
+		// Save new material to disk
 		pugi::xml_document doc;
 		pugi::xml_node materialNode = doc.append_child("material");
 		material->Save(materialNode);
 		const sh::String path = m_item->absolutePath + "/" + materialName;
 		doc.save_file(path.c_str());
 
- 		sh::io::FileSystem* fs = sh::Device::GetInstance()->GetFileSystem();
+		// Update resource groups in file system
+ 		
 		fs->UpdateResourceGroups();
-// 		sh::io::File file = fs->LoadFile(materialName);
-// 
-// 		pugi::xml_document doc;
-// 		pugi::xml_parse_result result = doc.load_buffer(file.GetData().data(), file.GetData().size());
 
 		m_treeWidget->UpdateLayout();
 	}

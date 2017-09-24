@@ -36,35 +36,84 @@ namespace sh
 			while( paramNode )
 			{
 				String name = paramNode.name();
+				// Read sampler
 				if( name == "sampler" )
 				{
+					SamplerDescription samplerDesc;
+
 					String samplerName = paramNode.attribute("name").as_string();
 					TexturePtr texture;
 
-					pugi::xml_attribute typeAttr = paramNode.attribute("type");
-					if (typeAttr)
+					pugi::xml_node typeNode = paramNode.child("type");
+					pugi::xml_node textureNode = paramNode.child("texture");
+					String typeName = typeNode.attribute("val").as_string();
+					if (typeName == "Cube")
 					{
-						String typeName = typeAttr.as_string();
-						if (typeName == "Cube")
-						{
-							std::vector<String> faces(6);
-							std::vector<String> facesNames = { "right", "left", "top", "bottom", "back", "front" };
-							for (u32 i = 0; i < facesNames.size(); ++i)
-							{
-								String face = paramNode.attribute(facesNames[i].c_str()).as_string();
-								faces[i] = face;
-							}
+						samplerDesc.type = GPOT_SAMPLER_CUBE;
 
-							texture = resourceManager->GetCubeTexture(faces);
+						std::vector<String> faces(6);
+						std::vector<String> facesNames = { "right", "left", "top", "bottom", "back", "front" };
+						for (u32 i = 0; i < facesNames.size(); ++i)
+						{
+							String face = textureNode.child(facesNames[i].c_str()).attribute("val").as_string();
+							faces[i] = face;
 						}
+
+						texture = resourceManager->GetCubeTexture(faces);
 					}
 					else
 					{
-						String textureFilename = paramNode.attribute("val").as_string();
+						samplerDesc.type = GPOT_SAMPLER_2D;
+						String textureFilename = textureNode.attribute("val").as_string();
 						texture = resourceManager->GetTexture(textureFilename);
 					}
 
-					m_commonGpuParams->SetSampler(samplerName, texture);
+					if (paramNode.child("minFilter"))
+					{
+						String val = paramNode.child("minFilter").attribute("val").as_string();
+						if (textureFilteringMap.find(val) != textureFilteringMap.end())
+							samplerDesc.minFilter = textureFilteringMap.at(val);
+					}
+					if (paramNode.child("magFilter"))
+					{
+						String val = paramNode.child("magFilter").attribute("val").as_string();
+						if (textureFilteringMap.find(val) != textureFilteringMap.end())
+							samplerDesc.magFilter = textureFilteringMap.at(val);
+					}
+					if (paramNode.child("mipFilter"))
+					{
+						String val = paramNode.child("mipFilter").attribute("val").as_string();
+						if (textureFilteringMap.find(val) != textureFilteringMap.end())
+							samplerDesc.mipFilter = textureFilteringMap.at(val);
+					}
+					if (paramNode.child("tilingU"))
+					{
+						String val = paramNode.child("tilingU").attribute("val").as_string();
+						if (textureTilingMap.find(val) != textureTilingMap.end())
+							samplerDesc.tilingU = textureTilingMap.at(val);
+					}
+					if (paramNode.child("tilingV"))
+					{
+						String val = paramNode.child("tilingV").attribute("val").as_string();
+						if (textureTilingMap.find(val) != textureTilingMap.end())
+							samplerDesc.tilingV = textureTilingMap.at(val);
+					}
+					if (paramNode.child("tilingW"))
+					{
+						String val = paramNode.child("tilingW").attribute("val").as_string();
+						if (textureTilingMap.find(val) != textureTilingMap.end())
+							samplerDesc.tilingV = textureTilingMap.at(val);
+					}
+
+					auto sampler = Sampler::Create(samplerDesc);
+					sampler->Set(texture);
+					//m_commonGpuParams->SetSampler(samplerName, texture);
+
+					m_commonGpuParams->SetSampler(samplerName, sampler);
+				}
+				else if (name == "param")
+				{
+
 				}
 
 				paramNode = paramNode.next_sibling();
@@ -80,15 +129,104 @@ namespace sh
 			pugi::xml_node techniqueNode = materialNode.append_child("technique");
 			techniqueNode.append_attribute("filename").set_value(GetRenderTechnique()->GetFileName().c_str());
 
-
+			pugi::xml_node paramsNode = materialNode.append_child("params");
 			const auto& paramsInfo = m_commonGpuParams->GetParamsInfo();
-			for (size_t i = 0; i < 6; ++i)
+
+			// Same params
+			const auto& params = m_commonParams->GetParams();
+			for (const auto& param : params)
 			{
-				const auto& paramsDescription = paramsInfo->GetParamsDescription(ShaderType(i));
-				for (const auto& samplerDesc : paramsDescription->samplers)
+				if (param.GetUsage() != MaterialParamUsage::Undefined)
+					continue;
+
+				pugi::xml_node paramNode = paramsNode.append_child("param");
+				paramNode.append_attribute("name").set_value(param.GetName().c_str());
+				paramNode.append_child("type").append_attribute("val")
+					.set_value(materialParamTypeStringArray[static_cast<size_t>( param.GetType() )].c_str());
+				switch (param.GetType())
 				{
-					const auto sampler = m_commonGpuParams->GetSampler(samplerDesc.second.name);
-					const auto& fileName = sampler->GetTexture()->GetFileName();
+					case MaterialParamType::Float:
+					{
+						float value = 0.0f;
+						param.Get(value);
+						pugi::xml_node valueNode = paramNode.append_child("value");
+						valueNode.append_attribute("val").set_value(value);
+					}
+						break;
+					case MaterialParamType::Float2:
+					{
+						math::Vector2f value;
+						param.Get(value);
+						pugi::xml_node valueNode = paramNode.append_child("value");
+						valueNode.append_attribute("x").set_value(value.x);
+						valueNode.append_attribute("y").set_value(value.y);
+					}
+						break;
+					case MaterialParamType::Float3:
+					{
+						math::Vector3f value;
+						param.Get(value);
+						pugi::xml_node valueNode = paramNode.append_child("value");
+						valueNode.append_attribute("x").set_value(value.x);
+						valueNode.append_attribute("y").set_value(value.y);
+						valueNode.append_attribute("z").set_value(value.z);
+					}
+						break;
+					case MaterialParamType::Float4:
+					{
+						math::Vector4f value;
+						param.Get(value);
+						pugi::xml_node valueNode = paramNode.append_child("value");
+						valueNode.append_attribute("x").set_value(value.x);
+						valueNode.append_attribute("y").set_value(value.y);
+						valueNode.append_attribute("z").set_value(value.z);
+						valueNode.append_attribute("w").set_value(value.w);
+					}
+						break;
+					default:
+						break;
+				}
+			}
+
+			// Same samplers
+			const auto& samplerParams = m_commonParams->GetSamplerParams();
+			for (const auto& samplerParam : samplerParams)
+			{
+				const auto sampler = samplerParam.GetSampler();
+				const auto& fileName = sampler->GetTexture()->GetFileName();
+					
+				const auto& desc = sampler->GetDescription();
+				pugi::xml_node samplerNode = paramsNode.append_child("sampler");
+				
+				samplerNode.append_attribute("name").set_value(samplerParam.GetName().c_str());
+				samplerNode.append_child("type").append_attribute("val")
+					.set_value(samplerTypeStringArray[desc.type].c_str());
+				if (desc.type == GPOT_SAMPLER_3D || desc.type == GPOT_SAMPLER_CUBE)
+				{
+				}
+				else
+				{
+					samplerNode.append_child("texture").append_attribute("val")
+						.set_value(fileName.c_str());
+				}
+					
+				samplerNode.append_child("minFilter").append_attribute("val")
+					.set_value(textureFilteringStringArray[desc.minFilter].c_str());
+				samplerNode.append_child("magFilter").append_attribute("val")
+					.set_value(textureFilteringStringArray[desc.magFilter].c_str());
+				samplerNode.append_child("mipFilter").append_attribute("val")
+					.set_value(textureFilteringStringArray[desc.mipFilter].c_str());
+				samplerNode.append_child("tilingU").append_attribute("val")
+					.set_value(textureTilingStringArray[desc.tilingU].c_str());
+				if (desc.type == GPOT_SAMPLER_2D)
+				{
+					samplerNode.append_child("tilingV").append_attribute("val")
+						.set_value(textureTilingStringArray[desc.tilingV].c_str());
+				}
+				if (desc.type == GPOT_SAMPLER_3D || desc.type == GPOT_SAMPLER_CUBE)
+				{
+					samplerNode.append_child("tilingW").append_attribute("val")
+						.set_value(textureTilingStringArray[desc.tilingW].c_str());
 				}
 			}
 		}

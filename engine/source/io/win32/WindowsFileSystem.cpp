@@ -105,6 +105,8 @@ namespace io
 		}
 
 		SH_ASSERT(file.is_open(), "failed to open file!");
+		if (!file.is_open())
+			return std::vector<char>();
 
 		size_t fileSize = (size_t)file.tellg();
 		std::vector<char> buffer(fileSize);
@@ -167,31 +169,6 @@ namespace io
 				}
 			} while (FindNextFile(hFind, &FindFileData));
 			FindClose(hFind);
-		}
-	}
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	void WindowsFileSystem::UpdateFileGroups()
-	{
-		m_imageFileNames.clear();
-		const auto& imageExtensions = video::TextureLoader::GetInstance()->GetAvalilableExtensions();
-
-		for (const auto& file : m_fileList)
-		{
-			size_t pos = file.name.find_last_of('.');
-			auto extension = file.name.substr(pos + 1);
-
-			// Check for image
-			auto res = std::find(imageExtensions.begin(), imageExtensions.end(), extension);
-			if (res != imageExtensions.end())
-				m_imageFileNames.push_back(file.name);
-
-			// Check for material
-			if (extension == "mat")
-			{
-				m_materialFileNames.push_back(file.name);
-			}
 		}
 	}
 

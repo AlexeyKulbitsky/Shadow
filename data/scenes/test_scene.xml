@@ -45,7 +45,7 @@
 		</component>
 	</entity>
 	
-	<entity name="nanosuit">
+	<!--entity name="nanosuit">
 		<component name="transform">
 			<position val="2 2 -2" />
 			<rotation val="0 0 0 1" />
@@ -55,7 +55,7 @@
 			<model filename="nanosuit.obj" />
 			<material filename="testMaterial.mat"/>
 		</component>
-	</entity>
+	</entity-->
 
 	<entity name="test_terrain">
 		<component name="terrain">

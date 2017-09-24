@@ -83,18 +83,19 @@ namespace sh
 
 			void UpdateResourceGroups();
 
-			const std::vector<String>& GetImageFileNames() const { return m_imageFileNames; }
-			const std::vector<String>& GetMaterialFileNames() const { return m_materialFileNames; }
-			const std::vector<String>& GetRenderTechniqueFileNames() const { return m_renderTechniqueFileNames; }
+			const std::vector<std::weak_ptr<FileInfo>>& GetImageFileInfos() const { return m_imageFileInfos; }
+			const std::vector<std::weak_ptr<FileInfo>>& GetMaterialFileInfos() const { return m_materialFileInfos; }
+			const std::vector<std::weak_ptr<FileInfo>>& GetRenderTechniqueFileInfos() const { return m_renderTechniqueFileInfos; }
 			const SPtr<FolderInfo> GetRoot() const { return m_root; }
 
 		private:
 			void UpdateRecursive(const SPtr<FolderInfo>& fsComponent, const std::vector<String>& imageExtensions);
 
 		protected:
-			std::vector<String> m_imageFileNames;
-			std::vector<String> m_materialFileNames;
-			std::vector<String> m_renderTechniqueFileNames;
+			std::vector<std::weak_ptr<FileInfo>> m_imageFileInfos;
+			std::vector<std::weak_ptr<FileInfo>> m_materialFileInfos;
+			std::vector<std::weak_ptr<FileInfo>> m_renderTechniqueFileInfos;
+
 			SPtr<FolderInfo> m_root;
 		};
 	}

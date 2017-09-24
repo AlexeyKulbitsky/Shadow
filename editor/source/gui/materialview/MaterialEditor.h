@@ -69,7 +69,7 @@ private:
 	sh::gui::ComboBoxPtr m_comboBox;
 	sh::gui::WidgetPtr m_rtWidget;
 	sh::video::Material* m_material = nullptr;
-	std::vector<sh::String> m_rtNames;
+	std::vector<std::weak_ptr<sh::io::FileInfo>> m_rtInfos;
 };
 
 #endif

@@ -31,7 +31,7 @@ namespace video
 		}
 
 		template<typename T>
-		void Get(T& value, u32 arrayIndex = 0U)
+		void Get(T& value, u32 arrayIndex = 0U) const
 		{
 			if (!m_dataPtr)
 				return;

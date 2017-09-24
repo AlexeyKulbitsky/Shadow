@@ -1,7 +1,15 @@
+<?xml version="1.0"?>
 <material name="testMaterial">
 	<technique filename="const_color.rt" />
 	<params>
-		<sampler name="diffuse" val="statue.jpg"/>
-		<sampler name="normalMap" val="arm_showroom_ddn.png"/>
+		<sampler name="diffuse">
+			<type val="2D"/>
+			<texture val="statue.jpg"/>
+		</sampler>
+		
+		<sampler name="normalMap">
+			<type val="2D"/>
+			<texture val="arm_showroom_ddn.png"/>
+		</sampler>
 	</params>
 </material>	

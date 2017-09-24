@@ -12,7 +12,7 @@ private:
 	void MaterialChanged(sh::u32 index);
 
 private:
-	std::vector<sh::String> m_materialNames;
+	std::vector<std::weak_ptr<sh::io::FileInfo>> m_materialInfos;
 	sh::scene::MeshPtr m_mesh;
 };
 

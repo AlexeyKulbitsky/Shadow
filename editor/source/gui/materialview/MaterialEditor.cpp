@@ -119,16 +119,16 @@ MaterialEditor::MaterialEditor()
 	m_layout->SetMargins(2, 2, 2, 2);
 	m_layout->SetSpacing(2);
 
-	m_rtNames = sh::io::FileSystem::GetInstance()->GetRenderTechniqueFileNames();
+	m_rtInfos = sh::io::FileSystem::GetInstance()->GetRenderTechniqueFileInfos();
 
 	sh::gui::HorizontalLayoutPtr rtLayout(new sh::gui::HorizontalLayout());
 	sh::gui::LabelPtr rtLabel(new sh::gui::Label("Render technique"));
 	m_comboBox.reset(new sh::gui::ComboBox());
 
 	sh::u32 index = 0U;
-	for (sh::u32 i = 0U; i < m_rtNames.size(); ++i)
+	for (sh::u32 i = 0U; i < m_rtInfos.size(); ++i)
 	{
-		m_comboBox->AddItem(m_rtNames[i]);
+		m_comboBox->AddItem(m_rtInfos[i].lock()->name);
 	}
 
 	m_comboBox->OnItemChanged.Connect(std::bind(&MaterialEditor::OnRenderTechniqueChanged, this,
@@ -146,22 +146,31 @@ MaterialEditor::MaterialEditor()
 
 void MaterialEditor::SetMaterial(const sh::video::MaterialPtr& material)
 {
+	if (m_material == material.get())
+		return;
+
+	// Save current edited material
+
+
 	m_material = material.get();
 
-	sh::u32 index = 0U;
-	for (sh::u32 i = 0U; i < m_rtNames.size(); ++i)
+	if (m_material)
 	{
-		if (m_material->GetRenderTechnique()->GetFileName() == m_rtNames[i])
-			index = i;
+		sh::u32 index = 0U;
+		for (sh::u32 i = 0U; i < m_rtInfos.size(); ++i)
+		{
+			if (m_material->GetRenderTechnique()->GetFileName() == m_rtInfos[i].lock()->name)
+				index = i;
+		}
+		m_comboBox->SetSelectedItem(index);
 	}
-	m_comboBox->SetSelectedItem(index);
 
 	ResetLayout();
 }
 
 void MaterialEditor::OnRenderTechniqueChanged(sh::u32 index)
 {
-	const auto& name = m_rtNames[index];
+	const auto& name = m_rtInfos[index].lock()->name;
 
 	if (!m_material)
 		return;

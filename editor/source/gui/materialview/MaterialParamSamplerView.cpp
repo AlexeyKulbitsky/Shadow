@@ -3,7 +3,7 @@
 MaterialParamSamplerView::MaterialParamSamplerView(sh::video::MaterialSamplerParam* param)
 	: m_param(param)
 {
-	m_textureNames = sh::io::FileSystem::GetInstance()->GetImageFileNames();
+	m_textureInfos = sh::io::FileSystem::GetInstance()->GetImageFileInfos();
 
 	auto sampler = m_param->GetSampler();
 	auto texture = sampler->GetTexture();
@@ -17,11 +17,15 @@ MaterialParamSamplerView::MaterialParamSamplerView(sh::video::MaterialSamplerPar
 	sh::gui::ComboBoxPtr samplerComboBox(new sh::gui::ComboBox());
 
 	sh::u32 index = 0U;
-	for (sh::u32 i = 0U; i < m_textureNames.size(); ++i)
+	for (sh::u32 i = 0U; i < m_textureInfos.size(); ++i)
 	{
-		samplerComboBox->AddItem(m_textureNames[i]);
-		if (texture->GetFileName() == m_textureNames[i])
-			index = i;
+		if (!m_textureInfos[i].expired())
+		{
+			samplerComboBox->AddItem(m_textureInfos[i].lock()->name);
+			if (texture->GetFileName() == m_textureInfos[i].lock()->name)
+				index = i;
+		}
+		
 	}
 	samplerComboBox->SetSelectedItem(index);
 	samplerComboBox->OnItemChanged.Connect(std::bind(&MaterialParamSamplerView::TextureChanged, this,
@@ -104,7 +108,7 @@ MaterialParamSamplerView::MaterialParamSamplerView(sh::video::MaterialSamplerPar
 
 void MaterialParamSamplerView::TextureChanged(sh::u32 index)
 {
-	const auto& name = m_textureNames[index];
+	const auto& name = m_textureInfos[index].lock()->name;
 	
 	sh::ResourceManager* resourceManager = sh::Device::GetInstance()->GetResourceManager();
 	auto texture = resourceManager->GetTexture(name);

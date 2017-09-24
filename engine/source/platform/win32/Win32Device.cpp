@@ -475,6 +475,7 @@ void Win32Device::Run()
 		if (msg.message == WM_QUIT)
 		{
 			done = true;
+			m_application->Destroy();
 		}
 		const u64 currentTimePoint = GetTime();
 		const u64 delta = currentTimePoint - m_lastFrameTimePoint;

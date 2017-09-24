@@ -7,16 +7,19 @@ MeshMaterialParam::MeshMaterialParam(const sh::scene::MeshPtr& mesh)
 	m_mesh = mesh;
 	const auto& material = m_mesh->GetMaterial();
 
-	m_materialNames = sh::io::FileSystem::GetInstance()->GetMaterialFileNames();
+	m_materialInfos = sh::io::FileSystem::GetInstance()->GetMaterialFileInfos();
 
 	sh::gui::ComboBoxPtr comboBox(new sh::gui::ComboBox());
 
 	sh::u32 index = 0U;
-	for (sh::u32 i = 0U; i < m_materialNames.size(); ++i)
+	for (sh::u32 i = 0U; i < m_materialInfos.size(); ++i)
 	{
-		comboBox->AddItem(m_materialNames[i]);
-		if (material->GetFileName() == m_materialNames[i])
-			index = i;
+		if (!m_materialInfos[i].expired())
+		{
+			comboBox->AddItem(m_materialInfos[i].lock()->name);
+			if (material->GetFileName() == m_materialInfos[i].lock()->name)
+				index = i;
+		}
 	}
 	comboBox->SetSelectedItem(index);
 
@@ -35,7 +38,7 @@ MeshMaterialParam::MeshMaterialParam(const sh::scene::MeshPtr& mesh)
 
 void MeshMaterialParam::MaterialChanged(sh::u32 index)
 {
-	const auto& name = m_materialNames[index];
+	const auto& name = m_materialInfos[index].lock()->name;
 	
 	sh::ResourceManager* resourceManager = sh::Device::GetInstance()->GetResourceManager();
 	auto material = resourceManager->GetMaterial(name);

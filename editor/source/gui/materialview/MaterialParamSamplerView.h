@@ -17,7 +17,7 @@ private:
 	void MipFilterChanged(sh::u32 filtering);
 
 private:
-	std::vector<sh::String> m_textureNames;
+	std::vector<std::weak_ptr<sh::io::FileInfo>> m_textureInfos;
 
 	sh::video::MaterialSamplerParam* m_param = nullptr;
 };
