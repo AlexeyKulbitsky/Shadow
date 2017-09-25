@@ -138,6 +138,15 @@ namespace sh
 			material->SetFileName(materialName);
 			m_materials.push_back(material);
 
+			const auto& materialFileInfos = fs->GetMaterialFileInfos();
+			for (const auto& materialFileInfo : materialFileInfos)
+			{
+				if (!materialFileInfo.expired() && materialFileInfo.lock()->name == materialName)
+				{
+					material->SetFileInfo(materialFileInfo);
+				}
+			}
+
 			return material;
 		}
 
@@ -176,6 +185,13 @@ namespace sh
 			m_defaultMaterial->SetRenderTechnique("default.xml");
 		}
 		return m_defaultMaterial;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	const video::TexturePtr& ResourceManager::GetDefaultTexture()
+	{
+		return video::TextureLoader::GetInstance()->GetWhiteTexture();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////

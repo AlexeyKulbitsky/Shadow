@@ -33,6 +33,7 @@ namespace sh
 		scene::ModelBasePtr GetModelBase(const String& fileName);
 
 		const video::MaterialPtr& GetDefaultMaterial();
+		const video::TexturePtr& GetDefaultTexture();
 
 	private:
 		std::vector<video::RenderTechniquePtr> m_renderTechniques;

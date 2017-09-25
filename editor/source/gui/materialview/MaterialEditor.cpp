@@ -150,7 +150,11 @@ void MaterialEditor::SetMaterial(const sh::video::MaterialPtr& material)
 		return;
 
 	// Save current edited material
-
+	if (m_material && m_material->HasChanged())
+	{
+		m_material->SetChanged(false);
+		m_material->Save();
+	}
 
 	m_material = material.get();
 
@@ -226,8 +230,15 @@ void MaterialEditor::ResetLayout()
 	const auto& samplerParams = params->GetSamplerParams();
 	for (const auto& samplerParam : samplerParams)
 	{
-		sh::gui::WidgetPtr widget;
+		sh::SPtr<MaterialParamSamplerView> widget;
 		widget.reset(new MaterialParamSamplerView(const_cast<sh::video::MaterialSamplerParam*>(&samplerParam)));
+		widget->paramChanged.Connect(std::bind(&MaterialEditor::MaterialChanged, this));
 		m_layout->AddWidget(widget);
 	}
+}
+
+void MaterialEditor::MaterialChanged()
+{
+	if (m_material)
+		m_material->SetChanged(true);
 }

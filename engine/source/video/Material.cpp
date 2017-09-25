@@ -50,22 +50,37 @@ namespace sh
 					if (typeName == "Cube")
 					{
 						samplerDesc.type = GPOT_SAMPLER_CUBE;
-
-						std::vector<String> faces(6);
-						std::vector<String> facesNames = { "right", "left", "top", "bottom", "back", "front" };
-						for (u32 i = 0; i < facesNames.size(); ++i)
+						if (textureNode)
 						{
-							String face = textureNode.child(facesNames[i].c_str()).attribute("val").as_string();
-							faces[i] = face;
+							std::vector<String> faces(6);
+							std::vector<String> facesNames = { "right", "left", "top", "bottom", "back", "front" };
+							for (u32 i = 0; i < facesNames.size(); ++i)
+							{
+								String face = textureNode.child(facesNames[i].c_str()).attribute("val").as_string();
+								faces[i] = face;
+							}
+							texture = resourceManager->GetCubeTexture(faces);
+						}
+						else
+						{
+							texture = resourceManager->GetDefaultTexture();
 						}
 
-						texture = resourceManager->GetCubeTexture(faces);
+						
 					}
 					else
 					{
 						samplerDesc.type = GPOT_SAMPLER_2D;
-						String textureFilename = textureNode.attribute("val").as_string();
-						texture = resourceManager->GetTexture(textureFilename);
+						if (textureNode)
+						{
+							String textureFilename = textureNode.attribute("val").as_string();
+							texture = resourceManager->GetTexture(textureFilename);
+						}
+						else
+						{
+							texture = resourceManager->GetDefaultTexture();
+						}
+						
 					}
 
 					if (paramNode.child("minFilter"))
@@ -122,6 +137,22 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////
 
+		void Material::Save()
+		{
+			if (m_fileInfo.expired())
+				return;
+
+			auto fileInfo = m_fileInfo.lock();
+			// Save material to disk
+			pugi::xml_document doc;
+			pugi::xml_node materialNode = doc.append_child("material");
+			Save(materialNode);
+			const sh::String path = fileInfo->absolutePath;
+			doc.save_file(path.c_str());
+		}
+
+		////////////////////////////////////////////////////////////////
+
 		void Material::Save(pugi::xml_node &materialNode)
 		{
 			//pugi::xml_node materialNode = parent;// .append_child("material");
@@ -132,7 +163,7 @@ namespace sh
 			pugi::xml_node paramsNode = materialNode.append_child("params");
 			const auto& paramsInfo = m_commonGpuParams->GetParamsInfo();
 
-			// Same params
+			// Save params
 			const auto& params = m_commonParams->GetParams();
 			for (const auto& param : params)
 			{
@@ -188,7 +219,7 @@ namespace sh
 				}
 			}
 
-			// Same samplers
+			// Save samplers
 			const auto& samplerParams = m_commonParams->GetSamplerParams();
 			for (const auto& samplerParam : samplerParams)
 			{
@@ -206,8 +237,11 @@ namespace sh
 				}
 				else
 				{
-					samplerNode.append_child("texture").append_attribute("val")
-						.set_value(fileName.c_str());
+					if (!fileName.empty())
+					{
+						samplerNode.append_child("texture").append_attribute("val")
+							.set_value(fileName.c_str());
+					}
 				}
 					
 				samplerNode.append_child("minFilter").append_attribute("val")

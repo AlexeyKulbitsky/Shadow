@@ -88,6 +88,9 @@ namespace gui
 
 	void Window::Render(video::Painter* painter)
 	{
+		if (!m_visible)
+			return;
+
 		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
 		// Render bar
 		video::Painter::Vertex barUL(m_barRect.upperLeftCorner, 
@@ -119,6 +122,9 @@ namespace gui
 
 	bool Window::ProcessEvent(GUIEvent& ev)
 	{
+		if (!m_visible || !m_enabled)
+			return false;
+
 		if (Widget::ProcessEvent(ev))
 			return true;
 

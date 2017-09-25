@@ -16,7 +16,10 @@ MaterialParamSamplerView::MaterialParamSamplerView(sh::video::MaterialSamplerPar
 	sh::gui::LabelPtr samplerLabel(new sh::gui::Label(m_param->GetName()));
 	sh::gui::ComboBoxPtr samplerComboBox(new sh::gui::ComboBox());
 
-	sh::u32 index = 0U;
+	// Add default texture
+	samplerComboBox->AddItem("-Default-");
+
+	sh::s32 index = -1;
 	for (sh::u32 i = 0U; i < m_textureInfos.size(); ++i)
 	{
 		if (!m_textureInfos[i].expired())
@@ -27,7 +30,7 @@ MaterialParamSamplerView::MaterialParamSamplerView(sh::video::MaterialSamplerPar
 		}
 		
 	}
-	samplerComboBox->SetSelectedItem(index);
+	samplerComboBox->SetSelectedItem(index + 1);
 	samplerComboBox->OnItemChanged.Connect(std::bind(&MaterialParamSamplerView::TextureChanged, this,
 		std::placeholders::_1));
 
@@ -69,6 +72,7 @@ MaterialParamSamplerView::MaterialParamSamplerView(sh::video::MaterialSamplerPar
 	sh::gui::ComboBoxPtr minFilterComboBox(new sh::gui::ComboBox());
 	minFilterComboBox->AddItem("Nearest");
 	minFilterComboBox->AddItem("Linear");
+	minFilterComboBox->AddItem("None");
 	minFilterComboBox->SetSelectedItem(static_cast<sh::u32>(desc.minFilter));
 	minFilterComboBox->OnItemChanged.Connect(std::bind(&MaterialParamSamplerView::MinFilterChanged, this,
 		std::placeholders::_1));
@@ -82,6 +86,7 @@ MaterialParamSamplerView::MaterialParamSamplerView(sh::video::MaterialSamplerPar
 	sh::gui::ComboBoxPtr magFilterComboBox(new sh::gui::ComboBox());
 	magFilterComboBox->AddItem("Nearest");
 	magFilterComboBox->AddItem("Linear");
+	magFilterComboBox->AddItem("None");
 	magFilterComboBox->SetSelectedItem(static_cast<sh::u32>(desc.magFilter));
 	magFilterComboBox->OnItemChanged.Connect(std::bind(&MaterialParamSamplerView::MagFilterChanged, this,
 		std::placeholders::_1));
@@ -95,6 +100,7 @@ MaterialParamSamplerView::MaterialParamSamplerView(sh::video::MaterialSamplerPar
 	sh::gui::ComboBoxPtr mipFilterComboBox(new sh::gui::ComboBox());
 	mipFilterComboBox->AddItem("Nearest");
 	mipFilterComboBox->AddItem("Linear");
+	mipFilterComboBox->AddItem("None");
 	mipFilterComboBox->SetSelectedItem(static_cast<sh::u32>(desc.mipFilter));
 	mipFilterComboBox->OnItemChanged.Connect(std::bind(&MaterialParamSamplerView::MipFilterChanged, this,
 		std::placeholders::_1));
@@ -108,13 +114,22 @@ MaterialParamSamplerView::MaterialParamSamplerView(sh::video::MaterialSamplerPar
 
 void MaterialParamSamplerView::TextureChanged(sh::u32 index)
 {
-	const auto& name = m_textureInfos[index].lock()->name;
-	
 	sh::ResourceManager* resourceManager = sh::Device::GetInstance()->GetResourceManager();
-	auto texture = resourceManager->GetTexture(name);
+	sh::video::TexturePtr texture;
+	if (index == 0U)
+	{
+		texture = resourceManager->GetDefaultTexture();
+	}
+	else
+	{
+		const auto& name = m_textureInfos[index - 1].lock()->name;
+		texture = resourceManager->GetTexture(name);
+	}
 
 	auto sampler = m_param->GetSampler();
 	sampler->Set(texture);
+
+	paramChanged();
 }
 
 void MaterialParamSamplerView::TilingUChanged(sh::u32 tiling)
@@ -128,6 +143,8 @@ void MaterialParamSamplerView::TilingUChanged(sh::u32 tiling)
 	auto newSampler = sh::video::Sampler::Create(desc);
 	newSampler->Set(texture);
 	m_param->SetSampler(newSampler);
+
+	paramChanged();
 }
 
 void MaterialParamSamplerView::TilingVChanged(sh::u32 tiling)
@@ -141,6 +158,8 @@ void MaterialParamSamplerView::TilingVChanged(sh::u32 tiling)
 	auto newSampler = sh::video::Sampler::Create(desc);
 	newSampler->Set(texture);
 	m_param->SetSampler(newSampler);
+
+	paramChanged();
 }
 
 void MaterialParamSamplerView::MagFilterChanged(sh::u32 filtering)
@@ -154,6 +173,8 @@ void MaterialParamSamplerView::MagFilterChanged(sh::u32 filtering)
 	auto newSampler = sh::video::Sampler::Create(desc);
 	newSampler->Set(texture);
 	m_param->SetSampler(newSampler);
+
+	paramChanged();
 }
 
 void MaterialParamSamplerView::MinFilterChanged(sh::u32 filtering)
@@ -167,6 +188,8 @@ void MaterialParamSamplerView::MinFilterChanged(sh::u32 filtering)
 	auto newSampler = sh::video::Sampler::Create(desc);
 	newSampler->Set(texture);
 	m_param->SetSampler(newSampler);
+
+	paramChanged();
 }
 
 void MaterialParamSamplerView::MipFilterChanged(sh::u32 filtering)
@@ -180,4 +203,6 @@ void MaterialParamSamplerView::MipFilterChanged(sh::u32 filtering)
 	auto newSampler = sh::video::Sampler::Create(desc);
 	newSampler->Set(texture);
 	m_param->SetSampler(newSampler);
+
+	paramChanged();
 }

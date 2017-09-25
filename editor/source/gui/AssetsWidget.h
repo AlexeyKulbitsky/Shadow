@@ -3,50 +3,56 @@
 
 #include "gui/materialview/MaterialEditor.h"
 
-class TreeItem : public sh::gui::Widget
+#include "TreeWidget.h"
+
+class FolderTreeItem : public TreeItem
 {
-	friend class TreeWidget;
 public:
-	TreeItem(sh::io::FileSystemComponent* fsItem, TreeItem* parent);
-	~TreeItem();
+	FolderTreeItem(TreeItem* parent, sh::io::FileSystemComponent* fsItem);
+	virtual ~FolderTreeItem();
 
-	TreeItem* GetParent() { return m_parent; }
-	void AddChild(const sh::SPtr<TreeItem>& child);
-	sh::s32 GetOffset() const { return m_offset; }
-	bool IsExpanded() const { return m_expanded; }
-	void SetExpanded(bool expanded);
-	void OnToggled(bool toggled);
+protected:
+	virtual void OnContextMenu(sh::s32 x, sh::s32 y) override;
 
-	virtual bool ProcessEvent(sh::gui::GUIEvent& ev);
-	
 private:
 	void OnMenuItemSelected(const sh::String& itemName);
 
 private:
-	sh::s32 m_offset = 0;
 	sh::io::FileSystemComponent* m_item = nullptr;
-	bool m_expanded = true;
-	TreeItem* m_parent = nullptr;
-	TreeWidget* m_treeWidget = nullptr;
-	std::vector<sh::SPtr<TreeItem>> m_children;
 };
 
-class TreeWidget : public sh::gui::ScrollWidget
+////////////////////////////////////////////////////////////////////////////////////////////
+
+class FileTreeItem : public TreeItem
 {
 public:
-	TreeWidget();
-	sh::SPtr<TreeItem> AddItem(sh::io::FileSystemComponent* fsItem, TreeItem* parent);
-
-	virtual void Render(sh::video::Painter* painter) override;
-	virtual void UpdateLayout() override;
-
-	sh::Event<void, const sh::String&, bool> itemToggled;
+	FileTreeItem(TreeItem* parent, sh::io::FileSystemComponent* fsItem);
+	virtual ~FileTreeItem();
 
 private:
-	//sh::gui::VerticalLayoutPtr m_layout;
+	sh::io::FileSystemComponent* m_item = nullptr;
 };
 
-///////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+
+class MaterialTreeItem : public TreeItem
+{
+public:
+	MaterialTreeItem(TreeItem* parent, sh::io::FileSystemComponent* fsItem);
+	virtual ~MaterialTreeItem();
+	virtual void OnToggled(bool toggled) override;
+
+private:
+	sh::io::FileSystemComponent* m_item = nullptr;
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+class AssetsTreeWidget : public TreeWidget
+{
+public:
+	sh::Event<void, const sh::video::MaterialPtr&> materialChanged;
+};
 
 class AssetsWidget
 {
@@ -54,7 +60,8 @@ public:
 	AssetsWidget();
 	~AssetsWidget();
 
-	void OnTreeItemToggled(const sh::String& name, bool toggled);
+private:
+	void OnMaterialTreeItemChanged(const sh::video::MaterialPtr& material);
 
 private:
 	sh::gui::WindowPtr m_window;

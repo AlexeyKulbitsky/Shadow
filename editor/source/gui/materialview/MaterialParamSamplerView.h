@@ -8,6 +8,8 @@ class MaterialParamSamplerView : public sh::gui::Widget
 public:
 	MaterialParamSamplerView(sh::video::MaterialSamplerParam* param);
 
+	sh::Event<void> paramChanged;
+
 private:
 	void TextureChanged(sh::u32 index);
 	void TilingUChanged(sh::u32 tiling);

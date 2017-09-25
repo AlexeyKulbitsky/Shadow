@@ -14,6 +14,9 @@ namespace sh
 		public:
 			Material() {}
 			void Load(const pugi::xml_node &node);
+
+			virtual void Save() override;
+
 			void Save(pugi::xml_node &parent);
 			void SetRenderTechnique(const RenderTechniquePtr& technique);
 			void SetRenderTechnique( const String& techniqueName);

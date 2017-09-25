@@ -64,6 +64,7 @@ public:
 private:
 	void OnRenderTechniqueChanged(sh::u32 index);
 	void ResetLayout();
+	void MaterialChanged();
 
 private:
 	sh::gui::ComboBoxPtr m_comboBox;
