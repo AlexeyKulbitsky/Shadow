@@ -54,7 +54,7 @@ public:
 	sh::Event<void, const sh::video::MaterialPtr&> materialChanged;
 };
 
-class AssetsWidget
+class AssetsWidget : public sh::gui::Window
 {
 public:
 	AssetsWidget();

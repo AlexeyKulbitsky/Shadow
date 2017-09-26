@@ -2,8 +2,32 @@
 #define SHADOW_EDITOR_HIERARCHY_WIDGET_INCLUDE
 
 #include <Shadow.h>
+#include "TreeWidget.h"
 
-class HierarchyWidget
+//////////////////////////////////////////////////////////////////////////////////////
+
+class HeirarchyTreeItem : public TreeItem
+{
+public:
+	HeirarchyTreeItem(TreeItem* parent, sh::Entity* entity);
+
+	sh::Entity* GetEntity() { return m_entity; }
+
+private:
+	sh::Entity* m_entity = nullptr;
+};
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+class HierarchyTreeWidget : public TreeWidget
+{
+public:
+	HierarchyTreeWidget();
+};
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+class HierarchyWidget : public sh::gui::Window
 {
 public:
 	HierarchyWidget();
@@ -15,15 +39,14 @@ public:
 	sh::Event<void, sh::Entity*> OnEntitySelected;
 
 private:
-	void OnWindowResized(sh::s32 width, sh::s32 height);
 	void OnItemToggled(bool toggled, const sh::gui::ButtonPtr& sender);
-	void UpdateGeometry(sh::u32 screenWidth, sh::u32 screenHeight);
 	void SelectEntity(sh::u32 index);
 
 private:
-	sh::gui::WindowPtr m_window;
 	sh::gui::VerticalLayoutPtr m_layout;
 	sh::gui::ButtonPtr m_currentSelectedItem;
+
+	sh::SPtr<HierarchyTreeWidget> m_treeWidget;
 };
 
 #endif

@@ -62,26 +62,48 @@ namespace gui
 
 	///////////////////////////////////////////////////////////////////////////////////////
 
+	void Window::SetRect(const math::Recti& rect)
+	{
+		m_rect = rect;
+		InternalUpdate();
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////
+
 	void Window::SetPosition(s32 x, s32 y)
 	{
 		auto size = m_rect.GetSize();
 		m_rect.Set(x, y, x + size.x, y + size.y);
+		InternalUpdate();
+	}
 
-		m_text->SetPosition(x, y);
+	///////////////////////////////////////////////////////////////////////////////////////
 
-		// Update bar rect for input handling (moving with mouse)
-		m_barRect.upperLeftCorner.x = m_rect.upperLeftCorner.x;
-		m_barRect.upperLeftCorner.y = m_rect.upperLeftCorner.y;
-		m_barRect.lowerRightCorner.x = m_rect.lowerRightCorner.x;
-		m_barRect.lowerRightCorner.y = m_rect.upperLeftCorner.y + m_barWidth;
+	void Window::SetSize(const math::Vector2i& size)
+	{
+		const auto& pos = m_rect.upperLeftCorner;
+		m_rect.Set(pos.x, pos.y, pos.x + size.x, pos.y + size.y);
+		InternalUpdate();
+	}
 
-		// Update in rect for updating layout representation
-		m_inRect.upperLeftCorner.x = m_rect.upperLeftCorner.x;
-		m_inRect.upperLeftCorner.y = m_rect.upperLeftCorner.y + m_barWidth;
-		m_inRect.lowerRightCorner.x = m_rect.lowerRightCorner.x;
-		m_inRect.lowerRightCorner.y = m_rect.lowerRightCorner.y;
+	///////////////////////////////////////////////////////////////////////////////////////
 
-		UpdateLayout();
+	void Window::SetWidth(s32 width)
+	{
+		auto size = m_rect.GetSize();
+		const auto& pos = m_rect.upperLeftCorner;
+		m_rect.Set(pos.x, pos.y, pos.x + width, pos.y + size.y);
+		InternalUpdate();
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////
+
+	void Window::SetHeight(s32 height)
+	{
+		auto size = m_rect.GetSize();
+		const auto& pos = m_rect.upperLeftCorner;
+		m_rect.Set(pos.x, pos.y, pos.x + size.x, pos.y + height);
+		InternalUpdate();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -178,12 +200,6 @@ namespace gui
 					if ((newX + m_rect.GetWidth()) > viewport.z) newX = viewport.z - m_rect.GetWidth();
 
 					u32 topEdge = 0U;
-					const auto& menuBar = GuiManager::GetInstance()->GetMenuBar();
-					if (menuBar)
-						topEdge += menuBar->GetRect().GetHeight();
-					const auto& toolBar = GuiManager::GetInstance()->GetToolBar();
-					if (toolBar)
-						topEdge += toolBar->GetRect().GetHeight();
 					if (newY < topEdge) newY = topEdge;
 					if ((newY + m_rect.GetHeight()) > viewport.w) newY = viewport.w - m_rect.GetHeight();
 
@@ -209,6 +225,27 @@ namespace gui
 		{
 			m_layout->Resize(m_inRect);
 		}
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////
+
+	void Window::InternalUpdate()
+	{
+		m_text->SetPosition(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y);
+
+		// Update bar rect for input handling (moving with mouse)
+		m_barRect.upperLeftCorner.x = m_rect.upperLeftCorner.x;
+		m_barRect.upperLeftCorner.y = m_rect.upperLeftCorner.y;
+		m_barRect.lowerRightCorner.x = m_rect.lowerRightCorner.x;
+		m_barRect.lowerRightCorner.y = m_rect.upperLeftCorner.y + m_barWidth;
+
+		// Update in rect for updating layout representation
+		m_inRect.upperLeftCorner.x = m_rect.upperLeftCorner.x;
+		m_inRect.upperLeftCorner.y = m_rect.upperLeftCorner.y + m_barWidth;
+		m_inRect.lowerRightCorner.x = m_rect.lowerRightCorner.x;
+		m_inRect.lowerRightCorner.y = m_rect.lowerRightCorner.y;
+
+		UpdateLayout();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////

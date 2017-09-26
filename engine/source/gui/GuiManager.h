@@ -41,19 +41,12 @@ namespace gui
 		void Update(u32 delta);
 		void Render();
 
-		void CreateMenuBar();
-		void CreateToolBar();
-
-		const MenuBarPtr& GetMenuBar() const { return m_menuBar; }
-		const ToolBarPtr& GetToolBar() const { return m_toolBar; }
-
 		void LoadGui(const char* filename);
 		void AddChild(const SPtr<Widget>& child);
 
 		void SetFont(const FontPtr& font);
 		const FontPtr& GetFont() const { return m_font; }
 
-		//const SPtr<Widget>& GetChild(size_t i) const { return m_children.; }
 		size_t GetChildrenCount() const { return m_children.size(); }
 		void RemoveAllChildren() { m_children.clear(); }
 		
@@ -73,10 +66,6 @@ namespace gui
 
 	private:
 		FontPtr m_font;
-
-		MenuBarPtr m_menuBar;
-		ToolBarPtr m_toolBar;
-		//std::vector<SPtr<Widget>> m_children;
 
 		List<SPtr<Widget>> m_children;
 

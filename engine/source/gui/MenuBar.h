@@ -21,13 +21,11 @@ namespace gui
 		virtual void SetPosition(s32 x, s32 y) override;
 		virtual void SetWidth(s32 width) override;
 		virtual void SetHeight(s32 height) override;
-
 		virtual bool ProcessEvent(GUIEvent& ev) override;
-
-		void OnWindowResized(int width, int height);
+		virtual void UpdateLayout() override;
 
 	private:
-		void OnMenuReleased();
+		void OnButtonToggled(bool toggled, const ButtonPtr& sender);
 
 	private:
 		SpritePtr m_sprite;

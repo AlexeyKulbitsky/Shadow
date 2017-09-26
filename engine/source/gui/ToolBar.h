@@ -20,8 +20,6 @@ namespace gui
 		virtual void Render(video::Painter* painter) override;
 		virtual bool ProcessEvent(GUIEvent& ev) override;
 
-		void OnWindowResized(int width, int height);
-
 	private:
 		std::vector<ButtonPtr> m_buttons;
 		SpritePtr m_sprite;

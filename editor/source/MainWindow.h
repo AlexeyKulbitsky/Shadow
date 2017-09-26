@@ -60,6 +60,8 @@ private:
 	sh::gui::ButtonPtr m_arrowButton;
 
 	sh::Entity* m_cameraTargetEntity = nullptr;
+
+	sh::gui::WidgetPtr m_mainWidget;
 };
 
 #endif

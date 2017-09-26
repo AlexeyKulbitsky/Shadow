@@ -17,7 +17,13 @@ namespace gui
 
 		void SetText(const String& text);
 
+		virtual void SetRect(const math::Recti& rect) override;
 		virtual void SetPosition(s32 x, s32 y) override;
+		virtual void SetSize(const math::Vector2i& size) override;
+		virtual void SetWidth(s32 width) override;
+		virtual void SetHeight(s32 height) override;
+
+
 		virtual void Render(video::Painter* painter) override;
 
 		virtual bool ProcessEvent(GUIEvent& ev) override;
@@ -26,6 +32,9 @@ namespace gui
 		void SetMovable(bool movable) { m_isMovable = movable; }
 
 		virtual void UpdateLayout() override;
+
+	private:
+		void InternalUpdate();
 
 	private:
 		SpritePtr m_sprite;

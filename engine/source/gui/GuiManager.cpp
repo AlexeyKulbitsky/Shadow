@@ -72,12 +72,6 @@ namespace gui
 			(*child)->Render(painter);
 		}
 
-		if (m_toolBar)
-			m_toolBar->Render(painter);
-
-		if (m_menuBar)
-			m_menuBar->Render(painter);
-
 		if (m_focusWidget && m_focusWidget->IsInFocus())
 		{
 			m_focusWidget->SetFocus(false);
@@ -86,22 +80,6 @@ namespace gui
 		}
 
 		painter->Flush();
-	}
-
-	void GuiManager::CreateMenuBar()
-	{
-		if (!m_menuBar)
-		{
-			m_menuBar.reset(new MenuBar());
-		}
-	}
-
-	void GuiManager::CreateToolBar()
-	{
-		if (!m_toolBar)
-		{
-			m_toolBar.reset(new ToolBar());
-		}
 	}
 
 	void GuiManager::LoadGui(const char* filename)
@@ -184,12 +162,6 @@ namespace gui
 
 	bool GuiManager::ProcessEvent(GUIEvent& ev)
 	{
-		if (m_menuBar && m_menuBar->ProcessEvent(ev))
-			return true;
-
-		if (m_toolBar && m_toolBar->ProcessEvent(ev))
-			return true;
-
 		if (m_focusWidget)
 		{
 			if (m_focusWidget->IsInFocus())

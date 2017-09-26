@@ -218,6 +218,7 @@ void MainWindow::OnKeyboardEvent(sh::KeyboardEventType type, sh::KeyCode code)
 
 void MainWindow::OnWindowResized(int width, int height)
 {
+	m_mainWidget->SetRect(sh::math::Recti(0, 0, width, height));
 }
 
 void MainWindow::Init()
@@ -228,6 +229,7 @@ void MainWindow::Init()
 	sh::Device::GetInstance()->mouseEvent.Connect(std::bind(&MainWindow::OnMouseEvent, this, _1, _2, _3, _4));
 	sh::Device::GetInstance()->mouseWheelEvent.Connect(std::bind(&MainWindow::OnMouseWeelEvent, this, _1, _2, _3));
 	sh::Device::GetInstance()->keyboardEvent.Connect(std::bind(&MainWindow::OnKeyboardEvent, this, _1, _2));
+	sh::Device::GetInstance()->windowResizeEvent.Connect(std::bind(&MainWindow::OnWindowResized, this, _1, _2));
 
 
 	m_defaultGizmo.reset(new Gizmo());
@@ -242,6 +244,8 @@ void MainWindow::Init()
 	const auto& fileInfo = fileSystem->FindFile("editor_gui.xml");
 
 	auto guiMgr = sh::gui::GuiManager::GetInstance();
+	m_mainWidget.reset(new sh::gui::Widget());
+	guiMgr->AddChild(m_mainWidget);
 
 	if (fileInfo.name != "")
 	{
@@ -270,13 +274,10 @@ void MainWindow::Init()
 
 	////////////////////////////////////////////////////////////////////////////
 
-	guiMgr->CreateMenuBar();
-	guiMgr->CreateToolBar();
-
-	const auto& menuBar = guiMgr->GetMenuBar();
-	const auto& toolBar = guiMgr->GetToolBar();
+	sh::gui::VerticalLayoutPtr mainVerticalLayout(new sh::gui::VerticalLayout());
 
 	// Menu bar
+	sh::gui::MenuBarPtr menuBar(new sh::gui::MenuBar());
 	sh::gui::ButtonPtr menuButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
 	menuButton->SetToggleable(true);
 	const auto& fileMenu = menuBar->AddMenu("File", menuButton);
@@ -291,10 +292,13 @@ void MainWindow::Init()
 	saveSceneButton->OnRelease.Connect(std::bind(&MainWindow::SaveScene, this));
 	fileMenu->AddItem(saveSceneButton);
 
-	sh::gui::ButtonPtr exitButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
-	exitButton->SetText("Exit");
-	exitButton->OnRelease.Connect(std::bind(&MainWindow::Close, this));
-	fileMenu->AddItem(exitButton);
+	sh::gui::ButtonPtr exitButton1(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	exitButton1->SetText("Exit");
+	exitButton1->OnRelease.Connect(std::bind(&MainWindow::Close, this));
+	fileMenu->AddItem(exitButton1);
+	
+	mainVerticalLayout->AddWidget(menuBar);
+	
 
 	// Tool bar
 	m_moveGizmoButton = guiMgr->GetStyle()->GetButton("MoveGizmoButton");
@@ -313,24 +317,44 @@ void MainWindow::Init()
 	m_arrowButton->SetToggleable(true);
 	m_arrowButton->OnToggle.Connect(std::bind(&MainWindow::OnArrowButtonToggled, this, _1));
 
+	sh::gui::ToolBarPtr toolBar(new sh::gui::ToolBar());
 	toolBar->AddItem(m_arrowButton);
 	toolBar->AddItem(m_moveGizmoButton);
 	toolBar->AddItem(m_rotateGizmoButton);
 	toolBar->AddItem(m_scaleGizmoButton);
 
-	//sh::gui::ComboBoxPtr comboBox(new sh::gui::ComboBox(sh::math::Rectu(50U, 50U, 150U, 70U)));
-	//comboBox->AddItem("Item 1");
-	//comboBox->AddItem("Item 2");
-	//comboBox->AddItem("Item 3");
-	//guiMgr->AddChild(comboBox);
+	mainVerticalLayout->AddWidget(toolBar);
 
 	// Inspector
 	m_inspectorWidget.reset(new InspectorWidget());
 	m_assetsWidget.reset(new AssetsWidget());
 	m_hierarchyWidget.reset(new HierarchyWidget());
-
-
 	
+
+	sh::gui::VerticalLayoutPtr assetsHierarchyLayout(new sh::gui::VerticalLayout());
+	assetsHierarchyLayout->AddWidget(m_hierarchyWidget);
+	assetsHierarchyLayout->AddWidget(m_assetsWidget);
+
+	sh::gui::VerticalLayoutPtr inspectorLayout(new sh::gui::VerticalLayout());
+	inspectorLayout->AddWidget(m_inspectorWidget);
+
+	sh::gui::HorizontalLayoutPtr mainLayout(new sh::gui::HorizontalLayout());
+
+	mainVerticalLayout->AddLayout(mainLayout);
+
+	mainLayout->AddLayout(assetsHierarchyLayout);
+	sh::gui::WidgetPtr emptyWidget(new sh::gui::Widget());
+	emptyWidget->SetVisible(false);
+	emptyWidget->SetEnabled(false);
+	mainLayout->AddWidget(emptyWidget);
+	emptyWidget.reset(new sh::gui::Widget());
+	emptyWidget->SetVisible(false);
+	emptyWidget->SetEnabled(false);
+	mainLayout->AddWidget(emptyWidget);
+	mainLayout->AddLayout(inspectorLayout);
+	m_mainWidget->SetLayout(mainVerticalLayout);
+	auto viewport = sh::Device::GetInstance()->GetDriver()->GetViewport();
+	m_mainWidget->SetRect(sh::math::Recti(0, 0, viewport.lowerRightCorner.x, viewport.lowerRightCorner.y));
 
 	m_hierarchyWidget->OnEntitySelected.Connect(std::bind(&MainWindow::OnEntityFromListSelected, this, std::placeholders::_1));
 

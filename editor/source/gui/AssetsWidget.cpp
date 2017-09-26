@@ -118,19 +118,16 @@ void MaterialTreeItem::OnToggled(bool toggled)
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 AssetsWidget::AssetsWidget()
+	:sh::gui::Window(sh::math::Recti(0, 100, 250, 500))
 {
-	m_window.reset(new sh::gui::Window(sh::math::Recti(0, 100, 250, 500)));
-	const auto& viewport = sh::Device::GetInstance()->GetDriver()->GetViewPort();
-	m_window->SetText("Assets");
-
+	SetText("Assets");
+	SetMovable(false);
 	sh::gui::VerticalLayoutPtr windowLayout(new sh::gui::VerticalLayout());
 	windowLayout->SetMargins(2, 2, 2, 2);
 
 	auto guiMgr = sh::gui::GuiManager::GetInstance();
 
-	m_window->SetLayout(windowLayout);
-
-	guiMgr->AddChild(m_window);
+	SetLayout(windowLayout);
 
 	//////////////////////////////////////////////////
 

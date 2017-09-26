@@ -4,6 +4,7 @@
 #include "Sprite.h"
 #include "Style.h"
 #include "GuiManager.h"
+#include "HorizontalLayout.h"
 
 #include "../video/Driver.h"
 #include "../Device.h"
@@ -17,18 +18,11 @@ namespace gui
 	ToolBar::ToolBar()
 		: Widget()
 	{
-
-		video::Driver* driver = Device::GetInstance()->GetDriver();
-
-		const auto& viewPort = driver->GetViewPort();
-		math::Vector2u extends(viewPort.z, viewPort.w);
-
-		m_rect.Set(0U, 15U, extends.x, 45U);
-
+		SetMaximumHeight(30);
 		m_sprite = GuiManager::GetInstance()->GetStyle()->GetToolBar()->m_sprite;
 
-		Device::GetInstance()->windowResizeEvent.Connect(std::bind(&ToolBar::OnWindowResized, this,
-			std::placeholders::_1, std::placeholders::_2));
+		HorizontalLayoutPtr layout(new HorizontalLayout());
+		SetLayout(layout);
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -36,27 +30,19 @@ namespace gui
 	ToolBar::ToolBar(const SpritePtr& sprite)
 		: Widget()
 	{
-		video::Driver* driver = Device::GetInstance()->GetDriver();
-
-		const auto& viewPort = driver->GetViewPort();
-		math::Vector2u extends(viewPort.z, viewPort.w);
-
-		m_rect.Set(0U, 15U, extends.x, 45U);
-
+		SetMaximumHeight(30);
 		m_sprite = sprite;
 
-		Device::GetInstance()->windowResizeEvent.Connect(std::bind(&ToolBar::OnWindowResized, this,
-			std::placeholders::_1, std::placeholders::_2));
+		HorizontalLayoutPtr layout(new HorizontalLayout());
+		SetLayout(layout);
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	void ToolBar::AddItem(const ButtonPtr& button)
 	{
-		u32 size = m_buttons.size();
-		button->SetPosition(30 * (size), 15U);
-		button->SetWidth(30U);
-		button->SetHeight(30U);
+		button->SetMaximumWidth(30);
+		m_layout->AddWidget(button);
 
 		m_buttons.push_back(button); 
 	}
@@ -97,13 +83,6 @@ namespace gui
 				return true;
 		}
 		return false;
-	}
-
-	/////////////////////////////////////////////////////////////////////////////////////
-
-	void ToolBar::OnWindowResized(int width, int)
-	{
-		m_rect.Set(0U, 15U, width, 45U);
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////

@@ -4,6 +4,7 @@
 #include "Button.h"
 #include "Sprite.h"
 #include "Style.h"
+#include "HorizontalLayout.h"
 #include "GuiManager.h"
 
 #include "../video/Driver.h"
@@ -21,10 +22,10 @@ namespace gui
 		: Widget()
 	{
 		m_sprite = GuiManager::GetInstance()->GetStyle()->GetMenuBar()->m_sprite;
-		SetHeight(15U);
+		SetMaximumHeight(20);
 
-		Device::GetInstance()->windowResizeEvent.Connect(std::bind(&MenuBar::OnWindowResized, this,
-			std::placeholders::_1, std::placeholders::_2));
+		HorizontalLayoutPtr layout(new HorizontalLayout());
+		SetLayout(layout);
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -33,11 +34,10 @@ namespace gui
 		: Widget()
 	{
 		m_sprite = sprite;
-		SetHeight(15U);
+		SetMaximumHeight(20);
 
-		Device::GetInstance()->windowResizeEvent.Connect(std::bind(&MenuBar::OnWindowResized, this,
-			std::placeholders::_1, std::placeholders::_2));
-
+		HorizontalLayoutPtr layout(new HorizontalLayout());
+		SetLayout(layout);
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -45,11 +45,12 @@ namespace gui
 	const MenuPtr& MenuBar::AddMenu(const String& title, const ButtonPtr& button)
 	{
 		MenuPtr menu(new Menu(title));
-		button->SetPosition(0, 0);
 		button->SetText(title);
+		button->SetMaximumWidth(50);
 		button->OnToggle.Connect(std::bind(&Menu::SetEnabled, menu.get(), std::placeholders::_1));
 		button->OnToggle.Connect(std::bind(&Menu::SetVisible, menu.get(), std::placeholders::_1));
-		menu->SetPosition(0, 15);
+		button->OnToggle.Connect(std::bind(&MenuBar::OnButtonToggled, this, std::placeholders::_1, std::placeholders::_2));
+		m_layout->AddWidget(button);
 
 		m_menus.push_back(std::make_pair(button, menu));
 		return m_menus[m_menus.size() - 1].second;
@@ -80,25 +81,21 @@ namespace gui
 
 	void MenuBar::SetPosition(s32 x, s32 y)
 	{
-		// Position is fixed in left upper corener of viewport
+		Widget::SetPosition(x, y);
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	void MenuBar::SetWidth(s32 width)
 	{
-		// Width is always stretched to viewport's width
+		Widget::SetWidth(width);
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	void MenuBar::SetHeight(s32 height)
 	{
-		video::Driver* driver = Device::GetInstance()->GetDriver();
-		const auto& viewPort = driver->GetViewPort();
-		math::Vector2u extends(viewPort.z, viewPort.w);
-
-		m_rect.Set(0U, 0U, extends.x, height);
+		Widget::SetHeight(height);
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -125,14 +122,33 @@ namespace gui
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	void MenuBar::OnWindowResized(int width, int)
+	void MenuBar::UpdateLayout()
 	{
-		m_rect.Set(0U, 0U, width, m_rect.lowerRightCorner.y);
-//		UpdatePosition();
+		Widget::UpdateLayout();
+
+		for (const auto& menu : m_menus)
+		{
+			const auto& pos = menu.first->GetPosition();
+			const auto height = menu.first->GetHeight();
+			menu.second->SetPosition(pos.x, pos.y + height);
+		}
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
+	void MenuBar::OnButtonToggled(bool toggled, const ButtonPtr& sender)
+	{
+		for (const auto& menu : m_menus)
+		{
+			if (menu.first == sender)
+			{
+				menu.second->SetFocus(true);
+				GuiManager::GetInstance()->SetFocusWidget(menu.second);
+			}
+		}
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
 } // gui
 
 } // sh
