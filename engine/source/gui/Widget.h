@@ -15,6 +15,7 @@ namespace gui
 		PointerDown,
 		PointerUp,
 		PointerMove,
+		PointerDoubleClick,
 		Wheel,
 		KeyDown,
 		KeyUp

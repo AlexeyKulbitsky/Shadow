@@ -54,6 +54,13 @@ bool TreeItem::ProcessEvent(sh::gui::GUIEvent& ev)
 		OnContextMenu(ev.x, ev.y);
 		return true;
 	}
+	if (ev.type == sh::gui::EventType::PointerDoubleClick && 
+		ev.mouseButtonCode == sh::MouseCode::ButtonLeft &&
+		m_rect.IsPointInside(ev.x, ev.y))
+	{
+		OnEdit(ev.x, ev.y);
+		return true;
+	}
 	else
 	{
 		return Widget::ProcessEvent(ev);

@@ -59,7 +59,11 @@ namespace gui
 
 	void GuiManager::Update(u32 delta)
 	{
-
+		if (!m_focusWidgetsQueue.empty())
+		{
+			m_focusWidget = m_focusWidgetsQueue.front();
+			m_focusWidgetsQueue.pop();
+		}
 	}
 
 	void GuiManager::Render()
@@ -121,6 +125,19 @@ namespace gui
 		m_children.push_back(child);
 	}
 
+	void GuiManager::AddChildFront(const SPtr<Widget>& child)
+	{
+		m_children.push_front(child);
+	}
+
+	void GuiManager::RemoveChild(size_t index)
+	{
+		if (index >= m_children.size())
+			return;
+
+		m_children.erase(m_children.begin());
+	}
+
 	void GuiManager::SetFont(const FontPtr& font)
 	{
 		m_font = font;
@@ -158,6 +175,11 @@ namespace gui
 		m_defaultMaterial->GetCommonGpuParams()->SetSampler("diffuse", sampler);
 
 		//m_defaultMaterial->GetCommonGpuParams()->SetSampler("diffuse", m_style->GetTexure());
+	}
+
+	void GuiManager::SetFocusWidget(const SPtr<Widget>& widget) 
+	{ 
+		m_focusWidgetsQueue.push(widget);
 	}
 
 	bool GuiManager::ProcessEvent(GUIEvent& ev)

@@ -144,7 +144,6 @@ bool GLES20Driver::Init()
 
 void GLES20Driver::BeginRendering()
 {
-
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 }
 
@@ -501,7 +500,7 @@ void GLES20Driver::SetScissorRect(const math::Rectu& scissor, const CommandBuffe
 
 ////////////////////////////////////////////////////////////////////////
 
-void GLES20Driver::GetPixelData( u32 x, u32 y, u32 width, u32 height, u8* data )
+void GLES20Driver::GetPixelData( u32 x, u32 y, u8* data )
 {
 	GLint viewport[4];
 	glGetIntegerv( GL_VIEWPORT, viewport );

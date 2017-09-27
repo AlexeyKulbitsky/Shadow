@@ -5,6 +5,7 @@
 #include "Sprite.h"
 #include "Style.h"
 #include "HorizontalLayout.h"
+#include "VerticalLayout.h"
 #include "GuiManager.h"
 
 #include "../video/Driver.h"
@@ -17,6 +18,68 @@ namespace sh
 
 namespace gui
 {
+
+	MenuBar::MenuBarItem::MenuBarItem(const String& menuName, const ButtonPtr& _button)
+	{
+		menu.reset(new Menu(menuName));
+		button = _button;
+		button->SetText(menuName);
+		button->SetToggleable(true);
+		button->OnToggle.Connect(std::bind(&MenuBar::MenuBarItem::OnButtonToggled, this, std::placeholders::_1, std::placeholders::_2));
+		m_layout.reset(new VerticalLayout());
+		m_layout->AddWidget(button);
+		SetMaximumWidth(50);
+	}
+
+	void MenuBar::MenuBarItem::UpdateLayout()
+	{
+		Widget::UpdateLayout();
+		const auto& pos = button->GetPosition();
+		const auto height = button->GetHeight();
+		menu->SetPosition(pos.x, pos.y + height);
+	}
+
+	void MenuBar::MenuBarItem::Render(video::Painter* painter)
+	{
+		Widget::Render(painter);
+		menu->Render(painter);
+	}
+
+	bool MenuBar::MenuBarItem::ProcessEvent(GUIEvent& ev)
+	{
+		if (menu->IsEnabled() &&
+			(ev.type == EventType::PointerUp ||
+				ev.type == EventType::PointerMove) &&
+			menu->ProcessEvent(ev))
+		{
+			menu->SetEnabled(false);
+			menu->SetVisible(false);
+			return true;
+		}
+
+		if (button->ProcessEvent(ev))
+			return true;
+
+		return false;
+	}
+
+	void MenuBar::MenuBarItem::OnButtonToggled(bool toggled, const ButtonPtr& sender)
+	{
+		if (toggled)
+		{
+			menu->SetEnabled(true);
+			menu->SetVisible(true);
+			this->SetFocus(true);
+			GuiManager::GetInstance()->SetFocusWidget(shared_from_this());
+		}
+		else
+		{
+			menu->SetEnabled(false);
+			menu->SetVisible(false);
+			this->SetFocus(false);
+			GuiManager::GetInstance()->SetFocusWidget(nullptr);
+		}
+	}
 
 	MenuBar::MenuBar()
 		: Widget()
@@ -44,16 +107,10 @@ namespace gui
 
 	const MenuPtr& MenuBar::AddMenu(const String& title, const ButtonPtr& button)
 	{
-		MenuPtr menu(new Menu(title));
-		button->SetText(title);
-		button->SetMaximumWidth(50);
-		button->OnToggle.Connect(std::bind(&Menu::SetEnabled, menu.get(), std::placeholders::_1));
-		button->OnToggle.Connect(std::bind(&Menu::SetVisible, menu.get(), std::placeholders::_1));
-		button->OnToggle.Connect(std::bind(&MenuBar::OnButtonToggled, this, std::placeholders::_1, std::placeholders::_2));
-		m_layout->AddWidget(button);
-
-		m_menus.push_back(std::make_pair(button, menu));
-		return m_menus[m_menus.size() - 1].second;
+		MenuBarItemPtr item(new MenuBarItem(title, button));
+		m_layout->AddWidget(item);
+		m_menuItems.push_back(item);
+		return m_menuItems[m_menuItems.size() - 1]->menu;
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -69,86 +126,14 @@ namespace gui
 										 m_sprite->GetColor());
 		painter->DrawRect(upperLeft, downRight);
 
-		for (const auto& menu : m_menus)
+		for (const auto& menuItem : m_menuItems)
 		{
-			menu.first->Render(painter);
-			if (menu.second->IsVisible())
-				menu.second->Render(painter);
+			menuItem->Render(painter);
 		}
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
 
-	void MenuBar::SetPosition(s32 x, s32 y)
-	{
-		Widget::SetPosition(x, y);
-	}
-
-	/////////////////////////////////////////////////////////////////////////////////////
-
-	void MenuBar::SetWidth(s32 width)
-	{
-		Widget::SetWidth(width);
-	}
-
-	/////////////////////////////////////////////////////////////////////////////////////
-
-	void MenuBar::SetHeight(s32 height)
-	{
-		Widget::SetHeight(height);
-	}
-
-	/////////////////////////////////////////////////////////////////////////////////////
-
-	bool MenuBar::ProcessEvent(GUIEvent& ev)
-	{
-		for (const auto& menu : m_menus)
-		{
-			if (menu.second->IsEnabled() &&
-				(ev.type == EventType::PointerUp ||
-					ev.type == EventType::PointerMove) &&
-				menu.second->ProcessEvent(ev))
-			{
-				menu.second->SetEnabled(false);
-				menu.second->SetVisible(false);
-				return true;
-			}
-
-			if (menu.first->ProcessEvent(ev))
-				return true;
-		}
-		return false;
-	}
-
-	/////////////////////////////////////////////////////////////////////////////////////
-
-	void MenuBar::UpdateLayout()
-	{
-		Widget::UpdateLayout();
-
-		for (const auto& menu : m_menus)
-		{
-			const auto& pos = menu.first->GetPosition();
-			const auto height = menu.first->GetHeight();
-			menu.second->SetPosition(pos.x, pos.y + height);
-		}
-	}
-
-	/////////////////////////////////////////////////////////////////////////////////////
-
-	void MenuBar::OnButtonToggled(bool toggled, const ButtonPtr& sender)
-	{
-		for (const auto& menu : m_menus)
-		{
-			if (menu.first == sender)
-			{
-				menu.second->SetFocus(true);
-				GuiManager::GetInstance()->SetFocusWidget(menu.second);
-			}
-		}
-	}
-
-	/////////////////////////////////////////////////////////////////////////////////////
 } // gui
 
 } // sh

@@ -94,6 +94,9 @@ void MainWindow::OnMouseEvent(int x, int y, sh::MouseEventType type, sh::MouseCo
 	case sh::MouseEventType::Moved:
 		ev.type = sh::gui::EventType::PointerMove;
 		break;
+	case sh::MouseEventType::ButtonDoubleClicked:
+		ev.type = sh::gui::EventType::PointerDoubleClick;
+		break;
 	}
 	ev.x = x;
 	ev.y = y;
@@ -109,7 +112,7 @@ void MainWindow::OnMouseEvent(int x, int y, sh::MouseEventType type, sh::MouseCo
 			case sh::MouseEventType::ButtonPressed:
 			{
 				const auto& picker = sh::Device::GetInstance()->GetSceneManager()->GetPicker();
-				m_cameraTargetEntity = picker->TryToPick(x, y, 640, 480);
+				m_cameraTargetEntity = picker->TryToPick(x, y);
 			}
 			break;
 			case sh::MouseEventType::ButtonReleased:
@@ -140,7 +143,7 @@ void MainWindow::OnMouseEvent(int x, int y, sh::MouseEventType type, sh::MouseCo
 				if (!m_gizmo->IsEnabled())
 				{
 					const auto& picker = sh::Device::GetInstance()->GetSceneManager()->GetPicker();
-					auto result = picker->TryToPick(x, y, 640, 480);
+					auto result = picker->TryToPick(x, y);
 					m_gizmo->SetEntity(result);
 					m_inspectorWidget->SetEntity(result);
 					m_hierarchyWidget->SetSelectedEntity(result);
@@ -459,7 +462,7 @@ void MainWindow::Update(sh::u64 delta)
 
 	sceneMgr->Update();
 	m_gizmo->Render();
-
+	sh::gui::GuiManager::GetInstance()->Update(0U);
 	sh::gui::GuiManager::GetInstance()->Render();
 
 	driver->EndRendering();

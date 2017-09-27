@@ -21,6 +21,7 @@ public:
 
 protected:
 	virtual void OnContextMenu(sh::s32 x, sh::s32 y) { }
+	virtual void OnEdit(sh::s32 x, sh::s32 y) { }
 
 protected:
 	sh::s32 m_offset = 0;

@@ -28,6 +28,8 @@ namespace io
 		virtual std::vector<char> ReadFile(const String& filename) override;
 		virtual File LoadFile(const String& filename) override;
 
+		virtual void Rename(FileSystemComponent* component, const String& newName) override;
+
 	private:
 		void CollectFilesFromFolder(const String& folder, const SPtr<FolderInfo>& root, bool recursive = true);
 

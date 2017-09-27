@@ -56,7 +56,7 @@ namespace sh
 			virtual void DrawIndexed(u32 offset, u32 indicesCount, u32 instancesCount = 1U, const CommandBufferPtr& commandBuffer = nullptr) override;
 			virtual void SetScissorRect(const math::Rectu& scissor, const CommandBufferPtr& commandBuffer = nullptr) override;
 
-			virtual void GetPixelData(u32 x, u32 y, u32 width, u32 height, u8* data) override;
+			virtual void GetPixelData(u32 x, u32 y, u8* data) override;
 
 			virtual RenderTargetPtr CreateRenderTarget() const override;
 

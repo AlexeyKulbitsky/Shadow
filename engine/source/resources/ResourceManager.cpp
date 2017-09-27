@@ -117,7 +117,7 @@ namespace sh
 	{
 		for (size_t i = 0U, sz = m_materials.size(); i < sz; ++i)
 		{
-			if (m_materials[i]->GetFileName() == materialName)
+			if (m_materials[i]->GetFileInfo().lock()->name == materialName)
 			{
 				return m_materials[i];
 			}
@@ -182,7 +182,7 @@ namespace sh
 		if (!m_defaultMaterial)
 		{
 			m_defaultMaterial.reset(new video::Material());
-			m_defaultMaterial->SetRenderTechnique("default.xml");
+			m_defaultMaterial->SetRenderTechnique("default.rt");
 		}
 		return m_defaultMaterial;
 	}

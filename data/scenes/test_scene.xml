@@ -17,7 +17,7 @@
 		</component-->
 		<component name="render">
 			<model filename="cube.obj" />
-			<material filename="skyboxMaterial.mat"/>
+			<materials global="skyboxMaterial.mat"/>
 		</component>
 	</entity>
 	
@@ -29,7 +29,10 @@
 		</component>
 		<component name="render">
 			<model filename="cube.obj" />
-			<material filename="testMaterial.mat"/>
+			<materials>
+				<material mesh="Box001" filename="testMaterial.mat"/>
+			</materials>
+			
 		</component>
 	</entity>
 	
@@ -41,11 +44,13 @@
 		</component>
 		<component name="render">
 			<model filename="cube.obj" />
-			<material filename="testMaterial.mat"/>
+			<materials>
+				<material mesh="Box001" filename="testMaterial.mat"/>
+			</materials>
 		</component>
 	</entity>
 	
-	<!--entity name="nanosuit">
+	<entity name="nanosuit">
 		<component name="transform">
 			<position val="2 2 -2" />
 			<rotation val="0 0 0 1" />
@@ -53,9 +58,9 @@
 		</component>
 		<component name="render">
 			<model filename="nanosuit.obj" />
-			<material filename="testMaterial.mat"/>
+			<materials global="testMaterial.mat"/>
 		</component>
-	</entity-->
+	</entity>
 
 	<entity name="test_terrain">
 		<component name="terrain">

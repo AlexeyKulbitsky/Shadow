@@ -17,6 +17,7 @@ namespace sh
 			};
 
 			FileSystemComponent(const String& _name, const String& _absolutePath) : name(_name), absolutePath(_absolutePath) {}
+			void Rename(const String& newName);
 
 			virtual Type GetType() const = 0;
 
@@ -80,6 +81,8 @@ namespace sh
 			virtual bool SaveFile(const String& data, const String& fileName) { return false; }
 			virtual std::vector<char> ReadFile(const String& filename) { return std::vector<char>(); }
 			virtual File LoadFile(const String& filename) { return File(); }
+
+			virtual void Rename(FileSystemComponent* component, const String& newName) {}
 
 			void UpdateResourceGroups();
 

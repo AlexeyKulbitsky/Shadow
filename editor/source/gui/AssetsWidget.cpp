@@ -115,6 +115,73 @@ void MaterialTreeItem::OnToggled(bool toggled)
 	}
 }
 
+
+void MaterialTreeItem::OnContextMenu(sh::s32 x, sh::s32 y)
+{
+	sh::gui::MenuPtr menu(new sh::gui::Menu());
+	menu->AddItem("Rename");
+	menu->SetPosition(x, y);
+	menu->SetFocus(true);
+	menu->itemSelected.Connect(std::bind(&MaterialTreeItem::OnMenuItemSelected, this, std::placeholders::_1));
+	sh::gui::GuiManager::GetInstance()->SetFocusWidget(menu);
+}
+
+void MaterialTreeItem::OnEdit(sh::s32 x, sh::s32 y)
+{
+	//SH_ASSERT(0);
+}
+
+void MaterialTreeItem::OnMenuItemSelected(const sh::String& itemName)
+{
+	auto button = std::static_pointer_cast<sh::gui::Button>(m_layout->GetItem(0U)->GetWidget());
+
+	sh::gui::LineEditPtr lineEdit(new sh::gui::LineEdit());
+
+	const auto& originalFileName = button->GetText();
+	size_t pos = originalFileName.find_last_of('.');
+	const sh::String name = originalFileName.substr(0U, pos);
+
+	lineEdit->SetText(name);
+	lineEdit->SetRect(button->GetRect());
+	lineEdit->OnTextChanged.Connect([this](const sh::String& text)
+	{
+		// Check if new name is available
+		sh::io::FileSystem* fs = sh::Device::GetInstance()->GetFileSystem();
+		const auto& materialFileNames = fs->GetMaterialFileInfos();
+		bool fileNameAlreadyExists = false;
+		const sh::String fileName = text + ".mat";
+		for (const auto& materialFilename : materialFileNames)
+		{
+			if (fileName == materialFilename.lock()->name)
+			{
+				fileNameAlreadyExists = true;
+				break;
+			}
+		}
+		if (fileNameAlreadyExists)
+			return;
+
+		// Rename material
+		const auto& material = sh::Device::GetInstance()->GetResourceManager()->GetMaterial(m_item->name);
+// 		m_item->name = fileName;
+// 		size_t separatorPos = m_item->absolutePath.find_last_of('/');
+// 		m_item->absolutePath = m_item->absolutePath.substr(0U, separatorPos) + "/" + fileName;
+// 		auto button = std::static_pointer_cast<sh::gui::Button>(m_layout->GetItem(0U)->GetWidget());
+// 		button->SetText(fileName);
+
+		m_item->Rename(fileName);
+		auto button = std::static_pointer_cast<sh::gui::Button>(m_layout->GetItem(0U)->GetWidget());
+		button->SetText(fileName);
+
+		// Save renamed material
+		material->Save();
+
+		sh::gui::GuiManager::GetInstance()->SetFocusWidget(nullptr);
+	});
+	lineEdit->SetFocus(true);
+	sh::gui::GuiManager::GetInstance()->SetFocusWidget(lineEdit);
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 AssetsWidget::AssetsWidget()

@@ -203,7 +203,7 @@ namespace sh
 
 		void operator() (Args... args)
 		{
-			for (auto& connection : m_connections)
+			for (const auto& connection : m_connections)
 			{
 				connection(std::forward<Args>(args)...);
 			}

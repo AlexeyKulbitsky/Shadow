@@ -6,6 +6,12 @@ namespace sh
 {
 	namespace io
 	{
+
+		void FileSystemComponent::Rename(const String& newName)
+		{
+			FileSystem::GetInstance()->Rename(this, newName);
+		}
+
 		FileSystem::FileSystem()
 		{
 

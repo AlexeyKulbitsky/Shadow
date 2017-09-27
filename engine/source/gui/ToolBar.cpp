@@ -41,10 +41,11 @@ namespace gui
 
 	void ToolBar::AddItem(const ButtonPtr& button)
 	{
+		if (m_layout->GetItemsCount() == 0U)
+			button->SetToggled(true);
+
 		button->SetMaximumWidth(30);
 		m_layout->AddWidget(button);
-
-		m_buttons.push_back(button); 
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -67,22 +68,7 @@ namespace gui
 										 m_sprite->GetColor());
 		painter->DrawRect(upperLeft, downRight);
 
-		for (const auto& button : m_buttons)
-		{
-			button->Render(painter);
-		}
-	}
-
-	/////////////////////////////////////////////////////////////////////////////////////
-
-	bool ToolBar::ProcessEvent(GUIEvent& ev)
-	{
-		for (const auto& button : m_buttons)
-		{
-			if (button->ProcessEvent(ev))
-				return true;
-		}
-		return false;
+		Widget::Render(painter);
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////

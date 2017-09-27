@@ -127,6 +127,17 @@ namespace io
 		return file;
 	}
 
+	void WindowsFileSystem::Rename(FileSystemComponent* component, const String& newName)
+	{
+		auto oldFileName = component->absolutePath;
+		size_t separatorPos = oldFileName.find_last_of('/');
+		auto newFilename = oldFileName.substr(0U, separatorPos) + "/" + newName;
+		MoveFile(oldFileName.c_str(), newFilename.c_str());
+
+		component->absolutePath = newFilename;
+		component->name = newName;
+	}
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	void WindowsFileSystem::CollectFilesFromFolder(const String& folder, const SPtr<FolderInfo>& root, bool recursive)

@@ -4,6 +4,8 @@
 #include "../video/Material.h"
 #include "../video/RenderPipeline.h"
 #include "../video/Renderable.h"
+#include "../video/VertexDeclaration.h"
+#include "../video/VertexBuffer.h"
 #include "../scene/Mesh.h"
 #include "../scene/Model.h"
 #include "../scene/Camera.h"
@@ -19,12 +21,13 @@ namespace sh
 	{
 		Picker::Picker()
 		{	
-			//m_material.reset(new sh::video::Material());
-			//m_material->SetRenderTechnique("editor_base_color.xml");
-			//const auto& info = m_material->GetRenderPipeline()->GetAutoParamsInfo();
-			//m_params = sh::video::GpuParams::Create(info);
-			//m_params->GetParam("matWVP", m_wvpMtrix);
-			//m_params->GetParam("color", m_color);
+			m_material.reset(new sh::video::Material());
+			m_material->SetRenderTechnique("editor_base_color.rt");
+			m_params = m_material->GetCommonGpuParams();
+			m_params->GetParam("matrixWVP", m_wvpMtrix);
+			m_params->GetParam("color", m_color);
+
+			m_mode = Mode::Color;
 		}
 
 		/////////////////////////////////////////////////////////
@@ -46,14 +49,14 @@ namespace sh
 
 		/////////////////////////////////////////////////////////
 
-		sh::Entity* Picker::TryToPick(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
+		sh::Entity* Picker::TryToPick(sh::u32 x, sh::u32 y)
 		{
 			switch (m_mode)
 			{
 				case Mode::Color:
-					return TryToPickByColor(x, y, width, height);
+					return TryToPickByColor(x, y);
 				case Mode::RayCast:
-					return TryToPickByRayCast(x, y, width, height);
+					return TryToPickByRayCast(x, y);
 				default:
 					return nullptr;
 			}
@@ -68,7 +71,7 @@ namespace sh
 
 		/////////////////////////////////////////////////////////
 
-		sh::Entity* Picker::TryToPickByColor(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
+		sh::Entity* Picker::TryToPickByColor(sh::u32 x, sh::u32 y)
 		{
 			sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
 			sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
@@ -97,19 +100,22 @@ namespace sh
 					const auto& mesh = model->GetMesh(j);
 					const auto& renderable = mesh->GetRanderable();
 					sh::math::Matrix4f wvpMatrix = projectionMatrix * viewMatrix * mesh->GetWorldMatrix();
+					wvpMatrix.Transpose();
 					m_wvpMtrix.Set(wvpMatrix);
 
+					const auto& vertexDeclaration = m_material->GetRenderPipeline()->GetVertexInputDeclaration();
+					vertexDeclaration->Assemble(*(renderable->GetVertexBuffer()->GetVertexDeclaration()));
 
 					driver->SetGpuParams(m_params);
 					driver->SetVertexBuffer(renderable->GetVertexBuffer());
-					driver->SetVertexDeclaration(renderable->GetVertexInputDeclaration());
+					driver->SetVertexDeclaration(vertexDeclaration);
 					driver->SetIndexBuffer(renderable->GetIndexBuffer());				
 					driver->DrawIndexed(0, renderable->GetIndexBuffer()->GetIndicesCount());
 				}			
 			}
 			
 			unsigned char data[4];
-			driver->GetPixelData(x, y, width, height, data);
+			driver->GetPixelData(x, y, data);
 
 			int pickedID = data[0] + data[1] * 256 + data[2] * 256*256;
 			if (pickedID >= 0 && (size_t)pickedID < m_entities.size())
@@ -122,7 +128,7 @@ namespace sh
 
 		/////////////////////////////////////////////////////////
 
-		sh::Entity* Picker::TryToPickByRayCast(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height)
+		sh::Entity* Picker::TryToPickByRayCast(sh::u32 x, sh::u32 y)
 		{
 			sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
 

@@ -20,13 +20,13 @@ namespace sh
 			Picker();
 			~Picker();
 			void RegisterEntity(sh::Entity* entity);
-			sh::Entity* TryToPick(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height);
+			sh::Entity* TryToPick(sh::u32 x, sh::u32 y);
 			
 			void Clear();
 
 		private:
-			sh::Entity* TryToPickByColor(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height);
-			sh::Entity* TryToPickByRayCast(sh::u32 x, sh::u32 y, sh::u32 width, sh::u32 height);
+			sh::Entity* TryToPickByColor(sh::u32 x, sh::u32 y);
+			sh::Entity* TryToPickByRayCast(sh::u32 x, sh::u32 y);
 
 		private:
 			std::vector<sh::Entity*> m_entities;

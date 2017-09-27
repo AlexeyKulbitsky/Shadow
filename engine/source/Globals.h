@@ -16,6 +16,7 @@
 
 #include <vector>
 #include <array>
+#include <queue>
 #include <list>
 #include <set>
 #include <map>
@@ -27,7 +28,7 @@
 namespace sh
 {
 
-	typedef std::string		String;
+	using String = std::string;
 	
 	template<typename T, typename U>
 	using Map = std::map<T, U>;
@@ -39,10 +40,10 @@ namespace sh
 	using List = std::list<T>;
 
 	template<typename T>
+	using Queue = std::queue<T>;
+
+	template<typename T>
 	using SPtr = std::shared_ptr<T>;
-
-
-	
 
 }
 

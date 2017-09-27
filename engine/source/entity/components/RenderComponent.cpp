@@ -42,26 +42,87 @@ namespace sh
 			modelBase = resourceManager->GetModelBase(modelFileName);
 			model.reset(new scene::Model(modelBase));
 		}
+		const auto& defaultMaterial = resourceManager->GetDefaultMaterial();
 
-		// Read material
-		pugi::xml_node materialNode = node.child("material");
-		if (materialNode)
+		pugi::xml_node materialsNode = node.child("materials");
+		if (materialsNode)
 		{
-			pugi::xml_attribute nameAttribute = materialNode.attribute("filename");
-			SH_ASSERT(nameAttribute);
+			// Global material for all meshes
+			pugi::xml_attribute globalAttribute = materialsNode.attribute("global");
+			if (globalAttribute)
+			{
+				String materialName(globalAttribute.as_string());
+				const sh::video::MaterialPtr& material = resourceManager->GetMaterial(materialName);
 
-			String materialName(nameAttribute.as_string());
+				for (size_t i = 0, sz = model->GetMeshesCount(); i < sz; ++i)
+				{
+					sh::scene::MeshPtr mesh = model->GetMesh(i);
+					mesh->SetMaterial(material);
+				}
+			}
+			else
+			{
+				// Separate materials for each mesh
+				pugi::xml_node materialNode = materialsNode.child("material");
+				while (materialNode)
+				{
+					pugi::xml_attribute meshAttribute = materialNode.attribute("mesh");
+					String meshName(meshAttribute.as_string());
 
-			const sh::video::MaterialPtr& material = resourceManager->GetMaterial(materialName);
-			SH_ASSERT(material);
-				
-			// Init model with material
+					pugi::xml_attribute nameAttribute = materialNode.attribute("filename");
+					String materialName(nameAttribute.as_string());
+
+					const sh::video::MaterialPtr& material = resourceManager->GetMaterial(materialName);
+
+					for (size_t i = 0, sz = model->GetMeshesCount(); i < sz; ++i)
+					{
+						sh::scene::MeshPtr mesh = model->GetMesh(i);
+						if (mesh->GetName() == meshName)
+						{
+							mesh->SetMaterial(material);
+						}
+					}
+					materialNode = materialNode.next_sibling();
+				}
+			}
+
+			// Check all meshes for materials
 			for (size_t i = 0, sz = model->GetMeshesCount(); i < sz; ++i)
 			{
 				sh::scene::MeshPtr mesh = model->GetMesh(i);
-				mesh->SetMaterial(material);
-			}		
+				if (!mesh->GetMaterial())
+					mesh->SetMaterial(defaultMaterial);
+			}
 		}
+		else
+		{
+			// Init model with default material
+			for (size_t i = 0, sz = model->GetMeshesCount(); i < sz; ++i)
+			{
+				const auto& mesh = model->GetMesh(i);
+				mesh->SetMaterial(defaultMaterial);
+			}
+		}
+
+		// Read material
+// 		pugi::xml_node materialNode = node.child("material");
+// 		if (materialNode)
+// 		{
+// 			pugi::xml_attribute nameAttribute = materialNode.attribute("filename");
+// 			SH_ASSERT(nameAttribute);
+// 
+// 			String materialName(nameAttribute.as_string());
+// 
+// 			const sh::video::MaterialPtr& material = resourceManager->GetMaterial(materialName);
+// 			SH_ASSERT(material);
+// 				
+// 			// Init model with material
+// 			for (size_t i = 0, sz = model->GetMeshesCount(); i < sz; ++i)
+// 			{
+// 				sh::scene::MeshPtr mesh = model->GetMesh(i);
+// 				mesh->SetMaterial(material);
+// 			}		
+// 		}
 
 		m_model = model;
 	}

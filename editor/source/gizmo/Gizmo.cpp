@@ -173,7 +173,7 @@ void Gizmo::OnMouseReleased(sh::u32 x, sh::u32 y)
 	if (!TryToSelect(x, y) && !m_mousePressed)
 	{
 		const auto& picker = sh::Device::GetInstance()->GetSceneManager()->GetPicker();
-		auto result = picker->TryToPick(x, y, 640, 480);
+		auto result = picker->TryToPick(x, y);
 		if (result != m_entity)
 		{
 			SetEntity(nullptr);

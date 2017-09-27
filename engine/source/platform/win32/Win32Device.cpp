@@ -70,6 +70,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	}
 		return 0;
 
+	case WM_LBUTTONDBLCLK:
+	{
+		int x = LOWORD(lParam);
+		int y = HIWORD(lParam);
+		if (device)
+			device->mouseEvent(x, y, MouseEventType::ButtonDoubleClicked, MouseCode::ButtonLeft);
+	}
+		return 0;
 	case WM_RBUTTONDOWN:
 	{
 		int x = LOWORD(lParam);
@@ -89,6 +97,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			device->mouseEvent(x, y, MouseEventType::ButtonReleased, MouseCode::ButtonRight);
 	}
 		return 0;
+
+	case WM_RBUTTONDBLCLK:
+	{
+		int x = LOWORD(lParam);
+		int y = HIWORD(lParam);
+		if (device)
+			device->mouseEvent(x, y, MouseEventType::ButtonDoubleClicked, MouseCode::ButtonRight);
+	}
+	return 0;
 	case WM_MBUTTONDOWN:
 	{
 		int x = LOWORD(lParam);
@@ -235,7 +252,9 @@ Win32Device::Win32Device()
 	// Register Class
 	WNDCLASSEX wcex;
 	wcex.cbSize = sizeof(WNDCLASSEX);
-	wcex.style = CS_HREDRAW | CS_VREDRAW;
+	wcex.style = CS_HREDRAW | 
+		CS_VREDRAW | 
+		CS_DBLCLKS; // Double clicks caching
 	wcex.lpfnWndProc = WndProc;
 	wcex.cbClsExtra = 0;
 	wcex.cbWndExtra = 0;
