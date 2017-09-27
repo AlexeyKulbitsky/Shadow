@@ -3,8 +3,8 @@
 
 #include <Shadow.h>
 
-#include "TransformWidget.h"
-#include "MaterialWidget.h"
+#include "transformcomponent/TransformComponentWidget.h"
+#include "rendercomponent/RenderComponentWidget.h"
 
 class InspectorWidget : public sh::gui::Window
 {

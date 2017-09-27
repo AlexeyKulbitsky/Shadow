@@ -16,7 +16,7 @@ namespace scene
 	class AssimpModelLoader : public ModelLoader
 	{
 	public:
-		AssimpModelLoader(){}
+		AssimpModelLoader();
 		virtual ~AssimpModelLoader(){}
 
 		virtual ModelBasePtr Load(const std::string &path) override;

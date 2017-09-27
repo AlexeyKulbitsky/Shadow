@@ -5,6 +5,7 @@
 #include "../../RenderTechnique.h"
 #include "../../RenderPipeline.h"
 #include "../../../scene/Mesh.h"
+#include "../../../io/FileSystem.h"
 
 namespace sh
 {
@@ -24,7 +25,7 @@ namespace sh
 			RenderLayer layer = material->GetRenderPipeline(0)->GetRenderLayer();
 			size_t layerIndex = (size_t)layer;
 
-			if (m_renderBatches[layerIndex].find(material->GetFileName()) == m_renderBatches[layerIndex].end())
+			if (m_renderBatches[layerIndex].find(material->GetFileInfo().lock()->name) == m_renderBatches[layerIndex].end())
 			{
 				GLES20RenderBatchPtr renderBatch(new GLES20RenderBatch());
 				const RenderPipelinePtr& renderPipeline = material->GetRenderPipeline(0);
@@ -33,10 +34,10 @@ namespace sh
 				renderBatch->SetGpuParams(material->GetCommonGpuParams());
 				renderBatch->SetMaterialParams(material->GetParams());
 
-				m_renderBatches[layerIndex][material->GetFileName()] = renderBatch;
+				m_renderBatches[layerIndex][material->GetFileInfo().lock()->name] = renderBatch;
 			}
 
-			m_renderBatches[layerIndex][material->GetFileName()]->AddMesh(mesh);
+			m_renderBatches[layerIndex][material->GetFileInfo().lock()->name]->AddMesh(mesh);
 		}
 
 		////////////////////////////////////////////////////////////////////////
@@ -48,7 +49,7 @@ namespace sh
 			RenderLayer layer = material->GetRenderPipeline(0)->GetRenderLayer();
 			size_t layerIndex = (size_t)layer;
 
-			m_renderBatches[layerIndex][material->GetFileName()]->RemoveMesh(mesh);
+			m_renderBatches[layerIndex][material->GetFileInfo().lock()->name]->RemoveMesh(mesh);
 		}
 
 		////////////////////////////////////////////////////////////////////////

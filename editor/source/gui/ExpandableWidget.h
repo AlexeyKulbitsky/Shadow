@@ -3,38 +3,13 @@
 
 #include <Shadow.h>
 
-#if 0
-
-#include <QFrame>
-#include <QGridLayout>
-#include <QParallelAnimationGroup>
-#include <QScrollArea>
-#include <QToolButton>
-#include <QWidget>
-
-class ExpandableWidget : public QWidget 
-{
-	Q_OBJECT
-public:
-	explicit ExpandableWidget(const QString & title = "", const int animationDuration = 300, QWidget *parent = 0);
-	void setContentLayout(QLayout & contentLayout);
-
-private:
-	QGridLayout mainLayout;
-	QToolButton toggleButton;
-	QFrame headerLine;
-	QParallelAnimationGroup toggleAnimation;
-	QScrollArea contentArea;
-	int animationDuration{ 300 };
-};
-
-#endif
-
-
-class ExpandableWidget
+class ExpandableWidget : public sh::gui::Widget
 {
 public:
 	ExpandableWidget(const sh::String& title);
+
+protected:
+	void OnButtonToggled(bool toggled, const sh::gui::ButtonPtr& sender);
 
 private:
 	sh::gui::ButtonPtr m_toggleButton;

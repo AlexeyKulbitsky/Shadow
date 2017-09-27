@@ -1,6 +1,6 @@
 #include "MoveGizmo.h"
 
-#include "../gui/TransformWidget.h"
+#include "../gui/inspectorwidget/transformcomponent/TransformComponentWidget.h"
 
 MoveGizmo::MoveGizmo()
 {

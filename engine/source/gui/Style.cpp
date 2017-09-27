@@ -53,6 +53,17 @@ namespace gui
 			LoadCustomButtons(customButtonsNode);
 	}
 
+	void Style::Load(const String& name)
+	{
+		auto fileSystem = sh::Device::GetInstance()->GetFileSystem();
+		const auto file = fileSystem->LoadFile(name);
+
+		pugi::xml_document doc;
+		pugi::xml_parse_result result = doc.load_buffer(file.GetData().data(), file.GetData().size());
+		pugi::xml_node root = doc.first_child();
+		Load(root);
+	}
+
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	ButtonPtr Style::GetButton(const String& name)

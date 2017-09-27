@@ -86,10 +86,14 @@ namespace gui
 		painter->Flush();
 	}
 
-	void GuiManager::LoadGui(const char* filename)
+	void GuiManager::LoadGui(const String& name)
 	{
+		auto fileSystem = sh::Device::GetInstance()->GetFileSystem();
+		const auto file = fileSystem->LoadFile(name);
+
+		
 		pugi::xml_document doc;
-		pugi::xml_parse_result result = doc.load_file(filename);
+		pugi::xml_parse_result result = doc.load_buffer(file.GetData().data(), file.GetData().size());
 			
 		pugi::xml_node child = doc.first_child();
 		sh::String texFilename = child.attribute("val").as_string();

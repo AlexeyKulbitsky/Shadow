@@ -44,22 +44,17 @@ namespace io
 
 	void WindowsFileSystem::AddFolder(const String& folder, bool recursive)
 	{
-		if (m_folders.find(folder) != m_folders.end())
-			return;
-
 		String absolutePath = m_workingDirectoryPath + "/" + folder + "/";
 		m_root.reset(new FolderInfo(folder, absolutePath));
 
 		CollectFilesFromFolder(absolutePath, m_root, true);
 
-		m_folders.insert(folder);
-
-		//UpdateFileGroups();
 		UpdateResourceGroups();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	/*
 	const FileInfo& WindowsFileSystem::FindFile(const String& fileName)
 	{
 		static const FileInfo errorFile("", "");
@@ -70,7 +65,7 @@ namespace io
 		}
 		return errorFile;
 	}
-
+	*/
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	bool WindowsFileSystem::SaveFile(const std::vector<char>& data, const String& fileName)
@@ -93,13 +88,12 @@ namespace io
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	/*
 	std::vector<char> WindowsFileSystem::ReadFile(const String& filename)
 	{
-		// First try to open file by direct path (local folder)
 		std::ifstream file(filename, std::ios::ate | std::ios::binary);
 		if (!file.is_open())
 		{
-			// Else try to find file in local filesystem and open it
 			const auto& info = FindFile(filename);
 			file = std::ifstream(info.absolutePath, std::ios::ate | std::ios::binary);
 		}
@@ -117,32 +111,69 @@ namespace io
 
 		return buffer;
 	}
+	*/
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	File WindowsFileSystem::LoadFile(const String& filename)
 	{
-		File file;
-		file.m_data = ReadFile(filename);
+		//File file;
+		//file.m_data = ReadFile(filename);
+		//return file;
+
+
+		auto result = m_root->FindChildByName(filename);
+		if (result.expired())
+			return File();
+
+		File file = LoadFile(std::static_pointer_cast<FileInfo>(result.lock()));
 		return file;
 	}
 
-	void WindowsFileSystem::Rename(FileSystemComponent* component, const String& newName)
+	File WindowsFileSystem::LoadFile(std::weak_ptr<FileInfo> fileInfo)
 	{
-		auto oldFileName = component->absolutePath;
-		size_t separatorPos = oldFileName.find_last_of('/');
-		auto newFilename = oldFileName.substr(0U, separatorPos) + "/" + newName;
-		MoveFile(oldFileName.c_str(), newFilename.c_str());
+		if (fileInfo.expired())
+			return File();
 
-		component->absolutePath = newFilename;
-		component->name = newName;
+		const auto path = fileInfo.lock()->absolutePath;
+
+		std::ifstream file(path, std::ios::ate | std::ios::binary);
+
+		SH_ASSERT(file.is_open(), "failed to open file!");
+		if (!file.is_open())
+			return File();
+
+		size_t fileSize = (size_t)file.tellg();
+		std::vector<char> buffer(fileSize);
+
+		file.seekg(0);
+		file.read(buffer.data(), fileSize);
+		file.close();
+
+		File result;
+		result.m_data = std::move(buffer);
+		return result;
+	}
+
+	bool WindowsFileSystem::CreateFolder(const String& path)
+	{
+		return CreateDirectory(path.c_str(), NULL);
+	}
+
+	bool WindowsFileSystem::Rename(const String& oldName, const String& newName)
+	{
+		 return MoveFile(oldName.c_str(), newName.c_str());
+	}
+
+	bool WindowsFileSystem::Delete(const String& filePath)
+	{
+		return DeleteFile(filePath.c_str());
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	void WindowsFileSystem::CollectFilesFromFolder(const String& folder, const SPtr<FolderInfo>& root, bool recursive)
 	{
-
 		WIN32_FIND_DATA FindFileData;
 		HANDLE hFind;
 
@@ -156,12 +187,13 @@ namespace io
 			{
 				if (!(FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
 				{
-					FileInfo info;
-					info.name = FindFileData.cFileName;
-					info.absolutePath = originalPath + info.name;
-					m_fileList.insert(info);
+					//FileInfo info;
+					//info.name = FindFileData.cFileName;
+					//info.absolutePath = originalPath + info.name;
+					//m_fileList.insert(info);
 
-					SPtr<FileInfo> fileInfo(new FileInfo(FindFileData.cFileName, info.absolutePath));
+					SPtr<FileInfo> fileInfo(new FileInfo(FindFileData.cFileName, 
+						originalPath + FindFileData.cFileName));
 					root->children.push_back(fileInfo);
 				}
 				else

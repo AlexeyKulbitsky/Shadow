@@ -57,13 +57,13 @@ void InspectorWidget::SetEntity(sh::Entity* entity)
 		bool found = false;
 		for (sh::u32 i = 0U; i < count; ++i)
 		{
-			if (m_materialWidget->GetWidget() == m_layout->GetItem(i)->GetWidget())
+			if (m_materialWidget == m_layout->GetItem(i)->GetWidget())
 			{
 				found = true;
 				break;
 			}
 		}
 		if (!found)
-			m_layout->AddWidget(m_materialWidget->GetWidget());
+			m_layout->AddWidget(m_materialWidget);
 	}
 }

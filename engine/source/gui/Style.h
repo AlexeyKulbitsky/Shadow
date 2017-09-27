@@ -13,6 +13,7 @@ namespace gui
 	{
 	public:
 		void Load(const pugi::xml_node& root);
+		void Load(const String& name);
 
 		// Default widgets
 		const video::TexturePtr& GetTexure() const { return m_texture; }

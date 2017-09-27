@@ -1,9 +1,9 @@
 #ifndef SHADOW_EDITOR_ASSETS_WIDGET_INCLUDE
 #define SHADOW_EDITOR_ASSETS_WIDGET_INCLUDE
 
-#include "gui/materialview/MaterialEditor.h"
+#include "../materialview/MaterialEditor.h"
 
-#include "TreeWidget.h"
+#include "../TreeWidget.h"
 
 class FolderTreeItem : public TreeItem
 {

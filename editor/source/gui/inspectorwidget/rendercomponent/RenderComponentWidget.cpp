@@ -1,6 +1,6 @@
-#include "MaterialWidget.h"
+#include "RenderComponentWidget.h"
 
-#include "materialview/MaterialParamSamplerView.h"
+//#include "../../materialview/MaterialParamSamplerView.h"
 
 MeshMaterialParam::MeshMaterialParam(const sh::scene::MeshPtr& mesh)
 {
@@ -17,7 +17,7 @@ MeshMaterialParam::MeshMaterialParam(const sh::scene::MeshPtr& mesh)
 		if (!m_materialInfos[i].expired())
 		{
 			comboBox->AddItem(m_materialInfos[i].lock()->name);
-			if (material->GetFileName() == m_materialInfos[i].lock()->name)
+			if (material->GetFileInfo().lock()->name == m_materialInfos[i].lock()->name)
 				index = i;
 		}
 	}
@@ -54,12 +54,25 @@ void MeshMaterialParam::MaterialChanged(sh::u32 index)
 
 MaterialWidget::MaterialWidget()
 {
-	m_layout.reset(new sh::gui::VerticalLayout());
-	m_layout->SetMargins(2, 2, 2, 2);
-	m_layout->SetSpacing(2);
+	sh::gui::VerticalLayoutPtr layout(new sh::gui::VerticalLayout());
+	layout->SetMargins(2, 2, 2, 2);
+	layout->SetSpacing(2);
 
-	m_widget.reset(new sh::gui::Widget());
-	m_widget->SetLayout(m_layout);
+	sh::gui::ButtonPtr button(new sh::gui::Button("Render"));
+	button->SetToggleable(true);
+	button->SetMaximumHeight(20);
+	layout->AddWidget(button);
+
+	m_contentsLayout.reset(new sh::gui::VerticalLayout());
+	m_contentsLayout->SetMargins(2, 2, 2, 2);
+	m_contentsLayout->SetSpacing(2);
+	layout->AddLayout(m_contentsLayout);
+
+
+	//m_widget.reset(new sh::gui::Widget());
+	//m_widget->SetLayout(m_layout);
+
+	SetLayout(layout);
 }
 
 MaterialWidget::~MaterialWidget()
@@ -75,7 +88,7 @@ void MaterialWidget::SetRenderComponent(sh::RenderComponent* component)
 	{
 		return;
 	}
-	m_layout->Clear();
+	m_contentsLayout->Clear();
 
 	const auto& model = component->GetModel();
 	size_t meshesCount = model->GetMeshesCount();
@@ -83,7 +96,7 @@ void MaterialWidget::SetRenderComponent(sh::RenderComponent* component)
 	{
 		const auto& mesh = model->GetMesh(i);
 		sh::SPtr<MeshMaterialParam> param(new MeshMaterialParam(mesh));
-		m_layout->AddWidget(param);
+		m_contentsLayout->AddWidget(param);
 	}
 }
 

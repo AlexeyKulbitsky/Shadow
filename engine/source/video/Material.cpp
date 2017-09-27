@@ -158,7 +158,8 @@ namespace sh
 			//pugi::xml_node materialNode = parent;// .append_child("material");
 			materialNode.append_attribute("name").set_value(m_name.c_str());
 			pugi::xml_node techniqueNode = materialNode.append_child("technique");
-			techniqueNode.append_attribute("filename").set_value(GetRenderTechnique()->GetFileName().c_str());
+			techniqueNode.append_attribute("filename")
+				.set_value(GetRenderTechnique()->GetFileInfo().lock()->name.c_str());
 
 			pugi::xml_node paramsNode = materialNode.append_child("params");
 			const auto& paramsInfo = m_commonGpuParams->GetParamsInfo();
@@ -224,7 +225,6 @@ namespace sh
 			for (const auto& samplerParam : samplerParams)
 			{
 				const auto sampler = samplerParam.GetSampler();
-				const auto& fileName = sampler->GetTexture()->GetFileName();
 					
 				const auto& desc = sampler->GetDescription();
 				pugi::xml_node samplerNode = paramsNode.append_child("sampler");
@@ -237,8 +237,10 @@ namespace sh
 				}
 				else
 				{
-					if (!fileName.empty())
+					if (!sampler->GetTexture()->GetFileInfo().expired())
 					{
+						const auto& fileName = sampler->GetTexture()->GetFileInfo().lock()->name;
+
 						samplerNode.append_child("texture").append_attribute("val")
 							.set_value(fileName.c_str());
 					}

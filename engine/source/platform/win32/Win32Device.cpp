@@ -226,10 +226,9 @@ Win32Device::Win32Device()
 	m_fileSystem = io::FileSystem::GetInstance();
 	m_fileSystem->AddFolder(sh::String("../../../data"));
 
-	const auto& info = m_fileSystem->FindFile("config.xml");
-	if (info.name != "")
+	auto file = m_fileSystem->LoadFile("config.xml");
+	if (file.GetData().size() != 0)
 	{
-		auto file = m_fileSystem->LoadFile("config.xml");
 		const char* dataPtr = file.GetData().data();
 
 		pugi::xml_document doc;

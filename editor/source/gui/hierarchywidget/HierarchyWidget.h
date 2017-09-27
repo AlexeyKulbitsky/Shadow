@@ -2,7 +2,7 @@
 #define SHADOW_EDITOR_HIERARCHY_WIDGET_INCLUDE
 
 #include <Shadow.h>
-#include "TreeWidget.h"
+#include "../TreeWidget.h"
 
 //////////////////////////////////////////////////////////////////////////////////////
 

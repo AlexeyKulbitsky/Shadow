@@ -43,6 +43,9 @@ namespace gui
 
 	void Text::Render(video::Painter* painter)
 	{
+		if (!m_visible)
+			return;
+
 		painter->SetMaterial(GuiManager::GetInstance()->GetTextMaterial());
 		const auto cachedClipRect = painter->GetClipRect();
 

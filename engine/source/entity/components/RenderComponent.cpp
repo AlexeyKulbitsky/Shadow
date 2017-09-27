@@ -136,7 +136,7 @@ namespace sh
 
 		// Save model
 		pugi::xml_node modelNode = componentNode.append_child("model");
-		modelNode.append_attribute("filename").set_value(m_model->GetFileName().c_str());
+		modelNode.append_attribute("filename").set_value(m_model->GetFileInfo().lock()->name.c_str());
 		
 		// Save material
 		const sh::video::MaterialPtr& material = m_model->GetMesh(0)->GetMaterial();

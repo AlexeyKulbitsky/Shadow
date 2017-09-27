@@ -29,6 +29,9 @@ namespace gui
 
 	void ComboBox::Render(video::Painter* painter)
 	{
+		if (!m_visible)
+			return;
+
 		if (m_isInFocus)
 			return;
 

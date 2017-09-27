@@ -117,6 +117,8 @@ namespace gui
 
 	void MenuBar::Render(video::Painter* painter)
 	{
+		if (!m_visible)
+			return;
 		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
 		video::Painter::Vertex upperLeft(m_rect.upperLeftCorner, 
 										 m_sprite->GetUVRect().upperLeftCorner, 

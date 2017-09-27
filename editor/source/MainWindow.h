@@ -5,9 +5,9 @@
 #include "gizmo/MoveGizmo.h"
 #include "gizmo/RotateGizmo.h"
 #include "gizmo/ScaleGizmo.h"
-#include "gui/InspectorWidget.h"
-#include "gui/HierarchyWidget.h"
-#include "gui/AssetsWidget.h"
+#include "gui/inspectorwidget/InspectorWidget.h"
+#include "gui/hierarchywidget/HierarchyWidget.h"
+#include "gui/assetswidget/AssetsWidget.h"
 
 
 #include <Shadow.h>

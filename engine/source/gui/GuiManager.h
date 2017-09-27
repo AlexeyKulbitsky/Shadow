@@ -41,7 +41,7 @@ namespace gui
 		void Update(u32 delta);
 		void Render();
 
-		void LoadGui(const char* filename);
+		void LoadGui(const String& name);
 		void AddChild(const SPtr<Widget>& child);
 		void AddChildFront(const SPtr<Widget>& child);
 

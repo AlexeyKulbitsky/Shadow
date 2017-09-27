@@ -22,11 +22,13 @@ namespace sh
 		FT_Face     face;
 		FT_Error error;
 
-		const auto fileInefo = io::FileSystem::GetInstance()->FindFile(filename);
-		if (fileInefo.name == "")
+		const auto file = io::FileSystem::GetInstance()->LoadFile(filename);
+		if (file.GetData().size() == 0)
 			return FontPtr();
-
-		error = FT_New_Face(m_fontLibrary, fileInefo.absolutePath.c_str(), 0, &face);
+		error = FT_New_Memory_Face(m_fontLibrary, 
+								   reinterpret_cast<const u8*>(file.GetData().data()),
+								   file.GetData().size(), 0, &face);
+		//error = FT_New_Face(m_fontLibrary, fileInefo.absolutePath.c_str(), 0, &face);
 		SH_ASSERT(!error, "ERROR loading %s font!", filename.c_str());
 
 		FT_Set_Pixel_Sizes(face, 0, 12);

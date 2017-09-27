@@ -163,7 +163,7 @@ void MaterialEditor::SetMaterial(const sh::video::MaterialPtr& material)
 		sh::u32 index = 0U;
 		for (sh::u32 i = 0U; i < m_rtInfos.size(); ++i)
 		{
-			if (m_material->GetRenderTechnique()->GetFileName() == m_rtInfos[i].lock()->name)
+			if (m_material->GetRenderTechnique()->GetFileInfo().lock()->name == m_rtInfos[i].lock()->name)
 				index = i;
 		}
 		m_comboBox->SetSelectedItem(index);
@@ -179,7 +179,7 @@ void MaterialEditor::OnRenderTechniqueChanged(sh::u32 index)
 	if (!m_material)
 		return;
 
-	if (m_material->GetRenderTechnique()->GetFileName() == name)
+	if (m_material->GetRenderTechnique()->GetFileInfo().lock()->name == name)
 		return;
 
 	// Check for textures availability

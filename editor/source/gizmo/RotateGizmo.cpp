@@ -1,6 +1,6 @@
 #include "RotateGizmo.h"
 
-#include "../gui/TransformWidget.h"
+#include "../gui/inspectorwidget/transformcomponent/TransformComponentWidget.h"
 
 RotateGizmo::RotateGizmo()
 {

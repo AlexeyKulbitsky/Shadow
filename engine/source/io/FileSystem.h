@@ -53,6 +53,8 @@ namespace sh
 
 			virtual Type GetType() const override final { return Type::Folder; }
 
+			std::weak_ptr<FileSystemComponent> FindChildByName(const String& name);
+
 			std::vector<SPtr<FileSystemComponent>> children;
 		};
 
@@ -71,31 +73,38 @@ namespace sh
 			}
 
 			virtual void AddFolder(const String& folder, bool recursive = true) {}
-			virtual const FileInfo& FindFile(const String& fileName) 
-			{ 
-				static FileInfo res;
-				return res;
-			}
+			//virtual const FileInfo& FindFile(const String& fileName) 
+			//{ 
+			//	static FileInfo res;
+			//	return res;
+			//}
 			
 			virtual bool SaveFile(const std::vector<char>& data, const String& fileName) { return false; }
 			virtual bool SaveFile(const String& data, const String& fileName) { return false; }
-			virtual std::vector<char> ReadFile(const String& filename) { return std::vector<char>(); }
+			//virtual std::vector<char> ReadFile(const String& filename) { return std::vector<char>(); }
 			virtual File LoadFile(const String& filename) { return File(); }
+			virtual File LoadFile(std::weak_ptr<FileInfo> fileInfo) { return File(); }
 
-			virtual void Rename(FileSystemComponent* component, const String& newName) {}
+			virtual bool CreateFolder(const String& path) { return false; }
+			virtual bool Rename(const String& oldPath, const String& newPath) { return false; }
+			virtual bool Delete(const String& filePath) { return false; }
 
 			void UpdateResourceGroups();
 
 			const std::vector<std::weak_ptr<FileInfo>>& GetImageFileInfos() const { return m_imageFileInfos; }
+			const std::vector<std::weak_ptr<FileInfo>>& GetModelFileInfos() const { return m_modelFileInfos; }
 			const std::vector<std::weak_ptr<FileInfo>>& GetMaterialFileInfos() const { return m_materialFileInfos; }
 			const std::vector<std::weak_ptr<FileInfo>>& GetRenderTechniqueFileInfos() const { return m_renderTechniqueFileInfos; }
 			const SPtr<FolderInfo> GetRoot() const { return m_root; }
 
 		private:
-			void UpdateRecursive(const SPtr<FolderInfo>& fsComponent, const std::vector<String>& imageExtensions);
+			void UpdateRecursive(const SPtr<FolderInfo>& fsComponent, 
+								 const std::vector<String>& imageExtensions,
+								 const std::vector<String>& modelExtensions);
 
 		protected:
 			std::vector<std::weak_ptr<FileInfo>> m_imageFileInfos;
+			std::vector<std::weak_ptr<FileInfo>> m_modelFileInfos;
 			std::vector<std::weak_ptr<FileInfo>> m_materialFileInfos;
 			std::vector<std::weak_ptr<FileInfo>> m_renderTechniqueFileInfos;
 

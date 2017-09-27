@@ -6,12 +6,20 @@
 #include "../video/TextureLoader/TextureLoader.h"
 #include "../scene/ModelBase.h"
 #include "../scene/ModelLoader/ModelLoader.h"
+#include "../scene/ModelLoader/AssimpModelLoader.h"
+#include "scene/ModelLoader/TinyObjModelLoader.h"
 
 namespace sh
 {
 	ResourceManager::ResourceManager()
 	{
 		video::TextureLoader::CreateInstance();
+				// Model loader
+#if defined (SHADOW_ASSIMP_LOADER)
+		scene::ModelLoader::CreateInstance<scene::AssimpModelLoader>();
+#else
+		scene::ModelLoader::CreateInstance<scene::TinyObjModelLoader>();
+#endif
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -53,14 +61,24 @@ namespace sh
 		// Check if Texture already exists in textures pool
 		for (size_t i = 0, sz = m_textures.size(); i < sz; ++i)
 		{
-			if (m_textures[i]->GetFileName() == fileName)
+			if (m_textures[i]->GetFileInfo().lock()->name == fileName)
 				return m_textures[i];
 		}
 
 		video::TexturePtr texture = video::TextureLoader::GetInstance()->Load(fileName);
 		if (texture)
 		{
-			texture->SetFileName(fileName);
+			//texture->SetFileName(fileName);
+			io::FileSystem* fs = Device::GetInstance()->GetFileSystem();
+			const auto& textureFileInfos = fs->GetImageFileInfos();
+			for (const auto& textureFileInfo : textureFileInfos)
+			{
+				if (!textureFileInfo.expired() && textureFileInfo.lock()->name == fileName)
+				{
+					texture->SetFileInfo(textureFileInfo);
+				}
+			}
+
 			m_textures.push_back(texture);
 			return texture;
 		}
@@ -84,7 +102,7 @@ namespace sh
 		// Check if RenderTechnique already exists in techniques pool
 		for (size_t i = 0, sz = m_renderTechniques.size(); i < sz; ++i)
 		{
-			if (m_renderTechniques[i]->GetFileName() == fileName)
+			if (m_renderTechniques[i]->GetFileInfo().lock()->name == fileName)
 				return m_renderTechniques[i];
 		}
 		io::FileSystem* fs = Device::GetInstance()->GetFileSystem();
@@ -92,7 +110,15 @@ namespace sh
 
 		video::RenderTechniquePtr rt(new video::RenderTechnique());
 		rt->Load(file.GetData());
-		rt->SetFileName(fileName);
+		const auto& rtFileInfos = fs->GetRenderTechniqueFileInfos();
+		for (const auto& rtFileInfo : rtFileInfos)
+		{
+			if (!rtFileInfo.expired() && rtFileInfo.lock()->name == fileName)
+			{
+				rt->SetFileInfo(rtFileInfo);
+			}
+		}
+		//rt->SetFileName(fileName);
 		m_renderTechniques.push_back(rt);
 		return rt;
 	}
@@ -103,7 +129,7 @@ namespace sh
 	{
 		for (size_t i = 0U, sz = m_materials.size(); i < sz; ++i)
 		{
-			if (m_materials[i]->GetFileName() == material->GetFileName())
+			if (m_materials[i]->GetFileInfo().lock()->name == material->GetFileInfo().lock()->name)
 			{
 				return;
 			}
@@ -135,7 +161,7 @@ namespace sh
 		{
 			video::MaterialPtr material(new video::Material());
 			material->Load(materialNode);
-			material->SetFileName(materialName);
+			//material->SetFileName(materialName);
 			m_materials.push_back(material);
 
 			const auto& materialFileInfos = fs->GetMaterialFileInfos();
@@ -160,14 +186,24 @@ namespace sh
 		// Check if Model already exists in models pool
 		for (size_t i = 0, sz = m_models.size(); i < sz; ++i)
 		{
-			if (m_models[i]->GetFileName() == fileName)
+			if (m_models[i]->GetFileInfo().lock()->name == fileName)
 				return m_models[i];
 		}
 
 		scene::ModelBasePtr model = scene::ModelLoader::GetInstance()->Load(fileName);
 		if (model)
 		{
-			model->SetFileName(fileName);
+			//model->SetFileName(fileName);
+
+			io::FileSystem* fs = Device::GetInstance()->GetFileSystem();
+			const auto& modelFileInfos = fs->GetModelFileInfos();
+			for (const auto& modelFileInfo : modelFileInfos)
+			{
+				if (!modelFileInfo.expired() && modelFileInfo.lock()->name == fileName)
+				{
+					model->SetFileInfo(modelFileInfo);
+				}
+			}
 			m_models.push_back(model);
 			return model;
 		}

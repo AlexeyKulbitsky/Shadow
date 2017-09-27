@@ -145,6 +145,9 @@ namespace gui
 
 	void Button::Render(video::Painter* painter)
 	{
+		if (!m_visible)
+			return;
+
 		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
 		video::Painter::Vertex upperLeft(m_rect.upperLeftCorner, 
 										 m_sprites[m_state]->GetUVRect().upperLeftCorner, 

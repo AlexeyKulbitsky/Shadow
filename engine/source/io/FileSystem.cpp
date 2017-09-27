@@ -1,6 +1,7 @@
 #include "FileSystem.h"
 
 #include "../video/TextureLoader/TextureLoader.h"
+#include "../scene/ModelLoader/ModelLoader.h"
 
 namespace sh
 {
@@ -9,7 +10,30 @@ namespace sh
 
 		void FileSystemComponent::Rename(const String& newName)
 		{
-			FileSystem::GetInstance()->Rename(this, newName);
+			auto oldFileName = absolutePath;
+			size_t separatorPos = oldFileName.find_last_of('/');
+			auto newFilename = oldFileName.substr(0U, separatorPos) + "/" + newName;
+			FileSystem::GetInstance()->Rename(oldFileName, newFilename);
+
+			absolutePath = newFilename;
+			name = newName;
+		}
+
+		std::weak_ptr<FileSystemComponent> FolderInfo::FindChildByName(const String& name)
+		{
+			for (const auto& child : children)
+			{
+				if (child->name == name)
+					return child;
+				if (child->GetType() == FileSystemComponent::Type::Folder)
+				{
+					auto folderInfo = std::static_pointer_cast<FolderInfo>(child);
+					auto childInfo = folderInfo->FindChildByName(name);
+					if (!childInfo.expired())
+						return childInfo;
+				}
+			}
+			return SPtr<FileSystemComponent>();
 		}
 
 		FileSystem::FileSystem()
@@ -29,16 +53,20 @@ namespace sh
 		void FileSystem::UpdateResourceGroups()
 		{
 			m_imageFileInfos.clear();
+			m_modelFileInfos.clear();
 			m_materialFileInfos.clear();
 			m_renderTechniqueFileInfos.clear();
 			const auto& imageExtensions = video::TextureLoader::GetInstance()->GetAvalilableExtensions();
+			const auto& modelExtensions = scene::ModelLoader::GetInstance()->GetAvalilableExtensions();
 			
-			UpdateRecursive(m_root, imageExtensions);
+			UpdateRecursive(m_root, imageExtensions, modelExtensions);
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		void FileSystem::UpdateRecursive(const SPtr<FolderInfo>& folder, const std::vector<String>& imageExtensions)
+		void FileSystem::UpdateRecursive(const SPtr<FolderInfo>& folder, 
+										 const std::vector<String>& imageExtensions,
+										 const std::vector<String>& modelExtensions)
 		{
 			for (const auto& child : folder->children)
 			{
@@ -50,10 +78,17 @@ namespace sh
 					auto extension = child->name.substr(pos + 1);
 
 					// Check for image
-					auto res = std::find(imageExtensions.begin(), imageExtensions.end(), extension);
-					if (res != imageExtensions.end())
+					auto resImage = std::find(imageExtensions.begin(), imageExtensions.end(), extension);
+					if (resImage != imageExtensions.end())
 					{
 						m_imageFileInfos.push_back(std::static_pointer_cast<FileInfo>(child));
+					}
+
+					// Check for model
+					auto resModel = std::find(modelExtensions.begin(), modelExtensions.end(), extension);
+					if (resModel != modelExtensions.end())
+					{
+						m_modelFileInfos.push_back(std::static_pointer_cast<FileInfo>(child));
 					}
 
 					// Check for material
@@ -72,7 +107,7 @@ namespace sh
 				case FileSystemComponent::Type::Folder:
 				{
 					SPtr<FolderInfo> childFolderInfo = std::static_pointer_cast<FolderInfo>(child);
-					UpdateRecursive(childFolderInfo, imageExtensions);
+					UpdateRecursive(childFolderInfo, imageExtensions, modelExtensions);
 				}
 				break;
 				default:

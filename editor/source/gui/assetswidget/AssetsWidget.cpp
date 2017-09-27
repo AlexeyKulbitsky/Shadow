@@ -16,6 +16,7 @@ void FolderTreeItem::OnContextMenu(sh::s32 x, sh::s32 y)
 {
 	sh::gui::MenuPtr menu(new sh::gui::Menu());
 	menu->AddItem("Add material");
+	menu->AddItem("Add folder");
 	menu->SetPosition(x, y);
 	menu->SetFocus(true);
 	menu->itemSelected.Connect(std::bind(&FolderTreeItem::OnMenuItemSelected, this, std::placeholders::_1));
@@ -66,13 +67,53 @@ void FolderTreeItem::OnMenuItemSelected(const sh::String& itemName)
 		// Create material and add to Resource manager
 		sh::video::MaterialPtr material(new sh::video::Material());
 		material->SetRenderTechnique("const_color.rt");
-		material->SetFileName(materialName);
+		//material->SetFileName(materialName);
 		material->SetFileInfo(fsItem);
 		sh::Device::GetInstance()->GetResourceManager()->AddMaterial(material);
 
 		// Save new material to disk
 		material->Save();
 
+		m_treeWidget->UpdateLayout();
+	}
+	else if (itemName == "Add folder")
+	{
+		sh::io::FileSystem* fs = sh::Device::GetInstance()->GetFileSystem();
+		std::stringstream ss;
+
+		bool isFoldeNameFree = false;
+		size_t folderCounter = 0U;
+		// Find free material name
+		while (!isFoldeNameFree)
+		{
+			isFoldeNameFree = true;
+			ss.str(std::string());
+			ss << "New_folder_" << folderCounter++;
+			const std::string s(ss.str());
+			auto folder = static_cast<sh::io::FolderInfo*>(m_item);
+			for (auto childItem : folder->children)
+			{
+				if (childItem->GetType() == sh::io::FileSystemComponent::Type::Folder &&
+					s == childItem->name)
+				{
+					isFoldeNameFree = false;
+					break;
+				}
+			}
+		}
+
+		// Create new fileentry description
+		sh::String folderName(ss.str());
+		fs->CreateFolder(m_item->absolutePath + folderName);
+		sh::SPtr<sh::io::FolderInfo> fsItem(new sh::io::FolderInfo(folderName, m_item->absolutePath + folderName + "/"));
+		if (m_item->GetType() == sh::io::FileSystemComponent::Type::Folder)
+		{
+			sh::io::FolderInfo* folderInfo = static_cast<sh::io::FolderInfo*>(m_item);
+			folderInfo->children.push_back(fsItem);
+		}
+		
+		sh::SPtr<FolderTreeItem> item(new FolderTreeItem(this, fsItem.get()));
+		m_treeWidget->AddItem(item);
 		m_treeWidget->UpdateLayout();
 	}
 }
@@ -143,6 +184,7 @@ void MaterialTreeItem::OnMenuItemSelected(const sh::String& itemName)
 
 	lineEdit->SetText(name);
 	lineEdit->SetRect(button->GetRect());
+	lineEdit->SetState(sh::gui::LineEdit::State::Edit);
 	lineEdit->OnTextChanged.Connect([this](const sh::String& text)
 	{
 		// Check if new name is available

@@ -44,6 +44,21 @@ namespace gui
 		m_sprites[State::Edit] = editSprite;
 	}
 
+	void LineEdit::SetState(State state)
+	{
+		switch (state)
+		{
+			case State::Default:
+				m_inFocus = false;
+				break;
+			case State::Edit:
+				m_inFocus = true;
+				break;
+			default:
+				break;
+		}
+		m_state = state;
+	}
 	/*
 	void LineEdit::GetTextGeometry(GuiBatchData& data)
 	{
@@ -57,6 +72,9 @@ namespace gui
 
 	void LineEdit::Render(video::Painter* painter)
 	{
+		if (!m_visible)
+			return;
+
 		// Render background
 		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
 		video::Painter::Vertex upperLeft(m_rect.upperLeftCorner,

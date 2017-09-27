@@ -1,6 +1,6 @@
 #include "ScaleGizmo.h"
 
-#include "../gui/TransformWidget.h"
+#include "../gui/inspectorwidget/transformcomponent/TransformComponentWidget.h"
 
 ScaleGizmo::ScaleGizmo()
 {

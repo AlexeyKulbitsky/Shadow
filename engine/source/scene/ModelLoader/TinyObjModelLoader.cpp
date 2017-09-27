@@ -16,7 +16,7 @@ namespace sh
 	{
 		TinyObjModelLoader::TinyObjModelLoader()
 		{
-
+			m_availableExtensions.push_back("obj");
 		}
 
 		TinyObjModelLoader::~TinyObjModelLoader()

@@ -26,7 +26,7 @@ namespace sh
 			m_boundingBox = modelBase->GetBoundingBox();
 			m_initialBoundingBox = modelBase->GetBoundingBox();
 
-			SetFileName(modelBase->GetFileName());
+			SetFileInfo(modelBase->GetFileInfo());
 		}
 
 		//////////////////////////////////////////////////////////////////////////////

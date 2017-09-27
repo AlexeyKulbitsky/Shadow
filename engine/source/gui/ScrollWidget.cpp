@@ -23,6 +23,9 @@ namespace gui
 
 	void ScrollWidget::Render(video::Painter* painter)
 	{
+		if (!m_visible)
+			return;
+
 		painter->SetClipRect(math::Rectu(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y,
 			m_rect.lowerRightCorner.x, m_rect.lowerRightCorner.y));
 		Widget::Render(painter);

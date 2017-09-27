@@ -3,9 +3,9 @@
 
 #include <Shadow.h>
 
-#include "Vector3LineEdit.h"
+#include "../../Vector3LineEdit.h"
 
-#include "ParamEdit.h"
+#include "../../ParamEdit.h"
 
 class TransformWidget
 {

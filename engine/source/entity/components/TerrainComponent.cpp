@@ -9,6 +9,8 @@
 #include "../../scene/ModelBase.h"
 #include "../../scene/Mesh.h"
 #include "../../scene/Model.h"
+#include "../../Device.h"
+#include "../../resources/ResourceManager.h"
 
 namespace sh
 {
@@ -118,8 +120,10 @@ namespace sh
 
 		m_model.reset(new scene::Model(modelBase));
 
-		video::MaterialPtr material(new video::Material());
-		material->SetRenderTechnique("terrain.rt");
+		//video::MaterialPtr material(new video::Material());
+		//material->SetRenderTechnique("terrain.rt");
+
+		video::MaterialPtr material = Device::GetInstance()->GetResourceManager()->GetMaterial("terrain.mat");
 
 		m_model->SetMaterial(material);
 	}

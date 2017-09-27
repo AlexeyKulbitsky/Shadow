@@ -28,8 +28,8 @@ namespace gui
 			   const SpritePtr& defaultSprite, 
 			   const SpritePtr& editSprite);
 
+		void SetState(State state);
 		virtual void Render(video::Painter* painter) override;
-
 		virtual bool ProcessEvent(GUIEvent& ev) override;
 
 		Event<void, const String&> OnTextChanged;

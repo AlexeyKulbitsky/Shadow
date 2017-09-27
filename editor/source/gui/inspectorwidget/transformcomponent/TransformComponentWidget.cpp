@@ -1,4 +1,4 @@
-#include "TransformWidget.h"
+#include "TransformComponentWidget.h"
 
 TransformWidget::TransformWidget()
 {

@@ -39,7 +39,9 @@ void MainWindow::OpenScene()
 	if (GetOpenFileName(&ofn))
 	{
 		sh::scene::SceneManager* sceneMgr = sh::Device::GetInstance()->GetSceneManager();
-		sceneMgr->LoadScene(ofn.lpstrFile);
+		sh::String fullPath(ofn.lpstrFile);
+		size_t pos = fullPath.find_last_of('\\');
+		sceneMgr->LoadScene(fullPath.substr(pos + 1).c_str());
 
 		sh::u32 entitiesCount = sceneMgr->GetEntitiesCount();
 		for (sh::u32 i = 0U; i < entitiesCount; ++i)
@@ -244,31 +246,16 @@ void MainWindow::Init()
 
 	auto fileSystem = sh::Device::GetInstance()->GetFileSystem();
 
-	const auto& fileInfo = fileSystem->FindFile("editor_gui.xml");
-
 	auto guiMgr = sh::gui::GuiManager::GetInstance();
 	m_mainWidget.reset(new sh::gui::Widget());
 	guiMgr->AddChild(m_mainWidget);
-
-	if (fileInfo.name != "")
-	{
-		guiMgr->LoadGui(fileInfo.absolutePath.c_str());
-	}
+	guiMgr->LoadGui("editor_gui.xml");
 
 	////////////////////////////////////////////////////////////////////////////
 
-	const auto& styleFileInfo = fileSystem->FindFile("editor_style.xml");
-	if (styleFileInfo.name != "")
-	{
-		pugi::xml_document doc;
-		pugi::xml_parse_result result = doc.load_file(styleFileInfo.absolutePath.c_str());
-		pugi::xml_node root = doc.first_child();
-
-		sh::gui::StylePtr style(new sh::gui::Style());
-		style->Load(root);
-
-		guiMgr->SetStyle(style);
-	}
+	sh::gui::StylePtr style(new sh::gui::Style());
+	style->Load("editor_style.xml");
+	guiMgr->SetStyle(style);
 
 	////////////////////////////////////////////////////////////////////////////
 

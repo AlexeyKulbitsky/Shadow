@@ -16,6 +16,11 @@ namespace sh
 
 namespace scene
 {
+	AssimpModelLoader::AssimpModelLoader()
+	{
+		m_availableExtensions.push_back("obj");
+		m_availableExtensions.push_back("fbx");
+	}
 
 	ModelBasePtr AssimpModelLoader::Load(const std::string &path)
 	{
