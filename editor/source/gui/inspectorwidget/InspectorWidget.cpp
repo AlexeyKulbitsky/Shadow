@@ -7,8 +7,9 @@ InspectorWidget::InspectorWidget()
 	SetText("Inspector");
 	SetMovable(false);
 	sh::gui::VerticalLayoutPtr windowLayout(new sh::gui::VerticalLayout());
-	m_transformWidget.reset(new TransformWidget());
-	m_materialWidget.reset(new MaterialWidget());
+	m_transformComponentWidget.reset(new TransformComponentWidget());
+	m_transformComponentWidget->SetParent(this);
+	m_renderComponentWidget.reset(new RenderComponentWidget());
 	SetLayout(windowLayout);
 }
 
@@ -23,8 +24,8 @@ void InspectorWidget::SetEntity(sh::Entity* entity)
 
 	if (!entity)
 	{
-		m_transformWidget->SetTransformComponent(nullptr);
-		m_materialWidget->SetRenderComponent(nullptr);
+		m_transformComponentWidget->SetTransformComponent(nullptr);
+		m_renderComponentWidget->SetRenderComponent(nullptr);
 		m_layout->Clear();
 		return;
 	}
@@ -33,37 +34,37 @@ void InspectorWidget::SetEntity(sh::Entity* entity)
 	if (component)
 	{
 		auto transfromComponent = static_cast<sh::TransformComponent*>(component);
-		m_transformWidget->SetTransformComponent(transfromComponent);
+		m_transformComponentWidget->SetTransformComponent(transfromComponent);
 		sh::u32 count = m_layout->GetItemsCount();
 		bool found = false;
 		for (sh::u32 i = 0U; i < count; ++i)
 		{
-			if (m_transformWidget->GetWidget() == m_layout->GetItem(i)->GetWidget())
+			if (m_transformComponentWidget == m_layout->GetItem(i)->GetWidget())
 			{
 				found = true;
 				break;
 			}
 		}
 		if (!found)
-			m_layout->AddWidget(m_transformWidget->GetWidget());
+			m_layout->AddWidget(m_transformComponentWidget);
 	}
 	// Render component editor
 	component = entity->GetComponent(sh::Component::Type::Render);
 	if (component)
 	{
 		auto renderComponent = static_cast<sh::RenderComponent*>(component);
-		m_materialWidget->SetRenderComponent(renderComponent);
+		m_renderComponentWidget->SetRenderComponent(renderComponent);
 		sh::u32 count = m_layout->GetItemsCount();
 		bool found = false;
 		for (sh::u32 i = 0U; i < count; ++i)
 		{
-			if (m_materialWidget == m_layout->GetItem(i)->GetWidget())
+			if (m_renderComponentWidget == m_layout->GetItem(i)->GetWidget())
 			{
 				found = true;
 				break;
 			}
 		}
 		if (!found)
-			m_layout->AddWidget(m_materialWidget);
+			m_layout->AddWidget(m_renderComponentWidget);
 	}
 }

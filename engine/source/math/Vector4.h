@@ -25,7 +25,7 @@ namespace sh
 			Vector4<T>& operator=(const Vector4<T>& v) { x = v.x; y = v.y; z = v.z; w = v.w; return *this; }
 			Vector4<T>& operator=(const Vector3<T>& v) { x = v.x; y = v.y; z = v.z; return *this; }
 			bool operator==(const Vector4<T>& v) const { return v.x == x && v.y == y && v.z == z && v.w == w; }
-			bool operator!=(const Vector4<T>& v) const { return v.x != x && v.y != y && v.z != z && v.w != w; }
+			bool operator!=(const Vector4<T>& v) const { return v.x != x || v.y != y || v.z != z || v.w != w; }
 
 			Vector4<T> operator+(T s) const { return Vector4<T>(x + s, y + s, z + s, w + s); }
 			Vector4<T> operator+(const Vector4<T>& v) const { return Vector4<T>(x + v.x, y + v.y, z + v.z, w + v.w); }

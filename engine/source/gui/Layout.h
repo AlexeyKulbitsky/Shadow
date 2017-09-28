@@ -73,7 +73,15 @@ namespace gui
 		virtual void SetSpacing(s32 spacing) { m_spacing = spacing; }
 		// Returns actual spacing between elements
 		virtual s32 GetSpacing() const { return m_spacing; }
+
 		void SetMargins(u32 top, u32 right, u32 bottom, u32 left);
+		const u32 GetTopMargin() const { return m_topMargin; }
+		const u32 GetBottomMargin() const { return m_bottomMargin; }
+		const u32 GetRightMargin() const { return m_rightMargin; }
+		const u32 GetLeftMargin() const { return m_leftMargin; }
+
+		// Actual rect of layout
+		const math::Recti& GetRect() const { return m_rect; }
 
 
 		virtual void Render(video::Painter* painter) override;

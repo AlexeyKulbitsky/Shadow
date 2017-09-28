@@ -62,9 +62,13 @@ namespace gui
 
 		const math::Recti& GetRect() const { return m_rect; }
 
+		// Layout
 		void SetLayout(const LayoutPtr& layout);
 		const LayoutPtr& GetLayout() const { return m_layout; }
 
+		// Parent
+		void SetParent(Widget* parent) { m_parent = parent; }
+		Widget* GetParent() const { return m_parent; }
 		virtual void Load(const pugi::xml_node& node);
 		virtual void Render(video::Painter* painter);
 		virtual void SetRect(const math::Recti& rect);
@@ -86,7 +90,7 @@ namespace gui
 
 	protected:
 		LayoutPtr m_layout;
-
+		Widget* m_parent = nullptr;
 		math::Vector2u m_maxSize = math::Vector2u(std::numeric_limits<s32>::max());
 		math::Vector2u m_minSize = math::Vector2u(0U);
 

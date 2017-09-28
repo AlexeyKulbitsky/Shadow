@@ -217,8 +217,28 @@ namespace sh
 	{
 		if (!m_defaultMaterial)
 		{
-			m_defaultMaterial.reset(new video::Material());
-			m_defaultMaterial->SetRenderTechnique("default.rt");
+			io::FileSystem* fs = Device::GetInstance()->GetFileSystem();
+			io::File file = fs->LoadFile("default.mat");
+
+			pugi::xml_document doc;
+			pugi::xml_parse_result result = doc.load_buffer(file.GetData().data(), file.GetData().size());
+
+			// Read material
+			pugi::xml_node materialNode = doc.child("material");
+			if (materialNode)
+			{
+				m_defaultMaterial.reset(new video::Material());
+				m_defaultMaterial->Load(materialNode);
+
+				const auto& materialFileInfos = fs->GetMaterialFileInfos();
+				for (const auto& materialFileInfo : materialFileInfos)
+				{
+					if (!materialFileInfo.expired() && materialFileInfo.lock()->name == "default.mat")
+					{
+						m_defaultMaterial->SetFileInfo(materialFileInfo);
+					}
+				}
+			}
 		}
 		return m_defaultMaterial;
 	}

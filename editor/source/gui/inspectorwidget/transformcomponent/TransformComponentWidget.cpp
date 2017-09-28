@@ -1,12 +1,8 @@
 #include "TransformComponentWidget.h"
 
-TransformWidget::TransformWidget()
+TransformComponentWidget::TransformComponentWidget()
+	: ExpandableWidget("Transform")
 {
-	sh::gui::ButtonPtr button(new sh::gui::Button("Transform"));
-	button->SetToggleable(true);
-	button->OnToggle.Connect(std::bind(&TransformWidget::OnButtonToggled, this, 
-		std::placeholders::_1));
-
 	// Position part
 	sh::gui::HorizontalLayoutPtr positionLayout(new sh::gui::HorizontalLayout());
 	sh::gui::LabelPtr positionLabel(new sh::gui::Label("Position"));
@@ -31,36 +27,25 @@ TransformWidget::TransformWidget()
 	m_scaleEdit.reset(new Vector3LineEdit());
 	scaleLayout->AddWidget(m_scaleEdit);
 
-	// Common layout
-	sh::gui::VerticalLayoutPtr layout(new sh::gui::VerticalLayout());
-	layout->SetMargins(2, 2, 2, 2);
-	layout->SetSpacing(2);
-	layout->AddWidget(button);
-	layout->AddLayout(positionLayout);
-	layout->AddLayout(rotationLayout);
-	layout->AddLayout(scaleLayout);
+	m_contentsLayout->AddLayout(positionLayout);
+	m_contentsLayout->AddLayout(rotationLayout);
+	m_contentsLayout->AddLayout(scaleLayout);
+	SetMaximumHeight(80);
 
-	m_widget.reset(new sh::gui::Widget());
-	m_widget->SetMaximumHeight(80);
-	m_widget->SetLayout(layout);
-
-
-	//m_widget->SetMaximumHeight(75U);
-
-	m_positionEdit->valueChanged.Connect(std::bind(&TransformWidget::OnPositinChanged, this, 
+	m_positionEdit->valueChanged.Connect(std::bind(&TransformComponentWidget::OnPositinChanged, this,
 		std::placeholders::_1));
-	m_rotationEdit->valueChanged.Connect(std::bind(&TransformWidget::OnRotationChanged, this,
+	m_rotationEdit->valueChanged.Connect(std::bind(&TransformComponentWidget::OnRotationChanged, this,
 		std::placeholders::_1));
-	m_scaleEdit->valueChanged.Connect(std::bind(&TransformWidget::OnScaleChanged, this,
+	m_scaleEdit->valueChanged.Connect(std::bind(&TransformComponentWidget::OnScaleChanged, this,
 		std::placeholders::_1));
 }
 
-TransformWidget::~TransformWidget()
+TransformComponentWidget::~TransformComponentWidget()
 {
 
 }
 
-void TransformWidget::SetTransformComponent(sh::TransformComponent* component)
+void TransformComponentWidget::SetTransformComponent(sh::TransformComponent* component)
 {
 	m_transformComponent = component;
 
@@ -72,7 +57,7 @@ void TransformWidget::SetTransformComponent(sh::TransformComponent* component)
 	Update();
 }
 
-void TransformWidget::Update()
+void TransformComponentWidget::Update()
 {
 	m_positionEdit->SetValue(m_transformComponent->GetPosition());
 	sh::math::Vector3f eulerRotations;
@@ -81,7 +66,7 @@ void TransformWidget::Update()
 	m_scaleEdit->SetValue(m_transformComponent->GetScale());
 }
 
-void TransformWidget::OnPositinChanged(const sh::math::Vector3f& position)
+void TransformComponentWidget::OnPositinChanged(const sh::math::Vector3f& position)
 {
 	if (!m_transformComponent)
 		return;
@@ -89,7 +74,7 @@ void TransformWidget::OnPositinChanged(const sh::math::Vector3f& position)
 	m_transformComponent->SetPosition(position);
 }
 
-void TransformWidget::OnRotationChanged(const sh::math::Vector3f& rotation)
+void TransformComponentWidget::OnRotationChanged(const sh::math::Vector3f& rotation)
 {
 	if (!m_transformComponent)
 		return;
@@ -99,7 +84,7 @@ void TransformWidget::OnRotationChanged(const sh::math::Vector3f& rotation)
 	m_transformComponent->SetRotation(rot);
 }
 
-void TransformWidget::OnScaleChanged(const sh::math::Vector3f& scale)
+void TransformComponentWidget::OnScaleChanged(const sh::math::Vector3f& scale)
 {
 	if (!m_transformComponent)
 		return;
@@ -107,15 +92,3 @@ void TransformWidget::OnScaleChanged(const sh::math::Vector3f& scale)
 	m_transformComponent->SetScale(scale);
 }
 
-void TransformWidget::OnButtonToggled(bool toggled)
-{
-	if (toggled)
-	{
-
-	}
-	else
-	{
-
-	}
-	m_widget->SetVisible(toggled);
-}

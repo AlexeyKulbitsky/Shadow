@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<material name="defaultMaterial">
+	<technique filename="default.rt" />
+</material>	

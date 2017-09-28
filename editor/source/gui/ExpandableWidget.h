@@ -11,9 +11,10 @@ public:
 protected:
 	void OnButtonToggled(bool toggled, const sh::gui::ButtonPtr& sender);
 
-private:
+protected:
 	sh::gui::ButtonPtr m_toggleButton;
-
+	sh::gui::WidgetPtr m_contentsWidget;
+	sh::gui::VerticalLayoutPtr m_contentsLayout;
 };
 
 #endif

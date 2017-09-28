@@ -24,7 +24,7 @@ namespace math
 
 		bool operator!=(const Rect<T>& other) const 
 		{
-			return upperLeftCorner != other.upperLeftCorner &&
+			return upperLeftCorner != other.upperLeftCorner ||
 				lowerRightCorner != other.lowerRightCorner;
 		}
 

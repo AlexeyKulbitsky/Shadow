@@ -7,7 +7,8 @@
 #define DEFINE_CLASS_PTR(C)					\
 class C;									\
 typedef std::shared_ptr<C> C##Ptr;			\
-typedef std::unique_ptr<C> C##UPtr;		
+typedef std::unique_ptr<C> C##UPtr;			\
+typedef std::weak_ptr<C> C##WPtr;
 
 
 namespace sh

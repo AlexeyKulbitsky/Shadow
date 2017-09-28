@@ -3,7 +3,7 @@
 
 #include <Shadow.h>
 
-class TransformWidget;
+class TransformComponentWidget;
 
 class Gizmo
 {
@@ -41,7 +41,7 @@ public:
 	bool IsEnabled() const { return m_enabled; }
 	void SetEntity(sh::Entity* entity);
 	sh::Entity* GetEntity() { return m_entity; }
-	void SetTransformWidget(const sh::SPtr<TransformWidget>& widget) { m_transformWidget = widget; }
+	void SetTransformWidget(const sh::SPtr<TransformComponentWidget>& widget) { m_transformWidget = widget; }
 
 	sh::Event<void, sh::Entity*> OnSelectedEntityChanged;
 
@@ -49,7 +49,7 @@ protected:
 	sh::Entity* m_entity = nullptr;
 	bool m_enabled = false;
 	bool m_mousePressed = false;
-	sh::SPtr<TransformWidget> m_transformWidget;
+	sh::SPtr<TransformComponentWidget> m_transformWidget;
 
 private:
 	Axis m_axises[3];

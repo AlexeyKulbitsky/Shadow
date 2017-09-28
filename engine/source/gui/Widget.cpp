@@ -32,8 +32,6 @@ namespace gui
 
 	void Widget::Render(video::Painter* painter)
 	{
-		//if (!m_visible)
-		//	return;
 		if (m_layout)
 			m_layout->Render(painter);
 	}

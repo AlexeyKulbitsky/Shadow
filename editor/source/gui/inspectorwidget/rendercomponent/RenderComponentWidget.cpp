@@ -52,35 +52,38 @@ void MeshMaterialParam::MaterialChanged(sh::u32 index)
 }
 
 
-MaterialWidget::MaterialWidget()
+RenderComponentWidget::RenderComponentWidget()
+	: ExpandableWidget("Render")
 {
-	sh::gui::VerticalLayoutPtr layout(new sh::gui::VerticalLayout());
-	layout->SetMargins(2, 2, 2, 2);
-	layout->SetSpacing(2);
+	m_modelFileInfos = sh::io::FileSystem::GetInstance()->GetModelFileInfos();
 
-	sh::gui::ButtonPtr button(new sh::gui::Button("Render"));
-	button->SetToggleable(true);
-	button->SetMaximumHeight(20);
-	layout->AddWidget(button);
+	m_modelComboBox.reset(new sh::gui::ComboBox());
+	for (sh::u32 i = 0U; i < m_modelFileInfos.size(); ++i)
+	{
+		if (!m_modelFileInfos[i].expired())
+		{
+			m_modelComboBox->AddItem(m_modelFileInfos[i].lock()->name);
+		}
 
-	m_contentsLayout.reset(new sh::gui::VerticalLayout());
-	m_contentsLayout->SetMargins(2, 2, 2, 2);
-	m_contentsLayout->SetSpacing(2);
-	layout->AddLayout(m_contentsLayout);
+	}
+	m_modelComboBox->OnItemChanged.Connect(std::bind(&RenderComponentWidget::ModelChanged, this,
+ 		std::placeholders::_1));
 
-
-	//m_widget.reset(new sh::gui::Widget());
-	//m_widget->SetLayout(m_layout);
-
-	SetLayout(layout);
+	sh::gui::HorizontalLayoutPtr modelLayout(new sh::gui::HorizontalLayout());
+	sh::gui::LabelPtr modelLabel(new sh::gui::Label("Model"));
+	m_modelWidget.reset(new sh::gui::Widget());
+	m_modelWidget->SetMaximumHeight(20);
+	modelLayout->AddWidget(modelLabel);
+	modelLayout->AddWidget(m_modelComboBox);
+	m_modelWidget->SetLayout(modelLayout);
 }
 
-MaterialWidget::~MaterialWidget()
+RenderComponentWidget::~RenderComponentWidget()
 {
 
 }
 
-void MaterialWidget::SetRenderComponent(sh::RenderComponent* component)
+void RenderComponentWidget::SetRenderComponent(sh::RenderComponent* component)
 {
 	m_renderComponent = component;
 
@@ -89,6 +92,18 @@ void MaterialWidget::SetRenderComponent(sh::RenderComponent* component)
 		return;
 	}
 	m_contentsLayout->Clear();
+	m_contentsLayout->AddWidget(m_modelWidget);
+
+	const auto& modelName = component->GetModel()->GetFileInfo().lock()->name;
+
+	for (size_t i = 0; i < m_modelFileInfos.size(); ++i)
+	{
+		if (m_modelFileInfos[i].lock()->name == modelName)
+		{
+			m_modelComboBox->SetSelectedItem(i);
+			break;
+		}
+	}
 
 	const auto& model = component->GetModel();
 	size_t meshesCount = model->GetMeshesCount();
@@ -100,7 +115,56 @@ void MaterialWidget::SetRenderComponent(sh::RenderComponent* component)
 	}
 }
 
-void MaterialWidget::OnButtonToggled(bool toggled)
+void RenderComponentWidget::OnButtonToggled(bool toggled)
 {
 
+}
+
+void RenderComponentWidget::ModelChanged(sh::u32 index)
+{
+	if (index >= m_modelFileInfos.size())
+		return;
+
+	if (!m_renderComponent)
+		return;
+
+	auto rbManager = sh::video::RenderBatchManager::GetInstance();
+	auto resourceManager = sh::Device::GetInstance()->GetResourceManager();
+
+	const auto& model = m_renderComponent->GetModel();
+	if (model->GetFileInfo().lock()->name != m_modelFileInfos[index].lock()->name)
+	{
+		m_contentsLayout->Clear();
+		m_contentsLayout->AddWidget(m_modelWidget);
+		const auto modelMatrix = model->GetWorldMatrix();
+
+		// Remove current model for rendering meshes
+		const auto meshesCount = model->GetMeshesCount();
+		for (size_t i = 0; i < meshesCount; ++i)
+		{
+			const auto& mesh = model->GetMesh(i);
+			rbManager->RemoveMesh(mesh);
+		}
+		const sh::String modelName = m_modelFileInfos[index].lock()->name;
+		auto modelBase = resourceManager->GetModelBase(modelName);
+		
+		sh::scene::ModelPtr newModel(new sh::scene::Model(modelBase));
+
+		const auto& defaultMaterial = resourceManager->GetDefaultMaterial();
+		const auto newModelMeshesCount = newModel->GetMeshesCount();
+		for (size_t i = 0; i < newModelMeshesCount; ++i)
+		{
+			const auto& mesh = newModel->GetMesh(i);
+			mesh->SetMaterial(defaultMaterial);
+			rbManager->AddMesh(mesh);
+
+			sh::SPtr<MeshMaterialParam> param(new MeshMaterialParam(mesh));
+			m_contentsLayout->AddWidget(param);
+		}
+
+		auto box = newModel->GetInitialBoundingBox().GetTransformed(modelMatrix);
+		newModel->SetBoundingBox(box);
+
+		m_renderComponent->SetModel(newModel);
+	}
 }

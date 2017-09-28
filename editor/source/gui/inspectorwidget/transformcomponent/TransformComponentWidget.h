@@ -1,29 +1,23 @@
 #ifndef SHADOW_EDITOR_TRANSFORM_WIDGET_INCLUDE
 #define SHADOW_EDITOR_TRANSFORM_WIDGET_INCLUDE
 
-#include <Shadow.h>
-
+#include "../../ExpandableWidget.h"
 #include "../../Vector3LineEdit.h"
-
 #include "../../ParamEdit.h"
 
-class TransformWidget
+class TransformComponentWidget : public ExpandableWidget
 {
 public:
-	TransformWidget();
-	~TransformWidget();
-
-	const sh::gui::WidgetPtr& GetWidget() const { return m_widget; }
+	TransformComponentWidget();
+	~TransformComponentWidget();
 
 	void SetTransformComponent(sh::TransformComponent* component);
-
 	void Update();
 
 private:
 	void OnPositinChanged(const sh::math::Vector3f& position);
 	void OnRotationChanged(const sh::math::Vector3f& rotation);
 	void OnScaleChanged(const sh::math::Vector3f& scale);
-	void OnButtonToggled(bool toggled);
 
 private:
 	sh::gui::WidgetPtr m_widget;

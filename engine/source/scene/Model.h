@@ -21,6 +21,7 @@ namespace sh
 			const math::AABBf& GetBoundingBox() const { return m_boundingBox; }
 			const math::AABBf& GetInitialBoundingBox() const { return m_initialBoundingBox; }
 			void SetWorldMatrix(const math::Matrix4f& matrix);
+			const math::Matrix4f& GetWorldMatrix() const { return m_worldMatrix; }
 			void UpdateTransformationUniforms();
 			void AddMesh(MeshPtr mesh);
 			size_t GetMeshesCount() const;

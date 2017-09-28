@@ -1,7 +1,7 @@
 #ifndef SHADOW_EDITOR_MATERIAL_WIDGET_INCLUDE
 #define SHADOW_EDITOR_MATERIAL_WIDGET_INCLUDE
 
-#include <Shadow.h>
+#include "../../ExpandableWidget.h"
 
 class MeshMaterialParam : public sh::gui::Widget
 {
@@ -18,11 +18,11 @@ private:
 
 ////////////////////////////////////////////////////////////////////////
 
-class MaterialWidget : public sh::gui::Widget
+class RenderComponentWidget : public ExpandableWidget
 {
 public:
-	MaterialWidget();
-	~MaterialWidget();
+	RenderComponentWidget();
+	~RenderComponentWidget();
 
 	//const sh::gui::WidgetPtr& GetWidget() const { return m_widget; }
 
@@ -30,11 +30,13 @@ public:
 
 private:
 	void OnButtonToggled(bool toggled);
+	void ModelChanged(sh::u32 index);
 
 private:
-	//sh::gui::WidgetPtr m_widget;
-	sh::gui::VerticalLayoutPtr m_contentsLayout;
+	std::vector<std::weak_ptr<sh::io::FileInfo>> m_modelFileInfos;
 	sh::RenderComponent* m_renderComponent = nullptr;
+	sh::gui::WidgetPtr m_modelWidget;
+	sh::gui::ComboBoxPtr m_modelComboBox;
 };
 
 #endif
