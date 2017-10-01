@@ -53,12 +53,14 @@ namespace gui
 		u32 GetWidth() const;
 		const math::Vector2i& GetPosition() const;
 
+		SpritePtr GetSprite(State state) const;
+
 		Event<void, const ButtonPtr&> OnPress;
 		Event<void, const ButtonPtr&> OnRelease;
 		Event<void, const ButtonPtr&> OnHover;
 		Event<void, bool, const ButtonPtr&> OnToggle;
 
-	private:
+	protected:
 		std::array<SpritePtr, State::Count> m_sprites;
 		State m_state = State::Released;
 

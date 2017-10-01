@@ -1,12 +1,58 @@
 #include "TreeWidget.h"
 
+TreeExpandButton::TreeExpandButton()
+{
+	const auto& ref = sh::gui::GuiManager::GetInstance()->GetStyle()->GetButton("TreeButton");
+
+	m_sprites[Released] = ref->GetSprite(Released);
+	m_sprites[Pressed] = ref->GetSprite(Pressed);
+	m_sprites[Hovered] = ref->GetSprite(Hovered);
+
+	m_toggleable = true;
+	SetMaximumWidth(20);
+
+	m_rect = sh::math::Recti(0, 0, 10, 10);
+}
+
+TreeExpandButton::~TreeExpandButton()
+{
+}
+
+void TreeExpandButton::Render(sh::video::Painter* painter)
+{
+	if (!m_visible)
+		return;
+
+	painter->SetMaterial(sh::gui::GuiManager::GetInstance()->GetDefaultMaterial());
+	sh::math::Vector2f upperUVLeft, lowerUVRight;
+	sh::math::Vector4f color(1.0f);
+	if (m_toggled)
+	{
+		upperUVLeft = m_sprites[Pressed]->GetUVRect().upperLeftCorner;
+		lowerUVRight = m_sprites[Pressed]->GetUVRect().lowerRightCorner;
+	}
+	else
+	{
+		upperUVLeft = m_sprites[Released]->GetUVRect().upperLeftCorner;
+		lowerUVRight = m_sprites[Released]->GetUVRect().lowerRightCorner;
+	}
+
+	if (m_state == Hovered)
+		color = sh::math::Vector4f(0.5f, 0.5f, 0.5f, 1.0f);
+
+	sh::video::Painter::Vertex upperLeft(m_rect.upperLeftCorner, upperUVLeft, color);
+	sh::video::Painter::Vertex downRight(m_rect.lowerRightCorner, lowerUVRight, color);
+		
+	painter->DrawRect(upperLeft, downRight);
+}
+
 TreeItem::TreeItem(const sh::String& name, TreeItem* parent)
 	: m_parent(parent)
 {  
 	sh::gui::ButtonPtr button(new sh::gui::Button(name));
 	button->SetToggleable(true);
 
-	button->OnToggle.Connect(std::bind(&TreeItem::OnToggled, this, std::placeholders::_1));
+	//button->OnToggle.Connect(std::bind(&TreeItem::OnToggled, this, std::placeholders::_1));
 	sh::gui::HorizontalLayoutPtr layout(new sh::gui::HorizontalLayout());
 	layout->AddWidget(button);
 	SetMinimumHeight(15U);
@@ -16,7 +62,7 @@ TreeItem::TreeItem(const sh::String& name, TreeItem* parent)
 	if (parent)
 	{
 		sh::s32 offset = parent->GetOffset();
-		m_offset = offset + 15U;
+		m_offset = offset + 20U;
 		layout->SetMargins(0, 0, 0, m_offset);
 	}
 }
@@ -123,7 +169,7 @@ void TreeWidget::Render(sh::video::Painter* painter)
 		for (sh::u32 i = 0U; i < itemsCount; ++i)
 		{
 			auto treeItem = std::static_pointer_cast<TreeItem>(m_layout->GetWidget(i));
-			if (treeItem->IsVisible())
+			if (treeItem->IsVisible() && m_rect.Intersects(treeItem->GetRect()))
 				treeItem->Render(painter);
 		}
 	}

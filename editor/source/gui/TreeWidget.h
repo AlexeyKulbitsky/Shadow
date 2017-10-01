@@ -3,6 +3,15 @@
 
 #include <Shadow.h>
 
+class TreeExpandButton : public sh::gui::Button
+{
+public:
+	TreeExpandButton();
+	virtual ~TreeExpandButton();
+
+	virtual void Render(sh::video::Painter* painter) override;
+};
+
 class TreeItem : public sh::gui::Widget
 {
 	friend class TreeWidget;

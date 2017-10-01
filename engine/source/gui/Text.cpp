@@ -47,10 +47,10 @@ namespace gui
 			return;
 
 		painter->SetMaterial(GuiManager::GetInstance()->GetTextMaterial());
-		const auto cachedClipRect = painter->GetClipRect();
+		//const auto cachedClipRect = painter->GetClipRect();
 
-		painter->SetClipRect(math::Rectu(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y,
-			m_rect.lowerRightCorner.x, m_rect.lowerRightCorner.y));
+		//painter->SetClipRect(math::Rectu(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y,
+		//	m_rect.lowerRightCorner.x, m_rect.lowerRightCorner.y));
 
 		const auto& viewPort = sh::Device::GetInstance()->GetDriver()->GetViewPort();
 
@@ -85,7 +85,7 @@ namespace gui
 
 			xOrigin += desc.advance;
 		}
-		painter->SetClipRect(cachedClipRect);
+		//painter->SetClipRect(cachedClipRect);
 	}
 
 	void Text::SetPosition( s32 x, s32 y )

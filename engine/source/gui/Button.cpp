@@ -272,6 +272,14 @@ namespace gui
 		return m_rect.upperLeftCorner;
 	}
 
+	SpritePtr Button::GetSprite(State state) const
+	{
+		if (state >= State::Count)
+			return SpritePtr();
+
+		return m_sprites[static_cast<size_t>(state)];
+	}
+
 
 } // gui
 

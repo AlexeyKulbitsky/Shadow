@@ -6,6 +6,13 @@ FolderTreeItem::FolderTreeItem(TreeItem* parent, sh::io::FileSystemComponent* fs
 	: TreeItem(fsItem->name, parent)
 {
 	m_item = fsItem;
+
+	sh::SPtr<TreeExpandButton> button(new TreeExpandButton());
+	m_layout->InsertWidget(0U, button);
+	button->OnToggle.Connect(std::bind(&FolderTreeItem::OnToggled, this, std::placeholders::_1));
+
+	//m_offset += 20u;
+	//m_layout->SetMargins(0, 0, 0, m_offset);
 }
 
 FolderTreeItem::~FolderTreeItem()
