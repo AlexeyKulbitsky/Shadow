@@ -25,6 +25,9 @@ namespace gui
 		virtual void UpdateLayout() override;
 
 	protected:
+		void UpdateScrollBars();
+
+	protected:
 		math::Recti m_fullRect;
 		s32 m_scrollSpeed = 15;
 	};

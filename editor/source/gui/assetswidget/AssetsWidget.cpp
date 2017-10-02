@@ -131,6 +131,8 @@ FileTreeItem::FileTreeItem(TreeItem* parent, sh::io::FileSystemComponent* fsItem
 	: TreeItem(fsItem->name, parent)
 {
 	m_item = fsItem;
+	m_offset += 20U;
+	m_layout->SetMargins(0, 0, 0, m_offset);
 }
 
 FileTreeItem::~FileTreeItem()
@@ -143,6 +145,8 @@ MaterialTreeItem::MaterialTreeItem(TreeItem* parent, sh::io::FileSystemComponent
 	: TreeItem(fsItem->name, parent)
 {
 	m_item = fsItem;
+	m_offset += 20U;
+	m_layout->SetMargins(0, 0, 0, m_offset);
 }
 
 MaterialTreeItem::~MaterialTreeItem()

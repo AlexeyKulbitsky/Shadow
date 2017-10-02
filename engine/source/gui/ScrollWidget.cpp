@@ -123,6 +123,10 @@ namespace gui
 		}
 	}
 
+	void ScrollWidget::UpdateScrollBars()
+	{
+	}
+
 
 } // gui
 
