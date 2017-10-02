@@ -9,7 +9,7 @@ FolderTreeItem::FolderTreeItem(TreeItem* parent, sh::io::FileSystemComponent* fs
 
 	sh::SPtr<TreeExpandButton> button(new TreeExpandButton());
 	m_layout->InsertWidget(0U, button);
-	button->OnToggle.Connect(std::bind(&FolderTreeItem::OnToggled, this, std::placeholders::_1));
+	button->OnToggle.Connect(std::bind(&FolderTreeItem::OnExpanded, this, std::placeholders::_1));
 
 	//m_offset += 20u;
 	//m_layout->SetMargins(0, 0, 0, m_offset);
@@ -17,6 +17,12 @@ FolderTreeItem::FolderTreeItem(TreeItem* parent, sh::io::FileSystemComponent* fs
 
 FolderTreeItem::~FolderTreeItem()
 {
+}
+
+void FolderTreeItem::OnExpanded(bool expanded)
+{
+	SetExpanded(!expanded);
+	m_treeWidget->UpdateLayout();
 }
 
 void FolderTreeItem::OnContextMenu(sh::s32 x, sh::s32 y)
@@ -196,8 +202,10 @@ void MaterialTreeItem::OnMenuItemSelected(const sh::String& itemName)
 	lineEdit->SetText(name);
 	lineEdit->SetRect(button->GetRect());
 	lineEdit->SetState(sh::gui::LineEdit::State::Edit);
-	lineEdit->OnTextChanged.Connect([this](const sh::String& text)
+	lineEdit->OnEditingFinished.Connect([this](const sh::String& text)
 	{
+		sh::gui::GuiManager::GetInstance()->SetFocusWidget(nullptr);
+
 		// Check if new name is available
 		sh::io::FileSystem* fs = sh::Device::GetInstance()->GetFileSystem();
 		const auto& materialFileNames = fs->GetMaterialFileInfos();
@@ -229,7 +237,7 @@ void MaterialTreeItem::OnMenuItemSelected(const sh::String& itemName)
 		// Save renamed material
 		material->Save();
 
-		sh::gui::GuiManager::GetInstance()->SetFocusWidget(nullptr);
+		//sh::gui::GuiManager::GetInstance()->SetFocusWidget(nullptr);
 	});
 	lineEdit->SetFocus(true);
 	sh::gui::GuiManager::GetInstance()->SetFocusWidget(lineEdit);
@@ -319,6 +327,10 @@ void AssetsWidget::OnMaterialTreeItemChanged(const sh::video::MaterialPtr& mater
 	{
 		m_materialEditor->SetMaterial(material);
 		m_materialEditor->SetVisible(true);
+		auto rect = m_rect;
+		rect.upperLeftCorner.x += m_rect.GetWidth();
+		rect.lowerRightCorner.x += m_rect.GetWidth();
+		m_materialEditor->SetRect(rect);
 	}
 	else
 	{

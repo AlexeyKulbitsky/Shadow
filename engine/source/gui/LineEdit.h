@@ -33,10 +33,10 @@ namespace gui
 		virtual bool ProcessEvent(GUIEvent& ev) override;
 
 		Event<void, const String&> OnTextChanged;
+		Event<void, const String&> OnEditingFinished;
 
 	protected:
 		virtual void UpdateIfDirty();
-		//static void UpdateCursorGeometry();
 
 	protected:
 		std::array<SpritePtr, State::Count> m_sprites;
@@ -45,8 +45,8 @@ namespace gui
 		bool m_dirty = false;
 		bool m_inFocus = false;
 
-		static math::Rectu s_cursorRect;
-		static std::vector<float> s_cursorBatchData;
+		static math::Recti s_cursorRect;
+		static size_t s_cursorPos;
 	};
 
 } // gui

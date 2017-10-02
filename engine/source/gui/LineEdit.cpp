@@ -17,8 +17,8 @@ namespace sh
 
 namespace gui
 {
-	math::Rectu LineEdit::s_cursorRect;
-	std::vector<float> LineEdit::s_cursorBatchData;
+	math::Recti LineEdit::s_cursorRect;
+	size_t LineEdit::s_cursorPos = 0U;
 
 	LineEdit::LineEdit()
 	{
@@ -49,26 +49,21 @@ namespace gui
 		switch (state)
 		{
 			case State::Default:
+			{
 				m_inFocus = false;
+			}
 				break;
 			case State::Edit:
+			{
+				s_cursorPos = m_text.size();
 				m_inFocus = true;
+			}
 				break;
 			default:
 				break;
 		}
 		m_state = state;
 	}
-	/*
-	void LineEdit::GetTextGeometry(GuiBatchData& data)
-	{
-		if (m_inFocus)
-		{
-			s_cursorRect.Set(static_cast<u32>(xOrigin), m_rect.upperLeftCorner.y,
-				static_cast<u32>(xOrigin) + 3U, m_rect.lowerRightCorner.y);
-		}
-	}
-	*/
 
 	void LineEdit::Render(video::Painter* painter)
 	{
@@ -87,6 +82,39 @@ namespace gui
 
 		// Render text
 		Text::Render(painter);
+
+		if (m_inFocus)
+		{
+			s32 xPos = 0;
+			if (s_cursorPos == m_text.size())
+			{
+				if (m_text.size() == 0U)
+				{
+					xPos = m_rect.upperLeftCorner.x + 5;
+				}
+				else
+				{
+					const auto& font = GuiManager::GetInstance()->GetFont();
+					const auto& desc = font->GetGlyphDescription(static_cast<u32>(m_text.back()));
+					xPos = m_glyphOffsets.back() + desc.advance;
+				}
+			}
+			else
+			{
+				xPos = m_glyphOffsets[s_cursorPos];
+			}
+
+			s_cursorRect.Set(xPos, m_rect.upperLeftCorner.y,
+				xPos + 3U, m_rect.lowerRightCorner.y);
+
+			video::Painter::Vertex upperLeft(s_cursorRect.upperLeftCorner,
+				math::Vector2f(0.0f),
+				math::Vector4f(0.0f, 0.0f, 0.0f, 1.0f));
+			video::Painter::Vertex downRight(s_cursorRect.lowerRightCorner,
+				math::Vector2f(0.0f),
+				math::Vector4f(0.0f, 0.0f, 0.0f, 1.0f));
+			painter->DrawRect(upperLeft, downRight);
+		}
 	}
 
 	bool LineEdit::ProcessEvent(GUIEvent& ev)
@@ -104,6 +132,7 @@ namespace gui
 				else
 				{
 					m_state = State::Edit;
+					s_cursorPos = m_text.size();
 				}
 				m_inFocus = !m_inFocus;
 
@@ -124,26 +153,49 @@ namespace gui
 		}
 		else if (m_inFocus && ev.type == EventType::KeyDown)
 		{
-			if (ev.keyCode == (int)KeyCode::KEY_BACK)
+			KeyCode keyCode = static_cast<KeyCode>(ev.keyCode);
+
+
+			switch (keyCode)
+			{
+			case KeyCode::KEY_BACK:
 			{
 				if (m_text.size() >= 1)
 				{
-					m_text.pop_back();
+					m_text.erase(m_text.begin() + (s_cursorPos - 1));
+					s_cursorPos--;
 					m_dirty = true;
 				}
 			}
-			else if (ev.keyCode == (int)KeyCode::KEY_RETURN)
+			break;
+			case KeyCode::KEY_RETURN:
 			{
 				m_inFocus = false;
 				m_state = State::Default;
 				UpdateIfDirty();
+				OnEditingFinished(m_text);
 			}
-			else
+				break;
+			case KeyCode::KEY_LEFT:
 			{
-				m_text += (char)ev.keyCode;
+				if (s_cursorPos != 0U)
+					s_cursorPos--;
+			}
+			break;
+			case KeyCode::KEY_RIGHT:
+			{
+				if (s_cursorPos < m_text.size())
+					s_cursorPos++;
+			}
+			break;
+			default:
+			{
+				m_text.insert(m_text.begin() + s_cursorPos++, (char)ev.keyCode);
 				m_dirty = true;
 			}
-
+				break;
+			}
+			
 			return true;
 		}
 		return false;
@@ -157,38 +209,6 @@ namespace gui
 			m_dirty = false;
 		}
 	}
-
-	/*
-	void LineEdit::UpdateCursorGeometry()
-	{
-		if (s_cursorBatchData.size() == 0U)
-			s_cursorBatchData.resize(4 * 9);
-
-		// Updated positions
-		const auto& viewPort = sh::Device::GetInstance()->GetDriver()->GetViewPort();
-		math::Vector4f leftUp((float)s_cursorRect.upperLeftCorner.x, (float)s_cursorRect.upperLeftCorner.y, 0.0f, 1.0f);
-
-		math::Vector4f rightDown((float)s_cursorRect.lowerRightCorner.x, (float)s_cursorRect.lowerRightCorner.y, 0.0f, 1.0f);
-
-		s_cursorBatchData[0] = leftUp.x; s_cursorBatchData[1] = leftUp.y; s_cursorBatchData[2] = 0.0f;
-		s_cursorBatchData[9] = leftUp.x; s_cursorBatchData[10] = rightDown.y; s_cursorBatchData[11] = 0.0f;
-		s_cursorBatchData[18] = rightDown.x; s_cursorBatchData[19] = rightDown.y; s_cursorBatchData[20] = 0.0f;
-		s_cursorBatchData[27] = rightDown.x; s_cursorBatchData[28] = leftUp.y; s_cursorBatchData[29] = 0.0f;
-
-		// Update UVs
-		s_cursorBatchData[3] = 0.0f; s_cursorBatchData[4] = 0.0f;
-		s_cursorBatchData[12] = 0.0f; s_cursorBatchData[13] = 0.0f;
-		s_cursorBatchData[21] = 0.0f; s_cursorBatchData[22] = 0.0f;
-		s_cursorBatchData[30] = 0.0f; s_cursorBatchData[31] = 0.0f;
-
-		// Update colors
-		math::Vector3f color(0.0f);
-		s_cursorBatchData[5] = color.x; s_cursorBatchData[6] = color.y; s_cursorBatchData[7] = color.z; s_cursorBatchData[8] = 1.0f;
-		s_cursorBatchData[14] = color.x; s_cursorBatchData[15] = color.y; s_cursorBatchData[16] = color.z; s_cursorBatchData[17] = 1.0f;
-		s_cursorBatchData[23] = color.x; s_cursorBatchData[24] = color.y; s_cursorBatchData[25] = color.z; s_cursorBatchData[26] = 1.0f;
-		s_cursorBatchData[32] = color.x; s_cursorBatchData[33] = color.y;  s_cursorBatchData[34] = color.z; s_cursorBatchData[35] = 1.0f;
-	}
-	*/
 	
 } // gui
 

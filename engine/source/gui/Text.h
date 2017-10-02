@@ -30,6 +30,7 @@ namespace gui
 
 	protected:
 		String m_text;
+		std::vector<s32> m_glyphOffsets;
 	};
 
 } // gui

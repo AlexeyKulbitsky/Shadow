@@ -52,7 +52,7 @@ TreeItem::TreeItem(const sh::String& name, TreeItem* parent)
 	sh::gui::ButtonPtr button(new sh::gui::Button(name));
 	button->SetToggleable(true);
 
-	//button->OnToggle.Connect(std::bind(&TreeItem::OnToggled, this, std::placeholders::_1));
+	button->OnToggle.Connect(std::bind(&TreeItem::OnToggled, this, std::placeholders::_1));
 	sh::gui::HorizontalLayoutPtr layout(new sh::gui::HorizontalLayout());
 	layout->AddWidget(button);
 	SetMinimumHeight(15U);
@@ -83,8 +83,6 @@ void TreeItem::SetExpanded(bool expanded)
 
 void TreeItem::OnToggled(bool toggled)
 {
-	SetExpanded(!toggled);
-	m_treeWidget->UpdateLayout();
 }
 
 bool TreeItem::ProcessEvent(sh::gui::GUIEvent& ev)

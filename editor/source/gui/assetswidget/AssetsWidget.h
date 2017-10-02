@@ -12,6 +12,7 @@ public:
 	virtual ~FolderTreeItem();
 
 protected:
+	void OnExpanded(bool expanded);
 	virtual void OnContextMenu(sh::s32 x, sh::s32 y) override;
 
 private:

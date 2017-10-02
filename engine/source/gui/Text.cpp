@@ -46,6 +46,9 @@ namespace gui
 		if (!m_visible)
 			return;
 
+		if (m_glyphOffsets.size() != m_text.size())
+			m_glyphOffsets.resize(m_text.size());
+
 		painter->SetMaterial(GuiManager::GetInstance()->GetTextMaterial());
 		//const auto cachedClipRect = painter->GetClipRect();
 
@@ -60,9 +63,10 @@ namespace gui
 
 		s32 xOrigin = m_rect.upperLeftCorner.x + 5;
 		s32 yOrigin = m_rect.lowerRightCorner.y - m_rect.GetHeight() / 4;
-
+		size_t counter = 0U;
 		for (const auto c : m_text)
 		{
+			m_glyphOffsets[counter++] = xOrigin;
 			const auto& desc = font->GetGlyphDescription(static_cast<u32>(c));
 			
 			float x1 = static_cast<float>(xOrigin + desc.x_off);

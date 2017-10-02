@@ -26,34 +26,72 @@ namespace gui
 	{
 		if (m_inFocus && ev.type == EventType::KeyDown)
 		{
-			if (ev.keyCode == (int)KeyCode::KEY_BACK)
+			KeyCode keyCode = static_cast<KeyCode>(ev.keyCode);
+
+			auto text = m_text;
+			switch (keyCode)
 			{
-				if (m_text.size() >= 1)
+			case KeyCode::KEY_BACK:
+			{
+				if (text.size() >= 1)
 				{
-					m_text.pop_back();
+					text.erase(text.begin() + (s_cursorPos - 1));
+					s_cursorPos--;
 					m_dirty = true;
 				}
 			}
-			else if (ev.keyCode == (int)KeyCode::KEY_RETURN)
+			break;
+			case KeyCode::KEY_RETURN:
 			{
 				m_inFocus = false;
 				m_state = State::Default;
 				UpdateIfDirty();
+				OnEditingFinished(m_text);
+			}
+			break;
+			case KeyCode::KEY_LEFT:
+			{
+				if (s_cursorPos != 0U)
+					s_cursorPos--;
+			}
+			break;
+			case KeyCode::KEY_RIGHT:
+			{
+				if (s_cursorPos < m_text.size())
+					s_cursorPos++;
+			}
+			break;
+			case KeyCode::KEY_MINUS:
+			{
+				text.insert(text.begin() + s_cursorPos++, '-');
+			}
+			break;
+			case KeyCode::KEY_PLUS:
+			{
+				text.insert(text.begin() + s_cursorPos++, '+');
+			}
+			break;
+			case KeyCode::KEY_PERIOD:
+			{
+				text.insert(text.begin() + s_cursorPos++, '.');
+			}
+			break;
+			default:
+			{
+				text.insert(text.begin() + s_cursorPos++, (char)ev.keyCode);
+				m_dirty = true;
+			}
+			break;
+			}
+
+			if (CheckFloatFilter(text))
+			{
+				m_text = text;
+				m_dirty = true;
 			}
 			else
 			{
-				if (ev.keyCode == (int)KeyCode::KEY_MINUS)
-					m_text += '-';
-				else if (ev.keyCode == (int)KeyCode::KEY_PLUS)
-					m_text += '+';
-				else if (ev.keyCode == (int)KeyCode::KEY_PERIOD)
-					m_text += '.';
-				else
-					m_text += (char)ev.keyCode;
-				if (!CheckFloatFilter(m_text))
-					m_text.pop_back();
-				else
-					m_dirty = true;
+				s_cursorPos--;
 			}
 
 			return true;
