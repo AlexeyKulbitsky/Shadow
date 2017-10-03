@@ -37,6 +37,20 @@
 		<barrect x1="207" y1="135" x2="232" y2="166"/>
 	</window>
 	
+	<scrollwidget>
+		<scrollbar>
+			<default>
+				<rect x1="185" y1="69" x2="206" y2="112"/>
+			</default>
+			<pressed>
+				<rect x1="231" y1="69" x2="252" y2="112"/>
+			</pressed>
+			<hovered>
+				<rect x1="208" y1="69" x2="229" y2="112"/>
+			</hovered>
+		</scrollbar>
+	</scrollwidget>
+	
 	
 	
 	

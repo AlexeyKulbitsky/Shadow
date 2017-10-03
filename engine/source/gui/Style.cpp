@@ -6,6 +6,7 @@
 #include "ToolBar.h"
 #include "Window.h"
 #include "LineEdit.h"
+#include "ScrollWidget.h"
 
 #include "../Device.h"
 #include "../resources/ResourceManager.h"
@@ -47,6 +48,10 @@ namespace gui
 		pugi::xml_node lineEditNode = root.child("lineedit");
 		if (lineEditNode)
 			LoadLineEdit(lineEditNode);
+
+		pugi::xml_node scrollWidgetNode = root.child("scrollwidget");
+		if (scrollWidgetNode)
+			LoadScrollWidget(scrollWidgetNode);
 
 		pugi::xml_node customButtonsNode = root.child("buttons");
 		if (customButtonsNode)
@@ -182,6 +187,46 @@ namespace gui
 		}
 
 		m_lineEdit.reset(new LineEdit(sprites[0], sprites[1]));
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	void Style::LoadScrollWidget(const pugi::xml_node& node)
+	{
+		pugi::xml_node scrollBarNode = node.child("scrollbar");
+		if (!scrollBarNode)
+			return;
+
+		const u32 statesCount = 3U;
+		std::array<String, statesCount> states = { "default", "pressed", "hovered" };
+		std::array<SpritePtr, statesCount> sprites;
+
+		for (u32 i = 0U; i < statesCount; ++i)
+		{
+			pugi::xml_node stateNode = scrollBarNode.child(states[i].c_str());
+			pugi::xml_node rectNode = stateNode.child("rect");
+			u32 x1 = rectNode.attribute("x1").as_uint();
+			u32 y1 = rectNode.attribute("y1").as_uint();
+			u32 x2 = rectNode.attribute("x2").as_uint();
+			u32 y2 = rectNode.attribute("y2").as_uint();
+			math::Rectu rect(x1, y1, x2, y2);
+
+			math::Vector4f color(0.7f, 0.7f, 0.7f, 1.0f);
+			pugi::xml_node colorNode = stateNode.child("color");
+			if (colorNode)
+			{
+				color.x = colorNode.attribute("r").as_float();
+				color.y = colorNode.attribute("g").as_float();
+				color.z = colorNode.attribute("b").as_float();
+				color.w = colorNode.attribute("a").as_float();
+			}
+			sprites[i].reset(new Sprite(m_texture, rect, color));
+		}
+
+		SpritePtr backgroundSprite(new Sprite(m_texture, sprites[2]->GetRect(), math::Vector4f(1.0f)));
+
+		SPtr<ScrollWidget::ScrollBar> scrollBar(new ScrollWidget::ScrollBar(sprites[0], sprites[1], sprites[2], backgroundSprite));
+		m_scrollWidget.reset(new ScrollWidget(scrollBar));
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////

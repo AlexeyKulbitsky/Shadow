@@ -1,5 +1,8 @@
 #include "ScrollWidget.h"
 #include "Layout.h"
+#include "GuiManager.h"
+#include "Sprite.h"
+#include "Style.h"
 
 #include "../video/Painter.h"
 #include "../Device.h"
@@ -10,10 +13,132 @@ namespace sh
 
 namespace gui
 {
+	
+	ScrollWidget::ScrollBar::ScrollBar()
+		: Button()
+	{
+	}
+
+	ScrollWidget::ScrollBar::ScrollBar(const SpritePtr& defaultSprite,
+		const SpritePtr& pressedSprite,
+		const SpritePtr& hoveredSprite,
+		const SpritePtr& backgroundSprite)
+		: Button(defaultSprite, pressedSprite, hoveredSprite)
+		, m_backgroundSprite(backgroundSprite)
+	{
+	}
+
+	bool ScrollWidget::ScrollBar::ProcessEvent(sh::gui::GUIEvent& ev)
+	{
+		bool inside = m_rect.IsPointInside(ev.x, ev.y);
+
+
+		Button::ProcessEvent(ev);
+
+		switch (ev.type)
+		{
+		case sh::gui::EventType::PointerDown:
+		{
+			if (inside)
+			{
+				m_startPos.x = ev.x;
+				m_startPos.y = ev.y;
+				m_dragStarted = true;
+				return true;
+			}
+		}
+		break;
+		case sh::gui::EventType::PointerUp:
+		{
+			m_dragStarted = false;
+			return true;
+		}
+		break;
+		case sh::gui::EventType::PointerMove:
+		{
+			if (m_dragStarted)
+			{
+				sh::Device* device = sh::Device::GetInstance();
+				sh::InputManager* inputManager = device->GetInputManager();
+
+				if (inputManager->IsMouseButtonPressed(sh::MouseCode::ButtonLeft))
+				{
+					int yDelta = ev.y - m_startPos.y;
+					m_startPos.y = ev.y;
+
+					if (m_rect.upperLeftCorner.y + yDelta < m_scrollWidget->GetRect().upperLeftCorner.y)
+					{
+						yDelta = m_scrollWidget->GetRect().upperLeftCorner.y - m_rect.upperLeftCorner.y;
+					}
+					if (m_rect.upperLeftCorner.y + yDelta > m_scrollWidget->GetRect().lowerRightCorner.y - m_rect.GetHeight())
+					{
+						yDelta = m_scrollWidget->GetRect().lowerRightCorner.y - m_rect.GetHeight() - m_rect.upperLeftCorner.y;
+					}
+
+					m_rect.upperLeftCorner.y += yDelta;
+					m_rect.lowerRightCorner.y += yDelta;
+
+					const float deltaYAspect = static_cast<float>(yDelta) / static_cast<float>(m_scrollWidget->m_rect.GetHeight() - m_rect.GetHeight());
+					const float deltaYFloat = deltaYAspect * static_cast<float>(m_scrollWidget->m_fullRect.GetHeight() - m_scrollWidget->m_rect.GetHeight());
+					const int deltaYFinal = static_cast<int>(deltaYFloat);
+
+					m_scrollWidget->m_fullRect.upperLeftCorner.y -= deltaYFinal;
+					m_scrollWidget->m_fullRect.lowerRightCorner.y -= deltaYFinal;
+					m_scrollWidget->m_layout->Resize(m_scrollWidget->m_fullRect);
+
+					return true;
+				}
+			}
+		}
+		break;
+		}
+
+		return false;
+	}
+
+	void ScrollWidget::ScrollBar::Render(video::Painter* painter)
+	{
+
+		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
+
+
+		auto rect = m_scrollWidget->GetRect();
+
+		rect.upperLeftCorner.x = rect.lowerRightCorner.x - m_rect.GetWidth();
+
+		video::Painter::Vertex upperLeft(rect.upperLeftCorner,
+			m_backgroundSprite->GetUVRect().upperLeftCorner,
+			m_backgroundSprite->GetColor());
+		video::Painter::Vertex downRight(rect.lowerRightCorner,
+			m_backgroundSprite->GetUVRect().lowerRightCorner,
+			m_backgroundSprite->GetColor());
+		painter->DrawRect(upperLeft, downRight);
+
+
+		Button::Render(painter);
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////////////
 
 	ScrollWidget::ScrollWidget()
 	{
+		const auto& ref = GuiManager::GetInstance()->GetStyle()->GetScrollWidget();
+		m_verticalScrollBar.reset(new ScrollBar(
+			ref->m_verticalScrollBar->m_sprites[Button::Released],
+			ref->m_verticalScrollBar->m_sprites[Button::Pressed],
+			ref->m_verticalScrollBar->m_sprites[Button::Hovered],
+			ref->m_verticalScrollBar->m_backgroundSprite));
+		m_verticalScrollBar->m_scrollWidget = this;
+	}
 
+	ScrollWidget::ScrollWidget(const SPtr<ScrollBar>& scrollBar)
+	{
+		m_verticalScrollBar.reset(new ScrollBar(
+			scrollBar->m_sprites[Button::Released],
+			scrollBar->m_sprites[Button::Pressed],
+			scrollBar->m_sprites[Button::Hovered],
+			scrollBar->m_backgroundSprite));
+		m_verticalScrollBar->m_scrollWidget = this;
 	}
 
 	ScrollWidget::~ScrollWidget()
@@ -30,6 +155,8 @@ namespace gui
 			m_rect.lowerRightCorner.x, m_rect.lowerRightCorner.y));
 		Widget::Render(painter);
 		painter->SetClipRect(Device::GetInstance()->GetDriver()->GetViewport());
+
+		RenderScrollBars(painter);
 	}
 
 	void ScrollWidget::SetPosition(s32 x, s32 y)
@@ -61,6 +188,16 @@ namespace gui
 		bool inside = m_rect.IsPointInside(ev.x, ev.y);
 		if (!inside)
 			return false;
+
+		const auto fullHeight = m_fullRect.GetHeight();
+		const auto visibleHeight = m_rect.GetHeight();
+
+		if (fullHeight > visibleHeight)
+		{
+			if (m_verticalScrollBar->ProcessEvent(ev))
+				return true;
+		}
+
 
 		switch (ev.type)
 		{
@@ -125,6 +262,28 @@ namespace gui
 
 	void ScrollWidget::UpdateScrollBars()
 	{
+	}
+
+	void ScrollWidget::RenderScrollBars(video::Painter* painter)
+	{
+		const auto fullHeight = m_fullRect.GetHeight();
+		const auto visibleHeight = m_rect.GetHeight();
+
+		if (fullHeight > visibleHeight)
+		{
+			const float aspect = static_cast<float>(visibleHeight) / static_cast<float>(fullHeight);
+			const auto scrollBarHeight = static_cast<sh::s32>(aspect * static_cast<float>(visibleHeight));
+			const float yPosAspect = static_cast<float>(m_rect.upperLeftCorner.y - m_fullRect.upperLeftCorner.y)
+				/ static_cast<float>(fullHeight - visibleHeight);
+			const sh::s32 yPos = m_rect.upperLeftCorner.y + yPosAspect * (visibleHeight - scrollBarHeight);
+
+			const sh::s32 scrollBarWidth = 20;
+
+			m_verticalScrollBar->SetPosition(m_rect.lowerRightCorner.x - scrollBarWidth, yPos);
+			m_verticalScrollBar->SetWidth(scrollBarWidth);
+			m_verticalScrollBar->SetHeight(scrollBarHeight);
+			m_verticalScrollBar->Render(painter);
+		}
 	}
 
 

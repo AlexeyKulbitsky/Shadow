@@ -22,6 +22,7 @@ namespace gui
 		const ToolBarPtr& GetToolBar() const { return m_toolBar; }
 		const WindowPtr& GetWindow() const { return m_window; }
 		const LineEditPtr& GetLineEdit() const { return m_lineEdit; }
+		const ScrollWidgetPtr& GetScrollWidget() const { return m_scrollWidget; }
 
 		// Custom widgets
 		ButtonPtr GetButton(const String& name);
@@ -32,6 +33,7 @@ namespace gui
 		void LoadToolBar(const pugi::xml_node& node);
 		void LoadWindow(const pugi::xml_node& node);
 		void LoadLineEdit(const pugi::xml_node& node);
+		void LoadScrollWidget(const pugi::xml_node& node);
 		void LoadCustomButtons(const pugi::xml_node& node);
 
 	private:
@@ -41,6 +43,7 @@ namespace gui
 		ToolBarPtr m_toolBar;
 		WindowPtr m_window;
 		LineEditPtr m_lineEdit;
+		ScrollWidgetPtr m_scrollWidget;
 
 		// Maps
 		Map<String, ButtonPtr> m_buttonsMap;

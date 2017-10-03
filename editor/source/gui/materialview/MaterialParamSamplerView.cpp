@@ -25,8 +25,12 @@ MaterialParamSamplerView::MaterialParamSamplerView(sh::video::MaterialSamplerPar
 		if (!m_textureInfos[i].expired())
 		{
 			samplerComboBox->AddItem(m_textureInfos[i].lock()->name);
-			if (texture->GetFileInfo().lock()->name == m_textureInfos[i].lock()->name)
-				index = i;
+			if (auto textureFileInfo = texture->GetFileInfo().lock())
+			{
+				if (textureFileInfo->name == m_textureInfos[i].lock()->name)
+					index = i;
+			}
+			
 		}
 		
 	}

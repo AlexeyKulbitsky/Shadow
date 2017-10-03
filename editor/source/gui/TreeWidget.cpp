@@ -173,6 +173,8 @@ void TreeWidget::Render(sh::video::Painter* painter)
 	}
 
 	painter->SetClipRect(sh::Device::GetInstance()->GetDriver()->GetViewport());
+
+	RenderScrollBars(painter);
 }
 
 void TreeWidget::UpdateLayout()
@@ -241,4 +243,9 @@ void TreeWidget::UpdateLayout()
 
 		m_scrollSpeed = height / 25;
 	}
+}
+
+bool TreeWidget::ProcessEvent(sh::gui::GUIEvent& ev)
+{
+	return sh::gui::ScrollWidget::ProcessEvent(ev);
 }

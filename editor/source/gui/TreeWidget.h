@@ -48,6 +48,7 @@ public:
 
 	virtual void Render(sh::video::Painter* painter) override;
 	virtual void UpdateLayout() override;
+	virtual bool ProcessEvent(sh::gui::GUIEvent& ev) override;
 };
 
 #endif
