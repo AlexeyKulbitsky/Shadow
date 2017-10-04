@@ -28,6 +28,7 @@
 #include "gui/HorizontalLayout.h"
 #include "gui/VerticalLayout.h"
 #include "gui/ComboBox.h"
+#include "gui/SliderWidget.h"
 
 #include "entity/Component.h"
 #include "entity/ComponentsFactory.h"

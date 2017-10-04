@@ -47,14 +47,15 @@ void TreeExpandButton::Render(sh::video::Painter* painter)
 }
 
 TreeItem::TreeItem(const sh::String& name, TreeItem* parent)
-	: m_parent(parent)
+	: sh::gui::Button()
+	, m_parent(parent)
 {  
-	sh::gui::ButtonPtr button(new sh::gui::Button(name));
-	button->SetToggleable(true);
+	sh::gui::LabelPtr label(new sh::gui::Label(name));
+	SetToggleable(true);
 
-	button->OnToggle.Connect(std::bind(&TreeItem::OnToggled, this, std::placeholders::_1));
+	OnToggle.Connect(std::bind(&TreeItem::OnToggled, this, std::placeholders::_1));
 	sh::gui::HorizontalLayoutPtr layout(new sh::gui::HorizontalLayout());
-	layout->AddWidget(button);
+	layout->AddWidget(label);
 	SetMinimumHeight(15U);
 	SetMaximumHeight(20U);
 	SetLayout(layout);

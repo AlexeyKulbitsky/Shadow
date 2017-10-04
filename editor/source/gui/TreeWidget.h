@@ -12,7 +12,7 @@ public:
 	virtual void Render(sh::video::Painter* painter) override;
 };
 
-class TreeItem : public sh::gui::Widget
+class TreeItem : public sh::gui::Button
 {
 	friend class TreeWidget;
 public:
