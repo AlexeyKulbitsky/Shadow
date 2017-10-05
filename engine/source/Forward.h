@@ -88,6 +88,8 @@ namespace sh
 		DEFINE_CLASS_PTR(Window)
 		DEFINE_CLASS_PTR(ComboBox)
 		DEFINE_CLASS_PTR(SliderWidget)
+		DEFINE_CLASS_PTR(TreeWidget)
+		DEFINE_CLASS_PTR(TreeItem)
 	}
 
 	DEFINE_CLASS_PTR(Component)

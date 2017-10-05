@@ -7,12 +7,9 @@ FolderTreeItem::FolderTreeItem(TreeItem* parent, sh::io::FileSystemComponent* fs
 {
 	m_item = fsItem;
 
-	sh::SPtr<TreeExpandButton> button(new TreeExpandButton());
+	sh::SPtr<sh::gui::TreeExpandButton> button(new sh::gui::TreeExpandButton());
 	m_layout->InsertWidget(0U, button);
 	button->OnToggle.Connect(std::bind(&FolderTreeItem::OnExpanded, this, std::placeholders::_1));
-
-	//m_offset += 20u;
-	//m_layout->SetMargins(0, 0, 0, m_offset);
 }
 
 FolderTreeItem::~FolderTreeItem()
@@ -161,6 +158,8 @@ MaterialTreeItem::~MaterialTreeItem()
 
 void MaterialTreeItem::OnToggled(bool toggled)
 {
+	sh::gui::TreeItem::OnToggled(toggled);
+
 	auto assetsTreeWidget = static_cast<AssetsTreeWidget*>(m_treeWidget);
 	if (toggled)
 	{
@@ -267,8 +266,8 @@ AssetsWidget::AssetsWidget()
 	struct Local
 	{
 		static void Parse(const sh::SPtr<sh::io::FileSystemComponent>& item, 
-						  const sh::SPtr<TreeWidget>& treeWidget,
-						  sh::SPtr<TreeItem>& treeItem)
+						  const sh::SPtr<sh::gui::TreeWidget>& treeWidget,
+						  sh::SPtr<sh::gui::TreeItem>& treeItem)
 		{
 			if (item->GetType() == sh::io::FileSystemComponent::Type::Folder)
 			{
@@ -277,13 +276,13 @@ AssetsWidget::AssetsWidget()
 				{
 					if (child->GetType() == sh::io::FileSystemComponent::Type::Folder)
 					{
-						sh::SPtr<TreeItem> childItem(new FolderTreeItem(treeItem.get(), child.get()));
+						sh::SPtr<sh::gui::TreeItem> childItem(new FolderTreeItem(treeItem.get(), child.get()));
 						treeWidget->AddItem(childItem);
 						Parse(child, treeWidget, childItem);
 					}
 					else
 					{
-						sh::SPtr<TreeItem> childItem;
+						sh::SPtr<sh::gui::TreeItem> childItem;
 						size_t pos = child->name.find_last_of('.');
 						auto extension = child->name.substr(pos + 1);
 						if (extension == "mat")
@@ -310,7 +309,7 @@ AssetsWidget::AssetsWidget()
 	treeWidget->materialChanged.Connect(std::bind(&AssetsWidget::OnMaterialTreeItemChanged, this,
 		std::placeholders::_1));
 
-	sh::SPtr<TreeItem> rootTreeItem(new FolderTreeItem(nullptr, root.get()));
+	sh::SPtr<sh::gui::TreeItem> rootTreeItem(new FolderTreeItem(nullptr, root.get()));
 	treeWidget->AddItem(rootTreeItem);
 	Local::Parse(root, treeWidget, rootTreeItem);
 
@@ -319,6 +318,11 @@ AssetsWidget::AssetsWidget()
 
 AssetsWidget::~AssetsWidget()
 {
+}
+
+void AssetsWidget::UpdateLayout()
+{
+	Window::UpdateLayout();
 }
 
 void AssetsWidget::OnMaterialTreeItemChanged(const sh::video::MaterialPtr& material)

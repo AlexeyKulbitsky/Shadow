@@ -4,6 +4,8 @@
 #include <Commdlg.h>
 #include <tchar.h>
 
+#include <jobs/Test.h>
+
 using namespace std::placeholders;
 
 MainWindow::MainWindow()

@@ -45,27 +45,19 @@ namespace io
 	void WindowsFileSystem::AddFolder(const String& folder, bool recursive)
 	{
 		String absolutePath = m_workingDirectoryPath + "/" + folder + "/";
-		m_root.reset(new FolderInfo(folder, absolutePath));
+
+		String folderName = folder;
+		String::size_type pos = String(folder).find_last_of("\\/");
+		if (pos != String::npos)
+			folderName = folder.substr(pos + 1);
+
+		m_root.reset(new FolderInfo(folderName, absolutePath));
 
 		CollectFilesFromFolder(absolutePath, m_root, true);
 
 		UpdateResourceGroups();
 	}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	/*
-	const FileInfo& WindowsFileSystem::FindFile(const String& fileName)
-	{
-		static const FileInfo errorFile("", "");
-		Set<FileInfo>::iterator it = m_fileList.find(FileInfo(fileName, ""));
-		if (it != m_fileList.end())
-		{
-			return *it;
-		}
-		return errorFile;
-	}
-	*/
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	bool WindowsFileSystem::SaveFile(const std::vector<char>& data, const String& fileName)
@@ -88,40 +80,8 @@ namespace io
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	/*
-	std::vector<char> WindowsFileSystem::ReadFile(const String& filename)
-	{
-		std::ifstream file(filename, std::ios::ate | std::ios::binary);
-		if (!file.is_open())
-		{
-			const auto& info = FindFile(filename);
-			file = std::ifstream(info.absolutePath, std::ios::ate | std::ios::binary);
-		}
-
-		SH_ASSERT(file.is_open(), "failed to open file!");
-		if (!file.is_open())
-			return std::vector<char>();
-
-		size_t fileSize = (size_t)file.tellg();
-		std::vector<char> buffer(fileSize);
-
-		file.seekg(0);
-		file.read(buffer.data(), fileSize);
-		file.close();
-
-		return buffer;
-	}
-	*/
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-
 	File WindowsFileSystem::LoadFile(const String& filename)
 	{
-		//File file;
-		//file.m_data = ReadFile(filename);
-		//return file;
-
-
 		auto result = m_root->FindChildByName(filename);
 		if (result.expired())
 			return File();

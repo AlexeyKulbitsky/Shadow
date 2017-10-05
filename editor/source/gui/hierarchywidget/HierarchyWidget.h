@@ -2,14 +2,13 @@
 #define SHADOW_EDITOR_HIERARCHY_WIDGET_INCLUDE
 
 #include <Shadow.h>
-#include "../TreeWidget.h"
 
 //////////////////////////////////////////////////////////////////////////////////////
 
-class HeirarchyTreeItem : public TreeItem
+class HeirarchyTreeItem : public sh::gui::TreeItem
 {
 public:
-	HeirarchyTreeItem(TreeItem* parent, sh::Entity* entity);
+	HeirarchyTreeItem(sh::gui::TreeItem* parent, sh::Entity* entity);
 
 	sh::Entity* GetEntity() { return m_entity; }
 
@@ -19,10 +18,11 @@ private:
 
 //////////////////////////////////////////////////////////////////////////////////////
 
-class HierarchyTreeWidget : public TreeWidget
+class HierarchyTreeWidget : public sh::gui::TreeWidget
 {
 public:
 	HierarchyTreeWidget();
+	virtual void SetSelectedItem(sh::gui::TreeItem* item) override;
 };
 
 //////////////////////////////////////////////////////////////////////////////////////

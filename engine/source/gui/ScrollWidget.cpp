@@ -98,9 +98,7 @@ namespace gui
 
 	void ScrollWidget::ScrollBar::Render(video::Painter* painter)
 	{
-
 		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
-
 
 		auto rect = m_scrollWidget->GetRect();
 
@@ -113,9 +111,26 @@ namespace gui
 			m_backgroundSprite->GetUVRect().lowerRightCorner,
 			m_backgroundSprite->GetColor());
 		painter->DrawRect(upperLeft, downRight);
-
-
-		Button::Render(painter);
+		
+		// Draw bar
+		{
+			SpritePtr sprite;
+			if (m_dragStarted)
+			{
+				sprite = m_sprites[Button::Pressed];
+			}
+			else
+			{
+				sprite = m_sprites[m_state];
+			}
+			video::Painter::Vertex upperLeft(m_rect.upperLeftCorner,
+				sprite->GetUVRect().upperLeftCorner,
+				sprite->GetColor());
+			video::Painter::Vertex downRight(m_rect.lowerRightCorner,
+				sprite->GetUVRect().lowerRightCorner,
+				sprite->GetColor());
+			painter->DrawRect(upperLeft, downRight);
+		}
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
@@ -151,10 +166,12 @@ namespace gui
 		if (!m_visible)
 			return;
 
+		const auto cachedClipRect = painter->GetClipRect();
+
 		painter->SetClipRect(math::Rectu(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y,
 			m_rect.lowerRightCorner.x, m_rect.lowerRightCorner.y));
 		Widget::Render(painter);
-		painter->SetClipRect(Device::GetInstance()->GetDriver()->GetViewport());
+		painter->SetClipRect(cachedClipRect);
 
 		RenderScrollBars(painter);
 	}
@@ -275,9 +292,9 @@ namespace gui
 			const auto scrollBarHeight = static_cast<sh::s32>(aspect * static_cast<float>(visibleHeight));
 			const float yPosAspect = static_cast<float>(m_rect.upperLeftCorner.y - m_fullRect.upperLeftCorner.y)
 				/ static_cast<float>(fullHeight - visibleHeight);
-			const sh::s32 yPos = m_rect.upperLeftCorner.y + yPosAspect * (visibleHeight - scrollBarHeight);
+			const s32 yPos = m_rect.upperLeftCorner.y + static_cast<s32>(yPosAspect * (visibleHeight - scrollBarHeight));
 
-			const sh::s32 scrollBarWidth = 20;
+			const s32 scrollBarWidth = 20;
 
 			m_verticalScrollBar->SetPosition(m_rect.lowerRightCorner.x - scrollBarWidth, yPos);
 			m_verticalScrollBar->SetWidth(scrollBarWidth);

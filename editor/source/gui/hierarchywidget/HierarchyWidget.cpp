@@ -17,6 +17,19 @@ HierarchyTreeWidget::HierarchyTreeWidget()
 
 //////////////////////////////////////////////////////////////////////////////////////
 
+void HierarchyTreeWidget::SetSelectedItem(sh::gui::TreeItem* item)
+{
+	sh::gui::TreeWidget::SetSelectedItem(item);
+	if (!item)
+		return;
+
+	auto hierarchyItem = static_cast<HeirarchyTreeItem*>(item);
+	auto entity = hierarchyItem->GetEntity();
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////////
+
 HierarchyWidget::HierarchyWidget()
 	: sh::gui::Window(sh::math::Recti(0, 50, 250, 400))
 {

@@ -3,12 +3,11 @@
 
 #include "../materialview/MaterialEditor.h"
 
-#include "../TreeWidget.h"
 
-class FolderTreeItem : public TreeItem
+class FolderTreeItem : public sh::gui::TreeItem
 {
 public:
-	FolderTreeItem(TreeItem* parent, sh::io::FileSystemComponent* fsItem);
+	FolderTreeItem(sh::gui::TreeItem* parent, sh::io::FileSystemComponent* fsItem);
 	virtual ~FolderTreeItem();
 
 protected:
@@ -24,10 +23,10 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-class FileTreeItem : public TreeItem
+class FileTreeItem : public sh::gui::TreeItem
 {
 public:
-	FileTreeItem(TreeItem* parent, sh::io::FileSystemComponent* fsItem);
+	FileTreeItem(sh::gui::TreeItem* parent, sh::io::FileSystemComponent* fsItem);
 	virtual ~FileTreeItem();
 
 private:
@@ -36,10 +35,10 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-class MaterialTreeItem : public TreeItem
+class MaterialTreeItem : public sh::gui::TreeItem
 {
 public:
-	MaterialTreeItem(TreeItem* parent, sh::io::FileSystemComponent* fsItem);
+	MaterialTreeItem(sh::gui::TreeItem* parent, sh::io::FileSystemComponent* fsItem);
 	virtual ~MaterialTreeItem();
 	virtual void OnToggled(bool toggled) override;
 
@@ -56,7 +55,7 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-class AssetsTreeWidget : public TreeWidget
+class AssetsTreeWidget : public sh::gui::TreeWidget
 {
 public:
 	sh::Event<void, const sh::video::MaterialPtr&> materialChanged;
@@ -67,6 +66,8 @@ class AssetsWidget : public sh::gui::Window
 public:
 	AssetsWidget();
 	~AssetsWidget();
+
+	virtual void UpdateLayout() override;
 
 private:
 	void OnMaterialTreeItemChanged(const sh::video::MaterialPtr& material);
