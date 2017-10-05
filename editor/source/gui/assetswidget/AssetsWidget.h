@@ -2,6 +2,7 @@
 #define SHADOW_EDITOR_ASSETS_WIDGET_INCLUDE
 
 #include "../materialview/MaterialEditor.h"
+#include "../textureview/TextureWidget.h"
 
 
 class FolderTreeItem : public sh::gui::TreeItem
@@ -55,10 +56,24 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
+class TextureTreeItem : public sh::gui::TreeItem
+{
+public:
+	TextureTreeItem(sh::gui::TreeItem* parent, sh::io::FileSystemComponent* fsItem);
+	virtual ~TextureTreeItem();
+	virtual void OnToggled(bool toggled) override;
+
+private:
+	sh::io::FileSystemComponent* m_item = nullptr;
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
 class AssetsTreeWidget : public sh::gui::TreeWidget
 {
 public:
 	sh::Event<void, const sh::video::MaterialPtr&> materialChanged;
+	sh::Event<void, const sh::video::TexturePtr&> textureChanged;
 };
 
 class AssetsWidget : public sh::gui::Window
@@ -71,11 +86,13 @@ public:
 
 private:
 	void OnMaterialTreeItemChanged(const sh::video::MaterialPtr& material);
+	void OnTextureTreeItemChanged(const sh::video::TexturePtr& texture);
 
 private:
 	sh::gui::WindowPtr m_window;
 
 	sh::SPtr<MaterialEditor> m_materialEditor;
+	sh::SPtr<TextureWidget> m_textureWidget;
 };
 
 #endif

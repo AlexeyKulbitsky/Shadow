@@ -2,14 +2,27 @@
 <material name="testMaterial">
 	<technique filename="const_color.rt" />
 	<params>
+		<param name="addColor">
+			<type val="Float3" />
+			<value x="0" y="0" z="0" />
+		</param>
 		<sampler name="diffuse">
-			<type val="2D"/>
-			<texture val="statue.jpg"/>
+			<type val="2D" />
+			<texture val="Container.png" />
+			<minFilter val="Linear" />
+			<magFilter val="Linear" />
+			<mipFilter val="None" />
+			<tilingU val="Repeat" />
+			<tilingV val="Repeat" />
 		</sampler>
-		
 		<sampler name="normalMap">
-			<type val="2D"/>
-			<texture val="arm_showroom_ddn.png"/>
+			<type val="2D" />
+			<texture val="body_showroom_ddn.png" />
+			<minFilter val="Linear" />
+			<magFilter val="Linear" />
+			<mipFilter val="None" />
+			<tilingU val="Repeat" />
+			<tilingV val="Repeat" />
 		</sampler>
 	</params>
-</material>	
+</material>

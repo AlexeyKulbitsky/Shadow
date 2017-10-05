@@ -32,6 +32,8 @@ namespace gui
 	{
 		bool inside = m_rect.IsPointInside(ev.x, ev.y);
 
+		if (ev.mouseButtonCode != MouseCode::ButtonLeft)
+			return false;
 
 		Button::ProcessEvent(ev);
 

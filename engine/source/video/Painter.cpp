@@ -418,6 +418,7 @@ namespace sh
 			sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
 			const sh::math::Matrix4f& viewMatrix = camera->GetViewMatrix();
 			const sh::math::Matrix4f& projectionMatrix = camera->GetProjectionMatrix();
+			const sh::math::Matrix4f& projection2DMatrix = camera->Get2DProjectionMatrix();
 
 			m_commandBuffer->Begin();
 
@@ -466,6 +467,11 @@ namespace sh
 							math::Matrix4f wvp = projectionMatrix * viewMatrix;
 							wvp.Transpose();
 							param->Set(wvp);
+						}
+						break;
+						case MaterialParamUsage::Matrix2DProjection:
+						{
+							param->Set(projection2DMatrix);
 						}
 						break;
 						default:
@@ -535,6 +541,11 @@ namespace sh
 							math::Matrix4f wvp = projectionMatrix * viewMatrix;
 							wvp.Transpose();
 							param->Set(wvp);
+						}
+						break;
+						case MaterialParamUsage::Matrix2DProjection:
+						{
+							param->Set(projection2DMatrix);
 						}
 						break;
 						default:

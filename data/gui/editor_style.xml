@@ -1,136 +1,155 @@
 <?xml version="1.0"?>
 <style name="default">
-	<texture val="ui_editor.png"/>
+	<texture val="editor_atlas.png"/>
 
 	<button>
 		<default>
-			<rect x1="185" y1="69" x2="206" y2="112"/>
+			<rect x1="4" y1="4" x2="35" y2="37"/>
 		</default>
 		<pressed>
-			<rect x1="231" y1="69" x2="252" y2="112"/>
+			<rect x1="40" y1="4" x2="73" y2="37"/>
 		</pressed>
 		<hovered>
-			<rect x1="208" y1="69" x2="229" y2="112"/>
+			<rect x1="78" y1="4" x2="111" y2="37"/>
 		</hovered>
 	</button>
 
 	<lineedit>
 		<default>
-			<rect x1="185" y1="69" x2="206" y2="112"/>
+			<rect x1="4" y1="4" x2="35" y2="37"/>
 		</default>
 		<edit>
-			<rect x1="231" y1="69" x2="252" y2="112"/>
+			<rect x1="40" y1="4" x2="73" y2="37"/>
 		</edit>
 	</lineedit>
 	
 	<menubar>
-		<rect x1="254" y1="69" x2="275" y2="112"/>
+		<rect x1="116" y1="4" x2="149" y2="37"/>
 	</menubar>
 
 	<toolbar>
-		<rect x1="254" y1="69" x2="275" y2="112"/>
+		<rect x1="116" y1="4" x2="149" y2="37"/>
 	</toolbar>
 
 	<window>
-		<outrect x1="202" y1="130" x2="236" y2="198"/>
-		<inrect x1="207" y1="166" x2="232" y2="194"/>
-		<barrect x1="207" y1="135" x2="232" y2="166"/>
+		<outrect x1="154" y1="4" x2="203" y2="54"/>
+		<inrect x1="160" y1="30" x2="197" y2="48"/>
+		<barrect x1="160" y1="10" x2="198" y2="29"/>
 	</window>
+	
+	
 	
 	<scrollwidget>
 		<scrollbar>
 			<default>
-				<rect x1="185" y1="69" x2="206" y2="112"/>
+				<rect x1="4" y1="4" x2="35" y2="37"/>
 			</default>
 			<pressed>
-				<rect x1="231" y1="69" x2="252" y2="112"/>
+				<rect x1="40" y1="4" x2="73" y2="37"/>
 			</pressed>
 			<hovered>
-				<rect x1="208" y1="69" x2="229" y2="112"/>
+				<rect x1="78" y1="4" x2="111" y2="37"/>
 			</hovered>
 		</scrollbar>
 	</scrollwidget>
 	
 	
-	
+	<!-- /---------------------------------------------------------------------->
 	
 	<buttons>
 		<button name="MoveGizmoButton">
 			<default>
-				<rect x1="7" y1="120" x2="42" y2="155"/>
+				<rect x1="4" y1="42" x2="35" y2="73"/>
 				<color r="1" g="1" b="1" a="1"/>
 			</default>
 			<pressed>
-				<rect x1="7" y1="120" x2="42" y2="155"/>
+				<rect x1="4" y1="42" x2="35" y2="73"/>
 				<color r="0.5" g="0.5" b="0.5" a="1"/>
 			</pressed>
 			<hovered>
-				<rect x1="7" y1="120" x2="42" y2="155"/>
+				<rect x1="4" y1="42" x2="35" y2="73"/>
 				<color r="0.7" g="0.7" b="0.7" a="1"/>
 			</hovered>
 		</button>
 		
 		<button name="RotateGizmoButton">
 			<default>
-				<rect x1="47" y1="120" x2="82" y2="155"/>
+				<rect x1="40" y1="42" x2="73" y2="73"/>
 				<color r="1" g="1" b="1" a="1"/>
 			</default>
 			<pressed>
-				<rect x1="47" y1="120" x2="82" y2="155"/>
+				<rect x1="40" y1="42" x2="73" y2="73"/>
 				<color r="0.5" g="0.5" b="0.5" a="1"/>
 			</pressed>
 			<hovered>
-				<rect x1="47" y1="120" x2="82" y2="155"/>
+				<rect x1="40" y1="42" x2="73" y2="73"/>
 				<color r="0.7" g="0.7" b="0.7" a="1"/>
 			</hovered>
 		</button>
 		
 		<button name="ScaleGizmoButton">
 			<default>
-				<rect x1="87" y1="120" x2="122" y2="155"/>
+				<rect x1="78" y1="42" x2="111" y2="73"/>
 				<color r="1" g="1" b="1" a="1"/>
 			</default>
 			<pressed>
-				<rect x1="87" y1="120" x2="122" y2="155"/>
+				<rect x1="78" y1="42" x2="111" y2="73"/>
 				<color r="0.5" g="0.5" b="0.5" a="1"/>
 			</pressed>
 			<hovered>
-				<rect x1="87" y1="120" x2="122" y2="155"/>
+				<rect x1="78" y1="42" x2="111" y2="73"/>
 				<color r="0.7" g="0.7" b="0.7" a="1"/>
 			</hovered>
 		</button>
 		
 		<button name="ArrowButton">
 			<default>
-				<rect x1="7" y1="160" x2="42" y2="195"/>
+				<rect x1="116" y1="42" x2="149" y2="73"/>
 				<color r="1" g="1" b="1" a="1"/>
 			</default>
 			<pressed>
-				<rect x1="7" y1="160" x2="42" y2="195"/>
+				<rect x1="116" y1="42" x2="149" y2="73"/>
 				<color r="0.5" g="0.5" b="0.5" a="1"/>
 			</pressed>
 			<hovered>
-				<rect x1="7" y1="160" x2="42" y2="195"/>
+				<rect x1="116" y1="42" x2="149" y2="73"/>
 				<color r="0.7" g="0.7" b="0.7" a="1"/>
 			</hovered>
 		</button>
 
 		<button name="TreeButton">
 			<default>
-				<rect x1="48" y1="160" x2="87" y2="194"/>
+				<rect x1="4" y1="78" x2="35" y2="104"/>
 				<color r="1" g="1" b="1" a="1"/>
 			</default>
 			<pressed>
-				<rect x1="94" y1="158" x2="130" y2="197"/>
+				<rect x1="42" y1="78" x2="70" y2="104"/>
 				<color r="0.5" g="0.5" b="0.5" a="1"/>
 			</pressed>
 			<hovered>
-				<rect x1="140" y1="158" x2="180" y2="198"/>
+				<rect x1="0" y1="0" x2="2" y2="2"/>
 				<color r="0.7" g="0.7" b="0.7" a="1"/>
 			</hovered>
 		</button>
 
 	</buttons>
+	
+	<spritewidgets>
+		<spritewidget name="material">
+			<rect x1="340" y1="8" x2="383" y2="50"/>
+			<color r="1" g="1" b="1" a="1"/>
+		</spritewidget>
+		<spritewidget name="folder">
+			<rect x1="213" y1="4" x2="271" y2="54"/>
+			<color r="1" g="1" b="1" a="1"/>
+		</spritewidget>
+		<spritewidget name="image">
+			<rect x1="280" y1="8" x2="327" y2="50"/>
+			<color r="1" g="1" b="1" a="1"/>
+		</spritewidget>
+	</spritewidgets>
+	
+	
 </style>
 
 

@@ -90,6 +90,8 @@ namespace sh
 		DEFINE_CLASS_PTR(SliderWidget)
 		DEFINE_CLASS_PTR(TreeWidget)
 		DEFINE_CLASS_PTR(TreeItem)
+		DEFINE_CLASS_PTR(ImageWidget)
+		DEFINE_CLASS_PTR(SpriteWidget)
 	}
 
 	DEFINE_CLASS_PTR(Component)

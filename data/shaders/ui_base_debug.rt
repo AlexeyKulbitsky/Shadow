@@ -21,12 +21,12 @@
 
 				attribute vec3 position;				
 				
-				uniform mat4 orthoMat;
+				uniform mat4 mat2DProjection;
 				
 				
 				void main() 
 				{
-					gl_Position = orthoMat * vec4(position, 1.0);
+					gl_Position = mat2DProjection * vec4(position, 1.0);
 				}
 				
 			]]>

@@ -224,12 +224,6 @@ namespace sh
 			m_camera->SetProjection(3.1415926535f / 3.0f, 
 				static_cast<f32>(width), 
 				static_cast<f32>(height), 0.1f, 1000.0f);
-
-			sh::gui::GuiManager* guiManager = sh::gui::GuiManager::GetInstance();
-			if (guiManager)
-			{
-				guiManager->UpdateMatrices();
-			}
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////

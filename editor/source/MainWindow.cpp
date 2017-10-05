@@ -271,8 +271,10 @@ void MainWindow::Init()
 	// Menu bar
 	sh::gui::MenuBarPtr menuBar(new sh::gui::MenuBar());
 	sh::gui::ButtonPtr menuButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	sh::gui::ButtonPtr editButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
 	menuButton->SetToggleable(true);
 	const auto& fileMenu = menuBar->AddMenu("File", menuButton);
+	const auto& editMenu = menuBar->AddMenu("Edit", editButton);
 
 	sh::gui::ButtonPtr openSceneButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
 	openSceneButton->SetText("Open scene...");
@@ -288,6 +290,16 @@ void MainWindow::Init()
 	exitButton1->SetText("Exit");
 	exitButton1->OnRelease.Connect(std::bind(&MainWindow::Close, this));
 	fileMenu->AddItem(exitButton1);
+	
+	////////////////////////////////////////////////////////
+
+	sh::gui::ButtonPtr edit1Button(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	edit1Button->SetText("Edit 1");
+	editMenu->AddItem(edit1Button);
+
+	sh::gui::ButtonPtr edit2Button(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	edit2Button->SetText("Edit 2");
+	editMenu->AddItem(edit2Button);
 	
 	mainVerticalLayout->AddWidget(menuBar);
 	

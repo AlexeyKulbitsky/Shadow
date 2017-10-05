@@ -15,8 +15,12 @@ namespace gui
 		MenuBar();
 		MenuBar(const SpritePtr& sprite);
 
+		void SetToggled(bool toggled);
+		bool IsToggled() const { return m_toggled; }
+
 		const MenuPtr& AddMenu(const String& menuName, const ButtonPtr& button);
 		virtual void Render(video::Painter* painter) override;
+		virtual bool ProcessEvent(GUIEvent& ev) override;
 
 	private:
 		class MenuBarItem : public Widget
@@ -27,9 +31,12 @@ namespace gui
 			virtual void Render(video::Painter* painter) override;
 			virtual bool ProcessEvent(GUIEvent& ev) override;
 			void OnButtonToggled(bool toggled, const ButtonPtr& sender);
+			void OnButtonHovered(const ButtonPtr& sender);
+			void OnMenuItemSelected(const String& itemName);
 
 			ButtonPtr button;
 			MenuPtr menu;
+			MenuBar* parent = nullptr;
 		};
 		DEFINE_CLASS_PTR(MenuBarItem)
 
@@ -37,6 +44,8 @@ namespace gui
 		std::vector< std::pair<ButtonPtr, MenuPtr> > m_menus;
 
 		std::vector<MenuBarItemPtr> m_menuItems;
+		MenuBarItem* m_activeItem = nullptr;
+		bool m_toggled = false;
 	};
 
 } // gui

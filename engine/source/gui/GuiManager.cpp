@@ -43,18 +43,11 @@ namespace gui
 
 	void GuiManager::Init()
 	{
-		//InitMainBatch();
-		//InitTextBatch();
-		
-		const auto& mat = sh::Device::GetInstance()->GetSceneManager()->GetCamera()->Get2DProjectionMatrix();
-
 		m_defaultMaterial.reset(new video::Material());
 		m_defaultMaterial->SetRenderTechnique("ui_base.rt");
-		m_defaultMaterial->GetCommonGpuParams()->SetParam("orthoMat", mat);
 
 		m_textMaterial.reset(new video::Material());
 		m_textMaterial->SetRenderTechnique("text_base.rt");
-		m_textMaterial->GetCommonGpuParams()->SetParam("orthoMat", mat);
 	}
 
 	void GuiManager::Update(u32 delta)
@@ -102,7 +95,6 @@ namespace gui
 		SH_ASSERT(!!texture, "Can not load texture!");
 
 		m_defaultMaterial->GetCommonGpuParams()->SetSampler("diffuse", texture);
-		//m_mainBatch.material->GetCommonGpuParams()->SetSampler(ST_FRAGMENT, "diffuse", texture);
 
 		child = doc.child("sprites");
 		SpriteManager::GetInstance()->Load(child);
@@ -150,17 +142,6 @@ namespace gui
 		SH_ASSERT(!!texture, "Can not set empty font to Gui manager!");
 
 		m_textMaterial->GetCommonGpuParams()->SetSampler("fontAtlas", texture);
-		//m_textBatch.material->GetCommonGpuParams()->SetSampler(ST_FRAGMENT, "fontAtlas", texture);
-	}
-
-	void GuiManager::UpdateMatrices()
-	{
-		const auto& mat = sh::Device::GetInstance()->GetSceneManager()->GetCamera()->Get2DProjectionMatrix();
-		//m_mainBatch.orthoMatrix.Set(mat);
-		//m_textBatch.orthoMatrix.Set(mat);
-
-		m_defaultMaterial->GetCommonGpuParams()->SetParam("orthoMat", mat);
-		m_textMaterial->GetCommonGpuParams()->SetParam("orthoMat", mat);
 	}
 
 	void GuiManager::SetStyle(const StylePtr& style)
@@ -177,8 +158,6 @@ namespace gui
 		auto sampler = video::Sampler::Create(samplerDesc);
 		sampler->Set(m_style->GetTexure());
 		m_defaultMaterial->GetCommonGpuParams()->SetSampler("diffuse", sampler);
-
-		//m_defaultMaterial->GetCommonGpuParams()->SetSampler("diffuse", m_style->GetTexure());
 	}
 
 	void GuiManager::SetFocusWidget(const SPtr<Widget>& widget) 

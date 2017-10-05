@@ -41,14 +41,14 @@ namespace gui
 	void Menu::AddItem(const ButtonPtr& button) 
 	{ 
 		button->SetMaximumHeight(20);
+		button->SetHeight(20);
+		button->OnRelease.Connect(std::bind(&Menu::OnButtonReleased, this, std::placeholders::_1));
 		m_layout->AddWidget(button);
 	}
 
 	void Menu::AddItem(const String& name)
 	{
 		ButtonPtr button(new Button(name));
-		button->SetHeight(20);
-		button->OnRelease.Connect(std::bind(&Menu::OnButtonReleased, this, std::placeholders::_1));
 		AddItem(button);
 	}
 
@@ -74,14 +74,12 @@ namespace gui
 
 	bool Menu::ProcessEvent(GUIEvent& ev)
 	{
-		//if (!m_isInFocus)
-		//	return false;
-
 		if (ev.type == EventType::PointerDown && 
 			!m_rect.IsPointInside(ev.x, ev.y))
 		{
-			SetFocus(false);
-			return true;
+			if (IsInFocus())
+				SetFocus(false);
+			return false;
 		}
 		return Widget::ProcessEvent(ev);
 	}
@@ -96,7 +94,8 @@ namespace gui
 			{
 				itemSelected(sender->GetText());
 				itemIndexSelected(i);
-				SetFocus(false);
+				if (IsInFocus())
+					SetFocus(false);
 				return;
 			}
 		}

@@ -7,6 +7,7 @@
 #include "Window.h"
 #include "LineEdit.h"
 #include "ScrollWidget.h"
+#include "SpriteWidget.h"
 
 #include "../Device.h"
 #include "../resources/ResourceManager.h"
@@ -56,6 +57,10 @@ namespace gui
 		pugi::xml_node customButtonsNode = root.child("buttons");
 		if (customButtonsNode)
 			LoadCustomButtons(customButtonsNode);
+
+		pugi::xml_node customSpriteWidgets = root.child("spritewidgets");
+		if (customSpriteWidgets)
+			LoadCustomSpriteWidgets(customSpriteWidgets);
 	}
 
 	void Style::Load(const String& name)
@@ -78,6 +83,17 @@ namespace gui
 			return ButtonPtr();
 
 		return m_buttonsMap.at(name);
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////
+
+	SpriteWidgetPtr Style::GetSpriteWidget(const String& name)
+	{
+		auto it = m_spriteWidgetsMap.find(name);
+		if (it == m_spriteWidgetsMap.end())
+			return SpriteWidgetPtr();
+
+		return m_spriteWidgetsMap.at(name);
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -246,6 +262,40 @@ namespace gui
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
+
+	void Style::LoadCustomSpriteWidgets(const pugi::xml_node& node)
+	{
+		pugi::xml_node child = node.child("spritewidget");
+		while (child)
+		{
+			String name = child.attribute("name").as_string();
+			pugi::xml_node rectNode = child.child("rect");
+			u32 x1 = rectNode.attribute("x1").as_uint();
+			u32 y1 = rectNode.attribute("y1").as_uint();
+			u32 x2 = rectNode.attribute("x2").as_uint();
+			u32 y2 = rectNode.attribute("y2").as_uint();
+			math::Rectu rect(x1, y1, x2, y2);
+
+			math::Vector4f color(0.7f, 0.7f, 0.7f, 1.0f);
+			pugi::xml_node colorNode = child.child("color");
+			if (colorNode)
+			{
+				color.x = colorNode.attribute("r").as_float();
+				color.y = colorNode.attribute("g").as_float();
+				color.z = colorNode.attribute("b").as_float();
+				color.w = colorNode.attribute("a").as_float();
+			}
+
+			SpritePtr sprite(new Sprite(m_texture, rect, color));
+
+			SpriteWidgetPtr spriteWidget(new SpriteWidget());
+			spriteWidget->SetSprite(sprite);
+
+			m_spriteWidgetsMap[name] = spriteWidget;
+
+			child = child.next_sibling();
+		}
+	}
 
 } // gui
 

@@ -23,14 +23,14 @@
 				attribute vec2 uv;
 				attribute vec4 color;
 				
-				uniform mat4 orthoMat;
+				uniform mat4 mat2DProjection;
 				
 				varying vec2 vUV;
 				varying vec4 vColor;
 				
 				void main() 
 				{
-					gl_Position = orthoMat * vec4(position, 1.0);
+					gl_Position = mat2DProjection * vec4(position, 1.0);
 					vUV = uv;
 					vColor = color;
 				}

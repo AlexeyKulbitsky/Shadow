@@ -26,6 +26,7 @@ namespace gui
 
 		// Custom widgets
 		ButtonPtr GetButton(const String& name);
+		SpriteWidgetPtr GetSpriteWidget(const String& name);
 
 	private:
 		ButtonPtr LoadButton(const pugi::xml_node& node);
@@ -35,6 +36,7 @@ namespace gui
 		void LoadLineEdit(const pugi::xml_node& node);
 		void LoadScrollWidget(const pugi::xml_node& node);
 		void LoadCustomButtons(const pugi::xml_node& node);
+		void LoadCustomSpriteWidgets(const pugi::xml_node& node);
 
 	private:
 		video::TexturePtr m_texture;
@@ -47,6 +49,7 @@ namespace gui
 
 		// Maps
 		Map<String, ButtonPtr> m_buttonsMap;
+		Map<String, SpriteWidgetPtr> m_spriteWidgetsMap;
 	};
 
 } // gui

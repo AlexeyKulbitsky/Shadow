@@ -30,6 +30,8 @@
 #include "gui/ComboBox.h"
 #include "gui/SliderWidget.h"
 #include "gui/TreeWidget.h"
+#include "gui/ImageWidget.h"
+#include "gui/SpriteWidget.h"
 
 #include "entity/Component.h"
 #include "entity/ComponentsFactory.h"
@@ -82,6 +84,7 @@
 #include "video/Texture.h"
 #include "video/VertexBuffer.h"
 #include "video/VertexDeclaration.h"
+#include "video/TextureLoader/TextureLoader.h"
 
 namespace sh
 {

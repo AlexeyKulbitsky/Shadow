@@ -343,6 +343,7 @@ namespace sh
 		MatrixViewRotationProjection,
 		MatrixProjection,
 		MatrixViewProjection,
+		Matrix2DProjection,
 		DirectionalLightDirection,
 		DirectionalLightColor,
 		CameraPosition
@@ -388,7 +389,8 @@ namespace sh
 		{ "matViewRotation", MaterialParamUsage::MatrixViewRotation },
 		{ "matViewRotationProjection", MaterialParamUsage::MatrixViewRotationProjection },
 		{ "matProjection", MaterialParamUsage::MatrixProjection },
-		{ "matViewProjection", MaterialParamUsage::MatrixViewProjection }
+		{ "matViewProjection", MaterialParamUsage::MatrixViewProjection },
+		{ "mat2DProjection", MaterialParamUsage::Matrix2DProjection }
 	};
 
 	static const std::map<std::string, MaterialParamUsage> materialCommonParamsMap =

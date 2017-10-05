@@ -52,8 +52,6 @@ namespace gui
 		void RemoveChild(size_t index);
 		void RemoveAllChildren() { m_children.clear(); }
 		
-		void UpdateMatrices();
-
 		void SetStyle(const StylePtr& style);
 		const StylePtr& GetStyle() const { return m_style; }
 

@@ -7,6 +7,11 @@ FolderTreeItem::FolderTreeItem(TreeItem* parent, sh::io::FileSystemComponent* fs
 {
 	m_item = fsItem;
 
+	auto icon = sh::gui::GuiManager::GetInstance()->GetStyle()->GetSpriteWidget("folder");
+	auto clonedIcon = icon->Clone();
+	clonedIcon->SetMaximumWidth(20);
+	m_layout->InsertWidget(0U, clonedIcon);
+
 	sh::SPtr<sh::gui::TreeExpandButton> button(new sh::gui::TreeExpandButton());
 	m_layout->InsertWidget(0U, button);
 	button->OnToggle.Connect(std::bind(&FolderTreeItem::OnExpanded, this, std::placeholders::_1));
@@ -150,6 +155,11 @@ MaterialTreeItem::MaterialTreeItem(TreeItem* parent, sh::io::FileSystemComponent
 	m_item = fsItem;
 	m_offset += 20U;
 	m_layout->SetMargins(0, 0, 0, m_offset);
+
+	auto icon = sh::gui::GuiManager::GetInstance()->GetStyle()->GetSpriteWidget("material");
+	auto clonedIcon = icon->Clone();
+	clonedIcon->SetMaximumWidth(20);
+	m_layout->InsertWidget(0U, clonedIcon);
 }
 
 MaterialTreeItem::~MaterialTreeItem()
@@ -244,6 +254,42 @@ void MaterialTreeItem::OnMenuItemSelected(const sh::String& itemName)
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
+TextureTreeItem::TextureTreeItem(sh::gui::TreeItem* parent, sh::io::FileSystemComponent* fsItem)
+	: TreeItem(fsItem->name, parent)
+{
+	m_item = fsItem;
+	m_offset += 20U;
+	m_layout->SetMargins(0, 0, 0, m_offset);
+
+	auto icon = sh::gui::GuiManager::GetInstance()->GetStyle()->GetSpriteWidget("image");
+	auto clonedIcon = icon->Clone();
+	clonedIcon->SetMaximumWidth(20);
+	m_layout->InsertWidget(0U, clonedIcon);
+}
+
+TextureTreeItem::~TextureTreeItem()
+{
+
+}
+
+void TextureTreeItem::OnToggled(bool toggled)
+{
+	sh::gui::TreeItem::OnToggled(toggled);
+
+	auto assetsTreeWidget = static_cast<AssetsTreeWidget*>(m_treeWidget);
+	if (toggled)
+	{
+		auto texture = sh::Device::GetInstance()->GetResourceManager()->GetTexture(m_item->name);
+		assetsTreeWidget->textureChanged(texture);
+	}
+	else
+	{
+		assetsTreeWidget->textureChanged(nullptr);
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
 AssetsWidget::AssetsWidget()
 	:sh::gui::Window(sh::math::Recti(0, 100, 250, 500))
 {
@@ -262,6 +308,10 @@ AssetsWidget::AssetsWidget()
 	guiMgr->AddChild(m_materialEditor);
 	m_materialEditor->SetVisible(false);
 	s_materialEditor = m_materialEditor;
+
+	m_textureWidget.reset(new TextureWidget());
+	guiMgr->AddChild(m_textureWidget);
+	m_textureWidget->SetVisible(false);
 
 	struct Local
 	{
@@ -285,6 +335,8 @@ AssetsWidget::AssetsWidget()
 						sh::SPtr<sh::gui::TreeItem> childItem;
 						size_t pos = child->name.find_last_of('.');
 						auto extension = child->name.substr(pos + 1);
+
+						const auto& imageExtensions = sh::video::TextureLoader::GetInstance()->GetAvalilableExtensions();
 						if (extension == "mat")
 						{
 							sh::SPtr<MaterialTreeItem> item(new MaterialTreeItem(treeItem.get(), child.get()));
@@ -292,8 +344,18 @@ AssetsWidget::AssetsWidget()
 						}
 						else
 						{
-							childItem.reset(new FileTreeItem(treeItem.get(), child.get()));
+							auto it = std::find(imageExtensions.begin(), imageExtensions.end(), extension);
+							if (it != imageExtensions.end())
+							{
+								sh::SPtr<TextureTreeItem> item(new TextureTreeItem(treeItem.get(), child.get()));
+								childItem = item;
+							}
+							else
+							{
+								childItem.reset(new FileTreeItem(treeItem.get(), child.get()));
+							}
 						}
+						
 						treeWidget->AddItem(childItem);
 					}
 					
@@ -307,6 +369,9 @@ AssetsWidget::AssetsWidget()
 	auto root = sh::io::FileSystem::GetInstance()->GetRoot();
 	sh::SPtr<AssetsTreeWidget> treeWidget(new AssetsTreeWidget());
 	treeWidget->materialChanged.Connect(std::bind(&AssetsWidget::OnMaterialTreeItemChanged, this,
+		std::placeholders::_1));
+
+	treeWidget->textureChanged.Connect(std::bind(&AssetsWidget::OnTextureTreeItemChanged, this,
 		std::placeholders::_1));
 
 	sh::SPtr<sh::gui::TreeItem> rootTreeItem(new FolderTreeItem(nullptr, root.get()));
@@ -340,6 +405,24 @@ void AssetsWidget::OnMaterialTreeItemChanged(const sh::video::MaterialPtr& mater
 	{
 		m_materialEditor->SetMaterial(nullptr);
 		m_materialEditor->SetVisible(false);
+	}
+}
+
+void AssetsWidget::OnTextureTreeItemChanged(const sh::video::TexturePtr& texture)
+{
+	if (texture)
+	{
+		m_textureWidget->SetTexture(texture);
+		m_textureWidget->SetVisible(true);
+		auto rect = m_rect;
+		rect.upperLeftCorner.x += m_rect.GetWidth();
+		rect.lowerRightCorner.x += m_rect.GetWidth();
+		m_textureWidget->SetRect(rect);
+	}
+	else
+	{
+		m_textureWidget->SetTexture(nullptr);
+		m_textureWidget->SetVisible(false);
 	}
 }
 
