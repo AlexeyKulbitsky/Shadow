@@ -4,24 +4,6 @@
 #include "../materialview/MaterialEditor.h"
 #include "../textureview/TextureWidget.h"
 
-
-class FolderTreeItem : public sh::gui::TreeItem
-{
-public:
-	FolderTreeItem(sh::gui::TreeItem* parent, sh::io::FileSystemComponent* fsItem);
-	virtual ~FolderTreeItem();
-
-protected:
-	void OnExpanded(bool expanded);
-	virtual void OnContextMenu(sh::s32 x, sh::s32 y) override;
-
-private:
-	void OnMenuItemSelected(const sh::String& itemName);
-
-private:
-	sh::io::FileSystemComponent* m_item = nullptr;
-};
-
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 class FileTreeItem : public sh::gui::TreeItem
@@ -29,39 +11,6 @@ class FileTreeItem : public sh::gui::TreeItem
 public:
 	FileTreeItem(sh::gui::TreeItem* parent, sh::io::FileSystemComponent* fsItem);
 	virtual ~FileTreeItem();
-
-private:
-	sh::io::FileSystemComponent* m_item = nullptr;
-};
-
-////////////////////////////////////////////////////////////////////////////////////////////
-
-class MaterialTreeItem : public sh::gui::TreeItem
-{
-public:
-	MaterialTreeItem(sh::gui::TreeItem* parent, sh::io::FileSystemComponent* fsItem);
-	virtual ~MaterialTreeItem();
-	virtual void OnToggled(bool toggled) override;
-
-protected:
-	virtual void OnContextMenu(sh::s32 x, sh::s32 y) override;
-	virtual void OnEdit(sh::s32 x, sh::s32 y) override;
-
-private:
-	void OnMenuItemSelected(const sh::String& itemName);
-
-private:
-	sh::io::FileSystemComponent* m_item = nullptr;
-};
-
-////////////////////////////////////////////////////////////////////////////////////////////
-
-class TextureTreeItem : public sh::gui::TreeItem
-{
-public:
-	TextureTreeItem(sh::gui::TreeItem* parent, sh::io::FileSystemComponent* fsItem);
-	virtual ~TextureTreeItem();
-	virtual void OnToggled(bool toggled) override;
 
 private:
 	sh::io::FileSystemComponent* m_item = nullptr;

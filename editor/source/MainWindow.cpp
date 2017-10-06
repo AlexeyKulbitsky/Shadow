@@ -1,5 +1,7 @@
 #include "MainWindow.h"
 
+#include "selection/SelectionManager.h"
+
 #include <Windows.h>
 #include <Commdlg.h>
 #include <tchar.h>
@@ -129,38 +131,7 @@ void MainWindow::OnMouseEvent(int x, int y, sh::MouseEventType type, sh::MouseCo
 		return;
 	}
 
-	if (m_gizmo->IsEnabled())
-	{
-		m_gizmo->OnMouseEvent(x, y, type, code);
-		return;
-	}
-
-	switch (type)
-	{
-		case sh::MouseEventType::ButtonPressed:
-			break;
-		case sh::MouseEventType::ButtonReleased:
-
-		{
-			if (code == sh::MouseCode::ButtonLeft)
-			{
-				if (!m_gizmo->IsEnabled())
-				{
-					const auto& picker = sh::Device::GetInstance()->GetSceneManager()->GetPicker();
-					auto result = picker->TryToPick(x, y);
-					m_gizmo->SetEntity(result);
-					m_inspectorWidget->SetEntity(result);
-					m_hierarchyWidget->SetSelectedEntity(result);
-				}
-			}
-		}
-
-		break;
-		case sh::MouseEventType::Moved:
-			break;
-		default:
-			break;
-	}
+	SelectionManager::GetInstance()->ProcessMouseEvent(x, y, type, code);
 }
 
 void MainWindow::OnMouseWeelEvent(int x, int y, int d)
@@ -233,18 +204,12 @@ void MainWindow::Init()
 	sh::gui::GuiManager::CreateInstance();
 	sh::gui::GuiManager::GetInstance()->Init();
 
+	SelectionManager::CreateInstance();
+
 	sh::Device::GetInstance()->mouseEvent.Connect(std::bind(&MainWindow::OnMouseEvent, this, _1, _2, _3, _4));
 	sh::Device::GetInstance()->mouseWheelEvent.Connect(std::bind(&MainWindow::OnMouseWeelEvent, this, _1, _2, _3));
 	sh::Device::GetInstance()->keyboardEvent.Connect(std::bind(&MainWindow::OnKeyboardEvent, this, _1, _2));
 	sh::Device::GetInstance()->windowResizeEvent.Connect(std::bind(&MainWindow::OnWindowResized, this, _1, _2));
-
-
-	m_defaultGizmo.reset(new Gizmo());
-	m_moveGizmo.reset(new MoveGizmo());
-	m_rotateGizmo.reset(new RotateGizmo());
-	m_scaleGizmo.reset(new ScaleGizmo());
-
-	m_gizmo = m_defaultGizmo;
 
 	auto fileSystem = sh::Device::GetInstance()->GetFileSystem();
 
@@ -300,32 +265,48 @@ void MainWindow::Init()
 	sh::gui::ButtonPtr edit2Button(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
 	edit2Button->SetText("Edit 2");
 	editMenu->AddItem(edit2Button);
-	
+
+
+
+	sh::gui::MenuPtr subMenu(new sh::gui::Menu());
+	sh::gui::ButtonPtr sub1Button(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	sub1Button->SetText("Submenu 1");
+	subMenu->AddItem(sub1Button);
+
+	sh::gui::ButtonPtr sub2Button(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	sub2Button->SetText("Submenu 2");
+	subMenu->AddItem(sub2Button);
+
+	sh::gui::ButtonPtr sub3Button(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	sub3Button->SetText("Submenu 3");
+	subMenu->AddItem(sub3Button);
+
+	editMenu->AddSubmenu("Edit 2", subMenu);
 	mainVerticalLayout->AddWidget(menuBar);
 	
 
 	// Tool bar
-	m_moveGizmoButton = guiMgr->GetStyle()->GetButton("MoveGizmoButton");
-	m_moveGizmoButton->SetToggleable(true);
-	m_moveGizmoButton->OnToggle.Connect(std::bind(&MainWindow::OnMoveButtonToggled, this, _1));
+	sh::gui::ButtonPtr moveGizmoButton = guiMgr->GetStyle()->GetButton("MoveGizmoButton");
+	moveGizmoButton->SetToggleable(true);
+	SelectionManager::GetInstance()->SetMoveButton(moveGizmoButton);
 
-	m_rotateGizmoButton = guiMgr->GetStyle()->GetButton("RotateGizmoButton");
-	m_rotateGizmoButton->SetToggleable(true);
-	m_rotateGizmoButton->OnToggle.Connect(std::bind(&MainWindow::OnRotateButtonToggled, this, _1));
+	sh::gui::ButtonPtr rotateGizmoButton = guiMgr->GetStyle()->GetButton("RotateGizmoButton");
+	rotateGizmoButton->SetToggleable(true);
+	SelectionManager::GetInstance()->SetRotateButton(rotateGizmoButton);
 
-	m_scaleGizmoButton = guiMgr->GetStyle()->GetButton("ScaleGizmoButton");
-	m_scaleGizmoButton->SetToggleable(true);
-	m_scaleGizmoButton->OnToggle.Connect(std::bind(&MainWindow::OnScaleButtonToggled, this, _1));
+	sh::gui::ButtonPtr scaleGizmoButton = guiMgr->GetStyle()->GetButton("ScaleGizmoButton");
+	scaleGizmoButton->SetToggleable(true);
+	SelectionManager::GetInstance()->SetScaleButton(scaleGizmoButton);
 
-	m_arrowButton = guiMgr->GetStyle()->GetButton("ArrowButton");
-	m_arrowButton->SetToggleable(true);
-	m_arrowButton->OnToggle.Connect(std::bind(&MainWindow::OnArrowButtonToggled, this, _1));
+	sh::gui::ButtonPtr arrowButton = guiMgr->GetStyle()->GetButton("ArrowButton");
+	arrowButton->SetToggleable(true);
+	SelectionManager::GetInstance()->SetArrowButton(arrowButton);
 
 	sh::gui::ToolBarPtr toolBar(new sh::gui::ToolBar());
-	toolBar->AddItem(m_arrowButton);
-	toolBar->AddItem(m_moveGizmoButton);
-	toolBar->AddItem(m_rotateGizmoButton);
-	toolBar->AddItem(m_scaleGizmoButton);
+	toolBar->AddItem(arrowButton);
+	toolBar->AddItem(moveGizmoButton);
+	toolBar->AddItem(rotateGizmoButton);
+	toolBar->AddItem(scaleGizmoButton);
 
 	mainVerticalLayout->AddWidget(toolBar);
 
@@ -334,6 +315,8 @@ void MainWindow::Init()
 	m_assetsWidget.reset(new AssetsWidget());
 	m_hierarchyWidget.reset(new HierarchyWidget());
 	
+	SelectionManager::GetInstance()->SetHierarchyWidget(m_hierarchyWidget);
+	SelectionManager::GetInstance()->SetInspectorWidget(m_inspectorWidget);
 
 	sh::gui::VerticalLayoutPtr assetsHierarchyLayout(new sh::gui::VerticalLayout());
 	assetsHierarchyLayout->AddWidget(m_hierarchyWidget);
@@ -359,27 +342,11 @@ void MainWindow::Init()
 	m_mainWidget->SetLayout(mainVerticalLayout);
 	auto viewport = sh::Device::GetInstance()->GetDriver()->GetViewport();
 	m_mainWidget->SetRect(sh::math::Recti(0, 0, viewport.lowerRightCorner.x, viewport.lowerRightCorner.y));
-
-	m_hierarchyWidget->OnEntitySelected.Connect(std::bind(&MainWindow::OnEntityFromListSelected, this, std::placeholders::_1));
-
-	m_defaultGizmo->OnSelectedEntityChanged.Connect(std::bind(&InspectorWidget::SetEntity, m_inspectorWidget, std::placeholders::_1));
-	m_defaultGizmo->OnSelectedEntityChanged.Connect(std::bind(&HierarchyWidget::SetSelectedEntity, m_hierarchyWidget, std::placeholders::_1));
-	m_moveGizmo->OnSelectedEntityChanged.Connect(std::bind(&InspectorWidget::SetEntity, m_inspectorWidget, std::placeholders::_1));
-	m_moveGizmo->OnSelectedEntityChanged.Connect(std::bind(&HierarchyWidget::SetSelectedEntity, m_hierarchyWidget, std::placeholders::_1));
-	m_scaleGizmo->OnSelectedEntityChanged.Connect(std::bind(&InspectorWidget::SetEntity, m_inspectorWidget, std::placeholders::_1));
-	m_scaleGizmo->OnSelectedEntityChanged.Connect(std::bind(&HierarchyWidget::SetSelectedEntity, m_hierarchyWidget, std::placeholders::_1));
-	m_rotateGizmo->OnSelectedEntityChanged.Connect(std::bind(&InspectorWidget::SetEntity, m_inspectorWidget, std::placeholders::_1));
-	m_rotateGizmo->OnSelectedEntityChanged.Connect(std::bind(&HierarchyWidget::SetSelectedEntity, m_hierarchyWidget, std::placeholders::_1));
-	
-	
-	m_moveGizmo->SetTransformWidget(m_inspectorWidget->GetTransformWidget());
-	m_rotateGizmo->SetTransformWidget(m_inspectorWidget->GetTransformWidget());
-	m_scaleGizmo->SetTransformWidget(m_inspectorWidget->GetTransformWidget());
-	
 }
 
 void MainWindow::Destroy()
 {
+	SelectionManager::DestroyInstance();
 }
 
 void MainWindow::Update(sh::u64 delta)
@@ -462,66 +429,11 @@ void MainWindow::Update(sh::u64 delta)
 	driver->BeginRendering();
 
 	sceneMgr->Update();
-	m_gizmo->Render();
+
+	SelectionManager::GetInstance()->Render();
+	/*m_gizmo->Render();*/
 	sh::gui::GuiManager::GetInstance()->Update(0U);
 	sh::gui::GuiManager::GetInstance()->Render();
 
 	driver->EndRendering();
 }
-
-void MainWindow::OnMoveButtonToggled(bool toggled)
-{
-	if (toggled)
-	{
-		m_rotateGizmoButton->SetToggled(false);
-		m_scaleGizmoButton->SetToggled(false);
-		m_arrowButton->SetToggled(false);
-		m_gizmo = m_moveGizmo;
-	}
-}
-
-void MainWindow::OnRotateButtonToggled(bool toggled)
-{
-	if (toggled)
-	{
-		m_moveGizmoButton->SetToggled(false);
-		m_scaleGizmoButton->SetToggled(false);
-		m_arrowButton->SetToggled(false);
-		auto entity = m_gizmo->GetEntity();
-		m_gizmo = m_rotateGizmo;
-		m_gizmo->SetEntity(entity);
-	}
-}
-
-void MainWindow::OnScaleButtonToggled(bool toggled)
-{
-	if (toggled)
-	{
-		m_moveGizmoButton->SetToggled(false);
-		m_rotateGizmoButton->SetToggled(false);
-		m_arrowButton->SetToggled(false);
-		auto entity = m_gizmo->GetEntity();
-		m_gizmo = m_scaleGizmo;
-		m_gizmo->SetEntity(entity);
-	}
-}
-
-void MainWindow::OnArrowButtonToggled(bool toggled)
-{
-	if (toggled)
-	{
-		m_moveGizmoButton->SetToggled(false);
-		m_scaleGizmoButton->SetToggled(false);
-		m_rotateGizmoButton->SetToggled(false);
-		auto entity = m_gizmo->GetEntity();
-		m_gizmo = m_defaultGizmo;
-		m_gizmo->SetEntity(entity);
-	}
-}
-
-void MainWindow::OnEntityFromListSelected(sh::Entity* entity)
-{
-	m_gizmo->SetEntity(entity);
-	m_inspectorWidget->SetEntity(entity);
-}
-

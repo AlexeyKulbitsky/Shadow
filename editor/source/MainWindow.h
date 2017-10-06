@@ -33,32 +33,11 @@ public:
 	virtual void Destroy() override;
 	virtual void Update(sh::u64 delta) override;
 
-	void OnMoveButtonToggled(bool toggled);
-	void OnRotateButtonToggled(bool toggled);
-	void OnScaleButtonToggled(bool toggled);
-	void OnArrowButtonToggled(bool toggled);
-
-	void OnEntityFromListSelected(sh::Entity* entity);
-
 private:
 	sh::SPtr<InspectorWidget> m_inspectorWidget;
 	sh::SPtr<HierarchyWidget> m_hierarchyWidget;
 	sh::SPtr<AssetsWidget> m_assetsWidget;
 	
-
-	// Gizmos
-	sh::SPtr<Gizmo> m_gizmo;
-
-	sh::SPtr<Gizmo> m_defaultGizmo;
-	sh::SPtr<MoveGizmo> m_moveGizmo;
-	sh::SPtr<RotateGizmo> m_rotateGizmo;
-	sh::SPtr<ScaleGizmo> m_scaleGizmo;
-
-	sh::gui::ButtonPtr m_moveGizmoButton;
-	sh::gui::ButtonPtr m_rotateGizmoButton;
-	sh::gui::ButtonPtr m_scaleGizmoButton;
-	sh::gui::ButtonPtr m_arrowButton;
-
 	sh::Entity* m_cameraTargetEntity = nullptr;
 
 	sh::gui::WidgetPtr m_mainWidget;

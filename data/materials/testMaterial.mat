@@ -8,7 +8,7 @@
 		</param>
 		<sampler name="diffuse">
 			<type val="2D" />
-			<texture val="Container.png" />
+			<texture val="chalet.jpg" />
 			<minFilter val="Linear" />
 			<magFilter val="Linear" />
 			<mipFilter val="None" />
@@ -17,7 +17,7 @@
 		</sampler>
 		<sampler name="normalMap">
 			<type val="2D" />
-			<texture val="body_showroom_ddn.png" />
+			<texture val="leg_showroom_ddn.png" />
 			<minFilter val="Linear" />
 			<magFilter val="Linear" />
 			<mipFilter val="None" />

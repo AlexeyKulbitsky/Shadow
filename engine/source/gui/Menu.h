@@ -24,6 +24,8 @@ namespace gui
 
 		void AddItem(const ButtonPtr& button);
 		void AddItem(const String& name);
+		void AddSubmenu(const String& itemName, const MenuPtr& subMenu);
+		void AddSubmenu(size_t itemIndex, const MenuPtr& subMenu);
 
 		virtual void Render(video::Painter* painter) override;
 		virtual void SetPosition(s32 x, s32 y) override;
@@ -31,16 +33,25 @@ namespace gui
 		virtual void SetHeight(s32 height) override;
 
 		virtual bool ProcessEvent(GUIEvent& ev) override;
+		virtual void UpdateLayout() override;
 
 		Event<void, const String&> itemSelected;
 		Event<void, size_t> itemIndexSelected;
 
 	private:
 		void OnButtonReleased(const ButtonPtr& sender);
+		void OnButtonHovered(const ButtonPtr& sender);
 
 	private:
 		String m_title;
 		std::vector<ButtonPtr> m_buttons;
+		struct SubmenuItem
+		{
+			Button* button = nullptr;
+			MenuPtr menu;
+		};
+
+		std::vector<SubmenuItem> m_submenus;
 	};
 
 } // gui

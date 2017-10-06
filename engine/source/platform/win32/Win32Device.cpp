@@ -494,6 +494,7 @@ void Win32Device::Run()
 		{
 			done = true;
 			m_application->Destroy();
+			return;
 		}
 		const u64 currentTimePoint = GetTime();
 		const u64 delta = currentTimePoint - m_lastFrameTimePoint;

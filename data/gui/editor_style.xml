@@ -147,6 +147,10 @@
 			<rect x1="280" y1="8" x2="327" y2="50"/>
 			<color r="1" g="1" b="1" a="1"/>
 		</spritewidget>
+		<spritewidget name="model">
+			<rect x1="392" y1="6" x2="438" y2="52"/>
+			<color r="1" g="1" b="1" a="1"/>
+		</spritewidget>
 	</spritewidgets>
 	
 	

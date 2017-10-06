@@ -1,137 +1,13 @@
 #include "AssetsWidget.h"
 
+#include "FolderTreeItem.h"
+#include "MaterialTreeItem.h"
+#include "TextureTreeItem.h"
+#include "ModelTreeItem.h"
+
+
 std::weak_ptr<MaterialEditor> s_materialEditor;
 
-FolderTreeItem::FolderTreeItem(TreeItem* parent, sh::io::FileSystemComponent* fsItem)
-	: TreeItem(fsItem->name, parent)
-{
-	m_item = fsItem;
-
-	auto icon = sh::gui::GuiManager::GetInstance()->GetStyle()->GetSpriteWidget("folder");
-	auto clonedIcon = icon->Clone();
-	clonedIcon->SetMaximumWidth(20);
-	m_layout->InsertWidget(0U, clonedIcon);
-
-	sh::SPtr<sh::gui::TreeExpandButton> button(new sh::gui::TreeExpandButton());
-	m_layout->InsertWidget(0U, button);
-	button->OnToggle.Connect(std::bind(&FolderTreeItem::OnExpanded, this, std::placeholders::_1));
-}
-
-FolderTreeItem::~FolderTreeItem()
-{
-}
-
-void FolderTreeItem::OnExpanded(bool expanded)
-{
-	SetExpanded(!expanded);
-	m_treeWidget->UpdateLayout();
-}
-
-void FolderTreeItem::OnContextMenu(sh::s32 x, sh::s32 y)
-{
-	sh::gui::MenuPtr menu(new sh::gui::Menu());
-	menu->AddItem("Add material");
-	menu->AddItem("Add folder");
-	menu->SetPosition(x, y);
-	menu->SetFocus(true);
-	menu->itemSelected.Connect(std::bind(&FolderTreeItem::OnMenuItemSelected, this, std::placeholders::_1));
-	sh::gui::GuiManager::GetInstance()->SetFocusWidget(menu);
-}
-
-void FolderTreeItem::OnMenuItemSelected(const sh::String& itemName)
-{
-	if (itemName == "Add material")
-	{
-		static size_t matCounter = 0U;
-		sh::io::FileSystem* fs = sh::Device::GetInstance()->GetFileSystem();
-		std::stringstream ss;
-		const auto& materialFileNames = fs->GetMaterialFileInfos();
-		bool isMaterialnameFree = false;
-
-		// Find free material name
-		while (!isMaterialnameFree)
-		{
-			isMaterialnameFree = true;
-			ss.str(std::string());
-			ss << "New_material_" << matCounter++ << ".mat";
-			const std::string s(ss.str());
-			for (const auto& materialFilename : materialFileNames)
-			{
-				if (s == materialFilename.lock()->name)
-				{
-					isMaterialnameFree = false;
-					break;
-				}
-			}
-		}
-		
-		// Create new fileentry description
-		sh::String materialName(ss.str());
-		sh::SPtr<sh::io::FileInfo> fsItem(new sh::io::FileInfo(materialName, m_item->absolutePath + materialName));
-		if (m_item->GetType() == sh::io::FileSystemComponent::Type::Folder)
-		{
-			sh::io::FolderInfo* folderInfo = static_cast<sh::io::FolderInfo*>(m_item);
-			folderInfo->children.push_back(fsItem);
-			// Update resource groups in file system
-			fs->UpdateResourceGroups();
-		}
-		
-		sh::SPtr<MaterialTreeItem> item(new MaterialTreeItem(this, fsItem.get()));
-		m_treeWidget->AddItem(item);
-
-		// Create material and add to Resource manager
-		sh::video::MaterialPtr material(new sh::video::Material());
-		material->SetRenderTechnique("const_color.rt");
-		//material->SetFileName(materialName);
-		material->SetFileInfo(fsItem);
-		sh::Device::GetInstance()->GetResourceManager()->AddMaterial(material);
-
-		// Save new material to disk
-		material->Save();
-
-		m_treeWidget->UpdateLayout();
-	}
-	else if (itemName == "Add folder")
-	{
-		sh::io::FileSystem* fs = sh::Device::GetInstance()->GetFileSystem();
-		std::stringstream ss;
-
-		bool isFoldeNameFree = false;
-		size_t folderCounter = 0U;
-		// Find free material name
-		while (!isFoldeNameFree)
-		{
-			isFoldeNameFree = true;
-			ss.str(std::string());
-			ss << "New_folder_" << folderCounter++;
-			const std::string s(ss.str());
-			auto folder = static_cast<sh::io::FolderInfo*>(m_item);
-			for (auto childItem : folder->children)
-			{
-				if (childItem->GetType() == sh::io::FileSystemComponent::Type::Folder &&
-					s == childItem->name)
-				{
-					isFoldeNameFree = false;
-					break;
-				}
-			}
-		}
-
-		// Create new fileentry description
-		sh::String folderName(ss.str());
-		fs->CreateFolder(m_item->absolutePath + folderName);
-		sh::SPtr<sh::io::FolderInfo> fsItem(new sh::io::FolderInfo(folderName, m_item->absolutePath + folderName + "/"));
-		if (m_item->GetType() == sh::io::FileSystemComponent::Type::Folder)
-		{
-			sh::io::FolderInfo* folderInfo = static_cast<sh::io::FolderInfo*>(m_item);
-			folderInfo->children.push_back(fsItem);
-		}
-		
-		sh::SPtr<FolderTreeItem> item(new FolderTreeItem(this, fsItem.get()));
-		m_treeWidget->AddItem(item);
-		m_treeWidget->UpdateLayout();
-	}
-}
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -145,147 +21,6 @@ FileTreeItem::FileTreeItem(TreeItem* parent, sh::io::FileSystemComponent* fsItem
 
 FileTreeItem::~FileTreeItem()
 {
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////
-
-MaterialTreeItem::MaterialTreeItem(TreeItem* parent, sh::io::FileSystemComponent* fsItem)
-	: TreeItem(fsItem->name, parent)
-{
-	m_item = fsItem;
-	m_offset += 20U;
-	m_layout->SetMargins(0, 0, 0, m_offset);
-
-	auto icon = sh::gui::GuiManager::GetInstance()->GetStyle()->GetSpriteWidget("material");
-	auto clonedIcon = icon->Clone();
-	clonedIcon->SetMaximumWidth(20);
-	m_layout->InsertWidget(0U, clonedIcon);
-}
-
-MaterialTreeItem::~MaterialTreeItem()
-{
-}
-
-void MaterialTreeItem::OnToggled(bool toggled)
-{
-	sh::gui::TreeItem::OnToggled(toggled);
-
-	auto assetsTreeWidget = static_cast<AssetsTreeWidget*>(m_treeWidget);
-	if (toggled)
-	{
-		auto material = sh::Device::GetInstance()->GetResourceManager()->GetMaterial(m_item->name);
-		assetsTreeWidget->materialChanged(material);
-	}
-	else
-	{
-		assetsTreeWidget->materialChanged(nullptr);
-	}
-}
-
-
-void MaterialTreeItem::OnContextMenu(sh::s32 x, sh::s32 y)
-{
-	sh::gui::MenuPtr menu(new sh::gui::Menu());
-	menu->AddItem("Rename");
-	menu->SetPosition(x, y);
-	menu->SetFocus(true);
-	menu->itemSelected.Connect(std::bind(&MaterialTreeItem::OnMenuItemSelected, this, std::placeholders::_1));
-	sh::gui::GuiManager::GetInstance()->SetFocusWidget(menu);
-}
-
-void MaterialTreeItem::OnEdit(sh::s32 x, sh::s32 y)
-{
-	//SH_ASSERT(0);
-}
-
-void MaterialTreeItem::OnMenuItemSelected(const sh::String& itemName)
-{
-	auto button = std::static_pointer_cast<sh::gui::Button>(m_layout->GetItem(0U)->GetWidget());
-
-	sh::gui::LineEditPtr lineEdit(new sh::gui::LineEdit());
-
-	const auto& originalFileName = button->GetText();
-	size_t pos = originalFileName.find_last_of('.');
-	const sh::String name = originalFileName.substr(0U, pos);
-
-	lineEdit->SetText(name);
-	lineEdit->SetRect(button->GetRect());
-	lineEdit->SetState(sh::gui::LineEdit::State::Edit);
-	lineEdit->OnEditingFinished.Connect([this](const sh::String& text)
-	{
-		sh::gui::GuiManager::GetInstance()->SetFocusWidget(nullptr);
-
-		// Check if new name is available
-		sh::io::FileSystem* fs = sh::Device::GetInstance()->GetFileSystem();
-		const auto& materialFileNames = fs->GetMaterialFileInfos();
-		bool fileNameAlreadyExists = false;
-		const sh::String fileName = text + ".mat";
-		for (const auto& materialFilename : materialFileNames)
-		{
-			if (fileName == materialFilename.lock()->name)
-			{
-				fileNameAlreadyExists = true;
-				break;
-			}
-		}
-		if (fileNameAlreadyExists)
-			return;
-
-		// Rename material
-		const auto& material = sh::Device::GetInstance()->GetResourceManager()->GetMaterial(m_item->name);
-// 		m_item->name = fileName;
-// 		size_t separatorPos = m_item->absolutePath.find_last_of('/');
-// 		m_item->absolutePath = m_item->absolutePath.substr(0U, separatorPos) + "/" + fileName;
-// 		auto button = std::static_pointer_cast<sh::gui::Button>(m_layout->GetItem(0U)->GetWidget());
-// 		button->SetText(fileName);
-
-		m_item->Rename(fileName);
-		auto button = std::static_pointer_cast<sh::gui::Button>(m_layout->GetItem(0U)->GetWidget());
-		button->SetText(fileName);
-
-		// Save renamed material
-		material->Save();
-
-		//sh::gui::GuiManager::GetInstance()->SetFocusWidget(nullptr);
-	});
-	lineEdit->SetFocus(true);
-	sh::gui::GuiManager::GetInstance()->SetFocusWidget(lineEdit);
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////
-
-TextureTreeItem::TextureTreeItem(sh::gui::TreeItem* parent, sh::io::FileSystemComponent* fsItem)
-	: TreeItem(fsItem->name, parent)
-{
-	m_item = fsItem;
-	m_offset += 20U;
-	m_layout->SetMargins(0, 0, 0, m_offset);
-
-	auto icon = sh::gui::GuiManager::GetInstance()->GetStyle()->GetSpriteWidget("image");
-	auto clonedIcon = icon->Clone();
-	clonedIcon->SetMaximumWidth(20);
-	m_layout->InsertWidget(0U, clonedIcon);
-}
-
-TextureTreeItem::~TextureTreeItem()
-{
-
-}
-
-void TextureTreeItem::OnToggled(bool toggled)
-{
-	sh::gui::TreeItem::OnToggled(toggled);
-
-	auto assetsTreeWidget = static_cast<AssetsTreeWidget*>(m_treeWidget);
-	if (toggled)
-	{
-		auto texture = sh::Device::GetInstance()->GetResourceManager()->GetTexture(m_item->name);
-		assetsTreeWidget->textureChanged(texture);
-	}
-	else
-	{
-		assetsTreeWidget->textureChanged(nullptr);
-	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -337,6 +72,7 @@ AssetsWidget::AssetsWidget()
 						auto extension = child->name.substr(pos + 1);
 
 						const auto& imageExtensions = sh::video::TextureLoader::GetInstance()->GetAvalilableExtensions();
+						const auto& modelExtensions = sh::scene::ModelLoader::GetInstance()->GetAvalilableExtensions();
 						if (extension == "mat")
 						{
 							sh::SPtr<MaterialTreeItem> item(new MaterialTreeItem(treeItem.get(), child.get()));
@@ -344,15 +80,24 @@ AssetsWidget::AssetsWidget()
 						}
 						else
 						{
-							auto it = std::find(imageExtensions.begin(), imageExtensions.end(), extension);
-							if (it != imageExtensions.end())
+							auto textIt = std::find(imageExtensions.begin(), imageExtensions.end(), extension);
+							if (textIt != imageExtensions.end())
 							{
 								sh::SPtr<TextureTreeItem> item(new TextureTreeItem(treeItem.get(), child.get()));
 								childItem = item;
 							}
 							else
 							{
-								childItem.reset(new FileTreeItem(treeItem.get(), child.get()));
+								auto modelIt = std::find(modelExtensions.begin(), modelExtensions.end(), extension);
+								if (modelIt != modelExtensions.end())
+								{
+									sh::SPtr<ModelTreeItem> item(new ModelTreeItem(treeItem.get(), child.get()));
+									childItem = item;
+								}
+								else
+								{
+									childItem.reset(new FileTreeItem(treeItem.get(), child.get()));
+								}
 							}
 						}
 						
