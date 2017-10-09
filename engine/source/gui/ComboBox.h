@@ -19,10 +19,6 @@ namespace gui
 		ComboBox(const math::Recti& rect);
 
 		virtual void Render(video::Painter* painter) override;
-		virtual void SetPosition(s32 x, s32 y) override;
-		virtual void SetSize(const math::Vector2i& size) override;
-		virtual void SetWidth(s32 width) override;
-		virtual void SetHeight(s32 height) override;
 		virtual bool ProcessEvent(GUIEvent& ev) override;
 
 		void AddItem(const String& text);

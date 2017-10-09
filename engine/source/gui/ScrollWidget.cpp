@@ -169,7 +169,6 @@ namespace gui
 			return;
 
 		const auto cachedClipRect = painter->GetClipRect();
-
 		painter->SetClipRect(math::Rectu(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y,
 			m_rect.lowerRightCorner.x, m_rect.lowerRightCorner.y));
 		Widget::Render(painter);

@@ -206,6 +206,7 @@ namespace gui
 
 	void TreeWidget::Render(sh::video::Painter* painter)
 	{
+		const auto cachedClipRect = painter->GetClipRect();
 		painter->SetClipRect(sh::math::Rectu(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y,
 			m_rect.lowerRightCorner.x, m_rect.lowerRightCorner.y));
 
@@ -214,13 +215,13 @@ namespace gui
 			const u32 itemsCount = m_layout->GetItemsCount();
 			for (u32 i = 0U; i < itemsCount; ++i)
 			{
-				auto treeItem = std::static_pointer_cast<TreeItem>(m_layout->GetWidget(i));
-				if (treeItem->IsVisible() && m_rect.Intersects(treeItem->GetRect()))
-					treeItem->Render(painter);
+				const auto& item = m_layout->GetWidget(i);
+				if (item->IsVisible() && m_rect.Intersects(item->GetRect()))
+					item->Render(painter);
 			}
 		}
 
-		painter->SetClipRect(Device::GetInstance()->GetDriver()->GetViewport());
+		painter->SetClipRect(cachedClipRect);
 
 		RenderScrollBars(painter);
 	}

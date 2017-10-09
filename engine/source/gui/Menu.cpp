@@ -87,21 +87,6 @@ namespace gui
 		}
 	}
 
-	void Menu::SetPosition(s32 x, s32 y)
-	{
-		Widget::SetPosition(x, y);
-	}
-
-	void Menu::SetWidth(s32 width)
-	{
-		Widget::SetWidth(width);
-	}
-
-	void Menu::SetHeight(s32 height)
-	{
-		Widget::SetHeight(height);
-	}
-
 	bool Menu::ProcessEvent(GUIEvent& ev)
 	{
 		if (Widget::ProcessEvent(ev))

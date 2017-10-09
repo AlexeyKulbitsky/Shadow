@@ -63,13 +63,10 @@ namespace math
 
 		bool Intersects(const Rect<T>& other)
 		{
-			if (upperLeftCorner.x > other.lowerRightCorner.x ||
+			return !(upperLeftCorner.x > other.lowerRightCorner.x ||
 				other.upperLeftCorner.x > lowerRightCorner.x ||
 				upperLeftCorner.y > other.lowerRightCorner.y ||
-				other.upperLeftCorner.y > lowerRightCorner.y)
-				return false;
-			else
-				return true;
+				other.upperLeftCorner.y > lowerRightCorner.y);
 		}
 
 		Vector2<T> upperLeftCorner;

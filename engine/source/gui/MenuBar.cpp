@@ -36,8 +36,8 @@ namespace gui
 	void MenuBar::MenuBarItem::UpdateLayout()
 	{
 		Widget::UpdateLayout();
-		const auto& pos = button->GetPosition();
-		const auto height = button->GetHeight();
+		const auto& pos = m_rect.upperLeftCorner;
+		const auto height = m_rect.GetHeight();
 		menu->SetPosition(pos.x, pos.y + height);
 	}
 
@@ -156,6 +156,7 @@ namespace gui
 	{
 		if (!m_visible)
 			return;
+
 		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
 		video::Painter::Vertex upperLeft(m_rect.upperLeftCorner, 
 										 m_sprite->GetUVRect().upperLeftCorner, 

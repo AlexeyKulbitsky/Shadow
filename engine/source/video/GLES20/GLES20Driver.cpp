@@ -421,8 +421,55 @@ void GLES20Driver::SetGpuParams( const GpuParamsPtr& params, const CommandBuffer
 			glBindTexture(textureTraget, texture->GetGLId());
 
 			const auto& description = sampler->GetDescription();
-			glTexParameteri(textureTraget, GL_TEXTURE_MIN_FILTER, s_glTextureFiltering[description.minFilter]);
-			glTexParameteri(textureTraget, GL_TEXTURE_MAG_FILTER, s_glTextureFiltering[description.magFilter]);
+			// Set minification filter
+			{
+				switch (description.mipFilter)
+				{
+					case TEX_FILT_NEAREST:
+					{
+						switch (description.minFilter)
+						{
+							case TEX_FILT_NONE:
+							case TEX_FILT_NEAREST:
+								glTexParameteri(textureTraget, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+								break;
+							case TEX_FILT_LINEAR:
+								glTexParameteri(textureTraget, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+								break;
+							default:
+								break;
+						}
+					}
+						break;
+					case TEX_FILT_LINEAR:
+					{
+						switch (description.minFilter)
+						{
+							case TEX_FILT_NONE:
+							case TEX_FILT_NEAREST:
+								glTexParameteri(textureTraget, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+								break;
+							case TEX_FILT_LINEAR:
+								glTexParameteri(textureTraget, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+								break;
+							default:
+								break;
+						}
+					}
+						break;
+					case TEX_FILT_NONE:
+					{
+						glTexParameteri(textureTraget, GL_TEXTURE_MIN_FILTER, s_glTextureFiltering[description.minFilter]);
+					}
+						break;
+					default:
+						break;
+				}
+			}
+			// Set magnification filter
+			{
+				glTexParameteri(textureTraget, GL_TEXTURE_MAG_FILTER, s_glTextureFiltering[description.magFilter]);
+			}
 			glTexParameteri(textureTraget, GL_TEXTURE_WRAP_S, s_glTextureTiling[description.tilingU]);
 			glTexParameteri(textureTraget, GL_TEXTURE_WRAP_T, s_glTextureTiling[description.tilingV]);
 			if (texture->GetDescription().type == TEX_TYPE_TEXTURE_CUBE)

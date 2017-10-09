@@ -74,10 +74,10 @@ namespace gui
 			float x2 = static_cast<float>(xOrigin + desc.x_off + desc.width);
 			float y2 = static_cast<float>(yOrigin - desc.y_off + desc.height);
 
-			float u1 = (float)desc.x0 / (float)width;
-			float v1 = (float)desc.y0 / (float)height;
-			float u2 = (float)desc.x1 / (float)width;
-			float v2 = (float)desc.y1 / (float)height;
+			float u1 = static_cast<float>(desc.x0) / static_cast<float>(width);
+			float v1 = static_cast<float>(desc.y0) / static_cast<float>(height);
+			float u2 = static_cast<float>(desc.x1) / static_cast<float>(width);
+			float v2 = static_cast<float>(desc.y1) / static_cast<float>(height);
 
 			video::Painter::Vertex upperLeft(math::Vector3f(x1, y1, 0.0f), 
 											math::Vector2f(u1, v1), 
