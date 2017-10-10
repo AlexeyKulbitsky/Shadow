@@ -7,8 +7,6 @@ MaterialTreeItem::MaterialTreeItem(TreeItem* parent, sh::io::FileSystemComponent
 	: TreeItem(fsItem->name, parent)
 {
 	m_item = fsItem;
-	m_offset += 20U;
-	m_layout->SetMargins(0, 0, 0, m_offset);
 
 	auto icon = sh::gui::GuiManager::GetInstance()->GetStyle()->GetSpriteWidget("material");
 	auto clonedIcon = icon->Clone();
@@ -20,12 +18,13 @@ MaterialTreeItem::~MaterialTreeItem()
 {
 }
 
-void MaterialTreeItem::OnToggled(bool toggled)
+void MaterialTreeItem::OnPressed()
 {
-	sh::gui::TreeItem::OnToggled(toggled);
+	sh::gui::TreeItem::OnPressed();
 
 	auto assetsTreeWidget = static_cast<AssetsTreeWidget*>(m_treeWidget);
-	if (toggled)
+	auto selectedItem = m_treeWidget->GetSelectedItem();
+	if (selectedItem)
 	{
 		auto material = sh::Device::GetInstance()->GetResourceManager()->GetMaterial(m_item->name);
 		assetsTreeWidget->materialChanged(material);
@@ -42,7 +41,6 @@ void MaterialTreeItem::OnContextMenu(sh::s32 x, sh::s32 y)
 	sh::gui::MenuPtr menu(new sh::gui::Menu());
 	menu->AddItem("Rename");
 	menu->SetPosition(x, y);
-	//menu->SetFocus(true);
 	menu->itemSelected.Connect(std::bind(&MaterialTreeItem::OnMenuItemSelected, this, std::placeholders::_1));
 	sh::gui::GuiManager::GetInstance()->SetFocusWidget(menu);
 }
@@ -54,16 +52,16 @@ void MaterialTreeItem::OnEdit(sh::s32 x, sh::s32 y)
 
 void MaterialTreeItem::OnMenuItemSelected(const sh::String& itemName)
 {
-	auto button = std::static_pointer_cast<sh::gui::Button>(m_layout->GetItem(0U)->GetWidget());
+	auto label = std::static_pointer_cast<sh::gui::Label>(m_layout->GetItem(1U)->GetWidget());
 
 	sh::gui::LineEditPtr lineEdit(new sh::gui::LineEdit());
 
-	const auto& originalFileName = button->GetText();
+	const auto& originalFileName = label->GetText();
 	size_t pos = originalFileName.find_last_of('.');
 	const sh::String name = originalFileName.substr(0U, pos);
 
 	lineEdit->SetText(name);
-	lineEdit->SetRect(button->GetRect());
+	lineEdit->SetRect(label->GetRect());
 	lineEdit->SetState(sh::gui::LineEdit::State::Edit);
 	lineEdit->OnEditingFinished.Connect([this](const sh::String& text)
 	{
@@ -87,21 +85,14 @@ void MaterialTreeItem::OnMenuItemSelected(const sh::String& itemName)
 
 		// Rename material
 		const auto& material = sh::Device::GetInstance()->GetResourceManager()->GetMaterial(m_item->name);
-		// 		m_item->name = fileName;
-		// 		size_t separatorPos = m_item->absolutePath.find_last_of('/');
-		// 		m_item->absolutePath = m_item->absolutePath.substr(0U, separatorPos) + "/" + fileName;
-		// 		auto button = std::static_pointer_cast<sh::gui::Button>(m_layout->GetItem(0U)->GetWidget());
-		// 		button->SetText(fileName);
 
 		m_item->Rename(fileName);
-		auto button = std::static_pointer_cast<sh::gui::Button>(m_layout->GetItem(0U)->GetWidget());
-		button->SetText(fileName);
+		auto label = std::static_pointer_cast<sh::gui::Label>(m_layout->GetItem(1U)->GetWidget());
+		label->SetText(fileName);
 
 		// Save renamed material
 		material->Save();
-
-		//sh::gui::GuiManager::GetInstance()->SetFocusWidget(nullptr);
 	});
 	//lineEdit->SetFocus(true);
-	sh::gui::GuiManager::GetInstance()->SetFocusWidget(lineEdit);
+	//sh::gui::GuiManager::GetInstance()->SetFocusWidget(lineEdit);
 }

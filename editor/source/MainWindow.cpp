@@ -196,6 +196,7 @@ void MainWindow::OnKeyboardEvent(sh::KeyboardEventType type, sh::KeyCode code)
 
 void MainWindow::OnWindowResized(int width, int height)
 {
+	sh::gui::GuiManager::GetInstance()->SetFocusWidget(nullptr);
 	m_mainWidget->SetRect(sh::math::Recti(0, 0, width, height));
 }
 
@@ -319,8 +320,8 @@ void MainWindow::Init()
 	SelectionManager::GetInstance()->SetInspectorWidget(m_inspectorWidget);
 
 	sh::gui::VerticalLayoutPtr assetsHierarchyLayout(new sh::gui::VerticalLayout());
-	assetsHierarchyLayout->AddWidget(m_hierarchyWidget);
 	assetsHierarchyLayout->AddWidget(m_assetsWidget);
+	assetsHierarchyLayout->AddWidget(m_hierarchyWidget);
 
 	sh::gui::VerticalLayoutPtr inspectorLayout(new sh::gui::VerticalLayout());
 	inspectorLayout->AddWidget(m_inspectorWidget);

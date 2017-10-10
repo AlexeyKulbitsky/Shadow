@@ -128,11 +128,10 @@ namespace gui
 			const auto& button = std::static_pointer_cast<Button>(m_layout->GetWidget(i));
 			if (button == sender)
 			{
-				itemSelected(sender->GetText());
-				itemIndexSelected(i);
 				if (IsInFocus())
 					GuiManager::GetInstance()->SetFocusWidget(nullptr);
-					//SetFocus(false);
+				itemSelected(sender->GetText());
+				itemIndexSelected(i);
 				return;
 			}
 		}

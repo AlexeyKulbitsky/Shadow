@@ -92,6 +92,11 @@ namespace gui
 		//painter->SetClipRect(cachedClipRect);
 	}
 
+	void Text::SetRect(const math::Recti& rect)
+	{
+		m_rect = rect;
+	}
+
 	void Text::SetPosition( s32 x, s32 y )
 	{
 		auto size = m_rect.GetSize();

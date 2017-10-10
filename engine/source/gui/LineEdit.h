@@ -43,7 +43,7 @@ namespace gui
 		State m_state = State::Default;
 
 		bool m_dirty = false;
-		bool m_inFocus = false;
+		//bool m_inFocus = false;
 
 		static math::Recti s_cursorRect;
 		static size_t s_cursorPos;

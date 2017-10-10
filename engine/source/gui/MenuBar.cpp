@@ -188,7 +188,8 @@ namespace gui
 			return true;
 		}
 
-		return false;
+		bool isInside = m_rect.IsPointInside(ev.x, ev.y);
+		return isInside;
 	}
 
 } // gui

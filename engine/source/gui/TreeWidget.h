@@ -31,7 +31,7 @@ namespace gui
 		s32 GetOffset() const { return m_offset; }
 		bool IsExpanded() const { return m_expanded; }
 		void SetExpanded(bool expanded);
-		virtual void OnToggled(bool toggled);
+		virtual void OnPressed();
 
 		virtual void Render(video::Painter* painter) override;
 		virtual bool ProcessEvent(sh::gui::GUIEvent& ev) override;
@@ -54,6 +54,7 @@ namespace gui
 		TreeWidget();
 		void AddItem(SPtr<TreeItem> item);
 		virtual void SetSelectedItem(TreeItem* item);
+		TreeItem* GetSelectedItem() { return m_selectedItem; }
 
 		virtual void Render(sh::video::Painter* painter) override;
 		virtual void UpdateLayout() override;

@@ -68,7 +68,7 @@ namespace gui
 		sh::gui::LabelPtr label(new Label(name));
 		SetToggleable(true);
 
-		OnToggle.Connect(std::bind(&TreeItem::OnToggled, this, std::placeholders::_1));
+		OnPress.Connect(std::bind(&TreeItem::OnPressed, this));
 		HorizontalLayoutPtr layout(new sh::gui::HorizontalLayout());
 		layout->AddWidget(label);
 		SetMinimumHeight(15U);
@@ -77,10 +77,17 @@ namespace gui
 
 		if (parent)
 		{
+			if (parent->m_children.size() == 0 && parent->m_offset != 0)
+			{
+				parent->m_offset -= 20;
+				parent->m_layout->SetMargins(0, 0, 0, parent->m_offset);
+			}
 			s32 offset = parent->GetOffset();
 			m_offset = offset + 20U;
-			layout->SetMargins(0, 0, 0, m_offset);
 		}
+
+		m_offset += 20U;
+		m_layout->SetMargins(0, 0, 0, m_offset);
 	}
 
 	TreeItem::~TreeItem()
@@ -89,6 +96,16 @@ namespace gui
 
 	void TreeItem::AddChild(const sh::SPtr<TreeItem>& child)
 	{
+		if (m_children.size() == 0)
+		{
+			sh::SPtr<sh::gui::TreeExpandButton> button(new sh::gui::TreeExpandButton());
+			m_layout->InsertWidget(0U, button);
+			button->OnToggle.Connect([this](bool toggled, const ButtonPtr&)
+			{
+				SetExpanded(!toggled);
+				m_treeWidget->UpdateLayout();
+			});
+		}
 		m_children.push_back(child);
 	}
 
@@ -97,9 +114,25 @@ namespace gui
 		m_expanded = expanded;
 	}
 
-	void TreeItem::OnToggled(bool toggled)
+	void TreeItem::OnPressed()
 	{
-		m_treeWidget->SetSelectedItem(this);
+		auto selectedItem = m_treeWidget->GetSelectedItem();
+		if (selectedItem)
+		{
+			if (selectedItem == this)
+			{
+				m_treeWidget->SetSelectedItem(nullptr);
+			}
+			else
+			{
+				selectedItem->SetToggled(false);
+				m_treeWidget->SetSelectedItem(this);
+			}
+		}
+		else
+		{
+			m_treeWidget->SetSelectedItem(this);
+		}
 	}
 
 	void TreeItem::Render(video::Painter* painter)
@@ -186,7 +219,7 @@ namespace gui
 					break;
 				}
 			}
-			parent->m_children.push_back(item);
+			parent->AddChild(item);
 		}
 
 		item->m_treeWidget = this;
@@ -195,12 +228,6 @@ namespace gui
 
 	void TreeWidget::SetSelectedItem(TreeItem* item)
 	{
-		if (m_selectedItem)
-		{
-			if (m_selectedItem == item)
-				return;
-			m_selectedItem->SetToggled(false);
-		}
 		m_selectedItem = item;
 	}
 

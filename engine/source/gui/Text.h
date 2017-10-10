@@ -23,6 +23,7 @@ namespace gui
 		const String& GetText() const { return m_text; }
 
 		virtual void Render(video::Painter* painter) override;
+		virtual void SetRect(const math::Recti& rect) override;
 		virtual void SetPosition(s32 x, s32 y) override;
 		virtual void SetSize(const math::Vector2i& size) override;
 		virtual void SetWidth(s32 width) override;

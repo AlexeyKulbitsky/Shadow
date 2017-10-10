@@ -162,6 +162,12 @@ namespace gui
 		m_text->Render(painter);
 	}
 
+	void Button::SetRect(const math::Recti& rect)
+	{
+		Widget::SetRect(rect);
+		m_text->SetRect(rect);
+	}
+
 	void Button::SetPosition(s32 x, s32 y)
 	{
 		Widget::SetPosition(x, y);

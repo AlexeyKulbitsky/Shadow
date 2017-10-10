@@ -8,7 +8,7 @@ class MaterialTreeItem : public sh::gui::TreeItem
 public:
 	MaterialTreeItem(sh::gui::TreeItem* parent, sh::io::FileSystemComponent* fsItem);
 	virtual ~MaterialTreeItem();
-	virtual void OnToggled(bool toggled) override;
+	virtual void OnPressed() override;
 
 protected:
 	virtual void OnContextMenu(sh::s32 x, sh::s32 y) override;

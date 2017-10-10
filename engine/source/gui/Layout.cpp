@@ -8,7 +8,7 @@ namespace gui
 
 	void WidgetItem::Resize(const math::Recti& rect)
 	{
-		m_widget->SetPosition(rect.upperLeftCorner.x, rect.upperLeftCorner.y);
+		//m_widget->SetPosition(rect.upperLeftCorner.x, rect.upperLeftCorner.y);
 		s32 width = rect.GetWidth();
 		s32 height = rect.GetHeight();
 		
@@ -22,8 +22,11 @@ namespace gui
 		if (height > m_widget->GetMaximumHeight())
 			height = m_widget->GetMaximumHeight();
 
-		m_widget->SetWidth(width);
-		m_widget->SetHeight(height);
+		const math::Recti finalRect(rect.upperLeftCorner.x, rect.upperLeftCorner.y,
+									rect.upperLeftCorner.x + width, rect.upperLeftCorner.y + height);
+		//m_widget->SetWidth(width);
+		//m_widget->SetHeight(height);
+		m_widget->SetRect(finalRect);
 	}
 
 	////////////////////////////////////////////////////////////////////

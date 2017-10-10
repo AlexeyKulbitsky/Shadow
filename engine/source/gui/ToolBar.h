@@ -18,6 +18,7 @@ namespace gui
 
 		virtual void Load(const pugi::xml_node& node) override;
 		virtual void Render(video::Painter* painter) override;
+		virtual bool ProcessEvent(GUIEvent& ev) override;
 
 	private:
 		SpritePtr m_sprite;

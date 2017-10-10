@@ -6,8 +6,6 @@ ModelTreeItem::ModelTreeItem(sh::gui::TreeItem* parent, sh::io::FileSystemCompon
 	: TreeItem(fsItem->name, parent)
 {
 	m_item = fsItem;
-	m_offset += 20U;
-	m_layout->SetMargins(0, 0, 0, m_offset);
 
 	auto icon = sh::gui::GuiManager::GetInstance()->GetStyle()->GetSpriteWidget("model");
 	auto clonedIcon = icon->Clone();
@@ -20,18 +18,7 @@ ModelTreeItem::~ModelTreeItem()
 
 }
 
-void ModelTreeItem::OnToggled(bool toggled)
+void ModelTreeItem::OnPressed()
 {
-	sh::gui::TreeItem::OnToggled(toggled);
-
-// 	auto assetsTreeWidget = static_cast<AssetsTreeWidget*>(m_treeWidget);
-// 	if (toggled)
-// 	{
-// 		auto texture = sh::Device::GetInstance()->GetResourceManager()->GetTexture(m_item->name);
-// 		assetsTreeWidget->textureChanged(texture);
-// 	}
-// 	else
-// 	{
-// 		assetsTreeWidget->textureChanged(nullptr);
-// 	}
+	sh::gui::TreeItem::OnPressed();
 }

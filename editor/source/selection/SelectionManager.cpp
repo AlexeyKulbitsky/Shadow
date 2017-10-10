@@ -111,6 +111,13 @@ void SelectionManager::SetArrowButton(const sh::gui::ButtonPtr& button)
 
 void SelectionManager::OnGizmoButtonToggled(const sh::gui::ButtonPtr& sender)
 {
+	sh::Entity* entity = nullptr;
+	if (m_gizmo)
+	{
+		entity = m_gizmo->GetEntity();
+		m_gizmo->SetEntity(nullptr);
+	}
+
 	if (sender == m_moveGizmoButton)
 		m_gizmo = m_moveGizmo;
 	else if (sender == m_scaleGizmoButton)
@@ -119,6 +126,11 @@ void SelectionManager::OnGizmoButtonToggled(const sh::gui::ButtonPtr& sender)
 		m_gizmo = m_rotateGizmo;
 	else if (sender == m_arrowButton)
 		m_gizmo = m_defaultGizmo;
+
+	if (m_gizmo)
+	{
+		m_gizmo->SetEntity(entity);
+	}
 }
 
 void SelectionManager::OnEntityFromListSelected(sh::Entity* entity)

@@ -11,10 +11,6 @@ FolderTreeItem::FolderTreeItem(TreeItem* parent, sh::io::FileSystemComponent* fs
 	auto clonedIcon = icon->Clone();
 	clonedIcon->SetMaximumWidth(15);
 	m_layout->InsertWidget(0U, clonedIcon);
-
-	sh::SPtr<sh::gui::TreeExpandButton> button(new sh::gui::TreeExpandButton());
-	m_layout->InsertWidget(0U, button);
-	button->OnToggle.Connect(std::bind(&FolderTreeItem::OnExpanded, this, std::placeholders::_1));
 }
 
 FolderTreeItem::~FolderTreeItem()

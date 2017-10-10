@@ -39,7 +39,6 @@ public:
 	sh::Event<void, sh::Entity*> OnEntitySelected;
 
 private:
-	void OnItemToggled(bool toggled, const sh::gui::ButtonPtr& sender);
 	void SelectEntity(sh::u32 index);
 
 private:

@@ -1,5 +1,5 @@
 #include "FloatLineEdit.h"
-
+#include "GuiManager.h"
 #include "Sprite.h"
 
 #include <iomanip>
@@ -24,7 +24,7 @@ namespace gui
 
 	bool FloatLineEdit::ProcessEvent(GUIEvent& ev)
 	{
-		if (m_inFocus && ev.type == EventType::KeyDown)
+		if (IsInFocus() && ev.type == EventType::KeyDown)
 		{
 			KeyCode keyCode = static_cast<KeyCode>(ev.keyCode);
 
@@ -43,7 +43,7 @@ namespace gui
 			break;
 			case KeyCode::KEY_RETURN:
 			{
-				m_inFocus = false;
+				GuiManager::GetInstance()->SetFocusWidget(nullptr);
 				m_state = State::Default;
 				UpdateIfDirty();
 				OnEditingFinished(m_text);

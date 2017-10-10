@@ -16,7 +16,13 @@ namespace gui
 		~ImageWidget();
 
 		void SetTexture(const video::TexturePtr& texture);
+		const video::TexturePtr& GetTexture() const { return m_texture; }
 		virtual void Render(video::Painter* painter) override;
+		virtual void UpdateLayout() override;
+
+	private:
+		video::TexturePtr m_texture;
+		bool m_dirty = false;
 	};
 
 } // gui

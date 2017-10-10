@@ -50,13 +50,13 @@ namespace gui
 		{
 			case State::Default:
 			{
-				m_inFocus = false;
+				GuiManager::GetInstance()->SetFocusWidget(nullptr);
 			}
 				break;
 			case State::Edit:
 			{
 				s_cursorPos = m_text.size();
-				m_inFocus = true;
+				GuiManager::GetInstance()->SetFocusWidget(shared_from_this());
 			}
 				break;
 			default:
@@ -82,8 +82,8 @@ namespace gui
 
 		// Render text
 		Text::Render(painter);
-
-		if (m_inFocus)
+		
+		if (IsInFocus())
 		{
 			s32 xPos = 0;
 			if (s_cursorPos == m_text.size())
@@ -119,84 +119,104 @@ namespace gui
 
 	bool LineEdit::ProcessEvent(GUIEvent& ev)
 	{
-		if (ev.type == EventType::PointerDown)
+		bool inside = m_rect.IsPointInside(ev.x, ev.y);
+		switch (ev.type)
 		{
-			bool inside = m_rect.IsPointInside(ev.x, ev.y);
-			if (inside)
+			case EventType::PointerDown:
 			{
-				if (m_inFocus)
+				if (inside)
 				{
-					m_state = State::Default;
-					UpdateIfDirty();
-				}
-				else
-				{
-					m_state = State::Edit;
-					s_cursorPos = m_text.size();
-				}
-				m_inFocus = !m_inFocus;
-
-				return true;
-			}
-			else
-			{
-				if (m_inFocus)
-				{
-					m_inFocus = false;
-
-					m_state = State::Default;
-					UpdateIfDirty();
+					if (IsInFocus())
+					{
+						m_state = State::Default;
+						UpdateIfDirty();
+						GuiManager::GetInstance()->SetFocusWidget(nullptr);
+					}
+					else
+					{
+						m_state = State::Edit;
+						s_cursorPos = m_text.size();
+						GuiManager::GetInstance()->SetFocusWidget(shared_from_this());
+					}
 
 					return true;
 				}
-			}
-		}
-		else if (m_inFocus && ev.type == EventType::KeyDown)
-		{
-			KeyCode keyCode = static_cast<KeyCode>(ev.keyCode);
-
-
-			switch (keyCode)
-			{
-			case KeyCode::KEY_BACK:
-			{
-				if (m_text.size() >= 1)
+				else
 				{
-					m_text.erase(m_text.begin() + (s_cursorPos - 1));
-					s_cursorPos--;
-					m_dirty = true;
+					if (IsInFocus())
+					{
+						GuiManager::GetInstance()->SetFocusWidget(nullptr);
+
+						m_state = State::Default;
+						UpdateIfDirty();
+
+						return true;
+					}
 				}
 			}
-			break;
-			case KeyCode::KEY_RETURN:
+				break;
+			case EventType::PointerUp:
 			{
-				m_inFocus = false;
-				m_state = State::Default;
-				UpdateIfDirty();
-				OnEditingFinished(m_text);
+				if (IsInFocus())
+				{
+					return true;
+				}
 			}
 				break;
-			case KeyCode::KEY_LEFT:
-			{
-				if (s_cursorPos != 0U)
-					s_cursorPos--;
-			}
-			break;
-			case KeyCode::KEY_RIGHT:
-			{
-				if (s_cursorPos < m_text.size())
-					s_cursorPos++;
-			}
-			break;
-			default:
-			{
-				m_text.insert(m_text.begin() + s_cursorPos++, (char)ev.keyCode);
-				m_dirty = true;
-			}
+			case EventType::PointerMove:
 				break;
-			}
+			case EventType::KeyDown:
+			{
+				if (IsInFocus())
+				{
+					KeyCode keyCode = static_cast<KeyCode>(ev.keyCode);
+
+					switch (keyCode)
+					{
+					case KeyCode::KEY_BACK:
+					{
+						if (m_text.size() >= 1)
+						{
+							m_text.erase(m_text.begin() + (s_cursorPos - 1));
+							s_cursorPos--;
+							m_dirty = true;
+						}
+					}
+					break;
+					case KeyCode::KEY_RETURN:
+					{
+						GuiManager::GetInstance()->SetFocusWidget(nullptr);
+						m_state = State::Default;
+						UpdateIfDirty();
+						OnEditingFinished(m_text);
+					}
+						break;
+					case KeyCode::KEY_LEFT:
+					{
+						if (s_cursorPos != 0U)
+							s_cursorPos--;
+					}
+					break;
+					case KeyCode::KEY_RIGHT:
+					{
+						if (s_cursorPos < m_text.size())
+							s_cursorPos++;
+					}
+					break;
+					default:
+					{
+						m_text.insert(m_text.begin() + s_cursorPos++, (char)ev.keyCode);
+						m_dirty = true;
+					}
+						break;
+					}
 			
-			return true;
+					return true;
+				}
+			}
+				break;
+			default:
+				break;
 		}
 		return false;
 	}

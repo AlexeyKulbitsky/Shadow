@@ -5,8 +5,6 @@ TextureTreeItem::TextureTreeItem(sh::gui::TreeItem* parent, sh::io::FileSystemCo
 	: TreeItem(fsItem->name, parent)
 {
 	m_item = fsItem;
-	m_offset += 20U;
-	m_layout->SetMargins(0, 0, 0, m_offset);
 
 	auto icon = sh::gui::GuiManager::GetInstance()->GetStyle()->GetSpriteWidget("image");
 	auto clonedIcon = icon->Clone();
@@ -19,12 +17,13 @@ TextureTreeItem::~TextureTreeItem()
 
 }
 
-void TextureTreeItem::OnToggled(bool toggled)
+void TextureTreeItem::OnPressed()
 {
-	sh::gui::TreeItem::OnToggled(toggled);
+	sh::gui::TreeItem::OnPressed();
 
 	auto assetsTreeWidget = static_cast<AssetsTreeWidget*>(m_treeWidget);
-	if (toggled)
+	auto selectedItem = m_treeWidget->GetSelectedItem();
+	if (selectedItem)
 	{
 		auto texture = sh::Device::GetInstance()->GetResourceManager()->GetTexture(m_item->name);
 		assetsTreeWidget->textureChanged(texture);
