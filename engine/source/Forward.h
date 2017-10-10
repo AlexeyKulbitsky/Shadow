@@ -92,6 +92,7 @@ namespace sh
 		DEFINE_CLASS_PTR(TreeItem)
 		DEFINE_CLASS_PTR(ImageWidget)
 		DEFINE_CLASS_PTR(SpriteWidget)
+		DEFINE_CLASS_PTR(ButtonGroup)
 	}
 
 	DEFINE_CLASS_PTR(Component)

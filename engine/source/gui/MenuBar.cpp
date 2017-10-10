@@ -128,13 +128,14 @@ namespace gui
 		m_toggled = toggled;
 		if (toggled)
 		{
-			SetFocus(true);
+			//SetFocus(true);
 			GuiManager::GetInstance()->SetFocusWidget(shared_from_this());
 		}
 		else
 		{
-			SetFocus(false);
-			GuiManager::GetInstance()->SetFocusWidget(nullptr);
+			//SetFocus(false);
+			if (IsInFocus())
+				GuiManager::GetInstance()->SetFocusWidget(nullptr);
 		}
 	}
 

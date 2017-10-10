@@ -431,7 +431,7 @@ void MainWindow::Update(sh::u64 delta)
 	sceneMgr->Update();
 
 	SelectionManager::GetInstance()->Render();
-	/*m_gizmo->Render();*/
+
 	sh::gui::GuiManager::GetInstance()->Update(0U);
 	sh::gui::GuiManager::GetInstance()->Render();
 

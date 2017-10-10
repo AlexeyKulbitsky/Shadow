@@ -19,7 +19,7 @@ namespace gui
 		virtual void Render(video::Painter* painter) override;
 	};
 
-	class TreeItem : public sh::gui::Button
+	class TreeItem : public Button
 	{
 		friend class TreeWidget;
 	public:

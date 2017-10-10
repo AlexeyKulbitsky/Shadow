@@ -30,10 +30,10 @@ namespace gui
 		auto lowerRight = rect.lowerRightCorner;
 
 		math::Recti finalRect;
-		finalRect.upperLeftCorner.x = upperLeft.x + m_leftMargin;
-		finalRect.upperLeftCorner.y = upperLeft.y + m_topMargin;
-		finalRect.lowerRightCorner.x = lowerRight.x - m_rightMargin;
-		finalRect.lowerRightCorner.y = lowerRight.y - m_bottomMargin;
+		finalRect.upperLeftCorner.x = upperLeft.x + static_cast<s32>(m_leftMargin);
+		finalRect.upperLeftCorner.y = upperLeft.y + static_cast<s32>(m_topMargin);
+		finalRect.lowerRightCorner.x = lowerRight.x - static_cast<s32>(m_rightMargin);
+		finalRect.lowerRightCorner.y = lowerRight.y - static_cast<s32>(m_bottomMargin);
 
 		const s32 height = finalRect.GetHeight();
 		const s32 width = finalRect.GetWidth();
@@ -44,9 +44,14 @@ namespace gui
 		for (u32 i = 0; i < m_items.size(); ++i)
 		{
 			if (offset > height)
+			{
 				itemHeight = 0;
+			}
 			else
-				itemHeight = (height - offset - m_spacing * (elementCount - i - 1)) / (elementCount - i);
+			{
+				const s32 temp = static_cast<s32>(elementCount) - static_cast<s32>(i);
+				itemHeight = (height - offset - m_spacing * (temp - 1)) / (temp);
+			}
 			const s32 x = finalRect.upperLeftCorner.x;
 			const s32 y = finalRect.upperLeftCorner.y + offset;
 			m_items[i]->Resize(math::Recti(x, y, x + width, y + itemHeight));

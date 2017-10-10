@@ -1,6 +1,7 @@
 #include "Menu.h"
 
 #include "Button.h"
+#include "GuiManager.h"
 #include "VerticalLayout.h"
 
 namespace sh
@@ -102,7 +103,8 @@ namespace gui
 			!m_rect.IsPointInside(ev.x, ev.y))
 		{
 			if (IsInFocus())
-				SetFocus(false);
+				GuiManager::GetInstance()->SetFocusWidget(nullptr);
+				//SetFocus(false);
 			return false;
 		}
 
@@ -129,7 +131,8 @@ namespace gui
 				itemSelected(sender->GetText());
 				itemIndexSelected(i);
 				if (IsInFocus())
-					SetFocus(false);
+					GuiManager::GetInstance()->SetFocusWidget(nullptr);
+					//SetFocus(false);
 				return;
 			}
 		}

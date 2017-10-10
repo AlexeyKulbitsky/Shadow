@@ -45,20 +45,20 @@ namespace gui
 		bool IsEnabled() const { return m_enabled; }
 
 		// Maximum size
-		void SetMaximumWidth(u32 width) { m_maxSize.x = width; }
-		void SetMaximumHeight(u32 height) { m_maxSize.y = height; }
-		void SetMaximumSize(const math::Vector2u& size) { m_maxSize = size; }
-		u32 GetMaximumWidth() const { return m_maxSize.x; }
-		u32 GetMaximumHeight() const { return m_maxSize.y; }
-		const math::Vector2u& GetMaximumSize() const { return m_maxSize; }
+		void SetMaximumWidth(s32 width) { m_maxSize.x = width; }
+		void SetMaximumHeight(s32 height) { m_maxSize.y = height; }
+		void SetMaximumSize(const math::Vector2i& size) { m_maxSize = size; }
+		s32 GetMaximumWidth() const { return m_maxSize.x; }
+		s32 GetMaximumHeight() const { return m_maxSize.y; }
+		const math::Vector2i& GetMaximumSize() const { return m_maxSize; }
 
 		// Minimum size
-		void SetMinimumWidth(u32 width) { m_minSize.x = width; }
-		void SetMinimumHeight(u32 height) { m_minSize.y = height; }
-		void SetMinimumSize(const math::Vector2u& size) { m_minSize = size; }
-		u32 GetMinimumWidth() const { return m_minSize.x; }
-		u32 GetMinimumHeight() const { return m_minSize.y; }
-		const math::Vector2u& GetMinimumSize() const { return m_minSize; }
+		void SetMinimumWidth(s32 width) { m_minSize.x = width; }
+		void SetMinimumHeight(s32 height) { m_minSize.y = height; }
+		void SetMinimumSize(const math::Vector2i& size) { m_minSize = size; }
+		s32 GetMinimumWidth() const { return m_minSize.x; }
+		s32 GetMinimumHeight() const { return m_minSize.y; }
+		const math::Vector2i& GetMinimumSize() const { return m_minSize; }
 
 		const math::Recti& GetRect() const { return m_rect; }
 
@@ -79,8 +79,8 @@ namespace gui
 		virtual void SetHeight(s32 height);
 		virtual bool ProcessEvent(GUIEvent& ev);
 
-		void SetFocus(bool focus) { m_isInFocus = focus; }
-		bool IsInFocus() const { return m_isInFocus; }
+		//void SetFocus(bool focus);
+		bool IsInFocus() const;
 
 		void SetMaterial(const video::MaterialPtr& material) { m_material = material; }
 		const video::MaterialPtr& GetMaterial() const { return m_material; }
@@ -91,15 +91,14 @@ namespace gui
 	protected:
 		LayoutPtr m_layout;
 		Widget* m_parent = nullptr;
-		math::Vector2u m_maxSize = math::Vector2u(std::numeric_limits<s32>::max());
-		math::Vector2u m_minSize = math::Vector2u(0U);
+		math::Vector2i m_maxSize = math::Vector2i(std::numeric_limits<s32>::max());
+		math::Vector2i m_minSize = math::Vector2i(0);
 
 		video::MaterialPtr m_material;
 
 		math::Recti m_rect;
 		bool m_visible = true;
 		bool m_enabled = true;
-		bool m_isInFocus = false;
 	};
 
 } // gui

@@ -66,14 +66,15 @@ namespace gui
 
 		for (auto child = m_children.rbegin(); child != m_children.rend(); ++child)
 		{
-			(*child)->Render(painter);
+			// Draw only unfocused widgets
+			if (!(*child)->IsInFocus())
+				(*child)->Render(painter);
 		}
 
-		if (m_focusWidget && m_focusWidget->IsInFocus())
+		// The only focus widget must be drawn after all widgets are ready
+		if (m_focusWidget)
 		{
-			m_focusWidget->SetFocus(false);
 			m_focusWidget->Render(painter);
-			m_focusWidget->SetFocus(true);
 		}
 
 		painter->Flush();
@@ -169,19 +170,14 @@ namespace gui
 	{
 		if (m_focusWidget)
 		{
-			if (m_focusWidget->IsInFocus())
-			{
-				return m_focusWidget->ProcessEvent(ev);
-			}
-			else
-			{
-				SetFocusWidget(nullptr);
-				return true;
-			}
+			return m_focusWidget->ProcessEvent(ev);
 		}
 
 		for (auto child = m_children.begin(); child != m_children.end(); ++child)
 		{
+			if ((*child)->IsInFocus())
+				continue;
+
 			if ((*child)->ProcessEvent(ev))
 			{
 				if (ev.type == EventType::PointerDown ||

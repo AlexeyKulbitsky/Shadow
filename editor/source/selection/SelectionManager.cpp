@@ -8,6 +8,9 @@ SelectionManager::SelectionManager()
 	m_scaleGizmo.reset(new ScaleGizmo());
 
 	m_gizmo = m_defaultGizmo;
+
+	m_gizmoButtonGroup.reset(new sh::gui::ButtonGroup());
+	m_gizmoButtonGroup->buttonToggled.Connect(std::bind(&SelectionManager::OnGizmoButtonToggled, this, std::placeholders::_1));
 }
 
 bool SelectionManager::ProcessMouseEvent(int x, int y, sh::MouseEventType type, sh::MouseCode code)
@@ -85,75 +88,37 @@ void SelectionManager::SetInspectorWidget(const sh::SPtr<InspectorWidget>& widge
 void SelectionManager::SetMoveButton(const sh::gui::ButtonPtr& button) 
 { 
 	m_moveGizmoButton = button; 
-	m_moveGizmoButton->OnToggle.Connect(std::bind(&SelectionManager::OnMoveButtonToggled, this, std::placeholders::_1));
+	m_gizmoButtonGroup->AddButton(m_moveGizmoButton);
 }
 
 void SelectionManager::SetRotateButton(const sh::gui::ButtonPtr& button) 
 { 
 	m_rotateGizmoButton = button; 
-	m_rotateGizmoButton->OnToggle.Connect(std::bind(&SelectionManager::OnRotateButtonToggled, this, std::placeholders::_1));
+	m_gizmoButtonGroup->AddButton(m_rotateGizmoButton);
 }
 
 void SelectionManager::SetScaleButton(const sh::gui::ButtonPtr& button) 
 { 
 	m_scaleGizmoButton = button; 
-	m_scaleGizmoButton->OnToggle.Connect(std::bind(&SelectionManager::OnScaleButtonToggled, this, std::placeholders::_1));
+	m_gizmoButtonGroup->AddButton(m_scaleGizmoButton);
 }
 
 void SelectionManager::SetArrowButton(const sh::gui::ButtonPtr& button) 
 { 
 	m_arrowButton = button; 
-	m_arrowButton->OnToggle.Connect(std::bind(&SelectionManager::OnArrowButtonToggled, this, std::placeholders::_1));
+	m_gizmoButtonGroup->AddButton(m_arrowButton);
 }
 
-void SelectionManager::OnMoveButtonToggled(bool toggled)
+void SelectionManager::OnGizmoButtonToggled(const sh::gui::ButtonPtr& sender)
 {
-	if (toggled)
-	{
-		m_rotateGizmoButton->SetToggled(false);
-		m_scaleGizmoButton->SetToggled(false);
-		m_arrowButton->SetToggled(false);
+	if (sender == m_moveGizmoButton)
 		m_gizmo = m_moveGizmo;
-	}
-}
-
-void SelectionManager::OnRotateButtonToggled(bool toggled)
-{
-	if (toggled)
-	{
-		m_moveGizmoButton->SetToggled(false);
-		m_scaleGizmoButton->SetToggled(false);
-		m_arrowButton->SetToggled(false);
-		auto entity = m_gizmo->GetEntity();
-		m_gizmo = m_rotateGizmo;
-		m_gizmo->SetEntity(entity);
-	}
-}
-
-void SelectionManager::OnScaleButtonToggled(bool toggled)
-{
-	if (toggled)
-	{
-		m_moveGizmoButton->SetToggled(false);
-		m_rotateGizmoButton->SetToggled(false);
-		m_arrowButton->SetToggled(false);
-		auto entity = m_gizmo->GetEntity();
+	else if (sender == m_scaleGizmoButton)
 		m_gizmo = m_scaleGizmo;
-		m_gizmo->SetEntity(entity);
-	}
-}
-
-void SelectionManager::OnArrowButtonToggled(bool toggled)
-{
-	if (toggled)
-	{
-		m_moveGizmoButton->SetToggled(false);
-		m_scaleGizmoButton->SetToggled(false);
-		m_rotateGizmoButton->SetToggled(false);
-		auto entity = m_gizmo->GetEntity();
+	else if (sender == m_rotateGizmoButton)
+		m_gizmo = m_rotateGizmo;
+	else if (sender == m_arrowButton)
 		m_gizmo = m_defaultGizmo;
-		m_gizmo->SetEntity(entity);
-	}
 }
 
 void SelectionManager::OnEntityFromListSelected(sh::Entity* entity)

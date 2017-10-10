@@ -42,7 +42,7 @@ void MaterialTreeItem::OnContextMenu(sh::s32 x, sh::s32 y)
 	sh::gui::MenuPtr menu(new sh::gui::Menu());
 	menu->AddItem("Rename");
 	menu->SetPosition(x, y);
-	menu->SetFocus(true);
+	//menu->SetFocus(true);
 	menu->itemSelected.Connect(std::bind(&MaterialTreeItem::OnMenuItemSelected, this, std::placeholders::_1));
 	sh::gui::GuiManager::GetInstance()->SetFocusWidget(menu);
 }
@@ -102,6 +102,6 @@ void MaterialTreeItem::OnMenuItemSelected(const sh::String& itemName)
 
 		//sh::gui::GuiManager::GetInstance()->SetFocusWidget(nullptr);
 	});
-	lineEdit->SetFocus(true);
+	//lineEdit->SetFocus(true);
 	sh::gui::GuiManager::GetInstance()->SetFocusWidget(lineEdit);
 }

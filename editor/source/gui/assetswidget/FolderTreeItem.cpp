@@ -33,7 +33,7 @@ void FolderTreeItem::OnContextMenu(sh::s32 x, sh::s32 y)
 	menu->AddItem("Add material");
 	menu->AddItem("Add folder");
 	menu->SetPosition(x, y);
-	menu->SetFocus(true);
+	//menu->SetFocus(true);
 	menu->itemSelected.Connect(std::bind(&FolderTreeItem::OnMenuItemSelected, this, std::placeholders::_1));
 	sh::gui::GuiManager::GetInstance()->SetFocusWidget(menu);
 }

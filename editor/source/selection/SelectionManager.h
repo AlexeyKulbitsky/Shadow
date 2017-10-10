@@ -31,10 +31,7 @@ public:
 	void SetArrowButton(const sh::gui::ButtonPtr& button);
 
 
-	void OnMoveButtonToggled(bool toggled);
-	void OnRotateButtonToggled(bool toggled);
-	void OnScaleButtonToggled(bool toggled);
-	void OnArrowButtonToggled(bool toggled);
+	void OnGizmoButtonToggled(const sh::gui::ButtonPtr& sender);
 	void OnEntityFromListSelected(sh::Entity* entity);
 
 private:
@@ -56,6 +53,8 @@ private:
 	sh::gui::ButtonPtr m_rotateGizmoButton;
 	sh::gui::ButtonPtr m_scaleGizmoButton;
 	sh::gui::ButtonPtr m_arrowButton;
+
+	sh::gui::ButtonGroupPtr m_gizmoButtonGroup;
 };
 
 #endif

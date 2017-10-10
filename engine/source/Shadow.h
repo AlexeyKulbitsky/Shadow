@@ -32,6 +32,7 @@
 #include "gui/TreeWidget.h"
 #include "gui/ImageWidget.h"
 #include "gui/SpriteWidget.h"
+#include "gui/ButtonGroup.h"
 
 #include "entity/Component.h"
 #include "entity/ComponentsFactory.h"

@@ -123,7 +123,7 @@ namespace gui
 								m_barSprite->GetColor());
 		painter->DrawRect(barUL, barBR);
 
-		// Render layout
+		// Render content background
 		video::Painter::Vertex layoutUL(m_inRect.upperLeftCorner, 
 								m_inSprite->GetUVRect().upperLeftCorner, 
 								m_inSprite->GetColor());
@@ -132,8 +132,10 @@ namespace gui
 								m_inSprite->GetColor());
 		painter->DrawRect(layoutUL, layoutBR);
 
+		// Render text on bar
 		m_text->Render(painter);
 
+		// Render content
 		if (m_layout)
 		{
 			m_layout->Render(painter);
@@ -197,11 +199,11 @@ namespace gui
 
 					const auto& viewport = device->GetDriver()->GetViewPort();
 					if (newX < 0) newX = 0;
-					if ((newX + m_rect.GetWidth()) > viewport.z) newX = viewport.z - m_rect.GetWidth();
+					if ((newX + m_rect.GetWidth()) > static_cast<s32>(viewport.z)) newX = viewport.z - m_rect.GetWidth();
 
-					u32 topEdge = 0U;
+					s32 topEdge = 0U;
 					if (newY < topEdge) newY = topEdge;
-					if ((newY + m_rect.GetHeight()) > viewport.w) newY = viewport.w - m_rect.GetHeight();
+					if ((newY + m_rect.GetHeight()) > static_cast<s32>(viewport.w)) newY = static_cast<s32>(viewport.w) - m_rect.GetHeight();
 
 					SetPosition(newX, newY);
 					m_text->SetPosition(newX, newY);

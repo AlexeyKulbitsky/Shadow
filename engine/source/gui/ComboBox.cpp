@@ -36,8 +36,8 @@ namespace gui
 		if (!m_visible)
 			return;
 
-		if (m_isInFocus)
-			return;
+		//if (m_isInFocus)
+		//	return;
 
 		m_button->Render(painter);
 		if (m_showList)
@@ -130,15 +130,16 @@ namespace gui
 	void ComboBox::OnButtonToggled(bool toggled)
 	{
 		m_showList = toggled;
-		m_isInFocus = toggled;
+		//m_isInFocus = toggled;
 
-		if (m_isInFocus)
+		if (toggled)
 		{
 			GuiManager::GetInstance()->SetFocusWidget(shared_from_this());
 		}
 		else
 		{
-			GuiManager::GetInstance()->SetFocusWidget(nullptr);
+			if (IsInFocus())
+				GuiManager::GetInstance()->SetFocusWidget(nullptr);
 		}
 	}
 
