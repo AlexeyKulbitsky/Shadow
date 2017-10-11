@@ -211,7 +211,8 @@ namespace gui
 					}
 					else
 					{
-						m_state = Released;
+						m_state = Hovered;
+						OnHover(std::static_pointer_cast<Button>(shared_from_this()));
 					}
 
 					OnToggle(m_toggled, std::static_pointer_cast<Button>(shared_from_this()));
@@ -228,7 +229,7 @@ namespace gui
 			break;
 			case EventType::PointerUp:
 			{
-				if (!m_toggleable)
+				if (!m_toggleable || !m_toggled)
 				{
 					m_state = Hovered;
 				}

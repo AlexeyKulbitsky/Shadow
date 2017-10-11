@@ -40,7 +40,7 @@ void RotateGizmo::Render()
 
 	if (m_entity)
 	{
-		sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_entity->GetComponent(sh::Component::Type::Transform));
+		auto transformComponent = m_entity->GetComponent<sh::TransformComponent>();
 		if (transformComponent)
 		{
 			sh::math::Matrix4f matrix;
@@ -136,7 +136,7 @@ void RotateGizmo::OnMouseMoved(sh::u32 x, sh::u32 y)
 
 bool RotateGizmo::TryToSelect(sh::u32 x, sh::u32 y)
 {
-	sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_entity->GetComponent(sh::Component::Type::Transform));
+	auto transformComponent = m_entity->GetComponent<sh::TransformComponent>();
 	if (!transformComponent)
 		return false;
 
@@ -295,7 +295,7 @@ void RotateGizmo::Rotate(Axis::Type axis)
 	camera->BuildRay(old.x, old.y, rayOrigin, rayDirOld);
 	camera->BuildRay(current.x, current.y, rayOrigin, rayDirCurrent);
 
-	sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_entity->GetComponent(sh::Component::Type::Transform));
+	auto transformComponent = m_entity->GetComponent<sh::TransformComponent>();
 	sh::math::Vector3f pos = transformComponent->GetPosition();
 	sh::math::Matrix3f rotation = transformComponent->GetRotation().GetAsMatrix3();
 

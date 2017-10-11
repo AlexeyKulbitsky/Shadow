@@ -6,6 +6,16 @@
 
 namespace sh
 {
+	void TransformSystem::RegisterEntity(Entity* entity)
+	{
+		if (entity->GetComponent<TransformComponent>())
+		{
+			AddEntity(entity);
+		}
+	}
+
+	//////////////////////////////////////////////////////////////////
+
 	void TransformSystem::AddEntity(Entity* entity)
 	{
 		m_entities.push_back(entity);
@@ -31,7 +41,7 @@ namespace sh
 	{
 		for (auto entity : m_entities)
 		{
-			TransformComponent* transformComponent = static_cast<TransformComponent*>( entity->GetComponent(Component::Type::Transform) );
+			TransformComponent* transformComponent = entity->GetComponent<TransformComponent>();
 			if (transformComponent->NeedsToRecalculateWorldMatrix())
 			{
 				transformComponent->m_worldMatrix.SetIdentity();
@@ -45,7 +55,7 @@ namespace sh
 				transformComponent->m_worldMatrix.SetTranslation(translation);
 				transformComponent->m_worldMatrix = transformComponent->m_worldMatrix * rotation.GetAsMatrix4() * scaleMatrix;
 				
-				RenderComponent* renderComponent = static_cast<RenderComponent*>(entity->GetComponent(Component::Type::Render));
+				RenderComponent* renderComponent = entity->GetComponent<RenderComponent>();
 				if (renderComponent)
 				{
 					auto box = renderComponent->GetModel()->GetInitialBoundingBox().GetTransformed(transformComponent->m_worldMatrix);

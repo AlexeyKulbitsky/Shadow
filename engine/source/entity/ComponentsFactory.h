@@ -9,7 +9,6 @@ namespace sh
 	{
 	public:
 		virtual ~ComponentsFactory();
-		virtual Component* CreateComponent(Component::Type type);
 
 	protected:
 		std::vector<Component*> m_components;

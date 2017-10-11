@@ -19,29 +19,4 @@ namespace sh
 
 	//////////////////////////////////////////////////////////////////////////////////////////
 
-	Component* ComponentsFactory::CreateComponent(Component::Type type)
-	{
-		Component* component = nullptr;
-
-		switch (type)
-		{
-		case Component::Type::Transform:
-			component = new TransformComponent();
-			break;
-		case Component::Type::Render:
-			component = new RenderComponent();
-			break;
-		case Component::Type::Light:
-			component = new LightComponent();
-			break;
-		case Component::Type::Terrain:
-			component = new TerrainComponent();
-			break;
-		}
-		m_components.push_back(component);
-
-		return component;
-	}
-
-	//////////////////////////////////////////////////////////////////////////////////////////
 }

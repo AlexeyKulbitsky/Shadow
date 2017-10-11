@@ -16,20 +16,22 @@ namespace sh
 		const String& GetName() const { return m_name; }
 		void SetName(const String& name) { m_name = name; }
 		void AddComponent(Component* component);
-		void SetComponent(Component::Type type, Component* component);
-		Component* GetComponent(Component::Type type);
 
 		template<typename T>
 		T* GetComponent()
 		{
-			return nullptr;
+			const auto id = T::GetTypeId();
+			if (id >= m_components.size())
+				return nullptr;
+			return static_cast<T*>(m_components[id]);
 		}
 
 		bool IntersectsRay(const math::Vector3f& origin, const math::Vector3f& direction);
 
 	private:	
-		Component* m_components[static_cast<size_t>(Component::Type::Count)];
 		String m_name = "unnamed";
+
+		std::vector<Component*> m_components;
 	};
 }
 

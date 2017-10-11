@@ -5,14 +5,14 @@ namespace sh
 {
 	void System::RegisterEntity(Entity* entity)
 	{
-		for (auto componentType : m_componentTypes)
+		/*for (auto componentType : m_componentTypes)
 		{
 			if (entity->GetComponent(componentType) != nullptr)
 			{
 				AddEntity(entity);
 				return;
 			}
-		}
+		}*/
 	}
 
 	void System::AddEntity(Entity* entity)
@@ -29,7 +29,7 @@ namespace sh
 
 	}
 
-	void System::AddComponentType(Component::Type type)
+	/*void System::AddComponentType(Component::Type type)
 	{
 		for (auto componentType : m_componentTypes)
 		{
@@ -40,7 +40,7 @@ namespace sh
 		}
 
 		m_componentTypes.push_back(type);
-	}
+	}*/
 
 	void System::Clear()
 	{

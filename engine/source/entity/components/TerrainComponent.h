@@ -8,9 +8,10 @@ namespace sh
 
 	class TerrainComponent : public Component
 	{
+		COMPONENT
 	public:
 		virtual ~TerrainComponent();
-		virtual Type GetType() const override { return Component::Type::Terrain; }
+		//virtual Type GetType() const override { return Component::Type::Terrain; }
 		virtual void Load(const pugi::xml_node &node) override;
 		virtual void Save(pugi::xml_node &parent) override;
 

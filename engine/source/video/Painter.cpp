@@ -432,6 +432,9 @@ namespace sh
 			
 			for (u32 i = 0U; i < m_lines.linesBatches.size(); ++i)
 			{
+				if (m_lines.linesBatches[i].verticesCount == 0)
+					continue;
+
 				// Update current batch material params
 				const u32 materialIdx = m_lines.linesBatches[i].materialIndex;
 				auto& params = m_materials[materialIdx]->GetAutoParams();
@@ -506,6 +509,9 @@ namespace sh
 
 			for (u32 i = 0U; i < m_triangles.trianglesBatches.size(); ++i)
 			{
+				if (m_triangles.trianglesBatches[i].indicesCount == 0)
+					continue;
+
 				// Update current batch material params
 				const u32 materialIdx = m_triangles.trianglesBatches[i].materialIndex;
 				auto& params = m_materials[materialIdx]->GetAutoParams();

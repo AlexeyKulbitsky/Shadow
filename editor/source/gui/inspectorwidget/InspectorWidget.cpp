@@ -30,10 +30,9 @@ void InspectorWidget::SetEntity(sh::Entity* entity)
 		return;
 	}
 	// Transform component editor
-	sh::Component* component = entity->GetComponent(sh::Component::Type::Transform);
-	if (component)
+	auto transfromComponent = entity->GetComponent<sh::TransformComponent>();
+	if (transfromComponent)
 	{
-		auto transfromComponent = static_cast<sh::TransformComponent*>(component);
 		m_transformComponentWidget->SetTransformComponent(transfromComponent);
 		sh::u32 count = m_layout->GetItemsCount();
 		bool found = false;
@@ -49,10 +48,9 @@ void InspectorWidget::SetEntity(sh::Entity* entity)
 			m_layout->AddWidget(m_transformComponentWidget);
 	}
 	// Render component editor
-	component = entity->GetComponent(sh::Component::Type::Render);
-	if (component)
+	auto renderComponent = entity->GetComponent<sh::RenderComponent>();
+	if (renderComponent)
 	{
-		auto renderComponent = static_cast<sh::RenderComponent*>(component);
 		m_renderComponentWidget->SetRenderComponent(renderComponent);
 		sh::u32 count = m_layout->GetItemsCount();
 		bool found = false;

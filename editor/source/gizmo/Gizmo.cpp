@@ -83,7 +83,7 @@ void Gizmo::Render()
 
 	if (m_entity)
 	{
-		sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_entity->GetComponent(sh::Component::Type::Transform));
+		auto transformComponent = m_entity->GetComponent<sh::TransformComponent>();
 		if (transformComponent)
 		{
 			sh::math::Matrix4f matrix;
@@ -190,7 +190,7 @@ void Gizmo::DrawBoundingBox()
 {
 	sh::Device::GetInstance()->GetDriver()->GetPainter()->SetMaterial(m_aabbMaterial);
 	auto driver = sh::Device::GetInstance()->GetDriver();
-	auto renderCompoent = static_cast<sh::RenderComponent*>(m_entity->GetComponent(sh::Component::Type::Render));
+	auto renderCompoent = m_entity->GetComponent<sh::RenderComponent>();
 	driver->GetPainter()->DrawBox(renderCompoent->GetModel()->GetBoundingBox());
 	driver->GetPainter()->Flush();
 }

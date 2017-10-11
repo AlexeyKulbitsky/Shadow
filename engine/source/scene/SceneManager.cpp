@@ -19,6 +19,11 @@
 #include "../entity/systems/TransformSystem.h"
 #include "../entity/systems/LightSystem.h"
 #include "../entity/Component.h"
+#include "../entity/components/LightComponent.h"
+#include "../entity/components/RenderComponent.h"
+#include "../entity/components/TerrainComponent.h"
+#include "../entity/components/TransformComponent.h"
+
 #include "../entity/Entity.h"
 #include "../entity/ComponentsFactory.h"
 
@@ -39,16 +44,12 @@ namespace sh
 		SceneManager::SceneManager()
 		{
 			TransformSystem* transformSystem = new TransformSystem();
-			transformSystem->AddComponentType(Component::Type::Transform);
 			m_systems.push_back(transformSystem);
 
 			RenderSystem* renderSystem = new RenderSystem();
-			renderSystem->AddComponentType(Component::Type::Render);
-			renderSystem->AddComponentType(Component::Type::Terrain);
 			m_systems.push_back(renderSystem);
 
 			LightSystem* lightSystem = new LightSystem();
-			lightSystem->AddComponentType(Component::Type::Light);
 			m_systems.push_back(lightSystem);
 
 			m_picker.reset(new Picker());
@@ -110,22 +111,19 @@ namespace sh
 					{
 						pugi::xml_attribute componentName = componentNode.attribute("name");
 						String nameStr = componentName.as_string();
-						Component::Type componentType;
 						Component* component = nullptr;
 
 						if (nameStr == "transform")
-							componentType = Component::Type::Transform;
+							component = new TransformComponent();
 						else if (nameStr == "render")
-							componentType = Component::Type::Render;
+							component = new RenderComponent();
 						else if (nameStr == "light")
-							componentType = Component::Type::Light;
+							component = new LightComponent();
 						else if (nameStr == "terrain")
-							componentType = Component::Type::Terrain;
+							component = new TerrainComponent();
 						else
 							componentNode = componentNode.next_sibling();
 
-						//component = Component::Create(componentType);
-						component = m_componentsFactory->CreateComponent(componentType);
 						component->Load(componentNode);
 
 						entity->AddComponent(component);

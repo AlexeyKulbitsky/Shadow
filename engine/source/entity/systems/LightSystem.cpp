@@ -21,6 +21,16 @@ namespace sh
 
 	//////////////////////////////////////////////////////////////////
 
+	void LightSystem::RegisterEntity(Entity* entity)
+	{
+		if (entity->GetComponent<LightComponent>())
+		{
+			AddEntity(entity);
+		}
+	}
+
+	//////////////////////////////////////////////////////////////////
+
 	void LightSystem::AddEntity(Entity* entity)
 	{
 		m_entities.push_back(entity);
@@ -46,7 +56,7 @@ namespace sh
 	{
 		for (auto entity : m_entities)
 		{
-			LightComponent* lightComponent = static_cast<LightComponent*>(entity->GetComponent(Component::Type::Light));	
+			auto lightComponent = entity->GetComponent<LightComponent>();	
 			if (lightComponent->m_needsToRecalculate)
 			{
 				lightComponent->m_needsToRecalculate = false;

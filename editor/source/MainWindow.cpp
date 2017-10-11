@@ -367,7 +367,7 @@ void MainWindow::Update(sh::u64 delta)
 			sh::math::Vector3f targetPos(0.0f);
 			if (m_cameraTargetEntity)
 			{
-				sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_cameraTargetEntity->GetComponent(sh::Component::Type::Transform));
+				auto transformComponent = m_cameraTargetEntity->GetComponent<sh::TransformComponent>();
 				targetPos = transformComponent->GetPosition();
 			}
 
@@ -397,7 +397,7 @@ void MainWindow::Update(sh::u64 delta)
 			sh::math::Vector3f targetPos(0.0f);
 			if (m_cameraTargetEntity)
 			{
-				sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_cameraTargetEntity->GetComponent(sh::Component::Type::Transform));
+				auto transformComponent = m_cameraTargetEntity->GetComponent<sh::TransformComponent>();
 				targetPos = transformComponent->GetPosition();
 				sh::math::Planef plane(targetPos, camera->GetFrontVector() * (-1.0f));
 

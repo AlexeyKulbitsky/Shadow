@@ -40,7 +40,7 @@ namespace sh
 
 		void Picker::RegisterEntity(sh::Entity* entity)
 		{
-			if (!entity->GetComponent(sh::Component::Type::Render))
+			if (!entity->GetComponent<RenderComponent>())
 				return;
 
 			m_entities.push_back(entity);
@@ -91,7 +91,7 @@ namespace sh
 
 				m_color.Set(color);
 
-				sh::RenderComponent* renderComponent = static_cast<sh::RenderComponent*>(m_entities[i]->GetComponent(sh::Component::Type::Render));		
+				RenderComponent* renderComponent = m_entities[i]->GetComponent<RenderComponent>();		
 				const auto& model = renderComponent->GetModel();
 
 				size_t meshesCount = model->GetMeshesCount();
@@ -142,11 +142,11 @@ namespace sh
 
 			for (size_t i = 0, sz = m_entities.size(); i < sz; ++i)
 			{
-				sh::TransformComponent* transformComponent = static_cast<sh::TransformComponent*>(m_entities[i]->GetComponent(sh::Component::Type::Transform));		
+				TransformComponent* transformComponent = m_entities[i]->GetComponent<sh::TransformComponent>();		
 				if (!transformComponent)
 					continue;
 
-				sh::RenderComponent* renderComponent = static_cast<sh::RenderComponent*>(m_entities[i]->GetComponent(sh::Component::Type::Render));
+				RenderComponent* renderComponent = m_entities[i]->GetComponent<RenderComponent>();
 				if (!renderComponent)
 					continue;
 

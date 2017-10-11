@@ -29,11 +29,22 @@ namespace sh
 
 	//////////////////////////////////////////////////////////////////
 
+	void RenderSystem::RegisterEntity(Entity* entity)
+	{
+		if (entity->GetComponent<RenderComponent>() ||
+			entity->GetComponent<TerrainComponent>())
+		{
+			AddEntity(entity);
+		}
+	}
+
+	//////////////////////////////////////////////////////////////////
+
 	void RenderSystem::AddEntity(Entity* entity)
 	{
 		m_entities.push_back(entity);
 
-		RenderComponent* renderComponent = static_cast<RenderComponent*>( entity->GetComponent(Component::Type::Render) );
+		RenderComponent* renderComponent = entity->GetComponent<RenderComponent>();
 		if (renderComponent)
 		{
 			const scene::ModelPtr& model = renderComponent->GetModel();
@@ -44,7 +55,7 @@ namespace sh
 			}
 		}
 		
-		TerrainComponent* terrainComponent = static_cast<TerrainComponent*>(entity->GetComponent(Component::Type::Terrain));
+		TerrainComponent* terrainComponent = entity->GetComponent<TerrainComponent>();
 		if (terrainComponent)
 		{
 			const scene::ModelPtr& model = terrainComponent->GetModel();
@@ -83,10 +94,10 @@ namespace sh
 			scene::Model* model = nullptr;
 
 			// Process if it is usual model
-			RenderComponent* renderComponent = static_cast<RenderComponent*>( entity->GetComponent(Component::Type::Render) );
+			RenderComponent* renderComponent = entity->GetComponent<RenderComponent>();
 			if (renderComponent)
 			{
-				TransformComponent* transformComponent = static_cast<TransformComponent*>(entity->GetComponent(Component::Type::Transform));
+				TransformComponent* transformComponent = entity->GetComponent<TransformComponent>();
 				if (transformComponent)
 				{
 					renderComponent->GetModel()->SetPosition(transformComponent->GetPosition());
@@ -97,7 +108,7 @@ namespace sh
 			// Process if it is terrain
 			else
 			{
-				TerrainComponent* terrainComponent = static_cast<TerrainComponent*>(entity->GetComponent(Component::Type::Terrain));
+				TerrainComponent* terrainComponent = entity->GetComponent<TerrainComponent>();
 				if (terrainComponent)
 				{
 					terrainComponent->GetModel()->SetPosition(math::Vector3f(0.0f));

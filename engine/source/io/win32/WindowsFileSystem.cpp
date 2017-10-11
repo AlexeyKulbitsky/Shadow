@@ -117,17 +117,17 @@ namespace io
 
 	bool WindowsFileSystem::CreateFolder(const String& path)
 	{
-		return CreateDirectory(path.c_str(), NULL);
+		return static_cast<bool>(CreateDirectory(path.c_str(), NULL));
 	}
 
 	bool WindowsFileSystem::Rename(const String& oldName, const String& newName)
 	{
-		 return MoveFile(oldName.c_str(), newName.c_str());
+		 return static_cast<bool>(MoveFile(oldName.c_str(), newName.c_str()));
 	}
 
 	bool WindowsFileSystem::Delete(const String& filePath)
 	{
-		return DeleteFile(filePath.c_str());
+		return static_cast<bool>(DeleteFile(filePath.c_str()));
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -8,39 +8,27 @@ namespace sh
 	static const size_t MaxComponents = 32;
 	class Entity;
 
-	struct IdCounter
+	struct ComponentTypeIdGenerator
 	{
-		static size_t counter;
-		static size_t GetId() { return counter++; }
+		static size_t currentId;
+		static size_t GetAvailableId() { return currentId++; }
 	};
 
 #define COMPONENT \
-static uintptr_t GetTypeId() { size_t value; return reinterpret_cast<uintptr_t>(&value); }
+public: \
+static size_t GetTypeId() { static size_t id = ComponentTypeIdGenerator::GetAvailableId(); return id; } \
+virtual size_t GetId() override { return GetTypeId(); }
 
 	class Component
 	{
 	public:
-		enum class Type
-		{
-			Transform = 0,
-			Render,
-			Light,
-			Terrain,
-
-			Count
-		};
-		
-
-		static Component* Create(Type type);
 		virtual ~Component() {}
-		virtual Type GetType() const = 0;
+		virtual size_t GetId() = 0;
 		virtual void Load(const pugi::xml_node &node) = 0;
 		virtual void Save(pugi::xml_node &parent) = 0;
 
 		void SetParentEntity(Entity* entity) { m_parentEntity = entity; }
 		Entity* GetParentEntity() const { return m_parentEntity; }
-
-		static size_t GetId() { static size_t id = IdCounter::GetId(); return id; }
 
 	protected:
 		Bitset<MaxComponents> m_mask;
