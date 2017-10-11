@@ -6,6 +6,8 @@
 
 namespace sh
 {
+	size_t IdCounter::counter = 0;
+
 	Component* Component::Create(Component::Type type)
 	{
 		switch (type)

@@ -24,6 +24,7 @@
 #include <memory>
 #include <regex>
 #include <functional>
+#include <bitset>
 
 namespace sh
 {
@@ -47,6 +48,9 @@ namespace sh
 
 	template<typename T>
 	using WPtr = std::weak_ptr<T>;
+
+	template<size_t N>
+	using Bitset = std::bitset<N>;
 
 }
 

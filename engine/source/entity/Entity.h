@@ -19,6 +19,12 @@ namespace sh
 		void SetComponent(Component::Type type, Component* component);
 		Component* GetComponent(Component::Type type);
 
+		template<typename T>
+		T* GetComponent()
+		{
+			return nullptr;
+		}
+
 		bool IntersectsRay(const math::Vector3f& origin, const math::Vector3f& direction);
 
 	private:	

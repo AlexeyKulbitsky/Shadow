@@ -5,7 +5,17 @@
 
 namespace sh
 {
+	static const size_t MaxComponents = 32;
 	class Entity;
+
+	struct IdCounter
+	{
+		static size_t counter;
+		static size_t GetId() { return counter++; }
+	};
+
+#define COMPONENT \
+static uintptr_t GetTypeId() { size_t value; return reinterpret_cast<uintptr_t>(&value); }
 
 	class Component
 	{
@@ -19,6 +29,7 @@ namespace sh
 
 			Count
 		};
+		
 
 		static Component* Create(Type type);
 		virtual ~Component() {}
@@ -29,7 +40,10 @@ namespace sh
 		void SetParentEntity(Entity* entity) { m_parentEntity = entity; }
 		Entity* GetParentEntity() const { return m_parentEntity; }
 
+		static size_t GetId() { static size_t id = IdCounter::GetId(); return id; }
+
 	protected:
+		Bitset<MaxComponents> m_mask;
 		Entity* m_parentEntity = nullptr;
 	};
 }
