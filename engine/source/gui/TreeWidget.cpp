@@ -228,7 +228,15 @@ namespace gui
 
 	void TreeWidget::SetSelectedItem(TreeItem* item)
 	{
+		if (m_selectedItem)
+		{
+			m_selectedItem->SetToggled(false);
+		}
 		m_selectedItem = item;
+		if (m_selectedItem)
+		{
+			m_selectedItem->SetToggled(true);
+		}
 	}
 
 	void TreeWidget::Render(sh::video::Painter* painter)

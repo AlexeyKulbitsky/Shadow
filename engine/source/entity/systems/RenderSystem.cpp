@@ -111,8 +111,17 @@ namespace sh
 				TerrainComponent* terrainComponent = entity->GetComponent<TerrainComponent>();
 				if (terrainComponent)
 				{
-					terrainComponent->GetModel()->SetPosition(math::Vector3f(0.0f));
-					terrainComponent->GetModel()->SetWorldMatrix(math::Matrix4f::Identity());
+					TransformComponent* transformComponent = entity->GetComponent<TransformComponent>();
+					if (transformComponent)
+					{
+						terrainComponent->GetModel()->SetPosition(transformComponent->GetPosition());
+						terrainComponent->GetModel()->SetWorldMatrix(transformComponent->GetWorldMatrix());
+					}
+					else
+					{
+						terrainComponent->GetModel()->SetPosition(math::Vector3f(0.0f));
+						terrainComponent->GetModel()->SetWorldMatrix(math::Matrix4f::Identity());
+					}
 					model = terrainComponent->GetModel().get();
 				}
 			}

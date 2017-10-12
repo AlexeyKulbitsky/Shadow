@@ -31,8 +31,9 @@ namespace gui
 
 	private:
 		SPtr<Button> m_button;
+		math::Recti m_sliderRect;
 		bool m_dragStarted = false;
-		sh::math::Vector2i m_startPos;
+		s32 m_dragPointOffset = 0;
 
 		math::Vector2f m_valueEdges = math::Vector2f(0.0f, 10.0f);
 		float m_value = 0.0f;

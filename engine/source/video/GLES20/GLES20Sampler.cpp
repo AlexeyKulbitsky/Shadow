@@ -11,7 +11,7 @@ namespace sh
 		GLES20Sampler::GLES20Sampler(const SamplerDescription& description)
 		{
 			m_description = description;
-			m_texture = TextureLoader::GetInstance()->GetWhiteTexture();
+			m_texture = TextureLoader::GetInstance()->GetCheckerTexture();
 		}
 		
 	}

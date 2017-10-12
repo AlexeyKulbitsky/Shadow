@@ -22,47 +22,28 @@ void InspectorWidget::SetEntity(sh::Entity* entity)
 {
 	m_entity = entity;
 
+	// Clear layout
+	m_transformComponentWidget->SetTransformComponent(nullptr);
+	m_renderComponentWidget->SetRenderComponent(nullptr);
+	m_layout->Clear();
+
 	if (!entity)
 	{
-		m_transformComponentWidget->SetTransformComponent(nullptr);
-		m_renderComponentWidget->SetRenderComponent(nullptr);
-		m_layout->Clear();
 		return;
 	}
+
 	// Transform component editor
 	auto transfromComponent = entity->GetComponent<sh::TransformComponent>();
 	if (transfromComponent)
 	{
 		m_transformComponentWidget->SetTransformComponent(transfromComponent);
-		sh::u32 count = m_layout->GetItemsCount();
-		bool found = false;
-		for (sh::u32 i = 0U; i < count; ++i)
-		{
-			if (m_transformComponentWidget == m_layout->GetItem(i)->GetWidget())
-			{
-				found = true;
-				break;
-			}
-		}
-		if (!found)
-			m_layout->AddWidget(m_transformComponentWidget);
+		m_layout->AddWidget(m_transformComponentWidget);
 	}
 	// Render component editor
 	auto renderComponent = entity->GetComponent<sh::RenderComponent>();
 	if (renderComponent)
 	{
 		m_renderComponentWidget->SetRenderComponent(renderComponent);
-		sh::u32 count = m_layout->GetItemsCount();
-		bool found = false;
-		for (sh::u32 i = 0U; i < count; ++i)
-		{
-			if (m_renderComponentWidget == m_layout->GetItem(i)->GetWidget())
-			{
-				found = true;
-				break;
-			}
-		}
-		if (!found)
-			m_layout->AddWidget(m_renderComponentWidget);
+		m_layout->AddWidget(m_renderComponentWidget);
 	}
 }

@@ -22,10 +22,16 @@ void HierarchyTreeWidget::SetSelectedItem(sh::gui::TreeItem* item)
 	sh::gui::TreeWidget::SetSelectedItem(item);
 	if (!item)
 		return;
-
-	auto hierarchyItem = static_cast<HeirarchyTreeItem*>(item);
-	auto entity = hierarchyItem->GetEntity();
-
+	if (item)
+	{
+		auto hierarchyItem = static_cast<HeirarchyTreeItem*>(item);
+		auto entity = hierarchyItem->GetEntity();
+		m_hierarchyWidget->OnEntitySelected(entity);
+	}
+	else
+	{
+		m_hierarchyWidget->OnEntitySelected(nullptr);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -43,12 +49,12 @@ HierarchyWidget::HierarchyWidget()
 	m_layout->AddWidget(slider);
 
 	m_treeWidget.reset(new HierarchyTreeWidget());
+	m_treeWidget->SetHierarchyWidget(this);
 	m_layout->AddWidget(m_treeWidget);
 }
 
 HierarchyWidget::~HierarchyWidget()
 {
-
 }
 
 void HierarchyWidget::AddEntity(sh::Entity* entity)
@@ -59,4 +65,23 @@ void HierarchyWidget::AddEntity(sh::Entity* entity)
 
 void HierarchyWidget::SetSelectedEntity(sh::Entity* entity)
 {
+	if (entity)
+	{
+		const auto itemsCount = m_treeWidget->GetLayout()->GetItemsCount();
+		for (size_t i = 0; i < itemsCount; ++i)
+		{
+			auto hierarchyItem = static_cast<HeirarchyTreeItem*>(m_treeWidget->GetLayout()->GetWidget(i).get());
+			auto itemEntity = hierarchyItem->GetEntity();
+			if (itemEntity == entity)
+			{
+				m_treeWidget->SetSelectedItem(hierarchyItem);
+				return;
+			}
+		}
+		m_treeWidget->SetSelectedItem(nullptr);
+	}
+	else
+	{
+		m_treeWidget->SetSelectedItem(nullptr);
+	}
 }

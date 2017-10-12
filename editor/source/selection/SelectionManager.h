@@ -30,10 +30,13 @@ public:
 	void SetScaleButton(const sh::gui::ButtonPtr& button);
 	void SetArrowButton(const sh::gui::ButtonPtr& button);
 
-
+	// Signal comes from one of gizmo button for switching between gizmo modes
 	void OnGizmoButtonToggled(const sh::gui::ButtonPtr& sender);
+
+	// Signal comes from hierarchy widget when users click on it's tree view
 	void OnEntityFromListSelected(sh::Entity* entity);
 
+	// Signals come from gizmos whe user changes one of the transform components using them
 	void OnPositionChanged(const sh::math::Vector3f&);
 	void OnRotationChanged(const sh::math::Quaternionf&);
 	void OnScaleChanged(const sh::math::Vector3f&);

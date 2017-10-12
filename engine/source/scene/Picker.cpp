@@ -13,6 +13,7 @@
 #include "../entity/Entity.h"
 #include "../entity/Component.h"
 #include "../entity/components/RenderComponent.h"
+#include "../entity/components/TerrainComponent.h"
 #include "../entity/components/TransformComponent.h"
 
 namespace sh
@@ -40,7 +41,8 @@ namespace sh
 
 		void Picker::RegisterEntity(sh::Entity* entity)
 		{
-			if (!entity->GetComponent<RenderComponent>())
+			if (!entity->GetComponent<RenderComponent>() && 
+				!entity->GetComponent<TerrainComponent>())
 				return;
 
 			m_entities.push_back(entity);
@@ -91,8 +93,19 @@ namespace sh
 
 				m_color.Set(color);
 
-				RenderComponent* renderComponent = m_entities[i]->GetComponent<RenderComponent>();		
-				const auto& model = renderComponent->GetModel();
+				ModelPtr model;
+
+				RenderComponent* renderComponent = m_entities[i]->GetComponent<RenderComponent>();
+				if (renderComponent)
+				{
+					model = renderComponent->GetModel();
+				}
+				else
+				{
+					TerrainComponent* terrainComponent = m_entities[i]->GetComponent<TerrainComponent>();
+					model = terrainComponent->GetModel();
+				}
+				
 
 				size_t meshesCount = model->GetMeshesCount();
 				for (size_t j = 0; j < meshesCount; ++j)

@@ -247,7 +247,7 @@ namespace sh
 
 	const video::TexturePtr& ResourceManager::GetDefaultTexture()
 	{
-		return video::TextureLoader::GetInstance()->GetWhiteTexture();
+		return video::TextureLoader::GetInstance()->GetCheckerTexture();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////

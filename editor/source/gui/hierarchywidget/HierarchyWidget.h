@@ -17,12 +17,17 @@ private:
 };
 
 //////////////////////////////////////////////////////////////////////////////////////
+class HierarchyWidget;
 
 class HierarchyTreeWidget : public sh::gui::TreeWidget
 {
 public:
 	HierarchyTreeWidget();
+	void SetHierarchyWidget(HierarchyWidget* widget) { m_hierarchyWidget = widget; }
 	virtual void SetSelectedItem(sh::gui::TreeItem* item) override;
+
+private:
+	HierarchyWidget* m_hierarchyWidget = nullptr;
 };
 
 //////////////////////////////////////////////////////////////////////////////////////

@@ -76,6 +76,36 @@ namespace sh
 			return m_whiteTexture; 
 		}
 
+		const TexturePtr& TextureLoader::GetCheckerTexture()
+		{
+			if (!m_checkerTexture)
+			{
+				const u32 textureSize = 64U;
+				const u32 textureHalfSize = textureSize / 2;
+				std::vector<u32> data(textureSize * textureSize);
+				const u32 blackPattern = 0xFF0000FF;
+				const u32 brightPattern = 0xFFFFFFFF;
+				for (size_t i = 0; i < textureSize; ++i)
+				{
+					for (size_t j = 0; j < textureSize; ++j)
+					{
+						bool flag = (i / textureHalfSize - j / textureHalfSize) == 0;
+						data[i * textureSize + j] = flag ? blackPattern : brightPattern;
+					}
+				}
+
+				video::TextureDescription textureDesc;
+				textureDesc.type = TEX_TYPE_TEXTURE_2D;
+				textureDesc.width = textureSize;
+				textureDesc.height = textureSize;
+				textureDesc.format = TextureFormat::RGBA;
+
+				m_checkerTexture = video::Texture::Create(textureDesc);
+				m_checkerTexture->SetData(0U, (char*)data.data());
+			}
+			return m_checkerTexture;
+		}
+
 		//////////////////////////////////////////////////////////////
 
 		TexturePtr TextureLoader::LoadSTB(const String& filename)

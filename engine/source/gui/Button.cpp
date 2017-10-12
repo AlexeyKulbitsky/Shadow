@@ -157,7 +157,7 @@ namespace gui
 										 m_sprites[m_state]->GetColor());
 		painter->DrawRect(upperLeft, downRight);
 
-		Widget::Render(painter);
+		//Widget::Render(painter);
 
 		m_text->Render(painter);
 	}
