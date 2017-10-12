@@ -234,82 +234,9 @@ void MainWindow::Init()
 
 	sh::gui::VerticalLayoutPtr mainVerticalLayout(new sh::gui::VerticalLayout());
 
-	// Menu bar
-	sh::gui::MenuBarPtr menuBar(new sh::gui::MenuBar());
-	sh::gui::ButtonPtr menuButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
-	sh::gui::ButtonPtr editButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
-	menuButton->SetToggleable(true);
-	const auto& fileMenu = menuBar->AddMenu("File", menuButton);
-	const auto& editMenu = menuBar->AddMenu("Edit", editButton);
-
-	sh::gui::ButtonPtr openSceneButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
-	openSceneButton->SetText("Open scene...");
-	openSceneButton->OnRelease.Connect(std::bind(&MainWindow::OpenScene, this));
-	fileMenu->AddItem(openSceneButton);
-
-	sh::gui::ButtonPtr saveSceneButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
-	saveSceneButton->SetText("Save scene...");
-	saveSceneButton->OnRelease.Connect(std::bind(&MainWindow::SaveScene, this));
-	fileMenu->AddItem(saveSceneButton);
-
-	sh::gui::ButtonPtr exitButton1(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
-	exitButton1->SetText("Exit");
-	exitButton1->OnRelease.Connect(std::bind(&MainWindow::Close, this));
-	fileMenu->AddItem(exitButton1);
 	
-	////////////////////////////////////////////////////////
-
-	sh::gui::ButtonPtr edit1Button(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
-	edit1Button->SetText("Edit 1");
-	editMenu->AddItem(edit1Button);
-
-	sh::gui::ButtonPtr edit2Button(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
-	edit2Button->SetText("Edit 2");
-	editMenu->AddItem(edit2Button);
-
-
-
-	sh::gui::MenuPtr subMenu(new sh::gui::Menu());
-	sh::gui::ButtonPtr sub1Button(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
-	sub1Button->SetText("Submenu 1");
-	subMenu->AddItem(sub1Button);
-
-	sh::gui::ButtonPtr sub2Button(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
-	sub2Button->SetText("Submenu 2");
-	subMenu->AddItem(sub2Button);
-
-	sh::gui::ButtonPtr sub3Button(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
-	sub3Button->SetText("Submenu 3");
-	subMenu->AddItem(sub3Button);
-
-	editMenu->AddSubmenu("Edit 2", subMenu);
-	mainVerticalLayout->AddWidget(menuBar);
-	
-
-	// Tool bar
-	sh::gui::ButtonPtr moveGizmoButton = guiMgr->GetStyle()->GetButton("MoveGizmoButton");
-	moveGizmoButton->SetToggleable(true);
-	SelectionManager::GetInstance()->SetMoveButton(moveGizmoButton);
-
-	sh::gui::ButtonPtr rotateGizmoButton = guiMgr->GetStyle()->GetButton("RotateGizmoButton");
-	rotateGizmoButton->SetToggleable(true);
-	SelectionManager::GetInstance()->SetRotateButton(rotateGizmoButton);
-
-	sh::gui::ButtonPtr scaleGizmoButton = guiMgr->GetStyle()->GetButton("ScaleGizmoButton");
-	scaleGizmoButton->SetToggleable(true);
-	SelectionManager::GetInstance()->SetScaleButton(scaleGizmoButton);
-
-	sh::gui::ButtonPtr arrowButton = guiMgr->GetStyle()->GetButton("ArrowButton");
-	arrowButton->SetToggleable(true);
-	SelectionManager::GetInstance()->SetArrowButton(arrowButton);
-
-	sh::gui::ToolBarPtr toolBar(new sh::gui::ToolBar());
-	toolBar->AddItem(arrowButton);
-	toolBar->AddItem(moveGizmoButton);
-	toolBar->AddItem(rotateGizmoButton);
-	toolBar->AddItem(scaleGizmoButton);
-
-	mainVerticalLayout->AddWidget(toolBar);
+	mainVerticalLayout->AddWidget(CreateMenuBar());
+	mainVerticalLayout->AddWidget(CreateToolbar());
 
 	// Inspector
 	m_inspectorWidget.reset(new InspectorWidget());
@@ -320,8 +247,8 @@ void MainWindow::Init()
 	SelectionManager::GetInstance()->SetInspectorWidget(m_inspectorWidget);
 
 	sh::gui::VerticalLayoutPtr assetsHierarchyLayout(new sh::gui::VerticalLayout());
-	assetsHierarchyLayout->AddWidget(m_assetsWidget);
 	assetsHierarchyLayout->AddWidget(m_hierarchyWidget);
+	assetsHierarchyLayout->AddWidget(m_assetsWidget);
 
 	sh::gui::VerticalLayoutPtr inspectorLayout(new sh::gui::VerticalLayout());
 	inspectorLayout->AddWidget(m_inspectorWidget);
@@ -437,4 +364,87 @@ void MainWindow::Update(sh::u64 delta)
 	sh::gui::GuiManager::GetInstance()->Render();
 
 	driver->EndRendering();
+}
+
+sh::gui::MenuBarPtr MainWindow::CreateMenuBar()
+{
+	// Menu bar
+	sh::gui::MenuBarPtr menuBar(new sh::gui::MenuBar());
+	sh::gui::ButtonPtr menuButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	sh::gui::ButtonPtr editButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	menuButton->SetToggleable(true);
+	const auto& fileMenu = menuBar->AddMenu("File", menuButton);
+	const auto& editMenu = menuBar->AddMenu("Edit", editButton);
+
+	sh::gui::ButtonPtr openSceneButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	openSceneButton->SetText("Open scene...");
+	openSceneButton->OnRelease.Connect(std::bind(&MainWindow::OpenScene, this));
+	fileMenu->AddItem(openSceneButton);
+
+	sh::gui::ButtonPtr saveSceneButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	saveSceneButton->SetText("Save scene...");
+	saveSceneButton->OnRelease.Connect(std::bind(&MainWindow::SaveScene, this));
+	fileMenu->AddItem(saveSceneButton);
+
+	sh::gui::ButtonPtr exitButton1(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	exitButton1->SetText("Exit");
+	exitButton1->OnRelease.Connect(std::bind(&MainWindow::Close, this));
+	fileMenu->AddItem(exitButton1);
+
+	////////////////////////////////////////////////////////
+
+	sh::gui::ButtonPtr edit1Button(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	edit1Button->SetText("Edit 1");
+	editMenu->AddItem(edit1Button);
+
+	sh::gui::ButtonPtr edit2Button(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	edit2Button->SetText("Edit 2");
+	editMenu->AddItem(edit2Button);
+
+	sh::gui::MenuPtr subMenu(new sh::gui::Menu());
+	sh::gui::ButtonPtr sub1Button(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	sub1Button->SetText("Submenu 1");
+	subMenu->AddItem(sub1Button);
+
+	sh::gui::ButtonPtr sub2Button(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	sub2Button->SetText("Submenu 2");
+	subMenu->AddItem(sub2Button);
+
+	sh::gui::ButtonPtr sub3Button(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	sub3Button->SetText("Submenu 3");
+	subMenu->AddItem(sub3Button);
+
+	editMenu->AddSubmenu("Edit 2", subMenu);
+
+	return menuBar;
+}
+
+sh::gui::ToolBarPtr MainWindow::CreateToolbar()
+{
+	// Tool bar
+	auto guiMgr = sh::gui::GuiManager::GetInstance();
+
+	sh::gui::ButtonPtr moveGizmoButton = guiMgr->GetStyle()->GetButton("MoveGizmoButton");
+	moveGizmoButton->SetToggleable(true);
+	SelectionManager::GetInstance()->SetMoveButton(moveGizmoButton);
+
+	sh::gui::ButtonPtr rotateGizmoButton = guiMgr->GetStyle()->GetButton("RotateGizmoButton");
+	rotateGizmoButton->SetToggleable(true);
+	SelectionManager::GetInstance()->SetRotateButton(rotateGizmoButton);
+
+	sh::gui::ButtonPtr scaleGizmoButton = guiMgr->GetStyle()->GetButton("ScaleGizmoButton");
+	scaleGizmoButton->SetToggleable(true);
+	SelectionManager::GetInstance()->SetScaleButton(scaleGizmoButton);
+
+	sh::gui::ButtonPtr arrowButton = guiMgr->GetStyle()->GetButton("ArrowButton");
+	arrowButton->SetToggleable(true);
+	SelectionManager::GetInstance()->SetArrowButton(arrowButton);
+
+	sh::gui::ToolBarPtr toolBar(new sh::gui::ToolBar());
+	toolBar->AddItem(arrowButton);
+	toolBar->AddItem(moveGizmoButton);
+	toolBar->AddItem(rotateGizmoButton);
+	toolBar->AddItem(scaleGizmoButton);
+
+	return toolBar;
 }

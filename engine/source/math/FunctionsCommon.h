@@ -67,6 +67,24 @@ namespace sh
 		{
 			return std::abs(value);
 		}
+
+		template<typename T>
+		T Min(const T& a, const T& b)
+		{
+			return std::min(a, b);
+		}
+
+		template<typename T>
+		T Max(const T& a, const T& b)
+		{
+			return std::max(a, b);
+		}
+
+		template<typename T>
+		T Clamp(const T& value, const T& min, const T& max)
+		{
+			return Min(Max(value, min), max);
+		}
 	}
 }
 

@@ -34,6 +34,10 @@ public:
 	virtual void Update(sh::u64 delta) override;
 
 private:
+	sh::gui::MenuBarPtr CreateMenuBar();
+	sh::gui::ToolBarPtr CreateToolbar();
+
+private:
 	sh::SPtr<InspectorWidget> m_inspectorWidget;
 	sh::SPtr<HierarchyWidget> m_hierarchyWidget;
 	sh::SPtr<AssetsWidget> m_assetsWidget;

@@ -37,9 +37,11 @@ public:
 	virtual ~ScaleGizmo();
 	virtual void Render() override;
 	virtual void Process() override;
-	virtual void OnMouseMoved(sh::u32 x, sh::u32 y) override;
+	virtual bool OnMouseMoved(sh::u32 x, sh::u32 y) override;
 	virtual bool TryToSelect(sh::u32 x, sh::u32 y) override;
 	virtual bool IsActive() const override;
+
+	sh::Event<void, const sh::math::Vector3f&> scaleChanged;
 
 private:
 	void CreateArrow(Axis::Type type);

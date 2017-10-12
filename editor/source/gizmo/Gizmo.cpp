@@ -2,15 +2,15 @@
 
 ///////////////////////////////////////////////////////////////////
 
+sh::math::Vector3f Gizmo::s_position;
+sh::math::Quaternionf Gizmo::s_rotation;
+sh::math::Vector3f Gizmo::s_scale;
+
 Gizmo::Gizmo()
 {
 	m_material.reset(new sh::video::Material());
 	m_material->SetRenderTechnique("editor_base_color.rt");
 	const auto& info = m_material->GetRenderPipeline()->GetParamsInfo();
-
-	m_aabbMaterial.reset(new sh::video::Material());
-	m_aabbMaterial->SetRenderTechnique("vertex_color.rt");
-	
 
 	float radius = 0.1f;
 	float height = 3.0f;
@@ -72,8 +72,7 @@ Gizmo::~Gizmo()
 
 void Gizmo::Render()
 {
-	if (!m_axises[0].lineModel || !m_axises[1].lineModel || !m_axises[2].lineModel ||
-		!m_entity)
+	if (!m_enabled || !m_axises[0].lineModel || !m_axises[1].lineModel || !m_axises[2].lineModel)
 		return;
 
 	sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
@@ -81,31 +80,24 @@ void Gizmo::Render()
 	sh::math::Matrix4f viewMatrix = camera->GetViewMatrix();
 	sh::math::Matrix4f projectionMatrix = camera->GetProjectionMatrix();
 
-	if (m_entity)
+	sh::math::Matrix4f matrix;
+	matrix.SetIdentity();
+
+	sh::math::Vector3f position = s_position;
+	sh::math::Quaternionf rotation = s_rotation;
+	sh::f32 scaleFactor = (camera->GetPosition() - position).GetLength() / 35.0f;
+	sh::math::Vector3f scale(scaleFactor);
+
+	matrix.SetScale(scale);
+	matrix.SetTranslation(position);
+	matrix = matrix * rotation.GetAsMatrix4();
+
+	sh::math::Matrix4f wvpMatrix = projectionMatrix * viewMatrix * matrix;
+	wvpMatrix.Transpose();
+
+	for (size_t i = 0; i < Axis::COUNT; ++i)
 	{
-		auto transformComponent = m_entity->GetComponent<sh::TransformComponent>();
-		if (transformComponent)
-		{
-			sh::math::Matrix4f matrix;
-			matrix.SetIdentity();
-
-			sh::math::Vector3f position = transformComponent->GetPosition();
-			sh::math::Quaternionf rotation = transformComponent->GetRotation();
-			sh::f32 scaleFactor = (camera->GetPosition() - position).GetLength() / 35.0f;
-			sh::math::Vector3f scale(scaleFactor);
-
-			matrix.SetScale(scale);
-			matrix.SetTranslation(position);
-			matrix = matrix * rotation.GetAsMatrix4();
-
-			sh::math::Matrix4f wvpMatrix = projectionMatrix * viewMatrix * matrix;
-			wvpMatrix.Transpose();
-
-			for (size_t i = 0; i < Axis::COUNT; ++i)
-			{
-				m_axises[i].wvpMtrix.Set(wvpMatrix);
-			}
-		}
+		m_axises[i].wvpMtrix.Set(wvpMatrix);
 	}
 
 
@@ -128,83 +120,54 @@ void Gizmo::Render()
 			driver->DrawIndexed(0, renderable->GetIndexBuffer()->GetIndicesCount());
 		}
 	}
-
-	DrawBoundingBox();
 }
 
 ///////////////////////////////////////////////////////////////////
 
-void Gizmo::OnMouseEvent(int x, int y, sh::MouseEventType type, sh::MouseCode code)
+bool Gizmo::OnMouseEvent(int x, int y, sh::MouseEventType type, sh::MouseCode code)
 {
 	if (code != sh::MouseCode::ButtonLeft)
-		return;
+		return false;
 
 	switch (type)
 	{
 		case sh::MouseEventType::ButtonPressed:
-			OnMousePressed(x, y);
+			return OnMousePressed(x, y);
 			break;
 		case sh::MouseEventType::ButtonReleased:
-			OnMouseReleased(x, y);
+			return OnMouseReleased(x, y);
 			break;
 		case sh::MouseEventType::Moved:
-			OnMouseMoved(x, y);
+			return OnMouseMoved(x, y);
 			break;
 		default:
 			break;
 	}
+	return false;
 }
 
 ///////////////////////////////////////////////////////////////////
 
-void Gizmo::OnMousePressed(sh::u32 x, sh::u32 y) 
+bool Gizmo::OnMousePressed(sh::u32 x, sh::u32 y)
 {
 	if (!TryToSelect(x, y))
 	{
-		return;
+		return false;
 	}
 	m_mousePressed = true;
+	return true;
 }
 
 ///////////////////////////////////////////////////////////////////
 
-void Gizmo::OnMouseReleased(sh::u32 x, sh::u32 y) 
+bool Gizmo::OnMouseReleased(sh::u32 x, sh::u32 y)
 {
 	if (!TryToSelect(x, y) && !m_mousePressed)
 	{
-		const auto& picker = sh::Device::GetInstance()->GetSceneManager()->GetPicker();
-		auto result = picker->TryToPick(x, y);
-		if (result != m_entity)
-		{
-			SetEntity(nullptr);
-			OnSelectedEntityChanged(nullptr);
-		}
-		return;
+		return false;
 	}
 	m_mousePressed = false;
-}
-
-///////////////////////////////////////////////////////////////////
-
-void Gizmo::DrawBoundingBox()
-{
-	sh::Device::GetInstance()->GetDriver()->GetPainter()->SetMaterial(m_aabbMaterial);
-	auto driver = sh::Device::GetInstance()->GetDriver();
-	auto renderCompoent = m_entity->GetComponent<sh::RenderComponent>();
-	driver->GetPainter()->DrawBox(renderCompoent->GetModel()->GetBoundingBox());
-	driver->GetPainter()->Flush();
-}
-
-///////////////////////////////////////////////////////////////////
-
-void Gizmo::SetEntity(sh::Entity* entity)
-{
-	m_entity = entity;
-	m_enabled = false;
-	if (m_entity)
-	{
-		m_enabled = true;
-	}
+	return true;
 }
 
 ///////////////////////////////////////////////////////////////////

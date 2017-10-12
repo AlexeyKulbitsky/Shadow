@@ -34,6 +34,10 @@ public:
 	void OnGizmoButtonToggled(const sh::gui::ButtonPtr& sender);
 	void OnEntityFromListSelected(sh::Entity* entity);
 
+	void OnPositionChanged(const sh::math::Vector3f&);
+	void OnRotationChanged(const sh::math::Quaternionf&);
+	void OnScaleChanged(const sh::math::Vector3f&);
+
 private:
 	sh::Entity* m_selectedEntity = nullptr;
 
@@ -55,6 +59,8 @@ private:
 	sh::gui::ButtonPtr m_arrowButton;
 
 	sh::gui::ButtonGroupPtr m_gizmoButtonGroup;
+
+	sh::video::MaterialPtr m_aabbMaterial;
 };
 
 #endif

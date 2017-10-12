@@ -30,31 +30,35 @@ public:
 	virtual ~Gizmo();
 	virtual void Render();
 	virtual void Process(){}
-	virtual void OnMouseEvent(int x, int y, sh::MouseEventType type, sh::MouseCode code);
-	virtual void OnMousePressed(sh::u32 x, sh::u32 y);
-	virtual void OnMouseReleased(sh::u32 x, sh::u32 y);
-	virtual void OnMouseMoved(sh::u32 x, sh::u32 y) {}
+	virtual bool OnMouseEvent(int x, int y, sh::MouseEventType type, sh::MouseCode code);
+	virtual bool OnMousePressed(sh::u32 x, sh::u32 y);
+	virtual bool OnMouseReleased(sh::u32 x, sh::u32 y);
+	virtual bool OnMouseMoved(sh::u32 x, sh::u32 y) { return false; }
 	virtual bool TryToSelect(sh::u32 x, sh::u32 y) { return false; }
 	virtual bool IsActive() const { return false; }
-	void DrawBoundingBox();
 
 	bool IsEnabled() const { return m_enabled; }
-	void SetEntity(sh::Entity* entity);
-	sh::Entity* GetEntity() { return m_entity; }
-	void SetTransformWidget(const sh::SPtr<TransformComponentWidget>& widget) { m_transformWidget = widget; }
+	void SetEnabled(bool enabled) { m_enabled = enabled; }
 
-	sh::Event<void, sh::Entity*> OnSelectedEntityChanged;
+	// Methods are shared between all children
+	static void SetPosition(const sh::math::Vector3f& position) { s_position = position; }
+	static const sh::math::Vector3f& GetPosition() { return s_position; }
+	static void SetRotation(const sh::math::Quaternionf& rotation) { s_rotation = rotation; }
+	static const sh::math::Quaternionf& GetRotation() { return s_rotation; }
+	static void SetScale(const sh::math::Vector3f& scale) { s_scale = scale; }
+	static const sh::math::Vector3f& GetScale() { return s_scale; }
 
 protected:
-	sh::Entity* m_entity = nullptr;
 	bool m_enabled = false;
 	bool m_mousePressed = false;
-	sh::SPtr<TransformComponentWidget> m_transformWidget;
+
+	static sh::math::Vector3f s_position;
+	static sh::math::Quaternionf s_rotation;
+	static sh::math::Vector3f s_scale;
 
 private:
 	Axis m_axises[3];
 	sh::video::MaterialPtr m_material;
-	sh::video::MaterialPtr m_aabbMaterial;
 };
 
 #endif

@@ -27,10 +27,8 @@ RotateGizmo::~RotateGizmo()
 
 void RotateGizmo::Render()
 {
-	if (!m_entity)
-	{
+	if (!m_enabled)
 		return;
-	}
 
 	sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
 	sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
@@ -38,31 +36,24 @@ void RotateGizmo::Render()
 	sh::math::Matrix4f projectionMatrix = camera->GetProjectionMatrix();
 
 
-	if (m_entity)
+	sh::math::Matrix4f matrix;
+	matrix.SetIdentity();
+
+	sh::math::Vector3f position = s_position;
+	sh::math::Quaternionf rotation = s_rotation;
+	sh::f32 scaleFactor = (camera->GetPosition() - position).GetLength() / 35.0f;
+	sh::math::Vector3f scale(scaleFactor);
+
+	matrix.SetScale(scale);
+	matrix.SetTranslation(position);
+	matrix = matrix * rotation.GetAsMatrix4();
+
+	sh::math::Matrix4f wvpMatrix = projectionMatrix * viewMatrix * matrix;
+	wvpMatrix.Transpose();
+
+	for (size_t i = 0; i < Axis::COUNT; ++i)
 	{
-		auto transformComponent = m_entity->GetComponent<sh::TransformComponent>();
-		if (transformComponent)
-		{
-			sh::math::Matrix4f matrix;
-			matrix.SetIdentity();
-
-			sh::math::Vector3f position = transformComponent->GetPosition();
-			sh::math::Quaternionf rotation = transformComponent->GetRotation();
-			sh::f32 scaleFactor = (camera->GetPosition() - position).GetLength() / 35.0f;
-			sh::math::Vector3f scale(scaleFactor);
-
-			matrix.SetScale(scale);
-			matrix.SetTranslation(position);
-			matrix = matrix * rotation.GetAsMatrix4();
-
-			sh::math::Matrix4f wvpMatrix = projectionMatrix * viewMatrix * matrix;
-			wvpMatrix.Transpose();
-
-			for (size_t i = 0; i < Axis::COUNT; ++i)
-			{
-				m_axises[i].wvpMatrix.Set(wvpMatrix);
-			}
-		}
+		m_axises[i].wvpMatrix.Set(wvpMatrix);
 	}
 
 	m_commandBuffer->Begin();
@@ -105,8 +96,6 @@ void RotateGizmo::Render()
 	m_commandBuffer->End();
 
 	driver->SubmitCommandBuffer(m_commandBuffer);
-
-	DrawBoundingBox();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -118,28 +107,24 @@ void RotateGizmo::Process()
 
 //////////////////////////////////////////////////////////////////////////
 
-void RotateGizmo::OnMouseMoved(sh::u32 x, sh::u32 y)
+bool RotateGizmo::OnMouseMoved(sh::u32 x, sh::u32 y)
 {
 	for (size_t i = 0; i < static_cast<size_t>(Axis::Type::COUNT); ++i)
 	{
 		if (m_axises[i].active && m_mousePressed)
 		{
 			Rotate(static_cast<Axis::Type>(i));
-			return;
+			return true;
 		}
 	}
 
-	TryToSelect(x, y);
+	return TryToSelect(x, y);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 bool RotateGizmo::TryToSelect(sh::u32 x, sh::u32 y)
 {
-	auto transformComponent = m_entity->GetComponent<sh::TransformComponent>();
-	if (!transformComponent)
-		return false;
-
 	sh::math::Matrix4f matrix;
 	sh::math::Matrix4f invMatrix;
 	matrix.SetIdentity();
@@ -149,8 +134,8 @@ bool RotateGizmo::TryToSelect(sh::u32 x, sh::u32 y)
 	sh::math::Vector3f rayDirection(0.0f);
 	camera->BuildRay(x, y, rayOrigin, rayDirection);
 
-	sh::math::Vector3f position = transformComponent->GetPosition();
-	sh::math::Quaternionf rotation = transformComponent->GetRotation();
+	sh::math::Vector3f position = s_position;
+	sh::math::Quaternionf rotation = s_rotation;
 	sh::f32 scaleFactor = (camera->GetPosition() - position).GetLength() / 35.0f;
 	sh::math::Vector3f scale(scaleFactor);
 
@@ -284,9 +269,6 @@ void RotateGizmo::CreateCircle(Axis::Type type)
 
 void RotateGizmo::Rotate(Axis::Type axis)
 {
-	if (!m_entity)
-		return;
-
 	sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
 	sh::InputManager* inputManager = sh::Device::GetInstance()->GetInputManager();
 	sh::math::Vector2i old = inputManager->GetMousePositionOld();
@@ -295,9 +277,8 @@ void RotateGizmo::Rotate(Axis::Type axis)
 	camera->BuildRay(old.x, old.y, rayOrigin, rayDirOld);
 	camera->BuildRay(current.x, current.y, rayOrigin, rayDirCurrent);
 
-	auto transformComponent = m_entity->GetComponent<sh::TransformComponent>();
-	sh::math::Vector3f pos = transformComponent->GetPosition();
-	sh::math::Matrix3f rotation = transformComponent->GetRotation().GetAsMatrix3();
+	sh::math::Vector3f pos = s_position;
+	sh::math::Matrix3f rotation = s_rotation.GetAsMatrix3();
 
 	sh::math::Vector3f normalDir(0.0f);
 
@@ -327,12 +308,10 @@ void RotateGizmo::Rotate(Axis::Type axis)
 	sh::math::Quaternionf rot;
 	rot.RotationFromTo(oldDirection, currentDirection);
 
-	sh::math::Quaternionf finalRotation = rot * transformComponent->GetRotation();
+	sh::math::Quaternionf finalRotation = rot * s_rotation;
+	s_rotation = finalRotation;
 
-	transformComponent->SetRotation(finalRotation);
-
-	if (m_transformWidget)
-		m_transformWidget->Update();
+	rotationChanged(s_rotation);
 }
 
 //////////////////////////////////////////////////////////////////////////

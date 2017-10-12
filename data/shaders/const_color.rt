@@ -1,6 +1,12 @@
+<?xml version="1.0"?>
 <technique name="ConstantColor">
 
 <pipeline name="firstPass" layer="main">	
+	<params>
+		<param name="diffuse" desc="Diffuse map" type="sampler2D"/>
+		<param name="normalMap" desc="Normal map" type="sampler2D"/>
+		<param name="addColor" desc="Additional color (RGB)" type="color"/>
+	</params>
 	
 	<shader language="GLSL" api="GLES20">
 		<vertexShader>

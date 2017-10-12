@@ -243,7 +243,7 @@ namespace gui
 			for (u32 i = 0U; i < itemsCount; ++i)
 			{
 				const auto& item = m_layout->GetWidget(i);
-				if (item->IsVisible() && m_rect.Intersects(item->GetRect()))
+				if (item->IsVisible())// && m_rect.Intersects(item->GetRect()))
 					item->Render(painter);
 			}
 		}
