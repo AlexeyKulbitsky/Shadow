@@ -11,6 +11,7 @@ namespace gui
 
 	class Window : public Widget
 	{
+		friend class Style;
 	public:
 		Window(const math::Recti& rect);
 		Window(const SpritePtr& outSprite, const SpritePtr& inSprite, const SpritePtr& barSprite);
@@ -31,7 +32,12 @@ namespace gui
 		bool IsMovable() const { return m_isMovable; }
 		void SetMovable(bool movable) { m_isMovable = movable; }
 
+		bool IsClosable() const { return m_isClosable; }
+		void SetClosable(bool closable) { m_isClosable = closable; }
+
 		virtual void UpdateLayout() override;
+
+		void Close();
 
 	private:
 		void InternalUpdate();
@@ -47,11 +53,14 @@ namespace gui
 		SpritePtr m_inSprite;
 		SpritePtr m_barSprite;
 
+		ButtonPtr m_closeButton;
+
 		math::Recti m_barRect;
 		math::Recti m_inRect;
 
 		u32 m_barWidth = 25U;
 		bool m_isMovable = true;
+		bool m_isClosable = false;
 	};
 
 } // gui

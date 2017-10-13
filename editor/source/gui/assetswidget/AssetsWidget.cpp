@@ -36,6 +36,7 @@ AssetsWidget::AssetsWidget()
 	auto guiMgr = sh::gui::GuiManager::GetInstance();
 
 	SetLayout(windowLayout);
+	SetClosable(true);
 
 	//////////////////////////////////////////////////
 

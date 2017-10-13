@@ -11,22 +11,22 @@ namespace gui
 {
 	class Widget;
 
-	struct GuiBatchData
-	{
-		std::vector<float> vertices;
-		u32 verticesCount = 0U;
-		std::vector<u32> indices;
-	};
-
-	struct GuiBatch
-	{
-		video::VertexBufferPtr vertexBuffer;
-		video::IndexBufferPtr indexBuffer;
-		video::VertexInputDeclarationPtr inputDeclaration;
-		video::MaterialPtr material;
-		video::CommandBufferPtr commandBuffer;
-		video::GpuParamMatrix4f orthoMatrix;
-	};
+// 	struct GuiBatchData
+// 	{
+// 		std::vector<float> vertices;
+// 		u32 verticesCount = 0U;
+// 		std::vector<u32> indices;
+// 	};
+// 
+// 	struct GuiBatch
+// 	{
+// 		video::VertexBufferPtr vertexBuffer;
+// 		video::IndexBufferPtr indexBuffer;
+// 		video::VertexInputDeclarationPtr inputDeclaration;
+// 		video::MaterialPtr material;
+// 		video::CommandBufferPtr commandBuffer;
+// 		video::GpuParamMatrix4f orthoMatrix;
+// 	};
 
 	struct GUIEvent;
 
@@ -50,6 +50,7 @@ namespace gui
 
 		size_t GetChildrenCount() const { return m_children.size(); }
 		void RemoveChild(size_t index);
+		void RemoveChild(const WidgetPtr& child);
 		void RemoveAllChildren() { m_children.clear(); }
 		
 		void SetStyle(const StylePtr& style);
@@ -73,6 +74,8 @@ namespace gui
 
 		SPtr<Widget> m_focusWidget;
 		Queue<SPtr<Widget>> m_focusWidgetsQueue;
+		Queue<SPtr<Widget>> m_widgetsToRemove;
+
 		///////////////////////////////////
 
 		video::MaterialPtr m_defaultMaterial;

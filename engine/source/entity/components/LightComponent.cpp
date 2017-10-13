@@ -154,4 +154,19 @@ namespace sh
 	}
 
 	//////////////////////////////////////////////////////////
+
+	scene::Light::Type LightComponent::GetType() const
+	{
+		return m_light->GetType();
+	}
+
+	//////////////////////////////////////////////////////////
+
+	void LightComponent::SetType(scene::Light::Type type)
+	{
+		m_light->SetType(type);
+		m_needsToRecalculate = true;
+	}
+
+	//////////////////////////////////////////////////////////
 }

@@ -2,6 +2,7 @@
 #define SHADOW_WIDGET_INCLUDE
 
 #include "../Globals.h"
+#include "GuiBatch.h"
 
 namespace sh
 {
@@ -71,6 +72,7 @@ namespace gui
 		Widget* GetParent() const { return m_parent; }
 		virtual void Load(const pugi::xml_node& node);
 		virtual void Render(video::Painter* painter);
+		virtual void CollectBatches(GuiLayerBatch& batch);
 		virtual void SetRect(const math::Recti& rect);
 		virtual void SetPosition(s32 x, s32 y);
 		const sh::math::Vector2i& GetPosition() const { return m_rect.upperLeftCorner; }

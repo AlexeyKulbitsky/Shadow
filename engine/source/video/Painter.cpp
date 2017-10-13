@@ -422,7 +422,7 @@ namespace sh
 
 			m_commandBuffer->Begin();
 
-
+			size_t drawCallsCount = 0;
 			// Render lines
 			// Upload vertex data to lines vertex buffer
 			const void* verticesPointer = m_linesVertexArray.data();
@@ -492,6 +492,8 @@ namespace sh
 				driver->SetScissorRect(m_lines.linesBatches[i].clipRect, m_commandBuffer);
 				driver->Draw(m_lines.linesBatches[i].startIndex, 
 							 m_lines.linesBatches[i].verticesCount, 1U, m_commandBuffer);
+
+				drawCallsCount++;
 
 			}
 
@@ -572,6 +574,7 @@ namespace sh
 									m_triangles.trianglesBatches[i].indicesCount,
 									1U,
 									m_commandBuffer);
+				drawCallsCount++;
 			}
 
 			m_commandBuffer->End();

@@ -5,6 +5,7 @@
 
 #include "transformcomponent/TransformComponentWidget.h"
 #include "rendercomponent/RenderComponentWidget.h"
+#include "lightcomponent/LightComponentWidget.h"
 
 class InspectorWidget : public sh::gui::Window
 {
@@ -22,6 +23,7 @@ private:
 
 	sh::SPtr<TransformComponentWidget> m_transformComponentWidget;
 	sh::SPtr<RenderComponentWidget> m_renderComponentWidget;
+	sh::SPtr<LightComponentWidget> m_lightComponentWidget;
 };
 
 #endif

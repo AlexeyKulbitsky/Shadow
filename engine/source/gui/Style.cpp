@@ -30,6 +30,15 @@ namespace gui
 		m_texture = resManager->GetTexture(textureName);
 		SH_ASSERT(m_texture, "No atlas texture for GUI style!");
 
+		// Load custom widgets
+		pugi::xml_node customButtonsNode = root.child("buttons");
+		if (customButtonsNode)
+			LoadCustomButtons(customButtonsNode);
+
+		pugi::xml_node customSpriteWidgets = root.child("spritewidgets");
+		if (customSpriteWidgets)
+			LoadCustomSpriteWidgets(customSpriteWidgets);
+
 		pugi::xml_node buttonNode = root.child("button");
 		if (buttonNode)
 			m_button = LoadButton(buttonNode);
@@ -53,14 +62,6 @@ namespace gui
 		pugi::xml_node scrollWidgetNode = root.child("scrollwidget");
 		if (scrollWidgetNode)
 			LoadScrollWidget(scrollWidgetNode);
-
-		pugi::xml_node customButtonsNode = root.child("buttons");
-		if (customButtonsNode)
-			LoadCustomButtons(customButtonsNode);
-
-		pugi::xml_node customSpriteWidgets = root.child("spritewidgets");
-		if (customSpriteWidgets)
-			LoadCustomSpriteWidgets(customSpriteWidgets);
 	}
 
 	void Style::Load(const String& name)
@@ -179,7 +180,10 @@ namespace gui
 			sprites[i].reset(new Sprite(m_texture, rect));
 		}
 
+		auto closeButton = GetButton("CloseButton")->Clone();
+
 		m_window.reset(new Window(sprites[0], sprites[1], sprites[2]));
+		m_window->m_closeButton = closeButton;
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////

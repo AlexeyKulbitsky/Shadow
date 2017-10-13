@@ -21,6 +21,7 @@ namespace gui
 		virtual s32 GetHeight() const = 0;
 		virtual void Resize(const math::Recti& rect) {}
 		virtual void Render(video::Painter* painter) {}
+		virtual void CollectBatches(GuiLayerBatch& batch) {}
 		virtual bool ProcessEvent(GUIEvent& ev) { return false; }
 
 	protected:
@@ -43,6 +44,7 @@ namespace gui
 		virtual s32 GetHeight() const  override { return m_widget->GetRect().GetHeight(); }
 		virtual void Resize(const math::Recti& rect) override;
 		virtual void Render(video::Painter* painter) { m_widget->Render(painter); }
+		virtual void CollectBatches(GuiLayerBatch& batch) { m_widget->CollectBatches(batch); }
 		virtual bool ProcessEvent(GUIEvent& ev) { return m_widget->ProcessEvent(ev); }
 	};
 	
@@ -85,6 +87,7 @@ namespace gui
 
 
 		virtual void Render(video::Painter* painter) override;
+		virtual void CollectBatches(GuiLayerBatch& batch) override;
 		virtual bool ProcessEvent(GUIEvent& ev) override;
 		virtual void Resize(const math::Recti& rect) override {}
 

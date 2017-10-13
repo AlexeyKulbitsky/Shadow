@@ -13,6 +13,9 @@ public:
 	sh::Entity* GetEntity() { return m_entity; }
 
 private:
+	void OnDoubleClick(sh::s32 x, sh::s32 y);
+
+private:
 	sh::Entity* m_entity = nullptr;
 };
 

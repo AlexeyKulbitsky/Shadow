@@ -52,10 +52,27 @@ namespace gui
 
 	void GuiManager::Update(u32 delta)
 	{
+		// Reset focus widget
 		if (!m_focusWidgetsQueue.empty())
 		{
 			m_focusWidget = m_focusWidgetsQueue.front();
 			m_focusWidgetsQueue.pop();
+		}
+
+		// Remove widgets
+		while (!m_widgetsToRemove.empty())
+		{
+			auto widgetToRemove = m_widgetsToRemove.front();
+			m_widgetsToRemove.pop();
+
+			for (auto it = m_children.begin(); it != m_children.end(); ++it)
+			{
+				if ((*it) == widgetToRemove)
+				{
+					m_children.erase(it);
+					break;
+				}
+			}
 		}
 	}
 
@@ -129,10 +146,16 @@ namespace gui
 
 	void GuiManager::RemoveChild(size_t index)
 	{
-		if (index >= m_children.size())
-			return;
+// 		if (index >= m_children.size())
+// 			return;
+// 
+// 		m_children.erase(m_children.begin());
+	}
 
-		m_children.erase(m_children.begin());
+	void GuiManager::RemoveChild(const WidgetPtr& widget)
+	{
+		
+		m_widgetsToRemove.push(widget);
 	}
 
 	void GuiManager::SetFont(const FontPtr& font)

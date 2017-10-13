@@ -11,6 +11,20 @@ HeirarchyTreeItem::HeirarchyTreeItem(TreeItem* parent, sh::Entity* entity)
 
 //////////////////////////////////////////////////////////////////////////////////////
 
+void HeirarchyTreeItem::OnDoubleClick(sh::s32 x, sh::s32 y)
+{
+	if (m_treeWidget->GetSelectedItem() == this)
+	{
+
+	}
+	else
+	{
+
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////
+
 HierarchyTreeWidget::HierarchyTreeWidget()
 {
 }
@@ -20,8 +34,6 @@ HierarchyTreeWidget::HierarchyTreeWidget()
 void HierarchyTreeWidget::SetSelectedItem(sh::gui::TreeItem* item)
 {
 	sh::gui::TreeWidget::SetSelectedItem(item);
-	if (!item)
-		return;
 	if (item)
 	{
 		auto hierarchyItem = static_cast<HeirarchyTreeItem*>(item);

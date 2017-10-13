@@ -36,6 +36,12 @@ namespace gui
 			m_layout->Render(painter);
 	}
 
+	void Widget::CollectBatches(GuiLayerBatch& batch)
+	{
+		if (m_layout)
+			m_layout->CollectBatches(batch);
+	}
+
 	void Widget::SetRect(const math::Recti& rect)
 	{
 		m_rect = rect;

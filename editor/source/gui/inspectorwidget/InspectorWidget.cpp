@@ -10,6 +10,7 @@ InspectorWidget::InspectorWidget()
 	m_transformComponentWidget.reset(new TransformComponentWidget());
 	m_transformComponentWidget->SetParent(this);
 	m_renderComponentWidget.reset(new RenderComponentWidget());
+	m_lightComponentWidget.reset(new LightComponentWidget());
 	SetLayout(windowLayout);
 }
 
@@ -25,6 +26,7 @@ void InspectorWidget::SetEntity(sh::Entity* entity)
 	// Clear layout
 	m_transformComponentWidget->SetTransformComponent(nullptr);
 	m_renderComponentWidget->SetRenderComponent(nullptr);
+	m_lightComponentWidget->SetLightComponent(nullptr);
 	m_layout->Clear();
 
 	if (!entity)
@@ -45,5 +47,12 @@ void InspectorWidget::SetEntity(sh::Entity* entity)
 	{
 		m_renderComponentWidget->SetRenderComponent(renderComponent);
 		m_layout->AddWidget(m_renderComponentWidget);
+	}
+	// Light component editor
+	auto lightComponent = entity->GetComponent<sh::LightComponent>();
+	if (lightComponent)
+	{
+		m_lightComponentWidget->SetLightComponent(lightComponent);
+		m_layout->AddWidget(m_lightComponentWidget);
 	}
 }

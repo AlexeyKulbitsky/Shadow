@@ -89,12 +89,8 @@ namespace gui
 
 	ButtonPtr Button::Clone() const
 	{
-		ButtonPtr result(new Button());
+		ButtonPtr result(new Button(m_sprites[Released], m_sprites[Pressed], m_sprites[Hovered]));
 		result->m_rect = m_rect;
-
-		result->m_sprites[Released] = m_sprites[Released];
-		result->m_sprites[Pressed] = m_sprites[Pressed];
-		result->m_sprites[Hovered] = m_sprites[Hovered];
 
 		result->m_minSize = m_minSize;
 		result->m_maxSize = m_maxSize;
@@ -160,6 +156,26 @@ namespace gui
 		//Widget::Render(painter);
 
 		m_text->Render(painter);
+	}
+
+	void Button::CollectBatches(GuiLayerBatch& batch)
+	{
+		if (!m_visible)
+			return;
+
+		auto mat = GuiManager::GetInstance()->GetDefaultMaterial().get();
+		auto& subBatch = batch.batches[GUI_LAYER_BACKGROUND].batches[mat];
+
+		subBatch.material = mat;
+		subBatch.indicesCount += 6;
+		subBatch.verticesCount += 4;
+		video::Painter::Vertex upperLeft(m_rect.upperLeftCorner,
+										m_sprites[m_state]->GetUVRect().upperLeftCorner,
+										m_sprites[m_state]->GetColor());
+		video::Painter::Vertex downRight(m_rect.lowerRightCorner,
+										m_sprites[m_state]->GetUVRect().lowerRightCorner,
+										m_sprites[m_state]->GetColor());
+
 	}
 
 	void Button::SetRect(const math::Recti& rect)

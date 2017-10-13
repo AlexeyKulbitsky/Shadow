@@ -98,6 +98,17 @@ void SelectionManager::Render()
 			driver->GetPainter()->DrawBox(renderComponent->GetModel()->GetBoundingBox());
 			driver->GetPainter()->Flush();
 		}
+		else 
+		{
+			auto terrainComponent = m_selectedEntity->GetComponent<sh::TerrainComponent>();
+			if (terrainComponent)
+			{
+				sh::Device::GetInstance()->GetDriver()->GetPainter()->SetMaterial(m_aabbMaterial);
+				auto driver = sh::Device::GetInstance()->GetDriver();
+				driver->GetPainter()->DrawBox(terrainComponent->GetModel()->GetBoundingBox());
+				driver->GetPainter()->Flush();
+			}
+		}
 	}
 }
 
@@ -160,7 +171,7 @@ void SelectionManager::OnEntityFromListSelected(sh::Entity* entity)
 	m_selectedEntity = entity;
 	m_inspectorWidget->SetEntity(m_selectedEntity);
 	
-
+	// If entity is selected then reset gizmo
 	if (m_selectedEntity)
 	{
 		auto transformComponent = m_selectedEntity->GetComponent<sh::TransformComponent>();
@@ -171,6 +182,11 @@ void SelectionManager::OnEntityFromListSelected(sh::Entity* entity)
 			m_gizmo->SetScale(transformComponent->GetScale());
 			m_gizmo->SetEnabled(true);
 		}
+	}
+	// Otherwise clear anythig connected with entity selection
+	else
+	{
+		m_gizmo->SetEnabled(false);
 	}
 }
 

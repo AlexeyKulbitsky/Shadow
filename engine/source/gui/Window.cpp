@@ -6,6 +6,7 @@
 #include "Style.h"
 #include "GuiManager.h"
 #include "MenuBar.h"
+#include "Button.h"
 #include "ToolBar.h"
 
 #include "../Device.h"
@@ -22,6 +23,7 @@ namespace gui
 		m_outSprite = ref->m_outSprite;
 		m_inSprite = ref->m_inSprite;
 		m_barSprite = ref->m_barSprite;
+		m_closeButton = ref->m_closeButton->Clone();
 
 		m_rect = rect;
 		
@@ -38,6 +40,8 @@ namespace gui
 		m_inRect.lowerRightCorner.y = m_rect.lowerRightCorner.y;
 
 		m_text.reset(new Text(m_barRect));
+
+		m_closeButton->OnRelease.Connect(std::bind(&Window::Close, this));
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -135,6 +139,11 @@ namespace gui
 		// Render text on bar
 		m_text->Render(painter);
 
+		if (m_isClosable)
+		{
+			m_closeButton->Render(painter);
+		}
+
 		// Render content
 		if (m_layout)
 		{
@@ -148,6 +157,11 @@ namespace gui
 	{
 		if (!m_visible || !m_enabled)
 			return false;
+
+		if (m_isClosable && m_closeButton->ProcessEvent(ev))
+		{
+			return true;
+		}
 
 		if (Widget::ProcessEvent(ev))
 			return true;
@@ -221,6 +235,11 @@ namespace gui
 
 	///////////////////////////////////////////////////////////////////////////////////////
 
+	void Window::Close()
+	{
+		GuiManager::GetInstance()->RemoveChild(shared_from_this());
+	}
+
 	void Window::UpdateLayout()
 	{
 		if (m_layout)
@@ -246,6 +265,13 @@ namespace gui
 		m_inRect.upperLeftCorner.y = m_rect.upperLeftCorner.y + m_barWidth;
 		m_inRect.lowerRightCorner.x = m_rect.lowerRightCorner.x;
 		m_inRect.lowerRightCorner.y = m_rect.lowerRightCorner.y;
+
+
+		// Update close button
+		const s32 height = m_barRect.GetHeight();
+		math::Recti closeButtonRect(m_barRect.lowerRightCorner.x - height, m_barRect.upperLeftCorner.y,
+			m_barRect.lowerRightCorner.x, m_barRect.lowerRightCorner.y);
+		m_closeButton->SetRect(closeButtonRect);
 
 		UpdateLayout();
 	}

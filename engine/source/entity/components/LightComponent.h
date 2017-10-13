@@ -2,6 +2,7 @@
 #define SHADOW_LIGHT_COMPONENT_INCLUDE
 
 #include "../Component.h"
+#include "../../scene/Light.h"
 
 namespace sh
 {
@@ -15,7 +16,6 @@ namespace sh
 		COMPONENT
 	public:
 		virtual ~LightComponent();
-		//virtual Component::Type GetType() const override { return Component::Type::Light; }
 		virtual void Load(const pugi::xml_node &node) override;
 		virtual void Save(pugi::xml_node &parent) override;
 
@@ -29,6 +29,9 @@ namespace sh
 
 		void SetColor(math::Vector3f& color);
 		const math::Vector3f&  GetColor() const;
+
+		scene::Light::Type GetType() const;
+		void SetType(scene::Light::Type type);
 
 	private:
 		scene::Light* m_light = nullptr;
