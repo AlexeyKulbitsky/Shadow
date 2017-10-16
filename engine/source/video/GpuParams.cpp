@@ -133,6 +133,8 @@ namespace video
 				m_samplers[index] = Sampler::Create(samplerDescription);
 			}
 		}
+		if (paramsSize == 0)
+			return;
 		m_data = new u8[paramsSize];
 		std::memset(m_data, 0, paramsSize);
 	}

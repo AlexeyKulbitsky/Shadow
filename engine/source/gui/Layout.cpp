@@ -102,9 +102,10 @@ namespace gui
 		for (u32 i = 0; i < m_items.size(); ++i)
 		{
 			const auto& widget = m_items[i]->GetWidget();
-			if (widget && widget->IsVisible() && !widget->IsInFocus())
+			if (widget)
 			{
-				widget->Render(painter);
+				if (widget->IsVisible() && !widget->IsInFocus())
+					widget->Render(painter);
 				continue;
 			}
 

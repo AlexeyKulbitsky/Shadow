@@ -57,8 +57,8 @@ namespace gui
 		Widget::RenderBackground(painter);
 
 		// Render menu if it is visible
-		if (menu->IsVisible())
-			menu->RenderBackground(painter);
+		//if (menu->IsVisible())
+		//	menu->RenderBackground(painter);
 	}
 
 	void MenuBar::MenuBarItem::RenderText(video::Painter* painter)
@@ -67,8 +67,8 @@ namespace gui
 		Widget::RenderText(painter);
 
 		// Render menu if it is visible
-		if (menu->IsVisible())
-			menu->RenderText(painter);
+		//if (menu->IsVisible())
+		//	menu->RenderText(painter);
 	}
 
 	bool MenuBar::MenuBarItem::ProcessEvent(GUIEvent& ev)
@@ -148,12 +148,10 @@ namespace gui
 		m_toggled = toggled;
 		if (toggled)
 		{
-			//SetFocus(true);
 			GuiManager::GetInstance()->SetFocusWidget(shared_from_this());
 		}
 		else
 		{
-			//SetFocus(false);
 			if (IsInFocus())
 				GuiManager::GetInstance()->SetFocusWidget(nullptr);
 		}

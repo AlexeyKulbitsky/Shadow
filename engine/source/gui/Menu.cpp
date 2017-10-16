@@ -45,6 +45,8 @@ namespace gui
 		button->SetHeight(20);
 		button->OnRelease.Connect(std::bind(&Menu::OnButtonReleased, this, std::placeholders::_1));
 		button->OnHover.Connect(std::bind(&Menu::OnButtonHovered, this, std::placeholders::_1));
+		const s32 height = (m_layout->GetItemsCount() + 1) * 20;
+		SetHeight(height);
 		m_layout->AddWidget(button);
 	}
 

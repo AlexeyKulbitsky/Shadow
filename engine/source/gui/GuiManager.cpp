@@ -55,8 +55,9 @@ namespace gui
 		// Reset focus widget
 		if (!m_focusWidgetsQueue.empty())
 		{
-			m_focusWidget = m_focusWidgetsQueue.front();
-			m_focusWidgetsQueue.pop();
+			m_focusWidget = m_focusWidgetsQueue.back();
+			while (!m_focusWidgetsQueue.empty())
+				m_focusWidgetsQueue.pop();
 		}
 
 		// Remove widgets
@@ -125,8 +126,10 @@ namespace gui
 
 		auto t2 = Device::GetInstance()->GetTime();
 
-		printf("GUI draw time: %d\n", static_cast<int>(t2 - t1));
-
+		//printf("GUI draw time: %d\n", static_cast<int>(t2 - t1));
+		//printf("GUI value: %d\n", m_value);
+		//SH_ASSERT(m_value != 2);
+		m_value = 0;
 	}
 
 	void GuiManager::LoadGui(const String& name)
@@ -235,8 +238,7 @@ namespace gui
 
 			if ((*child)->ProcessEvent(ev))
 			{
-				if (ev.type == EventType::PointerDown ||
-					ev.type == EventType::PointerDown)
+				if (ev.type == EventType::PointerDown)
 				{
 					auto childWidget = *child;
 					m_children.erase(child);

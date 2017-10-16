@@ -65,6 +65,9 @@ namespace gui
 		// Events
 		bool ProcessEvent(GUIEvent& ev);
 
+		int GetValue() const { return m_value; }
+		void SetValue(int value) { m_value = value; }
+
 	private:
 		FontPtr m_font;
 
@@ -80,6 +83,8 @@ namespace gui
 
 		video::MaterialPtr m_defaultMaterial;
 		video::MaterialPtr m_textMaterial;
+
+		int m_value = 0;
 	};
 
 } // gui

@@ -98,23 +98,6 @@ namespace gui
 		return m_layout->ProcessEvent(ev);
 	}
 
-// 	void Widget::SetFocus(bool focus) 
-// 	{ 
-// 		auto guiManager = GuiManager::GetInstance();
-// 		if (focus)
-// 		{
-// 			guiManager->SetFocusWidget(shared_from_this());
-// 		}
-// 		else
-// 		{
-// 			const auto& focusWidget = guiManager->GetFocusWidget();
-// 			if (focusWidget && focusWidget.get() == this)
-// 			{
-// 				guiManager->SetFocusWidget(nullptr);
-// 			}
-// 		}
-// 	}
-
 	bool Widget::IsInFocus() const 
 	{ 
 		return GuiManager::GetInstance()->GetFocusWidget().get() == this;

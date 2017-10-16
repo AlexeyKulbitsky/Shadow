@@ -36,6 +36,7 @@ namespace gui
 
 	class Widget : public std::enable_shared_from_this<Widget>
 	{
+		friend class GuiManager;
 	public:
 		Widget();
 		virtual ~Widget();
