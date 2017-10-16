@@ -72,6 +72,8 @@ namespace gui
 		Widget* GetParent() const { return m_parent; }
 		virtual void Load(const pugi::xml_node& node);
 		virtual void Render(video::Painter* painter);
+		virtual void RenderBackground(video::Painter* painter);
+		virtual void RenderText(video::Painter* painter);
 		virtual void CollectBatches(GuiLayerBatch& batch);
 		virtual void SetRect(const math::Recti& rect);
 		virtual void SetPosition(s32 x, s32 y);

@@ -24,6 +24,8 @@ namespace gui
 				const SpritePtr& backgroundSprite);
 			virtual bool ProcessEvent(sh::gui::GUIEvent& ev) override;
 			virtual void Render(video::Painter* painter) override;
+			virtual void RenderBackground(video::Painter* painter) override;
+			virtual void RenderText(video::Painter* painter) override;
 
 		protected:
 			ScrollWidget* m_scrollWidget = nullptr;
@@ -37,6 +39,8 @@ namespace gui
 		virtual ~ScrollWidget();
 
 		virtual void Render(video::Painter* painter) override;
+		virtual void RenderBackground(video::Painter* painter) override;
+		virtual void RenderText(video::Painter* painter) override;
 		virtual void SetPosition(s32 x, s32 y) override;
 		virtual void SetSize(const math::Vector2i& size) override;
 		virtual void SetWidth(s32 width) override;

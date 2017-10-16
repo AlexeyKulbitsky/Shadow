@@ -30,6 +30,8 @@ namespace gui
 
 		void SetState(State state);
 		virtual void Render(video::Painter* painter) override;
+		virtual void RenderBackground(video::Painter* painter) override;
+		virtual void RenderText(video::Painter* painter) override;
 		virtual bool ProcessEvent(GUIEvent& ev) override;
 
 		Event<void, const String&> OnTextChanged;

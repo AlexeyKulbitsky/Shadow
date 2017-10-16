@@ -46,6 +46,24 @@ namespace gui
 		}
 	}
 
+	void ComboBox::RenderBackground(video::Painter* painter)
+	{
+		m_button->RenderBackground(painter);
+		if (m_showList)
+		{
+			m_scrollWidget->RenderBackground(painter);
+		}
+	}
+
+	void ComboBox::RenderText(video::Painter* painter)
+	{
+		m_button->RenderText(painter);
+		if (m_showList)
+		{
+			m_scrollWidget->RenderText(painter);
+		}
+	}
+
 	bool ComboBox::ProcessEvent(GUIEvent& ev)
 	{
 		if (m_button->ProcessEvent(ev))

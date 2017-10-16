@@ -22,17 +22,52 @@ namespace gui
 	struct GuiBatch
 	{
 		sh::video::Material* material = nullptr;
+		math::Recti clipRect;
 		u32 startIndex = 0U;
 		u32 indicesCount = 0U;
-		u32 verticesCount = 0U;
+
+		
 	};
 
 	// Batches pack for one sub layer (background, text, etc.)
 	struct GuiSubLayerBatch
 	{
-		Map<video::Material*, GuiBatch> batches;
-		std::vector<video::Painter::Vertex> vertexArray;
+		std::vector<GuiBatch> batches;
+		std::vector<float> vertexArray;
 		std::vector<u32> indexArray;
+
+		void AddRect(const math::Vector2i& ulPos, const math::Vector2f& ulUV, const math::Vector4f& ulColor,
+			const math::Vector2i& brPos, const math::Vector2f& brUV, const math::Vector4f& brColor)
+		{
+			const auto lastIndex = indexArray.size();
+			vertexArray.push_back(static_cast<float>(ulPos.x)); vertexArray.push_back(static_cast<float>(brPos.y));
+			vertexArray.push_back(static_cast<float>(ulUV.x)); vertexArray.push_back(static_cast<float>(brUV.y));
+			vertexArray.push_back(static_cast<float>(ulColor.x)); vertexArray.push_back(static_cast<float>(ulColor.y));
+			vertexArray.push_back(static_cast<float>(ulColor.z)); vertexArray.push_back(static_cast<float>(ulColor.w));
+
+			vertexArray.push_back(static_cast<float>(ulPos.x)); vertexArray.push_back(static_cast<float>(ulPos.y));
+			vertexArray.push_back(static_cast<float>(ulUV.x)); vertexArray.push_back(static_cast<float>(ulUV.y));
+			vertexArray.push_back(static_cast<float>(ulColor.x)); vertexArray.push_back(static_cast<float>(ulColor.y));
+			vertexArray.push_back(static_cast<float>(ulColor.z)); vertexArray.push_back(static_cast<float>(ulColor.w));
+
+			vertexArray.push_back(static_cast<float>(brPos.x)); vertexArray.push_back(static_cast<float>(ulPos.y));
+			vertexArray.push_back(static_cast<float>(brUV.x)); vertexArray.push_back(static_cast<float>(ulUV.y));
+			vertexArray.push_back(static_cast<float>(ulColor.x)); vertexArray.push_back(static_cast<float>(ulColor.y));
+			vertexArray.push_back(static_cast<float>(ulColor.z)); vertexArray.push_back(static_cast<float>(ulColor.w));
+
+			vertexArray.push_back(static_cast<float>(brPos.x)); vertexArray.push_back(static_cast<float>(brPos.y));
+			vertexArray.push_back(static_cast<float>(brUV.x)); vertexArray.push_back(static_cast<float>(brUV.y));
+			vertexArray.push_back(static_cast<float>(ulColor.x)); vertexArray.push_back(static_cast<float>(ulColor.y));
+			vertexArray.push_back(static_cast<float>(ulColor.z)); vertexArray.push_back(static_cast<float>(ulColor.w));
+
+			indexArray.push_back(lastIndex);
+			indexArray.push_back(lastIndex + 2);
+			indexArray.push_back(lastIndex + 1);
+
+			indexArray.push_back(lastIndex);
+			indexArray.push_back(lastIndex + 3);
+			indexArray.push_back(lastIndex + 2);
+		}
 	};
 
 	// Batches for one rendering layer

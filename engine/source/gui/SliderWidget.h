@@ -18,6 +18,8 @@ namespace gui
 
 		virtual bool ProcessEvent(sh::gui::GUIEvent& ev) override;
 		virtual void Render(video::Painter* painter) override;
+		virtual void RenderBackground(video::Painter* painter) override;
+		virtual void RenderText(video::Painter* painter) override;
 		virtual void UpdateLayout() override;
 
 		float GetValue() const { return m_value; }

@@ -18,6 +18,8 @@ namespace gui
 		void SetTexture(const video::TexturePtr& texture);
 		const video::TexturePtr& GetTexture() const { return m_texture; }
 		virtual void Render(video::Painter* painter) override;
+		virtual void RenderBackground(video::Painter* painter) override;
+		virtual void RenderText(video::Painter* painter) override {}
 		virtual void UpdateLayout() override;
 
 	private:

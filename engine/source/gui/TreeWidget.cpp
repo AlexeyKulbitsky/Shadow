@@ -152,6 +152,31 @@ namespace gui
 		Widget::Render(painter);
 	}
 
+	void TreeItem::RenderBackground(video::Painter* painter)
+	{
+		if (!m_visible)
+			return;
+
+		painter->SetMaterial(sh::gui::GuiManager::GetInstance()->GetDefaultMaterial());
+		video::Painter::Vertex upperLeft(m_rect.upperLeftCorner,
+			m_sprites[m_state]->GetUVRect().upperLeftCorner,
+			m_sprites[m_state]->GetColor() * sh::math::Vector4f(1.5f, 1.5f, 1.5f, 1.0f));
+		video::Painter::Vertex downRight(m_rect.lowerRightCorner,
+			m_sprites[m_state]->GetUVRect().lowerRightCorner,
+			m_sprites[m_state]->GetColor() * sh::math::Vector4f(1.5f, 1.5f, 1.5f, 1.0f));
+		painter->DrawRect(upperLeft, downRight);
+
+		Widget::RenderBackground(painter);
+	}
+
+	void TreeItem::RenderText(video::Painter* painter)
+	{
+		if (!m_visible)
+			return;
+
+		Widget::RenderText(painter);
+	}
+
 	bool TreeItem::ProcessEvent(GUIEvent& ev)
 	{
 		if (ev.type == EventType::PointerDown &&
@@ -251,12 +276,54 @@ namespace gui
 			for (u32 i = 0U; i < itemsCount; ++i)
 			{
 				const auto& item = m_layout->GetWidget(i);
-				if (item->IsVisible())// && m_rect.Intersects(item->GetRect()))
+				if (item->IsVisible() && m_rect.Intersects(item->GetRect()))
 					item->Render(painter);
 			}
 		}
 
 		painter->SetClipRect(cachedClipRect);
+
+		RenderScrollBars(painter);
+	}
+
+	void TreeWidget::RenderBackground(video::Painter* painter)
+	{
+		const auto cachedClipRect = painter->GetClipRect();
+		painter->SetClipRect(sh::math::Rectu(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y,
+			m_rect.lowerRightCorner.x, m_rect.lowerRightCorner.y));
+
+		if (m_layout)
+		{
+			const u32 itemsCount = m_layout->GetItemsCount();
+			for (u32 i = 0U; i < itemsCount; ++i)
+			{
+				const auto& item = m_layout->GetWidget(i);
+				if (item->IsVisible() && m_rect.Intersects(item->GetRect()))
+					item->RenderBackground(painter);
+			}
+		}
+
+		painter->SetClipRect(cachedClipRect);
+	}
+
+	void TreeWidget::RenderText(video::Painter* painter)
+	{
+		if (m_layout)
+		{
+			const auto cachedClipRect = painter->GetClipRect();
+			painter->SetClipRect(sh::math::Rectu(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y,
+				m_rect.lowerRightCorner.x, m_rect.lowerRightCorner.y));
+
+			const u32 itemsCount = m_layout->GetItemsCount();
+			for (u32 i = 0U; i < itemsCount; ++i)
+			{
+				const auto& item = m_layout->GetWidget(i);
+				if (item->IsVisible() && m_rect.Intersects(item->GetRect()))
+					item->RenderText(painter);
+			}
+
+			painter->SetClipRect(cachedClipRect);
+		}
 
 		RenderScrollBars(painter);
 	}

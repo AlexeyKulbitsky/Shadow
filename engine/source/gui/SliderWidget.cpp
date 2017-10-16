@@ -174,6 +174,37 @@ namespace gui
 		//m_button->Render(painter);
 	}
 
+	void SliderWidget::RenderBackground(video::Painter* painter)
+	{
+		painter->SetMaterial(GuiManager::GetInstance()->GetTextMaterial());
+
+		const auto height = m_rect.GetHeight();
+		const int barHeight = 5;
+		video::Painter::Vertex barUpperLeft(
+			math::Vector2i(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y + (height - barHeight) / 2),
+			math::Vector2f(0.0f),
+			math::Vector4f(0.8f, 0.8f, 0.8f, 1.0f));
+		video::Painter::Vertex barDownRight(
+			math::Vector2i(m_rect.lowerRightCorner.x, m_rect.upperLeftCorner.y + (height - barHeight) / 2 + barHeight),
+			math::Vector2f(0.0f),
+			math::Vector4f(0.8f, 0.8f, 0.8f, 1.0f));
+		painter->DrawRect(barUpperLeft, barDownRight);
+
+		video::Painter::Vertex sliderUpperLeft(
+			m_sliderRect.upperLeftCorner,
+			math::Vector2f(0.0f),
+			math::Vector4f(0.6f, 0.6f, 0.6f, 1.0f));
+		video::Painter::Vertex sliderDownRight(
+			m_sliderRect.lowerRightCorner,
+			math::Vector2f(0.0f),
+			math::Vector4f(0.6f, 0.6f, 0.6f, 1.0f));
+		painter->DrawRect(sliderUpperLeft, sliderDownRight);
+	}
+
+	void SliderWidget::RenderText(video::Painter* painter)
+	{
+	}
+
 	void SliderWidget::UpdateLayout()
 	{
 		const float aspect = (m_value - m_valueEdges.x) / (m_valueEdges.y - m_valueEdges.x);

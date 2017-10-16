@@ -41,6 +41,12 @@ namespace gui
 
 		m_text.reset(new Text(m_barRect));
 
+		// Update close button
+		const s32 height = m_barRect.GetHeight();
+		math::Recti closeButtonRect(m_barRect.lowerRightCorner.x - height, m_barRect.upperLeftCorner.y,
+			m_barRect.lowerRightCorner.x, m_barRect.lowerRightCorner.y);
+		m_closeButton->SetRect(closeButtonRect);
+
 		m_closeButton->OnRelease.Connect(std::bind(&Window::Close, this));
 	}
 
@@ -148,6 +154,57 @@ namespace gui
 		if (m_layout)
 		{
 			m_layout->Render(painter);
+		}
+	}
+
+	void Window::RenderBackground(video::Painter* painter)
+	{
+		if (!m_visible)
+			return;
+
+		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
+		// Render bar
+		video::Painter::Vertex barUL(m_barRect.upperLeftCorner,
+			m_barSprite->GetUVRect().upperLeftCorner,
+			m_barSprite->GetColor());
+		video::Painter::Vertex barBR(m_barRect.lowerRightCorner,
+			m_barSprite->GetUVRect().lowerRightCorner,
+			m_barSprite->GetColor());
+		painter->DrawRect(barUL, barBR);
+
+		// Render content background
+		video::Painter::Vertex layoutUL(m_inRect.upperLeftCorner,
+			m_inSprite->GetUVRect().upperLeftCorner,
+			m_inSprite->GetColor());
+		video::Painter::Vertex layoutBR(m_inRect.lowerRightCorner,
+			m_inSprite->GetUVRect().lowerRightCorner,
+			m_inSprite->GetColor());
+		painter->DrawRect(layoutUL, layoutBR);
+
+		// Render text on bar
+		m_text->Render(painter);
+
+		if (m_isClosable)
+		{
+			m_closeButton->Render(painter);
+		}
+
+		// Render content
+		if (m_layout)
+		{
+			m_layout->RenderBackground(painter);
+		}
+	}
+
+	void Window::RenderText(video::Painter* painter)
+	{
+		if (!m_visible)
+			return;
+
+		// Render content
+		if (m_layout)
+		{
+			m_layout->RenderText(painter);
 		}
 	}
 

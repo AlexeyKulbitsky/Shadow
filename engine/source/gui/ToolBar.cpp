@@ -74,6 +74,28 @@ namespace gui
 		Widget::Render(painter);
 	}
 
+	void ToolBar::RenderBackground(video::Painter* painter)
+	{
+		if (!m_visible)
+			return;
+
+		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
+		video::Painter::Vertex upperLeft(m_rect.upperLeftCorner,
+			m_sprite->GetUVRect().upperLeftCorner,
+			m_sprite->GetColor());
+		video::Painter::Vertex downRight(m_rect.lowerRightCorner,
+			m_sprite->GetUVRect().lowerRightCorner,
+			m_sprite->GetColor());
+		painter->DrawRect(upperLeft, downRight);
+
+		Widget::RenderBackground(painter);
+	}
+
+	void ToolBar::RenderText(video::Painter* painter)
+	{
+		Widget::RenderText(painter);
+	}
+
 	/////////////////////////////////////////////////////////////////////////////////////
 
 	bool ToolBar::ProcessEvent(GUIEvent& ev)

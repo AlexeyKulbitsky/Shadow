@@ -36,6 +36,18 @@ namespace gui
 			m_layout->Render(painter);
 	}
 
+	void Widget::RenderBackground(video::Painter* painter)
+	{
+		if (m_layout)
+			m_layout->RenderBackground(painter);
+	}
+
+	void Widget::RenderText(video::Painter* painter)
+	{
+		if (m_layout)
+			m_layout->RenderText(painter);
+	}
+
 	void Widget::CollectBatches(GuiLayerBatch& batch)
 	{
 		if (m_layout)

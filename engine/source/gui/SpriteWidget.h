@@ -20,6 +20,8 @@ namespace gui
 		const SpritePtr& GetSprite() const { return m_sprite; }
 
 		virtual void Render(video::Painter* painter) override;
+		virtual void RenderBackground(video::Painter* painter) override;
+		virtual void RenderText(video::Painter* painter) override {}
 
 	private:
 		SpritePtr m_sprite;

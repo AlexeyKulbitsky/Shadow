@@ -34,6 +34,8 @@ namespace gui
 		virtual void OnPressed();
 
 		virtual void Render(video::Painter* painter) override;
+		virtual void RenderBackground(video::Painter* painter) override;
+		virtual void RenderText(video::Painter* painter) override;
 		virtual bool ProcessEvent(sh::gui::GUIEvent& ev) override;
 
 	protected:
@@ -57,6 +59,8 @@ namespace gui
 		TreeItem* GetSelectedItem() { return m_selectedItem; }
 
 		virtual void Render(sh::video::Painter* painter) override;
+		virtual void RenderBackground(video::Painter* painter) override;
+		virtual void RenderText(video::Painter* painter) override;
 		virtual void UpdateLayout() override;
 		virtual bool ProcessEvent(sh::gui::GUIEvent& ev) override;
 

@@ -135,6 +135,47 @@ namespace gui
 		}
 	}
 
+	void ScrollWidget::ScrollBar::RenderBackground(video::Painter* painter)
+	{
+		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
+
+		auto rect = m_scrollWidget->GetRect();
+
+		rect.upperLeftCorner.x = rect.lowerRightCorner.x - m_rect.GetWidth();
+
+		video::Painter::Vertex upperLeft(rect.upperLeftCorner,
+			m_backgroundSprite->GetUVRect().upperLeftCorner,
+			m_backgroundSprite->GetColor());
+		video::Painter::Vertex downRight(rect.lowerRightCorner,
+			m_backgroundSprite->GetUVRect().lowerRightCorner,
+			m_backgroundSprite->GetColor());
+		painter->DrawRect(upperLeft, downRight);
+
+		// Draw bar
+		{
+			SpritePtr sprite;
+			if (m_dragStarted)
+			{
+				sprite = m_sprites[Button::Pressed];
+			}
+			else
+			{
+				sprite = m_sprites[m_state];
+			}
+			video::Painter::Vertex upperLeft(m_rect.upperLeftCorner,
+				sprite->GetUVRect().upperLeftCorner,
+				sprite->GetColor());
+			video::Painter::Vertex downRight(m_rect.lowerRightCorner,
+				sprite->GetUVRect().lowerRightCorner,
+				sprite->GetColor());
+			painter->DrawRect(upperLeft, downRight);
+		}
+	}
+
+	void ScrollWidget::ScrollBar::RenderText(video::Painter* painter)
+	{
+	}
+
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
 	ScrollWidget::ScrollWidget()
@@ -175,6 +216,22 @@ namespace gui
 		painter->SetClipRect(cachedClipRect);
 
 		RenderScrollBars(painter);
+	}
+
+	void ScrollWidget::RenderBackground(video::Painter* painter) 
+	{
+		const auto cachedClipRect = painter->GetClipRect();
+		painter->SetClipRect(math::Rectu(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y,
+			m_rect.lowerRightCorner.x, m_rect.lowerRightCorner.y));
+		Widget::RenderBackground(painter);
+		painter->SetClipRect(cachedClipRect);
+
+		RenderScrollBars(painter);
+	}
+
+	void ScrollWidget::RenderText(video::Painter* painter) 
+	{
+		Widget::RenderText(painter);
 	}
 
 	void ScrollWidget::SetPosition(s32 x, s32 y)

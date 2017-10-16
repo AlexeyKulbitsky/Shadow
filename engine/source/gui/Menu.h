@@ -28,6 +28,8 @@ namespace gui
 		void AddSubmenu(size_t itemIndex, const MenuPtr& subMenu);
 
 		virtual void Render(video::Painter* painter) override;
+		virtual void RenderBackground(video::Painter* painter) override;
+		virtual void RenderText(video::Painter* painter) override;
 
 		virtual bool ProcessEvent(GUIEvent& ev) override;
 		virtual void UpdateLayout() override;

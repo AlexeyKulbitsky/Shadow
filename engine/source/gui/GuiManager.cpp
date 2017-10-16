@@ -81,6 +81,9 @@ namespace gui
 		video::Driver* driver = Device::GetInstance()->GetDriver();
 		auto painter = driver->GetPainter();
 
+		auto t1 = Device::GetInstance()->GetTime();
+
+//#if 0
 		for (auto child = m_children.rbegin(); child != m_children.rend(); ++child)
 		{
 			// Draw only unfocused widgets
@@ -93,8 +96,37 @@ namespace gui
 		{
 			m_focusWidget->Render(painter);
 		}
+//#endif
+
+
+
+#if 0
+
+		for (auto child = m_children.rbegin(); child != m_children.rend(); ++child)
+		{
+			// Draw only unfocused widgets
+			if (!(*child)->IsInFocus())
+			{
+				(*child)->RenderBackground(painter);
+				(*child)->RenderText(painter);
+			}
+		}
+
+		// The only focus widget must be drawn after all widgets are ready
+		if (m_focusWidget)
+		{
+			m_focusWidget->RenderBackground(painter);
+			m_focusWidget->RenderText(painter);
+		}
+
+#endif
 
 		painter->Flush();
+
+		auto t2 = Device::GetInstance()->GetTime();
+
+		printf("GUI draw time: %d\n", static_cast<int>(t2 - t1));
+
 	}
 
 	void GuiManager::LoadGui(const String& name)

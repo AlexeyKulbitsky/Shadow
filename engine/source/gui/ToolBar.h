@@ -18,6 +18,8 @@ namespace gui
 
 		virtual void Load(const pugi::xml_node& node) override;
 		virtual void Render(video::Painter* painter) override;
+		virtual void RenderBackground(video::Painter* painter) override;
+		virtual void RenderText(video::Painter* painter) override;
 		virtual bool ProcessEvent(GUIEvent& ev) override;
 
 	private:

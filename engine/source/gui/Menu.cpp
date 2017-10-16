@@ -88,6 +88,28 @@ namespace gui
 		}
 	}
 
+	void Menu::RenderBackground(video::Painter* painter)
+	{
+		Widget::RenderBackground(painter);
+
+		for (const auto& item : m_submenus)
+		{
+			if (item.menu->IsVisible())
+				item.menu->RenderBackground(painter);
+		}
+	}
+
+	void Menu::RenderText(video::Painter* painter)
+	{
+		Widget::RenderText(painter);
+
+		for (const auto& item : m_submenus)
+		{
+			if (item.menu->IsVisible())
+				item.menu->RenderText(painter);
+		}
+	}
+
 	bool Menu::ProcessEvent(GUIEvent& ev)
 	{
 		if (Widget::ProcessEvent(ev))

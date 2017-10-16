@@ -51,6 +51,26 @@ namespace gui
 			menu->Render(painter);
 	}
 
+	void MenuBar::MenuBarItem::RenderBackground(video::Painter* painter)
+	{
+		// Render activation button
+		Widget::RenderBackground(painter);
+
+		// Render menu if it is visible
+		if (menu->IsVisible())
+			menu->RenderBackground(painter);
+	}
+
+	void MenuBar::MenuBarItem::RenderText(video::Painter* painter)
+	{
+		// Render activation button
+		Widget::RenderText(painter);
+
+		// Render menu if it is visible
+		if (menu->IsVisible())
+			menu->RenderText(painter);
+	}
+
 	bool MenuBar::MenuBarItem::ProcessEvent(GUIEvent& ev)
 	{
 		if (button->ProcessEvent(ev))
@@ -170,6 +190,31 @@ namespace gui
 		for (const auto& menuItem : m_menuItems)
 		{
 			menuItem->Render(painter);
+		}
+	}
+
+	void MenuBar::RenderBackground(video::Painter* painter)
+	{
+		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
+		video::Painter::Vertex upperLeft(m_rect.upperLeftCorner,
+			m_sprite->GetUVRect().upperLeftCorner,
+			m_sprite->GetColor());
+		video::Painter::Vertex downRight(m_rect.lowerRightCorner,
+			m_sprite->GetUVRect().lowerRightCorner,
+			m_sprite->GetColor());
+		painter->DrawRect(upperLeft, downRight);
+
+		for (const auto& menuItem : m_menuItems)
+		{
+			menuItem->RenderBackground(painter);
+		}
+	}
+
+	void MenuBar::RenderText(video::Painter* painter)
+	{
+		for (const auto& menuItem : m_menuItems)
+		{
+			menuItem->RenderText(painter);
 		}
 	}
 

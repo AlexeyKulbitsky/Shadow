@@ -26,6 +26,8 @@ namespace gui
 
 
 		virtual void Render(video::Painter* painter) override;
+		virtual void RenderBackground(video::Painter* painter) override;
+		virtual void RenderText(video::Painter* painter) override;
 
 		virtual bool ProcessEvent(GUIEvent& ev) override;
 

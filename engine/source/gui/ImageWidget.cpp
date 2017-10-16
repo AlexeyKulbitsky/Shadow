@@ -45,6 +45,18 @@ namespace gui
 		painter->DrawRect(upperLeft, downRight);
 	}
 
+	void ImageWidget::RenderBackground(video::Painter* painter)
+	{
+		painter->SetMaterial(m_material);
+		video::Painter::Vertex upperLeft(m_rect.upperLeftCorner,
+			math::Vector2f(0.0f, 0.0f),
+			math::Vector4f(1.0f));
+		video::Painter::Vertex downRight(m_rect.lowerRightCorner,
+			math::Vector2f(1.0f, 1.0f),
+			math::Vector4f(1.0f));
+		painter->DrawRect(upperLeft, downRight);
+	}
+
 	void ImageWidget::UpdateLayout()
 	{
 		if (!m_texture)

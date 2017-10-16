@@ -164,18 +164,43 @@ namespace gui
 			return;
 
 		auto mat = GuiManager::GetInstance()->GetDefaultMaterial().get();
-		auto& subBatch = batch.batches[GUI_LAYER_BACKGROUND].batches[mat];
+		auto& backgroundLayer = batch.batches[GUI_LAYER_BACKGROUND];
 
-		subBatch.material = mat;
+		if (backgroundLayer.batches[backgroundLayer.batches.size() - 1].material != mat)
+		{
+			const auto& prevBatch = backgroundLayer.batches[backgroundLayer.batches.size() - 1];
+			GuiBatch newBatch;
+			newBatch.clipRect = prevBatch.clipRect;
+			newBatch.material = mat;
+			newBatch.indicesCount = 0;
+			newBatch.startIndex = batch.batches[GUI_LAYER_BACKGROUND].indexArray.size();
+
+			backgroundLayer.batches.push_back(newBatch);
+		}
+
+		auto& subBatch = backgroundLayer.batches[backgroundLayer.batches.size() - 1];
 		subBatch.indicesCount += 6;
-		subBatch.verticesCount += 4;
-		video::Painter::Vertex upperLeft(m_rect.upperLeftCorner,
-										m_sprites[m_state]->GetUVRect().upperLeftCorner,
-										m_sprites[m_state]->GetColor());
-		video::Painter::Vertex downRight(m_rect.lowerRightCorner,
-										m_sprites[m_state]->GetUVRect().lowerRightCorner,
-										m_sprites[m_state]->GetColor());
 
+		backgroundLayer.AddRect(m_rect.upperLeftCorner, m_sprites[m_state]->GetUVRect().upperLeftCorner, m_sprites[m_state]->GetColor(),
+			m_rect.lowerRightCorner, m_sprites[m_state]->GetUVRect().lowerRightCorner, m_sprites[m_state]->GetColor());
+
+	}
+
+	void Button::RenderBackground(video::Painter* painter)
+	{
+		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
+		video::Painter::Vertex upperLeft(m_rect.upperLeftCorner,
+			m_sprites[m_state]->GetUVRect().upperLeftCorner,
+			m_sprites[m_state]->GetColor());
+		video::Painter::Vertex downRight(m_rect.lowerRightCorner,
+			m_sprites[m_state]->GetUVRect().lowerRightCorner,
+			m_sprites[m_state]->GetColor());
+		painter->DrawRect(upperLeft, downRight);
+	}
+
+	void Button::RenderText(video::Painter* painter)
+	{
+		m_text->Render(painter);
 	}
 
 	void Button::SetRect(const math::Recti& rect)

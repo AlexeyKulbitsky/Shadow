@@ -597,6 +597,8 @@ namespace sh
 
 			// We must have at least one active material any time
 			SetMaterial(m_material);
+
+			printf("Draw calls :%d\n", drawCallsCount);
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////

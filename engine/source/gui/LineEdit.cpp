@@ -117,6 +117,56 @@ namespace gui
 		}
 	}
 
+	void LineEdit::RenderBackground(video::Painter* painter)
+	{
+		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
+		video::Painter::Vertex upperLeft(m_rect.upperLeftCorner,
+			m_sprites[m_state]->GetUVRect().upperLeftCorner,
+			m_sprites[m_state]->GetColor());
+		video::Painter::Vertex downRight(m_rect.lowerRightCorner,
+			m_sprites[m_state]->GetUVRect().lowerRightCorner,
+			m_sprites[m_state]->GetColor());
+		painter->DrawRect(upperLeft, downRight);
+	}
+
+	void LineEdit::RenderText(video::Painter* painter)
+	{
+		Text::Render(painter);
+
+		if (IsInFocus())
+		{
+			s32 xPos = 0;
+			if (s_cursorPos == m_text.size())
+			{
+				if (m_text.size() == 0U)
+				{
+					xPos = m_rect.upperLeftCorner.x + 5;
+				}
+				else
+				{
+					const auto& font = GuiManager::GetInstance()->GetFont();
+					const auto& desc = font->GetGlyphDescription(static_cast<u32>(m_text.back()));
+					xPos = m_glyphOffsets.back() + desc.advance;
+				}
+			}
+			else
+			{
+				xPos = m_glyphOffsets[s_cursorPos];
+			}
+
+			s_cursorRect.Set(xPos, m_rect.upperLeftCorner.y,
+				xPos + 3U, m_rect.lowerRightCorner.y);
+
+			video::Painter::Vertex upperLeft(s_cursorRect.upperLeftCorner,
+				math::Vector2f(0.0f),
+				math::Vector4f(0.0f, 0.0f, 0.0f, 1.0f));
+			video::Painter::Vertex downRight(s_cursorRect.lowerRightCorner,
+				math::Vector2f(0.0f),
+				math::Vector4f(0.0f, 0.0f, 0.0f, 1.0f));
+			painter->DrawRect(upperLeft, downRight);
+		}
+	}
+
 	bool LineEdit::ProcessEvent(GUIEvent& ev)
 	{
 		bool inside = m_rect.IsPointInside(ev.x, ev.y);

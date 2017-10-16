@@ -127,6 +127,36 @@ namespace gui
 		}
 	}
 
+	void Layout::RenderBackground(video::Painter* painter)
+	{
+		for (u32 i = 0; i < m_items.size(); ++i)
+		{
+			const auto& widget = m_items[i]->GetWidget();
+			if (widget && widget->IsVisible() && !widget->IsInFocus())
+			{
+				widget->RenderBackground(painter);
+				continue;
+			}
+
+			m_items[i]->RenderBackground(painter);
+		}
+	}
+
+	void Layout::RenderText(video::Painter* painter)
+	{
+		for (u32 i = 0; i < m_items.size(); ++i)
+		{
+			const auto& widget = m_items[i]->GetWidget();
+			if (widget && widget->IsVisible() && !widget->IsInFocus())
+			{
+				widget->RenderText(painter);
+				continue;
+			}
+
+			m_items[i]->RenderText(painter);
+		}
+	}
+
 	bool Layout::ProcessEvent(GUIEvent& ev)
 	{
 		for (u32 i = 0; i < m_items.size(); ++i)

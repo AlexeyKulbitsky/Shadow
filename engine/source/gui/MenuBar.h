@@ -20,6 +20,8 @@ namespace gui
 
 		const MenuPtr& AddMenu(const String& menuName, const ButtonPtr& button);
 		virtual void Render(video::Painter* painter) override;
+		virtual void RenderBackground(video::Painter* painter) override;
+		virtual void RenderText(video::Painter* painter) override;
 		virtual bool ProcessEvent(GUIEvent& ev) override;
 
 	private:
@@ -29,6 +31,8 @@ namespace gui
 			MenuBarItem(const String& menuName, const ButtonPtr& button);
 			virtual void UpdateLayout() override;
 			virtual void Render(video::Painter* painter) override;
+			virtual void RenderBackground(video::Painter* painter) override;
+			virtual void RenderText(video::Painter* painter) override;
 			virtual bool ProcessEvent(GUIEvent& ev) override;
 			void OnButtonToggled(bool toggled, const ButtonPtr& sender);
 			void OnButtonHovered(const ButtonPtr& sender);
