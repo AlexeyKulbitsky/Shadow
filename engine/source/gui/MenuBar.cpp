@@ -47,8 +47,8 @@ namespace gui
 		Widget::Render(painter);
 
 		// Render menu if it is visible
-		if (menu->IsVisible())
-			menu->Render(painter);
+ 		if (menu->IsVisible())
+ 			menu->Render(painter);
 	}
 
 	void MenuBar::MenuBarItem::RenderBackground(video::Painter* painter)

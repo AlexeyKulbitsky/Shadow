@@ -200,7 +200,8 @@ namespace gui
 		const auto& texture = m_font->GetTextureAtlas();
 		SH_ASSERT(!!texture, "Can not set empty font to Gui manager!");
 
-		m_textMaterial->GetCommonGpuParams()->SetSampler("fontAtlas", texture);
+		m_textMaterial->GetCommonGpuParams()->SetSampler("fontAtlas", Device::GetInstance()->GetResourceManager()->GetDefaultTexture());
+		//m_textMaterial->GetCommonGpuParams()->SetSampler("fontAtlas", texture);
 	}
 
 	void GuiManager::SetStyle(const StylePtr& style)

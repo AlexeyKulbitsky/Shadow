@@ -143,7 +143,7 @@ if (WIN32)
   set(BUILD_UTILS OFF CACHE BOOL "utilities" FORCE)
   add_subdirectory(../libs/glew/build/cmake "${CMAKE_CURRENT_BINARY_DIR}/glew_build")
   include_directories(../libs/glew/include)
-  #target_link_libraries(${PROJECT_NAME} glew_s)
+  target_link_libraries(${PROJECT_NAME} glew_s)
 endif(WIN32)
 
 # Add assimp
@@ -175,6 +175,6 @@ if (SHADOW_ANDROID)
 
   target_link_libraries(${PROJECT_NAME} pugixml freetype minizip)
 else(SHADOW_ANDROID)
-  target_link_libraries(${PROJECT_NAME} pugixml freetype ${EGL_LIBRARY} ${GLESV2_LIBRARY})
+  target_link_libraries(${PROJECT_NAME} pugixml freetype)# ${EGL_LIBRARY} ${GLESV2_LIBRARY})
 endif(SHADOW_ANDROID)
 

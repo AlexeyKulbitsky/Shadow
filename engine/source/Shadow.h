@@ -65,7 +65,7 @@
 #include "scene/ModelLoader/ModelLoader.h"
 #include "scene/ModelLoader/TinyObjModelLoader.h"
 
-#include "video/GLContext/GLContextManager.h"
+#include "video/GL/GLContext/GLContextManager.h"
 #include "video/Driver.h"
 #include "video/BlendingState.h"
 #include "video/Color.h"
