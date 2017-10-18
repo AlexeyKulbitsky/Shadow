@@ -1,9 +1,28 @@
-#ifndef SHADOW_GLES20_COMMON_INCLUDE
-#define SHADOW_GLES20_COMMON_INCLUDE
+#ifndef SHADOW_GL_COMMON_INCLUDE
+#define SHADOW_GL_COMMON_INCLUDE
 
-#include "../../../Globals.h"
-#include "../GLContext/EGLContextManager.h"
-#include <gl/glew.h>
+#include "../../Globals.h"
+
+#if defined SHADOW_APPLE
+
+#include <OpenGLES/ES3/gl.h>
+
+#elif defined SHADOW_ANDROID
+
+#include <GLES3/gl3.h>
+#include <GLES2/gl2ext.h>
+#include <EGL/egl.h>
+#include <EGL/eglext.h>
+
+#elif defined SHADOW_WINDOWS
+
+//#include <gl/glew.h>
+//#include <gl/wglew.h>
+
+#include "../../../../libs/glew/include/GL/glew.h"
+#include "../../../../libs/glew/include/GL/wglew.h"
+
+#endif
 
 namespace sh
 {

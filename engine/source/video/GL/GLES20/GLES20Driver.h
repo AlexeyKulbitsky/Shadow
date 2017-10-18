@@ -2,7 +2,7 @@
 #define SHADOW_GLES20_DRIVER_INCLUDE
 
 #include "../../Driver.h"
-#include "../GLContext/EGLContextManager.h"
+#include "../GLContext/GLContextManager.h"
 
 namespace sh
 {

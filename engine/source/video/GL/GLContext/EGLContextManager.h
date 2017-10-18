@@ -1,28 +1,12 @@
 #ifndef SHADOW_EGLCONTEXTMANAGER_INCLUDE
 #define SHADOW_EGLCONTEXTMANAGER_INCLUDE
 
+#if defined SHADOW_ANDROID
+
+
 #include "GLContextManager.h"
 
 #include <stdlib.h>
-#include <gl/glew.h>
-#if 0
-
-
-#ifdef SHADOW_APPLE
-#include <OpenGLES/ES3/gl.h>
-#else
-#include <GLES3/gl3.h>
-#include <GLES2/gl2ext.h>
-#include <EGL/egl.h>
-#include <EGL/eglext.h>
-#endif
-
-#if defined SHADOW_WINDOWS
-//#pragma comment(lib, "libEGL.lib")
-//#pragma comment(lib, "libGLESv2.lib")
-#endif
-
-#endif
 
 namespace sh
 {
@@ -42,7 +26,7 @@ namespace sh
 			virtual bool DestroyContext(bool destroyDisplay) override;
 			virtual bool SwapBuffers() override;
 			virtual bool IsContextCreated() override { return false; }// { return m_isContextCreated; }
-#if 0
+
 		private:
 			EGLint GetContextRenderableType(EGLDisplay eglDisplay);
 
@@ -64,9 +48,11 @@ namespace sh
 			EGLSurface				m_eglSurface;
 #endif
 
-#endif
 		};
 	}
 }
+
+#endif
+
 
 #endif

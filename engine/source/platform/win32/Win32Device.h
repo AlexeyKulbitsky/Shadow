@@ -24,8 +24,6 @@ namespace sh
 		virtual u64 GetTime() override;
 
 		bool CreateDriver();
-
-		void InitGlew(HINSTANCE hInstance);
 	private:
 		HWND m_hwnd;
 	};

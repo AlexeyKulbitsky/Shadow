@@ -23,13 +23,10 @@
 #include "../../Shadow.h"
 
 
-#include <gl/glew.h>
-#include <gl/wglew.h>
-
 using namespace sh;
 using namespace video;
 
-#pragma comment(lib, "opengl32.lib")
+
 
 int g_xPoint, g_yPoint;
 #include <shellapi.h>
@@ -311,7 +308,6 @@ Win32Device::Win32Device()
 	m_hwnd = CreateWindowEx(exStyle, ClassName, __TEXT("Shadow engine"), style, windowLeft, windowTop,
 		realWidth, realHeight, NULL, NULL, hInstance, NULL);
 
-
 	m_creationParameters.WinId = m_hwnd;
 
 	ShowWindow(m_hwnd, SW_SHOWNORMAL);
@@ -319,7 +315,6 @@ Win32Device::Win32Device()
 
 	// fix ugly ATI driver bugs. Thanks to ariaci
 	MoveWindow(m_hwnd, windowLeft, windowTop, realWidth, realHeight, TRUE);
-
 
 	CreateDriver();
 
@@ -337,9 +332,6 @@ Win32Device::Win32Device(const CreationParameters &parameters)
 
 	// get handle to exe file
 	HINSTANCE hInstance = GetModuleHandle(0);
-
-
-	InitGlew(hInstance);
 
 	// Store original desktop mode.
 
@@ -552,65 +544,6 @@ bool Win32Device::CreateDriver()
 		break;
 	}
 	return true;
-}
-
-
-void Win32Device::InitGlew(HINSTANCE hInstance)
-{
-	// Registering fake class
-	WNDCLASSEX wc;
-
-	wc.cbSize = sizeof(WNDCLASSEX);
-	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC | CS_DBLCLKS;
-	//wc.lpfnWndProc = (WNDPROC)MsgHandlerSimpleOpenGLClass;
-	wc.cbClsExtra = 0; wc.cbWndExtra = 0;
-	wc.hInstance = hInstance;
-	wc.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_APPLICATION));
-	wc.hIconSm = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_APPLICATION));
-	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wc.hbrBackground = (HBRUSH)(COLOR_MENUBAR + 1);
-	wc.lpszMenuName = NULL;
-	wc.lpszClassName = "Fake_class_name";
-
-	RegisterClassEx(&wc);
-
-
-	HWND hWndFake = CreateWindow("Fake_class_name", "FAKE", WS_OVERLAPPEDWINDOW | WS_MAXIMIZE | WS_CLIPCHILDREN,
-		0, 0, CW_USEDEFAULT, CW_USEDEFAULT, NULL,
-		NULL, hInstance, NULL);
-
-	HDC hDC = GetDC(hWndFake);
-
-	// First, choose false pixel format
-
-	PIXELFORMATDESCRIPTOR pfd;
-	memset(&pfd, 0, sizeof(PIXELFORMATDESCRIPTOR));
-	pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
-	pfd.nVersion = 1;
-	pfd.dwFlags = PFD_DOUBLEBUFFER | PFD_SUPPORT_OPENGL | PFD_DRAW_TO_WINDOW;
-	pfd.iPixelType = PFD_TYPE_RGBA;
-	pfd.cColorBits = 32;
-	pfd.cDepthBits = 32;
-	pfd.iLayerType = PFD_MAIN_PLANE;
-
-	int iPixelFormat = ChoosePixelFormat(hDC, &pfd);
-	if (iPixelFormat == 0)
-		return;
-
-	if (!SetPixelFormat(hDC, iPixelFormat, &pfd))
-		return;
-
-	// Create the false, old style context (OpenGL 2.1 and before)
-
-	HGLRC hRCFake = wglCreateContext(hDC);
-	wglMakeCurrent(hDC, hRCFake);
-
-	auto res = glewInit();
-	SH_ASSERT(res == GLEW_OK, "Can not initialize GLEW!");
-
-	wglMakeCurrent(NULL, NULL);
-	wglDeleteContext(hRCFake);
-	DestroyWindow(hWndFake);
 }
 
 ////////////////////////////////////////////////////////////////////////

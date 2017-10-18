@@ -1,19 +1,19 @@
-#include "GLES20Texture.h"
-#include "../../../pempek_assert.h"
+#include "GLTexture.h"
+//#include "../../../pempek_assert.h"
 
 namespace sh
 {
 	namespace video
 	{
 
-		GLES20Texture::~GLES20Texture()
+		GLTexture::~GLTexture()
 		{
 			glDeleteTextures(1, &m_glID);
 		}
 
 		////////////////////////////////////////////////////////////////////
 
-		void GLES20Texture::SetData(u32 mipLevel, void* data)
+		void GLTexture::SetData(u32 mipLevel, void* data)
 		{
 			glBindTexture(s_glTextureType[m_description.type], m_glID);
 			glTexImage2D(s_glTextureType[m_description.type], 
@@ -31,7 +31,7 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////
 
-		void GLES20Texture::SetFaceData(TextureFace face, u32 mipLevel, const void* data)
+		void GLTexture::SetFaceData(TextureFace face, u32 mipLevel, const void* data)
 		{
 			glBindTexture(s_glTextureType[m_description.type], m_glID);
 			glTexImage2D(s_glTextureFace[face], 
@@ -48,7 +48,7 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////
 
-		GLES20Texture::GLES20Texture(const TextureDescription& description)
+		GLTexture::GLTexture(const TextureDescription& description)
 			: Texture(description)
 		{
 			glGenTextures(1, &m_glID);

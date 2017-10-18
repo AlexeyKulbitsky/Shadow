@@ -22,6 +22,7 @@ namespace sh
 		class Sampler
 		{
 		public:
+			Sampler(const SamplerDescription& description);
 			virtual ~Sampler(){}
 
 			virtual void Set(TexturePtr texture) { m_texture = texture; }

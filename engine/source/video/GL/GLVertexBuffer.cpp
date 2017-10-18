@@ -1,18 +1,18 @@
-#include "GLES20VertexBuffer.h"
-#include "../GLContext/EGLContextManager.h"
+#include "GLVertexBuffer.h"
+//#include "../GLContext/EGLContextManager.h"
 
 namespace sh
 {
 	namespace video
 	{
-		GLES20VertexBuffer::~GLES20VertexBuffer()
+		GLVertexBuffer::~GLVertexBuffer()
 		{
 			glDeleteBuffers(1, &m_glID);
 		}
 
 		////////////////////////////////////////////////////////////////////////
 
-		void GLES20VertexBuffer::SetData(size_t offset, size_t length, const void* data)
+		void GLVertexBuffer::SetData(size_t offset, size_t length, const void* data)
 		{
 			glBindBuffer(GL_ARRAY_BUFFER, m_glID);
 
@@ -35,14 +35,14 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////
 
-		void GLES20VertexBuffer::GetData(size_t offset, size_t length, const void* data)
+		void GLVertexBuffer::GetData(size_t offset, size_t length, const void* data)
 		{
 			SH_ASSERT(0, "Unimplemented yet!");
 		}
 
 		////////////////////////////////////////////////////////////////////////
 
-		GLES20VertexBuffer::GLES20VertexBuffer(const VertexBufferDecription& description)
+		GLVertexBuffer::GLVertexBuffer(const VertexBufferDecription& description)
 			: VertexBuffer(description)
 		{
 			glGenBuffers(1, &m_glID);

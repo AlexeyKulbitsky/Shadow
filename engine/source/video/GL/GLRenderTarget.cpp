@@ -1,20 +1,19 @@
-#include "GLES20RenderTarget.h"
-#include "GLES20Texture.h"
-#include "GLES20Driver.h"
-#include "../../../Device.h"
+#include "GLRenderTarget.h"
+#include "GLTexture.h"
+#include "../../Device.h"
 
 namespace sh
 {
 	namespace video
 	{
-		GLES20RenderTarget::GLES20RenderTarget()
+		GLRenderTarget::GLRenderTarget()
 		{
 			glGenFramebuffers(1, &m_glID);
 		}
 
 		////////////////////////////////////////////////////////////////////////
 
-		GLES20RenderTarget::~GLES20RenderTarget()
+		GLRenderTarget::~GLRenderTarget()
 		{ 
 			if (m_depthRenderbuffer != 0U)
 			{
@@ -25,21 +24,21 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////
 
-		void GLES20RenderTarget::AddColorTexture(const TexturePtr& texture)
+		void GLRenderTarget::AddColorTexture(const TexturePtr& texture)
 		{
 			m_colorTexture = texture;
 		}
 
 		////////////////////////////////////////////////////////////////////////
 
-		void GLES20RenderTarget::AddDepthTexture(const TexturePtr& texture)
+		void GLRenderTarget::AddDepthTexture(const TexturePtr& texture)
 		{
 			m_depthTexture = texture;
 		}
 
 		////////////////////////////////////////////////////////////////////////
 
-		void GLES20RenderTarget::Init()
+		void GLRenderTarget::Init()
 		{
 			glBindFramebuffer(GL_FRAMEBUFFER, m_glID);
 
@@ -47,8 +46,8 @@ namespace sh
 			const math::Vector4u& viewport = driver->GetViewPort();
 			u32 width = viewport.z;
 			u32 height = viewport.w;
-			GLES20Texture *colorTexture = static_cast<GLES20Texture*>(m_colorTexture.get());
-			GLES20Texture *depthTexture = static_cast<GLES20Texture*>(m_depthTexture.get());
+			GLTexture *colorTexture = static_cast<GLTexture*>(m_colorTexture.get());
+			GLTexture *depthTexture = static_cast<GLTexture*>(m_depthTexture.get());
 
 			//colorTexture->SetType(TextureType::TEX_TYPE_TEXTURE_2D);
 			//colorTexture->Bind();
@@ -89,14 +88,14 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////
 
-		void GLES20RenderTarget::Bind()
+		void GLRenderTarget::Bind()
 		{
 			glBindFramebuffer(GL_FRAMEBUFFER, m_glID);
 		}
 
 		////////////////////////////////////////////////////////////////////////
 
-		void GLES20RenderTarget::Unbind()
+		void GLRenderTarget::Unbind()
 		{
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		}

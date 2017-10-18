@@ -1,19 +1,18 @@
 #include "GLES20Driver.h"
 #include "GLES20VertexDeclaration.h"
-#include "GLES20IndexBuffer.h"
-#include "GLES20VertexBuffer.h"
-#include "GLES20Texture.h"
-#include "GLES20RenderTarget.h"
+#include "../GLIndexBuffer.h"
+#include "../GLVertexBuffer.h"
+#include "../GLTexture.h"
+#include "../GLRenderTarget.h"
 #include "GLES20RenderPIpeline.h"
 #include "Batching/GLES20RenderBatchManager.h"
-#include "GLES20Common.h"
-#include "GLES20Shader.h"
-#include "GLES20Sampler.h"
+#include "../GLCommon.h"
+#include "../GLShader.h"
 
-#include "Managers/GLES20RenderStateManager.h"
-#include "Managers/GLES20HardwareBufferManager.h"
-#include "Managers/GLES20CommandBufferManager.h"
-#include "Managers/GLES20TextureManager.h"
+#include "../Managers/GLRenderStateManager.h"
+#include "../Managers/GLHardwareBufferManager.h"
+#include "../Managers/GLCommandBufferManager.h"
+#include "../Managers/GLTextureManager.h"
 
 #include "../../../gui/SpriteManager.h"
 
@@ -40,11 +39,11 @@ using namespace video;
 GLES20Driver::GLES20Driver( GLContextManager* contextManager )
 	:m_contextManager( contextManager )
 {
-	RenderStateManager::CreateInstance<GLES20RenderStateManager>();
-	HardwareBufferManager::CreateInstance<GLES20HardwareBufferManager>();
-	CommandBufferManager::CreateInstance<GLES20CommandBufferManager>();
+	RenderStateManager::CreateInstance<GLRenderStateManager>();
+	HardwareBufferManager::CreateInstance<GLHardwareBufferManager>();
+	CommandBufferManager::CreateInstance<GLCommandBufferManager>();
 	RenderBatchManager::CreateInstance<GLES20RenderBatchManager>();
-	TextureManager::CreateInstance<GLES20TextureManager>();
+	TextureManager::CreateInstance<GLTextureManager>();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -416,7 +415,7 @@ void GLES20Driver::SetGpuParams( const GpuParamsPtr& params, const CommandBuffer
 			const u32 index = paramsInfo->GetIndex(samplerDesc.second.set, samplerDesc.second.binding);
 			const auto& sampler = samplers[index];
 
-			GLES20Texture* texture = static_cast<GLES20Texture*>(sampler->GetTexture().get());
+			GLTexture* texture = static_cast<GLTexture*>(sampler->GetTexture().get());
 			glActiveTexture(GL_TEXTURE0 + samplerCounter);
 			GLenum textureTraget = s_glTextureType[texture->GetDescription().type];
 			glBindTexture(textureTraget, texture->GetGLId());
@@ -506,7 +505,7 @@ void GLES20Driver::SetVertexDeclaration( const VertexInputDeclarationPtr& declar
 void GLES20Driver::SetVertexBuffer( const VertexBufferPtr& buffer, const CommandBufferPtr& )
 {
 	glBindBuffer( GL_ARRAY_BUFFER, 0 );
-	GLES20VertexBuffer* glBuffer = static_cast<GLES20VertexBuffer*>( buffer.get() );
+	GLVertexBuffer* glBuffer = static_cast<GLVertexBuffer*>( buffer.get() );
 	m_currentVertexBuffer = glBuffer->GetGLId();
 	glBindBuffer( GL_ARRAY_BUFFER, m_currentVertexBuffer );
 }
@@ -516,7 +515,7 @@ void GLES20Driver::SetVertexBuffer( const VertexBufferPtr& buffer, const Command
 void GLES20Driver::SetIndexBuffer( const IndexBufferPtr& buffer, const CommandBufferPtr& )
 {
 	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
-	GLES20IndexBuffer* glBuffer = static_cast<GLES20IndexBuffer*>( buffer.get() );
+	GLIndexBuffer* glBuffer = static_cast<GLIndexBuffer*>( buffer.get() );
 	m_currentIndexBuffer = glBuffer->GetGLId();
 	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_currentIndexBuffer );
 }
@@ -560,7 +559,7 @@ void GLES20Driver::GetPixelData( u32 x, u32 y, u8* data )
 RenderTargetPtr GLES20Driver::CreateRenderTarget() const
 {
 	RenderTargetPtr result = nullptr;
-	result.reset( new GLES20RenderTarget() );
+	result.reset( new GLRenderTarget() );
 	return result;
 }
 

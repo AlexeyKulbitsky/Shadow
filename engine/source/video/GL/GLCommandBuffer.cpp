@@ -1,4 +1,4 @@
-#include "GLES20CommandBuffer.h"
+#include "GLCommandBuffer.h"
 
 namespace sh
 {

@@ -1,8 +1,6 @@
 #include "WGLContextManager.h"
 
-#include <gl/glew.h>
-#include <gl/wglew.h>
-
+#pragma comment(lib, "opengl32.lib")
 
 namespace sh
 {

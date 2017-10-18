@@ -7,7 +7,7 @@
 #include "../../VertexDeclaration.h"
 #include "../../GpuParamsDescription.h"
 #include "../../GpuParams.h"
-#include "GLES20Shader.h"
+#include "../GLShader.h"
 #include "GLES20VertexDeclaration.h"
 
 namespace sh
@@ -394,8 +394,8 @@ namespace sh
 			// Create shader program
 			m_programID = glCreateProgram();
 
-			GLES20Shader* vertShader = static_cast<GLES20Shader*>(m_description.vertexShader.get());
-			GLES20Shader* fragShader = static_cast<GLES20Shader*>(m_description.fragmentShader.get());
+			GLShader* vertShader = static_cast<GLShader*>(m_description.vertexShader.get());
+			GLShader* fragShader = static_cast<GLShader*>(m_description.fragmentShader.get());
 			glAttachShader(m_programID, vertShader->GetGLId());
 			glAttachShader(m_programID, fragShader->GetGLId());
 

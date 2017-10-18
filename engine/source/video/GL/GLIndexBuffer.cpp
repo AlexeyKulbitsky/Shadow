@@ -1,18 +1,18 @@
-#include "GLES20IndexBuffer.h"
-#include "../GLContext/EGLContextManager.h"
+#include "GLIndexBuffer.h"
+//#include "../GLContext/EGLContextManager.h"
 
 namespace sh
 {
 	namespace video
 	{
-		GLES20IndexBuffer::~GLES20IndexBuffer()
+		GLIndexBuffer::~GLIndexBuffer()
 		{
 			glDeleteBuffers(1, &m_glID);
 		}
 
 		////////////////////////////////////////////////////////////////////////
 
-		void GLES20IndexBuffer::SetData(size_t offset, size_t length, const void* data)
+		void GLIndexBuffer::SetData(size_t offset, size_t length, const void* data)
 		{
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_glID);
 
@@ -34,14 +34,14 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////
 
-		void GLES20IndexBuffer::GetData(size_t offset, size_t length, const void* data)
+		void GLIndexBuffer::GetData(size_t offset, size_t length, const void* data)
 		{
 
 		}
 
 		////////////////////////////////////////////////////////////////////////
 
-		GLES20IndexBuffer::GLES20IndexBuffer(const IndexBufferDescription& description)
+		GLIndexBuffer::GLIndexBuffer(const IndexBufferDescription& description)
 			: IndexBuffer(description)
 			, m_size(0U)
 		{

@@ -2,6 +2,7 @@
 #define SHADOW_GLCONTEXTMANAGER_INCLUDE
 
 #include "../../../CreationParameters.h"
+#include "../GLCommon.h"
 
 namespace sh
 {

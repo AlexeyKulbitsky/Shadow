@@ -1,11 +1,11 @@
-#include "GLES20Shader.h"
+#include "GLShader.h"
 
 namespace sh
 {
 
 namespace video
 {
-	GLES20Shader::GLES20Shader(const ShaderDescription& description)
+	GLShader::GLShader(const ShaderDescription& description)
 	{
 		GLenum shaderType;
 		switch (description.type)

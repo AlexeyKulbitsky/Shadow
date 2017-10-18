@@ -1,8 +1,8 @@
 #ifndef SHADOW_GLES20_VERTEX_DECLARATION_INCLUDE
 #define SHADOW_GLES20_VERTEX_DECLARATION_INCLUDE
 
-#include "../GLContext/EGLContextManager.h"
 #include "../../VertexDeclaration.h"
+#include "../GLCommon.h"
 
 
 namespace sh

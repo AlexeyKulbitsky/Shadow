@@ -1,5 +1,5 @@
-#ifndef SHADOW_GLES20_RENDER_PIPELINE_INCLUDE
-#define SHADOW_GLES20_RENDER_PIPELINE_INCLUDE
+#ifndef SHADOW_GL3_RENDER_PIPELINE_INCLUDE
+#define SHADOW_GL3_RENDER_PIPELINE_INCLUDE
 
 #include "../../RenderPipeline.h"
 #include "../GLCommon.h"
@@ -8,13 +8,13 @@ namespace sh
 {
 	namespace video
 	{
-		class GLES20RenderPipeline : public RenderPipeline
+		class GL3RenderPipeline : public RenderPipeline
 		{
 			//friend class GLES20Driver;
 			friend class GLRenderStateManager;
 		public:
-			GLES20RenderPipeline();
-			virtual ~GLES20RenderPipeline();
+			GL3RenderPipeline();
+			virtual ~GL3RenderPipeline();
 
 			virtual void Load(const pugi::xml_node &node) override;
 			virtual void Unload() override;
@@ -28,7 +28,7 @@ namespace sh
 			void LoadShaders(const pugi::xml_node &node);
 			void ParseAttributes();
 			void ParseUniforms();
-			GLES20RenderPipeline(const RenderPipelineDescription& description);
+			GL3RenderPipeline(const RenderPipelineDescription& description);
 
 		protected:			
 			ShaderProgramPtr m_shaderProgram;

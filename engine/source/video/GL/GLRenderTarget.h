@@ -1,18 +1,18 @@
-#ifndef SHADOW_GLES20_RENDER_TARGET_INCLUDE
-#define SHADOW_GLES20_RENDER_TARGET_INCLUDE
+#ifndef SHADOW_GL_RENDER_TARGET_INCLUDE
+#define SHADOW_GL_RENDER_TARGET_INCLUDE
 
-#include "../../RenderTarget.h"
-#include "../GLContext/EGLContextManager.h"
+#include "../RenderTarget.h"
+#include "GLCommon.h"
 
 namespace sh
 {
 	namespace video
 	{
-		class GLES20RenderTarget : public RenderTarget
+		class GLRenderTarget : public RenderTarget
 		{
 		public:
-			GLES20RenderTarget();
-			virtual ~GLES20RenderTarget();
+			GLRenderTarget();
+			virtual ~GLRenderTarget();
 			virtual void AddColorTexture(const TexturePtr& texture) override;
 			virtual void AddDepthTexture(const TexturePtr& texture) override;
 			virtual void Init() override;

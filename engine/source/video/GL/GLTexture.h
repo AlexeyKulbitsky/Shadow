@@ -1,19 +1,19 @@
-#ifndef SHADOW_GLES20_TEXTURE_INCLUDE
-#define SHADOW_GLES20_TEXTURE_INCLUDE
+#ifndef SHADOW_GL_TEXTURE_INCLUDE
+#define SHADOW_GL_TEXTURE_INCLUDE
 
-#include "../../Texture.h"
-#include "GLES20Common.h"
+#include "../Texture.h"
+#include "GLCommon.h"
 
 namespace sh
 {
 	namespace video
 	{
-		class GLES20Texture : public Texture
+		class GLTexture : public Texture
 		{
-			friend class GLES20Driver;
-			friend class GLES20TextureManager;
+			//friend class GLES20Driver;
+			friend class GLTextureManager;
 		public:
-			virtual ~GLES20Texture();
+			virtual ~GLTexture();
 
 			virtual void SetData(u32 mipLevel, void* data) override;
 			virtual void SetFaceData(TextureFace face, u32 mipLevel, const void* data) override;
@@ -22,7 +22,7 @@ namespace sh
 			u32 GetGLId() const { return m_glID; }
 
 		protected:
-			GLES20Texture(const TextureDescription& description);
+			GLTexture(const TextureDescription& description);
 
 		private:
 			u32 m_glID = 0U;
