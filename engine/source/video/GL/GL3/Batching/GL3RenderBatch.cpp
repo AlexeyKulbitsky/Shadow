@@ -1,4 +1,4 @@
-#include "GLES20RenderBatch.h"
+#include "GL3RenderBatch.h"
 #include "../../../IndexBuffer.h"
 #include "../../../Driver.h"
 #include "../../../../scene/Mesh.h"
@@ -16,35 +16,35 @@ namespace sh
 	namespace video
 	{
 
-		void GLES20RenderBatch::SetRenderPipeline(const RenderPipelinePtr& pipeline)
+		void GL3RenderBatch::SetRenderPipeline(const RenderPipelinePtr& pipeline)
 		{
 			m_pipeline = pipeline;
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 
-		void GLES20RenderBatch::SetGpuParams(const GpuParamsPtr& gpuParams)
+		void GL3RenderBatch::SetGpuParams(const GpuParamsPtr& gpuParams)
 		{
 			m_gpuParams = gpuParams;
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 
-		void GLES20RenderBatch::SetMaterialParams(const MaterialParamsPtr& materialParams)
+		void GL3RenderBatch::SetMaterialParams(const MaterialParamsPtr& materialParams)
 		{
 			m_materialParams = materialParams;
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 
-		void GLES20RenderBatch::AddMesh(const scene::MeshPtr& mesh)
+		void GL3RenderBatch::AddMesh(const scene::MeshPtr& mesh)
 		{
 			m_renderables.push_back(mesh->GetRanderable());
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 
-		void GLES20RenderBatch::RemoveMesh(const scene::MeshPtr& mesh)
+		void GL3RenderBatch::RemoveMesh(const scene::MeshPtr& mesh)
 		{
 			for (u32 i = 0U; i < m_renderables.size(); ++i)
 			{
@@ -58,7 +58,7 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////////////
 
-		void GLES20RenderBatch::Submit()
+		void GL3RenderBatch::Submit()
 		{
 			UpdateParams();
 
@@ -81,14 +81,14 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////////////
 
-		void GLES20RenderBatch::Clear()
+		void GL3RenderBatch::Clear()
 		{
 
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 
-		void GLES20RenderBatch::UpdateLight(scene::Light* light)
+		void GL3RenderBatch::UpdateLight(scene::Light* light)
 		{
 			auto type = light->GetType();
 			switch (type)
@@ -125,7 +125,7 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////////////
 
-		void GLES20RenderBatch::UpdateParams()
+		void GL3RenderBatch::UpdateParams()
 		{
 			auto camera = Device::GetInstance()->GetSceneManager()->GetCamera();
 

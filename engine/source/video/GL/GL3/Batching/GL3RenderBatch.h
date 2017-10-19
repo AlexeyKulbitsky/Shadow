@@ -1,5 +1,5 @@
-#ifndef SHADOW_RENDER_BATCH_INCLUDE
-#define SHADOW_RENDER_BATCH_INCLUDE
+#ifndef SHADOW_GL3_RENDER_BATCH_INCLUDE
+#define SHADOW_GL_3RENDER_BATCH_INCLUDE
 
 #include "../../../../Globals.h"
 
@@ -7,14 +7,14 @@ namespace sh
 {
 	namespace video
 	{
-		class GLES20RenderBatch
+		class GL3RenderBatch
 		{
 		public:
 			/*
 			This class is used to hold render commands with the same material
 			*/
-			GLES20RenderBatch() {}
-			~GLES20RenderBatch() {}
+			GL3RenderBatch() {}
+			~GL3RenderBatch() {}
 			void SetRenderPipeline(const RenderPipelinePtr& pipeline);
 			void SetGpuParams(const GpuParamsPtr& gpuParams);
 			void SetMaterialParams(const MaterialParamsPtr& materialParams);

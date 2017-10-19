@@ -134,6 +134,22 @@ namespace video
 				WGL_STENCIL_BITS_ARB, 8,
 				0 // End of attributes list
 			};
+
+// 			const int iPixelFormatAttribList[] =
+// 			{
+// 				WGL_SUPPORT_OPENGL_ARB, TRUE,
+// 				WGL_DRAW_TO_WINDOW_ARB, TRUE,
+// 				WGL_ACCELERATION_ARB, WGL_FULL_ACCELERATION_ARB,
+// 				WGL_COLOR_BITS_ARB, 24,
+// 				WGL_DEPTH_BITS_ARB, 24,
+// 				WGL_DOUBLE_BUFFER_ARB, TRUE,
+// 				WGL_SWAP_METHOD_ARB, WGL_SWAP_EXCHANGE_ARB,
+// 				WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB,
+// 				WGL_STENCIL_BITS_ARB, 8,
+// 				0 // End of attributes list
+// 			};
+
+
 			int iContextAttribs[] =
 			{
 				WGL_CONTEXT_MAJOR_VERSION_ARB, majorVersion,

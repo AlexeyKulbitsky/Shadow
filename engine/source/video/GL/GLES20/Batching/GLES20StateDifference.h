@@ -1,7 +1,7 @@
 #ifndef SHADOW_GLES20_STATE_DIFFERENCE_INCLUDE
 #define SHADOW_GLES20_STATE_DIFFERENCE_INCLUDE
 
-#include "../../../Globals.h"
+#include "../../../../Globals.h"
 
 namespace sh
 {

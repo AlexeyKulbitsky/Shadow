@@ -1,6 +1,6 @@
-#include "GLES20RenderBatchManager.h"
+#include "GL3RenderBatchManager.h"
 
-#include "GLES20RenderBatch.h"
+#include "GL3RenderBatch.h"
 #include "../../../Material.h"
 #include "../../../RenderTechnique.h"
 #include "../../../RenderPipeline.h"
@@ -11,14 +11,14 @@ namespace sh
 {
 	namespace video
 	{
-		GLES20RenderBatchManager::~GLES20RenderBatchManager()
+		GL3RenderBatchManager::~GL3RenderBatchManager()
 		{
 
 		}
 
 		////////////////////////////////////////////////////////////////////////
 
-		void GLES20RenderBatchManager::AddMesh(const scene::MeshPtr& mesh)
+		void GL3RenderBatchManager::AddMesh(const scene::MeshPtr& mesh)
 		{
 			const MaterialPtr& material = mesh->GetMaterial();
 			String techniqueName = material->GetRenderTechnique()->GetName();
@@ -27,7 +27,7 @@ namespace sh
 
 			if (m_renderBatches[layerIndex].find(material->GetFileInfo().lock()->name) == m_renderBatches[layerIndex].end())
 			{
-				GLES20RenderBatchPtr renderBatch(new GLES20RenderBatch());
+				GL3RenderBatchPtr renderBatch(new GL3RenderBatch());
 				const RenderPipelinePtr& renderPipeline = material->GetRenderPipeline(0);
 				renderBatch->SetTechniqueName(techniqueName);
 				renderBatch->SetRenderPipeline(renderPipeline);
@@ -42,7 +42,7 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////
 
-		void GLES20RenderBatchManager::RemoveMesh(const scene::MeshPtr& mesh)
+		void GL3RenderBatchManager::RemoveMesh(const scene::MeshPtr& mesh)
 		{
 			const MaterialPtr& material = mesh->GetMaterial();
 			String techniqueName = material->GetRenderTechnique()->GetName();
@@ -54,7 +54,7 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////
 
-		void GLES20RenderBatchManager::Submit()
+		void GL3RenderBatchManager::Submit()
 		{
 			for (size_t i = 0; i < (size_t)RenderPipeline::Layer::COUNT; ++i)
 			{
@@ -67,7 +67,7 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////
 
-		void GLES20RenderBatchManager::Clear()
+		void GL3RenderBatchManager::Clear()
 		{
 			for (size_t i = 0; i < (size_t)RenderPipeline::Layer::COUNT; ++i)
 			{
@@ -77,7 +77,7 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////////////
 
-		void GLES20RenderBatchManager::UpdateLight(scene::Light* light)
+		void GL3RenderBatchManager::UpdateLight(scene::Light* light)
 		{
 			for (size_t i = 0; i < (size_t)RenderPipeline::Layer::COUNT; ++i)
 			{

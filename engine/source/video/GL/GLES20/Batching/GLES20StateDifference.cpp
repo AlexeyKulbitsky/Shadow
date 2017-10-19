@@ -1,6 +1,6 @@
 #include "GLES20StateDifference.h"
 
-#include "../../Material.h"
+#include "../../../Material.h"
 
 namespace sh
 {
