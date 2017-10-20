@@ -529,7 +529,7 @@ bool Win32Device::CreateDriver()
 		video::WGLContextManager* contextManager = new video::WGLContextManager();
 		if (contextManager)
 		{
-			//m_creationParameters.driverType = video::DriverType::OPENGL_3;
+			m_creationParameters.driverType = video::DriverType::OPENGL_3;
 			//m_driver = new video::GLES20Driver(contextManager);
 			m_driver = new video::GL3Driver(contextManager);
 			m_GLContextManager = contextManager;

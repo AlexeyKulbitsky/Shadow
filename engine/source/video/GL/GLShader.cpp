@@ -51,6 +51,7 @@ namespace video
 				char *infoLog = new char[infoLen];
 
 				glGetShaderInfoLog(m_glID, infoLen, NULL, infoLog);
+				SH_ASSERT(0, "Error while compiling GL3 shader ! Error message: %s", infoLog);
 
 				delete[] infoLog;
 			}	

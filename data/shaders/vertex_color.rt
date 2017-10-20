@@ -1,7 +1,56 @@
+<?xml version="1.0"?>
 <technique name="VertexColor">
 
 <pipeline name="firstPass" layer="main">	
 
+
+	<shader language="GLSL" api="GL3">
+		<vertexShader>
+		
+		<source>
+			<![CDATA[
+				
+				#version 330 core
+				
+				layout (location = 0) in vec3 position;
+				layout (location = 1) in vec3 color;
+				
+								
+				uniform mat4 matWVP;
+				
+				out vec3 vColor;
+				
+				void main() 
+				{
+					gl_Position = matWVP * vec4(position, 1.0);
+					vColor = color;
+				}
+				
+			]]>
+		</source>
+		</vertexShader>
+
+		<fragmentShader>
+		
+		<source>
+			<![CDATA[
+
+				#version 330 core
+				
+				in vec3 vColor;
+				
+				out vec4 FragColor;
+				
+				void main() 
+				{				
+					FragColor = vec4(vColor, 1.0);
+				} 
+		
+			]]>	
+		</source>
+		</fragmentShader>
+	</shader>
+	
 	<shader language="GLSL" api="GLES20">
 		<vertexShader>
 		

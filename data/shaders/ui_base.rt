@@ -47,17 +47,19 @@
 			<![CDATA[
 
 				#version 330 core
-				out vec4 FragColor;
-
-				uniform sampler2D diffuse;
+								
+				//uniform sampler2D diffuse;
 				
 				in vec2 vUV;
 				in vec4 vColor;
+				
+				out vec4 FragColor;
 
 				void main() 
 				{				
-					vec4 color = texture(diffuse, vUV);
-					FragColor = color;// * vColor;					
+					//vec4 color = texture(diffuse, vUV);
+					//FragColor = color * vColor;	
+					FragColor = vec4(vUV.x, vUV.y, 0.0, 1.0);
 				} 
 		
 			]]>	

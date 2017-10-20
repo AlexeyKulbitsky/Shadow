@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <technique name="EditorBaseColor">
 
 <pipeline name="firstPass" layer="main">	
@@ -16,6 +17,47 @@
 	<rasterizationState>
 		<cullFace val="none"/>
 	</rasterizationState>
+	
+	<shader language="GLSL" api="GL3">
+		<vertexShader>
+		
+		<source>
+			<![CDATA[
+				
+				#version 330 core
+				
+				layout (location = 0) in vec3 position;			
+				uniform mat4 matrixWVP;
+				
+				void main() 
+				{
+					gl_Position = matrixWVP * vec4(position, 1.0);
+				}
+				
+			]]>
+		</source>
+		</vertexShader>
+
+		<fragmentShader>
+		
+		<source>
+			<![CDATA[
+
+				#version 330 core
+
+				uniform vec4 color;
+				
+				out vec4 FragColor;
+
+				void main() 
+				{				
+					FragColor = color;
+				} 
+		
+			]]>	
+		</source>
+		</fragmentShader>
+	</shader>
 	
 	<shader language="GLSL" api="GLES20">
 		<vertexShader>

@@ -24,7 +24,7 @@ namespace sh
 			// Create lines data
 			m_linesVertexArray.reserve(50000);
 			video::VertexBufferDecription desc;
-			desc.usage = USAGE_DYNAMIC;
+			desc.usage = USAGE_STREAM;
 			m_linesVertexBuffer = video::VertexBuffer::Create(desc);
 			m_lines.linesBatches.reserve(100U);
 			m_lines.verticesCount = 0U;
@@ -35,7 +35,7 @@ namespace sh
 			m_trianglesVertexBuffer = video::VertexBuffer::Create(desc);
 			video::IndexBufferDescription indexDesc;
 			indexDesc.indexType = IT_32_BIT;
-			indexDesc.usage = USAGE_DYNAMIC;
+			indexDesc.usage = USAGE_STREAM;
 			m_trianglesIndexBuffer = video::IndexBuffer::Create(indexDesc);
 			m_triangles.trianglesBatches.reserve(100U);
 			m_triangles.indicesCount = 0U;

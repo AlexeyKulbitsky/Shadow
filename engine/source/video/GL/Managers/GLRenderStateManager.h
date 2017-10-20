@@ -12,9 +12,7 @@ namespace video
 	class GLRenderStateManager : public RenderStateManager
 	{
 	public:
-		virtual RenderPipelinePtr CreateRenderPipeline(const RenderPipelineDescription& description) override;
 		virtual ShaderPtr CreateShader(const ShaderDescription& description) override;
-		virtual VertexInputDeclarationPtr CreateVertexDeclaration() override;
 	};
 
 } // video

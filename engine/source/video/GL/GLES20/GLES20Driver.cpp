@@ -9,7 +9,7 @@
 #include "../GLCommon.h"
 #include "../GLShader.h"
 
-#include "../Managers/GLRenderStateManager.h"
+#include "Managers/GLES20RenderStateManager.h"
 #include "../Managers/GLHardwareBufferManager.h"
 #include "../Managers/GLCommandBufferManager.h"
 #include "../Managers/GLTextureManager.h"
@@ -39,7 +39,7 @@ using namespace video;
 GLES20Driver::GLES20Driver( GLContextManager* contextManager )
 	:m_contextManager( contextManager )
 {
-	RenderStateManager::CreateInstance<GLRenderStateManager>();
+	RenderStateManager::CreateInstance<GLES20RenderStateManager>();
 	HardwareBufferManager::CreateInstance<GLHardwareBufferManager>();
 	CommandBufferManager::CreateInstance<GLCommandBufferManager>();
 	RenderBatchManager::CreateInstance<GLES20RenderBatchManager>();

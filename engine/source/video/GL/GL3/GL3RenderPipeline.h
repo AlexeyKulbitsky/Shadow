@@ -11,7 +11,7 @@ namespace sh
 		class GL3RenderPipeline : public RenderPipeline
 		{
 			//friend class GLES20Driver;
-			friend class GLRenderStateManager;
+			friend class GL3RenderStateManager;
 		public:
 			GL3RenderPipeline();
 			virtual ~GL3RenderPipeline();

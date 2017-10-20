@@ -246,8 +246,8 @@ int ShowMessageBox(const char* file, int line, const char* function, const char*
 		break;
 	}
 
-	char caption[256];
-	sprintf_s(caption, 255, "%s!!!", levelstr.c_str());
+	char caption[1024];
+	sprintf_s(caption, 1024, "%s!!!", levelstr.c_str());
 
 
 	int count = _scprintf("message: %s\nline: %d\nfile: %s\nexpression: %s\nfunction: %s", message, line, file, expression, function);
@@ -255,11 +255,11 @@ int ShowMessageBox(const char* file, int line, const char* function, const char*
 	newMsg.resize(count);//null terminated string
 	if (message)
 	{
-		sprintf_s(&newMsg[0], count - 1, "message: %s\nline: %d\nfile: %s\nexpression: %s\nfunction: %s", message, line, file, expression, function);
+		sprintf_s(&newMsg[0], count, "message: %s\nline: %d\nfile: %s\nexpression: %s\nfunction: %s", message, line, file, expression, function);
 	}
 	else
 	{
-		sprintf_s(&newMsg[0], count - 1, "line: %d\nfile: %s\nexpression: %s\nfunction: %s", line, file, expression, function);
+		sprintf_s(&newMsg[0], count, "line: %d\nfile: %s\nexpression: %s\nfunction: %s", line, file, expression, function);
 	}
 
 	size_t newSize = newMsg.size();

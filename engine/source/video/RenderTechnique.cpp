@@ -83,12 +83,22 @@ namespace sh
 			String language = shadersNode.attribute("language").as_string();
 			String api = shadersNode.attribute("api").as_string();
 
-			while (api != Device::GetInstance()->GetDriver()->GetApiName())
+			bool foundShaderForCurrentRenderAPI = false;
+
+			while (shadersNode)
 			{
-				shadersNode = shadersNode.next_sibling();
+				if (api == Device::GetInstance()->GetDriver()->GetApiName())
+				{
+					foundShaderForCurrentRenderAPI = true;
+					break;
+				}
+				shadersNode = shadersNode.next_sibling("shader");
 				language = shadersNode.attribute("language").as_string();
 				api = shadersNode.attribute("api").as_string();
 			}
+
+			SH_ASSERT(foundShaderForCurrentRenderAPI, "Can not find %s shader for %s API", 
+				m_name.c_str(), Device::GetInstance()->GetDriver()->GetApiName().c_str());
 
 			io::FileSystem* fs = Device::GetInstance()->GetFileSystem();
 
