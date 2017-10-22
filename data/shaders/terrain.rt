@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <technique name="Terrain">
 
 <pipeline name="firstPass" layer="main">	
@@ -12,13 +13,13 @@
 		<source>
 			<![CDATA[
 
-				attribute mediump vec3 position;	
-				attribute mediump vec3 normal;	
+				attribute vec3 position;	
+				attribute vec3 normal;	
 				
-				uniform mediump mat4 matWVP;
-				uniform mediump mat4 matWorld;
+				uniform mat4 matWVP;
+				uniform mat4 matWorld;
 				
-				varying mediump vec3 vNormal;
+				varying vec3 vNormal;
 				
 				void main() 
 				{
@@ -36,7 +37,7 @@
 		<source>
 			<![CDATA[
 
-				precision mediump float;
+				//precision mediump float;
 				uniform vec3 dLightDirection;
 				uniform vec3 dLightColor;
 				

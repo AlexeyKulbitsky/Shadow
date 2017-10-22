@@ -43,7 +43,6 @@ namespace gui
 
 	void Text::Render(video::Painter* painter)
 	{
-		return;
 		if (!m_visible)
 			return;
 

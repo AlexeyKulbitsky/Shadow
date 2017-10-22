@@ -130,7 +130,7 @@ namespace video
 				WGL_DOUBLE_BUFFER_ARB, GL_TRUE,
 				WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB,
 				WGL_COLOR_BITS_ARB, 32,
-				WGL_DEPTH_BITS_ARB, 24,
+				WGL_DEPTH_BITS_ARB, 16,
 				WGL_STENCIL_BITS_ARB, 8,
 				0 // End of attributes list
 			};
@@ -150,10 +150,20 @@ namespace video
 // 			};
 
 
+//			int iContextAttribs[] =
+//			{
+//				WGL_CONTEXT_MAJOR_VERSION_ARB, majorVersion,
+//				WGL_CONTEXT_MINOR_VERSION_ARB, minorVersion,
+//				WGL_CONTEXT_FLAGS_ARB, WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
+//				0 // End of attributes list
+//			};
+
+
 			int iContextAttribs[] =
 			{
-				WGL_CONTEXT_MAJOR_VERSION_ARB, majorVersion,
-				WGL_CONTEXT_MINOR_VERSION_ARB, minorVersion,
+				WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
+				WGL_CONTEXT_MINOR_VERSION_ARB, 0,
+				//WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_ES2_PROFILE_BIT_EXT,
 				WGL_CONTEXT_FLAGS_ARB, WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
 				0 // End of attributes list
 			};

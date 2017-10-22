@@ -2,7 +2,7 @@
 #include "../../video/Driver.h"
 #include "../../video/GL/GLContext/EGLContextManager.h"
 #include "../../video/GL/GLContext/WGLContextManager.h"
-//#include "../../video/GL/GLES20/GLES20Driver.h"
+#include "../../video/GL/GLES20/GLES20Driver.h"
 #include "../../video/GL/GL3/GL3Driver.h"
 
 #if defined (SHADOW_USE_VULKAN_API)
@@ -529,9 +529,9 @@ bool Win32Device::CreateDriver()
 		video::WGLContextManager* contextManager = new video::WGLContextManager();
 		if (contextManager)
 		{
-			m_creationParameters.driverType = video::DriverType::OPENGL_3;
-			//m_driver = new video::GLES20Driver(contextManager);
-			m_driver = new video::GL3Driver(contextManager);
+			//m_creationParameters.driverType = video::DriverType::OPENGL_3;
+			m_driver = new video::GLES20Driver(contextManager);
+			//m_driver = new video::GL3Driver(contextManager);
 			m_GLContextManager = contextManager;
 		}
 	}

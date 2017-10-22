@@ -26,7 +26,7 @@
 		<source>
 			<![CDATA[
 
-				precision mediump float;
+				//precision mediump float;
 				
 				void main() 
 				{				

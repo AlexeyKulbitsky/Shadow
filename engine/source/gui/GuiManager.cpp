@@ -201,7 +201,7 @@ namespace gui
 		SH_ASSERT(!!texture, "Can not set empty font to Gui manager!");
 
 		//m_textMaterial->GetCommonGpuParams()->SetSampler("fontAtlas", Device::GetInstance()->GetResourceManager()->GetDefaultTexture());
-		//m_textMaterial->GetCommonGpuParams()->SetSampler("fontAtlas", texture);
+		m_textMaterial->GetCommonGpuParams()->SetSampler("fontAtlas", texture);
 	}
 
 	void GuiManager::SetStyle(const StylePtr& style)
@@ -217,7 +217,7 @@ namespace gui
 
 		auto sampler = video::Sampler::Create(samplerDesc);
 		sampler->Set(m_style->GetTexure());
-		//m_defaultMaterial->GetCommonGpuParams()->SetSampler("diffuse", sampler);
+		m_defaultMaterial->GetCommonGpuParams()->SetSampler("diffuse", sampler);
 	}
 
 	void GuiManager::SetFocusWidget(const SPtr<Widget>& widget) 

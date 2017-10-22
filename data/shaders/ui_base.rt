@@ -98,7 +98,7 @@
 		<source>
 			<![CDATA[
 
-				precision mediump float;
+				//precision mediump float;
 				
 				uniform sampler2D diffuse;
 				varying vec4 vColor;

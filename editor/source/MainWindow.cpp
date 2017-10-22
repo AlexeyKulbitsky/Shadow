@@ -233,7 +233,6 @@ void MainWindow::Init()
 	////////////////////////////////////////////////////////////////////////////
 
 	sh::gui::VerticalLayoutPtr mainVerticalLayout(new sh::gui::VerticalLayout());
-	mainVerticalLayout->SetMargins(5, 5, 5, 5);
 	
 	mainVerticalLayout->AddWidget(CreateMenuBar());
 	mainVerticalLayout->AddWidget(CreateToolbar());
