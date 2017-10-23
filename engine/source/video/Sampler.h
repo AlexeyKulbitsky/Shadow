@@ -16,7 +16,7 @@ namespace sh
 			TextureFiltering mipFilter = TEX_FILT_NONE;
 			TextureTiling tilingU = TEX_TILING_REPEAT;
 			TextureTiling tilingV = TEX_TILING_REPEAT;
-			TextureTiling tilingW = TEX_TILING_NONE;
+			TextureTiling tilingW = TEX_TILING_REPEAT;
 		};
 
 		class Sampler

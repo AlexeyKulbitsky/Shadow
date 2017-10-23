@@ -17,14 +17,9 @@ namespace video
 		WGLContextManager();
 		WGLContextManager(int majorVersion, int minorVersion);
 
-		virtual bool InitContext(const CreationParameters &parameters) override;
-		virtual bool AttachWindow(void* window) override;
-		virtual bool CreateDisplay() override;
-		virtual bool DestroyDisplay() override;
-		virtual bool CreateContext(bool createDisplay) override;
 		virtual bool CreateContext(void* winId) override;
-		virtual bool DestroyContext(bool destroyDisplay) override;
-		virtual bool SwapBuffers() override;
+		virtual bool DestroyContext() override;
+		virtual void SwapBuffers() override;
 		virtual bool IsContextCreated() override;
 
 	private:

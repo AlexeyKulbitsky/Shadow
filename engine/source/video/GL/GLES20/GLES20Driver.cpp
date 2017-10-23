@@ -160,17 +160,6 @@ void GLES20Driver::EndRendering()
 
 void GLES20Driver::SetWindow(void* winId, u32 width, u32 height)
 {
-	/*if (!m_contextManager->IsContextCreated())
-	{
-		m_contextManager->AttachWindow(winId);
-		m_contextManager->CreateContext(true);
-	}
-	else
-	{
-		m_contextManager->DestroyContext(false);
-		m_contextManager->AttachWindow(winId);
-		m_contextManager->CreateContext(false);
-	}*/
 	m_contextManager->CreateContext(winId);
 	SetViewport(0, 0, width, height);
 }

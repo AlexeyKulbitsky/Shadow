@@ -34,37 +34,10 @@ namespace video
 	{
 	}
 
-	bool WGLContextManager::InitContext(const CreationParameters &parameters)
-	{
-		
-
-		return false;
-	}
-
-	bool WGLContextManager::AttachWindow(void* window)
-	{
-		return false;
-	}
-
-	bool WGLContextManager::CreateDisplay()
-	{
-		return false;
-	}
-
-	bool WGLContextManager::DestroyDisplay()
-	{
-		return false;
-	}
-
-	bool WGLContextManager::CreateContext(bool createDisplay)
-	{
-		return false;
-	}
-
 	bool WGLContextManager::CreateContext(void* winId)
 	{
 		if (m_hwnd)
-			DestroyContext(false);
+			DestroyContext();
 
 		m_hwnd = reinterpret_cast<HWND>(winId);
 		m_hdc = GetDC(m_hwnd);
@@ -77,7 +50,7 @@ namespace video
 		return true;
 	}
 
-	bool WGLContextManager::DestroyContext(bool destroyDisplay)
+	bool WGLContextManager::DestroyContext()
 	{
 		wglMakeCurrent(NULL, NULL);
 		wglDeleteContext(m_hrc);
@@ -88,15 +61,14 @@ namespace video
 		return false;
 	}
 
-	bool WGLContextManager::SwapBuffers()
+	void WGLContextManager::SwapBuffers()
 	{
 		::SwapBuffers(m_hdc);
-		return false;
 	}
 
 	bool WGLContextManager::IsContextCreated()
 	{
-		return false;
+		return m_hrc != NULL;
 	}
 
 	void WGLContextManager::CreateOldWayContext()
@@ -190,23 +162,8 @@ namespace video
 
 
 		// Create OpenGL context
-		const int majorVersion = 3;
-		const int minorVersion = 3;
-
 		if (WGLEW_ARB_create_context && WGLEW_ARB_pixel_format)
 		{
-			// 			const int iPixelFormatAttribList[] =
-			// 			{
-			// 				WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,
-			// 				WGL_SUPPORT_OPENGL_ARB, GL_TRUE,
-			// 				WGL_DOUBLE_BUFFER_ARB, GL_TRUE,
-			// 				WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB,
-			// 				WGL_COLOR_BITS_ARB, 32,
-			// 				WGL_DEPTH_BITS_ARB, 16,
-			// 				WGL_STENCIL_BITS_ARB, 8,
-			// 				0 // End of attributes list
-			// 			};
-
 			const int iPixelFormatAttribList[] =
 			{
 				WGL_SUPPORT_OPENGL_ARB, TRUE,
@@ -221,20 +178,10 @@ namespace video
 				0 // End of attributes list
 			};
 
-
-			//			int iContextAttribs[] =
-			//			{
-			//				WGL_CONTEXT_MAJOR_VERSION_ARB, majorVersion,
-			//				WGL_CONTEXT_MINOR_VERSION_ARB, minorVersion,
-			//				WGL_CONTEXT_FLAGS_ARB, WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
-			//				0 // End of attributes list
-			//			};
-
-
 			int iContextAttribs[] =
 			{
-				WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
-				WGL_CONTEXT_MINOR_VERSION_ARB, 0,
+				WGL_CONTEXT_MAJOR_VERSION_ARB, m_majorVersion,
+				WGL_CONTEXT_MINOR_VERSION_ARB, m_minorVersion,
 				//WGL_CONTEXT_FLAGS_ARB, WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
 				//WGL_CONTEXT_PROFILE_MASK_ARB,  WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
 				0 // End of attributes list
@@ -247,12 +194,21 @@ namespace video
 
 			// PFD seems to be only redundant parameter now
 			if (!SetPixelFormat(m_hdc, iPixelFormat, &pfd))
+			{
+				SH_ASSERT(0, "Can not set pixel formal while creating OpenGL context");
 				return;
+			}
 
 			m_hrc = wglCreateContextAttribsARB(m_hdc, 0, iContextAttribs);
 			// If everything went OK
 			if (m_hrc)
+			{
 				wglMakeCurrent(m_hdc, m_hrc);
+			}
+			else
+			{
+				SH_ASSERT(0, "Can not create OpenGL context");
+			}
 		}
 	}
 

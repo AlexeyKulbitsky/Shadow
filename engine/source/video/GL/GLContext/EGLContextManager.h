@@ -17,17 +17,14 @@ namespace sh
 		public:
 			EGLContextManager();
 			virtual ~EGLContextManager();
+			virtual bool CreateContext(void* winId) override;
 
-			virtual bool InitContext(const CreationParameters &parameters) override;
-			virtual bool AttachWindow(void* window) override;
-			virtual bool CreateDisplay() override;
-			virtual bool DestroyDisplay() override;
-			virtual bool CreateContext(bool createDisplay) override;
-			virtual bool DestroyContext(bool destroyDisplay) override;
-			virtual bool SwapBuffers() override;
-			virtual bool IsContextCreated() override { return false; }// { return m_isContextCreated; }
+			virtual void SwapBuffers() override;
+			virtual bool IsContextCreated() override { return m_isContextCreated; }
 
 		private:
+			bool CreateContextInternal(bool createDisplay);
+			bool DestroyContextInternal(bool destroyDisplay);
 			EGLint GetContextRenderableType(EGLDisplay eglDisplay);
 
 		private:

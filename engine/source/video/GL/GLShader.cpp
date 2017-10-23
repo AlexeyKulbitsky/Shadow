@@ -17,7 +17,7 @@ namespace video
 				shaderType = GL_FRAGMENT_SHADER;
 				break;
 			default:
-				SH_ASSERT(0, "Invalid shader type for GLES20 shader!");
+				SH_ASSERT(0, "Invalid shader type for GL shader!");
 				return;
 		}
 
@@ -51,7 +51,7 @@ namespace video
 				char *infoLog = new char[infoLen];
 
 				glGetShaderInfoLog(m_glID, infoLen, NULL, infoLog);
-				SH_ASSERT(0, "Error while compiling GL3 shader ! Error message: %s", infoLog);
+				SH_ASSERT(0, "Error while compiling GL shader ! Error message: %s", infoLog);
 
 				delete[] infoLog;
 			}	

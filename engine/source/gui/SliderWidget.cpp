@@ -147,7 +147,6 @@ namespace gui
 
 	void SliderWidget::Render(video::Painter* painter)
 	{
-		return;
 		painter->SetMaterial(GuiManager::GetInstance()->GetTextMaterial());
 
 		const auto height = m_rect.GetHeight();
