@@ -73,6 +73,7 @@
 		
 		<source>
 			<![CDATA[
+				
 				attribute vec3 position;				
 				attribute vec2 uv;
 				attribute vec4 color;
@@ -97,8 +98,9 @@
 		
 		<source>
 			<![CDATA[
-
-				//precision mediump float;
+				#ifdef GL_ES
+					precision mediump float;
+				#endif
 				
 				uniform sampler2D diffuse;
 				varying vec4 vColor;
@@ -106,7 +108,7 @@
 				
 				void main() 
 				{				
-					vec4 color = texture(diffuse, vUV);
+					vec4 color = texture2D(diffuse, vUV);
 					gl_FragColor = color * vColor;				
 				} 
 		

@@ -71,7 +71,7 @@
 		
 		<source>
 			<![CDATA[
-
+				
 				attribute vec3 position;				
 				attribute vec2 uv;
 				attribute vec4 color;
@@ -96,8 +96,10 @@
 		
 		<source>
 			<![CDATA[
-
-				//precision mediump float;
+				#ifdef GL_ES
+					precision mediump float;
+				#endif
+				
 				uniform sampler2D fontAtlas;
 				varying vec4 vColor;
 				varying vec2 vUV;

@@ -13,7 +13,7 @@
 		
 		<source>
 			<![CDATA[
-
+					
 				attribute vec3 position;	
 				attribute vec3 normal;			
 				attribute vec2 uv;
@@ -53,8 +53,10 @@
 		
 		<source>
 			<![CDATA[
-
-				//precision mediump float;
+				
+				#ifdef GL_ES
+					precision mediump float;
+				#endif
 
 				uniform sampler2D diffuse;
 				uniform sampler2D normalMap;

@@ -63,8 +63,8 @@
 		<vertexShader>
 		
 		<source>
-			<![CDATA[
-
+			<![CDATA[	
+				
 				attribute vec3 position;				
 				uniform mat4 matrixWVP;
 				
@@ -81,8 +81,9 @@
 		
 		<source>
 			<![CDATA[
-
-				//precision mediump float;
+				#ifdef GL_ES
+					precision mediump float;
+				#endif
 
 				uniform vec4 color;
 

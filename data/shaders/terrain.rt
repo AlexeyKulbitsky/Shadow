@@ -12,7 +12,7 @@
 		
 		<source>
 			<![CDATA[
-
+				
 				attribute vec3 position;	
 				attribute vec3 normal;	
 				
@@ -37,7 +37,10 @@
 		<source>
 			<![CDATA[
 
-				//precision mediump float;
+				#ifdef GL_ES
+					precision mediump float;
+				#endif
+				
 				uniform vec3 dLightDirection;
 				uniform vec3 dLightColor;
 				

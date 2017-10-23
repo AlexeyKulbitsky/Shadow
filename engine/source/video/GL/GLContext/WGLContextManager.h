@@ -15,6 +15,7 @@ namespace video
 	{
 	public:
 		WGLContextManager();
+		WGLContextManager(int majorVersion, int minorVersion);
 
 		virtual bool InitContext(const CreationParameters &parameters) override;
 		virtual bool AttachWindow(void* window) override;
@@ -27,9 +28,17 @@ namespace video
 		virtual bool IsContextCreated() override;
 
 	private:
+		void CreateOldWayContext();
+		void CreateFakeWindow();
+		void CreateNewWayContext();
+
+	private:
 		HWND m_hwnd;
 		HDC m_hdc;
 		HGLRC m_hrc;
+
+		int m_minorVersion;
+		int m_majorVersion;
 	};
 
 } // video

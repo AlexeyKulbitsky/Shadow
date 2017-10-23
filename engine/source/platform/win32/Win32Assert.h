@@ -248,24 +248,19 @@ int ShowMessageBox(const char* file, int line, const char* function, const char*
 
 	char caption[1024];
 	sprintf_s(caption, 1024, "%s!!!", levelstr.c_str());
-
+	std::ostringstream ss;
 
 	int count = _scprintf("message: %s\nline: %d\nfile: %s\nexpression: %s\nfunction: %s", message, line, file, expression, function);
-	std::string newMsg;
-	newMsg.resize(count);//null terminated string
 	if (message)
 	{
-		sprintf_s(&newMsg[0], count, "message: %s\nline: %d\nfile: %s\nexpression: %s\nfunction: %s", message, line, file, expression, function);
+		ss << "message: " << message << "\nline: " << line << "\nfile: " << file << "\nexpression: " << expression << "\nfunction: " << function;
 	}
 	else
 	{
-		sprintf_s(&newMsg[0], count, "line: %d\nfile: %s\nexpression: %s\nfunction: %s", line, file, expression, function);
+		ss << "line: " << line << "\nfile: " << file << "\nexpression: " << expression << "\nfunction: " << function;
 	}
 
-	size_t newSize = newMsg.size();
-	newMsg.resize(newSize + 1);
-	newMsg[newSize] = 0;
-
+	std::string newMsg = ss.str();
 	int value = ::CustomMessageBox(0, newMsg.c_str(), caption, "Place for call stack"/*stackText.c_str()*/, MB_ICONEXCLAMATION | MB_ABORTRETRYIGNORE | MB_TASKMODAL | MB_SETFOREGROUND);
 
 	return value;

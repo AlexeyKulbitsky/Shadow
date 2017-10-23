@@ -69,9 +69,10 @@ namespace sh
 				s32 attributeSize = 0;
 				GLenum attributeType;
 				glGetActiveAttrib(m_programID, i, bufferSize, &readedBytes, &attributeSize, &attributeType, buffer);
+				
 
 				GLES20VertexAttribute attribute;
-				attribute.index = i;
+				attribute.index = glGetAttribLocation(m_programID, buffer);
 				attribute.name = buffer;
 				attribute.type = GL_FLOAT;
 				attribute.semantic = AttributeSemantic::UNDEFINED;

@@ -25,6 +25,108 @@ namespace video
 
 	WGLContextManager::WGLContextManager()
 	{
+		
+	}
+
+	WGLContextManager::WGLContextManager(int majorVersion, int minorVersion)
+		: m_majorVersion(majorVersion)
+		, m_minorVersion(minorVersion)
+	{
+	}
+
+	bool WGLContextManager::InitContext(const CreationParameters &parameters)
+	{
+		
+
+		return false;
+	}
+
+	bool WGLContextManager::AttachWindow(void* window)
+	{
+		return false;
+	}
+
+	bool WGLContextManager::CreateDisplay()
+	{
+		return false;
+	}
+
+	bool WGLContextManager::DestroyDisplay()
+	{
+		return false;
+	}
+
+	bool WGLContextManager::CreateContext(bool createDisplay)
+	{
+		return false;
+	}
+
+	bool WGLContextManager::CreateContext(void* winId)
+	{
+		if (m_hwnd)
+			DestroyContext(false);
+
+		m_hwnd = reinterpret_cast<HWND>(winId);
+		m_hdc = GetDC(m_hwnd);
+
+		if (m_majorVersion < 3)
+			CreateOldWayContext();
+		else
+			CreateNewWayContext();
+
+		return true;
+	}
+
+	bool WGLContextManager::DestroyContext(bool destroyDisplay)
+	{
+		wglMakeCurrent(NULL, NULL);
+		wglDeleteContext(m_hrc);
+		ReleaseDC(m_hwnd, m_hdc);
+		m_hwnd = NULL;
+		m_hrc = NULL;
+		m_hdc = NULL;
+		return false;
+	}
+
+	bool WGLContextManager::SwapBuffers()
+	{
+		::SwapBuffers(m_hdc);
+		return false;
+	}
+
+	bool WGLContextManager::IsContextCreated()
+	{
+		return false;
+	}
+
+	void WGLContextManager::CreateOldWayContext()
+	{
+		PIXELFORMATDESCRIPTOR pfd;
+		memset(&pfd, 0, sizeof(PIXELFORMATDESCRIPTOR));
+		pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
+		pfd.nVersion = 1;
+		pfd.dwFlags = PFD_DOUBLEBUFFER | PFD_SUPPORT_OPENGL | PFD_DRAW_TO_WINDOW;
+		pfd.iPixelType = PFD_TYPE_RGBA;
+		pfd.cColorBits = 32;
+		pfd.cDepthBits = 24;
+		pfd.cStencilBits = 8;
+
+		int iPixelFormat = ChoosePixelFormat(m_hdc, &pfd);
+
+		if (!SetPixelFormat(m_hdc, iPixelFormat, &pfd))
+			return;
+
+		m_hrc = wglCreateContext(m_hdc);
+
+		if (m_hrc)
+			wglMakeCurrent(m_hdc, m_hrc);
+
+		auto res = glewInit();
+		SH_ASSERT(res == GLEW_OK, "Can not initialize GLEW!");
+	}
+
+	void WGLContextManager::CreateFakeWindow()
+	{
 		HINSTANCE hInstance = GetModuleHandle(0);
 
 		// Registering fake class
@@ -82,40 +184,10 @@ namespace video
 		DestroyWindow(hWndFake);
 	}
 
-	bool WGLContextManager::InitContext(const CreationParameters &parameters)
+	void WGLContextManager::CreateNewWayContext()
 	{
-		
+		CreateFakeWindow();
 
-		return false;
-	}
-
-	bool WGLContextManager::AttachWindow(void* window)
-	{
-		return false;
-	}
-
-	bool WGLContextManager::CreateDisplay()
-	{
-		return false;
-	}
-
-	bool WGLContextManager::DestroyDisplay()
-	{
-		return false;
-	}
-
-	bool WGLContextManager::CreateContext(bool createDisplay)
-	{
-		return false;
-	}
-
-	bool WGLContextManager::CreateContext(void* winId)
-	{
-		if (m_hwnd)
-			DestroyContext(false);
-
-		m_hwnd = reinterpret_cast<HWND>(winId);
-		m_hdc = GetDC(m_hwnd);
 
 		// Create OpenGL context
 		const int majorVersion = 3;
@@ -123,48 +195,48 @@ namespace video
 
 		if (WGLEW_ARB_create_context && WGLEW_ARB_pixel_format)
 		{
+			// 			const int iPixelFormatAttribList[] =
+			// 			{
+			// 				WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,
+			// 				WGL_SUPPORT_OPENGL_ARB, GL_TRUE,
+			// 				WGL_DOUBLE_BUFFER_ARB, GL_TRUE,
+			// 				WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB,
+			// 				WGL_COLOR_BITS_ARB, 32,
+			// 				WGL_DEPTH_BITS_ARB, 16,
+			// 				WGL_STENCIL_BITS_ARB, 8,
+			// 				0 // End of attributes list
+			// 			};
+
 			const int iPixelFormatAttribList[] =
 			{
-				WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,
-				WGL_SUPPORT_OPENGL_ARB, GL_TRUE,
-				WGL_DOUBLE_BUFFER_ARB, GL_TRUE,
-				WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB,
+				WGL_SUPPORT_OPENGL_ARB, TRUE,
+				WGL_DRAW_TO_WINDOW_ARB, TRUE,
+				WGL_ACCELERATION_ARB, WGL_FULL_ACCELERATION_ARB,
 				WGL_COLOR_BITS_ARB, 32,
-				WGL_DEPTH_BITS_ARB, 16,
+				WGL_DEPTH_BITS_ARB, 24,
+				WGL_DOUBLE_BUFFER_ARB, TRUE,
+				WGL_SWAP_METHOD_ARB, WGL_SWAP_EXCHANGE_ARB,
+				WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB,
 				WGL_STENCIL_BITS_ARB, 8,
 				0 // End of attributes list
 			};
 
-// 			const int iPixelFormatAttribList[] =
-// 			{
-// 				WGL_SUPPORT_OPENGL_ARB, TRUE,
-// 				WGL_DRAW_TO_WINDOW_ARB, TRUE,
-// 				WGL_ACCELERATION_ARB, WGL_FULL_ACCELERATION_ARB,
-// 				WGL_COLOR_BITS_ARB, 24,
-// 				WGL_DEPTH_BITS_ARB, 24,
-// 				WGL_DOUBLE_BUFFER_ARB, TRUE,
-// 				WGL_SWAP_METHOD_ARB, WGL_SWAP_EXCHANGE_ARB,
-// 				WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB,
-// 				WGL_STENCIL_BITS_ARB, 8,
-// 				0 // End of attributes list
-// 			};
 
-
-//			int iContextAttribs[] =
-//			{
-//				WGL_CONTEXT_MAJOR_VERSION_ARB, majorVersion,
-//				WGL_CONTEXT_MINOR_VERSION_ARB, minorVersion,
-//				WGL_CONTEXT_FLAGS_ARB, WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
-//				0 // End of attributes list
-//			};
+			//			int iContextAttribs[] =
+			//			{
+			//				WGL_CONTEXT_MAJOR_VERSION_ARB, majorVersion,
+			//				WGL_CONTEXT_MINOR_VERSION_ARB, minorVersion,
+			//				WGL_CONTEXT_FLAGS_ARB, WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
+			//				0 // End of attributes list
+			//			};
 
 
 			int iContextAttribs[] =
 			{
 				WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
 				WGL_CONTEXT_MINOR_VERSION_ARB, 0,
-				//WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_ES2_PROFILE_BIT_EXT,
-				WGL_CONTEXT_FLAGS_ARB, WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
+				//WGL_CONTEXT_FLAGS_ARB, WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
+				//WGL_CONTEXT_PROFILE_MASK_ARB,  WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
 				0 // End of attributes list
 			};
 
@@ -175,35 +247,13 @@ namespace video
 
 			// PFD seems to be only redundant parameter now
 			if (!SetPixelFormat(m_hdc, iPixelFormat, &pfd))
-				return false;
+				return;
 
 			m_hrc = wglCreateContextAttribsARB(m_hdc, 0, iContextAttribs);
 			// If everything went OK
 			if (m_hrc)
 				wglMakeCurrent(m_hdc, m_hrc);
 		}
-	}
-
-	bool WGLContextManager::DestroyContext(bool destroyDisplay)
-	{
-		wglMakeCurrent(NULL, NULL);
-		wglDeleteContext(m_hrc);
-		ReleaseDC(m_hwnd, m_hdc);
-		m_hwnd = NULL;
-		m_hrc = NULL;
-		m_hdc = NULL;
-		return false;
-	}
-
-	bool WGLContextManager::SwapBuffers()
-	{
-		::SwapBuffers(m_hdc);
-		return false;
-	}
-
-	bool WGLContextManager::IsContextCreated()
-	{
-		return false;
 	}
 
 

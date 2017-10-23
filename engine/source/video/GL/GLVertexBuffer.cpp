@@ -7,30 +7,30 @@ namespace sh
 	{
 		GLVertexBuffer::~GLVertexBuffer()
 		{
-			glDeleteBuffers(1, &m_glID);
+			GL_CALL(glDeleteBuffers(1, &m_glID));
 		}
 
 		////////////////////////////////////////////////////////////////////////
 
 		void GLVertexBuffer::SetData(size_t offset, size_t length, const void* data)
 		{
-			glBindBuffer(GL_ARRAY_BUFFER, m_glID);
+			GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, m_glID));
 
 			GLenum usage = s_glUsage[m_description.usage];
 
-			if (offset == 0 && (length == m_size || m_size == 0))
+			if (offset == 0 && (length >= m_size || m_size == 0))
 			{
 				m_size = length;
-				glBufferData(GL_ARRAY_BUFFER, m_size, data, usage);
+				GL_CALL(glBufferData(GL_ARRAY_BUFFER, m_size, data, usage));
 			}
 			else
 			{
-				glBufferSubData(GL_ARRAY_BUFFER, offset, length, data);
+				GL_CALL(glBufferSubData(GL_ARRAY_BUFFER, offset, length, data));
 				m_size = offset + length;
 			}
 
 
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, 0));
 		}
 
 		////////////////////////////////////////////////////////////////////////
@@ -45,7 +45,7 @@ namespace sh
 		GLVertexBuffer::GLVertexBuffer(const VertexBufferDecription& description)
 			: VertexBuffer(description)
 		{
-			glGenBuffers(1, &m_glID);
+			GL_CALL(glGenBuffers(1, &m_glID));
 		}
 
 		////////////////////////////////////////////////////////////////////////

@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <technique name="Skybox">
 
 <pipeline name="firstPass" layer="background">	
@@ -37,7 +38,9 @@
 		<source>
 			<![CDATA[
 
-				//precision mediump float;
+				#ifdef GL_ES
+					precision mediump float;
+				#endif
 
 				uniform samplerCube skybox;
 				varying vec3 vUV;

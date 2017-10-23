@@ -526,7 +526,7 @@ bool Win32Device::CreateDriver()
 	case video::DriverType::OPENGL_ES_2_0:
 	{
 		//video::EGLContextManager* contextManager = new video::EGLContextManager();
-		video::WGLContextManager* contextManager = new video::WGLContextManager();
+		video::WGLContextManager* contextManager = new video::WGLContextManager(2, 1);
 		if (contextManager)
 		{
 			//m_creationParameters.driverType = video::DriverType::OPENGL_3;

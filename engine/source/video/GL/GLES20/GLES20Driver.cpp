@@ -34,8 +34,6 @@
 using namespace sh;
 using namespace video;
 
-
-
 GLES20Driver::GLES20Driver( GLContextManager* contextManager )
 	:m_contextManager( contextManager )
 {
@@ -83,21 +81,25 @@ bool GLES20Driver::Init()
             std::bind(&GLES20Driver::SetWindow, this, std::placeholders::_1, std::placeholders::_2,
     std::placeholders::_3));
 
-	glEnable( GL_DEPTH_TEST );
-	glEnable(GL_SCISSOR_TEST);
+	GL_CALL(glEnable( GL_DEPTH_TEST ));
+	GL_CALL(glEnable(GL_SCISSOR_TEST));
 	//glEnable(GL_BLEND);
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glClearColor( 0.7f, 0.7f, 0.7f, 1.0f );
+	GL_CALL(glClearColor( 0.7f, 0.7f, 0.7f, 1.0f ));
 
 
-	String vendor = (const char*)glGetString( GL_VENDOR );
-	printf( "Vendor: %s\n", vendor.c_str() );
-	String renderer = (const char*)glGetString( GL_RENDERER );
-	printf( "Renderer: %s\n", renderer.c_str() );
-	String version = (const char*)glGetString( GL_VERSION );
-	printf( "Version: %s\n", version.c_str() );
-	String shadingLanguage = (const char*)glGetString( GL_SHADING_LANGUAGE_VERSION );
-	printf( "Shading language: %s\n", shadingLanguage.c_str() );
+// 	String vendor = (const char*)glGetString( GL_VENDOR );
+// 	printf( "Vendor: %s\n", vendor.c_str() );
+// 	String renderer = (const char*)glGetString( GL_RENDERER );
+// 	printf( "Renderer: %s\n", renderer.c_str() );
+// 	String version = (const char*)glGetString( GL_VERSION );
+// 	printf( "Version: %s\n", version.c_str() );
+// 	String shadingLanguage = (const char*)glGetString( GL_SHADING_LANGUAGE_VERSION );
+//	printf( "Shading language: %s\n", shadingLanguage.c_str() );
+	GLint magorV;
+	GLint minorV;
+	glGetIntegerv(GL_MAJOR_VERSION, &magorV);
+	glGetIntegerv(GL_MINOR_VERSION, &minorV);
 
 	// Extensions
 	String extensions;// = (const char*)glGetString(GL_EXTENSIONS);
@@ -112,28 +114,28 @@ bool GLES20Driver::Init()
 		printf( "%s\n", ext.c_str() );
 	}
 
-	GLint value;
-	glGetIntegerv( GL_MAX_TEXTURE_IMAGE_UNITS, &value );
-	m_maxTextureUnits = (u32)value;
-
-	glGetIntegerv( GL_MAX_TEXTURE_SIZE, &value );
-	m_maxTextureSize = (u32)value;
-
-	glGetIntegerv( GL_MAX_CUBE_MAP_TEXTURE_SIZE, &value );
-	m_maxCubeTextureSize = (u32)value;
-
-	int depthBits;
-	glGetIntegerv( GL_DEPTH_BITS, &depthBits );
-
-
-	glGetIntegerv( GL_NUM_COMPRESSED_TEXTURE_FORMATS, &value );
-	GLint *valuePtr = new GLint[value];
-	glGetIntegerv( GL_COMPRESSED_TEXTURE_FORMATS, valuePtr );
-	for( int i = 0; i < value; ++i )
-	{
-		;//TextureFormat format = GLES20Texture::GetFormatFromGL( valuePtr[i] );
-	}
-	delete[] valuePtr;
+// 	GLint value;
+// 	GL_CALL(glGetIntegerv( GL_MAX_TEXTURE_IMAGE_UNITS, &value ));
+// 	m_maxTextureUnits = (u32)value;
+// 
+// 	GL_CALL(glGetIntegerv( GL_MAX_TEXTURE_SIZE, &value ));
+// 	m_maxTextureSize = (u32)value;
+// 
+// 	GL_CALL(glGetIntegerv( GL_MAX_CUBE_MAP_TEXTURE_SIZE, &value ));
+// 	m_maxCubeTextureSize = (u32)value;
+// 
+// 	int depthBits;
+// 	GL_CALL(glGetIntegerv( GL_DEPTH_BITS, &depthBits ));
+// 
+// 
+// 	GL_CALL(glGetIntegerv( GL_NUM_COMPRESSED_TEXTURE_FORMATS, &value ));
+// 	GLint *valuePtr = new GLint[value];
+// 	GL_CALL(glGetIntegerv( GL_COMPRESSED_TEXTURE_FORMATS, valuePtr ));
+// 	for( int i = 0; i < value; ++i )
+// 	{
+// 		;//TextureFormat format = GLES20Texture::GetFormatFromGL( valuePtr[i] );
+// 	}
+//	delete[] valuePtr;
 
 
 	return false;
@@ -143,14 +145,14 @@ bool GLES20Driver::Init()
 
 void GLES20Driver::BeginRendering()
 {
-	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+	GL_CALL(glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ));
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 void GLES20Driver::EndRendering()
 {
-	glFlush();
+	GL_CALL(glFlush());
 	m_contextManager->SwapBuffers();
 }
 
@@ -178,8 +180,7 @@ void GLES20Driver::SetWindow(void* winId, u32 width, u32 height)
 void GLES20Driver::SetViewport( u32 x, u32 y, u32 width, u32 height )
 {
 	Driver::SetViewport( x, y, width, height );
-	glViewport( (GLint)x, (GLint)y, (GLint)width, (GLint)height );
-	
+	GL_CALL(glViewport( (GLint)x, (GLint)y, (GLsizei)width, (GLsizei)height ));
 }
 
 
@@ -188,7 +189,7 @@ void GLES20Driver::SetViewport( u32 x, u32 y, u32 width, u32 height )
 void GLES20Driver::SetDepthRange( f32 zMin, f32 zMax )
 {
 	Driver::SetDepthRange( zMin, zMax );
-	glDepthRangef( zMin, zMax );
+	GL_CALL(glDepthRangef( zMin, zMax ));
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -196,7 +197,7 @@ void GLES20Driver::SetDepthRange( f32 zMin, f32 zMax )
 void GLES20Driver::SetClearColor( const math::Vector4f& clearColor )
 {
 	Driver::SetClearColor( clearColor );
-	glClearColor( m_clearColor.x, m_clearColor.y, m_clearColor.z, m_clearColor.w );
+	GL_CALL(glClearColor( m_clearColor.x, m_clearColor.y, m_clearColor.z, m_clearColor.w ));
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -204,7 +205,7 @@ void GLES20Driver::SetClearColor( const math::Vector4f& clearColor )
 void GLES20Driver::SetClearDepth( f32 clearDepth )
 {
 	Driver::SetClearDepth( clearDepth );
-	glClearDepthf( m_clearDepth );
+	GL_CALL(glClearDepthf( m_clearDepth ));
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -212,35 +213,35 @@ void GLES20Driver::SetClearDepth( f32 clearDepth )
 void GLES20Driver::SetClearStencil( u32 clearStencil )
 {
 	Driver::SetClearStencil( clearStencil );
-	glClearStencil( static_cast<GLint>( m_clearStencil ) );
+	GL_CALL(glClearStencil( static_cast<GLint>( m_clearStencil ) ));
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 void GLES20Driver::ClearColorBuffer()
 {
-	glClear( GL_COLOR_BUFFER_BIT );
+	GL_CALL(glClear( GL_COLOR_BUFFER_BIT ));
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 void GLES20Driver::ClearDepthBuffer()
 {
-	glClear( GL_DEPTH_BUFFER_BIT );
+	GL_CALL(glClear( GL_DEPTH_BUFFER_BIT ));
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 void GLES20Driver::ClearStencilBuffer()
 {
-	glClear( GL_STENCIL_BUFFER_BIT );
+	GL_CALL(glClear( GL_STENCIL_BUFFER_BIT ));
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 void GLES20Driver::ClearBuffers()
 {
-	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT );
+	GL_CALL(glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT ));
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -249,42 +250,42 @@ void GLES20Driver::SetDepthStencilState( const DepthStencilStatePtr& depthStenci
 {
 	if( depthStencilState->enableDepthTest )
 	{
-		glEnable( GL_DEPTH_TEST );
+		GL_CALL(glEnable( GL_DEPTH_TEST ));
 		//glDepthFunc(s_glCompareFunction[static_cast<size_t>(depthStencilState->depthCompareFunction)]);
 	}
 	else
 	{
-		glDisable( GL_DEPTH_TEST );
+		GL_CALL(glDisable( GL_DEPTH_TEST ));
 	}
 	//glDepthMask(s_glWriteMask[static_cast<size_t>(depthStencilState->depthWriteMask)]);
 
 	// Stencil part
 	if( depthStencilState->enableStencilTest )
 	{
-		glEnable( GL_STENCIL_TEST );
-		glStencilFuncSeparate( GL_FRONT,
+		GL_CALL(glEnable( GL_STENCIL_TEST ));
+		GL_CALL(glStencilFuncSeparate( GL_FRONT,
 							   s_glCompareFunction[static_cast<size_t>( depthStencilState->frontFace.compare )],
 							   depthStencilState->reference,
-							   depthStencilState->stencilReadMask );
-		glStencilMaskSeparate( GL_FRONT, depthStencilState->stencilWriteMask );
-		glStencilOpSeparate( GL_FRONT,
+							   depthStencilState->stencilReadMask ));
+		GL_CALL(glStencilMaskSeparate( GL_FRONT, depthStencilState->stencilWriteMask ));
+		GL_CALL(glStencilOpSeparate( GL_FRONT,
 							 s_glStencilOperation[static_cast<size_t>( depthStencilState->frontFace.fail )],
 							 s_glStencilOperation[static_cast<size_t>( depthStencilState->frontFace.depthFail )],
-							 s_glStencilOperation[static_cast<size_t>( depthStencilState->frontFace.pass )] );
+							 s_glStencilOperation[static_cast<size_t>( depthStencilState->frontFace.pass )] ));
 
-		glStencilFuncSeparate( GL_BACK,
+		GL_CALL(glStencilFuncSeparate( GL_BACK,
 							   s_glCompareFunction[static_cast<size_t>( depthStencilState->backFace.compare )],
 							   depthStencilState->reference,
-							   depthStencilState->stencilReadMask );
-		glStencilMaskSeparate( GL_BACK, depthStencilState->stencilWriteMask );
-		glStencilOpSeparate( GL_BACK,
+							   depthStencilState->stencilReadMask ));
+		GL_CALL(glStencilMaskSeparate( GL_BACK, depthStencilState->stencilWriteMask ));
+		GL_CALL(glStencilOpSeparate( GL_BACK,
 							 s_glStencilOperation[static_cast<size_t>( depthStencilState->backFace.fail )],
 							 s_glStencilOperation[static_cast<size_t>( depthStencilState->backFace.depthFail )],
-							 s_glStencilOperation[static_cast<size_t>( depthStencilState->backFace.pass )] );
+							 s_glStencilOperation[static_cast<size_t>( depthStencilState->backFace.pass )] ));
 	}
 	else
 	{
-		glDisable( GL_STENCIL_TEST );
+		GL_CALL(glDisable( GL_STENCIL_TEST ));
 	}
 }
 
@@ -294,13 +295,13 @@ void GLES20Driver::SetRasterizationState( const RasterizationStatePtr& rasteriza
 {
 	if( rasterizationState->cullFace != CullFace::CF_NONE )
 	{
-		glEnable( GL_CULL_FACE );
-		glCullFace( s_glCullFace[rasterizationState->cullFace] );
-		glFrontFace( s_glFrontFace[rasterizationState->frontFace] );
+		GL_CALL(glEnable( GL_CULL_FACE ));
+		GL_CALL(glCullFace( s_glCullFace[rasterizationState->cullFace] ));
+		GL_CALL(glFrontFace( s_glFrontFace[rasterizationState->frontFace] ));
 	}
 	else
 	{
-		glDisable( GL_CULL_FACE );
+		GL_CALL(glDisable( GL_CULL_FACE ));
 	}
 }
 
@@ -310,10 +311,10 @@ void GLES20Driver::SetBlendingState( const BlendingStatePtr& blendingState )
 {
 	if( blendingState->enabled )
 	{
-		glEnable( GL_BLEND );
-		glBlendFunc( s_glBlendFactor[static_cast<size_t>( blendingState->srcAlpha )],
-					 s_glBlendFactor[static_cast<size_t>( blendingState->dstAlpha )] );
-		glBlendEquation( s_glBlendOperation[static_cast<size_t>( blendingState->operationAlpha )] );
+		GL_CALL(glEnable( GL_BLEND ));
+		GL_CALL(glBlendFunc( s_glBlendFactor[static_cast<size_t>( blendingState->srcAlpha )],
+					 s_glBlendFactor[static_cast<size_t>( blendingState->dstAlpha )] ));
+		GL_CALL(glBlendEquation( s_glBlendOperation[static_cast<size_t>( blendingState->operationAlpha )] ));
 
 		/*
 		glBlendFuncSeparate(s_glBlendFactor[static_cast<size_t>(blendingState->srcColor)],
@@ -329,7 +330,7 @@ void GLES20Driver::SetBlendingState( const BlendingStatePtr& blendingState )
 	}
 	else
 	{
-		glDisable( GL_BLEND );
+		GL_CALL(glDisable( GL_BLEND ));
 	}
 }
 
@@ -341,7 +342,7 @@ void GLES20Driver::SetRenderPipeline( const RenderPipelinePtr& pipeline, const C
 	SetBlendingState( glPipeline->GetBlendingState() );
 	SetRasterizationState( glPipeline->GetRasterizationState() );
 	SetDepthStencilState( glPipeline->GetDepthStencilState() );
-	glUseProgram( glPipeline->GetProgramID() );
+	GL_CALL(glUseProgram( glPipeline->GetProgramID() ));
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -377,32 +378,32 @@ void GLES20Driver::SetGpuParams( const GpuParamsPtr& params, const CommandBuffer
 			{
 			case GPDT_FLOAT1:
 			{
-				glUniform1fv(param.second.location, 1, dataPtr);
+				GL_CALL(glUniform1fv(param.second.location, 1, dataPtr));
 			}
 			break;
 			case GPDT_FLOAT2:
 			{
-				glUniform2fv(param.second.location, 1, dataPtr);
+				GL_CALL(glUniform2fv(param.second.location, 1, dataPtr));
 			}
 			break;
 			case GPDT_FLOAT3:
 			{
-				glUniform3fv(param.second.location, 1, dataPtr);
+				GL_CALL(glUniform3fv(param.second.location, 1, dataPtr));
 			}
 			break;
 			case GPDT_FLOAT4:
 			{
-				glUniform4fv(param.second.location, 1, dataPtr);
+				GL_CALL(glUniform4fv(param.second.location, 1, dataPtr));
 			}
 			break;
 			case GPDT_MATRIX3:
 			{
-				glUniformMatrix3fv(param.second.location, 1, GL_FALSE, dataPtr);
+				GL_CALL(glUniformMatrix3fv(param.second.location, 1, GL_FALSE, dataPtr));
 			}
 			break;
 			case GPDT_MATRIX4:
 			{
-				glUniformMatrix4fv(param.second.location, 1, GL_FALSE, dataPtr);
+				GL_CALL(glUniformMatrix4fv(param.second.location, 1, GL_FALSE, dataPtr));
 			}
 			break;
 			}
@@ -416,7 +417,7 @@ void GLES20Driver::SetGpuParams( const GpuParamsPtr& params, const CommandBuffer
 			const auto& sampler = samplers[index];
 
 			GLTexture* texture = static_cast<GLTexture*>(sampler->GetTexture().get());
-			glActiveTexture(GL_TEXTURE0 + samplerCounter);
+			GL_CALL(glActiveTexture(GL_TEXTURE0 + samplerCounter));
 			GLenum textureTraget = s_glTextureType[texture->GetDescription().type];
 			glBindTexture(textureTraget, texture->GetGLId());
 
@@ -431,10 +432,10 @@ void GLES20Driver::SetGpuParams( const GpuParamsPtr& params, const CommandBuffer
 						{
 							case TEX_FILT_NONE:
 							case TEX_FILT_NEAREST:
-								glTexParameteri(textureTraget, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+								GL_CALL(glTexParameteri(textureTraget, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST));
 								break;
 							case TEX_FILT_LINEAR:
-								glTexParameteri(textureTraget, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+								GL_CALL(glTexParameteri(textureTraget, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST));
 								break;
 							default:
 								break;
@@ -447,10 +448,10 @@ void GLES20Driver::SetGpuParams( const GpuParamsPtr& params, const CommandBuffer
 						{
 							case TEX_FILT_NONE:
 							case TEX_FILT_NEAREST:
-								glTexParameteri(textureTraget, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+								GL_CALL(glTexParameteri(textureTraget, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR));
 								break;
 							case TEX_FILT_LINEAR:
-								glTexParameteri(textureTraget, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+								GL_CALL(glTexParameteri(textureTraget, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
 								break;
 							default:
 								break;
@@ -459,7 +460,7 @@ void GLES20Driver::SetGpuParams( const GpuParamsPtr& params, const CommandBuffer
 						break;
 					case TEX_FILT_NONE:
 					{
-						glTexParameteri(textureTraget, GL_TEXTURE_MIN_FILTER, s_glTextureFiltering[description.minFilter]);
+						GL_CALL(glTexParameteri(textureTraget, GL_TEXTURE_MIN_FILTER, s_glTextureFiltering[description.minFilter]));
 					}
 						break;
 					default:
@@ -468,14 +469,14 @@ void GLES20Driver::SetGpuParams( const GpuParamsPtr& params, const CommandBuffer
 			}
 			// Set magnification filter
 			{
-				glTexParameteri(textureTraget, GL_TEXTURE_MAG_FILTER, s_glTextureFiltering[description.magFilter]);
+				GL_CALL(glTexParameteri(textureTraget, GL_TEXTURE_MAG_FILTER, s_glTextureFiltering[description.magFilter]));
 			}
-			glTexParameteri(textureTraget, GL_TEXTURE_WRAP_S, s_glTextureTiling[description.tilingU]);
-			glTexParameteri(textureTraget, GL_TEXTURE_WRAP_T, s_glTextureTiling[description.tilingV]);
+			GL_CALL(glTexParameteri(textureTraget, GL_TEXTURE_WRAP_S, s_glTextureTiling[description.tilingU]));
+			GL_CALL(glTexParameteri(textureTraget, GL_TEXTURE_WRAP_T, s_glTextureTiling[description.tilingV]));
 			if (texture->GetDescription().type == TEX_TYPE_TEXTURE_CUBE)
-				glTexParameteri(textureTraget, GL_TEXTURE_WRAP_R, s_glTextureTiling[description.tilingW]);
+				GL_CALL(glTexParameteri(textureTraget, GL_TEXTURE_WRAP_R, s_glTextureTiling[description.tilingW]));
 
-			glUniform1i(samplerDesc.second.binding, samplerCounter);
+			GL_CALL(glUniform1i(samplerDesc.second.binding, samplerCounter));
 			samplerCounter++;
 		}
 	}
@@ -495,8 +496,8 @@ void GLES20Driver::SetVertexDeclaration( const VertexInputDeclarationPtr& declar
 	GLES20VertexDeclaration* vertexDeclaration = static_cast<GLES20VertexDeclaration*>( declaration.get() );
 	for( auto attribute : vertexDeclaration->GetAttributes() )
 	{
-		glEnableVertexAttribArray( attribute.index );
-		glVertexAttribPointer( attribute.index, attribute.size, attribute.type, false, vertexDeclaration->GetStride(), attribute.pointer );
+		GL_CALL(glEnableVertexAttribArray( attribute.index ));
+		GL_CALL(glVertexAttribPointer( attribute.index, attribute.size, attribute.type, false, vertexDeclaration->GetStride(), attribute.pointer ));
 	}
 }
 
@@ -504,34 +505,34 @@ void GLES20Driver::SetVertexDeclaration( const VertexInputDeclarationPtr& declar
 
 void GLES20Driver::SetVertexBuffer( const VertexBufferPtr& buffer, const CommandBufferPtr& )
 {
-	glBindBuffer( GL_ARRAY_BUFFER, 0 );
+	GL_CALL(glBindBuffer( GL_ARRAY_BUFFER, 0 ));
 	GLVertexBuffer* glBuffer = static_cast<GLVertexBuffer*>( buffer.get() );
 	m_currentVertexBuffer = glBuffer->GetGLId();
-	glBindBuffer( GL_ARRAY_BUFFER, m_currentVertexBuffer );
+	GL_CALL(glBindBuffer( GL_ARRAY_BUFFER, m_currentVertexBuffer ));
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 void GLES20Driver::SetIndexBuffer( const IndexBufferPtr& buffer, const CommandBufferPtr& )
 {
-	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
+	GL_CALL(glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 ));
 	GLIndexBuffer* glBuffer = static_cast<GLIndexBuffer*>( buffer.get() );
 	m_currentIndexBuffer = glBuffer->GetGLId();
-	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_currentIndexBuffer );
+	GL_CALL(glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_currentIndexBuffer ));
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 void GLES20Driver::Draw( u32 offset, u32 verticesCount, u32 instancesCount, const CommandBufferPtr& )
 {
-	glDrawArrays(m_currentTopology, offset, verticesCount);
+	GL_CALL(glDrawArrays(m_currentTopology, offset, verticesCount));
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 void GLES20Driver::DrawIndexed( u32 offset, u32 indicesCount, u32 instancesCount, const CommandBufferPtr& )
 {
-	glDrawElements(m_currentTopology, indicesCount, GL_UNSIGNED_INT, (void*)(offset * sizeof(u32)));
+	GL_CALL(glDrawElements(m_currentTopology, indicesCount, GL_UNSIGNED_INT, (void*)(offset * sizeof(u32))));
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -539,10 +540,10 @@ void GLES20Driver::DrawIndexed( u32 offset, u32 indicesCount, u32 instancesCount
 void GLES20Driver::SetScissorRect(const math::Rectu& scissor, const CommandBufferPtr&)
 {
 	const s32 height = static_cast<s32>(m_viewPort.w);
-	glScissor(static_cast<s32>(scissor.upperLeftCorner.x),
+	GL_CALL(glScissor(static_cast<s32>(scissor.upperLeftCorner.x),
 			  height - static_cast<s32>(scissor.upperLeftCorner.y + scissor.GetHeight()),
 			  scissor.GetWidth(),
-			  scissor.GetHeight());
+			  scissor.GetHeight()));
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -550,8 +551,8 @@ void GLES20Driver::SetScissorRect(const math::Rectu& scissor, const CommandBuffe
 void GLES20Driver::GetPixelData( u32 x, u32 y, u8* data )
 {
 	GLint viewport[4];
-	glGetIntegerv( GL_VIEWPORT, viewport );
-	glReadPixels( x, viewport[3] - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data );
+	GL_CALL(glGetIntegerv( GL_VIEWPORT, viewport ));
+	GL_CALL(glReadPixels( x, viewport[3] - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data ));
 }
 
 ////////////////////////////////////////////////////////////////////////

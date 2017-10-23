@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <technique name="ConstantColor">
 
 <pipeline name="firstPass" layer="main">	
@@ -17,8 +18,8 @@
 		<vertexShader>
 		
 		<source>
-			<![CDATA[
-
+			<![CDATA[			
+				
 				attribute vec3 position;				
 				
 				uniform mat4 mat2DProjection;
@@ -37,7 +38,9 @@
 		<source>
 			<![CDATA[
 
-				//precision mediump float;
+				#ifdef GL_ES
+					precision mediump float;
+				#endif
 
 				void main() 
 				{				

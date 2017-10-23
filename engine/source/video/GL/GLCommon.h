@@ -158,8 +158,66 @@ namespace video
 	{
 		GL_REPEAT,
 		GL_MIRRORED_REPEAT,
-		GL_CLAMP_TO_EDGE
+		GL_CLAMP_TO_EDGE,
+		GL_NONE
 	};
+
+
+
+
+
+#define GL_CALL(x)									\
+{													\
+	(x);											\
+	GLDebug::CheckGLError(__FILE__, __LINE__);		\
+}
+
+
+
+	class GLDebug
+	{
+	public:
+		static void CheckGLError(const char* file, unsigned line)
+		{
+			GLenum error = glGetError();
+			while (error != GL_NO_ERROR)
+			{
+				std::ostringstream ss;
+				switch (error)
+				{
+				case GL_INVALID_ENUM:
+					ss << "ERROR: GL_INVALID_ENUM\n" << "Enumeration parameter(s) is(are) not a legal enumeration for this function";
+					break;
+				case GL_INVALID_VALUE:
+					ss << "ERROR: GL_INVALID_VALUE\n" << "Value parameter(s) is(are) not a legal value(s) for this function";
+					break;
+				case GL_INVALID_OPERATION:
+					ss << "ERROR: GL_INVALID_OPERATION\n" << "The set of state for a command is not legal for the parameters given to that command";
+					break;
+				case GL_STACK_OVERFLOW:
+					ss << "ERROR: GL_STACK_OVERFLOW\n" << "Stack pushing operation cannot be done because it would overflow the limit of that stack's size";
+					break;
+				case GL_STACK_UNDERFLOW:
+					ss << "ERROR: GL_STACK_UNDERFLOW\n" << "Stack popping operation cannot be done because the stack is already at its lowest point";
+					break;
+				case GL_OUT_OF_MEMORY:
+					ss << "ERROR: GL_OUT_OF_MEMORY\n" << "Memory cannot be allocated";
+					break;
+				case GL_INVALID_FRAMEBUFFER_OPERATION:
+					ss << "ERROR: GL_INVALID_FRAMEBUFFER_OPERATION\n" << "Doing anything that would attempt to read from or write/render to a framebuffer that is not complete";
+					break;
+				default:
+					ss << "ERROR: unknown OpenGL error";
+					break;
+				}
+				String message = ss.str();
+				SH_ASSERT(0, message.c_str());
+				error = glGetError();
+			}
+		}
+	};
+
+
 
 } // video
 

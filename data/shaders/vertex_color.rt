@@ -56,7 +56,7 @@
 		
 		<source>
 			<![CDATA[
-
+				
 				attribute vec3 position;		
 				attribute vec3 color;					
 				uniform mat4 matWVP;
@@ -77,8 +77,9 @@
 		
 		<source>
 			<![CDATA[
-
-				//precision mediump float;
+				#ifdef GL_ES
+					precision mediump float;
+				#endif
 				
 				varying vec3 vColor;
 				
