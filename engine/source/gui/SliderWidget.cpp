@@ -219,6 +219,36 @@ namespace gui
 	void SliderWidget::SetValue(float value)
 	{
 		m_value = math::Clamp(value, m_valueEdges.x, m_valueEdges.y);
+		UpdateLayout();
+	}
+
+	void SliderWidget::SetMinValue(float value)
+	{
+		m_valueEdges.x = value;
+		m_value = math::Clamp(m_value, m_valueEdges.x, m_valueEdges.y);
+		UpdateLayout();
+	}
+
+	void SliderWidget::SetMaxValue(float value)
+	{
+		m_valueEdges.y = value;
+		m_value = math::Clamp(m_value, m_valueEdges.x, m_valueEdges.y);
+		UpdateLayout();
+	}
+
+	void SliderWidget::SetMinMaxValues(float min, float max)
+	{
+		m_valueEdges.x = min;
+		m_valueEdges.y = max;
+		m_value = math::Clamp(m_value, m_valueEdges.x, m_valueEdges.y);
+		UpdateLayout();
+	}
+
+	void SliderWidget::SetMinMaxValues(const math::Vector2f& values)
+	{
+		m_valueEdges = values;
+		m_value = math::Clamp(m_value, m_valueEdges.x, m_valueEdges.y);
+		UpdateLayout();
 	}
 
 } // gui

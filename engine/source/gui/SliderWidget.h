@@ -25,6 +25,14 @@ namespace gui
 		float GetValue() const { return m_value; }
 		void SetValue(float value);
 
+		void SetMinValue(float value);
+		void SetMaxValue(float value);
+		void SetMinMaxValues(float min, float max);
+		void SetMinMaxValues(const math::Vector2f& values);
+		float GetMinValue() const { return m_valueEdges.x; }
+		float GetMaxValue() const { return m_valueEdges.y; }
+		const math::Vector2f&  GetMinMaxValues() const { return m_valueEdges; }
+
 		Event<void, float> valueChanged;
 
 	private:

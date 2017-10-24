@@ -50,18 +50,19 @@ namespace math
 		Vector2<T> GetCenter() const { return Vector2<T>((lowerRightCorner + upperLeftCorner) / 2); }
 		Vector2<T> GetExtent() const { return lowerRightCorner - upperLeftCorner; }
 
-		bool IsPointInside(const Vector2<T>& point) { 
+		bool IsPointInside(const Vector2<T>& point) const 
+		{ 
 			return upperLeftCorner.x <= point.x && upperLeftCorner.y <= point.y &&
 			lowerRightCorner.x >= point.x && lowerRightCorner.y >= point.y;
 		}
 
-		bool IsPointInside(const T& x, const T& y)
+		bool IsPointInside(const T& x, const T& y) const
 		{
 			return upperLeftCorner.x <= x && upperLeftCorner.y <= y &&
 			lowerRightCorner.x >= x && lowerRightCorner.y >= y;
 		}
 
-		bool Intersects(const Rect<T>& other)
+		bool Intersects(const Rect<T>& other) const
 		{
 			return !(upperLeftCorner.x > other.lowerRightCorner.x ||
 				other.upperLeftCorner.x > lowerRightCorner.x ||

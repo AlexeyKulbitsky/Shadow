@@ -169,9 +169,12 @@ namespace gui
 		}
 	}
 
-	void GuiManager::AddChild(const SPtr<Widget>& child)
+	void GuiManager::AddChild(const SPtr<Widget>& child, bool back)
 	{
-		m_children.push_back(child);
+		if (back)
+			m_children.push_back(child);
+		else
+			m_children.push_front(child);
 	}
 
 	void GuiManager::AddChildFront(const SPtr<Widget>& child)

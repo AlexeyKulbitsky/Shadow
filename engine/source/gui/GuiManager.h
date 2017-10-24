@@ -42,7 +42,7 @@ namespace gui
 		void Render();
 
 		void LoadGui(const String& name);
-		void AddChild(const SPtr<Widget>& child);
+		void AddChild(const SPtr<Widget>& child, bool back = true);
 		void AddChildFront(const SPtr<Widget>& child);
 
 		void SetFont(const FontPtr& font);

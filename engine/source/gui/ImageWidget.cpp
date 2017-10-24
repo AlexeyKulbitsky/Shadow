@@ -59,6 +59,8 @@ namespace gui
 
 	void ImageWidget::UpdateLayout()
 	{
+		Widget::UpdateLayout();
+		return;
 		if (!m_texture)
 			return;
 

@@ -1,10 +1,9 @@
 #include "LightComponentWidget.h"
 
-#include "../../ColorPicker.h"
-
 LightComponentWidget::LightComponentWidget()
 	:ExpandableWidget("Light")
 {
+	m_colorPicker.reset(new ColorPicker());
 }
 
 void LightComponentWidget::SetLightComponent(sh::LightComponent* component)
@@ -54,6 +53,5 @@ void LightComponentWidget::SetLightComponent(sh::LightComponent* component)
 
 void LightComponentWidget::OnColorPickerButtonReleased()
 {
-	sh::SPtr<ColorPicker> colorPicker(new ColorPicker());
-	sh::gui::GuiManager::GetInstance()->AddChild(colorPicker);
+	sh::gui::GuiManager::GetInstance()->AddChild(m_colorPicker, false);
 }

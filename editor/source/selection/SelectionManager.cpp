@@ -182,8 +182,12 @@ void SelectionManager::OnEntityFromListSelected(sh::Entity* entity)
 			m_gizmo->SetScale(transformComponent->GetScale());
 			m_gizmo->SetEnabled(true);
 		}
+		else
+		{
+			m_gizmo->SetEnabled(false);
+		}
 	}
-	// Otherwise clear anythig connected with entity selection
+	// Otherwise clear anything connected with entity selection
 	else
 	{
 		m_gizmo->SetEnabled(false);
