@@ -20,11 +20,16 @@ class ColorPicker : public sh::gui::Window
 {
 public:
 	ColorPicker();
+	virtual void Render(sh::video::Painter* painter) override;
 	virtual bool ProcessEvent(sh::gui::GUIEvent& ev) override;
+	virtual void UpdateLayout() override;
 
 private:
 	std::array<sh::SPtr<ColorChannelEdit>, 4U> m_rgbaChannels;
 	sh::gui::ImageWidgetPtr m_paletteWidget;
+	sh::gui::SpriteWidgetPtr m_colorTarget;
+	sh::math::Vector2i m_colorTargetOffset;
+	bool m_dragStarted = false;
 };
 
 #endif

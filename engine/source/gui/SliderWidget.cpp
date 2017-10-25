@@ -208,7 +208,7 @@ namespace gui
 	void SliderWidget::UpdateLayout()
 	{
 		const float aspect = (m_value - m_valueEdges.x) / (m_valueEdges.y - m_valueEdges.x);
-		const int delta = static_cast<int>(static_cast<float>(m_rect.GetWidth()) * aspect);
+		const int delta = static_cast<int>(static_cast<float>(m_rect.GetWidth() - 10) * aspect);
 
 		m_sliderRect.upperLeftCorner.x = m_rect.upperLeftCorner.x + delta;
 		m_sliderRect.upperLeftCorner.y = m_rect.upperLeftCorner.y;
