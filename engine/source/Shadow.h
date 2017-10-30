@@ -14,6 +14,7 @@
 #include "gui/Label.h"
 #include "gui/Layout.h"
 #include "gui/LineEdit.h"
+#include "gui/IntLineEdit.h"
 #include "gui/FloatLineEdit.h"
 #include "gui/MenuBar.h"
 #include "gui/Menu.h"

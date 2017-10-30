@@ -256,6 +256,10 @@ void MainWindow::Init()
 
 	mainVerticalLayout->AddLayout(mainLayout);
 
+
+	sh::SPtr<sh::gui::Widget> colorPicker(new ColorPicker());
+	guiMgr->AddChild(colorPicker);
+
 	mainLayout->AddLayout(assetsHierarchyLayout);
 	sh::gui::WidgetPtr emptyWidget(new sh::gui::Widget());
 	emptyWidget->SetVisible(false);

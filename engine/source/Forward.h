@@ -78,6 +78,7 @@ namespace sh
 		DEFINE_CLASS_PTR(LayoutItem)
 		DEFINE_CLASS_PTR(LineEdit)
 		DEFINE_CLASS_PTR(FloatLineEdit)
+		DEFINE_CLASS_PTR(IntLineEdit)
 		DEFINE_CLASS_PTR(MenuBar)
 		DEFINE_CLASS_PTR(Menu)
 		DEFINE_CLASS_PTR(ScrollWidget)
