@@ -1,54 +1,9 @@
 #include "ColorPicker.h"
 
-ColorChannelEdit::ColorChannelEdit(const sh::String& name, int minValue, int maxValue)
-{
-	sh::gui::HorizontalLayoutPtr layout(new sh::gui::HorizontalLayout());
-	layout->SetSpacing(5);
-
-	sh::gui::LabelPtr nameLabel(new sh::gui::Label(name));
-	nameLabel->SetMaximumWidth(20);
-	m_valueLineEdit.reset(new sh::gui::IntLineEdit());
-	m_valueLineEdit->SetValue(0);
-	m_valueSlider.reset(new sh::gui::SliderWidget());
-	m_valueSlider->SetMinimumWidth(180);
-	m_valueSlider->SetMinValue(static_cast<float>(minValue));
-	m_valueSlider->SetMaxValue(static_cast<float>(maxValue));
-	m_valueSlider->valueChanged.Connect(std::bind(&ColorChannelEdit::OnSliderValueChanged, this, std::placeholders::_1));
-	m_valueLineEdit->OnValueChanged.Connect(std::bind(&ColorChannelEdit::OnEditValueChanged, this, std::placeholders::_1));
-
-
-	layout->SetMargins(2, 2, 2, 2);
-	layout->AddWidget(nameLabel);
-	layout->AddWidget(m_valueSlider);
-	layout->AddWidget(m_valueLineEdit);
-	sh::gui::WidgetPtr itemWidget(new sh::gui::Widget());
-	SetMaximumHeight(20);
-	SetLayout(layout);
-}
-
-void ColorChannelEdit::SetValue(int value)
-{
-	m_valueSlider->SetValue(static_cast<float>(value));
-	m_valueLineEdit->SetValue(value);
-}
-
-void ColorChannelEdit::OnSliderValueChanged(float value)
-{
-	int intValue = static_cast<int>(value);
-	m_valueLineEdit->SetValue(value);
-	OnValueChanged(value);
-}
-
-void ColorChannelEdit::OnEditValueChanged(int value)
-{
-	m_valueSlider->SetValue(static_cast<float>(value));
-	OnValueChanged(value);
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 ColorPicker::ColorPicker()
-	:sh::gui::Window(sh::math::Recti(0, 100, 256, 500))	
+	:sh::gui::Window(sh::math::Recti(0, 100, 256, 600))	
 {
 	SetText("Color Picker");
 	sh::gui::VerticalLayoutPtr layout(new sh::gui::VerticalLayout());
@@ -64,18 +19,14 @@ ColorPicker::ColorPicker()
 	m_paletteWidget->SetMinimumWidth(paletteTexture->GetDescription().width);
 	m_layout->AddWidget(m_paletteWidget);
 
-	m_rgbaChannels[0].reset(new ColorChannelEdit("R", 0, 255));
-	m_rgbaChannels[0]->OnValueChanged.Connect(std::bind(&ColorPicker::OnRedChannelChanged, this, std::placeholders::_1));
-	m_rgbaChannels[1].reset(new ColorChannelEdit("G", 0, 255));
-	m_rgbaChannels[1]->OnValueChanged.Connect(std::bind(&ColorPicker::OnGreenChannelGanged, this, std::placeholders::_1));
-	m_rgbaChannels[2].reset(new ColorChannelEdit("B", 0, 255));
-	m_rgbaChannels[2]->OnValueChanged.Connect(std::bind(&ColorPicker::OnBlueChannelChanged, this, std::placeholders::_1));
-	m_rgbaChannels[3].reset(new ColorChannelEdit("A", 0, 255));
+	m_rgbWidget.reset(new RGBWidget());
+	m_rgbWidget->colorChanged.Connect(std::bind(&ColorPicker::OnRGBColorChanged, this, std::placeholders::_1));
+	m_layout->AddWidget(m_rgbWidget);
 
-	m_layout->AddWidget(m_rgbaChannels[0]);
-	m_layout->AddWidget(m_rgbaChannels[1]);
-	m_layout->AddWidget(m_rgbaChannels[2]);
-	m_layout->AddWidget(m_rgbaChannels[3]);
+	m_hsvWidget.reset(new HSVWidget());
+	m_hsvWidget->colorChanged.Connect(std::bind(&ColorPicker::OnHSVColorChanged, this, std::placeholders::_1));
+	m_layout->AddWidget(m_hsvWidget);
+
 
 	auto icon = sh::gui::GuiManager::GetInstance()->GetStyle()->GetSpriteWidget("cross");
 	m_colorTarget = icon->Clone();
@@ -84,6 +35,8 @@ ColorPicker::ColorPicker()
 	auto targetPos = m_paletteWidget->GetPosition() + sh::math::Vector2i(m_paletteWidget->GetRect().GetWidth(), m_paletteWidget->GetRect().GetHeight());
 	auto offsets = m_colorTarget->GetRect().GetSize() / 2;
 	m_colorTarget->SetPosition(targetPos.x - offsets.x, targetPos.y - offsets.y);
+
+	SetColor(sh::math::Vector4f(1.0f));
 }
 
 void ColorPicker::Render(sh::video::Painter* painter)
@@ -163,7 +116,7 @@ bool ColorPicker::ProcessEvent(sh::gui::GUIEvent& ev)
 		x /= m_paletteWidget->GetRect().GetWidth() * 0.5f;
 		y /= m_paletteWidget->GetRect().GetHeight() * 0.5f;
 		float hue = 180.0f * sh::math::Atan2(y, x) / sh::math::k_pi;
-		if (hue < 0.0f) hue += 360.0f;
+		if (hue < 0.0f) hue *= -1.0f;//hue += 360.0f;
 		const float saturation = sh::math::Sqrt(x * x + y * y);
 		if (saturation > 1.0f)
 		{
@@ -182,10 +135,8 @@ bool ColorPicker::ProcessEvent(sh::gui::GUIEvent& ev)
 			data[3U] = 255;
 		}
 
-		m_rgbaChannels[0]->SetValue(data[0]);
-		m_rgbaChannels[1]->SetValue(data[1]);
-		m_rgbaChannels[2]->SetValue(data[2]);
-		m_rgbaChannels[3]->SetValue(data[3]);
+		m_rgbWidget->SetColor(data[0], data[1], data[2], data[3]);
+		m_hsvWidget->SetColor(static_cast<int>(hue), static_cast<int>(saturation * 100.0f), 100);
 
 		m_color.x = data[0] / 256.0f;
 		m_color.y = data[1] / 256.0f;
@@ -209,9 +160,37 @@ void ColorPicker::UpdateLayout()
 	m_colorTarget->SetPosition(pos.x, pos.y);
 }
 
-void ColorPicker::OnRedChannelChanged(int red)
+void ColorPicker::SetColor(const sh::math::Vector4f& _color)
 {
-	m_color.x = red / 256.0f;
+	m_color = _color;
+	m_rgbWidget->SetColor(m_color);
+
+	int hue = 0;
+	float saturation = 0.0f;
+	float value = 0.0f;
+	sh::math::Vector3f color(m_color.x, m_color.y, m_color.z);
+	RGBtoHSV(color, hue, saturation, value);
+	m_hsvWidget->SetColor(hue, static_cast<int>(saturation * 100.0f), static_cast<int>(value * 100.0f));
+
+
+	const float r = saturation * m_paletteWidget->GetRect().GetWidth() / 2.0f;
+	const sh::s32 x = static_cast<sh::s32>(r * sh::math::Cos(hue * sh::math::k_pi / 180.0f));
+	const sh::s32 y = static_cast<sh::s32>(r * sh::math::Sin(hue * sh::math::k_pi / 180.0f));
+
+	const auto pos = m_paletteWidget->GetPosition() + m_paletteWidget->GetRect().GetWidth() / 2 + sh::math::Vector2i(x, y);
+
+	auto offsets = m_colorTarget->GetRect().GetSize() / 2;
+	m_colorTarget->SetPosition(pos.x - offsets.x, pos.y - offsets.y);
+	m_colorTargetOffset = m_colorTarget->GetPosition() - m_paletteWidget->GetPosition();
+}
+
+void ColorPicker::OnRGBColorChanged(const sh::math::Vector4i& _color)
+{
+	m_color.x = _color.x / 256.0f;
+	m_color.y = _color.y / 256.0f;
+	m_color.z = _color.z / 256.0f;
+	m_color.w = _color.w / 256.0f;
+
 	int hue = 0;
 	float saturation = 0.0f;
 	float value = 0.0f;
@@ -227,40 +206,22 @@ void ColorPicker::OnRedChannelChanged(int red)
 	auto offsets = m_colorTarget->GetRect().GetSize() / 2;
 	m_colorTarget->SetPosition(pos.x - offsets.x, pos.y - offsets.y);
 	m_colorTargetOffset = m_colorTarget->GetPosition() - m_paletteWidget->GetPosition();
+
+	m_hsvWidget->SetColor(hue, static_cast<int>(saturation * 100.0f), static_cast<int>(value * 100.0f));
 }
 
-void ColorPicker::OnGreenChannelGanged(int green)
+void ColorPicker::OnHSVColorChanged(const sh::math::Vector3i& _color)
 {
-	m_color.y = green / 256.0f;
-	int hue = 0;
-	float saturation = 0.0f;
-	float value = 0.0f;
-	sh::math::Vector3f color(m_color.x, m_color.y, m_color.z);
-	RGBtoHSV(color, hue, saturation, value);
+	auto color = HSVtoRGB(_color.x, _color.y * 0.01f, _color.z * 0.01f);
+	m_color.x = color.x;
+	m_color.y = color.y;
+	m_color.z = color.z;
 
-	const float r = saturation * m_paletteWidget->GetRect().GetWidth() / 2.0f;
-	const sh::s32 x = static_cast<sh::s32>(r * sh::math::Cos(hue * sh::math::k_pi / 180.0f));
-	const sh::s32 y = static_cast<sh::s32>(r * sh::math::Sin(hue * sh::math::k_pi / 180.0f));
+	m_rgbWidget->SetColor(m_color);
 
-	const auto pos = m_paletteWidget->GetPosition() + m_paletteWidget->GetRect().GetWidth() / 2 + sh::math::Vector2i(x, y);
-
-	auto offsets = m_colorTarget->GetRect().GetSize() / 2;
-	m_colorTarget->SetPosition(pos.x - offsets.x, pos.y - offsets.y);
-	m_colorTargetOffset = m_colorTarget->GetPosition() - m_paletteWidget->GetPosition();
-}
-
-void ColorPicker::OnBlueChannelChanged(int blue)
-{
-	m_color.z = blue / 256.0f;
-	int hue = 0;
-	float saturation = 0.0f;
-	float value = 0.0f;
-	sh::math::Vector3f color(m_color.x, m_color.y, m_color.z);
-	RGBtoHSV(color, hue, saturation, value);
-
-	const float r = saturation * m_paletteWidget->GetRect().GetWidth() / 2.0f;
-	const sh::s32 x = static_cast<sh::s32>(r * sh::math::Cos(hue * sh::math::k_pi / 180.0f));
-	const sh::s32 y = static_cast<sh::s32>(r * sh::math::Sin(hue * sh::math::k_pi / 180.0f));
+	const float r = _color.y * 0.01f * m_paletteWidget->GetRect().GetWidth() / 2.0f;
+	const sh::s32 x = static_cast<sh::s32>(r * sh::math::Cos(_color.x * sh::math::k_pi / 180.0f));
+	const sh::s32 y = static_cast<sh::s32>(r * sh::math::Sin(_color.x * sh::math::k_pi / 180.0f));
 
 	const auto pos = m_paletteWidget->GetPosition() + m_paletteWidget->GetRect().GetWidth() / 2 + sh::math::Vector2i(x, y);
 

@@ -33,59 +33,6 @@ namespace gui
 
 	bool SliderWidget::ProcessEvent(sh::gui::GUIEvent& ev)
 	{
-#if 0
-		bool inside = m_rect.IsPointInside(ev.x, ev.y);
-
-		//if (ev.mouseButtonCode != MouseCode::ButtonLeft)
-		//	return false;
-
-		if (m_dragStarted)
-		{
-			if (ev.type == sh::gui::EventType::PointerMove)
-			{
-				sh::Device* device = sh::Device::GetInstance();
-				sh::InputManager* inputManager = device->GetInputManager();
-
-				if (inputManager->IsMouseButtonPressed(sh::MouseCode::ButtonLeft))
-				{
-					int xDelta = ev.x - m_startPos.x;
-
-					int xPos = m_rect.upperLeftCorner.x + xDelta;
-					if (xPos < m_rect.upperLeftCorner.x)
-						xPos = m_rect.upperLeftCorner.x;
-					if (xPos + m_button->GetWidth() > m_rect.lowerRightCorner.x)
-						xPos = m_rect.lowerRightCorner.x - m_button->GetWidth();
-
-					m_button->SetPosition(xPos, m_rect.upperLeftCorner.y);
-
-					float aspect = static_cast<float>(xPos - m_rect.upperLeftCorner.x) / 
-						static_cast<float>(m_rect.lowerRightCorner.x - m_rect.upperLeftCorner.x - m_button->GetWidth());
-					const float value = m_valueEdges.x + (m_valueEdges.y - m_valueEdges.x) * aspect;
-
-					if (math::Abs(value - m_value) > 0.0001f)
-					{
-						m_value = value;
-						valueChanged(m_value);
-					}
-
-					return true;
-				}
-			}
-			else if (ev.type == sh::gui::EventType::PointerUp)
-			{
-				if (IsInFocus())
-					GuiManager::GetInstance()->SetFocusWidget(nullptr);
-				return true;
-			}
-		}
-		else
-		{
-			return m_button->ProcessEvent(ev);
-		}
-
-		return false;
-#endif
-
 		bool inside = m_sliderRect.IsPointInside(ev.x, ev.y);
 		switch (ev.type)
 		{

@@ -2,7 +2,7 @@
 #define SHADOW_LIGHT_COMPONENT_WIDGET_INCLUDE
 
 #include "../../ExpandableWidget.h"
-#include "../../ColorPicker.h"
+#include "../../colorpicker/ColorPicker.h"
 
 class LightComponentWidget : public ExpandableWidget
 {
