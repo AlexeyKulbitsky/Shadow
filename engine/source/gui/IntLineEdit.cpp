@@ -74,19 +74,17 @@ namespace sh
 				default:
 				{
 					text.insert(text.begin() + s_cursorPos++, (char)ev.keyCode);
-					m_dirty = true;
+					if (CheckIntFilter(text))
+					{
+						m_text = text;
+						m_dirty = true;
+					}
+					else
+					{
+						s_cursorPos--;
+					}
 				}
 				break;
-				}
-
-				if (CheckFloatFilter(text))
-				{
-					m_text = text;
-					m_dirty = true;
-				}
-				else
-				{
-					s_cursorPos--;
 				}
 
 				return true;
@@ -107,7 +105,7 @@ namespace sh
 			SetText(s.str());
 		}
 
-		bool IntLineEdit::CheckFloatFilter(const String& string)
+		bool IntLineEdit::CheckIntFilter(const String& string)
 		{
 			return std::regex_match(string, std::regex("[+-]?\\d*"));
 		}

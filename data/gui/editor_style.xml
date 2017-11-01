@@ -185,6 +185,10 @@
 			<rect x1="117" y1="78" x2="148" y2="109"/>
 			<color r="1" g="1" b="1" a="1"/>
 		</spritewidget>
+		<spritewidget name="white">
+			<rect x1="154" y1="59" x2="204" y2="109"/>
+			<color r="1" g="1" b="1" a="1"/>
+		</spritewidget>
 	</spritewidgets>
 	
 	

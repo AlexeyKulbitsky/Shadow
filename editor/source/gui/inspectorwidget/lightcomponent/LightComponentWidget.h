@@ -13,10 +13,13 @@ public:
 
 	void OnColorPickerButtonReleased();
 
+	void OnColorChanged(const sh::math::Vector4f& color);
+
 private:
 	sh::LightComponent* m_lightComponent = nullptr;
 
 	sh::SPtr<ColorPicker> m_colorPicker;
+	sh::gui::SpriteWidgetPtr m_colorWidget;
 };
 
 #endif

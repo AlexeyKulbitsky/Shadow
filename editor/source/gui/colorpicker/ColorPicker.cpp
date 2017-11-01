@@ -116,7 +116,11 @@ bool ColorPicker::ProcessEvent(sh::gui::GUIEvent& ev)
 		x /= m_paletteWidget->GetRect().GetWidth() * 0.5f;
 		y /= m_paletteWidget->GetRect().GetHeight() * 0.5f;
 		float hue = 180.0f * sh::math::Atan2(y, x) / sh::math::k_pi;
-		if (hue < 0.0f) hue *= -1.0f;//hue += 360.0f;
+		if (hue < 0.0f)
+			hue *= -1.0f;
+		else
+			hue = 360.0f - hue;
+		//hue += 360.0f;
 		const float saturation = sh::math::Sqrt(x * x + y * y);
 		if (saturation > 1.0f)
 		{
@@ -142,6 +146,8 @@ bool ColorPicker::ProcessEvent(sh::gui::GUIEvent& ev)
 		m_color.y = data[1] / 256.0f;
 		m_color.z = data[2] / 256.0f;
 		m_color.w = data[3] / 256.0f;
+
+		colorChanged(m_color);
 
 		return true;
 	}
@@ -208,6 +214,8 @@ void ColorPicker::OnRGBColorChanged(const sh::math::Vector4i& _color)
 	m_colorTargetOffset = m_colorTarget->GetPosition() - m_paletteWidget->GetPosition();
 
 	m_hsvWidget->SetColor(hue, static_cast<int>(saturation * 100.0f), static_cast<int>(value * 100.0f));
+
+	colorChanged(m_color);
 }
 
 void ColorPicker::OnHSVColorChanged(const sh::math::Vector3i& _color)
@@ -228,6 +236,8 @@ void ColorPicker::OnHSVColorChanged(const sh::math::Vector3i& _color)
 	auto offsets = m_colorTarget->GetRect().GetSize() / 2;
 	m_colorTarget->SetPosition(pos.x - offsets.x, pos.y - offsets.y);
 	m_colorTargetOffset = m_colorTarget->GetPosition() - m_paletteWidget->GetPosition();
+
+	colorChanged(m_color);
 }
 
 sh::video::TexturePtr ColorPicker::CreatePalletteTexture() const

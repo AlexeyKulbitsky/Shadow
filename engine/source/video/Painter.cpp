@@ -345,9 +345,61 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		void Painter::DrawQuad()
+		void Painter::DrawQuad(const Vertex& downLeft, const Vertex& upperLeft, const Vertex& upperRight, const Vertex& downRight)
 		{
+			Painter::Vertex vertices[] = { downLeft, upperLeft, upperRight, downRight };
 
+			const auto& declaration = m_material->GetRenderPipeline()->GetVertexInputDeclaration();
+			const u32 attributesCount = declaration->GetAttributesCount();
+			const u32 idx = m_triangles.trianglesBatches.size() - 1;
+			const u32 startVertex = m_triangles.verticesCount;
+
+			for (u32 vertexIdx = 0; vertexIdx < 4; ++vertexIdx)
+			{
+				const auto& vertex = vertices[vertexIdx];
+				for (u32 i = 0U; i < attributesCount; ++i)
+				{
+					switch (declaration->GetAttribute(i).semantic)
+					{
+					case AttributeSemantic::POSITION:
+					{
+						m_trianglesVertexArray.push_back(vertex.position.x);
+						m_trianglesVertexArray.push_back(vertex.position.y);
+						m_trianglesVertexArray.push_back(vertex.position.z);
+					}
+					break;
+					case AttributeSemantic::UV:
+					{
+						m_trianglesVertexArray.push_back(vertex.uv.x);
+						m_trianglesVertexArray.push_back(vertex.uv.y);
+					}
+					break;
+					case AttributeSemantic::COLOR:
+					{
+						m_trianglesVertexArray.push_back(vertex.color.x);
+						m_trianglesVertexArray.push_back(vertex.color.y);
+						m_trianglesVertexArray.push_back(vertex.color.z);
+						m_trianglesVertexArray.push_back(vertex.color.w);
+					}
+					break;
+					default:
+						break;
+					}
+				}
+			}
+
+			m_trianglesIndexArray.push_back(startVertex);
+			m_trianglesIndexArray.push_back(startVertex + 2U);
+			m_trianglesIndexArray.push_back(startVertex + 1U);
+
+			m_trianglesIndexArray.push_back(startVertex);
+			m_trianglesIndexArray.push_back(startVertex + 3U);
+			m_trianglesIndexArray.push_back(startVertex + 2U);
+
+			m_triangles.trianglesBatches[idx].verticesCount += 4U;
+			m_triangles.trianglesBatches[idx].indicesCount += 6U;
+			m_triangles.verticesCount += 4U;
+			m_triangles.indicesCount += 6U;
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////

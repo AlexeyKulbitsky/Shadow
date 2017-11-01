@@ -36,10 +36,6 @@ namespace gui
 		Event<void, float> valueChanged;
 
 	private:
-		void OnButtonPressed();
-		void OnButtonReleased();
-
-	private:
 		SPtr<Button> m_button;
 		math::Recti m_sliderRect;
 		bool m_dragStarted = false;

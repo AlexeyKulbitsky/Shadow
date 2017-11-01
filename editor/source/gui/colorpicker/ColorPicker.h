@@ -19,6 +19,7 @@ public:
 	void OnRGBColorChanged(const sh::math::Vector4i& color);
 	void OnHSVColorChanged(const sh::math::Vector3i& color);
 
+	sh::Event<void, sh::math::Vector4f> colorChanged;
 
 private:
 	sh::video::TexturePtr CreatePalletteTexture() const;

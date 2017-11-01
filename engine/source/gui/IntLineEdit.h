@@ -25,7 +25,7 @@ namespace sh
 			Event<void, int> OnValueChanged;
 
 		protected:
-			bool CheckFloatFilter(const String& string);
+			bool CheckIntFilter(const String& string);
 			virtual void UpdateIfDirty() override;
 
 		private:

@@ -39,13 +39,15 @@ namespace sh
 			// Get current active material
 			const MaterialPtr& GetMaterial() const { return m_material; }
 			void SetCamera(const scene::CameraPtr& camera);
+			// Set current clipping rectangle
 			void SetClipRect(const math::Rectu& rect);
+			// Get current clipping rectangle
 			const math::Rectu& GetClipRect() const;
 
 			void DrawLine(const math::Vector3f& a, const math::Vector3f& b);
 			void DrawRect(const math::Rectu& rect, const gui::SpritePtr& sprite);
 			void DrawRect(const Vertex& upperLeft, const Vertex& downRight);
-			void DrawQuad();
+			void DrawQuad(const Vertex& downLeft, const Vertex& upperLeft, const Vertex& upperRight, const Vertex& downRight);
 			void DrawCircle();
 			void DrawArc();
 			void DrawBox(const math::AABBf& box);

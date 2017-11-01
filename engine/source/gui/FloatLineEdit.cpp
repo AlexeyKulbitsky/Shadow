@@ -79,21 +79,18 @@ namespace gui
 			default:
 			{
 				text.insert(text.begin() + s_cursorPos++, (char)ev.keyCode);
-				m_dirty = true;
+				if (CheckFloatFilter(text))
+				{
+					m_text = text;
+					m_dirty = true;
+				}
+				else
+				{
+					s_cursorPos--;
+				}
 			}
 			break;
 			}
-
-			if (CheckFloatFilter(text))
-			{
-				m_text = text;
-				m_dirty = true;
-			}
-			else
-			{
-				s_cursorPos--;
-			}
-
 			return true;
 		}
 		else
@@ -110,11 +107,6 @@ namespace gui
 		std::stringstream s;
 		s << std::fixed << std::setprecision(3) << m_value;
 		SetText(s.str());
-
-		//double pi = 3.1415926;
-		//std::string s(16, '\0');
-		//auto written = std::snprintf(&s[0], s.size(), "%.2f", pi);
-		//s.resize(written);
 	}
 
 	bool FloatLineEdit::CheckFloatFilter(const String& string)

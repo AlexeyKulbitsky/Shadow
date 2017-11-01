@@ -15,7 +15,7 @@ private:
 	void OnSliderValueChanged(float value);
 	void OnEditValueChanged(int value);
 
-
+	sh::math::Vector2i m_valueEdges;
 	sh::gui::SliderWidgetPtr m_valueSlider;
 	sh::gui::IntLineEditPtr m_valueLineEdit;
 };

@@ -2,6 +2,8 @@
 
 ColorChannelEdit::ColorChannelEdit(const sh::String& name, int minValue, int maxValue)
 {
+	m_valueEdges.x = minValue;
+	m_valueEdges.y = maxValue;
 	sh::gui::HorizontalLayoutPtr layout(new sh::gui::HorizontalLayout());
 	layout->SetSpacing(5);
 
@@ -28,8 +30,9 @@ ColorChannelEdit::ColorChannelEdit(const sh::String& name, int minValue, int max
 
 void ColorChannelEdit::SetValue(int value)
 {
-	m_valueSlider->SetValue(static_cast<float>(value));
-	m_valueLineEdit->SetValue(value);
+	int finalValue = sh::math::Clamp(value, m_valueEdges.x, m_valueEdges.y);
+	m_valueSlider->SetValue(static_cast<float>(finalValue));
+	m_valueLineEdit->SetValue(finalValue);
 }
 
 void ColorChannelEdit::OnSliderValueChanged(float value)
@@ -41,6 +44,9 @@ void ColorChannelEdit::OnSliderValueChanged(float value)
 
 void ColorChannelEdit::OnEditValueChanged(int value)
 {
-	m_valueSlider->SetValue(static_cast<float>(value));
-	OnValueChanged(value);
+	int finalValue = sh::math::Clamp(value, m_valueEdges.x, m_valueEdges.y);
+	if (finalValue != value)
+		m_valueLineEdit->SetValue(finalValue);
+	m_valueSlider->SetValue(static_cast<float>(finalValue));
+	OnValueChanged(finalValue);
 }

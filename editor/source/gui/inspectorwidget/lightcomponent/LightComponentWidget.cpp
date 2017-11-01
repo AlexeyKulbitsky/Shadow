@@ -4,6 +4,10 @@ LightComponentWidget::LightComponentWidget()
 	:ExpandableWidget("Light")
 {
 	m_colorPicker.reset(new ColorPicker());
+	m_colorPicker->colorChanged.Connect(std::bind(&LightComponentWidget::OnColorChanged, this, std::placeholders::_1));
+
+	auto icon = sh::gui::GuiManager::GetInstance()->GetStyle()->GetSpriteWidget("white");
+	m_colorWidget = icon->Clone();
 }
 
 void LightComponentWidget::SetLightComponent(sh::LightComponent* component)
@@ -37,12 +41,16 @@ void LightComponentWidget::SetLightComponent(sh::LightComponent* component)
 
 	// Light color
 	sh::gui::LabelPtr colorLabel(new sh::gui::Label("Color"));
+
+	m_colorWidget->SetColor(sh::math::Vector4f(m_lightComponent->GetColor(), 1.0f));
 	sh::gui::ButtonPtr pickerButton = guiMgr->GetStyle()->GetButton("PickerButton");
+	pickerButton->SetMaximumWidth(20);
 	
 	pickerButton->OnRelease.Connect(std::bind(&LightComponentWidget::OnColorPickerButtonReleased, this));
 	sh::gui::WidgetPtr colorWidget(new sh::gui::Widget());
 	sh::gui::HorizontalLayoutPtr colorLayout(new sh::gui::HorizontalLayout());
 	colorLayout->AddWidget(colorLabel);
+	colorLayout->AddWidget(m_colorWidget);
 	colorLayout->AddWidget(pickerButton);
 	colorWidget->SetLayout(colorLayout);
 	colorWidget->SetMaximumHeight(20);
@@ -53,5 +61,12 @@ void LightComponentWidget::SetLightComponent(sh::LightComponent* component)
 
 void LightComponentWidget::OnColorPickerButtonReleased()
 {
+	m_colorPicker->SetColor(sh::math::Vector4f(m_lightComponent->GetColor(), 1.0f));
 	sh::gui::GuiManager::GetInstance()->AddChild(m_colorPicker, false);
+}
+
+void LightComponentWidget::OnColorChanged(const sh::math::Vector4f& color)
+{
+	m_colorWidget->SetColor(sh::math::Vector4f(color));
+	m_lightComponent->SetColor(sh::math::Vector3f(color.x, color.y, color.z));
 }
