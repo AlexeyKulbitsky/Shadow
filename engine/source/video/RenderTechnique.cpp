@@ -135,6 +135,9 @@ namespace sh
 			}
 
 			m_renderPipelines.push_back(RenderPipeline::Create(pipelineDesc));
+
+			MaterialParamsDescription paramsDescription = LoadParams(pipelineNode);
+			m_paramDescriptions.push_back(paramsDescription);
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////
@@ -369,6 +372,52 @@ namespace sh
 			}
 
 			return state;
+		}
+
+		//////////////////////////////////////////////////////////////////////////////////////
+
+		MaterialParamsDescription RenderTechnique::LoadParams(const pugi::xml_node& node)
+		{
+			MaterialParamsDescription paramsDescription;
+
+			pugi::xml_node paramsNode = node.child("params");
+			if(!paramsNode)
+				return paramsDescription;
+
+			pugi::xml_node paramNode = paramsNode.child("param");
+			pugi::xml_attribute attribute;
+			while (paramNode)
+			{
+				MaterialParamDescription paramDesc;
+
+				// name
+				attribute = paramNode.attribute("name");
+				if (attribute)
+				{
+					paramDesc.name = attribute.as_string();
+				}
+				// description
+				attribute = paramNode.attribute("desc");
+				if (attribute)
+				{
+					paramDesc.description = attribute.as_string();
+				}
+				// type
+				attribute = paramNode.attribute("type");
+				{
+					auto it = materialParamTypeMap.find(attribute.as_string());
+					if (it != materialParamTypeMap.end())
+						paramDesc.type = it->second;
+					else
+						SH_ASSERT(0, "Can not determine Material Parameter Type for %s", paramDesc.name.c_str());
+				}
+
+				paramsDescription.params[paramDesc.name] = paramDesc;
+
+				paramNode = paramNode.next_sibling();
+			}
+
+			return paramsDescription;
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////

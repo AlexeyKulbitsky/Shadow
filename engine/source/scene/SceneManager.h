@@ -35,6 +35,7 @@ namespace sh
 			void ClearScene();
 
 			void AddEntity(Entity* entity) { m_entities.push_back(entity); }
+			void RegisterEntity(Entity* entity);
 			size_t GetEntitiesCount() const { return m_entities.size(); }
 			Entity* GetEntity(size_t index) { return m_entities[index]; }
 

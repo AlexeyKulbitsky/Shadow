@@ -6,6 +6,7 @@
 #include "../Vector2LineEdit.h"
 #include "../Vector3LineEdit.h"
 #include "../Vector4LineEdit.h"
+#include "../colorpicker/ColorPicker.h"
 
 class MaterialParamFloatEditor : public sh::gui::Widget
 {
@@ -51,6 +52,21 @@ public:
 
 private:
 	sh::video::MaterialParam* m_param = nullptr;
+};
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+class MaterialParamColorEditor : public sh::gui::Widget
+{
+public:
+	MaterialParamColorEditor(sh::video::MaterialParam* param);
+	void SetValue(const sh::math::Vector4f& value);
+	void OnColorPickerButtonReleased();
+
+private:
+	sh::video::MaterialParam* m_param = nullptr;
+	sh::SPtr<ColorPicker> m_colorPicker;
+	sh::gui::SpriteWidgetPtr m_colorWidget;
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////

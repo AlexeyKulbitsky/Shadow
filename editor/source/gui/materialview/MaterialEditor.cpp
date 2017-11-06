@@ -56,7 +56,7 @@ void MaterialParamVector2Editor::SetValue(const sh::math::Vector2f& value)
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-MaterialParamVector3Editor::MaterialParamVector3Editor(sh::video::MaterialParam* param) : m_param(param) 
+MaterialParamVector3Editor::MaterialParamVector3Editor(sh::video::MaterialParam* param) : m_param(param)
 {
 	sh::gui::HorizontalLayoutPtr layout(new sh::gui::HorizontalLayout());
 	sh::gui::LabelPtr label(new sh::gui::Label(m_param->GetName()));
@@ -106,6 +106,108 @@ void MaterialParamVector4Editor::SetValue(const sh::math::Vector4f& value)
 {
 	if (m_param)
 		m_param->Set(value);
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
+MaterialParamColorEditor::MaterialParamColorEditor(sh::video::MaterialParam* param) : m_param(param)
+{
+	sh::gui::HorizontalLayoutPtr layout(new sh::gui::HorizontalLayout());
+	sh::gui::LabelPtr label(new sh::gui::Label(m_param->GetName()));
+	label->SetMaximumWidth(75U);
+	layout->AddWidget(label);
+
+	m_colorPicker.reset(new ColorPicker());
+	m_colorPicker->colorChanged.Connect(std::bind(&MaterialParamColorEditor::SetValue, this, std::placeholders::_1));
+
+	auto icon = sh::gui::GuiManager::GetInstance()->GetStyle()->GetSpriteWidget("white");
+	m_colorWidget = icon->Clone();
+
+	sh::gui::ButtonPtr pickerButton = sh::gui::GuiManager::GetInstance()->GetStyle()->GetButton("PickerButton");
+	pickerButton->OnRelease.Connect(std::bind(&MaterialParamColorEditor::OnColorPickerButtonReleased, this));
+	pickerButton->SetMaximumWidth(20);
+
+	layout->AddWidget(m_colorWidget);
+	layout->AddWidget(pickerButton);
+
+	SetLayout(layout);
+	SetMaximumHeight(20);
+	
+	switch (m_param->GetType())
+	{
+		case sh::MaterialParamType::Color3:
+		{
+			sh::math::Vector3f val;
+			m_param->Get(val);
+			m_colorWidget->SetColor(sh::math::Vector4f(val, 1.0f));
+		}
+		break;
+		case sh::MaterialParamType::Color4:
+		{
+			sh::math::Vector4f val;
+			m_param->Get(val);
+			m_colorWidget->SetColor(val);
+		}
+		break;
+		default:
+			break;
+	}
+}
+
+void MaterialParamColorEditor::SetValue(const sh::math::Vector4f& value)
+{
+	if (m_param)
+	{
+		switch (m_param->GetType())
+		{
+			case sh::MaterialParamType::Color3:
+			{
+				sh::math::Vector3f val;
+				val.x = value.x;
+				val.y = value.y;
+				val.z = value.z;
+				m_colorWidget->SetColor(sh::math::Vector4f(val, 1.0f));
+				m_param->Set(val);
+			}
+			break;
+			case sh::MaterialParamType::Color4:
+			{
+				m_colorWidget->SetColor(value);
+				m_param->Set(value);
+			}
+			break;
+			default:
+				break;
+		}
+	}
+}
+
+void MaterialParamColorEditor::OnColorPickerButtonReleased()
+{
+	if (!m_param)
+		return;
+
+	switch (m_param->GetType())
+	{
+		case sh::MaterialParamType::Color3:
+		{
+			sh::math::Vector3f value;
+			m_param->Get(value);
+			m_colorPicker->SetColor(sh::math::Vector4f(value, 1.0f));
+		}
+		break;
+		case sh::MaterialParamType::Color4:
+		{
+			sh::math::Vector4f value;
+			m_param->Get(value);
+			m_colorPicker->SetColor(value);
+		}
+		break;
+		default:
+			return;
+			break;
+	}
+	sh::gui::GuiManager::GetInstance()->AddChild(m_colorPicker, false);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -208,20 +310,26 @@ void MaterialEditor::ResetLayout()
 		sh::gui::WidgetPtr widget;
 		switch (param->GetType())
 		{
-		case sh::MaterialParamType::Float:
-			widget.reset(new MaterialParamFloatEditor(param));
-			break;
-		case sh::MaterialParamType::Float2:
-			widget.reset(new MaterialParamVector2Editor(param));
-			break;
-		case sh::MaterialParamType::Float3:
-			widget.reset(new MaterialParamVector3Editor(param));
-			break;
-		case sh::MaterialParamType::Float4:
-			widget.reset(new MaterialParamVector4Editor(param));
-			break;
-		default:
-			break;
+			case sh::MaterialParamType::Float:
+				widget.reset(new MaterialParamFloatEditor(param));
+				break;
+			case sh::MaterialParamType::Float2:
+				widget.reset(new MaterialParamVector2Editor(param));
+				break;
+			case sh::MaterialParamType::Float3:
+				widget.reset(new MaterialParamVector3Editor(param));
+				break;
+			case sh::MaterialParamType::Float4:
+				widget.reset(new MaterialParamVector4Editor(param));
+				break;
+			case sh::MaterialParamType::Color3:
+				widget.reset(new MaterialParamColorEditor(param));
+				break;
+			case sh::MaterialParamType::Color4:
+				widget.reset(new MaterialParamColorEditor(param));
+				break;
+			default:
+				break;
 		}
 		if (widget)
 			m_layout->AddWidget(widget);
@@ -231,7 +339,7 @@ void MaterialEditor::ResetLayout()
 	for (const auto& samplerParam : samplerParams)
 	{
 		sh::SPtr<MaterialParamSamplerView> widget;
-		widget.reset(new MaterialParamSamplerView(const_cast<sh::video::MaterialSamplerParam*>(&samplerParam)));
+		widget.reset(new MaterialParamSamplerView(const_cast<sh::video::MaterialSamplerParam*>( &samplerParam )));
 		widget->paramChanged.Connect(std::bind(&MaterialEditor::MaterialChanged, this));
 		m_layout->AddWidget(widget);
 	}

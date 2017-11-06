@@ -1,6 +1,7 @@
 #include "LightSystem.h"
 #include "../Entity.h"
 #include "../components/LightComponent.h"
+#include "../components/TransformComponent.h"
 #include "../../scene/Light.h"
 
 #include "../../video/RenderBatchManager.h"
@@ -23,7 +24,8 @@ namespace sh
 
 	void LightSystem::RegisterEntity(Entity* entity)
 	{
-		if (entity->GetComponent<LightComponent>())
+		if (entity->GetComponent<LightComponent>() &&
+			entity->GetComponent<TransformComponent>())
 		{
 			AddEntity(entity);
 		}
@@ -33,6 +35,9 @@ namespace sh
 
 	void LightSystem::AddEntity(Entity* entity)
 	{
+		auto it = std::find(m_entities.begin(), m_entities.end(), entity);
+		if (it != m_entities.end())
+			return;
 		m_entities.push_back(entity);
 	}
 
@@ -57,10 +62,32 @@ namespace sh
 		for (auto entity : m_entities)
 		{
 			auto lightComponent = entity->GetComponent<LightComponent>();	
-			if (lightComponent->m_needsToRecalculate)
+			if (true)//lightComponent->m_needsToRecalculate)
 			{
-				lightComponent->m_needsToRecalculate = false;
+				auto transformComponent = entity->GetComponent<TransformComponent>();
+				if (transformComponent)
+				{
+					switch (lightComponent->GetType())
+					{
+						case scene::Light::Type::DIRECTIONAL:
+						{
+							auto direction = transformComponent->GetRotation() * math::Vector3f(0.0, 1.0, 0.0f);
+							direction.Normalize();
+							lightComponent->SetDirection(direction);
+						}
+							break;
+						case scene::Light::Type::AMBIENT:
+							break;
+						case scene::Light::Type::POINT:
+							break;
+						case scene::Light::Type::SPOT:
+							break;
+						default:
+							break;
+					}
+				}
 
+				lightComponent->m_needsToRecalculate = false;
 				m_batchManager->UpdateLight(lightComponent->m_light);
 			}
 		}

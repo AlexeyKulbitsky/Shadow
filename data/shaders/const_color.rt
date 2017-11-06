@@ -3,9 +3,9 @@
 
 <pipeline name="firstPass" layer="main">	
 	<params>
-		<param name="diffuse" desc="Diffuse map" type="sampler2D"/>
-		<param name="normalMap" desc="Normal map" type="sampler2D"/>
-		<param name="addColor" desc="Additional color (RGB)" type="color"/>
+		<param name="diffuse" desc="Diffuse map" type="Sampler2D"/>
+		<param name="normalMap" desc="Normal map" type="Sampler2D"/>
+		<param name="addColor" desc="Additional color (RGB)" type="Color3"/>
 	</params>
 	
 	<shader language="GLSL" api="GLES20">
@@ -89,7 +89,7 @@
 					vec3 ambient = vec3(0.4);
 
 					vec3 objectColor = texture2D(diffuse, vUV).xyz;
-					vec3 finalColor = objectColor * (diff + spec + ambient) + addColor;
+					vec3 finalColor = objectColor * (diff + spec + ambient) * addColor;
 					gl_FragColor = vec4(finalColor, 1.0);
 				} 
 		

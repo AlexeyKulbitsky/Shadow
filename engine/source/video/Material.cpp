@@ -33,11 +33,11 @@ namespace sh
 
 			pugi::xml_node paramNode = paramsNode.first_child();
 
-			while( paramNode )
+			while (paramNode)
 			{
 				String name = paramNode.name();
 				// Read sampler
-				if( name == "sampler" )
+				if (name == "sampler")
 				{
 					SamplerDescription samplerDesc;
 
@@ -66,7 +66,7 @@ namespace sh
 							texture = resourceManager->GetDefaultTexture();
 						}
 
-						
+
 					}
 					else
 					{
@@ -80,7 +80,7 @@ namespace sh
 						{
 							texture = resourceManager->GetDefaultTexture();
 						}
-						
+
 					}
 
 					if (paramNode.child("minFilter"))
@@ -128,7 +128,74 @@ namespace sh
 				}
 				else if (name == "param")
 				{
-
+					String paramName = paramNode.attribute("name").as_string();
+					String typeName = paramNode.child("type").attribute("val").as_string();
+					auto it = materialParamTypeMap.find(typeName);
+					if (it != materialParamTypeMap.end())
+					{
+						switch (it->second)
+						{
+							case MaterialParamType::Float:
+							{
+								float value = paramNode.child("value").attribute("val").as_float();
+								m_commonGpuParams->SetParam(paramName, value);
+							}
+							break;
+							case MaterialParamType::Float2:
+							{
+								math::Vector2f value;
+								pugi::xml_node valueNode = paramNode.child("value");
+								value.x = valueNode.attribute("x").as_float();
+								value.y = valueNode.attribute("y").as_float();
+								m_commonGpuParams->SetParam(paramName, value);
+							}
+							break;
+							case MaterialParamType::Float3:
+							{
+								math::Vector3f value;
+								pugi::xml_node valueNode = paramNode.child("value");
+								value.x = valueNode.attribute("x").as_float();
+								value.y = valueNode.attribute("y").as_float();
+								value.z = valueNode.attribute("z").as_float();
+								m_commonGpuParams->SetParam(paramName, value);
+							}
+							break;
+							case MaterialParamType::Float4:
+							{
+								math::Vector4f value;
+								pugi::xml_node valueNode = paramNode.child("value");
+								value.x = valueNode.attribute("x").as_float();
+								value.y = valueNode.attribute("y").as_float();
+								value.z = valueNode.attribute("z").as_float();
+								value.w = valueNode.attribute("w").as_float();
+								m_commonGpuParams->SetParam(paramName, value);
+							}
+							break;
+							case MaterialParamType::Color3:
+							{
+								math::Vector3f value;
+								pugi::xml_node valueNode = paramNode.child("value");
+								value.x = valueNode.attribute("x").as_float();
+								value.y = valueNode.attribute("y").as_float();
+								value.z = valueNode.attribute("z").as_float();
+								m_commonGpuParams->SetParam(paramName, value);
+							}
+							break;
+							case MaterialParamType::Color4:
+							{
+								math::Vector4f value;
+								pugi::xml_node valueNode = paramNode.child("value");
+								value.x = valueNode.attribute("x").as_float();
+								value.y = valueNode.attribute("y").as_float();
+								value.z = valueNode.attribute("z").as_float();
+								value.w = valueNode.attribute("w").as_float();
+								m_commonGpuParams->SetParam(paramName, value);
+							}
+							break;
+							default:
+								break;
+						}
+					}
 				}
 
 				paramNode = paramNode.next_sibling();
@@ -184,7 +251,7 @@ namespace sh
 						pugi::xml_node valueNode = paramNode.append_child("value");
 						valueNode.append_attribute("val").set_value(value);
 					}
-						break;
+					break;
 					case MaterialParamType::Float2:
 					{
 						math::Vector2f value;
@@ -193,7 +260,7 @@ namespace sh
 						valueNode.append_attribute("x").set_value(value.x);
 						valueNode.append_attribute("y").set_value(value.y);
 					}
-						break;
+					break;
 					case MaterialParamType::Float3:
 					{
 						math::Vector3f value;
@@ -203,7 +270,7 @@ namespace sh
 						valueNode.append_attribute("y").set_value(value.y);
 						valueNode.append_attribute("z").set_value(value.z);
 					}
-						break;
+					break;
 					case MaterialParamType::Float4:
 					{
 						math::Vector4f value;
@@ -214,7 +281,28 @@ namespace sh
 						valueNode.append_attribute("z").set_value(value.z);
 						valueNode.append_attribute("w").set_value(value.w);
 					}
-						break;
+					break;
+					case MaterialParamType::Color3:
+					{
+						math::Vector3f value;
+						param.Get(value);
+						pugi::xml_node valueNode = paramNode.append_child("value");
+						valueNode.append_attribute("x").set_value(value.x);
+						valueNode.append_attribute("y").set_value(value.y);
+						valueNode.append_attribute("z").set_value(value.z);
+					}
+					break;
+					case MaterialParamType::Color4:
+					{
+						math::Vector4f value;
+						param.Get(value);
+						pugi::xml_node valueNode = paramNode.append_child("value");
+						valueNode.append_attribute("x").set_value(value.x);
+						valueNode.append_attribute("y").set_value(value.y);
+						valueNode.append_attribute("z").set_value(value.z);
+						valueNode.append_attribute("w").set_value(value.w);
+					}
+					break;
 					default:
 						break;
 				}
@@ -225,10 +313,10 @@ namespace sh
 			for (const auto& samplerParam : samplerParams)
 			{
 				const auto sampler = samplerParam.GetSampler();
-					
+
 				const auto& desc = sampler->GetDescription();
 				pugi::xml_node samplerNode = paramsNode.append_child("sampler");
-				
+
 				samplerNode.append_attribute("name").set_value(samplerParam.GetName().c_str());
 				samplerNode.append_child("type").append_attribute("val")
 					.set_value(samplerTypeStringArray[desc.type].c_str());
@@ -245,7 +333,7 @@ namespace sh
 							.set_value(fileName.c_str());
 					}
 				}
-					
+
 				samplerNode.append_child("minFilter").append_attribute("val")
 					.set_value(textureFilteringStringArray[desc.minFilter].c_str());
 				samplerNode.append_child("magFilter").append_attribute("val")
@@ -269,9 +357,9 @@ namespace sh
 
 		////////////////////////////////////////////////////////////////
 
-		void Material::SetRenderTechnique(const RenderTechniquePtr& technique) 
-		{ 
-			m_renderTechnique = technique; 
+		void Material::SetRenderTechnique(const RenderTechniquePtr& technique)
+		{
+			m_renderTechnique = technique;
 			size_t pipelinesCount = technique->GetRenderPipelinesCount();
 			if (m_renderPipelines.size() != pipelinesCount)
 			{
@@ -279,15 +367,15 @@ namespace sh
 			}
 
 			for (size_t i = 0; i < pipelinesCount; ++i)
-			{			
+			{
 				RenderPipelinePtr pipeline = technique->GetRenderPipeline(i);
 				m_renderPipelines[i] = pipeline;
 
 				m_commonGpuParams = GpuParams::Create(pipeline->GetParamsInfo());
-				m_commonParams.reset(new MaterialParams(m_commonGpuParams));
+				m_commonParams.reset(new MaterialParams(m_commonGpuParams, technique->GetMaterialParamsDescription(i)));
 
 				m_autoGpuParams = GpuParams::Create(pipeline->GetAutoParamsInfo());
-				m_autoParams.reset(new MaterialParams(m_autoGpuParams));
+				m_autoParams.reset(new MaterialParams(m_autoGpuParams, technique->GetMaterialParamsDescription(i)));
 			}
 		}
 

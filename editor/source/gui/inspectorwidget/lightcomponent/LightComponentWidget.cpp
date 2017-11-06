@@ -1,5 +1,7 @@
 #include "LightComponentWidget.h"
 
+#include "../../Vector3LineEdit.h"
+
 LightComponentWidget::LightComponentWidget()
 	:ExpandableWidget("Light")
 {
@@ -57,6 +59,37 @@ void LightComponentWidget::SetLightComponent(sh::LightComponent* component)
 
 	m_contentsLayout->AddWidget(lightTypeWidget);
 	m_contentsLayout->AddWidget(colorWidget);
+
+	switch (lightType)
+	{
+		case sh::scene::Light::Type::DIRECTIONAL:
+		{
+			sh::gui::WidgetPtr directionWidget(new sh::gui::Widget());
+			sh::gui::HorizontalLayoutPtr directionLayout(new sh::gui::HorizontalLayout());
+
+			sh::gui::LabelPtr label(new sh::gui::Label("Direction"));
+			sh::SPtr<Vector3LineEdit> editWidget(new Vector3LineEdit());
+			editWidget->valueChanged.Connect(std::bind(&LightComponentWidget::OnDirectionChanged, this,
+				std::placeholders::_1));
+			editWidget->SetValue(m_lightComponent->GetDirection());
+
+			directionLayout->AddWidget(label);
+			directionLayout->AddWidget(editWidget);
+			directionWidget->SetLayout(directionLayout);
+			directionWidget->SetMaximumHeight(20);
+
+			m_contentsLayout->AddWidget(directionWidget);
+		}
+			break;
+		case sh::scene::Light::Type::POINT:
+			break;
+		case sh::scene::Light::Type::AMBIENT:
+			break;
+		case sh::scene::Light::Type::SPOT:
+			break;
+		default:
+			break;
+	}
 }
 
 void LightComponentWidget::OnColorPickerButtonReleased()
@@ -69,4 +102,10 @@ void LightComponentWidget::OnColorChanged(const sh::math::Vector4f& color)
 {
 	m_colorWidget->SetColor(sh::math::Vector4f(color));
 	m_lightComponent->SetColor(sh::math::Vector3f(color.x, color.y, color.z));
+}
+
+void LightComponentWidget::OnDirectionChanged(const sh::math::Vector3f& direction)
+{
+	auto dir = direction.GetNormalized();
+	m_lightComponent->SetDirection(dir);
 }

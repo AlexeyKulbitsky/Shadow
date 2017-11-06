@@ -51,6 +51,24 @@ void MainWindow::OpenScene()
 		for (sh::u32 i = 0U; i < entitiesCount; ++i)
 		{
 			auto entity = sceneMgr->GetEntity(i);
+
+			if (entity->GetComponent<sh::LightComponent>())
+			{
+				auto transform = entity->GetComponent<sh::TransformComponent>()->GetWorldMatrix();
+				//auto model = sh::scene::GeometryGenerator::GetConeModel(0.25f, 5.0f, transform);
+
+				auto model = sh::scene::GeometryGenerator::GetCylinderModel(5.0f, 0.25f, 16U, transform);
+				auto material = sh::Device::GetInstance()->GetResourceManager()->GetDefaultMaterial();
+
+				model->SetMaterial(material);
+				auto renderComponent = new sh::RenderComponent();
+				renderComponent->SetModel(model);
+
+				entity->AddComponent(renderComponent);
+
+				sceneMgr->RegisterEntity(entity);
+			}
+
 			m_hierarchyWidget->AddEntity(entity);
 		}
 	}

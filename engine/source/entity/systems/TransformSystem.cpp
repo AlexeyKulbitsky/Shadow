@@ -18,6 +18,9 @@ namespace sh
 
 	void TransformSystem::AddEntity(Entity* entity)
 	{
+		auto it = std::find(m_entities.begin(), m_entities.end(), entity);
+		if (it != m_entities.end())
+			return;
 		m_entities.push_back(entity);
 	}
 

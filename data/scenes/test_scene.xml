@@ -2,6 +2,11 @@
 
 <scene>
 	<entity name="light_0">
+		<component name="transform">
+			<position val="0 0 0" />
+			<rotation val="0 0 0 1" />
+			<scale val="1 1 1" />
+		</component>
 		<component name="light">
 			<type val="directional" />
 			<direction val="0.440831 -0.434961 0.785132" />

@@ -14,6 +14,7 @@ public:
 	void OnColorPickerButtonReleased();
 
 	void OnColorChanged(const sh::math::Vector4f& color);
+	void OnDirectionChanged(const sh::math::Vector3f& direction);
 
 private:
 	sh::LightComponent* m_lightComponent = nullptr;

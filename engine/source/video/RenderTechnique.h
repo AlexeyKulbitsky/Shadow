@@ -4,6 +4,7 @@
 #include "../resources/Resource.h"
 #include "../Globals.h"
 #include "RenderPipeline.h"
+#include "MaterialParams.h"
 
 namespace sh
 {
@@ -23,14 +24,17 @@ namespace sh
 			const String& GetName() const { return m_name; }
 			size_t GetRenderPipelinesCount() const { return m_renderPipelines.size(); }
 			const RenderPipelinePtr& GetRenderPipeline(size_t index) { return m_renderPipelines[index]; }
+			const MaterialParamsDescription& GetMaterialParamsDescription(size_t index) { return m_paramDescriptions[index]; }
 
 		protected:
 			DepthStencilStatePtr LoadDepthStencilState(const pugi::xml_node& node);
 			RasterizationStatePtr LoadRasterizationState(const pugi::xml_node& node);
 			BlendingStatePtr LoadBlendingState(const pugi::xml_node& node);
+			MaterialParamsDescription LoadParams(const pugi::xml_node& node);
 
 		protected:
 			std::vector<RenderPipelinePtr> m_renderPipelines;
+			std::vector<MaterialParamsDescription> m_paramDescriptions;
 			String m_name;
 		};
 	}

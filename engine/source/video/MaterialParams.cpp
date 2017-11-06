@@ -15,6 +15,15 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////////////////////////////
 
+		MaterialParams::MaterialParams(const GpuParamsPtr& gpuParams, const MaterialParamsDescription& description)
+		{
+			m_description = description;
+			ReadDataParams(gpuParams);
+			ReadSamplers(gpuParams);
+		}
+
+		/////////////////////////////////////////////////////////////////////////////////////////////
+
 		void MaterialParams::ReadDataParams(const GpuParamsPtr& gpuParams)
 		{
 			const u8* dataPtr = gpuParams->GetData();
@@ -26,8 +35,6 @@ namespace sh
 					continue;
 				for (const auto& param : desc->params)
 				{
-					
-
 					MaterialParamType type;
 					switch (param.second.type)
 					{
@@ -63,6 +70,13 @@ namespace sh
 						break;
 					default:
 						break;
+					}
+
+					// Try to override param type from description
+					auto descriptionIt = m_description.params.find(param.second.name);
+					if (descriptionIt != m_description.params.end())
+					{
+						type = descriptionIt->second.type;
 					}
 
 					auto autoParamsIt = materialAutoParamsMap.find(param.second.name);

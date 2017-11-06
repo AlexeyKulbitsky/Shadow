@@ -83,12 +83,12 @@ namespace sh
 
 			pugi::xml_document doc;
 			pugi::xml_parse_result result = doc.load_buffer(file.GetData().data(), file.GetData().size());
-			
+
 			// Read scene
 			pugi::xml_node scene = doc.child("scene");
-			pugi::xml_node sceneNode = scene.first_child();					
+			pugi::xml_node sceneNode = scene.first_child();
 			while (sceneNode)
-			{ 
+			{
 				String sceneNodeName = sceneNode.name();
 
 				// Read entities
@@ -101,7 +101,7 @@ namespace sh
 					if (nameAttribute)
 					{
 						String name = nameAttribute.as_string();
-						printf("Entity %s", name.c_str());					
+						printf("Entity %s", name.c_str());
 						entity->SetName(name);
 					}
 
@@ -128,14 +128,11 @@ namespace sh
 
 						entity->AddComponent(component);
 
-						for (auto system : m_systems)
-						{
-							system->RegisterEntity(entity);
-						}					
-
 						componentNode = componentNode.next_sibling();
 					}
 
+					// Register entity in all systems
+					RegisterEntity(entity);
 					// Add entity to entities list
 					AddEntity(entity);
 				}
@@ -143,7 +140,7 @@ namespace sh
 				// Read next object
 				sceneNode = sceneNode.next_sibling();
 			}
-			
+
 
 			size_t entitiesCount = m_entities.size();
 			for (size_t i = 0; i < entitiesCount; ++i)
@@ -159,7 +156,7 @@ namespace sh
 			pugi::xml_document doc;
 
 			// Save materials
-			ResourceManager* resourceManager = Device::GetInstance()->GetResourceManager();			
+			ResourceManager* resourceManager = Device::GetInstance()->GetResourceManager();
 			size_t materialsCount = resourceManager->GetMaterialsCount();
 			pugi::xml_node materialsNode = doc.append_child("materials");
 			for (size_t i = 0U; i < materialsCount; ++i)
@@ -197,6 +194,16 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
 
+		void SceneManager::RegisterEntity(Entity* entity)
+		{
+			for (auto system : m_systems)
+			{
+				system->RegisterEntity(entity);
+			}
+		}
+
+		//////////////////////////////////////////////////////////////////////////////////////////////
+
 		void SceneManager::SetCamera(Camera* camera)
 		{
 			m_camera = camera;
@@ -219,9 +226,9 @@ namespace sh
 
 		void SceneManager::OnWindowResized(int width, int height)
 		{
-			m_camera->SetProjection(3.1415926535f / 3.0f, 
-				static_cast<f32>(width), 
-				static_cast<f32>(height), 0.1f, 1000.0f);
+			m_camera->SetProjection(3.1415926535f / 3.0f,
+									static_cast<f32>( width ),
+									static_cast<f32>( height ), 0.1f, 1000.0f);
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////

@@ -8,7 +8,13 @@ namespace sh
 
 namespace video
 {
-	
+	struct MaterialParamDescription
+	{
+		String name;
+		String description;
+		MaterialParamType type;
+	};
+
 	class MaterialParam
 	{
 		friend class MaterialParams;

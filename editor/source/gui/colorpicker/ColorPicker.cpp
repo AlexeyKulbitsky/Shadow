@@ -131,7 +131,7 @@ bool ColorPicker::ProcessEvent(sh::gui::GUIEvent& ev)
 		}
 		else
 		{
-			const float value = 0.999f;
+			const float value = m_hsvWidget->GetColor().z * 0.01f;
 			auto color = HSVtoRGB(hue, saturation, value);
 			data[0U] = static_cast<sh::u8>(color.x * 256.0f);
 			data[1U] = static_cast<sh::u8>(color.y * 256.0f);
@@ -140,7 +140,7 @@ bool ColorPicker::ProcessEvent(sh::gui::GUIEvent& ev)
 		}
 
 		m_rgbWidget->SetColor(data[0], data[1], data[2], data[3]);
-		m_hsvWidget->SetColor(static_cast<int>(hue), static_cast<int>(saturation * 100.0f), 100);
+		m_hsvWidget->SetColor(static_cast<int>(hue), static_cast<int>(saturation * 100.0f), m_hsvWidget->GetColor().z);
 
 		m_color.x = data[0] / 256.0f;
 		m_color.y = data[1] / 256.0f;

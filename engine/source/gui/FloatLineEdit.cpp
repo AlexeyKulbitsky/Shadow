@@ -37,6 +37,7 @@ namespace gui
 				{
 					text.erase(text.begin() + (s_cursorPos - 1));
 					s_cursorPos--;
+					m_text = text;
 					m_dirty = true;
 				}
 			}

@@ -9,11 +9,16 @@ namespace sh
 
 namespace video
 {
+	struct MaterialParamsDescription
+	{
+		Map<String, MaterialParamDescription> params;
+	};
 
 	class MaterialParams
 	{
 	public:
 		MaterialParams(const GpuParamsPtr& gpuParams);
+		MaterialParams(const GpuParamsPtr& gpuParams, const MaterialParamsDescription& description);
 
 		u32 GetParamsCount() const { return m_params.size(); }
 		MaterialParam* GetParam(u32 idx) { return &m_params[idx]; }
@@ -25,6 +30,7 @@ namespace video
 		void ReadSamplers(const GpuParamsPtr& gpuParams);
 
 	private:
+		MaterialParamsDescription m_description;
 		std::vector<MaterialParam> m_params;
 		std::vector<MaterialSamplerParam> m_samplerParams;
 	};

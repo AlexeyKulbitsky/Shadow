@@ -353,6 +353,8 @@ namespace sh
 	{
 		Matrix4,
 		Matrix3,
+		Color4,
+		Color3,
 		Float4,
 		Float3,
 		Float2,
@@ -369,6 +371,8 @@ namespace sh
 	{
 		"Matrix4",
 		"Matrix3",
+		"Color4",
+		"Color3",
 		"Float4",
 		"Float3",
 		"Float2",
@@ -379,6 +383,24 @@ namespace sh
 		"Int",
 		"Sampler2D",
 		"SamplerCube"
+	};
+
+	static const std::map<std::string, MaterialParamType> materialParamTypeMap =
+	{
+		{ "Matrix4", MaterialParamType::Matrix4 },
+		{ "Matrix3", MaterialParamType::Matrix3 },
+		{ "Color4", MaterialParamType::Color4 },
+		{ "Color3", MaterialParamType::Color3 },
+		{ "Float4", MaterialParamType::Float4 },
+		{ "Float3", MaterialParamType::Float3 },
+		{ "Float2", MaterialParamType::Float2 },
+		{ "Float", MaterialParamType::Float },
+		{ "Int4", MaterialParamType::Int4 },
+		{ "Int3", MaterialParamType::Int3 },
+		{ "Int2", MaterialParamType::Int2 },
+		{ "Int", MaterialParamType::Int },
+		{ "Sampler2D", MaterialParamType::Sampler2D },
+		{ "SamplerCube", MaterialParamType::SamplerCube }
 	};
 	
 	static const std::map<std::string, MaterialParamUsage> materialAutoParamsMap =

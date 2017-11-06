@@ -57,9 +57,6 @@ HierarchyWidget::HierarchyWidget()
 	m_layout->SetMargins(2, 2, 2, 2);
 	SetLayout(m_layout);
 
-	sh::gui::SliderWidgetPtr slider(new sh::gui::SliderWidget());
-	m_layout->AddWidget(slider);
-
 	m_treeWidget.reset(new HierarchyTreeWidget());
 	m_treeWidget->SetHierarchyWidget(this);
 	m_layout->AddWidget(m_treeWidget);

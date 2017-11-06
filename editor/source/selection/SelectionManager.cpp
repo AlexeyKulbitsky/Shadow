@@ -29,52 +29,52 @@ bool SelectionManager::ProcessMouseEvent(int x, int y, sh::MouseEventType type, 
 
 	switch (type)
 	{
-	case sh::MouseEventType::ButtonPressed:
-		break;
-	case sh::MouseEventType::ButtonReleased:
-	{
-		if (code == sh::MouseCode::ButtonLeft)
+		case sh::MouseEventType::ButtonPressed:
+			break;
+		case sh::MouseEventType::ButtonReleased:
 		{
-			if (!m_gizmo->IsEnabled())
+			if (code == sh::MouseCode::ButtonLeft)
 			{
-				const auto& picker = sh::Device::GetInstance()->GetSceneManager()->GetPicker();
-				auto result = picker->TryToPick(x, y);
-				m_selectedEntity = result;
-				m_inspectorWidget->SetEntity(m_selectedEntity);
-				m_hierarchyWidget->SetSelectedEntity(m_selectedEntity);
-				if (!m_selectedEntity)
-					return false;
-
-				auto transformComponent = result->GetComponent<sh::TransformComponent>();
-				if (transformComponent)
+				if (!m_gizmo->IsEnabled())
 				{
-					m_gizmo->SetPosition(transformComponent->GetPosition());
-					m_gizmo->SetRotation(transformComponent->GetRotation());
-					m_gizmo->SetScale(transformComponent->GetScale());
-					m_gizmo->SetEnabled(true);
+					const auto& picker = sh::Device::GetInstance()->GetSceneManager()->GetPicker();
+					auto result = picker->TryToPick(x, y);
+					m_selectedEntity = result;
+					m_inspectorWidget->SetEntity(m_selectedEntity);
+					m_hierarchyWidget->SetSelectedEntity(m_selectedEntity);
+					if (!m_selectedEntity)
+						return false;
+
+					auto transformComponent = result->GetComponent<sh::TransformComponent>();
+					if (transformComponent)
+					{
+						m_gizmo->SetPosition(transformComponent->GetPosition());
+						m_gizmo->SetRotation(transformComponent->GetRotation());
+						m_gizmo->SetScale(transformComponent->GetScale());
+						m_gizmo->SetEnabled(true);
+					}
+
+
 				}
-
-				
-			}
-			else
-			{
-				if (!m_gizmo->OnMouseEvent(x, y, type, code))
+				else
 				{
-					m_gizmo->SetEnabled(false);
-					m_inspectorWidget->SetEntity(nullptr);
-					m_hierarchyWidget->SetSelectedEntity(nullptr);
-					m_selectedEntity = nullptr;
-					return true;
+					if (!m_gizmo->OnMouseEvent(x, y, type, code))
+					{
+						m_gizmo->SetEnabled(false);
+						m_inspectorWidget->SetEntity(nullptr);
+						m_hierarchyWidget->SetSelectedEntity(nullptr);
+						m_selectedEntity = nullptr;
+						return true;
+					}
 				}
 			}
 		}
-	}
 
-	break;
-	case sh::MouseEventType::Moved:
 		break;
-	default:
-		break;
+		case sh::MouseEventType::Moved:
+			break;
+		default:
+			break;
 	}
 
 	return false;
@@ -97,17 +97,16 @@ void SelectionManager::Render()
 			auto driver = sh::Device::GetInstance()->GetDriver();
 			driver->GetPainter()->DrawBox(renderComponent->GetModel()->GetBoundingBox());
 			driver->GetPainter()->Flush();
+			return;
 		}
-		else 
+		auto terrainComponent = m_selectedEntity->GetComponent<sh::TerrainComponent>();
+		if (terrainComponent)
 		{
-			auto terrainComponent = m_selectedEntity->GetComponent<sh::TerrainComponent>();
-			if (terrainComponent)
-			{
-				sh::Device::GetInstance()->GetDriver()->GetPainter()->SetMaterial(m_aabbMaterial);
-				auto driver = sh::Device::GetInstance()->GetDriver();
-				driver->GetPainter()->DrawBox(terrainComponent->GetModel()->GetBoundingBox());
-				driver->GetPainter()->Flush();
-			}
+			sh::Device::GetInstance()->GetDriver()->GetPainter()->SetMaterial(m_aabbMaterial);
+			auto driver = sh::Device::GetInstance()->GetDriver();
+			driver->GetPainter()->DrawBox(terrainComponent->GetModel()->GetBoundingBox());
+			driver->GetPainter()->Flush();
+			return;
 		}
 	}
 }
@@ -117,38 +116,38 @@ void SelectionManager::SetSelectedEntity(sh::Entity* entity)
 	m_selectedEntity = entity;
 }
 
-void SelectionManager::SetHierarchyWidget(const sh::SPtr<HierarchyWidget>& widget) 
+void SelectionManager::SetHierarchyWidget(const sh::SPtr<HierarchyWidget>& widget)
 {
-	m_hierarchyWidget = widget; 
+	m_hierarchyWidget = widget;
 	m_hierarchyWidget->OnEntitySelected.Connect(std::bind(&SelectionManager::OnEntityFromListSelected, this, std::placeholders::_1));
 }
 
-void SelectionManager::SetInspectorWidget(const sh::SPtr<InspectorWidget>& widget) 
-{ 
-	m_inspectorWidget = widget; 
+void SelectionManager::SetInspectorWidget(const sh::SPtr<InspectorWidget>& widget)
+{
+	m_inspectorWidget = widget;
 }
 
-void SelectionManager::SetMoveButton(const sh::gui::ButtonPtr& button) 
-{ 
-	m_moveGizmoButton = button; 
+void SelectionManager::SetMoveButton(const sh::gui::ButtonPtr& button)
+{
+	m_moveGizmoButton = button;
 	m_gizmoButtonGroup->AddButton(m_moveGizmoButton);
 }
 
-void SelectionManager::SetRotateButton(const sh::gui::ButtonPtr& button) 
-{ 
-	m_rotateGizmoButton = button; 
+void SelectionManager::SetRotateButton(const sh::gui::ButtonPtr& button)
+{
+	m_rotateGizmoButton = button;
 	m_gizmoButtonGroup->AddButton(m_rotateGizmoButton);
 }
 
-void SelectionManager::SetScaleButton(const sh::gui::ButtonPtr& button) 
-{ 
-	m_scaleGizmoButton = button; 
+void SelectionManager::SetScaleButton(const sh::gui::ButtonPtr& button)
+{
+	m_scaleGizmoButton = button;
 	m_gizmoButtonGroup->AddButton(m_scaleGizmoButton);
 }
 
-void SelectionManager::SetArrowButton(const sh::gui::ButtonPtr& button) 
-{ 
-	m_arrowButton = button; 
+void SelectionManager::SetArrowButton(const sh::gui::ButtonPtr& button)
+{
+	m_arrowButton = button;
 	m_gizmoButtonGroup->AddButton(m_arrowButton);
 }
 
@@ -170,7 +169,7 @@ void SelectionManager::OnEntityFromListSelected(sh::Entity* entity)
 {
 	m_selectedEntity = entity;
 	m_inspectorWidget->SetEntity(m_selectedEntity);
-	
+
 	// If entity is selected then reset gizmo
 	if (m_selectedEntity)
 	{
@@ -181,11 +180,10 @@ void SelectionManager::OnEntityFromListSelected(sh::Entity* entity)
 			m_gizmo->SetRotation(transformComponent->GetRotation());
 			m_gizmo->SetScale(transformComponent->GetScale());
 			m_gizmo->SetEnabled(true);
+			return;
 		}
-		else
-		{
-			m_gizmo->SetEnabled(false);
-		}
+
+		m_gizmo->SetEnabled(false);
 	}
 	// Otherwise clear anything connected with entity selection
 	else
@@ -197,20 +195,32 @@ void SelectionManager::OnEntityFromListSelected(sh::Entity* entity)
 void SelectionManager::OnPositionChanged(const sh::math::Vector3f& position)
 {
 	auto transformComponent = m_selectedEntity->GetComponent<sh::TransformComponent>();
-	transformComponent->SetPosition(position);
-	m_inspectorWidget->GetTransformWidget()->Update();
+	if (transformComponent)
+	{
+		transformComponent->SetPosition(position);
+		m_inspectorWidget->GetTransformWidget()->Update();
+		return;
+	}
 }
 
 void SelectionManager::OnRotationChanged(const sh::math::Quaternionf& rotation)
 {
 	auto transformComponent = m_selectedEntity->GetComponent<sh::TransformComponent>();
-	transformComponent->SetRotation(rotation);
-	m_inspectorWidget->GetTransformWidget()->Update();
+	if (transformComponent)
+	{
+		transformComponent->SetRotation(rotation);
+		m_inspectorWidget->GetTransformWidget()->Update();
+		return;
+	}
 }
 
 void SelectionManager::OnScaleChanged(const sh::math::Vector3f& scale)
 {
 	auto transformComponent = m_selectedEntity->GetComponent<sh::TransformComponent>();
-	transformComponent->SetScale(scale);
-	m_inspectorWidget->GetTransformWidget()->Update();
+	if (transformComponent)
+	{
+		transformComponent->SetScale(scale);
+		m_inspectorWidget->GetTransformWidget()->Update();
+		return;
+	}
 }
