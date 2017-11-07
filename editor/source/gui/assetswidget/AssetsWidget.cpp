@@ -49,11 +49,38 @@ AssetsWidget::AssetsWidget()
 	guiMgr->AddChild(m_textureWidget);
 	m_textureWidget->SetVisible(false);
 
+	
+
+	
+
+	m_treeWidget.reset(new AssetsTreeWidget());
+	m_treeWidget->materialChanged.Connect(std::bind(&AssetsWidget::OnMaterialTreeItemChanged, this,
+		std::placeholders::_1));
+
+	m_treeWidget->textureChanged.Connect(std::bind(&AssetsWidget::OnTextureTreeItemChanged, this,
+		std::placeholders::_1));
+
+	RefreshAssetsList();
+
+	windowLayout->AddWidget(m_treeWidget);
+}
+
+AssetsWidget::~AssetsWidget()
+{
+}
+
+void AssetsWidget::UpdateLayout()
+{
+	Window::UpdateLayout();
+}
+
+void AssetsWidget::RefreshAssetsList()
+{
 	struct Local
 	{
-		static void Parse(const sh::SPtr<sh::io::FileSystemComponent>& item, 
-						  const sh::SPtr<sh::gui::TreeWidget>& treeWidget,
-						  sh::SPtr<sh::gui::TreeItem>& treeItem)
+		static void Parse(const sh::SPtr<sh::io::FileSystemComponent>& item,
+			const sh::SPtr<sh::gui::TreeWidget>& treeWidget,
+			sh::SPtr<sh::gui::TreeItem>& treeItem)
 		{
 			if (item->GetType() == sh::io::FileSystemComponent::Type::Folder)
 			{
@@ -101,39 +128,23 @@ AssetsWidget::AssetsWidget()
 								}
 							}
 						}
-						
+
 						treeWidget->AddItem(childItem);
 					}
-					
+
 				}
 			}
 		}
 	};
 
-	
-
+	m_treeWidget->GetLayout()->Clear();
 	auto root = sh::io::FileSystem::GetInstance()->GetRoot();
-	sh::SPtr<AssetsTreeWidget> treeWidget(new AssetsTreeWidget());
-	treeWidget->materialChanged.Connect(std::bind(&AssetsWidget::OnMaterialTreeItemChanged, this,
-		std::placeholders::_1));
-
-	treeWidget->textureChanged.Connect(std::bind(&AssetsWidget::OnTextureTreeItemChanged, this,
-		std::placeholders::_1));
-
-	sh::SPtr<sh::gui::TreeItem> rootTreeItem(new FolderTreeItem(nullptr, root.get()));
-	treeWidget->AddItem(rootTreeItem);
-	Local::Parse(root, treeWidget, rootTreeItem);
-
-	windowLayout->AddWidget(treeWidget);
-}
-
-AssetsWidget::~AssetsWidget()
-{
-}
-
-void AssetsWidget::UpdateLayout()
-{
-	Window::UpdateLayout();
+	if (root)
+	{
+		sh::SPtr<sh::gui::TreeItem> rootTreeItem(new FolderTreeItem(nullptr, root.get()));
+		m_treeWidget->AddItem(rootTreeItem);
+		Local::Parse(root, m_treeWidget, rootTreeItem);
+	}
 }
 
 void AssetsWidget::OnMaterialTreeItemChanged(const sh::video::MaterialPtr& material)

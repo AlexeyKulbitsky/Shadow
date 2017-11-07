@@ -73,6 +73,7 @@ namespace sh
 			}
 
 			virtual void AddFolder(const String& folder, bool recursive = true) {}
+			virtual void AddInternalFolder(const String& folder) {}
 			//virtual const FileInfo& FindFile(const String& fileName) 
 			//{ 
 			//	static FileInfo res;
@@ -108,7 +109,11 @@ namespace sh
 			std::vector<std::weak_ptr<FileInfo>> m_materialFileInfos;
 			std::vector<std::weak_ptr<FileInfo>> m_renderTechniqueFileInfos;
 
+			// Root folder for current project data
 			SPtr<FolderInfo> m_root;
+
+			// Root folders for internal engine data
+			std::vector<SPtr<FolderInfo>> m_internalDataRoots;
 		};
 	}
 }

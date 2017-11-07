@@ -19,6 +19,11 @@ namespace sh
 		virtual void Destroy();
 
 		void Run();
+		void SetNeedsToBeClosed(bool needsToBeClosed) { m_needsToBeClosed = needsToBeClosed; }
+		bool NeedsToBeClosed() const { return m_needsToBeClosed; }
+
+	protected:
+		bool m_needsToBeClosed = false;
 	};
 
 } // sh

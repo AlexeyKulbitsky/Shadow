@@ -22,6 +22,14 @@ void MainWindow::Update()
 
 //////////////////////////////////////////////////////////////////////////
 
+void MainWindow::NewScene()
+{
+	sh::scene::SceneManager* sceneMgr = sh::Device::GetInstance()->GetSceneManager();
+	sceneMgr->ClearScene();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
 void MainWindow::OpenScene()
 {
 	HWND hWnd = (HWND)sh::Device::GetInstance()->GetWinId();
@@ -51,24 +59,6 @@ void MainWindow::OpenScene()
 		for (sh::u32 i = 0U; i < entitiesCount; ++i)
 		{
 			auto entity = sceneMgr->GetEntity(i);
-
-			if (entity->GetComponent<sh::LightComponent>())
-			{
-				auto transform = entity->GetComponent<sh::TransformComponent>()->GetWorldMatrix();
-				//auto model = sh::scene::GeometryGenerator::GetConeModel(0.25f, 5.0f, transform);
-
-				auto model = sh::scene::GeometryGenerator::GetCylinderModel(5.0f, 0.25f, 16U, transform);
-				auto material = sh::Device::GetInstance()->GetResourceManager()->GetDefaultMaterial();
-
-				model->SetMaterial(material);
-				auto renderComponent = new sh::RenderComponent();
-				renderComponent->SetModel(model);
-
-				entity->AddComponent(renderComponent);
-
-				sceneMgr->RegisterEntity(entity);
-			}
-
 			m_hierarchyWidget->AddEntity(entity);
 		}
 	}
@@ -95,13 +85,97 @@ void MainWindow::SaveScene()
 	if (GetSaveFileName(&ofn))
 	{
 		sh::scene::SceneManager* sceneMgr = sh::Device::GetInstance()->GetSceneManager();
-		//sceneMgr->SaveScene(ofn.lpstrFile);
+		sceneMgr->SaveScene(ofn.lpstrFile);
 	}
+}
+
+void MainWindow::NewProject()
+{
+	HWND hWnd = (HWND)sh::Device::GetInstance()->GetWinId();
+
+	char szFileName[MAX_PATH] = "";
+
+	OPENFILENAME ofn;
+	ZeroMemory(&ofn, sizeof(ofn));
+	ofn.lStructSize = sizeof(OPENFILENAME);
+	ofn.hwndOwner = hWnd;
+	ofn.lpstrFilter = "Project files (*.proj)\0*.proj\0";
+	ofn.lpstrFile = szFileName;
+	ofn.nMaxFile = MAX_PATH;
+	ofn.lpstrTitle = "New project";
+	ofn.Flags = OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+	ofn.lpstrDefExt = "proj";
+	if (GetSaveFileName(&ofn))
+	{
+		auto filesystem = sh::io::FileSystem::GetInstance();
+		auto root = filesystem->GetRoot();
+		sh::String projectFileName = ofn.lpstrFile;
+		sh::String projectFolder = "";
+		// Get project folder
+		sh::String::size_type pos = projectFileName.find_last_of("\\/");
+		if (pos != sh::String::npos)
+			projectFolder = projectFileName.substr(0U, pos);
+
+		// Create assets folder
+		sh::String assetsFolder = projectFolder + "/assets";
+		filesystem->CreateFolder(assetsFolder);
+
+		// Create source folder
+		sh::String sourceFolder = projectFolder + "/source";
+		filesystem->CreateFolder(sourceFolder);
+
+		// Save project
+		pugi::xml_document doc;
+		pugi::xml_node sceneNode = doc.append_child("project");
+		sceneNode.append_attribute("name").set_value("Test project");
+		sceneNode.append_attribute("internaldata").set_value(root->absolutePath.c_str());
+
+		doc.save_file(ofn.lpstrFile);
+	}
+}
+
+void MainWindow::OpenProject()
+{
+	HWND hWnd = (HWND)sh::Device::GetInstance()->GetWinId();
+
+	char szFileName[MAX_PATH] = "";
+
+	OPENFILENAME ofn;
+	ZeroMemory(&ofn, sizeof(ofn));
+	ofn.lStructSize = sizeof(OPENFILENAME);
+	ofn.hwndOwner = hWnd;
+	ofn.lpstrFilter = "Project files (*.proj)\0*.proj\0";
+	ofn.lpstrFile = szFileName;
+	ofn.nMaxFile = MAX_PATH;
+	ofn.lpstrTitle = "Open project";
+	ofn.Flags = OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+	ofn.lpstrDefExt = "proj";
+	if (GetOpenFileName(&ofn))
+	{
+		auto filesystem = sh::io::FileSystem::GetInstance();
+		auto root = filesystem->GetRoot();
+		sh::String projectFileName = ofn.lpstrFile;
+		sh::String projectFolder = "";
+		// Get project folder
+		sh::String::size_type pos = projectFileName.find_last_of("\\/");
+		if (pos != sh::String::npos)
+			projectFolder = projectFileName.substr(0U, pos);
+
+		// Set assets folder for file system
+		filesystem->AddFolder(projectFolder + "/assets");
+		
+		// Refresh assets list
+		m_assetsWidget->RefreshAssetsList();
+	}
+}
+
+void MainWindow::SaveProject()
+{
 }
 
 void MainWindow::Close()
 {
-
+	SetNeedsToBeClosed(true);
 }
 
 void MainWindow::OnMouseEvent(int x, int y, sh::MouseEventType type, sh::MouseCode code)
@@ -220,6 +294,11 @@ void MainWindow::OnWindowResized(int width, int height)
 
 void MainWindow::Init()
 {
+	// Add internal editor resources
+	auto filesystem = sh::io::FileSystem::GetInstance();
+	filesystem->AddInternalFolder(sh::String("../../../editor/data"));
+
+
 	sh::gui::GuiManager::CreateInstance();
 	sh::gui::GuiManager::GetInstance()->Init();
 
@@ -275,8 +354,8 @@ void MainWindow::Init()
 	mainVerticalLayout->AddLayout(mainLayout);
 
 
-	sh::SPtr<sh::gui::Widget> colorPicker(new ColorPicker());
-	guiMgr->AddChild(colorPicker);
+	//sh::SPtr<sh::gui::Widget> colorPicker(new ColorPicker());
+	//guiMgr->AddChild(colorPicker);
 
 	mainLayout->AddLayout(assetsHierarchyLayout);
 	sh::gui::WidgetPtr emptyWidget(new sh::gui::Widget());
@@ -397,8 +476,13 @@ sh::gui::MenuBarPtr MainWindow::CreateMenuBar()
 	const auto& fileMenu = menuBar->AddMenu("File", menuButton);
 	const auto& editMenu = menuBar->AddMenu("Edit", editButton);
 
+	sh::gui::ButtonPtr newSceneButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	newSceneButton->SetText("New scene");
+	newSceneButton->OnRelease.Connect(std::bind(&MainWindow::NewScene, this));
+	fileMenu->AddItem(newSceneButton);
+
 	sh::gui::ButtonPtr openSceneButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
-	openSceneButton->SetText("Open scene...");
+	openSceneButton->SetText("Open scene");
 	openSceneButton->OnRelease.Connect(std::bind(&MainWindow::OpenScene, this));
 	fileMenu->AddItem(openSceneButton);
 
@@ -406,6 +490,21 @@ sh::gui::MenuBarPtr MainWindow::CreateMenuBar()
 	saveSceneButton->SetText("Save scene...");
 	saveSceneButton->OnRelease.Connect(std::bind(&MainWindow::SaveScene, this));
 	fileMenu->AddItem(saveSceneButton);
+
+	sh::gui::ButtonPtr newProjectButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	newProjectButton->SetText("New project");
+	newProjectButton->OnRelease.Connect(std::bind(&MainWindow::NewProject, this));
+	fileMenu->AddItem(newProjectButton);
+
+	sh::gui::ButtonPtr openProjectButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	openProjectButton->SetText("Open project");
+	openProjectButton->OnRelease.Connect(std::bind(&MainWindow::OpenProject, this));
+	fileMenu->AddItem(openProjectButton);
+
+	sh::gui::ButtonPtr saveProjectButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	saveProjectButton->SetText("Save project...");
+	saveProjectButton->OnRelease.Connect(std::bind(&MainWindow::SaveProject, this));
+	fileMenu->AddItem(saveProjectButton);
 
 	sh::gui::ButtonPtr exitButton1(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
 	exitButton1->SetText("Exit");

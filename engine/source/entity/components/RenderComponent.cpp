@@ -104,26 +104,6 @@ namespace sh
 			}
 		}
 
-		// Read material
-// 		pugi::xml_node materialNode = node.child("material");
-// 		if (materialNode)
-// 		{
-// 			pugi::xml_attribute nameAttribute = materialNode.attribute("filename");
-// 			SH_ASSERT(nameAttribute);
-// 
-// 			String materialName(nameAttribute.as_string());
-// 
-// 			const sh::video::MaterialPtr& material = resourceManager->GetMaterial(materialName);
-// 			SH_ASSERT(material);
-// 				
-// 			// Init model with material
-// 			for (size_t i = 0, sz = model->GetMeshesCount(); i < sz; ++i)
-// 			{
-// 				sh::scene::MeshPtr mesh = model->GetMesh(i);
-// 				mesh->SetMaterial(material);
-// 			}		
-// 		}
-
 		m_model = model;
 	}
 
@@ -139,9 +119,20 @@ namespace sh
 		modelNode.append_attribute("filename").set_value(m_model->GetFileInfo().lock()->name.c_str());
 		
 		// Save material
-		const sh::video::MaterialPtr& material = m_model->GetMesh(0)->GetMaterial();
-		pugi::xml_node materialNode = componentNode.append_child("material");
-		materialNode.append_attribute("name").set_value(material->GetName().c_str());
+		pugi::xml_node materialsNode = componentNode.append_child("materials");
+		const auto meshesCount = m_model->GetMeshesCount();
+		for (size_t i = 0U; i < meshesCount; ++i)
+		{
+
+			pugi::xml_node materialNode = materialsNode.append_child("material");
+
+			const auto& mesh = m_model->GetMesh(i);
+			pugi::xml_attribute meshAttribute = materialNode.append_attribute("mesh");
+			meshAttribute.set_value(mesh->GetName().c_str());
+
+			pugi::xml_attribute nameAttribute = materialNode.append_attribute("filename");
+			nameAttribute.set_value(mesh->GetMaterial()->GetFileInfo().lock()->name.c_str());
+		}
 	}
 
 	////////////////////////////////////////////////////////////////

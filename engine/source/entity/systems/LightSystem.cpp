@@ -74,6 +74,7 @@ namespace sh
 							auto direction = transformComponent->GetRotation() * math::Vector3f(0.0, 1.0, 0.0f);
 							direction.Normalize();
 							lightComponent->SetDirection(direction);
+							lightComponent->SetPosition(transformComponent->GetPosition());
 						}
 							break;
 						case scene::Light::Type::AMBIENT:

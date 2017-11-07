@@ -30,6 +30,7 @@ namespace sh
 		{
 			const String hmSource = heightmapNode.attribute("val").as_string();
 			heightmap.Load(hmSource);
+			m_heightmapName = hmSource;
 		}
 
 		const u32 width = heightmap.GetWidth();
@@ -132,7 +133,12 @@ namespace sh
 
 	void TerrainComponent::Save(pugi::xml_node &parent)
 	{
+		pugi::xml_node componentNode = parent.append_child("component");
+		componentNode.append_attribute("name").set_value("terrain");
 
+		pugi::xml_node hightmapNode = componentNode.append_child("heightmap");
+		pugi::xml_attribute valueAttribute = hightmapNode.append_attribute("val");
+		valueAttribute.set_value(m_heightmapName.c_str());
 	}
 
 	////////////////////////////////////////////////////////////////////////////////

@@ -33,6 +33,8 @@ public:
 
 	virtual void UpdateLayout() override;
 
+	void RefreshAssetsList();
+
 private:
 	void OnMaterialTreeItemChanged(const sh::video::MaterialPtr& material);
 	void OnTextureTreeItemChanged(const sh::video::TexturePtr& texture);
@@ -40,6 +42,7 @@ private:
 private:
 	sh::gui::WindowPtr m_window;
 
+	sh::SPtr<AssetsTreeWidget> m_treeWidget;
 	sh::SPtr<MaterialEditor> m_materialEditor;
 	sh::SPtr<TextureWidget> m_textureWidget;
 };

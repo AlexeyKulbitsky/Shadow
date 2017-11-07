@@ -44,7 +44,9 @@ namespace io
 
 	void WindowsFileSystem::AddFolder(const String& folder, bool recursive)
 	{
-		String absolutePath = m_workingDirectoryPath + "/" + folder + "/";
+		//String absolutePath = m_workingDirectoryPath + "/" + folder + "/";
+
+		String absolutePath = folder + "/";
 
 		String folderName = folder;
 		String::size_type pos = String(folder).find_last_of("\\/");
@@ -54,6 +56,25 @@ namespace io
 		m_root.reset(new FolderInfo(folderName, absolutePath));
 
 		CollectFilesFromFolder(absolutePath, m_root, true);
+
+		UpdateResourceGroups();
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	void WindowsFileSystem::AddInternalFolder(const String& folder)
+	{
+		String absolutePath = m_workingDirectoryPath + "/" + folder + "/";
+
+		String folderName = folder;
+		String::size_type pos = String(folder).find_last_of("\\/");
+		if (pos != String::npos)
+			folderName = folder.substr(pos + 1);
+
+		SPtr<FolderInfo> folderInfo(new FolderInfo(folderName, absolutePath));
+
+		CollectFilesFromFolder(absolutePath, folderInfo, true);
+		m_internalDataRoots.push_back(folderInfo);
 
 		UpdateResourceGroups();
 	}
@@ -82,7 +103,29 @@ namespace io
 
 	File WindowsFileSystem::LoadFile(const String& filename)
 	{
-		auto result = m_root->FindChildByName(filename);
+		std::weak_ptr<FileSystemComponent> result;
+		if (m_root)
+		{
+			result = m_root->FindChildByName(filename);
+			if (result.expired())
+			{
+				for (auto internalRoot : m_internalDataRoots)
+				{
+					result = internalRoot->FindChildByName(filename);
+					if (!result.expired())
+						break;
+				}
+			}
+		}
+		else
+		{
+			for (auto internalRoot : m_internalDataRoots)
+			{
+				result = internalRoot->FindChildByName(filename);
+				if (!result.expired())
+					break;
+			}
+		}
 		if (result.expired())
 			return File();
 

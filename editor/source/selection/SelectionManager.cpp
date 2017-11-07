@@ -90,6 +90,7 @@ void SelectionManager::Render()
 	// Render selection for entity if it is possible
 	if (m_selectedEntity)
 	{
+		// If it has render component then render the Bounding box of the model
 		auto renderComponent = m_selectedEntity->GetComponent<sh::RenderComponent>();
 		if (renderComponent)
 		{
@@ -99,6 +100,7 @@ void SelectionManager::Render()
 			driver->GetPainter()->Flush();
 			return;
 		}
+		// If it has terrain component then render the Bounding box of the terrain model
 		auto terrainComponent = m_selectedEntity->GetComponent<sh::TerrainComponent>();
 		if (terrainComponent)
 		{
@@ -106,6 +108,43 @@ void SelectionManager::Render()
 			auto driver = sh::Device::GetInstance()->GetDriver();
 			driver->GetPainter()->DrawBox(terrainComponent->GetModel()->GetBoundingBox());
 			driver->GetPainter()->Flush();
+			return;
+		}
+		// If it has light component then render light bounds according to its type
+		auto lightComponent = m_selectedEntity->GetComponent<sh::LightComponent>();
+		if (lightComponent)
+		{
+			sh::Device::GetInstance()->GetDriver()->GetPainter()->SetMaterial(m_aabbMaterial);
+			auto driver = sh::Device::GetInstance()->GetDriver();
+
+			switch (lightComponent->GetType())
+			{
+			case sh::scene::Light::Type::DIRECTIONAL:
+			{
+				auto transformConponent = m_selectedEntity->GetComponent<sh::TransformComponent>();
+				auto delta = lightComponent->GetDirection() * 3.0f;
+				auto position = lightComponent->GetPosition();
+				auto xOffset = transformConponent->GetRotation() * sh::scene::SceneManager::GetRightVector();
+				auto zOffset = transformConponent->GetRotation() * sh::scene::SceneManager::GetFrontVector();
+				const float scaleFactor = 0.5f;
+				driver->GetPainter()->DrawLine(position, position + delta);
+
+				driver->GetPainter()->DrawLine(position + xOffset * scaleFactor, position + xOffset * scaleFactor + delta);
+				driver->GetPainter()->DrawLine(position - xOffset * scaleFactor, position - xOffset * scaleFactor + delta);
+				driver->GetPainter()->DrawLine(position + zOffset * scaleFactor, position + zOffset * scaleFactor + delta);
+				driver->GetPainter()->DrawLine(position - zOffset * scaleFactor, position - zOffset * scaleFactor + delta);
+
+				driver->GetPainter()->Flush();
+			}
+				break;
+			case sh::scene::Light::Type::POINT:
+				break;
+			case sh::scene::Light::Type::SPOT:
+				break;
+			default:
+				break;
+			}
+			
 			return;
 		}
 	}

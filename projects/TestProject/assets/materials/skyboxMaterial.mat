@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<material name="skyboxMaterial">
+	<technique filename="skybox.rt" />
+	<params>
+		<sampler name="skybox">
+			<type val="Cube"/>
+			<texture>
+				<front val="front.jpg"/>
+				<back val="back.jpg"/>
+				<right val="right.jpg"/>
+				<left val="left.jpg"/>
+				<top val="top.jpg"/>
+				<bottom val="bottom.jpg"/>
+			</texture>
+		</sampler>
+	</params>
+</material>	

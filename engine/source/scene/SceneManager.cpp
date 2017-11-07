@@ -155,15 +155,6 @@ namespace sh
 		{
 			pugi::xml_document doc;
 
-			// Save materials
-			ResourceManager* resourceManager = Device::GetInstance()->GetResourceManager();
-			size_t materialsCount = resourceManager->GetMaterialsCount();
-			pugi::xml_node materialsNode = doc.append_child("materials");
-			for (size_t i = 0U; i < materialsCount; ++i)
-			{
-				resourceManager->GetMaterial(i)->Save(materialsNode);
-			}
-
 			// Save scene
 			pugi::xml_node sceneNode = doc.append_child("scene");
 			for (size_t i = 0U, sz = m_entities.size(); i < sz; ++i)

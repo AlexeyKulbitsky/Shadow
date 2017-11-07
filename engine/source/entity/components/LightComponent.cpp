@@ -31,27 +31,7 @@ namespace sh
 			if (valString == "directional")
 			{
 				lightType = scene::Light::Type::DIRECTIONAL;
-
-				pugi::xml_node directionNode = node.child("direction");  
-				if (directionNode)
-				{
-					pugi::xml_attribute valAttr = directionNode.attribute("val");
-					String directionString = valAttr.as_string();
-					std::istringstream in(directionString);
-					float val = 0.0f;
-					std::vector<float> temp;
-					while (in >> val) temp.push_back(val);
-					math::Vector3f direction(0.0f);
-					direction.x = temp[0];
-					direction.y = temp[1];
-					direction.z = temp[2];
-
-					m_light->SetDirection(direction);
-					video::Driver* driver = Device::GetInstance()->GetDriver();
-					std::vector<math::Vector3f> value;
-					value.push_back(direction);
-					m_light->SetType(lightType);
-				}
+				m_light->SetType(lightType);
 			}
 
 
@@ -90,11 +70,6 @@ namespace sh
 			case sh::scene::Light::Type::DIRECTIONAL:
 			{
 				typeNode.append_attribute("val").set_value("directional");
-				pugi::xml_node directionNode = componentNode.append_child("direction");
-				const sh::math::Vector3f& dir = m_light->GetDirection();
-				std::ostringstream out;
-				out << dir.x << " " << dir.y << " " << dir.z;
-				directionNode.append_attribute("val").set_value(out.str().c_str());
 			}
 			break;
 			default:

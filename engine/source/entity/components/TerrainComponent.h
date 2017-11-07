@@ -23,6 +23,7 @@ namespace sh
 							  const video::VertexDeclarationPtr& vertexDeclaration);
 
 	private:
+		String m_heightmapName;
 		scene::ModelPtr m_model;
 	};
 

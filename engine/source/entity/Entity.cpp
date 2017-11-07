@@ -19,17 +19,14 @@ namespace sh
 
 	void Entity::Save(pugi::xml_node& parent)
 	{
-		/*pugi::xml_node entityNode = parent.append_child("entity");
+		pugi::xml_node entityNode = parent.append_child("entity");
 		entityNode.append_attribute("name").set_value(m_name.c_str());
 
-		for (size_t i = 0, sz = static_cast<size_t>( Component::Type::Count ); i < sz; ++i)
+		for (const auto& component : m_components)
 		{
-			Component* component = m_components[i];
 			if (component)
-			{
 				component->Save(entityNode);
-			}
-		}*/
+		}
 	}
 
 	//////////////////////////////////////////////////////////////

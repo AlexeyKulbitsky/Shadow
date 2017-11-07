@@ -13,7 +13,7 @@ namespace gui
 	{
 		m_enabled = false;
 		m_visible = false;
-		m_rect.Set(0, 0, 100, 300);
+		m_rect.Set(0, 0, 150, 300);
 		VerticalLayoutPtr layout(new VerticalLayout());
 		SetLayout(layout);
 	}
@@ -22,7 +22,7 @@ namespace gui
 	{
 		m_enabled = false;
 		m_visible = false;
-		m_rect.Set(0, 0, 100, 300);
+		m_rect.Set(0, 0, 150, 300);
 		VerticalLayoutPtr layout(new VerticalLayout());
 		SetLayout(layout);
 	}

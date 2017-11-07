@@ -228,9 +228,12 @@ Win32Device::Win32Device()
 {
 	io::FileSystem::CreateInstance<io::WindowsFileSystem>();
 	m_fileSystem = io::FileSystem::GetInstance();
-	m_fileSystem->AddFolder(sh::String("../../../data"));
+	//m_fileSystem->AddFolder(sh::String("../../../data"));
 
-	auto file = m_fileSystem->LoadFile("config.xml");
+	// Add engine's internal resources
+	m_fileSystem->AddInternalFolder(sh::String("../../../engine/data"));
+
+	/*auto file = m_fileSystem->LoadFile("config.xml");
 	if (file.GetData().size() != 0)
 	{
 		const char* dataPtr = file.GetData().data();
@@ -243,7 +246,9 @@ Win32Device::Win32Device()
 		String driverName = driverNode.attribute("type").as_string();
 		if (driverName == "GLES20")
 			m_creationParameters.driverType = video::DriverType::OPENGL_ES_2_0;
-	}
+	}*/
+
+	m_creationParameters.driverType = video::DriverType::OPENGL_ES_2_0;
 
 	pempek::assert::implementation::setAssertHandler(_testHandler);
 
@@ -493,7 +498,7 @@ void Win32Device::Run()
 		}
 
 		// If windows signals to end the application then exit out.
-		if (msg.message == WM_QUIT)
+		if (msg.message == WM_QUIT || m_application->NeedsToBeClosed())
 		{
 			done = true;
 			m_application->Destroy();

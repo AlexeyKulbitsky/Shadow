@@ -19,8 +19,14 @@ public:
 
 	void Update();
 
+	void NewScene();
 	void OpenScene();
 	void SaveScene();
+
+	void NewProject();
+	void OpenProject();
+	void SaveProject();
+
 	void Close();
 
 	void OnMouseEvent(int x, int y, sh::MouseEventType type, sh::MouseCode code);

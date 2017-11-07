@@ -21,6 +21,7 @@ namespace io
 		virtual const String& GetWorkingDirectory() const override;
 
 		virtual void AddFolder(const String& folder, bool recursive = true) override;
+		virtual void AddInternalFolder(const String& folder) override;
 
 		virtual bool SaveFile(const std::vector<char>& data, const String& fileName) override;
 		virtual bool SaveFile(const String& data, const String& fileName) override;

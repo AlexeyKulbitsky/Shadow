@@ -59,7 +59,16 @@ namespace sh
 			const auto& imageExtensions = video::TextureLoader::GetInstance()->GetAvalilableExtensions();
 			const auto& modelExtensions = scene::ModelLoader::GetInstance()->GetAvalilableExtensions();
 			
-			UpdateRecursive(m_root, imageExtensions, modelExtensions);
+			// Update project assets folder
+			if (m_root)
+			{
+				UpdateRecursive(m_root, imageExtensions, modelExtensions);
+			}
+
+			for (const auto& internalFolder : m_internalDataRoots)
+			{
+				UpdateRecursive(internalFolder, imageExtensions, modelExtensions);
+			}
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////

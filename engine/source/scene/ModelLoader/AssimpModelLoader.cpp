@@ -20,6 +20,7 @@ namespace scene
 	{
 		m_availableExtensions.push_back("obj");
 		m_availableExtensions.push_back("fbx");
+		m_availableExtensions.push_back("3ds");
 	}
 
 	ModelBasePtr AssimpModelLoader::Load(const std::string &path)
