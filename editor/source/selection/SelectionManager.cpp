@@ -3,7 +3,7 @@
 SelectionManager::SelectionManager()
 {
 	m_aabbMaterial.reset(new sh::video::Material());
-	m_aabbMaterial->SetRenderTechnique("vertex_color.rt");
+	m_aabbMaterial->SetRenderTechnique("VertexColor3D.rt");
 
 	m_defaultGizmo.reset(new Gizmo());
 	m_moveGizmo.reset(new MoveGizmo());

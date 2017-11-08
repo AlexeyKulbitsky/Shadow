@@ -14,7 +14,7 @@ namespace gui
 	ImageWidget::ImageWidget()
 	{
 		m_material.reset(new video::Material());
-		m_material->SetRenderTechnique("ui_base.rt");
+		m_material->SetRenderTechnique("Primitive2D.rt");
 	}
 
 	ImageWidget::~ImageWidget()

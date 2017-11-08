@@ -77,7 +77,7 @@ void FolderTreeItem::OnMenuItemSelected(const sh::String& itemName)
 
 		// Create material and add to Resource manager
 		sh::video::MaterialPtr material(new sh::video::Material());
-		material->SetRenderTechnique("const_color.rt");
+		material->SetRenderTechnique("Default.rt");
 		//material->SetFileName(materialName);
 		material->SetFileInfo(fsItem);
 		sh::Device::GetInstance()->GetResourceManager()->AddMaterial(material);

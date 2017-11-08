@@ -44,10 +44,10 @@ namespace gui
 	void GuiManager::Init()
 	{
 		m_defaultMaterial.reset(new video::Material());
-		m_defaultMaterial->SetRenderTechnique("ui_base.rt");
+		m_defaultMaterial->SetRenderTechnique("Primitive2D.rt");
 
 		m_textMaterial.reset(new video::Material());
-		m_textMaterial->SetRenderTechnique("text_base.rt");
+		m_textMaterial->SetRenderTechnique("Text2D.rt");
 	}
 
 	void GuiManager::Update(u32 delta)

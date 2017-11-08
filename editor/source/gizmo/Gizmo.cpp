@@ -9,7 +9,7 @@ sh::math::Vector3f Gizmo::s_scale;
 Gizmo::Gizmo()
 {
 	m_material.reset(new sh::video::Material());
-	m_material->SetRenderTechnique("editor_base_color.rt");
+	m_material->SetRenderTechnique("ConstantColor3D.rt");
 	const auto& info = m_material->GetRenderPipeline()->GetParamsInfo();
 
 	float radius = 0.1f;

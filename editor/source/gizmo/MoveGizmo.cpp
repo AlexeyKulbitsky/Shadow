@@ -5,7 +5,7 @@
 MoveGizmo::MoveGizmo()
 {
 	m_material.reset(new sh::video::Material());
-	m_material->SetRenderTechnique("editor_base_color.rt");
+	m_material->SetRenderTechnique("ConstantColor3D.rt");
 
 	sh::video::CommandBufferDescription commandBufferDesc;
 	commandBufferDesc.type = sh::COMMAND_BUFFER_TYPE_SECONDARY;
