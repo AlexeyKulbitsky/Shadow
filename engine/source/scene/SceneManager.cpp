@@ -53,6 +53,8 @@ namespace sh
 			m_systems.push_back(lightSystem);
 
 			m_picker.reset(new Picker());
+
+			TransformComponent::RegisterObject();
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////

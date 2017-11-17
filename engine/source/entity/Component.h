@@ -2,6 +2,7 @@
 #define SHADOW_COMPONENT_INCLUDE
 
 #include "../Globals.h"
+#include "../serialization/Serializable.h"
 
 namespace sh
 {
@@ -19,7 +20,7 @@ public: \
 static size_t GetTypeId() { static size_t id = ComponentTypeIdGenerator::GetAvailableId(); return id; } \
 virtual size_t GetId() override { return GetTypeId(); }
 
-	class Component
+	class Component : public Serializable
 	{
 	public:
 		virtual ~Component() {}

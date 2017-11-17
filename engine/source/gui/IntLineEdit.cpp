@@ -117,7 +117,7 @@ namespace sh
 				OnTextChanged(m_text);
 
 				std::stringstream s(m_text);
-				m_value = 0.0f;
+				m_value = 0;
 				s >> m_value;
 
 				OnValueChanged(m_value);

@@ -7,6 +7,7 @@ namespace sh
 {
 	class TransformComponent : public Component
 	{
+		SHADOW_OBJECT(TransformComponent)
 		COMPONENT
 	public:
 		TransformComponent();
@@ -14,6 +15,8 @@ namespace sh
 		//virtual Component::Type GetType() const override { return Component::Type::Transform; }
 		virtual void Load(const pugi::xml_node &node) override;
 		virtual void Save(pugi::xml_node &parent) override;
+
+		static void RegisterObject();
 	
 		const math::Matrix4f& GetWorldMatrix() const { return m_worldMatrix; }
 

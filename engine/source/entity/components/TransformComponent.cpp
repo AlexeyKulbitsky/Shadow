@@ -1,4 +1,5 @@
 #include "TransformComponent.h"
+#include "../../serialization/ObjectFactory.h"
 
 namespace sh
 {
@@ -107,6 +108,14 @@ namespace sh
 		std::ostringstream outScale;
 		outScale << m_scale.x << " " << m_scale.y << " " << m_scale.z;		
 		scaleNode.append_attribute("val").set_value(outScale.str().c_str());
+	}
+
+	/////////////////////////////////////////////////////////////////
+
+	void TransformComponent::RegisterObject()
+	{
+		ObjectFactory::GetInstance()->RegisterFactory<TransformComponent>();
+		S_ACCESSOR_PROPERTY("Position", GetPosition, SetPosition);
 	}
 
 	/////////////////////////////////////////////////////////////////

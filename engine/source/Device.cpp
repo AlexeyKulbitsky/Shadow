@@ -10,6 +10,7 @@
 #include "gui/GuiManager.h"
 #include "gui/SpriteManager.h"
 #include "font/FontManager.h"
+#include "serialization/ObjectFactory.h"
 
 #include <functional>
 using namespace std::placeholders;
@@ -27,6 +28,8 @@ namespace sh
 
 		m_resourceManager.reset(new ResourceManager());
 		m_resourceManager->Init();
+
+		ObjectFactory::CreateInstance();
 	}
 
 	Device::Device(const CreationParameters &parameters)
@@ -39,6 +42,8 @@ namespace sh
 
 		m_resourceManager.reset(new ResourceManager());
 		m_resourceManager->Init();
+
+		ObjectFactory::CreateInstance();
 	}
 
 	Device::~Device()
@@ -71,6 +76,7 @@ namespace sh
 
 		FontManager::CreateInstance();
 		gui::SpriteManager::CreateInstance();
+		
 	}
 
 
@@ -80,6 +86,7 @@ namespace sh
 		FontManager::DestroyInstance();
 
 		io::FileSystem::DestroyInstance();
+		ObjectFactory::DestroyInstance();
 
 		delete s_instance;
 		s_instance = nullptr;
