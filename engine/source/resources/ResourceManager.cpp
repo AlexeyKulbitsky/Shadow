@@ -251,5 +251,83 @@ namespace sh
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	void ResourceManager::UpdateResourceGroups()
+	{
+		auto fileSystem = io::FileSystem::GetInstance();
+		const auto& imageExtensions = video::TextureLoader::GetInstance()->GetAvalilableExtensions();
+		const auto& modelExtensions = scene::ModelLoader::GetInstance()->GetAvalilableExtensions();
 
+		m_resourceGroups.clear();
+
+		// Update project assets folder
+		auto rootFolder = fileSystem->GetRoot();
+		if (rootFolder)
+		{
+			UpdateRecursive(rootFolder, imageExtensions, modelExtensions);
+		}
+
+		const auto& internalFolders = fileSystem->GetInternalFolders();
+		for (const auto& internalFolder : internalFolders)
+		{
+			UpdateRecursive(internalFolder, imageExtensions, modelExtensions);
+		}
+
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	void ResourceManager::UpdateRecursive(const SPtr<io::FolderInfo>& folder,
+		const std::vector<String>& imageExtensions,
+		const std::vector<String>& modelExtensions)
+	{
+		for (const auto& child : folder->children)
+		{
+			switch (child->GetType())
+			{
+			case io::FileSystemComponent::Type::File:
+			{
+				size_t pos = child->name.find_last_of('.');
+				auto extension = child->name.substr(pos + 1);
+
+				// Check for image
+				auto resImage = std::find(imageExtensions.begin(), imageExtensions.end(), extension);
+				if (resImage != imageExtensions.end())
+				{
+					m_resourceGroups["Textures"].push_back(ResourceRef("Textures", child->name));
+				}
+
+				// Check for model
+				auto resModel = std::find(modelExtensions.begin(), modelExtensions.end(), extension);
+				if (resModel != modelExtensions.end())
+				{
+					m_resourceGroups["Models"].push_back(ResourceRef("Models", child->name));
+				}
+
+				// Check for material
+				if (extension == "mat")
+				{
+					m_resourceGroups["Materials"].push_back(ResourceRef("Materials", child->name));
+				}
+
+				// Check for render technique
+				if (extension == "rt")
+				{
+					m_resourceGroups["RenderTechniques"].push_back(ResourceRef("RenderTechniques", child->name));
+				}
+			}
+			break;
+			case io::FileSystemComponent::Type::Folder:
+			{
+				SPtr<io::FolderInfo> childFolderInfo = std::static_pointer_cast<io::FolderInfo>(child);
+				UpdateRecursive(childFolderInfo, imageExtensions, modelExtensions);
+			}
+			break;
+			default:
+				break;
+			}
+		}
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

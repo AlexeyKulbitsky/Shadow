@@ -8,6 +8,7 @@ namespace sh
 
 	class TerrainComponent : public Component
 	{
+		SHADOW_OBJECT(TerrainComponent)
 		COMPONENT
 	public:
 		virtual ~TerrainComponent();

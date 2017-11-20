@@ -27,6 +27,8 @@ namespace sh
 	using Getter = ReturnType(ClassType::*)() const;
 	template<typename ClassType, typename ArgumentType>
 	using Setter = void (ClassType::*)(ArgumentType);
+	template<typename T>
+	using base_type = typename std::remove_cv<typename std::remove_reference<T>::type>::type;
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -70,8 +72,17 @@ namespace sh
 		static_assert(!std::is_pointer<ReturnType>::value && !std::is_pointer<ArgumentType>::value,
 			"You can not use pointers to create properties");
 
-		static_assert(std::is_same<std::remove_cv<ReturnType>, std::remove_cv<ArgumentType>>::value,
+		using NonConstReturnType = std::remove_cv<ReturnType>;
+		using NonConstArgumentType = std::remove_cv<ArgumentType>;
+
+		//static_assert(std::is_same<std::remove_reference<NonConstReturnType>, std::remove_reference<NonConstArgumentType>>::value,
+		//	"You must use equal types for creating properties");
+
+		static_assert(std::is_same<base_type<ReturnType>, base_type<ArgumentType>>::value,
 			"You must use equal types for creating properties");
+		
+
+		// Add removing reference
 
 		using BaseType = std::remove_cv_t<ReturnType>;
 

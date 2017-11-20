@@ -40,7 +40,7 @@ namespace sh
 		video::Driver* GetDriver() { return m_driver; }
 		scene::SceneManager* GetSceneManager() { return m_sceneManager; }
 		InputManager* GetInputManager() { return m_inputManager.get(); }
-		ResourceManager* GetResourceManager() { return m_resourceManager.get(); }
+		ResourceManager* GetResourceManager() { return ResourceManager::GetInstance(); }
 		io::FileSystem* GetFileSystem() { return m_fileSystem; }
 		video::GLContextManager* GetContextManager() { return m_GLContextManager;}
 
@@ -63,7 +63,6 @@ namespace sh
 		scene::SceneManager* m_sceneManager = nullptr;
 
 		InputManagerUPtr m_inputManager;
-		ResourceManagerUPtr m_resourceManager;
 
 		io::FileSystem* m_fileSystem = nullptr;
 

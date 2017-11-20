@@ -116,6 +116,8 @@ namespace sh
 	{
 		ObjectFactory::GetInstance()->RegisterFactory<TransformComponent>();
 		S_ACCESSOR_PROPERTY("Position", GetPosition, SetPosition);
+		S_ACCESSOR_PROPERTY("Rotation", GetRotation, SetRotation);
+		S_ACCESSOR_PROPERTY("Scale", GetScale, SetScale);
 	}
 
 	/////////////////////////////////////////////////////////////////

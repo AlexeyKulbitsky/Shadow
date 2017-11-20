@@ -70,6 +70,7 @@ void FolderTreeItem::OnMenuItemSelected(const sh::String& itemName)
 			folderInfo->children.push_back(fsItem);
 			// Update resource groups in file system
 			fs->UpdateResourceGroups();
+			sh::Device::GetInstance()->GetResourceManager()->UpdateResourceGroups();
 		}
 
 		sh::SPtr<MaterialTreeItem> item(new MaterialTreeItem(this, fsItem.get()));

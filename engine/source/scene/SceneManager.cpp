@@ -55,6 +55,8 @@ namespace sh
 			m_picker.reset(new Picker());
 
 			TransformComponent::RegisterObject();
+			LightComponent::RegisterObject();
+			RenderComponent::RegisterObject();
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////

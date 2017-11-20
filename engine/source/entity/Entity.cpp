@@ -1,6 +1,8 @@
 #include "Entity.h"
 #include "components/TransformComponent.h"
 #include "components/RenderComponent.h"
+#include "../serialization/Serializer.h"
+#include "../serialization/XMLSerializer.h"
 
 
 namespace sh
@@ -22,10 +24,15 @@ namespace sh
 		pugi::xml_node entityNode = parent.append_child("entity");
 		entityNode.append_attribute("name").set_value(m_name.c_str());
 
+		XMLSerializer serializer;
 		for (const auto& component : m_components)
 		{
 			if (component)
-				component->Save(entityNode);
+			{
+				pugi::xml_node componentNode = parent.append_child("component");
+				serializer.Serialize(component, componentNode);
+				//component->Save(entityNode);
+			}
 		}
 	}
 

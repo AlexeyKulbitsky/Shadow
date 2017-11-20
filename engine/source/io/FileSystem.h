@@ -97,6 +97,7 @@ namespace sh
 			const std::vector<std::weak_ptr<FileInfo>>& GetMaterialFileInfos() const { return m_materialFileInfos; }
 			const std::vector<std::weak_ptr<FileInfo>>& GetRenderTechniqueFileInfos() const { return m_renderTechniqueFileInfos; }
 			const SPtr<FolderInfo> GetRoot() const { return m_root; }
+			const std::vector<SPtr<FolderInfo>>& GetInternalFolders() const { return m_internalDataRoots; }
 
 		private:
 			void UpdateRecursive(const SPtr<FolderInfo>& fsComponent, 

@@ -1,6 +1,8 @@
 #ifndef SHADOW_SERIALIZER_INCLUDE
 #define SHADOW_SERIALIZER_INCLUDE
 
+#include "../Globals.h"
+
 namespace sh
 {
 
@@ -9,7 +11,7 @@ namespace sh
 	class Serializer
 	{
 	public:
-		void Serialize(Serializable* serializable);
+		virtual void Serialize(Serializable* serializable);
 	};
 
 } // sh

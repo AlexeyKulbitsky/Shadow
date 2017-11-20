@@ -9,6 +9,7 @@
 #include "../../video/RenderTechnique.h"
 #include "../../video/RenderPipeline.h"
 #include "../../scene/SceneManager.h"
+#include "../../serialization/ObjectFactory.h"
 
 
 namespace sh
@@ -137,4 +138,24 @@ namespace sh
 
 	////////////////////////////////////////////////////////////////
 
+	void RenderComponent::RegisterObject()
+	{
+		ObjectFactory::GetInstance()->RegisterFactory<RenderComponent>();
+		S_ACCESSOR_PROPERTY("Model", GetModelProperty, SetModelProperty);
+	}
+
+	////////////////////////////////////////////////////////////////
+
+	void RenderComponent::SetModelProperty(const ResourceRef& value)
+	{
+	}
+
+	////////////////////////////////////////////////////////////////
+
+	ResourceRef RenderComponent::GetModelProperty() const
+	{
+		return ResourceRef("Models", m_model->GetFileInfo().lock()->name);
+	}
+
+	////////////////////////////////////////////////////////////////
 }

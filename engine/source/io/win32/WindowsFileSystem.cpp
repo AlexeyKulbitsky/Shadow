@@ -1,6 +1,7 @@
 #include "WindowsFileSystem.h"
 
 #include "../../video/TextureLoader/TextureLoader.h"
+#include "../../Device.h"
 
 #include <windows.h>
 #include <fstream>
@@ -58,6 +59,7 @@ namespace io
 		CollectFilesFromFolder(absolutePath, m_root, true);
 
 		UpdateResourceGroups();
+		ResourceManager::GetInstance()->UpdateResourceGroups();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,6 +79,7 @@ namespace io
 		m_internalDataRoots.push_back(folderInfo);
 
 		UpdateResourceGroups();
+		ResourceManager::GetInstance()->UpdateResourceGroups();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////

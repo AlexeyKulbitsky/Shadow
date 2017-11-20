@@ -13,8 +13,10 @@ namespace sh
 		VAR_FLOAT,
 		VAR_BOOL,
 		VAR_STRING,
-		VAR_VECTOR3FLOAT,
+		VAR_VECTOR_3_FLOAT,
+		VAR_QUATERNION_FLOAT,
 		VAR_SERIALIZABLE,
+		VAR_RESOURCE_REF,
 		VAR_CUSTOM
 	};
 
@@ -32,6 +34,19 @@ namespace sh
 		CustomValueImpl(const T& value) : m_value(value) { }
 
 		T m_value;
+	};
+
+	union VariantValue
+	{
+		float floatValue;
+		int intValue;
+		bool boolValue;
+		void* ptrValue;
+		math::Vector3f vector3fValue;
+		math::Quaternionf quaternionfValue;
+
+		VariantValue() {}
+		~VariantValue() {}
 	};
 
 	class Variant
@@ -67,7 +82,19 @@ namespace sh
 			*this = value;
 		}
 
+		Variant(const math::Quaternionf& value)
+			: m_type(VAR_NOTYPE)
+		{
+			*this = value;
+		}
+
 		Variant(Serializable* value)
+			: m_type(VAR_NOTYPE)
+		{
+			*this = value;
+		}
+
+		Variant(const ResourceRef& value)
 			: m_type(VAR_NOTYPE)
 		{
 			*this = value;
@@ -86,45 +113,63 @@ namespace sh
 			m_customValue = new CustomValueImpl<T>(value);
 		}
 
+		~Variant()
+		{
+		}
+
 		Variant& operator=(int value)
 		{
 			SetType(VAR_INT);
-			m_int = value;
+			m_value.intValue = value;
 			return *this;
 		}
 
 		Variant& operator=(float value)
 		{
 			SetType(VAR_FLOAT);
-			m_float = value;
+			m_value.floatValue = value;
 			return *this;
 		}
 
 		Variant& operator=(bool value)
 		{
 			SetType(VAR_BOOL);
-			m_bool = value;
+			m_value.boolValue = value;
 			return *this;
 		}
 
 		Variant& operator=(const std::string& value)
 		{
 			SetType(VAR_STRING);
-			*reinterpret_cast<std::string*>(m_ptr) = value;
+			*reinterpret_cast<std::string*>(m_value.ptrValue) = value;
 			return *this;
 		}
 
 		Variant& operator=(const math::Vector3f& value)
 		{
-			SetType(VAR_VECTOR3FLOAT);
-			m_vector3f = value;
+			SetType(VAR_VECTOR_3_FLOAT);
+			m_value.vector3fValue = value;
+			return *this;
+		}
+
+		Variant& operator=(const math::Quaternionf& value)
+		{
+			SetType(VAR_QUATERNION_FLOAT);
+			m_value.quaternionfValue = value;
 			return *this;
 		}
 
 		Variant& operator=(Serializable* value)
 		{
 			SetType(VAR_SERIALIZABLE);
-			m_ptr = value;
+			m_value.ptrValue = value;
+			return *this;
+		}
+
+		Variant& operator=(const ResourceRef& value)
+		{
+			SetType(VAR_RESOURCE_REF);
+			*reinterpret_cast<ResourceRef*>(m_value.ptrValue) = value;
 			return *this;
 		}
 
@@ -133,7 +178,9 @@ namespace sh
 		bool GetBool() const;
 		const std::string& GetString() const;
 		const math::Vector3f& GetVector3Float() const;
+		const math::Quaternionf& GetQuaternionFloat() const;
 		Serializable* GetSerializable() const;
+		const ResourceRef& GetResourceRef() const;
 
 		template<typename T>
 		T Get() const
@@ -146,14 +193,7 @@ namespace sh
 	private:
 		void SetType(VariantType type);
 
-		union
-		{
-			float m_float;
-			int m_int;
-			bool m_bool;
-			void* m_ptr;
-			math::Vector3f m_vector3f;
-		};
+		VariantValue m_value;
 		CustomValue* m_customValue = nullptr;
 		VariantType m_type = VAR_NOTYPE;
 	};
@@ -163,7 +203,9 @@ namespace sh
 	template<> bool Variant::Get<bool>() const;
 	template<> std::string Variant::Get<std::string>() const;
 	template<> math::Vector3f Variant::Get<math::Vector3f>() const;
+	template<> math::Quaternionf Variant::Get<math::Quaternionf>() const;
 	template<> Serializable* Variant::Get<Serializable*>() const;
+	template<> ResourceRef Variant::Get<ResourceRef>() const;
 
 } // sh
 

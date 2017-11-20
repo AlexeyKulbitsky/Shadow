@@ -2,6 +2,7 @@
 #include "../../scene/Light.h"
 #include "../../video/Driver.h"
 #include "../../Device.h"
+#include "../../serialization/ObjectFactory.h"
 
 namespace sh
 {
@@ -85,6 +86,15 @@ namespace sh
 
 	//////////////////////////////////////////////////////////
 
+	void LightComponent::RegisterObject()
+	{
+		ObjectFactory::GetInstance()->RegisterFactory<LightComponent>();
+		S_ACCESSOR_PROPERTY("Color", GetColor, SetColor);
+		S_ENUM_ACCESSOR_PROPERTY("Type", GetType, SetType);
+	}
+
+	//////////////////////////////////////////////////////////
+
 	void LightComponent::SetPosition(const math::Vector3f& position)
 	{
 		m_light->SetPosition(position);
@@ -115,7 +125,7 @@ namespace sh
 
 	//////////////////////////////////////////////////////////
 
-	void LightComponent::SetColor(math::Vector3f& color)
+	void LightComponent::SetColor(const math::Vector3f& color)
 	{
 		m_light->SetColor(color);
 		m_needsToRecalculate = true;
@@ -123,7 +133,7 @@ namespace sh
 
 	//////////////////////////////////////////////////////////
 
-	const math::Vector3f&  LightComponent::GetColor() const
+	const math::Vector3f& LightComponent::GetColor() const
 	{
 		return m_light->GetColor();
 	}

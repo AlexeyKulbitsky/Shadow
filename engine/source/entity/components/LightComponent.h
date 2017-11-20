@@ -13,11 +13,14 @@ namespace sh
 
 	class LightComponent : public Component
 	{
+		SHADOW_OBJECT(LightComponent)
 		COMPONENT
 	public:
 		virtual ~LightComponent();
 		virtual void Load(const pugi::xml_node &node) override;
 		virtual void Save(pugi::xml_node &parent) override;
+
+		static void RegisterObject();
 
 		bool NeedsToRecalculate() const { return m_needsToRecalculate; }		
 
@@ -27,8 +30,8 @@ namespace sh
 		void SetDirection(const math::Vector3f& direction);
 		const math::Vector3f& GetDirection() const;
 
-		void SetColor(math::Vector3f& color);
-		const math::Vector3f&  GetColor() const;
+		void SetColor(const math::Vector3f& color);
+		const math::Vector3f& GetColor() const;
 
 		scene::Light::Type GetType() const;
 		void SetType(scene::Light::Type type);

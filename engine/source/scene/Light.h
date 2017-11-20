@@ -30,7 +30,7 @@ namespace sh
 			void SetDirection(const math::Vector3f& direction) { m_direction = direction; }
 			const math::Vector3f& GetDirection() const { return m_direction; }
 
-			void SetColor(math::Vector3f& color) { m_color = color; }
+			void SetColor(const math::Vector3f& color) { m_color = color; }
 			const math::Vector3f&  GetColor() const { return m_color; }
 
 		private:

@@ -53,6 +53,17 @@ namespace sh
 	template<size_t N>
 	using Bitset = std::bitset<N>;
 
+	struct ResourceRef
+	{
+		ResourceRef() {}
+		ResourceRef(const String& _type, const String& _name) : type(_type), name(_name) {}
+		ResourceRef(const ResourceRef& other) : type(other.type), name(other.name) {}
+		String type;
+		String name;
+	};
+
+	using ResourceRefList = std::vector<ResourceRef>;
+
 }
 
 
