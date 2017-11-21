@@ -63,7 +63,14 @@ namespace sh
 	};
 
 	using ResourceRefList = std::vector<ResourceRef>;
+	
+	struct NamedResourceRef
+	{
+		String name;
+		ResourceRef resource;
+	};
 
+	using NamedResourceRefList = std::vector<NamedResourceRef>;
 }
 
 

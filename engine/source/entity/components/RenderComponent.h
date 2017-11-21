@@ -29,8 +29,13 @@ namespace sh
 		void SetModelProperty(const ResourceRef& value);
 		ResourceRef GetModelProperty() const;
 
+		void SetMaterials(const NamedResourceRefList& value) { m_namedResourceRefList = value; }
+		const NamedResourceRefList& GetMaterials() const { return m_namedResourceRefList; }
+
 	protected:
 		scene::ModelPtr m_model;
+
+		NamedResourceRefList m_namedResourceRefList;
 	};
 }
 

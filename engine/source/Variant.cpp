@@ -86,6 +86,11 @@ namespace sh
 		return *reinterpret_cast<ResourceRef*>(m_value.ptrValue);
 	}
 
+	const NamedResourceRefList& Variant::GetNamedResourceRefList() const
+	{
+		return *reinterpret_cast<NamedResourceRefList*>(m_value.ptrValue);
+	}
+
 	void Variant::SetType(VariantType type)
 	{
 		switch (m_type)
@@ -99,6 +104,12 @@ namespace sh
 		case VAR_RESOURCE_REF:
 		{
 			delete reinterpret_cast<ResourceRef*>(m_value.ptrValue);
+			m_value.ptrValue = nullptr;
+		}
+			break;
+		case VAR_NAMED_RESOURCE_REF_LIST:
+		{
+			delete reinterpret_cast<NamedResourceRefList*>(m_value.ptrValue);
 			m_value.ptrValue = nullptr;
 		}
 			break;
@@ -116,6 +127,9 @@ namespace sh
 		case VAR_RESOURCE_REF:
 			m_value.ptrValue = new ResourceRef();
 			break;
+		case VAR_NAMED_RESOURCE_REF_LIST:
+			m_value.ptrValue = new NamedResourceRefList();
+			break;
 		default:
 			break;
 		}
@@ -129,5 +143,6 @@ namespace sh
 	template<> math::Quaternionf Variant::Get<math::Quaternionf>() const { return GetQuaternionFloat(); }
 	template<> Serializable* Variant::Get<Serializable*>() const { return GetSerializable(); }
 	template<> ResourceRef Variant::Get<ResourceRef>() const { return GetResourceRef(); }
+	template<> NamedResourceRefList Variant::Get<NamedResourceRefList>() const { return GetNamedResourceRefList(); }
 
 } // sh

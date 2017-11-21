@@ -51,6 +51,16 @@ namespace sh
 				porpertyNode.append_attribute("val").set_value(resourceRef.name.c_str());
 			}
 				break;
+			case VAR_NAMED_RESOURCE_REF_LIST:
+			{
+				const auto& namedResourceRefList = value.GetNamedResourceRefList();
+				for (const auto& ref : namedResourceRefList)
+				{
+					pugi::xml_node refNode = porpertyNode.append_child(ref.name.c_str());
+					refNode.append_attribute("val").set_value(ref.resource.name.c_str());
+				}
+			}
+				break;
 			default:
 				break;
 			}

@@ -106,6 +106,21 @@ namespace sh
 		}
 
 		m_model = model;
+
+		/////////////////////////////////////////////////////////////
+
+		for (size_t i = 0, sz = model->GetMeshesCount(); i < sz; ++i)
+		{
+			const auto& mesh = model->GetMesh(i);
+			const auto& material = mesh->GetMaterial();
+
+			NamedResourceRef ref;
+			ref.name = mesh->GetName();
+			ref.resource.type = "Materials";
+			ref.resource.name = material->GetFileInfo().lock()->name;
+
+			m_namedResourceRefList.push_back(ref);
+		}
 	}
 
 	////////////////////////////////////////////////////////////////
@@ -142,6 +157,7 @@ namespace sh
 	{
 		ObjectFactory::GetInstance()->RegisterFactory<RenderComponent>();
 		S_ACCESSOR_PROPERTY("Model", GetModelProperty, SetModelProperty);
+		S_ACCESSOR_PROPERTY("Materials", GetMaterials, SetMaterials);
 	}
 
 	////////////////////////////////////////////////////////////////

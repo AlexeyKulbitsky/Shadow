@@ -17,6 +17,7 @@ namespace sh
 		VAR_QUATERNION_FLOAT,
 		VAR_SERIALIZABLE,
 		VAR_RESOURCE_REF,
+		VAR_NAMED_RESOURCE_REF_LIST,
 		VAR_CUSTOM
 	};
 
@@ -100,6 +101,12 @@ namespace sh
 			*this = value;
 		}
 
+		Variant(const NamedResourceRefList& value)
+			: m_type(VAR_NOTYPE)
+		{
+			*this = value;
+		}
+
 		Variant(const Variant& other)
 		{
 		}
@@ -173,6 +180,13 @@ namespace sh
 			return *this;
 		}
 
+		Variant& operator=(const NamedResourceRefList& value)
+		{
+			SetType(VAR_NAMED_RESOURCE_REF_LIST);
+			*reinterpret_cast<NamedResourceRefList*>(m_value.ptrValue) = value;
+			return *this;
+		}
+
 		int GetInt() const;
 		float GetFloat() const;
 		bool GetBool() const;
@@ -181,6 +195,7 @@ namespace sh
 		const math::Quaternionf& GetQuaternionFloat() const;
 		Serializable* GetSerializable() const;
 		const ResourceRef& GetResourceRef() const;
+		const NamedResourceRefList& GetNamedResourceRefList() const;
 
 		template<typename T>
 		T Get() const
@@ -206,6 +221,7 @@ namespace sh
 	template<> math::Quaternionf Variant::Get<math::Quaternionf>() const;
 	template<> Serializable* Variant::Get<Serializable*>() const;
 	template<> ResourceRef Variant::Get<ResourceRef>() const;
+	template<> NamedResourceRefList Variant::Get<NamedResourceRefList>() const;
 
 } // sh
 
