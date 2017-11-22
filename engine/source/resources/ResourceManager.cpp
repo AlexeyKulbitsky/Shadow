@@ -155,6 +155,9 @@ namespace sh
 		pugi::xml_document doc;
 		pugi::xml_parse_result result = doc.load_buffer(file.GetData().data(), file.GetData().size());
 			
+		if (result.status != pugi::status_ok)
+			return video::MaterialPtr();
+
 		// Read material
 		pugi::xml_node materialNode = doc.child("material");
 		while (materialNode)
@@ -176,7 +179,7 @@ namespace sh
 			return material;
 		}
 
-		return nullptr;
+		return video::MaterialPtr();
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////

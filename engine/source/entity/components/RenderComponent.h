@@ -23,14 +23,17 @@ namespace sh
 
 		static void RegisterObject();
 
-		void SetModel(scene::ModelPtr model) { m_model = model; }
-		const scene::ModelPtr& GetModel() { return m_model; }
+		void SetModel(scene::ModelPtr model);
+		const scene::ModelPtr& GetModel();
 
 		void SetModelProperty(const ResourceRef& value);
 		ResourceRef GetModelProperty() const;
 
-		void SetMaterials(const NamedResourceRefList& value) { m_namedResourceRefList = value; }
-		const NamedResourceRefList& GetMaterials() const { return m_namedResourceRefList; }
+		void SetMaterials(const NamedResourceRefList& value);
+		const NamedResourceRefList& GetMaterials() const;
+
+	private:
+		void UpdateMaterials();
 
 	protected:
 		scene::ModelPtr m_model;
