@@ -15,6 +15,7 @@ namespace sh
 		Property(const std::string& name) : m_name(name) {}
 		virtual void SetValue(Serializable* object, const Variant& value) = 0;
 		virtual Variant GetValue(Serializable* object) = 0;
+		virtual VariantType GetType() const = 0;
 		const std::string& GetName() const;
 
 	private:
@@ -48,6 +49,11 @@ namespace sh
 		{
 			ClassType* concreteClass = static_cast<ClassType*>(object);
 			return Variant(concreteClass->*m_ptr);
+		}
+
+		virtual VariantType GetType() const override
+		{
+			return GetVariantType<FieldType>();
 		}
 
 	private:
@@ -84,7 +90,8 @@ namespace sh
 
 		// Add removing reference
 
-		using BaseType = std::remove_cv_t<ReturnType>;
+		//using BaseType = std::remove_cv_t<ReturnType>;
+		using BaseType = base_type<ReturnType>;
 
 		AccessorPropertyImpl(GetterPtr getter, SetterPtr setter, const std::string& name)
 			: Property(name)
@@ -100,6 +107,10 @@ namespace sh
 		{
 			ClassType* concreteClass = static_cast<ClassType*>(object);
 			return Variant((concreteClass->*m_getter)());
+		}
+		virtual VariantType GetType() const override
+		{
+			return GetVariantType<BaseType>();
 		}
 
 	private:
@@ -134,6 +145,10 @@ namespace sh
 		{
 			ClassType* concreteClass = static_cast<ClassType*>(object);
 			return Variant(static_cast<int>(concreteClass->*m_ptr));
+		}
+		virtual VariantType GetType() const override
+		{
+			return VAR_INT;
 		}
 
 	private:
@@ -180,6 +195,10 @@ namespace sh
 		{
 			ClassType* concreteClass = static_cast<ClassType*>(object);
 			return Variant(static_cast<int>((concreteClass->*m_getter)()));
+		}
+		virtual VariantType GetType() const override
+		{
+			return VAR_INT;
 		}
 
 	private:

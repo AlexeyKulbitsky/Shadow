@@ -57,6 +57,7 @@ namespace sh
 			TransformComponent::RegisterObject();
 			LightComponent::RegisterObject();
 			RenderComponent::RegisterObject();
+			TerrainComponent::RegisterObject();
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
@@ -99,41 +100,7 @@ namespace sh
 				if (sceneNodeName == "entity")
 				{
 					sh::Entity* entity = new sh::Entity();
-
-					// Read name
-					pugi::xml_attribute nameAttribute = sceneNode.attribute("name");
-					if (nameAttribute)
-					{
-						String name = nameAttribute.as_string();
-						printf("Entity %s", name.c_str());
-						entity->SetName(name);
-					}
-
-					pugi::xml_node componentNode = sceneNode.child("component");
-
-					while (componentNode)
-					{
-						pugi::xml_attribute componentName = componentNode.attribute("name");
-						String nameStr = componentName.as_string();
-						Component* component = nullptr;
-
-						if (nameStr == "transform")
-							component = new TransformComponent();
-						else if (nameStr == "render")
-							component = new RenderComponent();
-						else if (nameStr == "light")
-							component = new LightComponent();
-						else if (nameStr == "terrain")
-							component = new TerrainComponent();
-						else
-							componentNode = componentNode.next_sibling();
-
-						component->Load(componentNode);
-
-						entity->AddComponent(component);
-
-						componentNode = componentNode.next_sibling();
-					}
+					entity->Load(sceneNode);
 
 					// Register entity in all systems
 					RegisterEntity(entity);

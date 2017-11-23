@@ -10,6 +10,7 @@ namespace sh
 	{
 	public:
 		void Serialize(Serializable* serializable, pugi::xml_node& node);
+		void Deserialize(Serializable* serializable, const pugi::xml_node& node);
 	};
 
 } // sh

@@ -1,6 +1,7 @@
 #include "Entity.h"
 #include "components/TransformComponent.h"
 #include "components/RenderComponent.h"
+#include "../serialization/ObjectFactory.h"
 #include "../serialization/Serializer.h"
 #include "../serialization/XMLSerializer.h"
 
@@ -18,6 +19,38 @@ namespace sh
 	}
 
 	//////////////////////////////////////////////////////////////
+	
+	void Entity::Load(const pugi::xml_node& parent)
+	{
+		pugi::xml_attribute nameAttribute = parent.attribute("name");
+		if (nameAttribute)
+		{
+			String name = nameAttribute.as_string();
+			printf("Entity %s\n", name.c_str());
+			SetName(name);
+		}
+
+		XMLSerializer serializer;
+
+		pugi::xml_node componentNode = parent.child("component");
+
+		while (componentNode)
+		{
+			pugi::xml_attribute componentType = componentNode.attribute("type");
+			String typeStr = componentType.as_string();
+
+			auto object = ObjectFactory::GetInstance()->CreateObject(typeStr);
+			if (!object)
+				continue;
+			
+			serializer.Deserialize(object, componentNode);
+
+			Component* component = static_cast<Component*>(object);
+			AddComponent(component);
+
+			componentNode = componentNode.next_sibling();
+		}
+	}
 
 	void Entity::Save(pugi::xml_node& parent)
 	{
@@ -29,7 +62,7 @@ namespace sh
 		{
 			if (component)
 			{
-				pugi::xml_node componentNode = parent.append_child("component");
+				pugi::xml_node componentNode = entityNode.append_child("component");
 				serializer.Serialize(component, componentNode);
 				//component->Save(entityNode);
 			}

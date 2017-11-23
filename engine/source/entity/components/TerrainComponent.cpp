@@ -11,6 +11,7 @@
 #include "../../scene/Model.h"
 #include "../../Device.h"
 #include "../../resources/ResourceManager.h"
+#include "../../serialization/ObjectFactory.h"
 
 namespace sh
 {
@@ -22,19 +23,36 @@ namespace sh
 
 	////////////////////////////////////////////////////////////////////////////////
 
-	void TerrainComponent::Load(const pugi::xml_node &node)
+	void TerrainComponent::RegisterObject()
+	{
+		ObjectFactory::GetInstance()->RegisterFactory<TerrainComponent>();
+		S_ACCESSOR_PROPERTY("Heightmap", GetHeightmapProperty, SetHeightmapProperty);
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
+
+	void TerrainComponent::SetHeightmapProperty(const ResourceRef& value)
 	{
 		video::Image heightmap;
-		pugi::xml_node heightmapNode = node.child("heightmap");
-		if (heightmapNode)
-		{
-			const String hmSource = heightmapNode.attribute("val").as_string();
-			heightmap.Load(hmSource);
-			m_heightmapName = hmSource;
-		}
+		heightmap.Load(value.name);
+		m_heightmapName = value.name;
 
-		const u32 width = heightmap.GetWidth();
-		const u32 height = heightmap.GetHeight();
+		SetHightMapFromImage(heightmap);
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
+
+	ResourceRef TerrainComponent::GetHeightmapProperty() const
+	{
+		return ResourceRef("Textures", m_heightmapName);
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
+
+	void TerrainComponent::SetHightMapFromImage(const video::Image& image)
+	{
+		const u32 width = image.GetWidth();
+		const u32 height = image.GetHeight();
 		const float step = 1.0f;
 
 		std::vector<float> vertexArray;
@@ -45,7 +63,7 @@ namespace sh
 		{
 			for (u32 j = 0U; j < width; ++j)
 			{
-				video::Color color = heightmap.GetPixel(i, j);
+				video::Color color = image.GetPixel(i, j);
 
 				const float x = j * step;
 				const float y = color.red * 50.0f;
@@ -64,7 +82,7 @@ namespace sh
 				verticesCount++;
 			}
 		}
-		
+
 		for (u32 i = 0U; i < height - 1; ++i)
 		{
 			for (u32 j = 0U; j < width - 1; ++j)
@@ -72,7 +90,7 @@ namespace sh
 				indexArray.push_back(i * width + j);
 				indexArray.push_back((i + 1) * width + j);
 				indexArray.push_back(i * width + j + 1);
-				
+
 				indexArray.push_back(i * width + j + 1);
 				indexArray.push_back((i + 1) * width + j);
 				indexArray.push_back((i + 1) * width + j + 1);
@@ -127,18 +145,6 @@ namespace sh
 		video::MaterialPtr material = Device::GetInstance()->GetResourceManager()->GetMaterial("terrain.mat");
 
 		m_model->SetMaterial(material);
-	}
-
-	////////////////////////////////////////////////////////////////////////////////
-
-	void TerrainComponent::Save(pugi::xml_node &parent)
-	{
-		pugi::xml_node componentNode = parent.append_child("component");
-		componentNode.append_attribute("name").set_value("terrain");
-
-		pugi::xml_node hightmapNode = componentNode.append_child("heightmap");
-		pugi::xml_attribute valueAttribute = hightmapNode.append_attribute("val");
-		valueAttribute.set_value(m_heightmapName.c_str());
 	}
 
 	////////////////////////////////////////////////////////////////////////////////

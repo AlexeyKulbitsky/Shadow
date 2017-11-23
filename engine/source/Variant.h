@@ -213,6 +213,17 @@ namespace sh
 		VariantType m_type = VAR_NOTYPE;
 	};
 
+	template <typename T> VariantType GetVariantType();
+	template <> inline VariantType GetVariantType<int>() { return VAR_INT; }
+	template <> inline VariantType GetVariantType<float>() { return VAR_FLOAT; }
+	template <> inline VariantType GetVariantType<bool>() { return VAR_BOOL; }
+	template <> inline VariantType GetVariantType<std::string>() { return VAR_STRING; }
+	template <> inline VariantType GetVariantType<math::Vector3f>() { return VAR_VECTOR_3_FLOAT; }
+	template <> inline VariantType GetVariantType<math::Quaternionf>() { return VAR_QUATERNION_FLOAT; }
+	template <> inline VariantType GetVariantType<Serializable*>() { return VAR_SERIALIZABLE; }
+	template <> inline VariantType GetVariantType<ResourceRef>() { return VAR_RESOURCE_REF; }
+	template <> inline VariantType GetVariantType<NamedResourceRefList>() { return VAR_NAMED_RESOURCE_REF_LIST; }
+
 	template<> int Variant::Get<int>() const;
 	template<> float Variant::Get<float>() const;
 	template<> bool Variant::Get<bool>() const;

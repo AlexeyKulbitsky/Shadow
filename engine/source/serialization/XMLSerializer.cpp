@@ -67,4 +67,92 @@ namespace sh
 		}
 	}
 
+	//////////////////////////////////////////////////////////////////////////////////////
+
+	void XMLSerializer::Deserialize(Serializable* serializable, const pugi::xml_node& node)
+	{
+		auto properties = ObjectFactory::GetInstance()->GetProperties(serializable->GetTypeName());
+		if (!properties)
+			return;
+
+		for (auto prop : (*properties))
+		{
+			pugi::xml_node propertyNode = node.child(prop.first.c_str());
+			if (!propertyNode)
+				continue;
+
+			auto type = prop.second->GetType();
+
+			switch (type)
+			{
+			case VAR_VECTOR_3_FLOAT:
+			{
+				String valueString = propertyNode.attribute("val").as_string();
+
+				std::istringstream in(valueString);
+				float val = 0.0f;
+				std::vector<float> temp;
+				while (in >> val) temp.push_back(val);
+				math::Vector3f vectorValue(0.0f);
+				vectorValue.x = temp[0];
+				vectorValue.y = temp[1];
+				vectorValue.z = temp[2];
+
+				prop.second->SetValue(serializable, vectorValue);
+			}
+			break;
+			case VAR_QUATERNION_FLOAT:
+			{
+				String valueString = propertyNode.attribute("val").as_string();
+				std::istringstream in(valueString);
+				float val = 0.0f;
+				std::vector<float> temp;
+				while (in >> val) temp.push_back(val);
+				math::Quaternionf quaternionValue;
+				quaternionValue.x = temp[0];
+				quaternionValue.y = temp[1];
+				quaternionValue.z = temp[2];
+				quaternionValue.w = temp[3];
+
+				prop.second->SetValue(serializable, quaternionValue);
+			}
+			break;
+			case VAR_INT:
+			{
+				const int intValue = propertyNode.attribute("val").as_int();
+
+				prop.second->SetValue(serializable, intValue);
+			}
+			break;
+			case VAR_RESOURCE_REF:
+			{
+				ResourceRef refValue;
+				refValue.name = propertyNode.attribute("val").as_string();
+				
+				prop.second->SetValue(serializable, refValue);
+			}
+			break;
+			case VAR_NAMED_RESOURCE_REF_LIST:
+			{
+				NamedResourceRefList refList;
+				auto child = propertyNode.first_child();
+				while (child)
+				{
+					NamedResourceRef ref;
+					ref.name = child.name();
+					ref.resource.name = child.attribute("val").as_string();
+					refList.push_back(ref);
+
+					child = child.next_sibling();
+				}
+
+				prop.second->SetValue(serializable, refList);
+			}
+			break;
+			default:
+				break;
+			}
+		}
+	}
+
 } // sh

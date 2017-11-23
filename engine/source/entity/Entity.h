@@ -12,6 +12,7 @@ namespace sh
 		Entity();
 		~Entity();
 
+		void Load(const pugi::xml_node& parent);
 		void Save(pugi::xml_node& parent);
 		const String& GetName() const { return m_name; }
 		void SetName(const String& name) { m_name = name; }

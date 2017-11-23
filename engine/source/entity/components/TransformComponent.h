@@ -12,9 +12,6 @@ namespace sh
 	public:
 		TransformComponent();
 		virtual ~TransformComponent();
-		//virtual Component::Type GetType() const override { return Component::Type::Transform; }
-		virtual void Load(const pugi::xml_node &node) override;
-		virtual void Save(pugi::xml_node &parent) override;
 
 		static void RegisterObject();
 	

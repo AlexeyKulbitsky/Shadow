@@ -16,9 +16,8 @@ namespace sh
 		SHADOW_OBJECT(LightComponent)
 		COMPONENT
 	public:
+		LightComponent();
 		virtual ~LightComponent();
-		virtual void Load(const pugi::xml_node &node) override;
-		virtual void Save(pugi::xml_node &parent) override;
 
 		static void RegisterObject();
 

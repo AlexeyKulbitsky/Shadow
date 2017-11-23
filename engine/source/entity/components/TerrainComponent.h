@@ -5,6 +5,10 @@
 
 namespace sh
 {
+	namespace video
+	{
+		class Image;
+	}
 
 	class TerrainComponent : public Component
 	{
@@ -12,13 +16,16 @@ namespace sh
 		COMPONENT
 	public:
 		virtual ~TerrainComponent();
-		//virtual Type GetType() const override { return Component::Type::Terrain; }
-		virtual void Load(const pugi::xml_node &node) override;
-		virtual void Save(pugi::xml_node &parent) override;
+
+		static void RegisterObject();
 
 		const scene::ModelPtr& GetModel() { return m_model; }
 
+		void SetHeightmapProperty(const ResourceRef& value);
+		ResourceRef GetHeightmapProperty() const;
+
 	private:
+		void SetHightMapFromImage(const video::Image& image);
 		void CalculateNormals(std::vector<float>& vertexArray, 
 							  const std::vector<u32>& indexArray,
 							  const video::VertexDeclarationPtr& vertexDeclaration);
