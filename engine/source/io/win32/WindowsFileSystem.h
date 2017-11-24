@@ -31,6 +31,7 @@ namespace io
 		virtual bool CreateFolder(const String& path) override;
 		virtual bool Rename(const String& oldName, const String& newName) override;
 		virtual bool Delete(const String& filePath) override;
+		virtual bool Copy(const String& srcFileName, const String& dstFileName) override;
 
 	private:
 		void CollectFilesFromFolder(const String& folder, const SPtr<FolderInfo>& root, bool recursive = true);

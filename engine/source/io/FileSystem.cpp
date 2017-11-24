@@ -50,6 +50,36 @@ namespace sh
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////
 
+		std::weak_ptr<FileInfo> FileSystem::FindFile(const String& name)
+		{
+			std::weak_ptr<FileSystemComponent> result;
+			if (m_root)
+			{
+				result = m_root->FindChildByName(name);
+				if (result.expired())
+				{
+					for (auto internalRoot : m_internalDataRoots)
+					{
+						result = internalRoot->FindChildByName(name);
+						if (!result.expired())
+							break;
+					}
+				}
+			}
+			else
+			{
+				for (auto internalRoot : m_internalDataRoots)
+				{
+					result = internalRoot->FindChildByName(name);
+					if (!result.expired())
+						break;
+				}
+			}
+			return std::static_pointer_cast<FileInfo>(result.lock());
+		}
+
+		///////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		void FileSystem::UpdateResourceGroups()
 		{
 			m_imageFileInfos.clear();

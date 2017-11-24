@@ -41,6 +41,7 @@ namespace sh
 		const video::TexturePtr& GetDefaultTexture();
 
 		void UpdateResourceGroups();
+		ResourceRefList GetResourceGroup(const String& name);
 
 	private:
 		void UpdateRecursive(const SPtr<io::FolderInfo>& fsComponent,

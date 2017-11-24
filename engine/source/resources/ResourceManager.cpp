@@ -280,6 +280,17 @@ namespace sh
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	ResourceRefList ResourceManager::GetResourceGroup(const String& name)
+	{
+		auto it = m_resourceGroups.find(name);
+		if (it == m_resourceGroups.end())
+			return ResourceRefList();
+
+		return it->second;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	void ResourceManager::UpdateRecursive(const SPtr<io::FolderInfo>& folder,
 		const std::vector<String>& imageExtensions,
 		const std::vector<String>& modelExtensions)

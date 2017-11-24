@@ -123,12 +123,30 @@ void MainWindow::NewProject()
 		// Create source folder
 		sh::String sourceFolder = projectFolder + "/source";
 		filesystem->CreateFolder(sourceFolder);
+		auto mainTemplateFileInfo = filesystem->FindFile("main.cpp");
+		if (!mainTemplateFileInfo.expired())
+		{
+			filesystem->Copy(mainTemplateFileInfo.lock()->absolutePath, sourceFolder + "/main.cpp");
+		}
+
+		// Create solution for Visual Studio
+		auto cmakeTemplateFileInfo = filesystem->FindFile("CMakeLists_template.txt");
+		if (!cmakeTemplateFileInfo.expired())
+		{
+			filesystem->Copy(cmakeTemplateFileInfo.lock()->absolutePath, sourceFolder + "/CMakeLists.txt");
+			sh::String IDEKey = "\"Visual Studio 14\"";
+			sh::String IDEProjectFolder = sourceFolder + "/project";
+
+			sh::String systemCommandString = "cmake -E make_directory " + IDEProjectFolder + " && cmake -E chdir " + IDEProjectFolder + " cmake -G " + IDEKey + " ..";
+			system(systemCommandString.c_str());
+		}
 
 		// Save project
 		pugi::xml_document doc;
 		pugi::xml_node sceneNode = doc.append_child("project");
 		sceneNode.append_attribute("name").set_value("Test project");
-		sceneNode.append_attribute("internaldata").set_value(root->absolutePath.c_str());
+
+		
 
 		doc.save_file(ofn.lpstrFile);
 	}

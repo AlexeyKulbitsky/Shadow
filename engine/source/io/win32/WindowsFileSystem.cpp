@@ -176,6 +176,11 @@ namespace io
 		return static_cast<bool>(DeleteFile(filePath.c_str()));
 	}
 
+	bool WindowsFileSystem::Copy(const String& srcFileName, const String& dstFileName)
+	{
+		return static_cast<bool>(CopyFile(srcFileName.c_str(), dstFileName.c_str(), TRUE));
+	}
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	void WindowsFileSystem::CollectFilesFromFolder(const String& folder, const SPtr<FolderInfo>& root, bool recursive)

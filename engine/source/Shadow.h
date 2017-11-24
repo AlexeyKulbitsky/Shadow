@@ -88,6 +88,8 @@
 #include "video/VertexDeclaration.h"
 #include "video/TextureLoader/TextureLoader.h"
 
+#include "serialization/Property.h"
+
 namespace sh
 {
 	// Create usual device

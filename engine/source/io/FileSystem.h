@@ -74,21 +74,18 @@ namespace sh
 
 			virtual void AddFolder(const String& folder, bool recursive = true) {}
 			virtual void AddInternalFolder(const String& folder) {}
-			//virtual const FileInfo& FindFile(const String& fileName) 
-			//{ 
-			//	static FileInfo res;
-			//	return res;
-			//}
+
+			std::weak_ptr<FileInfo> FindFile(const String& name);
 			
 			virtual bool SaveFile(const std::vector<char>& data, const String& fileName) { return false; }
 			virtual bool SaveFile(const String& data, const String& fileName) { return false; }
-			//virtual std::vector<char> ReadFile(const String& filename) { return std::vector<char>(); }
 			virtual File LoadFile(const String& filename) { return File(); }
 			virtual File LoadFile(std::weak_ptr<FileInfo> fileInfo) { return File(); }
 
 			virtual bool CreateFolder(const String& path) { return false; }
 			virtual bool Rename(const String& oldPath, const String& newPath) { return false; }
 			virtual bool Delete(const String& filePath) { return false; }
+			virtual bool Copy(const String& srcFileName, const String& dstFileName) { return false; }
 
 			void UpdateResourceGroups();
 
