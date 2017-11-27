@@ -14,6 +14,8 @@ QuaternionPropertyEditor::QuaternionPropertyEditor(sh::Serializable* object, sh:
 	mainLayout->AddWidget(label);
 	m_edit.reset(new Vector3LineEdit());
 	mainLayout->AddWidget(m_edit);
+	SetLayout(mainLayout);
+	SetMaximumHeight(20);
 
 	const auto& quaternionRotation = objectProperty->GetValue(object).GetQuaternionFloat();
 	sh::math::Vector3f eulerRotations;

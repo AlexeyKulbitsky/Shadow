@@ -64,9 +64,19 @@ namespace sh
 		return std::string();
 	}
 
+	const math::Vector2f& Variant::GetVector2Float() const
+	{
+		return m_value.vector2fValue;
+	}
+
 	const math::Vector3f& Variant::GetVector3Float() const
 	{
 		return m_value.vector3fValue;
+	}
+
+	const math::Vector4f& Variant::GetVector4Float() const
+	{
+		return m_value.vector4fValue;
 	}
 
 	const math::Quaternionf& Variant::GetQuaternionFloat() const
@@ -84,6 +94,16 @@ namespace sh
 	const ResourceRef& Variant::GetResourceRef() const
 	{
 		return *reinterpret_cast<ResourceRef*>(m_value.ptrValue);
+	}
+
+	const ResourceRefList& Variant::GetResourceRefList() const
+	{
+		return *reinterpret_cast<ResourceRefList*>(m_value.ptrValue);
+	}
+
+	const NamedResourceRef& Variant::GetNamedResourceRef() const
+	{
+		return *reinterpret_cast<NamedResourceRef*>(m_value.ptrValue);
 	}
 
 	const NamedResourceRefList& Variant::GetNamedResourceRefList() const
@@ -107,6 +127,12 @@ namespace sh
 			m_value.ptrValue = nullptr;
 		}
 			break;
+		case VAR_RESOURCE_REF_LIST:
+		{
+			delete reinterpret_cast<ResourceRefList*>(m_value.ptrValue);
+			m_value.ptrValue = nullptr;
+		}
+		break;
 		case VAR_NAMED_RESOURCE_REF_LIST:
 		{
 			delete reinterpret_cast<NamedResourceRefList*>(m_value.ptrValue);
@@ -127,6 +153,9 @@ namespace sh
 		case VAR_RESOURCE_REF:
 			m_value.ptrValue = new ResourceRef();
 			break;
+		case VAR_RESOURCE_REF_LIST:
+			m_value.ptrValue = new ResourceRefList();
+			break;
 		case VAR_NAMED_RESOURCE_REF_LIST:
 			m_value.ptrValue = new NamedResourceRefList();
 			break;
@@ -139,10 +168,14 @@ namespace sh
 	template<> float Variant::Get<float>() const { return GetFloat(); }
 	template<> bool Variant::Get<bool>() const { return GetBool(); }
 	template<> std::string Variant::Get<std::string>() const { return GetString(); }
+	template<> math::Vector2f Variant::Get<math::Vector2f>() const { return GetVector2Float(); }
 	template<> math::Vector3f Variant::Get<math::Vector3f>() const { return GetVector3Float(); }
+	template<> math::Vector4f Variant::Get<math::Vector4f>() const { return GetVector4Float(); }
 	template<> math::Quaternionf Variant::Get<math::Quaternionf>() const { return GetQuaternionFloat(); }
 	template<> Serializable* Variant::Get<Serializable*>() const { return GetSerializable(); }
 	template<> ResourceRef Variant::Get<ResourceRef>() const { return GetResourceRef(); }
+	template<> ResourceRefList Variant::Get<ResourceRefList>() const { return GetResourceRefList(); }
+	template<> NamedResourceRef Variant::Get<NamedResourceRef>() const { return GetNamedResourceRef(); }
 	template<> NamedResourceRefList Variant::Get<NamedResourceRefList>() const { return GetNamedResourceRefList(); }
 
 } // sh

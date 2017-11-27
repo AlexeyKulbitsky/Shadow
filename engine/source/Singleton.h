@@ -29,6 +29,13 @@ namespace sh
 			s_instance = nullptr;
 		}
 
+		static void SetInstance(T* instance)
+		{
+			if (s_instance)
+				delete s_instance;
+			s_instance = instance;
+		}
+
 	protected:
 		Singleton() { }
 		Singleton(const Singleton&) { }

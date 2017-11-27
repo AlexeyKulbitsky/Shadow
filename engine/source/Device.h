@@ -22,6 +22,7 @@ namespace sh
 	}
 
 	class Application;
+	class ObjectFactory;
 
 	class Device
 	{
@@ -43,6 +44,7 @@ namespace sh
 		ResourceManager* GetResourceManager() { return ResourceManager::GetInstance(); }
 		io::FileSystem* GetFileSystem() { return m_fileSystem; }
 		video::GLContextManager* GetContextManager() { return m_GLContextManager;}
+		ObjectFactory* GetObjectFactory() { return m_objectFactory; }
 
 		static void SetInstance(Device* instance) { s_instance = instance; }
 		static Device* GetInstance() { return s_instance; }
@@ -67,6 +69,8 @@ namespace sh
 		io::FileSystem* m_fileSystem = nullptr;
 
 		Application* m_application = nullptr;
+
+		ObjectFactory* m_objectFactory = nullptr;
 
 		u64 m_startTimePoint = 0U;
 		u64 m_lastFrameTimePoint = 0U;

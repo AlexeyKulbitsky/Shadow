@@ -237,7 +237,7 @@ void SelectionManager::OnPositionChanged(const sh::math::Vector3f& position)
 	if (transformComponent)
 	{
 		transformComponent->SetPosition(position);
-		m_inspectorWidget->GetTransformWidget()->Update();
+		//m_inspectorWidget->GetTransformWidget()->Update();
 		return;
 	}
 }
@@ -248,7 +248,7 @@ void SelectionManager::OnRotationChanged(const sh::math::Quaternionf& rotation)
 	if (transformComponent)
 	{
 		transformComponent->SetRotation(rotation);
-		m_inspectorWidget->GetTransformWidget()->Update();
+		//m_inspectorWidget->GetTransformWidget()->Update();
 		return;
 	}
 }
@@ -259,7 +259,7 @@ void SelectionManager::OnScaleChanged(const sh::math::Vector3f& scale)
 	if (transformComponent)
 	{
 		transformComponent->SetScale(scale);
-		m_inspectorWidget->GetTransformWidget()->Update();
+		//m_inspectorWidget->GetTransformWidget()->Update();
 		return;
 	}
 }

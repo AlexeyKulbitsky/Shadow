@@ -89,6 +89,7 @@
 #include "video/TextureLoader/TextureLoader.h"
 
 #include "serialization/Property.h"
+#include "serialization/ObjectFactory.h"
 
 namespace sh
 {

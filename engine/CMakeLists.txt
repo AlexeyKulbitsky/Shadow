@@ -13,7 +13,7 @@ set(PROJECT_NAME Shadow)
 
 include_directories( ${PROJECT_INCLUDE_DIR} )
 
-file(GLOB_RECURSE PROJECT_SOURCE_FILES "*.h" "*.hpp" "*.cpp")
+file(GLOB_RECURSE PROJECT_SOURCE_FILES "source/*.h" "source/*.hpp" "source/*.cpp")
 
 # exclude platform-specific files
 if (SHADOW_ANDROID)
@@ -144,6 +144,12 @@ if (WIN32)
   add_subdirectory(../libs/glew/build/cmake "${CMAKE_CURRENT_BINARY_DIR}/glew_build")
   include_directories(../libs/glew/include)
   target_link_libraries(${PROJECT_NAME} glew_s)
+
+  if(MSVC12 OR MSVC14)
+    set_property(TARGET glew_s PROPERTY FOLDER CommonLibs)
+    set_property(TARGET glew PROPERTY FOLDER CommonLibs)
+  endif(MSVC12 OR MSVC14)
+
 endif(WIN32)
 
 # Add assimp

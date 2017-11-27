@@ -1,4 +1,5 @@
 #include "InspectorWidget.h"
+#include "ComponentEditor.h"
 
 InspectorWidget::InspectorWidget()
 	: sh::gui::Window(sh::math::Recti(100, 100, 350, 500))
@@ -23,6 +24,22 @@ void InspectorWidget::SetEntity(sh::Entity* entity)
 {
 	m_entity = entity;
 
+	m_layout->Clear();
+
+	if (!m_entity)
+		return;
+
+	const auto& components = m_entity->GetComponents();
+	for (auto component : components)
+	{
+		if (!component)
+			continue;
+
+		sh::gui::WidgetPtr componentWidget(new ComponentEditor(component));
+		m_layout->AddWidget(componentWidget);
+	}
+
+#if 0
 	// Clear layout
 	m_transformComponentWidget->SetTransformComponent(nullptr);
 	m_renderComponentWidget->SetRenderComponent(nullptr);
@@ -55,4 +72,5 @@ void InspectorWidget::SetEntity(sh::Entity* entity)
 		m_lightComponentWidget->SetLightComponent(lightComponent);
 		m_layout->AddWidget(m_lightComponentWidget);
 	}
+#endif
 }

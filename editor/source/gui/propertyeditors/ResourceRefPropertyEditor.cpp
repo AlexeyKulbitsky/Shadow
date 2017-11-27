@@ -12,8 +12,10 @@ ResourceRefPropertyEditor::ResourceRefPropertyEditor(sh::Serializable* object, s
 	sh::gui::LabelPtr label(new sh::gui::Label(objectProperty->GetName()));
 	label->SetMaximumWidth(75U);
 	mainLayout->AddWidget(label);
-
 	m_comboBox.reset(new sh::gui::ComboBox());
+	mainLayout->AddWidget(m_comboBox);
+	SetLayout(mainLayout);
+	SetMaximumHeight(20);
 
 	auto value = objectProperty->GetValue(object);
 	const auto& resourceRef = value.GetResourceRef();
@@ -32,9 +34,12 @@ ResourceRefPropertyEditor::ResourceRefPropertyEditor(sh::Serializable* object, s
 void ResourceRefPropertyEditor::OnRefChanged(sh::u32 index)
 {
 	auto value = m_objectProperty->GetValue(m_object);
-	const auto& resourceRef = value.GetResourceRef();
+	auto resourceRef = value.GetResourceRef();
 	auto resourceGroup = sh::ResourceManager::GetInstance()->GetResourceGroup(resourceRef.type);
 
 	if (index >= resourceGroup.size())
 		return;
+
+	resourceRef.name = resourceGroup[index].name;
+	m_objectProperty->SetValue(m_object, resourceRef);
 }

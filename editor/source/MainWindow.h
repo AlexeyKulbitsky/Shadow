@@ -51,6 +51,9 @@ private:
 	sh::Entity* m_cameraTargetEntity = nullptr;
 
 	sh::gui::WidgetPtr m_mainWidget;
+
+	// Active game module that is being edited
+	sh::Application* m_gameModule = nullptr;
 };
 
 #endif

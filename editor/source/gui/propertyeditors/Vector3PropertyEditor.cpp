@@ -15,6 +15,8 @@ Vector3PropertyEditor::Vector3PropertyEditor(sh::Serializable* object, sh::Prope
 	mainLayout->AddWidget(label);
 	m_edit.reset(new Vector3LineEdit());
 	mainLayout->AddWidget(m_edit);
+	SetLayout(mainLayout);
+	SetMaximumHeight(20);
 
 	const auto& value = objectProperty->GetValue(object).GetVector3Float();
 	m_edit->SetValue(value);

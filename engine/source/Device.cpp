@@ -29,6 +29,7 @@ namespace sh
 		ResourceManager::CreateInstance();
 		ResourceManager::GetInstance()->Init();
 		ObjectFactory::CreateInstance();
+		m_objectFactory = ObjectFactory::GetInstance();
 	}
 
 	Device::Device(const CreationParameters &parameters)
@@ -42,6 +43,7 @@ namespace sh
 		ResourceManager::CreateInstance();
 		ResourceManager::GetInstance()->Init();
 		ObjectFactory::CreateInstance();
+		m_objectFactory = ObjectFactory::GetInstance();
 	}
 
 	Device::~Device()

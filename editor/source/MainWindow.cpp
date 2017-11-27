@@ -1,6 +1,7 @@
 #include "MainWindow.h"
 
 #include "selection/SelectionManager.h"
+#include "gui/propertyeditors/PropertyEditorsFactory.h"
 
 #include <Windows.h>
 #include <Commdlg.h>
@@ -135,9 +136,9 @@ void MainWindow::NewProject()
 		{
 			filesystem->Copy(cmakeTemplateFileInfo.lock()->absolutePath, sourceFolder + "/CMakeLists.txt");
 			sh::String IDEKey = "\"Visual Studio 14\"";
-			sh::String IDEProjectFolder = sourceFolder + "/project";
+			sh::String IDEProjectFolder = projectFolder + "/project";
 
-			sh::String systemCommandString = "cmake -E make_directory " + IDEProjectFolder + " && cmake -E chdir " + IDEProjectFolder + " cmake -G " + IDEKey + " ..";
+			sh::String systemCommandString = "cmake -E make_directory " + IDEProjectFolder + " && cmake -E chdir " + IDEProjectFolder + " cmake -G " + IDEKey + " ../source";
 			system(systemCommandString.c_str());
 		}
 
@@ -184,6 +185,40 @@ void MainWindow::OpenProject()
 		
 		// Refresh assets list
 		m_assetsWidget->RefreshAssetsList();
+
+		// Load Game as dynamic library
+		sh::String gameLibraryPath = projectFolder + "/bin/Debug/GameLibrary.dll";
+		
+		HINSTANCE libraryHandle = LoadLibrary(gameLibraryPath.c_str());
+		SH_ASSERT(libraryHandle, "Can not load DLL");
+		if (!libraryHandle)
+		{
+			return;
+		}
+
+		// Game module
+		auto gameModuleGetter = GetProcAddress(libraryHandle, "GetGameModule");
+		SH_ASSERT(gameModuleGetter, "Can not get function pointer");
+		if (!gameModuleGetter)
+		{
+			return;
+		}
+
+		m_gameModule = reinterpret_cast<sh::Application*>(gameModuleGetter());
+		SH_ASSERT(m_gameModule, "Can not get game module");
+		if (!m_gameModule)
+		{
+			return;
+		}
+		using DeviceSetter = void(*)(sh::Device*);
+		// Device setter 
+		auto deviceSetter = reinterpret_cast<DeviceSetter>(GetProcAddress(libraryHandle, "SetDevice"));
+		SH_ASSERT(deviceSetter, "Can not get function pointer");
+		if (!deviceSetter)
+		{
+			return;
+		}
+		deviceSetter(sh::Device::GetInstance());
 	}
 }
 
@@ -347,6 +382,8 @@ void MainWindow::Init()
 
 	////////////////////////////////////////////////////////////////////////////
 
+	PropertyEditorsFactory::CreateInstance();
+
 	sh::gui::VerticalLayoutPtr mainVerticalLayout(new sh::gui::VerticalLayout());
 	
 	mainVerticalLayout->AddWidget(CreateMenuBar());
@@ -393,6 +430,7 @@ void MainWindow::Init()
 void MainWindow::Destroy()
 {
 	SelectionManager::DestroyInstance();
+	PropertyEditorsFactory::DestroyInstance();
 }
 
 void MainWindow::Update(sh::u64 delta)
@@ -482,6 +520,10 @@ void MainWindow::Update(sh::u64 delta)
 	sh::gui::GuiManager::GetInstance()->Render();
 
 	driver->EndRendering();
+
+	// Updating game module if exists
+	if (m_gameModule)
+		m_gameModule->Update(delta);
 }
 
 sh::gui::MenuBarPtr MainWindow::CreateMenuBar()

@@ -17,6 +17,7 @@ namespace sh
 		const String& GetName() const { return m_name; }
 		void SetName(const String& name) { m_name = name; }
 		void AddComponent(Component* component);
+		const std::vector<Component*>& GetComponents() const { return m_components; }
 
 		template<typename T>
 		T* GetComponent()

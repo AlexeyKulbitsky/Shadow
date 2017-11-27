@@ -1,0 +1,1 @@
+cmake -E make_directory "project" && cmake -E chdir "project" cmake -G "Visual Studio 12" ../source
