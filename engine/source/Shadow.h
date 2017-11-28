@@ -5,6 +5,7 @@
 #include "Device.h"
 #include "Event.h"
 #include "Application.h"
+#include "DynamicLibrary.h"
 
 #include "font/Font.h"
 #include "font/FontManager.h"

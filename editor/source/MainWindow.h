@@ -53,6 +53,7 @@ private:
 	sh::gui::WidgetPtr m_mainWidget;
 
 	// Active game module that is being edited
+	sh::DynamicLibrary* m_gameModuleLibrary = nullptr;
 	sh::Application* m_gameModule = nullptr;
 };
 

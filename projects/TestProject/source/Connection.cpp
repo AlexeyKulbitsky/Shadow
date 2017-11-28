@@ -3,9 +3,18 @@
 #include "components/TestComponent.h"
 #include "Game.h"
 
-__declspec(dllexport) sh::Application* GetGameModule()
+static sh::Application* application = nullptr;
+
+__declspec(dllexport) sh::Application* CreateGameModule()
 {
-	return new Game();
+	application = new Game();
+	return application;
+}
+
+__declspec(dllexport) void DestroyGameModule()
+{
+	if (application)
+		delete application;
 }
 
 __declspec(dllexport) void SetDevice(sh::Device* device)

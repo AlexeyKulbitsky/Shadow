@@ -189,36 +189,21 @@ void MainWindow::OpenProject()
 		// Load Game as dynamic library
 		sh::String gameLibraryPath = projectFolder + "/bin/Debug/GameLibrary.dll";
 		
-		HINSTANCE libraryHandle = LoadLibrary(gameLibraryPath.c_str());
-		SH_ASSERT(libraryHandle, "Can not load DLL");
-		if (!libraryHandle)
-		{
-			return;
-		}
+		m_gameModuleLibrary = new sh::DynamicLibrary(gameLibraryPath);
+		SH_ASSERT(m_gameModuleLibrary->Load(), "Can not load Game module!");
 
-		// Game module
-		auto gameModuleGetter = GetProcAddress(libraryHandle, "GetGameModule");
-		SH_ASSERT(gameModuleGetter, "Can not get function pointer");
-		if (!gameModuleGetter)
-		{
-			return;
-		}
 
-		m_gameModule = reinterpret_cast<sh::Application*>(gameModuleGetter());
-		SH_ASSERT(m_gameModule, "Can not get game module");
-		if (!m_gameModule)
-		{
+		auto CreateGameModulePtr = reinterpret_cast<sh::Application*(*)()>(m_gameModuleLibrary->GetSymbol("CreateGameModule"));
+		SH_ASSERT(CreateGameModulePtr, "Can not load CreateGameModule() function address");
+		if (!CreateGameModulePtr)
 			return;
-		}
-		using DeviceSetter = void(*)(sh::Device*);
-		// Device setter 
-		auto deviceSetter = reinterpret_cast<DeviceSetter>(GetProcAddress(libraryHandle, "SetDevice"));
-		SH_ASSERT(deviceSetter, "Can not get function pointer");
-		if (!deviceSetter)
-		{
+		m_gameModule = CreateGameModulePtr();
+
+		auto SetDevicePtr = reinterpret_cast<void(*)(sh::Device*)>(m_gameModuleLibrary->GetSymbol("SetDevice"));
+		SH_ASSERT(CreateGameModulePtr, "Can not load SetDevice(sh::Device*) function address");
+		if (!CreateGameModulePtr)
 			return;
-		}
-		deviceSetter(sh::Device::GetInstance());
+		SetDevicePtr(sh::Device::GetInstance());
 	}
 }
 
@@ -429,6 +414,21 @@ void MainWindow::Init()
 
 void MainWindow::Destroy()
 {
+	if (m_gameModuleLibrary)
+	{
+		if (m_gameModule)
+		{
+			auto DestroyGameModulePtr = reinterpret_cast<void(*)()>(m_gameModuleLibrary->GetSymbol("DestroyGameModule"));
+			SH_ASSERT(DestroyGameModulePtr, "Can not load DestroyGameModule() function address");
+			if (!DestroyGameModulePtr)
+				return;
+			DestroyGameModulePtr();
+		}
+		m_gameModuleLibrary->Unload();
+		delete m_gameModuleLibrary;
+	}
+	
+
 	SelectionManager::DestroyInstance();
 	PropertyEditorsFactory::DestroyInstance();
 }
