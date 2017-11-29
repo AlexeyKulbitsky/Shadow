@@ -38,8 +38,8 @@ void ColorChannelEdit::SetValue(int value)
 void ColorChannelEdit::OnSliderValueChanged(float value)
 {
 	int intValue = static_cast<int>(value);
-	m_valueLineEdit->SetValue(value);
-	OnValueChanged(value);
+	m_valueLineEdit->SetValue(intValue);
+	OnValueChanged(intValue);
 }
 
 void ColorChannelEdit::OnEditValueChanged(int value)

@@ -1,5 +1,7 @@
 #include "BlendingState.h"
 
+#include <pugixml.hpp>
+
 namespace sh
 {
 	namespace video

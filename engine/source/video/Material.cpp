@@ -7,6 +7,8 @@
 #include "../font/FontManager.h"
 #include "../font/Font.h"
 
+#include <pugixml.hpp>
+
 namespace sh
 {
 	namespace video

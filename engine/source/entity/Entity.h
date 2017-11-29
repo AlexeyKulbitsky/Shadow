@@ -4,6 +4,11 @@
 #include "../Globals.h"
 #include "Component.h"
 
+namespace pugi
+{
+	class xml_node;
+}
+
 namespace sh
 {
 	class Entity

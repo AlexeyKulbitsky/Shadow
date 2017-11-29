@@ -1,5 +1,7 @@
 #include "RasterizationState.h"
 
+#include <pugixml.hpp>
+
 namespace sh
 {
 	namespace video

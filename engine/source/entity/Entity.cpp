@@ -5,6 +5,7 @@
 #include "../serialization/Serializer.h"
 #include "../serialization/XMLSerializer.h"
 
+#include <pugixml.hpp>
 
 namespace sh
 {

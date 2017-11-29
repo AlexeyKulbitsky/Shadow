@@ -96,8 +96,8 @@ bool ColorPicker::ProcessEvent(sh::gui::GUIEvent& ev)
 		unsigned char data[4];
 
 		auto size = m_paletteWidget->GetRect().GetSize() / 2;
-		float x = ev.x - m_paletteWidget->GetPosition().x - size.x;
-		float y = m_paletteWidget->GetRect().GetHeight() - ev.y + m_paletteWidget->GetPosition().y - size.y;
+		float x = static_cast<float>(ev.x - m_paletteWidget->GetPosition().x - size.x);
+		float y = static_cast<float>(m_paletteWidget->GetRect().GetHeight() - ev.y + m_paletteWidget->GetPosition().y - size.y);
 		const float length = sh::math::Sqrt(x * x + y * y);
 		const float widgetLength = static_cast<float>(m_paletteWidget->GetRect().GetWidth() / 2.0f);
 		if (length > widgetLength)
@@ -132,7 +132,7 @@ bool ColorPicker::ProcessEvent(sh::gui::GUIEvent& ev)
 		else
 		{
 			const float value = m_hsvWidget->GetColor().z * 0.01f;
-			auto color = HSVtoRGB(hue, saturation, value);
+			auto color = HSVtoRGB(static_cast<int>(hue), saturation, value);
 			data[0U] = static_cast<sh::u8>(color.x * 256.0f);
 			data[1U] = static_cast<sh::u8>(color.y * 256.0f);
 			data[2U] = static_cast<sh::u8>(color.z * 256.0f);
@@ -270,7 +270,7 @@ sh::video::TexturePtr ColorPicker::CreatePalletteTexture() const
 			else
 			{
 				const float value = 0.999f;
-				auto color = HSVtoRGB(hue, saturation, value);
+				auto color = HSVtoRGB(static_cast<int>(hue), saturation, value);
 				data[i * width * channels + j * channels] = static_cast<sh::u8>(color.x * 256.0f);
 				data[i * width * channels + j * channels + 1U] = static_cast<sh::u8>(color.y * 256.0f);
 				data[i * width * channels + j * channels + 2U] = static_cast<sh::u8>(color.z * 256.0f);

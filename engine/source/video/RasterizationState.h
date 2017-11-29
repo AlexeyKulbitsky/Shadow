@@ -3,6 +3,11 @@
 
 #include "../Globals.h"
 
+namespace pugi
+{
+	class xml_node;
+}
+
 namespace sh
 {
 	namespace video

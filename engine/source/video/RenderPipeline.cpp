@@ -7,6 +7,8 @@
 
 #include "Managers/RenderStateManager.h"
 
+#include <pugixml.hpp>
+
 namespace sh
 {
 	namespace video

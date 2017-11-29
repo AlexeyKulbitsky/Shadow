@@ -9,6 +9,8 @@
 
 #include <jobs/Test.h>
 
+#include <pugixml.hpp>
+
 using namespace std::placeholders;
 
 MainWindow::MainWindow()

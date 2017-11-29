@@ -12,6 +12,8 @@
 #include "../Device.h"
 #include "../resources/ResourceManager.h"
 
+#include <pugixml.hpp>
+
 namespace sh
 {
 	 

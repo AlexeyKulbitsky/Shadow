@@ -5,6 +5,11 @@
 #include "MaterialParams.h"
 #include "GpuParams.h"
 
+namespace pugi
+{
+	class xml_node;
+}
+
 namespace sh
 {
 	namespace video

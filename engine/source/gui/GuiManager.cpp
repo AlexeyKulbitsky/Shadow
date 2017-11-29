@@ -21,6 +21,8 @@
 #include "../scene/Camera.h"
 #include "../Device.h"
 
+#include <pugixml.hpp>
+
 #include <iostream>
 
 

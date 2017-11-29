@@ -9,6 +9,8 @@
 #include "../video/Driver.h"
 #include "../Device.h"
 
+#include <pugixml.hpp>
+
 namespace sh
 {
 

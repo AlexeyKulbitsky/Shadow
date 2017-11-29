@@ -4,6 +4,8 @@
 
 #include "../Device.h"
 
+#include <pugixml.hpp>
+
 namespace sh
 {
 

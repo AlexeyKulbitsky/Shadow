@@ -3,6 +3,11 @@
 
 #include "Serializer.h"
 
+namespace pugi
+{
+	class xml_node;
+}
+
 namespace sh
 {
 

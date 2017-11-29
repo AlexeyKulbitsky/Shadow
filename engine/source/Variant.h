@@ -47,12 +47,13 @@ namespace sh
 		int intValue;
 		bool boolValue;
 		void* ptrValue;
-		math::Vector2f vector2fValue;
-		math::Vector3f vector3fValue;
-		math::Vector4f vector4fValue;
-		math::Quaternionf quaternionfValue;
+		//math::Vector2f vector2fValue;
+		//math::Vector3f vector3fValue;
+		//math::Vector4f vector4fValue;
+		//math::Quaternionf quaternionfValue;
 
 		VariantValue() {}
+		VariantValue(const VariantValue& value) = delete;
 		~VariantValue() {}
 	};
 
@@ -185,28 +186,28 @@ namespace sh
 		Variant& operator=(const math::Vector2f& value)
 		{
 			SetType(VAR_VECTOR_2_FLOAT);
-			m_value.vector2fValue = value;
+			*reinterpret_cast<math::Vector2f*>(m_value.ptrValue) = value;
 			return *this;
 		}
 
 		Variant& operator=(const math::Vector3f& value)
 		{
 			SetType(VAR_VECTOR_3_FLOAT);
-			m_value.vector3fValue = value;
+			*reinterpret_cast<math::Vector3f*>(m_value.ptrValue) = value;
 			return *this;
 		}
 
 		Variant& operator=(const math::Vector4f& value)
 		{
 			SetType(VAR_VECTOR_4_FLOAT);
-			m_value.vector4fValue = value;
+			*reinterpret_cast<math::Vector4f*>(m_value.ptrValue) = value;
 			return *this;
 		}
 
 		Variant& operator=(const math::Quaternionf& value)
 		{
 			SetType(VAR_QUATERNION_FLOAT);
-			m_value.quaternionfValue = value;
+			*reinterpret_cast<math::Quaternionf*>(m_value.ptrValue) = value;
 			return *this;
 		}
 

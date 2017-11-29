@@ -9,6 +9,8 @@
 #include "../scene/ModelLoader/AssimpModelLoader.h"
 #include "scene/ModelLoader/TinyObjModelLoader.h"
 
+#include <pugixml.hpp>
+
 namespace sh
 {
 	ResourceManager::ResourceManager()

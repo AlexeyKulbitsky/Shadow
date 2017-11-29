@@ -13,7 +13,7 @@
 #include "../font/Font.h"
 #include "../Device.h"
 
-
+#include <pugixml.hpp>
 
 
 namespace sh

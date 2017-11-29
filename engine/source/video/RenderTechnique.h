@@ -6,6 +6,12 @@
 #include "RenderPipeline.h"
 #include "MaterialParams.h"
 
+namespace pugi
+{
+	class xml_document;
+	class xml_node;
+}
+
 namespace sh
 {
 	namespace video

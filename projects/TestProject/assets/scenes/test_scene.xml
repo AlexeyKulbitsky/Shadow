@@ -10,6 +10,9 @@
 			<Color val="0.957031 0.957031 0.734375" />
 			<Type val="1" />
 		</component>
+		<component type="TestComponent">
+			<Vector3 val="10.1 111.2 -1.0" />
+		</component>
 	</entity>
 	<entity name="skybox_test">
 		<component type="RenderComponent">

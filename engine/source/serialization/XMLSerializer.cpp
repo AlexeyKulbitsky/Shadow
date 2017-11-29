@@ -3,6 +3,8 @@
 #include "Property.h"
 #include "ObjectFactory.h"
 
+#include <pugixml.hpp>
+
 namespace sh
 {
 

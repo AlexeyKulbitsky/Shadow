@@ -4,6 +4,11 @@
 #include "../Globals.h"
 #include "GuiBatch.h"
 
+namespace pugi
+{
+	class xml_node;
+}
+
 namespace sh
 {
 

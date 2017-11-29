@@ -59,29 +59,27 @@ namespace sh
 
 	const std::string& Variant::GetString() const
 	{
-		if (m_type == VAR_STRING)
-			return *reinterpret_cast<std::string*>(m_value.ptrValue);
-		return std::string();
+		return *reinterpret_cast<std::string*>(m_value.ptrValue);
 	}
 
 	const math::Vector2f& Variant::GetVector2Float() const
 	{
-		return m_value.vector2fValue;
+		return *reinterpret_cast<math::Vector2f*>(m_value.ptrValue);
 	}
 
 	const math::Vector3f& Variant::GetVector3Float() const
 	{
-		return m_value.vector3fValue;
+		return *reinterpret_cast<math::Vector3f*>(m_value.ptrValue);
 	}
 
 	const math::Vector4f& Variant::GetVector4Float() const
 	{
-		return m_value.vector4fValue;
+		return *reinterpret_cast<math::Vector4f*>(m_value.ptrValue);
 	}
 
 	const math::Quaternionf& Variant::GetQuaternionFloat() const
 	{
-		return m_value.quaternionfValue;
+		return *reinterpret_cast<math::Quaternionf*>(m_value.ptrValue);
 	}
 
 	Serializable* Variant::GetSerializable() const
@@ -121,6 +119,30 @@ namespace sh
 			m_value.ptrValue = nullptr;
 		}
 			break;
+		case VAR_VECTOR_2_FLOAT:
+		{
+			delete reinterpret_cast<math::Vector2f*>(m_value.ptrValue);
+			m_value.ptrValue = nullptr;
+		}
+			break;
+		case VAR_VECTOR_3_FLOAT:
+		{
+			delete reinterpret_cast<math::Vector3f*>(m_value.ptrValue);
+			m_value.ptrValue = nullptr;
+		}
+			break;
+		case VAR_VECTOR_4_FLOAT:
+		{
+			delete reinterpret_cast<math::Vector4f*>(m_value.ptrValue);
+			m_value.ptrValue = nullptr;
+		}
+			break;
+		case VAR_QUATERNION_FLOAT:
+		{
+			delete reinterpret_cast<math::Quaternionf*>(m_value.ptrValue);
+			m_value.ptrValue = nullptr;
+		}
+			break;
 		case VAR_RESOURCE_REF:
 		{
 			delete reinterpret_cast<ResourceRef*>(m_value.ptrValue);
@@ -147,6 +169,18 @@ namespace sh
 
 		switch (m_type)
 		{
+		case VAR_VECTOR_2_FLOAT:
+			m_value.ptrValue = new math::Vector2f();
+			break;
+		case VAR_VECTOR_3_FLOAT:
+			m_value.ptrValue = new math::Vector3f();
+			break;
+		case VAR_VECTOR_4_FLOAT:
+			m_value.ptrValue = new math::Vector4f();
+			break;
+		case VAR_QUATERNION_FLOAT:
+			m_value.ptrValue = new math::Quaternionf();
+			break;
 		case VAR_STRING:
 			m_value.ptrValue = new std::string();
 			break;

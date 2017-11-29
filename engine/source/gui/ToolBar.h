@@ -3,6 +3,11 @@
 
 #include "Widget.h"
 
+namespace pugi
+{
+	class xml_node;
+}
+
 namespace sh
 {
 

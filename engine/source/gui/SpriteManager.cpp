@@ -6,6 +6,8 @@
 
 #include "../video/TextureLoader/TextureLoader.h"
 
+#include <pugixml.hpp>
+
 namespace sh
 {
 

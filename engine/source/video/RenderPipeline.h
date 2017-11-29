@@ -5,6 +5,11 @@
 #include "GpuParamsDescription.h"
 #include "GpuPipelineParamsInfo.h"
 
+namespace pugi
+{
+	class xml_node;
+}
+
 namespace sh
 {
 	namespace video
