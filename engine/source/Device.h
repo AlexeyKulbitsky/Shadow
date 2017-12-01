@@ -24,7 +24,7 @@ namespace sh
 	class Application;
 	class ObjectFactory;
 
-	class Device
+	class SHADOW_API Device
 	{
 	public:
 		Device();

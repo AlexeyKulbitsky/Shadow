@@ -8,7 +8,7 @@ namespace sh
 
 namespace video
 {
-	struct GpuPipelineParamsDescription
+	struct SHADOW_API GpuPipelineParamsDescription
 	{
 		SPtr<GpuParamsDescription> vertexParams;
 		SPtr<GpuParamsDescription> fragmentParams;
@@ -18,7 +18,7 @@ namespace video
 		SPtr<GpuParamsDescription> computeParams;
 	};
 
-	class GpuPipelineParamsInfo
+	class SHADOW_API GpuPipelineParamsInfo
 	{
 		friend class RenderPipeline;
 		friend class RenderStateManager;

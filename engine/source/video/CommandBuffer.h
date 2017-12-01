@@ -14,12 +14,12 @@ namespace video
 		virtual void Execute() = 0;
 	};
 
-	struct CommandBufferDescription
+	struct SHADOW_API CommandBufferDescription
 	{
 		CommandBufferType type;
 	};
 
-	class CommandBuffer
+	class SHADOW_API CommandBuffer
 	{
 	public:
 		CommandBuffer() {}

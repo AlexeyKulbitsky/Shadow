@@ -7,7 +7,7 @@ namespace sh
 {
 	namespace video
 	{
-		struct Attribute
+		struct SHADOW_API Attribute
 		{
 			Attribute()
 				: semantic(AttributeSemantic::POSITION)
@@ -28,7 +28,7 @@ namespace sh
 			size_t componentsCount;
 		};
 
-		class VertexDeclaration
+		class SHADOW_API VertexDeclaration
 		{
 		public:
 			VertexDeclaration() {}
@@ -82,12 +82,12 @@ namespace sh
 			size_t m_stride = 0U;
 		};
 
-		struct InputAttribute
+		struct SHADOW_API InputAttribute
 		{
 			AttributeSemantic semantic;
 		};
 
-		class VertexInputDeclaration
+		class SHADOW_API VertexInputDeclaration
 		{
 		public:
 			//virtual void Load(const pugi::xml_node &node){}

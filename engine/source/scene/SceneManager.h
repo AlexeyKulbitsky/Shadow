@@ -19,7 +19,7 @@ namespace sh
 		class Model;
 		class Camera;
 
-		class SceneManager
+		class SHADOW_API SceneManager
 		{
 		public:
 			static const math::Vector3f& GetFrontVector() { return s_frontVector; }

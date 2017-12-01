@@ -9,7 +9,7 @@ namespace sh
 namespace scene
 {
 
-	class Scene : public Node
+	class SHADOW_API Scene : public Node
 	{
 	public:
 		Scene() {}

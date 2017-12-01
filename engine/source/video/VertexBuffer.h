@@ -7,13 +7,13 @@ namespace sh
 {
 	namespace video
 	{				
-		struct VertexBufferDecription
+		struct SHADOW_API VertexBufferDecription
 		{
 			u32 size;
 			Usage usage;
 		};
 
-		class VertexBuffer
+		class SHADOW_API VertexBuffer
 		{
 		public:
 			virtual ~VertexBuffer() {}

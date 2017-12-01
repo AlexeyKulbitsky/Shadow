@@ -10,7 +10,7 @@ namespace sh
 namespace gui
 {
 
-	class TreeExpandButton : public Button
+	class SHADOW_API TreeExpandButton : public Button
 	{
 	public:
 		TreeExpandButton();
@@ -19,7 +19,7 @@ namespace gui
 		virtual void Render(video::Painter* painter) override;
 	};
 
-	class TreeItem : public Button
+	class SHADOW_API TreeItem : public Button
 	{
 		friend class TreeWidget;
 	public:
@@ -50,7 +50,7 @@ namespace gui
 		std::vector<sh::SPtr<TreeItem>> m_children;
 	};
 
-	class TreeWidget : public ScrollWidget
+	class SHADOW_API TreeWidget : public ScrollWidget
 	{
 	public:
 		TreeWidget();

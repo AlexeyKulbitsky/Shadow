@@ -14,7 +14,7 @@ namespace sh
 namespace gui
 {
 
-	class Button : public Widget
+	class SHADOW_API Button : public Widget
 	{
 	public:
 		enum State : u32

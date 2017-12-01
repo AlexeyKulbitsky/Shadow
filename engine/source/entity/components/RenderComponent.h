@@ -10,7 +10,7 @@ namespace sh
 		class Model;
 	}
 
-	class RenderComponent : public Component
+	class SHADOW_API RenderComponent : public Component
 	{
 		SHADOW_OBJECT(RenderComponent)
 		COMPONENT

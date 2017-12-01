@@ -7,7 +7,7 @@ namespace sh
 {
 	namespace video
 	{
-		struct TextureDescription
+		struct SHADOW_API TextureDescription
 		{
 			TextureType type;
 			TextureFormat format;
@@ -18,7 +18,7 @@ namespace sh
 			u32 samplesCount;
 		};
 
-		class Texture : public Resource
+		class SHADOW_API Texture : public Resource
 		{
 		public:			
 			Texture(){}

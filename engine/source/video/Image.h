@@ -10,7 +10,7 @@ namespace sh
 namespace video
 {
 
-	class Image
+	class SHADOW_API Image
 	{
 	public:
 		Image();

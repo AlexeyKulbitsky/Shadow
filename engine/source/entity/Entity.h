@@ -11,7 +11,7 @@ namespace pugi
 
 namespace sh
 {
-	class Entity
+	class SHADOW_API Entity
 	{
 	public:
 		Entity();

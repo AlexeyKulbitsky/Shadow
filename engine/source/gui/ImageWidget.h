@@ -9,7 +9,7 @@ namespace sh
 namespace gui
 {
 
-	class ImageWidget : public Widget
+	class SHADOW_API ImageWidget : public Widget
 	{
 	public:
 		ImageWidget();

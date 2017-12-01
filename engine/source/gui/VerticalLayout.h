@@ -9,7 +9,7 @@ namespace sh
 namespace gui
 {
 
-	class VerticalLayout : public Layout
+	class SHADOW_API VerticalLayout : public Layout
 	{
 	public:
 		VerticalLayout() {}

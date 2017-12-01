@@ -9,7 +9,7 @@ namespace sh
 namespace gui
 {
 
-	class Window : public Widget
+	class SHADOW_API Window : public Widget
 	{
 		friend class Style;
 	public:

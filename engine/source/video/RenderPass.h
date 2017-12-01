@@ -7,7 +7,7 @@ namespace sh
 {
 	namespace video
 	{
-		class RenderPass
+		class SHADOW_API RenderPass
 		{
 		};
 	}

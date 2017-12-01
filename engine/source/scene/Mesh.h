@@ -8,7 +8,7 @@ namespace sh
 {
 	namespace scene
 	{		
-		class Mesh
+		class SHADOW_API Mesh
 		{
 		public:			
 			explicit Mesh(MeshBasePtr meshBase);

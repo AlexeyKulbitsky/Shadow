@@ -8,7 +8,7 @@ namespace sh
 
 namespace gui
 {
-	class LayoutItem
+	class SHADOW_API LayoutItem
 	{
 	public:
 		LayoutItem() {}
@@ -32,7 +32,7 @@ namespace gui
 
 	//////////////////////////////////////////////////////////////////////
 
-	class WidgetItem : public LayoutItem
+	class SHADOW_API WidgetItem : public LayoutItem
 	{
 	public:
 		WidgetItem(const WidgetPtr& widget) { m_widget = widget; }
@@ -55,7 +55,7 @@ namespace gui
 
 	//////////////////////////////////////////////////////////////////////
 
-	class Layout : public LayoutItem
+	class SHADOW_API Layout : public LayoutItem
 	{
 		friend class Widget;
 		friend class Window;

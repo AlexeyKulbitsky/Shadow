@@ -8,7 +8,7 @@ namespace sh
 
 	class Serializable;
 
-	class Serializer
+	class SHADOW_API Serializer
 	{
 	public:
 		virtual void Serialize(Serializable* serializable);

@@ -8,7 +8,7 @@ namespace sh
 {
 	namespace video
 	{
-		class Painter
+		class SHADOW_API Painter
 		{
 		public:
 			struct Vertex

@@ -6,7 +6,7 @@
 namespace sh
 {
 
-	class Serializable
+	class SHADOW_API Serializable
 	{
 		SHADOW_OBJECT(Serializable)
 	public:

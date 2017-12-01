@@ -7,13 +7,13 @@ namespace sh
 {
 	namespace video
 	{		
-		struct IndexBufferDescription
+		struct SHADOW_API IndexBufferDescription
 		{
 			IndexType indexType;
 			Usage usage;
 		};
 
-		class IndexBuffer
+		class SHADOW_API IndexBuffer
 		{
 		public:
 			IndexBuffer(Usage usage) {}

@@ -6,7 +6,7 @@
 namespace sh
 {
 
-	class RenderSystem : public System
+	class SHADOW_API RenderSystem : public System
 	{
 	public:
 		RenderSystem();

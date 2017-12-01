@@ -97,7 +97,7 @@ namespace sh
 
 			bool Equals(const Vector3<T>& other, const T& eps)
 			{
-				return (std::abs(x - other.x) < eps) && (std::abs(y - other.y) < eps) && (std::abs(z - other.z) < eps);
+				return false;// (std::abs(x - other.x) < eps) && (std::abs(y - other.y) < eps) && (std::abs(z - other.z) < eps);
 			}
 		};
 

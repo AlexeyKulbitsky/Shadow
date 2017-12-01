@@ -5,7 +5,7 @@
 
 namespace sh
 {
-	class ComponentsFactory
+	class SHADOW_API ComponentsFactory
 	{
 	public:
 		virtual ~ComponentsFactory();

@@ -16,7 +16,7 @@ namespace sh
 {
 	namespace video
 	{
-		class RenderTechnique : public Resource
+		class SHADOW_API RenderTechnique : public Resource
 		{
 		public:
 			RenderTechnique();

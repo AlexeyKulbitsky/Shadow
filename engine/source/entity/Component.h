@@ -20,7 +20,7 @@ public: \
 static size_t GetTypeId() { static size_t id = ComponentTypeIdGenerator::GetAvailableId(); return id; } \
 virtual size_t GetId() override { return GetTypeId(); }
 
-	class Component : public Serializable
+	class SHADOW_API Component : public Serializable
 	{
 	public:
 		virtual ~Component() {}

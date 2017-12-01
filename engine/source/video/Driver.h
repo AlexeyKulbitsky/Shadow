@@ -30,7 +30,7 @@ namespace sh
 
 		struct RenderPipelineDescription;
 
-		class Driver
+		class SHADOW_API Driver
 		{
 		public:
 			Driver();

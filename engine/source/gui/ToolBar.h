@@ -14,7 +14,7 @@ namespace sh
 namespace gui
 {
 
-	class ToolBar : public Widget
+	class SHADOW_API ToolBar : public Widget
 	{
 	public:
 		ToolBar();

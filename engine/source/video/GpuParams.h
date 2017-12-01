@@ -32,7 +32,7 @@ namespace video
 		T* m_valuePtr = nullptr;
 	};
 
-	class TGpuParamStruct
+	class SHADOW_API TGpuParamStruct
 	{
 		void Set(const void* value, u32 size, u32 index = 0U) const;
 		void Get(void* value, u32 size, u32 index = 0U) const;
@@ -50,7 +50,7 @@ namespace video
 	///////////////////////////////////////////////////////////////
 
 
-	class GpuParams
+	class SHADOW_API GpuParams
 	{
 		friend class HardwareBufferManager;
 		template<typename U>

@@ -7,7 +7,7 @@ namespace sh
 {
 	namespace scene
 	{
-		class Light
+		class SHADOW_API Light
 		{
 		public:
 			enum class Type

@@ -8,7 +8,7 @@ namespace sh
 {
 	namespace scene
 	{
-		class Picker
+		class SHADOW_API Picker
 		{
 		public:
 			enum class Mode

@@ -9,31 +9,31 @@ namespace sh
 	class Singleton
 	{
 	public:
-		static T* GetInstance() { return s_instance; }
+		static T* GetInstance() { return instance(); }
 
 		static void CreateInstance()
 		{
-			s_instance = new T();
+			instance() = new T();
 		}
 
 		template<typename ChildType>
 		static void CreateInstance()
 		{
 			static_assert(std::is_base_of<T, ChildType>::value, "Invalid child type for creating singleton instance!");
-			s_instance = new ChildType();
+			instance() = new ChildType();
 		}
 
 		static void DestroyInstance()
 		{
-			delete s_instance;
-			s_instance = nullptr;
+			delete instance();
+			instance() = nullptr;
 		}
 
-		static void SetInstance(T* instance)
+		static void SetInstance(T* _instance)
 		{
-			if (s_instance)
-				delete s_instance;
-			s_instance = instance;
+			if (instance())
+				delete instance();
+			instance() = _instance;
 		}
 
 	protected:
@@ -43,12 +43,18 @@ namespace sh
 		Singleton& operator=(const Singleton&) { return *this; }
 		Singleton& operator=(Singleton&& ) { return *this; }
 
+		static T*& instance()
+		{
+			static T* inst = nullptr;
+			return inst;
+		}
+
 	protected:
-		static T* s_instance;
+		//static T* s_instance;
 	};
 
-	template<typename T>
-	T* Singleton<T>::s_instance = nullptr;
+	//template<typename T>
+	//T* Singleton<T>::s_instance = nullptr;
 
 } // sh
 

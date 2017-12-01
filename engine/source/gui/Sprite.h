@@ -9,7 +9,7 @@ namespace sh
 namespace gui
 {
 
-	class Sprite
+	class SHADOW_API Sprite
 	{
 	public:
 		Sprite(const video::TexturePtr& texture, const math::Rectu& rect);

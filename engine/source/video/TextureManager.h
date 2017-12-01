@@ -10,7 +10,7 @@ namespace sh
 namespace video
 {
 
-	class TextureManager
+	class SHADOW_API TextureManager
 	{
 	public:
 		static TextureManager* GetInstance();

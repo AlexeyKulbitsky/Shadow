@@ -9,7 +9,7 @@ namespace sh
 namespace gui
 {
 
-	class LineEdit : public Text
+	class SHADOW_API LineEdit : public Text
 	{
 	public:
 		enum State : u32

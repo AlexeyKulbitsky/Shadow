@@ -7,7 +7,7 @@ namespace sh
 {
 	namespace scene
 	{
-		class Camera
+		class SHADOW_API Camera
 		{
 		public:
 			Camera();

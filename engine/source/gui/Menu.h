@@ -9,7 +9,7 @@ namespace sh
 namespace gui
 {
 
-	class Menu : public Widget
+	class SHADOW_API Menu : public Widget
 	{
 	public:
 		Menu();

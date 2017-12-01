@@ -95,10 +95,10 @@
 namespace sh
 {
 	// Create usual device
-	/*SHADOW_API*/ Device* /*SH_CALLCONV*/ CreateDevice();
+	SHADOW_API Device* /*SH_CALLCONV*/ CreateDevice();
 
 	// Create device with more extended configuration
-	/*SHADOW_API*/ Device* /*SH_CALLCONV*/ CreateDevice(const CreationParameters& parameters);
+	SHADOW_API Device* /*SH_CALLCONV*/ CreateDevice(const CreationParameters& parameters);
 
 }
 

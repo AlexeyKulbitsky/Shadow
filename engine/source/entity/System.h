@@ -8,7 +8,7 @@ namespace sh
 {
 	class Entity;
 
-	class System
+	class SHADOW_API System
 	{
 	public:
 		virtual void RegisterEntity(Entity* entity);

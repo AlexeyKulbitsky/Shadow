@@ -14,7 +14,7 @@ namespace sh
 namespace gui
 {
 
-	class Style
+	class SHADOW_API Style
 	{
 	public:
 		void Load(const pugi::xml_node& root);

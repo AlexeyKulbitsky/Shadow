@@ -10,7 +10,7 @@ namespace gui
 {
 	class Button;
 
-	class SliderWidget : public Widget
+	class SHADOW_API SliderWidget : public Widget
 	{
 	public:
 		SliderWidget();

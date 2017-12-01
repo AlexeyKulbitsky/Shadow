@@ -14,7 +14,7 @@ using LibraryHandle = void*;
 namespace sh
 {
 
-	class DynamicLibrary
+	class SHADOW_API DynamicLibrary
 	{
 	public:
 		DynamicLibrary(const String& filename);

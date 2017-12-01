@@ -14,7 +14,7 @@ namespace sh
 {
 	namespace video
 	{
-		class Material : public Resource
+		class SHADOW_API Material : public Resource
 		{
 		public:
 			Material() {}

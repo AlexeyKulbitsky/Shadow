@@ -10,7 +10,7 @@ namespace sh
 namespace gui
 {
 	
-	class ScrollWidget : public Widget
+	class SHADOW_API ScrollWidget : public Widget
 	{
 	public:
 		class ScrollBar : public Button

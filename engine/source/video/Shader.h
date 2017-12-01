@@ -8,7 +8,7 @@ namespace sh
 
 namespace video
 {
-	struct ShaderDescription
+	struct SHADOW_API ShaderDescription
 	{
 		String source;
 		String entryPoint;
@@ -18,7 +18,7 @@ namespace video
 		//SPtr<GpuParamsDescription> autoParamsDescription;
 	};
 
-	class Shader
+	class SHADOW_API Shader
 	{
 	public:
 		ShaderType GetType() const { return m_type; }

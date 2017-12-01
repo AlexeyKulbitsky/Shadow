@@ -7,7 +7,7 @@ namespace sh
 {
 	namespace scene
 	{
-		class MeshBase
+		class SHADOW_API MeshBase
 		{
 		public:
 			MeshBase();

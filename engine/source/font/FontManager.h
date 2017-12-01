@@ -3,11 +3,12 @@
 
 #include "../Globals.h"
 
+typedef struct FT_LibraryRec_  *FT_Library;
+
 namespace sh
 {
-	
 
-	class FontManager : public Singleton < FontManager >
+	class SHADOW_API FontManager : public Singleton < FontManager >
 	{
 	public:
 		struct GlyphInfo 

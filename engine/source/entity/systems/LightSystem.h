@@ -5,7 +5,7 @@
 
 namespace sh
 {
-	class LightSystem : public System
+	class SHADOW_API LightSystem : public System
 	{
 	public:
 		LightSystem();

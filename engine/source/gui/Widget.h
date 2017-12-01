@@ -27,7 +27,7 @@ namespace gui
 		KeyUp
 	};
 
-	struct GUIEvent
+	struct SHADOW_API GUIEvent
 	{
 		EventType type;
 		s32 x = 0;
@@ -39,7 +39,7 @@ namespace gui
 		MouseCode mouseButtonCode = MouseCode::ButtonLeft;
 	};
 
-	class Widget : public std::enable_shared_from_this<Widget>
+	class SHADOW_API Widget : public std::enable_shared_from_this<Widget>
 	{
 		friend class GuiManager;
 	public:

@@ -7,7 +7,7 @@ namespace sh
 {
 	namespace scene
 	{
-		class ModelLoader : public Singleton<ModelLoader>
+		class SHADOW_API ModelLoader : public Singleton<ModelLoader>
 		{
 		public:
 			ModelLoader(){}
@@ -15,7 +15,7 @@ namespace sh
 
 			ModelBasePtr Load(const char* path);
 
-			virtual ModelBasePtr Load(const std::string &path) = 0;
+			virtual ModelBasePtr Load(const std::string &path) { return ModelBasePtr(); }
 			const std::vector<String>& GetAvalilableExtensions() const { return m_availableExtensions; }
 
 		protected:

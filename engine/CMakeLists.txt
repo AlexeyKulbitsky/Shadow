@@ -93,7 +93,9 @@ if (WIN32)
 endif(WIN32)
 
 # Add Shadow engine library
-add_library(${PROJECT_NAME} ${PROJECT_SOURCE_FILES})
+add_library(${PROJECT_NAME} SHARED ${PROJECT_SOURCE_FILES})
+target_compile_definitions(${PROJECT_NAME} PRIVATE SHADOW_EXPORTS)
+
 
 # Add pugixml
 add_subdirectory(../libs/pugixml "${CMAKE_CURRENT_BINARY_DIR}/pugixml_build")

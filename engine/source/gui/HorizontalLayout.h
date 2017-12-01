@@ -9,7 +9,7 @@ namespace sh
 namespace gui
 {
 
-	class HorizontalLayout : public Layout
+	class SHADOW_API HorizontalLayout : public Layout
 	{
 	public:
 		virtual void AddWidget(const WidgetPtr& widget) override;

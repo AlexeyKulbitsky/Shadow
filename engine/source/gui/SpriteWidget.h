@@ -10,7 +10,7 @@ namespace sh
 namespace gui
 {
 
-	class SpriteWidget : public Widget
+	class SHADOW_API SpriteWidget : public Widget
 	{
 	public:
 		SpriteWidget();

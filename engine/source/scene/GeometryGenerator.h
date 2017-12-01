@@ -7,7 +7,7 @@ namespace sh
 {
 	namespace scene
 	{
-		class GeometryGenerator
+		class SHADOW_API GeometryGenerator
 		{
 		public:
 			static ModelPtr GetLineModel(const math::Vector3f& start, const math::Vector3f& end);

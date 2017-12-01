@@ -8,7 +8,7 @@ namespace sh
 {
 	namespace video
 	{
-		struct SamplerDescription
+		struct SHADOW_API SamplerDescription
 		{
 			GpuParamObjectType type = GPOT_SAMPLER_2D;
 			TextureFiltering minFilter = TEX_FILT_LINEAR;
@@ -19,7 +19,7 @@ namespace sh
 			TextureTiling tilingW = TEX_TILING_REPEAT;
 		};
 
-		class Sampler
+		class SHADOW_API Sampler
 		{
 		public:
 			Sampler(const SamplerDescription& description);

@@ -10,7 +10,7 @@ namespace sh
 		struct FileInfo;
 	}
 
-	class Resource
+	class SHADOW_API Resource
 	{
 	public:
 		enum class Group

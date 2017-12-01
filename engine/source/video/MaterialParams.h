@@ -9,12 +9,12 @@ namespace sh
 
 namespace video
 {
-	struct MaterialParamsDescription
+	struct SHADOW_API MaterialParamsDescription
 	{
 		Map<String, MaterialParamDescription> params;
 	};
 
-	class MaterialParams
+	class SHADOW_API MaterialParams
 	{
 	public:
 		MaterialParams(const GpuParamsPtr& gpuParams);

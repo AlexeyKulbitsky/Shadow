@@ -602,12 +602,35 @@
   #pragma GCC diagnostic pop
 #endif
 
-#define SH_ASSERT          PPK_ASSERT
-#define SH_ASSERT_WARNING  PPK_ASSERT_WARNING
-#define SH_ASSERT_DEBUG    PPK_ASSERT_DEBUG
-#define SH_ASSERT_ERROR    PPK_ASSERT_ERROR
-#define SH_ASSERT_FATAL    PPK_ASSERT_FATAL
-#define SH_ASSERT_CUSTOM   PPK_ASSERT_CUSTOM
-#define SH_ASSERT_USED     PPK_ASSERT_USED
-#define SH_TO_STRING(a)	   #a
 
+
+#if !defined SHADOW_STATIC_LIB
+	#ifdef SHADOW_EXPORTS
+		#define SH_ASSERT          PPK_ASSERT
+		#define SH_ASSERT_WARNING  PPK_ASSERT_WARNING
+		#define SH_ASSERT_DEBUG    PPK_ASSERT_DEBUG
+		#define SH_ASSERT_ERROR    PPK_ASSERT_ERROR
+		#define SH_ASSERT_FATAL    PPK_ASSERT_FATAL
+		#define SH_ASSERT_CUSTOM   PPK_ASSERT_CUSTOM
+		#define SH_ASSERT_USED     PPK_ASSERT_USED
+		#define SH_TO_STRING(a)	   #a
+	#else
+		#define SH_ASSERT          
+		#define SH_ASSERT_WARNING  
+		#define SH_ASSERT_DEBUG    
+		#define SH_ASSERT_ERROR    
+		#define SH_ASSERT_FATAL    
+		#define SH_ASSERT_CUSTOM   
+		#define SH_ASSERT_USED     
+		#define SH_TO_STRING(a)	   
+	#endif 
+#else
+	#define SH_ASSERT          PPK_ASSERT
+	#define SH_ASSERT_WARNING  PPK_ASSERT_WARNING
+	#define SH_ASSERT_DEBUG    PPK_ASSERT_DEBUG
+	#define SH_ASSERT_ERROR    PPK_ASSERT_ERROR
+	#define SH_ASSERT_FATAL    PPK_ASSERT_FATAL
+	#define SH_ASSERT_CUSTOM   PPK_ASSERT_CUSTOM
+	#define SH_ASSERT_USED     PPK_ASSERT_USED
+	#define SH_TO_STRING(a)	   #a
+#endif

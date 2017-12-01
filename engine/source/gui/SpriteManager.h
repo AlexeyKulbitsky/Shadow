@@ -14,7 +14,7 @@ namespace sh
 namespace gui
 {
 
-	class SpriteManager : public Singleton < SpriteManager >
+	class SHADOW_API SpriteManager : public Singleton < SpriteManager >
 	{
 	public:
 		void Load(const pugi::xml_node& node);

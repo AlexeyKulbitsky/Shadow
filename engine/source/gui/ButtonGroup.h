@@ -9,7 +9,7 @@ namespace sh
 namespace gui
 {
 
-	class ButtonGroup
+	class SHADOW_API ButtonGroup
 	{
 	public:
 		void AddButton(const ButtonPtr& button);

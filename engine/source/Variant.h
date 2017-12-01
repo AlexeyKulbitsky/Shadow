@@ -6,7 +6,7 @@
 namespace sh
 {
 
-	enum VariantType
+	enum SHADOW_API VariantType
 	{
 		VAR_NOTYPE,
 		VAR_INT,
@@ -41,7 +41,7 @@ namespace sh
 		T m_value;
 	};
 
-	union VariantValue
+	union SHADOW_API VariantValue
 	{
 		float floatValue;
 		int intValue;
@@ -57,7 +57,7 @@ namespace sh
 		~VariantValue() {}
 	};
 
-	class Variant
+	class SHADOW_API Variant
 	{
 	public:
 		Variant(int value)

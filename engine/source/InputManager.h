@@ -5,7 +5,7 @@
 
 namespace sh
 {
-	class InputManager
+	class SHADOW_API InputManager
 	{
 	public:
 		static const size_t NUMBER_OF_KEYBOARD_KEYS = 256;

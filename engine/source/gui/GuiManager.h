@@ -30,7 +30,7 @@ namespace gui
 
 	struct GUIEvent;
 
-	class GuiManager : public Singleton <GuiManager>
+	class SHADOW_API GuiManager : public Singleton <GuiManager>
 	{
 		friend class Button;
 	public:

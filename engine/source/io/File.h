@@ -9,7 +9,7 @@ namespace sh
 namespace io
 {
 
-	class File
+	class SHADOW_API File
 	{
 		friend class FileSystem;
 		friend class WindowsFileSystem;

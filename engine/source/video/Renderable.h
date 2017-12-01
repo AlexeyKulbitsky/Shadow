@@ -7,7 +7,7 @@ namespace sh
 {
 	namespace video
 	{
-		class Renderable
+		class SHADOW_API Renderable
 		{
 			friend class scene::Mesh;
 			friend class RenderSystem;

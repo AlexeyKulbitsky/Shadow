@@ -8,7 +8,7 @@ namespace sh
 {
 namespace video
 {
-	struct GpuParamDataDescription
+	struct SHADOW_API GpuParamDataDescription
 	{
 		String name = "";
 		GpuParamDataType type;
@@ -18,7 +18,7 @@ namespace video
 		u32 location = 0U;
 	};
 
-	struct GpuParamObjectDescription
+	struct SHADOW_API GpuParamObjectDescription
 	{
 		String name = "";
 		GpuParamObjectType type;
@@ -29,7 +29,7 @@ namespace video
 
 	////////////////////////////////////////////////////
 
-	struct GpuParamsDescription
+	struct SHADOW_API GpuParamsDescription
 	{
 		Map<String, GpuParamDataDescription> params;
 		Map<String, GpuParamObjectDescription> samplers;

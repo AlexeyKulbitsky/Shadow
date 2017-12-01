@@ -15,6 +15,67 @@ namespace sh
 {
 	namespace math
 	{
+#ifndef SHADOW_STATIC_LIB
+		SHADOW_EXTERN template struct SHADOW_API Vector2<short>;
+		SHADOW_EXTERN template struct SHADOW_API Vector2<int>;
+		SHADOW_EXTERN template struct SHADOW_API Vector2<unsigned int>;
+		SHADOW_EXTERN template struct SHADOW_API Vector2<float>;
+		SHADOW_EXTERN template struct SHADOW_API Vector2<double>;
+
+		SHADOW_EXTERN template struct SHADOW_API Vector3<short>;
+		SHADOW_EXTERN template struct SHADOW_API Vector3<int>;
+		SHADOW_EXTERN template struct SHADOW_API Vector3<unsigned int>;
+		SHADOW_EXTERN template struct SHADOW_API Vector3<float>;
+		SHADOW_EXTERN template struct SHADOW_API Vector3<double>;
+
+		SHADOW_EXTERN template struct SHADOW_API Vector4<short>;
+		SHADOW_EXTERN template struct SHADOW_API Vector4<int>;
+		SHADOW_EXTERN template struct SHADOW_API Vector4<unsigned int>;
+		SHADOW_EXTERN template struct SHADOW_API Vector4<float>;
+		SHADOW_EXTERN template struct SHADOW_API Vector4<double>;
+
+		SHADOW_EXTERN template struct SHADOW_API Matrix3<short>;
+		SHADOW_EXTERN template struct SHADOW_API Matrix3<int>;
+		SHADOW_EXTERN template struct SHADOW_API Matrix3<unsigned int>;
+		SHADOW_EXTERN template struct SHADOW_API Matrix3<float>;
+		SHADOW_EXTERN template struct SHADOW_API Matrix3<double>;
+
+		SHADOW_EXTERN template struct SHADOW_API Matrix4<short>;
+		SHADOW_EXTERN template struct SHADOW_API Matrix4<int>;
+		SHADOW_EXTERN template struct SHADOW_API Matrix4<unsigned int>;
+		SHADOW_EXTERN template struct SHADOW_API Matrix4<float>;
+		SHADOW_EXTERN template struct SHADOW_API Matrix4<double>;
+
+		SHADOW_EXTERN template struct SHADOW_API Quaternion<short>;
+		SHADOW_EXTERN template struct SHADOW_API Quaternion<int>;
+		SHADOW_EXTERN template struct SHADOW_API Quaternion<unsigned int>;
+		SHADOW_EXTERN template struct SHADOW_API Quaternion<float>;
+		SHADOW_EXTERN template struct SHADOW_API Quaternion<double>;
+
+		SHADOW_EXTERN template struct SHADOW_API Sphere<short>;
+		SHADOW_EXTERN template struct SHADOW_API Sphere<int>;
+		SHADOW_EXTERN template struct SHADOW_API Sphere<unsigned int>;
+		SHADOW_EXTERN template struct SHADOW_API Sphere<float>;
+		SHADOW_EXTERN template struct SHADOW_API Sphere<double>;
+
+		SHADOW_EXTERN template struct SHADOW_API Plane<short>;
+		SHADOW_EXTERN template struct SHADOW_API Plane<int>;
+		SHADOW_EXTERN template struct SHADOW_API Plane<unsigned int>;
+		SHADOW_EXTERN template struct SHADOW_API Plane<float>;
+		SHADOW_EXTERN template struct SHADOW_API Plane<double>;
+
+		SHADOW_EXTERN template struct SHADOW_API Rect<short>;
+		SHADOW_EXTERN template struct SHADOW_API Rect<int>;
+		SHADOW_EXTERN template struct SHADOW_API Rect<unsigned int>;
+		SHADOW_EXTERN template struct SHADOW_API Rect<float>;
+		SHADOW_EXTERN template struct SHADOW_API Rect<double>;
+
+		SHADOW_EXTERN template struct SHADOW_API AABB<short>;
+		SHADOW_EXTERN template struct SHADOW_API AABB<int>;
+		SHADOW_EXTERN template struct SHADOW_API AABB<unsigned int>;
+		SHADOW_EXTERN template struct SHADOW_API AABB<float>;
+		SHADOW_EXTERN template struct SHADOW_API AABB<double>;
+#endif
 		typedef Vector2<short> Vector2s;
 		typedef Vector2<int> Vector2i;
 		typedef Vector2<unsigned int> Vector2u;

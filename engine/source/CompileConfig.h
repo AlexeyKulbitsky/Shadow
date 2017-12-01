@@ -2,7 +2,7 @@
 #define SHADOW_COMPILE_CONFIG_INCLUDE
 
 
-#define SHADOW_STATIC_LIB
+//#define SHADOW_STATIC_LIB
 //#define SHADOW_EXPORTS
 
 ///////////////////////////////////////////////////////////////////////
@@ -31,11 +31,14 @@
 	#ifndef SHADOW_STATIC_LIB
 		#ifdef SHADOW_EXPORTS
 			#define SHADOW_API __declspec(dllexport)
+			#define SHADOW_EXTERN
 		#else
 			#define SHADOW_API __declspec(dllimport)
+			#define SHADOW_EXTERN extern
 		#endif 
 	#else
 		#define SHADOW_API
+		#define SHADOW_EXTERN
 	#endif 
 
 

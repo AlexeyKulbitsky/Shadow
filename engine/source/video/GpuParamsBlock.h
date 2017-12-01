@@ -8,7 +8,7 @@ namespace sh
 
 namespace video
 {
-	class GpuParamsBlock
+	class SHADOW_API GpuParamsBlock
 	{
 	public:
 		Map<String, GpuParamDataDescription> params;

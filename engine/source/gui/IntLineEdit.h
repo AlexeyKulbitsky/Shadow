@@ -9,7 +9,7 @@ namespace sh
 	namespace gui
 	{
 
-		class IntLineEdit : public LineEdit
+		class SHADOW_API IntLineEdit : public LineEdit
 		{
 		public:
 			IntLineEdit();

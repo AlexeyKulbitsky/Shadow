@@ -7,7 +7,7 @@ namespace sh
 {
 	namespace video
 	{
-		class HardwareBuffer
+		class SHADOW_API HardwareBuffer
 		{
 		public:
 			

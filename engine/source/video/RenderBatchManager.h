@@ -12,15 +12,15 @@ namespace sh
 
 	namespace video
 	{
-		class RenderBatchManager : public Singleton<RenderBatchManager>
+		class SHADOW_API RenderBatchManager : public Singleton<RenderBatchManager>
 		{
 		public:
 			virtual ~RenderBatchManager() { }
-			virtual void AddMesh(const scene::MeshPtr& mesh) = 0;
+			virtual void AddMesh(const scene::MeshPtr& mesh) {}
 			virtual void RemoveMesh(const scene::MeshPtr& mesh) {}
-			virtual void Submit() = 0;
-			virtual void Clear() = 0;
-			virtual void UpdateLight(scene::Light* light) = 0;
+			virtual void Submit() {}
+			virtual void Clear() {}
+			virtual void UpdateLight(scene::Light* light) {}
 		};
 	}
 }

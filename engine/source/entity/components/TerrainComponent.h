@@ -10,7 +10,7 @@ namespace sh
 		class Image;
 	}
 
-	class TerrainComponent : public Component
+	class SHADOW_API TerrainComponent : public Component
 	{
 		SHADOW_OBJECT(TerrainComponent)
 		COMPONENT

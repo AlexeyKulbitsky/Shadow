@@ -11,7 +11,7 @@ namespace sh
 		class Light;
 	}
 
-	class LightComponent : public Component
+	class SHADOW_API LightComponent : public Component
 	{
 		SHADOW_OBJECT(LightComponent)
 		COMPONENT

@@ -8,14 +8,14 @@ namespace sh
 
 namespace video
 {
-	struct MaterialParamDescription
+	struct SHADOW_API MaterialParamDescription
 	{
 		String name;
 		String description;
 		MaterialParamType type;
 	};
 
-	class MaterialParam
+	class SHADOW_API MaterialParam
 	{
 		friend class MaterialParams;
 		friend class Material;
@@ -54,7 +54,7 @@ namespace video
 
 	/////////////////////////////////////////////////////////////////////////////
 
-	class MaterialSamplerParam
+	class SHADOW_API MaterialSamplerParam
 	{
 		friend class MaterialParams;
 		friend class Material;

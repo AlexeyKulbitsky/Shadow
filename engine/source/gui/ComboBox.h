@@ -12,7 +12,7 @@ namespace sh
 namespace gui
 {
 
-	class ComboBox : public Widget
+	class SHADOW_API ComboBox : public Widget
 	{
 	public:
 		ComboBox();

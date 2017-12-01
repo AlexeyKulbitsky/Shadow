@@ -7,7 +7,7 @@ namespace sh
 {
 	namespace video
 	{
-		class RenderTarget
+		class SHADOW_API RenderTarget
 		{
 		public:
 			virtual ~RenderTarget() { }

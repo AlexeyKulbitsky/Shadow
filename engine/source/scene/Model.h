@@ -8,7 +8,7 @@ namespace sh
 {
 	namespace scene
 	{
-		class Model : public Resource
+		class SHADOW_API Model : public Resource
 		{
 		public:
 			Model();

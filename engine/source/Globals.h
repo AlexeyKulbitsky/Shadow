@@ -11,9 +11,6 @@
 #include "Object.h"
 
 #include "pempek_assert.h"
-//#include <pugixml.hpp>
-#include <ft2build.h>
-#include FT_FREETYPE_H
 
 #include <vector>
 #include <array>

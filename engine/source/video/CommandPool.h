@@ -8,7 +8,7 @@ namespace sh
 {
 	namespace video
 	{
-		class CommandPool
+		class SHADOW_API CommandPool
 		{
 		};
 	}

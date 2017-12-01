@@ -10,7 +10,7 @@
 
 namespace sh
 {
-	/*SHADOW_API*/ Device* /*SH_CALLCONV*/ CreateDevice
+	SHADOW_API Device* /*SH_CALLCONV*/ CreateDevice
 	(
 		video::DriverType driverType,
 		u32 width, u32 height
@@ -27,7 +27,7 @@ namespace sh
 		return CreateDevice(parameters);
 	}
 
-	Device* CreateDevice()
+	SHADOW_API Device* CreateDevice()
 	{
 		Device *device = nullptr;
 
@@ -41,7 +41,7 @@ namespace sh
 		return device;
 	}
 
-	/*SHADOW_API*/ Device* /*SH_CALLCONV*/ CreateDevice(const CreationParameters& parameters)
+	SHADOW_API Device* /*SH_CALLCONV*/ CreateDevice(const CreationParameters& parameters)
 	{
 		Device *device = nullptr;
 

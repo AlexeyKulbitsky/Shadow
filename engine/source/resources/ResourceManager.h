@@ -20,7 +20,7 @@ namespace sh
 		struct FolderInfo;
 	}
 
-	class ResourceManager : public Singleton<ResourceManager>
+	class SHADOW_API ResourceManager : public Singleton<ResourceManager>
 	{
 	public:
 		ResourceManager();

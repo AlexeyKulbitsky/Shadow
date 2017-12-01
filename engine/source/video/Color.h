@@ -8,7 +8,7 @@ namespace sh
 	namespace video
 	{
 		
-		class Color
+		class SHADOW_API Color
 		{
 		public:
 			f32 red;

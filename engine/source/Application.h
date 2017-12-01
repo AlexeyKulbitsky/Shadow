@@ -7,7 +7,7 @@
 namespace sh
 {
 
-	class Application
+	class SHADOW_API Application
 	{
 	public:
 		Application() {}

@@ -6,7 +6,7 @@
 namespace sh
 {
 
-	class ComponentTypeManager
+	class SHADOW_API ComponentTypeManager
 	{
 	public:
 		

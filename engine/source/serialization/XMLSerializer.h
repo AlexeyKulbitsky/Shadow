@@ -11,7 +11,7 @@ namespace pugi
 namespace sh
 {
 
-	class XMLSerializer : public Serializer
+	class SHADOW_API XMLSerializer : public Serializer
 	{
 	public:
 		void Serialize(Serializable* serializable, pugi::xml_node& node);

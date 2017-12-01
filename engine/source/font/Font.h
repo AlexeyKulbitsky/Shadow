@@ -13,7 +13,7 @@ namespace sh
 		s32 advance;        // x advance when rendering
 	};
 
-	class Font
+	class SHADOW_API Font
 	{
 		friend class FontManager;
 	public:

@@ -27,7 +27,7 @@ namespace sh
 		virtual Serializable* CreateObject() override { return new T(); }
 	};
 
-	class ObjectFactory : public Singleton<ObjectFactory>
+	class SHADOW_API ObjectFactory : public Singleton<ObjectFactory>
 	{
 	public:
 

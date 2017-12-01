@@ -22,7 +22,7 @@ namespace sh
 			Count
 		};
 
-		struct RenderPipelineDescription
+		struct SHADOW_API RenderPipelineDescription
 		{
 			BlendingStatePtr blendingState;
 			RasterizationStatePtr rasterizationState;
@@ -38,7 +38,7 @@ namespace sh
 			RenderLayer layer = RenderLayer::Main;
 		};
 
-		class RenderPipeline
+		class SHADOW_API RenderPipeline
 		{
 			friend class GpuParams;
 		public:

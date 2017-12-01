@@ -5,7 +5,7 @@
 
 namespace sh
 {
-	class TransformSystem : public System
+	class SHADOW_API TransformSystem : public System
 	{
 	public:
 		virtual void RegisterEntity(Entity* entity) override;

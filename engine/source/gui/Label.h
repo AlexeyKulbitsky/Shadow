@@ -9,7 +9,7 @@ namespace sh
 namespace gui
 {
 
-	class Label : public Text
+	class SHADOW_API Label : public Text
 	{
 	public:
 		Label(); 

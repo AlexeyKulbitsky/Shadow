@@ -8,7 +8,7 @@ namespace sh
 {
 	namespace io
 	{
-		struct FileSystemComponent
+		struct SHADOW_API FileSystemComponent
 		{
 			enum class Type
 			{
@@ -27,7 +27,7 @@ namespace sh
 
 
 
-		struct FileInfo : public FileSystemComponent
+		struct SHADOW_API FileInfo : public FileSystemComponent
 		{
 			FileInfo(const String& name, const String& absolutePath) : FileSystemComponent(name, absolutePath) {}
 			FileInfo(const FileInfo& other) : FileSystemComponent(other.name, other.absolutePath) {}
@@ -47,7 +47,7 @@ namespace sh
 			virtual Type GetType() const override final { return Type::File; }
 		};
 
-		struct FolderInfo : public FileSystemComponent
+		struct SHADOW_API FolderInfo : public FileSystemComponent
 		{
 			FolderInfo(const String& name, const String& absolutePath) : FileSystemComponent(name, absolutePath) {}
 
@@ -58,7 +58,7 @@ namespace sh
 			std::vector<SPtr<FileSystemComponent>> children;
 		};
 
-		class FileSystem : public Singleton<FileSystem>
+		class SHADOW_API FileSystem : public Singleton<FileSystem>
 		{
 		public:
 			FileSystem();
