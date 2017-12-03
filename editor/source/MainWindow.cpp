@@ -329,7 +329,7 @@ void MainWindow::OnKeyboardEvent(sh::KeyboardEventType type, sh::KeyCode code)
 void MainWindow::OnWindowResized(int width, int height)
 {
 	sh::gui::GuiManager::GetInstance()->SetFocusWidget(nullptr);
-	m_mainWidget->SetRect(sh::math::Recti(0, 0, width, height));
+	m_mainWidget->SetRect(sh::math::Rect(0, 0, width, height));
 }
 
 void MainWindow::Init()
@@ -411,7 +411,7 @@ void MainWindow::Init()
 	mainLayout->AddLayout(inspectorLayout);
 	m_mainWidget->SetLayout(mainVerticalLayout);
 	auto viewport = sh::Device::GetInstance()->GetDriver()->GetViewport();
-	m_mainWidget->SetRect(sh::math::Recti(0, 0, viewport.lowerRightCorner.x, viewport.lowerRightCorner.y));
+	m_mainWidget->SetRect(sh::math::Rect(0, 0, viewport.lowerRightCorner.x, viewport.lowerRightCorner.y));
 }
 
 void MainWindow::Destroy()
@@ -439,8 +439,8 @@ void MainWindow::Update(sh::u64 delta)
 {
 	sh::Device* device = sh::Device::GetInstance();
 	sh::InputManager* inputManager = device->GetInputManager();
-	sh::math::Vector2i old = inputManager->GetMousePositionOld();
-	sh::math::Vector2i current = inputManager->GetMousePositionCurrent();
+	sh::math::Vector2Int old = inputManager->GetMousePositionOld();
+	sh::math::Vector2Int current = inputManager->GetMousePositionCurrent();
 	sh::scene::Camera* camera = device->GetSceneManager()->GetCamera();
 
 
@@ -448,59 +448,59 @@ void MainWindow::Update(sh::u64 delta)
 	{
 		if (inputManager->IsKeyPressed(sh::KeyCode::KEY_MENU))
 		{
-			const sh::math::Vector4u& viewport = device->GetDriver()->GetViewPort();
-			sh::math::Vector3f targetPos(0.0f);
+			const sh::math::Vector4& viewport = device->GetDriver()->GetViewPort();
+			sh::math::Vector3 targetPos(0.0f);
 			if (m_cameraTargetEntity)
 			{
 				auto transformComponent = m_cameraTargetEntity->GetComponent<sh::TransformComponent>();
 				targetPos = transformComponent->GetPosition();
 			}
 
-			sh::math::Vector2i delta = current - old;
+			sh::math::Vector2Int delta = current - old;
 
 			float yAxisAngle = -(float)delta.x * 0.01f;
-			sh::math::Quaternionf yAxisRot;
+			sh::math::Quaternion yAxisRot;
 			//yAxisRot.SetFromAxisAngle(camera->GetUpVector(), yAxisAngle);
 			yAxisRot.SetFromAxisAngle(sh::scene::SceneManager::GetUpVector(), yAxisAngle);
 
 			float xAxisangle = -(float)delta.y * 0.01f;
-			sh::math::Quaternionf xAxisRot;
+			sh::math::Quaternion xAxisRot;
 			xAxisRot.SetFromAxisAngle(camera->GetRightVector(), xAxisangle);
 
-			sh::math::Quaternionf deltaRot = yAxisRot * xAxisRot;
+			sh::math::Quaternion deltaRot = yAxisRot * xAxisRot;
 
-			sh::math::Vector3f baseVec = camera->GetPosition() - targetPos;
+			sh::math::Vector3 baseVec = camera->GetPosition() - targetPos;
 			float length = baseVec.GetLength();
 			baseVec.Normalize();
-			sh::math::Vector3f targetVec = deltaRot * baseVec;
+			sh::math::Vector3 targetVec = deltaRot * baseVec;
 			camera->SetPosition(targetPos + targetVec * length);
 
 			camera->SetRotation(deltaRot * camera->GetRotation());
 		}
 		else
 		{
-			sh::math::Vector3f targetPos(0.0f);
+			sh::math::Vector3 targetPos(0.0f);
 			if (m_cameraTargetEntity)
 			{
 				auto transformComponent = m_cameraTargetEntity->GetComponent<sh::TransformComponent>();
 				targetPos = transformComponent->GetPosition();
-				sh::math::Planef plane(targetPos, camera->GetFrontVector() * (-1.0f));
+				sh::math::Plane plane(targetPos, camera->GetFrontVector() * (-1.0f));
 
-				sh::math::Vector3f rayOrigin, rayDirOld, rayDirCurrent;
+				sh::math::Vector3 rayOrigin, rayDirOld, rayDirCurrent;
 				camera->BuildRay(old.x, old.y, rayOrigin, rayDirOld);
 				camera->BuildRay(current.x, current.y, rayOrigin, rayDirCurrent);
-				sh::math::Vector3f intersectionOld(0.0f), intersectionCurrent(0.0f);
+				sh::math::Vector3 intersectionOld(0.0f), intersectionCurrent(0.0f);
 				plane.GetIntersectionWithLine(rayOrigin, rayDirOld, intersectionOld);
 				plane.GetIntersectionWithLine(rayOrigin, rayDirCurrent, intersectionCurrent);
-				sh::math::Vector3f delta = intersectionCurrent - intersectionOld;
+				sh::math::Vector3 delta = intersectionCurrent - intersectionOld;
 				camera->SetPosition(camera->GetPosition() - delta);
 			}
 			else
 			{
-				sh::math::Vector2i delta = current - old;
-				sh::math::Vector3f cameraUpMove = camera->GetUpVector() * static_cast<float>(delta.y) * 0.1f;
-				sh::math::Vector3f cameraRightMove = camera->GetRightVector() * static_cast<float>(-delta.x) * 0.1f;
-				sh::math::Vector3f cameraDeltaMove = cameraUpMove + cameraRightMove;
+				sh::math::Vector2Int delta = current - old;
+				sh::math::Vector3 cameraUpMove = camera->GetUpVector() * static_cast<float>(delta.y) * 0.1f;
+				sh::math::Vector3 cameraRightMove = camera->GetRightVector() * static_cast<float>(-delta.x) * 0.1f;
+				sh::math::Vector3 cameraDeltaMove = cameraUpMove + cameraRightMove;
 				//camera->SetPosition(camera->GetPosition() + cameraDeltaMove);
 			}
 		}
@@ -532,67 +532,67 @@ sh::gui::MenuBarPtr MainWindow::CreateMenuBar()
 {
 	// Menu bar
 	sh::gui::MenuBarPtr menuBar(new sh::gui::MenuBar());
-	sh::gui::ButtonPtr menuButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
-	sh::gui::ButtonPtr editButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	sh::gui::ButtonPtr menuButton(new sh::gui::Button(sh::math::Rect(0, 0, 50, 15)));
+	sh::gui::ButtonPtr editButton(new sh::gui::Button(sh::math::Rect(0, 0, 50, 15)));
 	menuButton->SetToggleable(true);
 	const auto& fileMenu = menuBar->AddMenu("File", menuButton);
 	const auto& editMenu = menuBar->AddMenu("Edit", editButton);
 
-	sh::gui::ButtonPtr newSceneButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	sh::gui::ButtonPtr newSceneButton(new sh::gui::Button(sh::math::Rect(0, 0, 50, 15)));
 	newSceneButton->SetText("New scene");
 	newSceneButton->OnRelease.Connect(std::bind(&MainWindow::NewScene, this));
 	fileMenu->AddItem(newSceneButton);
 
-	sh::gui::ButtonPtr openSceneButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	sh::gui::ButtonPtr openSceneButton(new sh::gui::Button(sh::math::Rect(0, 0, 50, 15)));
 	openSceneButton->SetText("Open scene");
 	openSceneButton->OnRelease.Connect(std::bind(&MainWindow::OpenScene, this));
 	fileMenu->AddItem(openSceneButton);
 
-	sh::gui::ButtonPtr saveSceneButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	sh::gui::ButtonPtr saveSceneButton(new sh::gui::Button(sh::math::Rect(0, 0, 50, 15)));
 	saveSceneButton->SetText("Save scene...");
 	saveSceneButton->OnRelease.Connect(std::bind(&MainWindow::SaveScene, this));
 	fileMenu->AddItem(saveSceneButton);
 
-	sh::gui::ButtonPtr newProjectButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	sh::gui::ButtonPtr newProjectButton(new sh::gui::Button(sh::math::Rect(0, 0, 50, 15)));
 	newProjectButton->SetText("New project");
 	newProjectButton->OnRelease.Connect(std::bind(&MainWindow::NewProject, this));
 	fileMenu->AddItem(newProjectButton);
 
-	sh::gui::ButtonPtr openProjectButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	sh::gui::ButtonPtr openProjectButton(new sh::gui::Button(sh::math::Rect(0, 0, 50, 15)));
 	openProjectButton->SetText("Open project");
 	openProjectButton->OnRelease.Connect(std::bind(&MainWindow::OpenProject, this));
 	fileMenu->AddItem(openProjectButton);
 
-	sh::gui::ButtonPtr saveProjectButton(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	sh::gui::ButtonPtr saveProjectButton(new sh::gui::Button(sh::math::Rect(0, 0, 50, 15)));
 	saveProjectButton->SetText("Save project...");
 	saveProjectButton->OnRelease.Connect(std::bind(&MainWindow::SaveProject, this));
 	fileMenu->AddItem(saveProjectButton);
 
-	sh::gui::ButtonPtr exitButton1(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	sh::gui::ButtonPtr exitButton1(new sh::gui::Button(sh::math::Rect(0, 0, 50, 15)));
 	exitButton1->SetText("Exit");
 	exitButton1->OnRelease.Connect(std::bind(&MainWindow::Close, this));
 	fileMenu->AddItem(exitButton1);
 
 	////////////////////////////////////////////////////////
 
-	sh::gui::ButtonPtr edit1Button(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	sh::gui::ButtonPtr edit1Button(new sh::gui::Button(sh::math::Rect(0, 0, 50, 15)));
 	edit1Button->SetText("Edit 1");
 	editMenu->AddItem(edit1Button);
 
-	sh::gui::ButtonPtr edit2Button(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	sh::gui::ButtonPtr edit2Button(new sh::gui::Button(sh::math::Rect(0, 0, 50, 15)));
 	edit2Button->SetText("Edit 2");
 	editMenu->AddItem(edit2Button);
 
 	sh::gui::MenuPtr subMenu(new sh::gui::Menu());
-	sh::gui::ButtonPtr sub1Button(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	sh::gui::ButtonPtr sub1Button(new sh::gui::Button(sh::math::Rect(0, 0, 50, 15)));
 	sub1Button->SetText("Submenu 1");
 	subMenu->AddItem(sub1Button);
 
-	sh::gui::ButtonPtr sub2Button(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	sh::gui::ButtonPtr sub2Button(new sh::gui::Button(sh::math::Rect(0, 0, 50, 15)));
 	sub2Button->SetText("Submenu 2");
 	subMenu->AddItem(sub2Button);
 
-	sh::gui::ButtonPtr sub3Button(new sh::gui::Button(sh::math::Recti(0, 0, 50, 15)));
+	sh::gui::ButtonPtr sub3Button(new sh::gui::Button(sh::math::Rect(0, 0, 50, 15)));
 	sub3Button->SetText("Submenu 3");
 	subMenu->AddItem(sub3Button);
 

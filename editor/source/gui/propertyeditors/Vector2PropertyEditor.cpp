@@ -23,7 +23,7 @@ Vector2PropertyEditor::Vector2PropertyEditor(sh::Serializable* object, sh::Prope
 	m_edit->valueChanged.Connect(std::bind(&Vector2PropertyEditor::OnValueChanged, this, std::placeholders::_1));
 }
 
-void Vector2PropertyEditor::OnValueChanged(const sh::math::Vector2f& value)
+void Vector2PropertyEditor::OnValueChanged(const sh::math::Vector2& value)
 {
 	m_objectProperty->SetValue(m_object, value);
 }

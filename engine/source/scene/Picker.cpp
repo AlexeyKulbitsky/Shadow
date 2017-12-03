@@ -77,8 +77,8 @@ namespace sh
 		{
 			sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
 			sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
-			sh::math::Matrix4f viewMatrix = camera->GetViewMatrix();
-			sh::math::Matrix4f projectionMatrix = camera->GetProjectionMatrix();
+			sh::math::Matrix4 viewMatrix = camera->GetViewMatrix();
+			sh::math::Matrix4 projectionMatrix = camera->GetProjectionMatrix();
 			
 			driver->BeginRendering();
 
@@ -89,7 +89,7 @@ namespace sh
 				int r = (i & 0x000000FF) >>  0;
 				int g = (i & 0x0000FF00) >>  8;
 				int b = (i & 0x00FF0000) >> 16;
-				sh::math::Vector4f color(r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
+				sh::math::Vector4 color(r / 255.0f, g / 255.0f, b / 255.0f, 1.0f);
 
 				m_color.Set(color);
 
@@ -112,7 +112,7 @@ namespace sh
 				{
 					const auto& mesh = model->GetMesh(j);
 					const auto& renderable = mesh->GetRanderable();
-					sh::math::Matrix4f wvpMatrix = projectionMatrix * viewMatrix * mesh->GetWorldMatrix();
+					sh::math::Matrix4 wvpMatrix = projectionMatrix * viewMatrix * mesh->GetWorldMatrix();
 					wvpMatrix.Transpose();
 					m_wvpMtrix.Set(wvpMatrix);
 
@@ -145,8 +145,8 @@ namespace sh
 		{
 			sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
 
-			sh::math::Vector3f rayOrigin(0.0f);
-			sh::math::Vector3f rayDirection(0.0f);
+			sh::math::Vector3 rayOrigin(0.0f);
+			sh::math::Vector3 rayDirection(0.0f);
 
 			float t0 = 0.0f;
 			float t1 = 0.0f;

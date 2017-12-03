@@ -7,7 +7,7 @@ namespace sh
 {
 	namespace video
 	{
-		class TextureLoader : public Singleton<TextureLoader>
+		class SHADOW_API TextureLoader : public Singleton<TextureLoader>
 		{
 		public:
 			TextureLoader();

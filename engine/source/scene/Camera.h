@@ -15,29 +15,29 @@ namespace sh
 
 			void Update();
 
-			void SetPosition(const math::Vector3f& pos);
-			const math::Vector3f& GetPosition() const { return m_position; }
+			void SetPosition(const math::Vector3& pos);
+			const math::Vector3& GetPosition() const { return m_position; }
 
-			void SetRotation(const math::Quaternionf& rot);
-			const math::Quaternionf& GetRotation() const { return m_rotation; }
+			void SetRotation(const math::Quaternion& rot);
+			const math::Quaternion& GetRotation() const { return m_rotation; }
 
 			void SetProjection(f32 fov, f32 aspect, f32 nearPlane, f32 farPlane);
 			void SetProjection(f32 fov, f32 width, f32 height, f32 nearPlane, f32 farPlane);
-			void BuildRay(u32 x, u32 y, math::Vector3f& origin, math::Vector3f& direction);
+			void BuildRay(u32 x, u32 y, math::Vector3& origin, math::Vector3& direction);
 
 			f32 GetFov() const { return m_fovy; }
 			f32 GetNearPlane() const { return m_nearDistance; }
 			f32 GetFarPlane() const { return m_farDistance; }
 
-			const math::Matrix4f& GetViewMatrix();
-			const math::Matrix4f& GetProjectionMatrix();
-			const math::Matrix4f& GetViewProjectionMatrix();
-			const math::Matrix4f& Get2DProjectionMatrix() const { return m_2dProjectionMatrix; }
-			const math::Matrix4f& GetRotationMatrix() const { return m_rotationMatrix; }
+			const math::Matrix4& GetViewMatrix();
+			const math::Matrix4& GetProjectionMatrix();
+			const math::Matrix4& GetViewProjectionMatrix();
+			const math::Matrix4& Get2DProjectionMatrix() const { return m_2dProjectionMatrix; }
+			const math::Matrix4& GetRotationMatrix() const { return m_rotationMatrix; }
 
-			const math::Vector3f& GetFrontVector() const { return m_frontVector; }
-			const math::Vector3f& GetRightVector() const { return m_rightVector; }
-			const math::Vector3f& GetUpVector() const { return m_upVector; }
+			const math::Vector3& GetFrontVector() const { return m_frontVector; }
+			const math::Vector3& GetRightVector() const { return m_rightVector; }
+			const math::Vector3& GetUpVector() const { return m_upVector; }
 
 		protected:
 			void UpdateViewMatrix();
@@ -45,24 +45,24 @@ namespace sh
 			void UpdateMatrixTransform();
 
 		protected:
-			math::Vector3f m_position;
-			math::Quaternionf m_rotation;
+			math::Vector3 m_position;
+			math::Quaternion m_rotation;
 
 			f32 m_fovy;
 			f32 m_nearDistance;
 			f32 m_farDistance;
 			f32 m_aspectRatio;
 
-			math::Matrix4f m_projectionMatrix;
-			math::Matrix4f m_rotationMatrix;
-			math::Matrix4f m_translationMatrix;
-			math::Matrix4f m_viewMatrix;
-			math::Matrix4f m_viewProjectionMatrix;
-			math::Matrix4f m_2dProjectionMatrix;
+			math::Matrix4 m_projectionMatrix;
+			math::Matrix4 m_rotationMatrix;
+			math::Matrix4 m_translationMatrix;
+			math::Matrix4 m_viewMatrix;
+			math::Matrix4 m_viewProjectionMatrix;
+			math::Matrix4 m_2dProjectionMatrix;
 
-			math::Vector3f m_frontVector;
-			math::Vector3f m_upVector;
-			math::Vector3f m_rightVector;
+			math::Vector3 m_frontVector;
+			math::Vector3 m_upVector;
+			math::Vector3 m_rightVector;
 
 			bool m_needsToRecalculateViewMatrix;
 			bool m_needsToRecalculateProjectionMatrix;

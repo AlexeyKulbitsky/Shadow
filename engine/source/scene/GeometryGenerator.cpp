@@ -14,7 +14,7 @@ namespace sh
 {
 	namespace scene
 	{
-		ModelPtr GeometryGenerator::GetLineModel(const math::Vector3f& start, const math::Vector3f& end)
+		ModelPtr GeometryGenerator::GetLineModel(const math::Vector3& start, const math::Vector3& end)
 		{
 			// Set vertex data
 			std::vector<float> vertexArray;
@@ -38,13 +38,13 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////
 
-		ModelPtr GeometryGenerator::GetCircleModel(const math::Vector3f& centre, const f32 radius, const math::Vector3f& vtx, const math::Vector3f& vty)
+		ModelPtr GeometryGenerator::GetCircleModel(const math::Vector3& centre, const f32 radius, const math::Vector3& vtx, const math::Vector3& vty)
 		{
 			std::vector<float> vertexArray;
 
 			for (int i = 0; i < 100; i++)
 			{
-				math::Vector3f vt;
+				math::Vector3 vt;
 				vt = vtx * sh::math::Cos((2 * math::k_pi / 100) * i) * radius;
 				vt += vty * sh::math::Sin((2 * math::k_pi / 100) * i) * radius;
 				vt += centre;
@@ -66,7 +66,7 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////
 
-		ModelPtr GeometryGenerator::GetTorusModel(const math::Vector3f& start, const f32 radius, const f32 ringRadius, u32 sides, u32 rings, const math::Vector3f& vtx, const math::Vector3f& vty)
+		ModelPtr GeometryGenerator::GetTorusModel(const math::Vector3& start, const f32 radius, const f32 ringRadius, u32 sides, u32 rings, const math::Vector3& vtx, const math::Vector3& vty)
 		{
 			float verticalAngularStride = (math::k_pi * 2.0f) / (float)rings;
 			float horizontalAngularStride = (math::k_pi * 2.0f) / (float)sides;
@@ -74,8 +74,8 @@ namespace sh
 			u32 numVerticesPerRow = sides + 1;
 			u32 numVerticesPerColumn = rings + 1;
 
-			math::Vector3f vtz = vtx.Cross(vty);
-			math::Matrix3f rotationMatrix;
+			math::Vector3 vtz = vtx.Cross(vty);
+			math::Matrix3 rotationMatrix;
 			rotationMatrix.SetIdentity();
 			rotationMatrix.m[2][0] = vtz.x;
 			rotationMatrix.m[2][1] = vtz.y;
@@ -104,7 +104,7 @@ namespace sh
 					float z = ringRadius * math::Sin(phi);
 
 					
-					math::Vector3f vt(x, y, z);
+					math::Vector3 vt(x, y, z);
 					
 					vt = rotationMatrix * vt;
 
@@ -155,7 +155,7 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////
 
-		ModelPtr GeometryGenerator::GetTorusModel(const f32 radius, const f32 ringRadius, u32 sides, u32 rings, math::Matrix4f transform)
+		ModelPtr GeometryGenerator::GetTorusModel(const f32 radius, const f32 ringRadius, u32 sides, u32 rings, math::Matrix4 transform)
 		{
 			float verticalAngularStride = (math::k_pi * 2.0f) / (float)rings;
 			float horizontalAngularStride = (math::k_pi * 2.0f) / (float)sides;
@@ -178,7 +178,7 @@ namespace sh
 					float z = ringRadius * math::Sin(phi);
 
 
-					math::Vector4f vt(x, y, z, 1.0f);
+					math::Vector4 vt(x, y, z, 1.0f);
 
 					vt = transform * vt;
 
@@ -225,7 +225,7 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////
 
-		ModelPtr GeometryGenerator::GetHalfTorusModel(const f32 radius, const f32 ringRadius, u32 sides, u32 rings, math::Matrix4f transform)
+		ModelPtr GeometryGenerator::GetHalfTorusModel(const f32 radius, const f32 ringRadius, u32 sides, u32 rings, math::Matrix4 transform)
 		{
 			float verticalAngularStride = (math::k_pi) / (float)rings;
 			float horizontalAngularStride = (math::k_pi) / (float)sides;
@@ -247,7 +247,7 @@ namespace sh
 					float y = math::Sin(theta) * (radius + ringRadius * math::Cos(phi));
 					float z = ringRadius * math::Sin(phi);
 
-					math::Vector4f vt = transform * math::Vector4f(x, y, z, 1.0f);
+					math::Vector4 vt = transform * math::Vector4(x, y, z, 1.0f);
 
 					vertexArray.push_back(vt.x);
 					vertexArray.push_back(vt.y);
@@ -287,7 +287,7 @@ namespace sh
 			return CreateModel(vertexArray, indexArray, vertexDeclaration, Topology::TOP_TRIANGLE_LIST);
 		}
 
-		ModelPtr GeometryGenerator::GetHalfTorusModel(const math::Vector3f& start, const f32 radius, const f32 ringRadius, u32 sides, u32 rings, const math::Vector3f& vtx, const math::Vector3f& vty)
+		ModelPtr GeometryGenerator::GetHalfTorusModel(const math::Vector3& start, const f32 radius, const f32 ringRadius, u32 sides, u32 rings, const math::Vector3& vtx, const math::Vector3& vty)
 		{
 			float verticalAngularStride = (math::k_pi) / (float)rings;
 			float horizontalAngularStride = (math::k_pi) / (float)sides;
@@ -295,8 +295,8 @@ namespace sh
 			u32 numVerticesPerRow = sides + 1;
 			u32 numVerticesPerColumn = rings + 1;
 
-			math::Vector3f vtz = vtx.Cross(vty);
-			math::Matrix3f rotationMatrix;
+			math::Vector3 vtz = vtx.Cross(vty);
+			math::Matrix3 rotationMatrix;
 			rotationMatrix.SetIdentity();
 			rotationMatrix.m[2][0] = vtz.x;
 			rotationMatrix.m[2][1] = vtz.y;
@@ -325,7 +325,7 @@ namespace sh
 					float z = ringRadius * math::Sin(phi);
 
 					
-					math::Vector3f vt(x, y, z);
+					math::Vector3 vt(x, y, z);
 					
 					vt = rotationMatrix * vt;
 
@@ -376,12 +376,12 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////
 
-		ModelPtr GeometryGenerator::GetCylinderModel(f32 height, f32 radius, u32 numberOfSides, math::Matrix4f transform)
+		ModelPtr GeometryGenerator::GetCylinderModel(f32 height, f32 radius, u32 numberOfSides, math::Matrix4 transform)
 		{
 			std::vector<float> vertexArray;
 
-			math::Vector3f srcVertex(0.0f);
-			math::Vector3f resultVertex(0.0f);
+			math::Vector3 srcVertex(0.0f);
+			math::Vector3 resultVertex(0.0f);
 			for (u32 i = 0; i < numberOfSides; i++)
 			{
 				srcVertex.x = sh::math::Cos((4 * math::k_pi / numberOfSides) * i) * radius;
@@ -424,12 +424,12 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////
 
-		ModelPtr GeometryGenerator::GetConeModel(f32 radius, f32 height, math::Matrix4f transform)
+		ModelPtr GeometryGenerator::GetConeModel(f32 radius, f32 height, math::Matrix4 transform)
 		{
 			std::vector<float> vertexArray;
 			u32 numberOfSides = 30U;
-			math::Vector3f srcVertex(0.0f);
-			math::Vector3f resultVertex(0.0f);
+			math::Vector3 srcVertex(0.0f);
+			math::Vector3 resultVertex(0.0f);
 
 			srcVertex.x = 0.0f;
 			srcVertex.z = 0.0f;
@@ -442,7 +442,7 @@ namespace sh
 
 			for (size_t i = 0; i <= numberOfSides; ++i)
 			{
-				math::Vector3f pt;
+				math::Vector3 pt;
 				srcVertex.x = sh::math::Cos(((2 * sh::math::k_pi) / numberOfSides) * i) * radius;
 				srcVertex.z = sh::math::Sin(((2 * sh::math::k_pi) / numberOfSides) * i) * radius;
 				srcVertex.y = 0.0f;
@@ -463,32 +463,32 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////
 
-		ModelPtr GeometryGenerator::GetPlaneModel(f32 width, f32 height, math::Matrix4f transform)
+		ModelPtr GeometryGenerator::GetPlaneModel(f32 width, f32 height, math::Matrix4 transform)
 		{
-			math::Vector3f srcVertex(0.0f);
-			math::Vector3f resultVertex(0.0f);
+			math::Vector3 srcVertex(0.0f);
+			math::Vector3 resultVertex(0.0f);
 
 			std::vector<float> vertexArray;
 
-			srcVertex = sh::math::Vector3f(-width / 2.0f, -height / 2.0f, 0.0f);
+			srcVertex = sh::math::Vector3(-width / 2.0f, -height / 2.0f, 0.0f);
 			resultVertex = transform * srcVertex;
 			vertexArray.push_back(resultVertex.x);
 			vertexArray.push_back(resultVertex.y);
 			vertexArray.push_back(resultVertex.z); 
 
-			srcVertex = sh::math::Vector3f(width / 2.0f, -height / 2.0f, 0.0f);
+			srcVertex = sh::math::Vector3(width / 2.0f, -height / 2.0f, 0.0f);
 			resultVertex = transform * srcVertex;
 			vertexArray.push_back(resultVertex.x);
 			vertexArray.push_back(resultVertex.y);
 			vertexArray.push_back(resultVertex.z); 
 
-			srcVertex = sh::math::Vector3f(width / 2.0f, height / 2.0f, 0.0f);
+			srcVertex = sh::math::Vector3(width / 2.0f, height / 2.0f, 0.0f);
 			resultVertex = transform * srcVertex;
 			vertexArray.push_back(resultVertex.x);
 			vertexArray.push_back(resultVertex.y);
 			vertexArray.push_back(resultVertex.z); 
 
-			srcVertex = sh::math::Vector3f(-width / 2.0f, height / 2.0f, 0.0f);
+			srcVertex = sh::math::Vector3(-width / 2.0f, height / 2.0f, 0.0f);
 			resultVertex = transform * srcVertex;
 			vertexArray.push_back(resultVertex.x);
 			vertexArray.push_back(resultVertex.y);

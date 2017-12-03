@@ -56,7 +56,7 @@ namespace sh
 				std::vector<unsigned int> indexArray;
 				sh::video::VertexDeclarationPtr vertexDeclaration = sh::video::VertexDeclarationPtr(new sh::video::VertexDeclaration());
 				size_t verticesCount = 0;
-				math::AABBf boundingBox(math::Vector3f(0.0f));
+				math::AABB boundingBox(math::Vector3(0.0f));
 				
 
 				for (const auto& index : shape.mesh.indices)

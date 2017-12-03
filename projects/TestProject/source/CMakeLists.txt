@@ -9,11 +9,11 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "../lib")
 
 # Add engine (must be compolied before linking)
 #add_subdirectory(../../../engine "${CMAKE_CURRENT_BINARY_DIR}/engine_build")
-find_library(SHADOW_LIBRARY Shadow HINTS ../../../editor/build/engine_build/Debug)
+find_library(SHADOW_LIBRARY Shadow HINTS ../../../engine/$<CONFIGURATION>)
 include_directories(../../../engine/source)
 
-include_directories( ../../../libs/pugixml/src )
-include_directories(../../../libs/freetype/include)
+#include_directories( ../../../libs/pugixml/src )
+#include_directories(../../../libs/freetype/include)
 
 #if(USE_ASSIMP_API)
 #  include_directories(../../../libs/assimp/include)

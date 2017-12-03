@@ -125,7 +125,7 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		void Painter::SetClipRect(const math::Rectu& rect)
+		void Painter::SetClipRect(const math::Rect& rect)
 		{
 			// Set clip rect for lines batches
 			const u32 linessIdx = m_lines.linesBatches.size() - 1U;
@@ -168,7 +168,7 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		const math::Rectu& Painter::GetClipRect() const
+		const math::Rect& Painter::GetClipRect() const
 		{
 			const u32 idx = m_triangles.trianglesBatches.size() - 1U;
 			return m_triangles.trianglesBatches[idx].clipRect;
@@ -176,7 +176,7 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		void Painter::DrawLine(const math::Vector3f& a, const math::Vector3f& b)
+		void Painter::DrawLine(const math::Vector3& a, const math::Vector3& b)
 		{
 			const auto& declaration = m_material->GetRenderPipeline()->GetVertexInputDeclaration();
 			const u32 attributesCount = declaration->GetAttributesCount();
@@ -239,7 +239,7 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		void Painter::DrawRect(const math::Rectu& rect, const gui::SpritePtr& sprite)
+		void Painter::DrawRect(const math::Rect& rect, const gui::SpritePtr& sprite)
 		{
 
 		}
@@ -418,25 +418,25 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		void Painter::DrawBox(const math::AABBf& box)
+		void Painter::DrawBox(const math::AABB& box)
 		{
 			const auto& a = box.minPoint;
 			const auto& b = box.maxPoint;
 
-			DrawLine(math::Vector3f(a.x, a.y, a.z), math::Vector3f(b.x, a.y, a.z));
-			DrawLine(math::Vector3f(b.x, a.y, a.z), math::Vector3f(b.x, b.y, a.z));
-			DrawLine(math::Vector3f(b.x, b.y, a.z), math::Vector3f(a.x, b.y, a.z));
-			DrawLine(math::Vector3f(a.x, b.y, a.z), math::Vector3f(a.x, a.y, a.z));
+			DrawLine(math::Vector3(a.x, a.y, a.z), math::Vector3(b.x, a.y, a.z));
+			DrawLine(math::Vector3(b.x, a.y, a.z), math::Vector3(b.x, b.y, a.z));
+			DrawLine(math::Vector3(b.x, b.y, a.z), math::Vector3(a.x, b.y, a.z));
+			DrawLine(math::Vector3(a.x, b.y, a.z), math::Vector3(a.x, a.y, a.z));
 
-			DrawLine(math::Vector3f(b.x, b.y, b.z), math::Vector3f(a.x, b.y, b.z));
-			DrawLine(math::Vector3f(a.x, b.y, b.z), math::Vector3f(a.x, a.y, b.z));
-			DrawLine(math::Vector3f(a.x, a.y, b.z), math::Vector3f(b.x, a.y, b.z));
-			DrawLine(math::Vector3f(b.x, a.y, b.z), math::Vector3f(b.x, b.y, b.z));
+			DrawLine(math::Vector3(b.x, b.y, b.z), math::Vector3(a.x, b.y, b.z));
+			DrawLine(math::Vector3(a.x, b.y, b.z), math::Vector3(a.x, a.y, b.z));
+			DrawLine(math::Vector3(a.x, a.y, b.z), math::Vector3(b.x, a.y, b.z));
+			DrawLine(math::Vector3(b.x, a.y, b.z), math::Vector3(b.x, b.y, b.z));
 
-			DrawLine(math::Vector3f(a.x, a.y, a.z), math::Vector3f(a.x, a.y, b.z));
-			DrawLine(math::Vector3f(a.x, b.y, a.z), math::Vector3f(a.x, b.y, b.z));
-			DrawLine(math::Vector3f(b.x, b.y, a.z), math::Vector3f(b.x, b.y, b.z));
-			DrawLine(math::Vector3f(b.x, a.y, a.z), math::Vector3f(b.x, a.y, b.z));
+			DrawLine(math::Vector3(a.x, a.y, a.z), math::Vector3(a.x, a.y, b.z));
+			DrawLine(math::Vector3(a.x, b.y, a.z), math::Vector3(a.x, b.y, b.z));
+			DrawLine(math::Vector3(b.x, b.y, a.z), math::Vector3(b.x, b.y, b.z));
+			DrawLine(math::Vector3(b.x, a.y, a.z), math::Vector3(b.x, a.y, b.z));
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -468,9 +468,9 @@ namespace sh
 		{
 			sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
 			sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
-			const sh::math::Matrix4f& viewMatrix = camera->GetViewMatrix();
-			const sh::math::Matrix4f& projectionMatrix = camera->GetProjectionMatrix();
-			const sh::math::Matrix4f& projection2DMatrix = camera->Get2DProjectionMatrix();
+			const sh::math::Matrix4& viewMatrix = camera->GetViewMatrix();
+			const sh::math::Matrix4& projectionMatrix = camera->GetProjectionMatrix();
+			const sh::math::Matrix4& projection2DMatrix = camera->Get2DProjectionMatrix();
 
 			m_commandBuffer->Begin();
 
@@ -513,13 +513,13 @@ namespace sh
 							break;
 						case MaterialParamUsage::MatrixViewProjection:
 						{
-							math::Matrix4f viewProjection = projectionMatrix * viewMatrix;
+							math::Matrix4 viewProjection = projectionMatrix * viewMatrix;
 							param->Set(viewProjection);
 						}
 						break;
 						case MaterialParamUsage::MatrixWorldViewProjection:
 						{
-							math::Matrix4f wvp = projectionMatrix * viewMatrix;
+							math::Matrix4 wvp = projectionMatrix * viewMatrix;
 							wvp.Transpose();
 							param->Set(wvp);
 						}
@@ -592,13 +592,13 @@ namespace sh
 							break;
 						case MaterialParamUsage::MatrixViewProjection:
 						{
-							math::Matrix4f viewProjection = projectionMatrix * viewMatrix;
+							math::Matrix4 viewProjection = projectionMatrix * viewMatrix;
 							param->Set(viewProjection);
 						}
 						break;
 						case MaterialParamUsage::MatrixWorldViewProjection:
 						{
-							math::Matrix4f wvp = projectionMatrix * viewMatrix;
+							math::Matrix4 wvp = projectionMatrix * viewMatrix;
 							wvp.Transpose();
 							param->Set(wvp);
 						}

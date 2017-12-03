@@ -2,7 +2,7 @@
 #include "ComponentEditor.h"
 
 InspectorWidget::InspectorWidget()
-	: sh::gui::Window(sh::math::Recti(100, 100, 350, 500))
+	: sh::gui::Window(sh::math::Rect(100, 100, 350, 500))
 {
 	const auto& viewport = sh::Device::GetInstance()->GetDriver()->GetViewPort();
 	SetText("Inspector");

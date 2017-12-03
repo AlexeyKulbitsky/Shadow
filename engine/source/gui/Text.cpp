@@ -15,7 +15,7 @@ namespace gui
 	{
 	}
 
-	Text::Text(const math::Recti rect)
+	Text::Text(const math::Rect rect)
 	{
 		m_rect = rect;
 	}
@@ -25,7 +25,7 @@ namespace gui
 		SetText(text);
 	}
 
-	Text::Text(const math::Recti rect, const String& text)
+	Text::Text(const math::Rect rect, const String& text)
 	{
 		m_rect = rect;
 		SetText(text);
@@ -79,12 +79,12 @@ namespace gui
 			float u2 = static_cast<float>(desc.x1) / static_cast<float>(width);
 			float v2 = static_cast<float>(desc.y1) / static_cast<float>(height);
 
-			video::Painter::Vertex upperLeft(math::Vector3f(x1, y1, 0.0f), 
-											math::Vector2f(u1, v1), 
-											math::Vector4f(0.0f, 0.0f, 0.0f, 1.0f));
-			video::Painter::Vertex downRight(math::Vector3f(x2, y2, 0.0f),
-											math::Vector2f(u2, v2),
-											math::Vector4f(0.0f, 0.0f, 0.0f, 1.0f));
+			video::Painter::Vertex upperLeft(math::Vector3(x1, y1, 0.0f), 
+											math::Vector2(u1, v1), 
+											math::Vector4(0.0f, 0.0f, 0.0f, 1.0f));
+			video::Painter::Vertex downRight(math::Vector3(x2, y2, 0.0f),
+											math::Vector2(u2, v2),
+											math::Vector4(0.0f, 0.0f, 0.0f, 1.0f));
 			painter->DrawRect(upperLeft, downRight);
 
 			xOrigin += desc.advance;
@@ -130,12 +130,12 @@ namespace gui
 			float u2 = static_cast<float>(desc.x1) / static_cast<float>(width);
 			float v2 = static_cast<float>(desc.y1) / static_cast<float>(height);
 
-			video::Painter::Vertex upperLeft(math::Vector3f(x1, y1, 0.0f),
-				math::Vector2f(u1, v1),
-				math::Vector4f(0.0f, 0.0f, 0.0f, 1.0f));
-			video::Painter::Vertex downRight(math::Vector3f(x2, y2, 0.0f),
-				math::Vector2f(u2, v2),
-				math::Vector4f(0.0f, 0.0f, 0.0f, 1.0f));
+			video::Painter::Vertex upperLeft(math::Vector3(x1, y1, 0.0f),
+				math::Vector2(u1, v1),
+				math::Vector4(0.0f, 0.0f, 0.0f, 1.0f));
+			video::Painter::Vertex downRight(math::Vector3(x2, y2, 0.0f),
+				math::Vector2(u2, v2),
+				math::Vector4(0.0f, 0.0f, 0.0f, 1.0f));
 			painter->DrawRect(upperLeft, downRight);
 
 			xOrigin += desc.advance;
@@ -143,7 +143,7 @@ namespace gui
 		//painter->SetClipRect(cachedClipRect);
 	}
 
-	void Text::SetRect(const math::Recti& rect)
+	void Text::SetRect(const math::Rect& rect)
 	{
 		m_rect = rect;
 	}
@@ -154,7 +154,7 @@ namespace gui
 		m_rect.Set(x, y, x + size.x, y + size.y);
 	}
 
-	void Text::SetSize( const math::Vector2i& size )
+	void Text::SetSize( const math::Vector2Int& size )
 	{
 		Widget::SetSize(size);
 	}

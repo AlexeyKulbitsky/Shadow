@@ -19,9 +19,9 @@ namespace gui
 		void SetSprite(const SpritePtr& sprite) { m_sprite = sprite; }
 		const SpritePtr& GetSprite() const { return m_sprite; }
 		// Set the same color for all corners
-		void SetColor(const math::Vector4f& color);
+		void SetColor(const math::Vector4& color);
 		// Set different color for each corner
-		void SetColor(const math::Vector4f& downLeft, const math::Vector4f& upperLeft, const math::Vector4f& upperRight, const math::Vector4f& downRight);
+		void SetColor(const math::Vector4& downLeft, const math::Vector4& upperLeft, const math::Vector4& upperRight, const math::Vector4& downRight);
 
 		virtual void Render(video::Painter* painter) override;
 		virtual void RenderBackground(video::Painter* painter) override;
@@ -29,7 +29,7 @@ namespace gui
 
 	private:
 		SpritePtr m_sprite;
-		std::array<math::Vector4f, 4U> m_colors;
+		std::array<math::Vector4, 4U> m_colors;
 	};
 
 } // gui

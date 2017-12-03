@@ -10,7 +10,7 @@ public:
 	Vector4PropertyEditor(sh::Serializable* object, sh::Property* objectProperty);
 
 private:
-	void OnValueChanged(const sh::math::Vector4f& value);
+	void OnValueChanged(const sh::math::Vector4& value);
 
 private:
 	sh::SPtr<Vector4LineEdit> m_edit;

@@ -13,27 +13,27 @@ public:
 	virtual bool ProcessEvent(sh::gui::GUIEvent& ev) override;
 	virtual void UpdateLayout() override;
 
-	const sh::math::Vector4f& GetColor() const { return m_color; }
-	void SetColor(const sh::math::Vector4f& color);
+	const sh::math::Vector4& GetColor() const { return m_color; }
+	void SetColor(const sh::math::Vector4& color);
 
-	void OnRGBColorChanged(const sh::math::Vector4i& color);
-	void OnHSVColorChanged(const sh::math::Vector3i& color);
+	void OnRGBColorChanged(const sh::math::Vector4Int& color);
+	void OnHSVColorChanged(const sh::math::Vector3Int& color);
 
-	sh::Event<void, sh::math::Vector4f> colorChanged;
+	sh::Event<void, sh::math::Vector4> colorChanged;
 
 private:
 	sh::video::TexturePtr CreatePalletteTexture() const;
-	sh::math::Vector3f HSVtoRGB(int h, float s, float v) const;
-	void RGBtoHSV(const sh::math::Vector3f& rgb, int& h, float& s, float& v);
+	sh::math::Vector3 HSVtoRGB(int h, float s, float v) const;
+	void RGBtoHSV(const sh::math::Vector3& rgb, int& h, float& s, float& v);
 
 	sh::SPtr<RGBWidget> m_rgbWidget;
 	sh::SPtr<HSVWidget> m_hsvWidget;
 
 	sh::gui::ImageWidgetPtr m_paletteWidget;
 	sh::gui::SpriteWidgetPtr m_colorTarget;
-	sh::math::Vector2i m_colorTargetOffset;
+	sh::math::Vector2Int m_colorTargetOffset;
 
-	sh::math::Vector4f m_color;
+	sh::math::Vector4 m_color;
 	bool m_dragStarted = false;
 };
 

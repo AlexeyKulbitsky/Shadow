@@ -19,7 +19,7 @@ Vector2LineEdit::Vector2LineEdit()
 	m_lineEdits[1]->OnValueChanged.Connect(std::bind(&Vector2LineEdit::OnYvalueChanged, this, std::placeholders::_1));
 }
 
-void Vector2LineEdit::SetValue(const sh::math::Vector2f& value)
+void Vector2LineEdit::SetValue(const sh::math::Vector2& value)
 {
 	m_value = value;
 

@@ -15,7 +15,7 @@ namespace gui
 		m_text = "0";
 	}
 
-	FloatLineEdit::FloatLineEdit(const math::Recti& rect, 
+	FloatLineEdit::FloatLineEdit(const math::Rect& rect, 
 								 const SpritePtr& defaultSprite, 
 								const SpritePtr& editSprite)
 				  : LineEdit(rect, defaultSprite, editSprite)

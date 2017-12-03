@@ -54,20 +54,20 @@ namespace gui
 		// Maximum size
 		void SetMaximumWidth(s32 width) { m_maxSize.x = width; }
 		void SetMaximumHeight(s32 height) { m_maxSize.y = height; }
-		void SetMaximumSize(const math::Vector2i& size) { m_maxSize = size; }
+		void SetMaximumSize(const math::Vector2Int& size) { m_maxSize = size; }
 		s32 GetMaximumWidth() const { return m_maxSize.x; }
 		s32 GetMaximumHeight() const { return m_maxSize.y; }
-		const math::Vector2i& GetMaximumSize() const { return m_maxSize; }
+		const math::Vector2Int& GetMaximumSize() const { return m_maxSize; }
 
 		// Minimum size
 		void SetMinimumWidth(s32 width) { m_minSize.x = width; }
 		void SetMinimumHeight(s32 height) { m_minSize.y = height; }
-		void SetMinimumSize(const math::Vector2i& size) { m_minSize = size; }
+		void SetMinimumSize(const math::Vector2Int& size) { m_minSize = size; }
 		s32 GetMinimumWidth() const { return m_minSize.x; }
 		s32 GetMinimumHeight() const { return m_minSize.y; }
-		const math::Vector2i& GetMinimumSize() const { return m_minSize; }
+		const math::Vector2Int& GetMinimumSize() const { return m_minSize; }
 
-		const math::Recti& GetRect() const { return m_rect; }
+		const math::Rect& GetRect() const { return m_rect; }
 
 		// Layout
 		void SetLayout(const LayoutPtr& layout);
@@ -81,10 +81,10 @@ namespace gui
 		virtual void RenderBackground(video::Painter* painter);
 		virtual void RenderText(video::Painter* painter);
 		virtual void CollectBatches(GuiLayerBatch& batch);
-		virtual void SetRect(const math::Recti& rect);
+		virtual void SetRect(const math::Rect& rect);
 		virtual void SetPosition(s32 x, s32 y);
-		const sh::math::Vector2i& GetPosition() const { return m_rect.upperLeftCorner; }
-		virtual void SetSize(const math::Vector2i& size);
+		const sh::math::Vector2Int& GetPosition() const { return m_rect.upperLeftCorner; }
+		virtual void SetSize(const math::Vector2Int& size);
 		virtual void SetWidth(s32 width);
 		virtual void SetHeight(s32 height);
 		virtual bool ProcessEvent(GUIEvent& ev);
@@ -101,12 +101,12 @@ namespace gui
 	protected:
 		LayoutPtr m_layout;
 		Widget* m_parent = nullptr;
-		math::Vector2i m_maxSize = math::Vector2i(std::numeric_limits<s32>::max());
-		math::Vector2i m_minSize = math::Vector2i(0);
+		math::Vector2Int m_maxSize = math::Vector2Int(std::numeric_limits<int32_t>::max());
+		math::Vector2Int m_minSize = math::Vector2Int(0);
 
 		video::MaterialPtr m_material;
 
-		math::Recti m_rect;
+		math::Rect m_rect;
 		bool m_visible = true;
 		bool m_enabled = true;
 	};

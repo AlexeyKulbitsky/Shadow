@@ -22,7 +22,7 @@ namespace gui
 	struct GuiBatch
 	{
 		sh::video::Material* material = nullptr;
-		math::Recti clipRect;
+		math::Rect clipRect;
 		u32 startIndex = 0U;
 		u32 indicesCount = 0U;
 
@@ -36,8 +36,8 @@ namespace gui
 		std::vector<float> vertexArray;
 		std::vector<u32> indexArray;
 
-		void AddRect(const math::Vector2i& ulPos, const math::Vector2f& ulUV, const math::Vector4f& ulColor,
-			const math::Vector2i& brPos, const math::Vector2f& brUV, const math::Vector4f& brColor)
+		void AddRect(const math::Vector2Int& ulPos, const math::Vector2& ulUV, const math::Vector4& ulColor,
+			const math::Vector2Int& brPos, const math::Vector2& brUV, const math::Vector4& brColor)
 		{
 			const auto lastIndex = indexArray.size();
 			vertexArray.push_back(static_cast<float>(ulPos.x)); vertexArray.push_back(static_cast<float>(brPos.y));

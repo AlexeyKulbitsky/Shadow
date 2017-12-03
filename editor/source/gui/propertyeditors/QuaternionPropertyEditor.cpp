@@ -18,16 +18,16 @@ QuaternionPropertyEditor::QuaternionPropertyEditor(sh::Serializable* object, sh:
 	SetMaximumHeight(20);
 
 	const auto& quaternionRotation = objectProperty->GetValue(object).GetQuaternionFloat();
-	sh::math::Vector3f eulerRotations;
+	sh::math::Vector3 eulerRotations;
 	quaternionRotation.GetAsEulerXYZ(eulerRotations);
 
 	m_edit->SetValue(sh::math::Degrees(eulerRotations));
 	m_edit->valueChanged.Connect(std::bind(&QuaternionPropertyEditor::OnValueChanged, this, std::placeholders::_1));
 }
 
-void QuaternionPropertyEditor::OnValueChanged(const sh::math::Vector3f& value)
+void QuaternionPropertyEditor::OnValueChanged(const sh::math::Vector3& value)
 {
-	sh::math::Quaternionf rot;
+	sh::math::Quaternion rot;
 	rot.SetFromEulerXYZ(sh::math::Radians(value));
 
 	m_objectProperty->SetValue(m_object, value);

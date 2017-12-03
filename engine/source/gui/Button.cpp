@@ -30,11 +30,11 @@ namespace gui
 		m_sprites[Pressed] = ref->m_sprites[Pressed];
 		m_sprites[Hovered] = ref->m_sprites[Hovered];
 
-		m_rect = sh::math::Recti(0, 0, 10, 10);
+		m_rect = sh::math::Rect(0, 0, 10, 10);
 		m_text.reset(new Text(m_rect));
 	}
 
-	Button::Button(const math::Recti rect)
+	Button::Button(const math::Rect rect)
 		: Widget()
 	{
 		const auto& ref = GuiManager::GetInstance()->GetStyle()->GetButton();
@@ -57,11 +57,11 @@ namespace gui
 		m_sprites[Pressed] = pressedSprite;
 		m_sprites[Hovered] = hoveredSprite;
 
-		m_rect = sh::math::Recti(0, 0, 10, 10);
+		m_rect = sh::math::Rect(0, 0, 10, 10);
 		m_text.reset(new Text(m_rect));
 	}
 
-	Button::Button(const math::Recti& rect,
+	Button::Button(const math::Rect& rect,
 				   const SpritePtr& defaultSprite,
 				   const SpritePtr& pressedSprite,
 				   const SpritePtr& hoveredSprite)
@@ -81,7 +81,7 @@ namespace gui
 		m_sprites[Pressed] = ref->m_sprites[Pressed];
 		m_sprites[Hovered] = ref->m_sprites[Hovered];
 
-		m_rect = sh::math::Recti(0, 0, 10, 10);
+		m_rect = sh::math::Rect(0, 0, 10, 10);
 		m_text.reset(new Text(m_rect));
 		m_text->SetText(text);
 
@@ -146,10 +146,10 @@ namespace gui
 
 		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
 		video::Painter::Vertex upperLeft(m_rect.upperLeftCorner, 
-										 m_sprites[m_state]->GetUVRect().upperLeftCorner, 
+										 m_sprites[m_state]->GetUpperLeftUV(), 
 										 m_sprites[m_state]->GetColor());
 		video::Painter::Vertex downRight(m_rect.lowerRightCorner,
-										 m_sprites[m_state]->GetUVRect().lowerRightCorner,
+										 m_sprites[m_state]->GetLowerRightUV(),
 										 m_sprites[m_state]->GetColor());
 		painter->DrawRect(upperLeft, downRight);
 
@@ -181,8 +181,8 @@ namespace gui
 		auto& subBatch = backgroundLayer.batches[backgroundLayer.batches.size() - 1];
 		subBatch.indicesCount += 6;
 
-		backgroundLayer.AddRect(m_rect.upperLeftCorner, m_sprites[m_state]->GetUVRect().upperLeftCorner, m_sprites[m_state]->GetColor(),
-			m_rect.lowerRightCorner, m_sprites[m_state]->GetUVRect().lowerRightCorner, m_sprites[m_state]->GetColor());
+		backgroundLayer.AddRect(m_rect.upperLeftCorner, m_sprites[m_state]->GetUpperLeftUV(), m_sprites[m_state]->GetColor(),
+			m_rect.lowerRightCorner, m_sprites[m_state]->GetLowerRightUV(), m_sprites[m_state]->GetColor());
 
 	}
 
@@ -190,10 +190,10 @@ namespace gui
 	{
 		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
 		video::Painter::Vertex upperLeft(m_rect.upperLeftCorner,
-			m_sprites[m_state]->GetUVRect().upperLeftCorner,
+			m_sprites[m_state]->GetUpperLeftUV(),
 			m_sprites[m_state]->GetColor());
 		video::Painter::Vertex downRight(m_rect.lowerRightCorner,
-			m_sprites[m_state]->GetUVRect().lowerRightCorner,
+			m_sprites[m_state]->GetLowerRightUV(),
 			m_sprites[m_state]->GetColor());
 		painter->DrawRect(upperLeft, downRight);
 	}
@@ -203,7 +203,7 @@ namespace gui
 		m_text->Render(painter);
 	}
 
-	void Button::SetRect(const math::Recti& rect)
+	void Button::SetRect(const math::Rect& rect)
 	{
 		Widget::SetRect(rect);
 		m_text->SetRect(rect);
@@ -215,7 +215,7 @@ namespace gui
 		m_text->SetPosition(x, y);
 	}
 
-	void Button::SetSize(const math::Vector2i& size)
+	void Button::SetSize(const math::Vector2Int& size)
 	{
 		Widget::SetSize(size);
 		m_text->SetSize(size);
@@ -317,7 +317,7 @@ namespace gui
 		return m_rect.GetWidth();
 	}
 
-	const math::Vector2i& Button::GetPosition() const
+	const math::Vector2Int& Button::GetPosition() const
 	{
 		return m_rect.upperLeftCorner;
 	}

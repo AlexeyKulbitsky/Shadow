@@ -7,7 +7,7 @@ namespace sh
 	namespace scene
 	{
 		Model::Model()
-			: m_boundingBox(math::Vector3f(0.0f))
+			: m_boundingBox(math::Vector3(0.0f))
 		{
 			
 		}
@@ -37,7 +37,7 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////////////////
 
-		void Model::SetPosition(const math::Vector3f& pos) 
+		void Model::SetPosition(const math::Vector3& pos) 
 		{ 
 			m_position = pos; 
 			m_worldMatrix.SetIdentity();
@@ -46,7 +46,7 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////////////////
 
-		void Model::SetWorldMatrix(const math::Matrix4f& matrix) 
+		void Model::SetWorldMatrix(const math::Matrix4& matrix) 
 		{ 
 			m_worldMatrix = matrix; 
 			for (auto mesh : m_meshes)

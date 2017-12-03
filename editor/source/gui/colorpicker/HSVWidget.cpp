@@ -21,7 +21,7 @@ HSVWidget::HSVWidget()
 	m_layout->AddWidget(m_hsvChannels[2]);
 }
 
-void HSVWidget::SetColor(const sh::math::Vector3i& color)
+void HSVWidget::SetColor(const sh::math::Vector3Int& color)
 {
 	m_color = color;
 	m_hsvChannels[0]->SetValue(color.x);

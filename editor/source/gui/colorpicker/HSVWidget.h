@@ -9,10 +9,10 @@ class HSVWidget : public sh::gui::Widget
 public:
 	HSVWidget();
 
-	sh::Event<void, const sh::math::Vector3i&> colorChanged;
+	sh::Event<void, const sh::math::Vector3Int&> colorChanged;
 
-	const sh::math::Vector3i& GetColor() const { return m_color; }
-	void SetColor(const sh::math::Vector3i& color);
+	const sh::math::Vector3Int& GetColor() const { return m_color; }
+	void SetColor(const sh::math::Vector3Int& color);
 	void SetColor(int hue, int saturation, int value);
 
 	void OnHueChannelChanged(int value);
@@ -20,7 +20,7 @@ public:
 	void OnValueChannelChanged(int value);
 
 private:
-	sh::math::Vector3i m_color;
+	sh::math::Vector3Int m_color;
 	std::array<sh::SPtr<ColorChannelEdit>, 3U> m_hsvChannels;
 };
 

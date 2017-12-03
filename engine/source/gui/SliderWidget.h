@@ -28,20 +28,20 @@ namespace gui
 		void SetMinValue(float value);
 		void SetMaxValue(float value);
 		void SetMinMaxValues(float min, float max);
-		void SetMinMaxValues(const math::Vector2f& values);
+		void SetMinMaxValues(const math::Vector2& values);
 		float GetMinValue() const { return m_valueEdges.x; }
 		float GetMaxValue() const { return m_valueEdges.y; }
-		const math::Vector2f&  GetMinMaxValues() const { return m_valueEdges; }
+		const math::Vector2&  GetMinMaxValues() const { return m_valueEdges; }
 
 		Event<void, float> valueChanged;
 
 	private:
 		SPtr<Button> m_button;
-		math::Recti m_sliderRect;
+		math::Rect m_sliderRect;
 		bool m_dragStarted = false;
 		s32 m_dragPointOffset = 0;
 
-		math::Vector2f m_valueEdges = math::Vector2f(0.0f, 10.0f);
+		math::Vector2 m_valueEdges = math::Vector2(0.0f, 10.0f);
 		float m_value = 0.0f;
 	};
 

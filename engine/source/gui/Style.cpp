@@ -115,9 +115,9 @@ namespace gui
 			u32 y1 = rectNode.attribute("y1").as_uint();
 			u32 x2 = rectNode.attribute("x2").as_uint();
 			u32 y2 = rectNode.attribute("y2").as_uint();
-			math::Rectu rect(x1, y1, x2, y2);
+			math::Rect rect(x1, y1, x2, y2);
 
-			math::Vector4f color(1.0f);
+			math::Vector4 color(1.0f);
 			pugi::xml_node colorNode = stateNode.child("color");
 			if (colorNode)
 			{
@@ -142,7 +142,7 @@ namespace gui
 		u32 y1 = rectNode.attribute("y1").as_uint();
 		u32 x2 = rectNode.attribute("x2").as_uint();
 		u32 y2 = rectNode.attribute("y2").as_uint();
-		math::Rectu rect(x1, y1, x2, y2);
+		math::Rect rect(x1, y1, x2, y2);
 		SpritePtr sprite(new Sprite(m_texture, rect));
 
 		m_menuBar.reset(new MenuBar(sprite));
@@ -157,7 +157,7 @@ namespace gui
 		u32 y1 = rectNode.attribute("y1").as_uint();
 		u32 x2 = rectNode.attribute("x2").as_uint();
 		u32 y2 = rectNode.attribute("y2").as_uint();
-		math::Rectu rect(x1, y1, x2, y2);
+		math::Rect rect(x1, y1, x2, y2);
 		SpritePtr sprite(new Sprite(m_texture, rect));
 
 		m_toolBar.reset(new ToolBar(sprite));
@@ -178,7 +178,7 @@ namespace gui
 			u32 y1 = rectNode.attribute("y1").as_uint();
 			u32 x2 = rectNode.attribute("x2").as_uint();
 			u32 y2 = rectNode.attribute("y2").as_uint();
-			math::Rectu rect(x1, y1, x2, y2);
+			math::Rect rect(x1, y1, x2, y2);
 			sprites[i].reset(new Sprite(m_texture, rect));
 		}
 
@@ -204,7 +204,7 @@ namespace gui
 			u32 y1 = rectNode.attribute("y1").as_uint();
 			u32 x2 = rectNode.attribute("x2").as_uint();
 			u32 y2 = rectNode.attribute("y2").as_uint();
-			math::Rectu rect(x1, y1, x2, y2);
+			math::Rect rect(x1, y1, x2, y2);
 			sprites[i].reset(new Sprite(m_texture, rect));
 		}
 
@@ -231,9 +231,9 @@ namespace gui
 			u32 y1 = rectNode.attribute("y1").as_uint();
 			u32 x2 = rectNode.attribute("x2").as_uint();
 			u32 y2 = rectNode.attribute("y2").as_uint();
-			math::Rectu rect(x1, y1, x2, y2);
+			math::Rect rect(x1, y1, x2, y2);
 
-			math::Vector4f color(0.7f, 0.7f, 0.7f, 1.0f);
+			math::Vector4 color(0.7f, 0.7f, 0.7f, 1.0f);
 			pugi::xml_node colorNode = stateNode.child("color");
 			if (colorNode)
 			{
@@ -245,7 +245,7 @@ namespace gui
 			sprites[i].reset(new Sprite(m_texture, rect, color));
 		}
 
-		SpritePtr backgroundSprite(new Sprite(m_texture, sprites[2]->GetRect(), math::Vector4f(1.0f)));
+		SpritePtr backgroundSprite(new Sprite(m_texture, sprites[2]->GetRect(), math::Vector4(1.0f)));
 
 		SPtr<ScrollWidget::ScrollBar> scrollBar(new ScrollWidget::ScrollBar(sprites[0], sprites[1], sprites[2], backgroundSprite));
 		m_scrollWidget.reset(new ScrollWidget(scrollBar));
@@ -280,9 +280,9 @@ namespace gui
 			u32 y1 = rectNode.attribute("y1").as_uint();
 			u32 x2 = rectNode.attribute("x2").as_uint();
 			u32 y2 = rectNode.attribute("y2").as_uint();
-			math::Rectu rect(x1, y1, x2, y2);
+			math::Rect rect(x1, y1, x2, y2);
 
-			math::Vector4f color(0.7f, 0.7f, 0.7f, 1.0f);
+			math::Vector4 color(0.7f, 0.7f, 0.7f, 1.0f);
 			pugi::xml_node colorNode = child.child("color");
 			if (colorNode)
 			{

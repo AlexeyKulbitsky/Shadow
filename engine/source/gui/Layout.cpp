@@ -6,7 +6,7 @@ namespace sh
 namespace gui
 {
 
-	void WidgetItem::Resize(const math::Recti& rect)
+	void WidgetItem::Resize(const math::Rect& rect)
 	{
 		//m_widget->SetPosition(rect.upperLeftCorner.x, rect.upperLeftCorner.y);
 		s32 width = rect.GetWidth();
@@ -22,7 +22,7 @@ namespace gui
 		if (height > m_widget->GetMaximumHeight())
 			height = m_widget->GetMaximumHeight();
 
-		const math::Recti finalRect(rect.upperLeftCorner.x, rect.upperLeftCorner.y,
+		const math::Rect finalRect(rect.upperLeftCorner.x, rect.upperLeftCorner.y,
 									rect.upperLeftCorner.x + width, rect.upperLeftCorner.y + height);
 		//m_widget->SetWidth(width);
 		//m_widget->SetHeight(height);
@@ -74,7 +74,7 @@ namespace gui
 			m_parent->UpdateLayout();
 	}
 
-	void Layout::SetSize(const math::Vector2i& size)
+	void Layout::SetSize(const math::Vector2Int& size)
 	{
 		
 	}

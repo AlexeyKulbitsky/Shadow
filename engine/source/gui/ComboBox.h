@@ -16,7 +16,7 @@ namespace gui
 	{
 	public:
 		ComboBox();
-		ComboBox(const math::Recti& rect);
+		ComboBox(const math::Rect& rect);
 
 		virtual void Render(video::Painter* painter) override;
 		virtual void RenderBackground(video::Painter* painter) override;

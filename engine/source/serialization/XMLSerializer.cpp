@@ -95,7 +95,7 @@ namespace sh
 				float val = 0.0f;
 				std::vector<float> temp;
 				while (in >> val) temp.push_back(val);
-				math::Vector3f vectorValue(0.0f);
+				math::Vector3 vectorValue(0.0f);
 				vectorValue.x = temp[0];
 				vectorValue.y = temp[1];
 				vectorValue.z = temp[2];
@@ -110,7 +110,7 @@ namespace sh
 				float val = 0.0f;
 				std::vector<float> temp;
 				while (in >> val) temp.push_back(val);
-				math::Quaternionf quaternionValue;
+				math::Quaternion quaternionValue;
 				quaternionValue.x = temp[0];
 				quaternionValue.y = temp[1];
 				quaternionValue.z = temp[2];

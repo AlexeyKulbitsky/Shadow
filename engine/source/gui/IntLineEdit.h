@@ -13,7 +13,7 @@ namespace sh
 		{
 		public:
 			IntLineEdit();
-			IntLineEdit(const math::Recti& rect,
+			IntLineEdit(const math::Rect& rect,
 				const SpritePtr& defaultSprite,
 				const SpritePtr& editSprite);
 

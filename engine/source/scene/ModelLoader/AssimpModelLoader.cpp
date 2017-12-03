@@ -65,7 +65,7 @@ namespace scene
 	{
 		std::vector<float> vertexArray;
 		std::vector<unsigned int> indexArray;
-		math::AABBf boundingBox(math::Vector3f(0.0f));
+		math::AABB boundingBox(math::Vector3(0.0f));
 
 		const bool hasNormals = mesh->HasNormals();
 		const bool hasUVs = mesh->HasTextureCoords(0);

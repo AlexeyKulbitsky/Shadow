@@ -41,20 +41,20 @@ public:
 	void SetEnabled(bool enabled) { m_enabled = enabled; }
 
 	// Methods are shared between all children
-	static void SetPosition(const sh::math::Vector3f& position) { s_position = position; }
-	static const sh::math::Vector3f& GetPosition() { return s_position; }
-	static void SetRotation(const sh::math::Quaternionf& rotation) { s_rotation = rotation; }
-	static const sh::math::Quaternionf& GetRotation() { return s_rotation; }
-	static void SetScale(const sh::math::Vector3f& scale) { s_scale = scale; }
-	static const sh::math::Vector3f& GetScale() { return s_scale; }
+	static void SetPosition(const sh::math::Vector3& position) { s_position = position; }
+	static const sh::math::Vector3& GetPosition() { return s_position; }
+	static void SetRotation(const sh::math::Quaternion& rotation) { s_rotation = rotation; }
+	static const sh::math::Quaternion& GetRotation() { return s_rotation; }
+	static void SetScale(const sh::math::Vector3& scale) { s_scale = scale; }
+	static const sh::math::Vector3& GetScale() { return s_scale; }
 
 protected:
 	bool m_enabled = false;
 	bool m_mousePressed = false;
 
-	static sh::math::Vector3f s_position;
-	static sh::math::Quaternionf s_rotation;
-	static sh::math::Vector3f s_scale;
+	static sh::math::Vector3 s_position;
+	static sh::math::Quaternion s_rotation;
+	static sh::math::Vector3 s_scale;
 
 private:
 	Axis m_axises[3];

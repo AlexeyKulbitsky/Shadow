@@ -23,7 +23,7 @@ RGBWidget::RGBWidget()
 	m_layout->AddWidget(m_rgbaChannels[3]);
 }
 
-void RGBWidget::SetColor(const sh::math::Vector4i& color)
+void RGBWidget::SetColor(const sh::math::Vector4Int& color)
 {
 	m_color = color;
 	m_rgbaChannels[0]->SetValue(color.x);
@@ -44,7 +44,7 @@ void RGBWidget::SetColor(sh::u8 red, sh::u8 green, sh::u8 blue, sh::u8 alpha)
 	m_rgbaChannels[3]->SetValue(m_color.w);
 }
 
-void RGBWidget::SetColor(const sh::math::Vector4f& color)
+void RGBWidget::SetColor(const sh::math::Vector4& color)
 {
 	m_color.x = static_cast<int>(color.x * 256.0f);
 	m_color.y = static_cast<int>(color.y * 256.0f);

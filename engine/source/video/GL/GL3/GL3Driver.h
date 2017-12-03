@@ -28,7 +28,7 @@ namespace sh
 			virtual void SetDepthRange(f32 zMin, f32 zMax) override;
 
 			// Buffers clearing
-			virtual void SetClearColor(const math::Vector4f& clearColor) override;
+			virtual void SetClearColor(const math::Vector4& clearColor) override;
 			virtual void SetClearDepth(f32 clearDepth) override;
 			virtual void SetClearStencil(u32 clearStencil) override;
 
@@ -52,7 +52,7 @@ namespace sh
 			virtual void SetIndexBuffer(const IndexBufferPtr& buffer, const CommandBufferPtr& commandBuffer = nullptr) override;
 			virtual void Draw(u32 offset, u32 verticesCount, u32 instancesCount = 1U, const CommandBufferPtr& commandBuffer = nullptr) override;
 			virtual void DrawIndexed(u32 offset, u32 indicesCount, u32 instancesCount = 1U, const CommandBufferPtr& commandBuffer = nullptr) override;
-			virtual void SetScissorRect(const math::Rectu& scissor, const CommandBufferPtr& commandBuffer = nullptr) override;
+			virtual void SetScissorRect(const math::Rect& scissor, const CommandBufferPtr& commandBuffer = nullptr) override;
 
 			virtual void GetPixelData(u32 x, u32 y, u8* data) override;
 

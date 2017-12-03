@@ -37,9 +37,9 @@ public:
 	void OnEntityFromListSelected(sh::Entity* entity);
 
 	// Signals come from gizmos whe user changes one of the transform components using them
-	void OnPositionChanged(const sh::math::Vector3f&);
-	void OnRotationChanged(const sh::math::Quaternionf&);
-	void OnScaleChanged(const sh::math::Vector3f&);
+	void OnPositionChanged(const sh::math::Vector3&);
+	void OnRotationChanged(const sh::math::Quaternion&);
+	void OnScaleChanged(const sh::math::Vector3&);
 
 private:
 	sh::Entity* m_selectedEntity = nullptr;

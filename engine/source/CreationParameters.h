@@ -6,7 +6,7 @@
 
 namespace sh
 {
-	struct CreationParameters
+	struct SHADOW_API CreationParameters
 	{
 		u32 width = 800U;
 		u32 height = 600U;

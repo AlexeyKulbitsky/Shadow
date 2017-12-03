@@ -30,7 +30,7 @@ namespace gui
 		protected:
 			ScrollWidget* m_scrollWidget = nullptr;
 			bool m_dragStarted = false;
-			sh::math::Vector2i m_startPos;
+			sh::math::Vector2Int m_startPos;
 			SpritePtr m_backgroundSprite;
 		};
 
@@ -42,7 +42,7 @@ namespace gui
 		virtual void RenderBackground(video::Painter* painter) override;
 		virtual void RenderText(video::Painter* painter) override;
 		virtual void SetPosition(s32 x, s32 y) override;
-		virtual void SetSize(const math::Vector2i& size) override;
+		virtual void SetSize(const math::Vector2Int& size) override;
 		virtual void SetWidth(s32 width) override;
 		virtual void SetHeight(s32 height) override;
 		virtual bool ProcessEvent(GUIEvent& ev) override;
@@ -53,7 +53,7 @@ namespace gui
 		void RenderScrollBars(video::Painter* painter);
 
 	protected:
-		math::Recti m_fullRect;
+		math::Rect m_fullRect;
 		s32 m_scrollSpeed = 15;
 
 		sh::SPtr<ScrollBar> m_verticalScrollBar;

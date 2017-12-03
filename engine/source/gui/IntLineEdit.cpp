@@ -15,7 +15,7 @@ namespace sh
 			m_text = "0";
 		}
 
-		IntLineEdit::IntLineEdit(const math::Recti& rect,
+		IntLineEdit::IntLineEdit(const math::Rect& rect,
 			const SpritePtr& defaultSprite,
 			const SpritePtr& editSprite)
 			: LineEdit(rect, defaultSprite, editSprite)

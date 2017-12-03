@@ -3,21 +3,23 @@
 
 #include "Vector3.h"
 
+#include "../CompileConfig.h"
+
 namespace sh
 {
 	namespace math
 	{
-		template<typename T>
-		struct Sphere
+		class SHADOW_API Sphere
 		{
-			T GetRadius() const { return radius; }
-			void SetRadius(T r) { radius = r; }
+		public:
+			float GetRadius() const;
+			void SetRadius(float r);
 
-			const Vector3<T>& GetCentre() const { return centre; }
-			void SetCentre(const Vector3<T> c) { centre = c; }
+			const Vector3& GetCentre() const;
+			void SetCentre(const Vector3& c);
 
-			Vector3<T> centre;
-			T radius;
+			Vector3 centre;
+			float radius;
 		};
 	}
 }

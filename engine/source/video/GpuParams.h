@@ -41,11 +41,11 @@ namespace video
 
 	typedef TGpuParam<float> GpuParamFloat;
 	typedef TGpuParam<int> GpuParamInt;
-	typedef TGpuParam<math::Vector2f> GpuParamVector2f;
-	typedef TGpuParam<math::Vector3f> GpuParamVector3f;
-	typedef TGpuParam<math::Vector4f> GpuParamVector4f;
-	typedef TGpuParam<math::Matrix3f> GpuParamMatrix3f;
-	typedef TGpuParam<math::Matrix4f> GpuParamMatrix4f;
+	typedef TGpuParam<math::Vector2> GpuParamVector2f;
+	typedef TGpuParam<math::Vector3> GpuParamVector3f;
+	typedef TGpuParam<math::Vector4> GpuParamVector4f;
+	typedef TGpuParam<math::Matrix3> GpuParamMatrix3f;
+	typedef TGpuParam<math::Matrix4> GpuParamMatrix4f;
 
 	///////////////////////////////////////////////////////////////
 

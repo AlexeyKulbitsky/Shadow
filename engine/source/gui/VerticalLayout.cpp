@@ -21,7 +21,7 @@ namespace gui
 		Layout::AddLayout(layout);
 	}
 
-	void VerticalLayout::Resize(const math::Recti& rect)
+	void VerticalLayout::Resize(const math::Rect& rect)
 	{
 		if (m_items.size() == 0U)
 			return;
@@ -29,7 +29,7 @@ namespace gui
 		auto upperLeft = rect.upperLeftCorner;
 		auto lowerRight = rect.lowerRightCorner;
 
-		math::Recti finalRect;
+		math::Rect finalRect;
 		finalRect.upperLeftCorner.x = upperLeft.x + static_cast<s32>(m_leftMargin);
 		finalRect.upperLeftCorner.y = upperLeft.y + static_cast<s32>(m_topMargin);
 		finalRect.lowerRightCorner.x = lowerRight.x - static_cast<s32>(m_rightMargin);
@@ -54,15 +54,15 @@ namespace gui
 			}
 			const s32 x = finalRect.upperLeftCorner.x;
 			const s32 y = finalRect.upperLeftCorner.y + offset;
-			m_items[i]->Resize(math::Recti(x, y, x + width, y + itemHeight));
+			m_items[i]->Resize(math::Rect(x, y, x + width, y + itemHeight));
 			if (m_items[i]->GetHeight() != 0)
 				offset += m_items[i]->GetHeight() + m_spacing;
 		}
 		m_rect.upperLeftCorner = finalRect.upperLeftCorner;
-		m_rect.lowerRightCorner = finalRect.upperLeftCorner + math::Vector2i(width, offset);
+		m_rect.lowerRightCorner = finalRect.upperLeftCorner + math::Vector2Int(width, offset);
 	}
 
-	void VerticalLayout::SetSize(const math::Vector2i& size)
+	void VerticalLayout::SetSize(const math::Vector2Int& size)
 	{
 
 	}

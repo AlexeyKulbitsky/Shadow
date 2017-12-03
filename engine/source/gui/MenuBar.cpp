@@ -178,10 +178,10 @@ namespace gui
 
 		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
 		video::Painter::Vertex upperLeft(m_rect.upperLeftCorner, 
-										 m_sprite->GetUVRect().upperLeftCorner, 
+										 m_sprite->GetUpperLeftUV(), 
 										 m_sprite->GetColor());
 		video::Painter::Vertex downRight(m_rect.lowerRightCorner,
-										 m_sprite->GetUVRect().lowerRightCorner,
+										 m_sprite->GetLowerRightUV(),
 										 m_sprite->GetColor());
 		painter->DrawRect(upperLeft, downRight);
 
@@ -195,10 +195,10 @@ namespace gui
 	{
 		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
 		video::Painter::Vertex upperLeft(m_rect.upperLeftCorner,
-			m_sprite->GetUVRect().upperLeftCorner,
+			m_sprite->GetUpperLeftUV(),
 			m_sprite->GetColor());
 		video::Painter::Vertex downRight(m_rect.lowerRightCorner,
-			m_sprite->GetUVRect().lowerRightCorner,
+			m_sprite->GetLowerRightUV(),
 			m_sprite->GetColor());
 		painter->DrawRect(upperLeft, downRight);
 

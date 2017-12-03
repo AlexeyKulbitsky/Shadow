@@ -26,7 +26,7 @@ FileTreeItem::~FileTreeItem()
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 AssetsWidget::AssetsWidget()
-	:sh::gui::Window(sh::math::Recti(0, 100, 250, 500))
+	:sh::gui::Window(sh::math::Rect(0, 100, 250, 500))
 {
 	SetText("Assets");
 	SetMovable(false);

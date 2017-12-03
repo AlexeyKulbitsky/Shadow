@@ -23,14 +23,14 @@ namespace sh
 
 		bool NeedsToRecalculate() const { return m_needsToRecalculate; }		
 
-		void SetPosition(const math::Vector3f& position);
-		const math::Vector3f& GetPosition() const;
+		void SetPosition(const math::Vector3& position);
+		const math::Vector3& GetPosition() const;
 
-		void SetDirection(const math::Vector3f& direction);
-		const math::Vector3f& GetDirection() const;
+		void SetDirection(const math::Vector3& direction);
+		const math::Vector3& GetDirection() const;
 
-		void SetColor(const math::Vector3f& color);
-		const math::Vector3f& GetColor() const;
+		void SetColor(const math::Vector3& color);
+		const math::Vector3& GetColor() const;
 
 		scene::Light::Type GetType() const;
 		void SetType(scene::Light::Type type);

@@ -7,6 +7,7 @@
 
 ///////////////////////////////////////////////////////////////////////
 
+#pragma warning (disable: 4251)
 
 #if defined(_WIN32) || defined(_WIN64) || defined(WIN32) || defined(WIN64)
 	#define SHADOW_WINDOWS

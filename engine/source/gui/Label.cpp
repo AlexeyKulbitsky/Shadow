@@ -12,7 +12,7 @@ namespace gui
 
 	}
 
-	Label::Label(const math::Recti rect)
+	Label::Label(const math::Rect rect)
 		: Text(rect)
 	{
 	}
@@ -22,7 +22,7 @@ namespace gui
 	{
 	}
 
-	Label::Label(const math::Recti rect, const String& text)
+	Label::Label(const math::Rect rect, const String& text)
 		: Text(rect, text)
 	{
 	}

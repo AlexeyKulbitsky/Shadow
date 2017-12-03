@@ -15,9 +15,9 @@ public:
 	void Update();
 
 private:
-	void OnPositinChanged(const sh::math::Vector3f& position);
-	void OnRotationChanged(const sh::math::Vector3f& rotation);
-	void OnScaleChanged(const sh::math::Vector3f& scale);
+	void OnPositinChanged(const sh::math::Vector3& position);
+	void OnRotationChanged(const sh::math::Vector3& rotation);
+	void OnScaleChanged(const sh::math::Vector3& scale);
 
 private:
 	sh::gui::WidgetPtr m_widget;
@@ -25,7 +25,7 @@ private:
 	sh::SPtr<Vector3LineEdit> m_rotationEdit;
 	sh::SPtr<Vector3LineEdit> m_scaleEdit;
 
-	sh::SPtr<ParamEdit<sh::math::Vector3f>> m_testEdit;
+	sh::SPtr<ParamEdit<sh::math::Vector3>> m_testEdit;
 
 	sh::TransformComponent* m_transformComponent = nullptr;
 };

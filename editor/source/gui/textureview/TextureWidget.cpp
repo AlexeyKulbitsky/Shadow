@@ -1,7 +1,7 @@
 #include "TextureWidget.h"
 
 TextureWidget::TextureWidget()
-	: sh::gui::Window(sh::math::Recti(100, 100, 350, 500))
+	: sh::gui::Window(sh::math::Rect(100, 100, 350, 500))
 {
 	SetText("Texture view");
 

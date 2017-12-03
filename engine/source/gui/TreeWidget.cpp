@@ -26,7 +26,7 @@ namespace gui
 		m_toggleable = true;
 		SetMaximumWidth(20);
 
-		m_rect = math::Recti(0, 0, 10, 10);
+		m_rect = math::Rect(0, 0, 10, 10);
 	}
 
 	TreeExpandButton::~TreeExpandButton()
@@ -39,21 +39,21 @@ namespace gui
 			return;
 
 		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
-		math::Vector2f upperUVLeft, lowerUVRight;
-		math::Vector4f color(1.0f);
+		math::Vector2 upperUVLeft, lowerUVRight;
+		math::Vector4 color(1.0f);
 		if (m_toggled)
 		{
-			upperUVLeft = m_sprites[Pressed]->GetUVRect().upperLeftCorner;
-			lowerUVRight = m_sprites[Pressed]->GetUVRect().lowerRightCorner;
+			upperUVLeft = m_sprites[Pressed]->GetUpperLeftUV();
+			lowerUVRight = m_sprites[Pressed]->GetLowerRightUV();
 		}
 		else
 		{
-			upperUVLeft = m_sprites[Released]->GetUVRect().upperLeftCorner;
-			lowerUVRight = m_sprites[Released]->GetUVRect().lowerRightCorner;
+			upperUVLeft = m_sprites[Released]->GetUpperLeftUV();
+			lowerUVRight = m_sprites[Released]->GetLowerRightUV();
 		}
 
 		if (m_state == Hovered)
-			color = math::Vector4f(0.5f, 0.5f, 0.5f, 1.0f);
+			color = math::Vector4(0.5f, 0.5f, 0.5f, 1.0f);
 
 		video::Painter::Vertex upperLeft(m_rect.upperLeftCorner, upperUVLeft, color);
 		video::Painter::Vertex downRight(m_rect.lowerRightCorner, lowerUVRight, color);
@@ -142,11 +142,11 @@ namespace gui
 
 		painter->SetMaterial(sh::gui::GuiManager::GetInstance()->GetDefaultMaterial());
 		video::Painter::Vertex upperLeft(m_rect.upperLeftCorner,
-			m_sprites[m_state]->GetUVRect().upperLeftCorner,
-			m_sprites[m_state]->GetColor() * sh::math::Vector4f(1.5f, 1.5f, 1.5f, 1.0f));
+			m_sprites[m_state]->GetUpperLeftUV(),
+			m_sprites[m_state]->GetColor() * sh::math::Vector4(1.5f, 1.5f, 1.5f, 1.0f));
 		video::Painter::Vertex downRight(m_rect.lowerRightCorner,
-			m_sprites[m_state]->GetUVRect().lowerRightCorner,
-			m_sprites[m_state]->GetColor() * sh::math::Vector4f(1.5f, 1.5f, 1.5f, 1.0f));
+			m_sprites[m_state]->GetLowerRightUV(),
+			m_sprites[m_state]->GetColor() * sh::math::Vector4(1.5f, 1.5f, 1.5f, 1.0f));
 		painter->DrawRect(upperLeft, downRight);
 
 		Widget::Render(painter);
@@ -159,11 +159,11 @@ namespace gui
 
 		painter->SetMaterial(sh::gui::GuiManager::GetInstance()->GetDefaultMaterial());
 		video::Painter::Vertex upperLeft(m_rect.upperLeftCorner,
-			m_sprites[m_state]->GetUVRect().upperLeftCorner,
-			m_sprites[m_state]->GetColor() * sh::math::Vector4f(1.5f, 1.5f, 1.5f, 1.0f));
+			m_sprites[m_state]->GetUpperLeftUV(),
+			m_sprites[m_state]->GetColor() * sh::math::Vector4(1.5f, 1.5f, 1.5f, 1.0f));
 		video::Painter::Vertex downRight(m_rect.lowerRightCorner,
-			m_sprites[m_state]->GetUVRect().lowerRightCorner,
-			m_sprites[m_state]->GetColor() * sh::math::Vector4f(1.5f, 1.5f, 1.5f, 1.0f));
+			m_sprites[m_state]->GetLowerRightUV(),
+			m_sprites[m_state]->GetColor() * sh::math::Vector4(1.5f, 1.5f, 1.5f, 1.0f));
 		painter->DrawRect(upperLeft, downRight);
 
 		Widget::RenderBackground(painter);
@@ -267,7 +267,7 @@ namespace gui
 	void TreeWidget::Render(sh::video::Painter* painter)
 	{
 		const auto cachedClipRect = painter->GetClipRect();
-		painter->SetClipRect(sh::math::Rectu(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y,
+		painter->SetClipRect(sh::math::Rect(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y,
 			m_rect.lowerRightCorner.x, m_rect.lowerRightCorner.y));
 
 		if (m_layout)
@@ -289,7 +289,7 @@ namespace gui
 	void TreeWidget::RenderBackground(video::Painter* painter)
 	{
 		const auto cachedClipRect = painter->GetClipRect();
-		painter->SetClipRect(sh::math::Rectu(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y,
+		painter->SetClipRect(sh::math::Rect(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y,
 			m_rect.lowerRightCorner.x, m_rect.lowerRightCorner.y));
 
 		if (m_layout)
@@ -311,7 +311,7 @@ namespace gui
 		if (m_layout)
 		{
 			const auto cachedClipRect = painter->GetClipRect();
-			painter->SetClipRect(sh::math::Rectu(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y,
+			painter->SetClipRect(sh::math::Rect(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y,
 				m_rect.lowerRightCorner.x, m_rect.lowerRightCorner.y));
 
 			const u32 itemsCount = m_layout->GetItemsCount();

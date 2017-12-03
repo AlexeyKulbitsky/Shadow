@@ -83,13 +83,13 @@ namespace sh
 
 	//////////////////////////////////////////////////////////////
 
-	bool Entity::IntersectsRay(const math::Vector3f& origin, const math::Vector3f& direction)
+	bool Entity::IntersectsRay(const math::Vector3& origin, const math::Vector3& direction)
 	{		
 		auto renderComponent = GetComponent<RenderComponent>();
 		auto transformComponent = GetComponent<TransformComponent>();
 		if (transformComponent && renderComponent)
 		{
-			math::Vector3f pos = transformComponent->GetPosition();
+			math::Vector3 pos = transformComponent->GetPosition();
 
 			float radius = 1.0f;
 			float t1 = 0.0f, t2 = 0.0f;

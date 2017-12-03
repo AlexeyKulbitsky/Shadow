@@ -33,7 +33,7 @@ namespace sh
 
 	//////////////////////////////////////////////////////////
 
-	void LightComponent::SetPosition(const math::Vector3f& position)
+	void LightComponent::SetPosition(const math::Vector3& position)
 	{
 		m_light->SetPosition(position);
 		m_needsToRecalculate = true;
@@ -41,14 +41,14 @@ namespace sh
 
 	//////////////////////////////////////////////////////////
 
-	const math::Vector3f& LightComponent::GetPosition() const
+	const math::Vector3& LightComponent::GetPosition() const
 	{
 		return m_light->GetPosition();
 	}
 
 	//////////////////////////////////////////////////////////
 
-	void LightComponent::SetDirection(const math::Vector3f& direction)
+	void LightComponent::SetDirection(const math::Vector3& direction)
 	{
 		m_light->SetDirection(direction);
 		m_needsToRecalculate = true;
@@ -56,14 +56,14 @@ namespace sh
 
 	//////////////////////////////////////////////////////////
 
-	const math::Vector3f& LightComponent::GetDirection() const
+	const math::Vector3& LightComponent::GetDirection() const
 	{
 		return m_light->GetDirection();
 	}
 
 	//////////////////////////////////////////////////////////
 
-	void LightComponent::SetColor(const math::Vector3f& color)
+	void LightComponent::SetColor(const math::Vector3& color)
 	{
 		m_light->SetColor(color);
 		m_needsToRecalculate = true;
@@ -71,7 +71,7 @@ namespace sh
 
 	//////////////////////////////////////////////////////////
 
-	const math::Vector3f& LightComponent::GetColor() const
+	const math::Vector3& LightComponent::GetColor() const
 	{
 		return m_light->GetColor();
 	}

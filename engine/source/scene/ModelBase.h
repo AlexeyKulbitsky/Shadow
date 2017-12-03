@@ -19,10 +19,10 @@ namespace sh
 			size_t GetMeshesCount() const;
 			MeshBasePtr GetMesh(size_t index);
 
-			const math::AABBf& GetBoundingBox() const { return m_boundingBox; }
+			const math::AABB& GetBoundingBox() const { return m_boundingBox; }
 		private:
 			std::vector<MeshBasePtr> m_meshes;
-			math::AABBf m_boundingBox;
+			math::AABB m_boundingBox;
 		};
 	}
 }

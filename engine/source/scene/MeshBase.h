@@ -19,7 +19,7 @@ namespace sh
 			void SetTopology(sh::Topology topology);
 			void SetVertexBuffer(video::VertexBufferPtr vertexBuffer);
 			void SetIndexBuffer(video::IndexBufferPtr indexBuffer);
-			void SetBoundingBox(const math::AABBf& boundingBox) { m_boundingBox = boundingBox; }
+			void SetBoundingBox(const math::AABB& boundingBox) { m_boundingBox = boundingBox; }
 			void SetName(const String& name) { m_name = name; }
 			const String& GetName() const { return m_name; }
 
@@ -34,10 +34,10 @@ namespace sh
 			const video::VertexBufferPtr& GetVertexBuffer() const;
 			const video::IndexBufferPtr& GetIndexBuffer() const;
 			sh::Topology GetTopology();
-			const math::AABBf& GetBoundingBox() const { return m_boundingBox; }
+			const math::AABB& GetBoundingBox() const { return m_boundingBox; }
 
 		private:
-			math::AABBf m_boundingBox;
+			math::AABB m_boundingBox;
 			video::VertexBufferPtr m_vertexBuffer;
 			video::IndexBufferPtr m_indexBuffer;
 			sh::Topology m_topology;

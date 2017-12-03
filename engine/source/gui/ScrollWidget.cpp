@@ -107,10 +107,10 @@ namespace gui
 		rect.upperLeftCorner.x = rect.lowerRightCorner.x - m_rect.GetWidth();
 
 		video::Painter::Vertex upperLeft(rect.upperLeftCorner,
-			m_backgroundSprite->GetUVRect().upperLeftCorner,
+			m_backgroundSprite->GetUpperLeftUV(),
 			m_backgroundSprite->GetColor());
 		video::Painter::Vertex downRight(rect.lowerRightCorner,
-			m_backgroundSprite->GetUVRect().lowerRightCorner,
+			m_backgroundSprite->GetLowerRightUV(),
 			m_backgroundSprite->GetColor());
 		painter->DrawRect(upperLeft, downRight);
 		
@@ -126,10 +126,10 @@ namespace gui
 				sprite = m_sprites[m_state];
 			}
 			video::Painter::Vertex upperLeft(m_rect.upperLeftCorner,
-				sprite->GetUVRect().upperLeftCorner,
+				sprite->GetUpperLeftUV(),
 				sprite->GetColor());
 			video::Painter::Vertex downRight(m_rect.lowerRightCorner,
-				sprite->GetUVRect().lowerRightCorner,
+				sprite->GetLowerRightUV(),
 				sprite->GetColor());
 			painter->DrawRect(upperLeft, downRight);
 		}
@@ -144,10 +144,10 @@ namespace gui
 		rect.upperLeftCorner.x = rect.lowerRightCorner.x - m_rect.GetWidth();
 
 		video::Painter::Vertex upperLeft(rect.upperLeftCorner,
-			m_backgroundSprite->GetUVRect().upperLeftCorner,
+			m_backgroundSprite->GetUpperLeftUV(),
 			m_backgroundSprite->GetColor());
 		video::Painter::Vertex downRight(rect.lowerRightCorner,
-			m_backgroundSprite->GetUVRect().lowerRightCorner,
+			m_backgroundSprite->GetLowerRightUV(),
 			m_backgroundSprite->GetColor());
 		painter->DrawRect(upperLeft, downRight);
 
@@ -163,10 +163,10 @@ namespace gui
 				sprite = m_sprites[m_state];
 			}
 			video::Painter::Vertex upperLeft(m_rect.upperLeftCorner,
-				sprite->GetUVRect().upperLeftCorner,
+				sprite->GetUpperLeftUV(),
 				sprite->GetColor());
 			video::Painter::Vertex downRight(m_rect.lowerRightCorner,
-				sprite->GetUVRect().lowerRightCorner,
+				sprite->GetLowerRightUV(),
 				sprite->GetColor());
 			painter->DrawRect(upperLeft, downRight);
 		}
@@ -210,7 +210,7 @@ namespace gui
 			return;
 
 		const auto cachedClipRect = painter->GetClipRect();
-		painter->SetClipRect(math::Rectu(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y,
+		painter->SetClipRect(math::Rect(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y,
 			m_rect.lowerRightCorner.x, m_rect.lowerRightCorner.y));
 		Widget::Render(painter);
 		painter->SetClipRect(cachedClipRect);
@@ -221,7 +221,7 @@ namespace gui
 	void ScrollWidget::RenderBackground(video::Painter* painter) 
 	{
 		const auto cachedClipRect = painter->GetClipRect();
-		painter->SetClipRect(math::Rectu(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y,
+		painter->SetClipRect(math::Rect(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y,
 			m_rect.lowerRightCorner.x, m_rect.lowerRightCorner.y));
 		Widget::RenderBackground(painter);
 		painter->SetClipRect(cachedClipRect);
@@ -243,7 +243,7 @@ namespace gui
 		Widget::SetPosition(x, y);
 	}
 
-	void ScrollWidget::SetSize(const math::Vector2i& size)
+	void ScrollWidget::SetSize(const math::Vector2Int& size)
 	{
 		Widget::SetSize(size);
 	}

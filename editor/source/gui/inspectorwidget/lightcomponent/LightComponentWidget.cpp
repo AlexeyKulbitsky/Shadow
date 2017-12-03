@@ -44,7 +44,7 @@ void LightComponentWidget::SetLightComponent(sh::LightComponent* component)
 	// Light color
 	sh::gui::LabelPtr colorLabel(new sh::gui::Label("Color"));
 
-	m_colorWidget->SetColor(sh::math::Vector4f(m_lightComponent->GetColor(), 1.0f));
+	m_colorWidget->SetColor(sh::math::Vector4(m_lightComponent->GetColor(), 1.0f));
 	sh::gui::ButtonPtr pickerButton = guiMgr->GetStyle()->GetButton("PickerButton");
 	pickerButton->SetMaximumWidth(20);
 	
@@ -94,17 +94,17 @@ void LightComponentWidget::SetLightComponent(sh::LightComponent* component)
 
 void LightComponentWidget::OnColorPickerButtonReleased()
 {
-	m_colorPicker->SetColor(sh::math::Vector4f(m_lightComponent->GetColor(), 1.0f));
+	m_colorPicker->SetColor(sh::math::Vector4(m_lightComponent->GetColor(), 1.0f));
 	sh::gui::GuiManager::GetInstance()->AddChild(m_colorPicker, false);
 }
 
-void LightComponentWidget::OnColorChanged(const sh::math::Vector4f& color)
+void LightComponentWidget::OnColorChanged(const sh::math::Vector4& color)
 {
-	m_colorWidget->SetColor(sh::math::Vector4f(color));
-	m_lightComponent->SetColor(sh::math::Vector3f(color.x, color.y, color.z));
+	m_colorWidget->SetColor(sh::math::Vector4(color));
+	m_lightComponent->SetColor(sh::math::Vector3(color.x, color.y, color.z));
 }
 
-void LightComponentWidget::OnDirectionChanged(const sh::math::Vector3f& direction)
+void LightComponentWidget::OnDirectionChanged(const sh::math::Vector3& direction)
 {
 	auto dir = direction.GetNormalized();
 	m_lightComponent->SetDirection(dir);

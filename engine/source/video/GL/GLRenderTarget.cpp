@@ -43,7 +43,7 @@ namespace sh
 			glBindFramebuffer(GL_FRAMEBUFFER, m_glID);
 
 			Driver *driver = Device::GetInstance()->GetDriver();
-			const math::Vector4u& viewport = driver->GetViewPort();
+			const math::Vector4& viewport = driver->GetViewPort();
 			u32 width = viewport.z;
 			u32 height = viewport.w;
 			GLTexture *colorTexture = static_cast<GLTexture*>(m_colorTexture.get());

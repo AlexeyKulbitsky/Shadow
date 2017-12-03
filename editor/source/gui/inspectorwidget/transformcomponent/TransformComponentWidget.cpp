@@ -60,13 +60,13 @@ void TransformComponentWidget::SetTransformComponent(sh::TransformComponent* com
 void TransformComponentWidget::Update()
 {
 	m_positionEdit->SetValue(m_transformComponent->GetPosition());
-	sh::math::Vector3f eulerRotations;
+	sh::math::Vector3 eulerRotations;
 	m_transformComponent->GetRotation().GetAsEulerXYZ(eulerRotations);
 	m_rotationEdit->SetValue(sh::math::Degrees(eulerRotations));
 	m_scaleEdit->SetValue(m_transformComponent->GetScale());
 }
 
-void TransformComponentWidget::OnPositinChanged(const sh::math::Vector3f& position)
+void TransformComponentWidget::OnPositinChanged(const sh::math::Vector3& position)
 {
 	if (!m_transformComponent)
 		return;
@@ -74,17 +74,17 @@ void TransformComponentWidget::OnPositinChanged(const sh::math::Vector3f& positi
 	m_transformComponent->SetPosition(position);
 }
 
-void TransformComponentWidget::OnRotationChanged(const sh::math::Vector3f& rotation)
+void TransformComponentWidget::OnRotationChanged(const sh::math::Vector3& rotation)
 {
 	if (!m_transformComponent)
 		return;
 
-	sh::math::Quaternionf rot;
+	sh::math::Quaternion rot;
 	rot.SetFromEulerXYZ(sh::math::Radians(rotation));
 	m_transformComponent->SetRotation(rot);
 }
 
-void TransformComponentWidget::OnScaleChanged(const sh::math::Vector3f& scale)
+void TransformComponentWidget::OnScaleChanged(const sh::math::Vector3& scale)
 {
 	if (!m_transformComponent)
 		return;

@@ -22,9 +22,9 @@ namespace sh
 		class SHADOW_API SceneManager
 		{
 		public:
-			static const math::Vector3f& GetFrontVector() { return s_frontVector; }
-			static const math::Vector3f& GetUpVector() { return s_upVector; }
-			static const math::Vector3f& GetRightVector() { return s_rightVector; }
+			static const math::Vector3& GetFrontVector() { return s_frontVector; }
+			static const math::Vector3& GetUpVector() { return s_upVector; }
+			static const math::Vector3& GetRightVector() { return s_rightVector; }
 
 			SceneManager();
 			~SceneManager();
@@ -51,9 +51,9 @@ namespace sh
 			void OnSurfaceChanged(void* surface, int width, int height);
 
 		private:
-			static math::Vector3f	s_frontVector;
-			static math::Vector3f	s_upVector;
-			static math::Vector3f	s_rightVector;
+			static math::Vector3	s_frontVector;
+			static math::Vector3	s_upVector;
+			static math::Vector3	s_rightVector;
 
 			Camera* m_camera;
 

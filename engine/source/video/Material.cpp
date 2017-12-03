@@ -145,7 +145,7 @@ namespace sh
 							break;
 							case MaterialParamType::Float2:
 							{
-								math::Vector2f value;
+								math::Vector2 value;
 								pugi::xml_node valueNode = paramNode.child("value");
 								value.x = valueNode.attribute("x").as_float();
 								value.y = valueNode.attribute("y").as_float();
@@ -154,7 +154,7 @@ namespace sh
 							break;
 							case MaterialParamType::Float3:
 							{
-								math::Vector3f value;
+								math::Vector3 value;
 								pugi::xml_node valueNode = paramNode.child("value");
 								value.x = valueNode.attribute("x").as_float();
 								value.y = valueNode.attribute("y").as_float();
@@ -164,7 +164,7 @@ namespace sh
 							break;
 							case MaterialParamType::Float4:
 							{
-								math::Vector4f value;
+								math::Vector4 value;
 								pugi::xml_node valueNode = paramNode.child("value");
 								value.x = valueNode.attribute("x").as_float();
 								value.y = valueNode.attribute("y").as_float();
@@ -175,7 +175,7 @@ namespace sh
 							break;
 							case MaterialParamType::Color3:
 							{
-								math::Vector3f value;
+								math::Vector3 value;
 								pugi::xml_node valueNode = paramNode.child("value");
 								value.x = valueNode.attribute("x").as_float();
 								value.y = valueNode.attribute("y").as_float();
@@ -185,7 +185,7 @@ namespace sh
 							break;
 							case MaterialParamType::Color4:
 							{
-								math::Vector4f value;
+								math::Vector4 value;
 								pugi::xml_node valueNode = paramNode.child("value");
 								value.x = valueNode.attribute("x").as_float();
 								value.y = valueNode.attribute("y").as_float();
@@ -256,7 +256,7 @@ namespace sh
 					break;
 					case MaterialParamType::Float2:
 					{
-						math::Vector2f value;
+						math::Vector2 value;
 						param.Get(value);
 						pugi::xml_node valueNode = paramNode.append_child("value");
 						valueNode.append_attribute("x").set_value(value.x);
@@ -265,7 +265,7 @@ namespace sh
 					break;
 					case MaterialParamType::Float3:
 					{
-						math::Vector3f value;
+						math::Vector3 value;
 						param.Get(value);
 						pugi::xml_node valueNode = paramNode.append_child("value");
 						valueNode.append_attribute("x").set_value(value.x);
@@ -275,7 +275,7 @@ namespace sh
 					break;
 					case MaterialParamType::Float4:
 					{
-						math::Vector4f value;
+						math::Vector4 value;
 						param.Get(value);
 						pugi::xml_node valueNode = paramNode.append_child("value");
 						valueNode.append_attribute("x").set_value(value.x);
@@ -286,7 +286,7 @@ namespace sh
 					break;
 					case MaterialParamType::Color3:
 					{
-						math::Vector3f value;
+						math::Vector3 value;
 						param.Get(value);
 						pugi::xml_node valueNode = paramNode.append_child("value");
 						valueNode.append_attribute("x").set_value(value.x);
@@ -296,7 +296,7 @@ namespace sh
 					break;
 					case MaterialParamType::Color4:
 					{
-						math::Vector4f value;
+						math::Vector4 value;
 						param.Get(value);
 						pugi::xml_node valueNode = paramNode.append_child("value");
 						valueNode.append_attribute("x").set_value(value.x);

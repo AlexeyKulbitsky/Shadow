@@ -3,66 +3,53 @@
 
 #include "FunctionsCommon.h"
 
+#include "../CompileConfig.h"
+
 namespace sh
 {
 
 	namespace math
 	{
-		template<typename T>
-		struct Vector2
+		class SHADOW_API Vector2
 		{
-			T x, y;
+		public:
+			float x, y;
 
 			// Constructors
-			Vector2() : x(0), y(0) {}
-			Vector2(T _x, T _y) : x(_x), y(_y) {}
-			explicit Vector2(T s) : x(s), y(s) {}
-			Vector2(const Vector2<T>& v) : x(v.x), y(v.y) {}
+			Vector2();
+			Vector2(float _x, float _y);
+			Vector2(float s);
+			Vector2(const Vector2& v);
 
 			// Operators
-			Vector2<T> operator-() const { return Vector2<T>(-x, -y); }
-			Vector2<T>& operator=(const Vector2<T>& v) { x = v.x; y = v.y; return *this; }
-			bool operator==(const Vector2<T>& v) const { return v.x == x && v.y == y; }
-			bool operator!=(const Vector2<T>& v) const { return v.x != x || v.y != y; }
+			Vector2 operator-() const;
+			Vector2& operator=(const Vector2& v);
+			bool operator==(const Vector2& v) const;
+			bool operator!=(const Vector2& v) const;
 
-			Vector2<T> operator+(T s) const { return Vector2<T>(x + s, y + s); }
-			Vector2<T> operator+(const Vector2<T>& v) const { return Vector2<T>(x + v.x, y + v.y); }
-			Vector2<T>& operator+=(T s) { x += s; y += s; return *this; }
-			Vector2<T>& operator+=(const Vector2<T>& v) { x += v.x; y += v.y; return *this; }
+			Vector2 operator+(float s) const;
+			Vector2 operator+(const Vector2& v) const;
+			Vector2& operator+=(float s);
+			Vector2& operator+=(const Vector2& v);
 
-			Vector2<T> operator-(T s) const { return Vector2<T>(x - s, y - s); }
-			Vector2<T> operator-(const Vector2<T>& v) const { return Vector2<T>(x - v.x, y - v.y); }
-			Vector2<T>& operator-=(T s) { x -= s; y -= s; return *this; }
-			Vector2<T>& operator-=(const Vector2<T>& v) { x -= v.x; y -= v.y; return *this; }
+			Vector2 operator-(float s) const;
+			Vector2 operator-(const Vector2& v) const;
+			Vector2& operator-=(float s);
+			Vector2& operator-=(const Vector2& v);
 
-			Vector2<T> operator*(T s) const { return Vector2<T>(x * s, y * s); }
-			Vector2<T> operator*(const Vector2<T>& v) const { return Vector2<T>(x * v.x, y * v.y); }
-			Vector2<T>& operator*=(T s) { x *= s; y *= s; return *this; }
-			Vector2<T>& operator*=(const Vector2<T>& v) { x *= v.x; y *= v.y; return *this; }
+			Vector2 operator*(float s) const;
+			Vector2 operator*(const Vector2& v) const;
+			Vector2& operator*=(float s);
+			Vector2& operator*=(const Vector2& v);
 
-			Vector2<T> operator/(T s) const { return Vector2<T>(x / s, y / s); }
-			Vector2<T> operator/(const Vector2<T>& v) const { return Vector2<T>(x / v.x, y / v.y); }
-			Vector2<T>& operator/=(T s) { x /= s; y /= s; return *this; }
-			Vector2<T>& operator/=(const Vector2<T>& v) { x /= v.x; y /= v.y; return *this; }
+			Vector2 operator/(float s) const;
+			Vector2 operator/(const Vector2& v) const;
+			Vector2& operator/=(float s);
+			Vector2& operator/=(const Vector2& v);
 
-			T GetLength() const 
-			{ 
-				return Sqrt(x * x + y * y); 
-			}
-
-			Vector2<T>& Normalize()
-			{ 
-				T length = GetLength(); 
-				x /= length; 
-				y /= length; 
-				return *this;
-			}
-
-			Vector2<T> GetNormalized() const
-			{
-				T length = GetLength();
-				return Vector2<T>(x / length, y / length);
-			}
+			float GetLength() const;
+			Vector2& Normalize();
+			Vector2 GetNormalized() const;
 		};
 
 	}

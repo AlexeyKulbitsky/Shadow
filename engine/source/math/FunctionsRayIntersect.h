@@ -34,62 +34,59 @@ namespace sh
 			}
 		}
 
-		template<class T>
-		inline bool RayIntersectPlane(const Vector3<T>& origin, const Vector3<T>& dir, const Plane<T>& plane, T& t)
+		inline bool RayIntersectPlane(const Vector3& origin, const Vector3& dir, const Plane& plane, float& t)
 		{
 			// Solution: t = -(p dot N + d) / (N dot dir)
-			T denum = plane.normal.Dot(dir);
+			float denum = plane.normal.Dot(dir);
 
 			// parallel to plane
 			// if (denum!=0.0f) // cos 0 = 90
-			if (Abs(denum) < (T)1e-6) // cos 0 = 90
+			if (Abs(denum) < 1e-6) // cos 0 = 90
 			{
 				return false;
 			}
 			
-			T num = plane.GetDistanceTo(origin);
+			float num = plane.GetDistanceTo(origin);
 			t = -num / denum;
 			return true;
 		}
 
-		template<class T>
-		inline int RayIntersectSphere(const Vector3<T>& rayOrigin, const Vector3<T>& rayDirection, const Vector3<T>& sphereCenter, T radius, T& t0, T& t1)
+		inline int RayIntersectSphere(const Vector3& rayOrigin, const Vector3& rayDirection, const Vector3& sphereCenter, float radius, float& t0, float& t1)
 		{
 			// christer ericson code
-			Vector3<T> m = rayOrigin - sphereCenter;
-			T b = m.Dot(rayDirection);
-			T c = m.Dot(m) - radius * radius;
+			Vector3 m = rayOrigin - sphereCenter;
+			float b = m.Dot(rayDirection);
+			float c = m.Dot(m) - radius * radius;
 
 			// exit if ray origin outside sphere ( c > 0) and r pointing away from sphere (b > 0)
 			// if (c > 0.0f && b > 0.0f) return 0;
 
-			T discr = b*b - c;
-			if (discr < (T)0)
+			float discr = b*b - c;
+			if (discr < 0.0f)
 			{
 				return 0;
 			}
 
-			T sqdiscr = Sqrt(discr);
+			float sqdiscr = Sqrt(discr);
 			t0 = -b - sqdiscr;
 			t1 = -b + sqdiscr;
 			return 2;
 		}
 
-		template<class T>
 		inline bool RayIntersectDisk(
-			const Vector3<T>& rayOrigin, const Vector3<T>& rayDir,
-			const Vector3<T>& circleCenter, const Vector3<T>& circleNormal, T circleRadius,
-			T& t)
+			const Vector3& rayOrigin, const Vector3& rayDir,
+			const Vector3& circleCenter, const Vector3& circleNormal, float circleRadius,
+			float& t)
 		{
-			Plane<T> plane(circleNormal, circleCenter);
-			T tt;
+			Plane plane(circleNormal, circleCenter);
+			float tt;
 			
 			if (!RayIntersectPlane(rayOrigin, rayDir, plane, tt))
 			{
 				return false;
 			}
 
-			Vector3<T> dist = circleCenter - (rayOrigin + rayDir * tt);
+			Vector3 dist = circleCenter - (rayOrigin + rayDir * tt);
 
 			if (dist.GetLengthSquare() < circleRadius * circleRadius)
 			{
@@ -100,16 +97,15 @@ namespace sh
 			return false;
 		}
 
-		template<class T>
 		inline int rayIntersectCylinder(
-			const Vector3<T>& p, const Vector3<T>& d,
-			T length, T radius,
-			T* t, bool intersectDisks)
+			const Vector3& p, const Vector3& d,
+			float length, float radius,
+			float* t, bool intersectDisks)
 		{
-			T hh = length / 2;
-			T r2 = radius * radius;
+			float hh = length / 2.0f;
+			float r2 = radius * radius;
 			// check if ray is parallel to cylinder axis
-			if (Abs(d.z) >= (T)0.999f)
+			if (Abs(d.z) >= 0.999f)
 			{
 				if (!intersectDisks)
 				{
@@ -118,7 +114,7 @@ namespace sh
 				// The line is parallel to the cylinder axis.  Determine if the line
 				// intersects the cylinder end disks.
 
-				T c = r2 - p.x*p.x - p.y*p.y;
+				float c = r2 - p.x*p.x - p.y*p.y;
 				if (c < 0.0f)
 				{
 					// line outside the cylinder, no intersection
@@ -143,18 +139,18 @@ namespace sh
 			// (Px^2 + t^2Dx^2 + 2*Px*t*Dx) + ... = r^2
 			// t2*(Dx^2 + Dy^2) + t*(2*Px*Dx + 2*Py*Dy) + Px^2 + Py^2 - r^2 = 0;
 
-			T a = d.x*d.x + d.y*d.y;
-			T b = 2.0f*(p.x*d.x + p.y*d.y);
-			T c = (p.x*p.x + p.y*p.y) - r2;
-			T t0, t1;
-			int ret = QuadraticEquation<T>(a, b, c, t0, t1);
+			float a = d.x*d.x + d.y*d.y;
+			float b = 2.0f*(p.x*d.x + p.y*d.y);
+			float c = (p.x*p.x + p.y*p.y) - r2;
+			float t0, t1;
+			int ret = QuadraticEquation(a, b, c, t0, t1);
 			if (ret == 0)
 			{
 				return 0;
 			}
 			// check z bounds
-			T z0 = p.z + d.z*t0;
-			T z1 = p.z + d.z*t1;
+			float z0 = p.z + d.z*t0;
+			float z1 = p.z + d.z*t1;
 			ret = 0;
 			if (Abs(z0) < hh)
 			{
@@ -162,7 +158,7 @@ namespace sh
 			}
 			else if (intersectDisks)
 			{
-				if (RayIntersectDisk<T>(p, d, Vector3<T>(0, 0, signOf(z0)*hh), Vector3<T>(0, 0, 1), radius, t0))
+				if (RayIntersectDisk(p, d, Vector3(0.0f, 0.0f, signOf(z0)*hh), Vector3(0.0f, 0.0f, 1.0f), radius, t0))
 				{
 					t[ret++] = t0;
 				}
@@ -173,7 +169,7 @@ namespace sh
 			}
 			else if (intersectDisks)
 			{
-				if (RayIntersectDisk<T>(p, d, Vector3<T>(0, 0, signOf(z1)*hh), Vector3<T>(0, 0, 1), radius, t1))
+				if (RayIntersectDisk(p, d, Vector3(0.0f, 0.0f, signOf(z1)*hh), Vector3(0.0f, 0.0f, 1.0f), radius, t1))
 				{
 					t[ret++] = t1;
 				}

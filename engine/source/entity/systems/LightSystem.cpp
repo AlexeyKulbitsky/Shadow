@@ -71,7 +71,7 @@ namespace sh
 					{
 						case scene::Light::Type::DIRECTIONAL:
 						{
-							auto direction = transformComponent->GetRotation() * math::Vector3f(0.0, 1.0, 0.0f);
+							auto direction = transformComponent->GetRotation() * math::Vector3(0.0, 1.0, 0.0f);
 							direction.Normalize();
 							lightComponent->SetDirection(direction);
 							lightComponent->SetPosition(transformComponent->GetPosition());

@@ -9,14 +9,14 @@ namespace gui
 {
 
 	ComboBox::ComboBox()
-		: ComboBox(math::Recti(0, 0, 10, 10))
+		: ComboBox(math::Rect(0, 0, 10, 10))
 	{
 	}
 
-	ComboBox::ComboBox(const math::Recti& rect)
+	ComboBox::ComboBox(const math::Rect& rect)
 	{
 		VerticalLayoutPtr scrollWidgetLayout(new VerticalLayout());
-		math::Recti scrollRect(rect.upperLeftCorner.x, rect.lowerRightCorner.y,
+		math::Rect scrollRect(rect.upperLeftCorner.x, rect.lowerRightCorner.y,
 			rect.lowerRightCorner.x, rect.lowerRightCorner.y + rect.GetHeight() + 200);
 		m_scrollWidget.reset(new ScrollWidget());
 		m_scrollWidget->SetLayout(scrollWidgetLayout);

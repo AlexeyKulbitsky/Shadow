@@ -48,11 +48,11 @@ namespace sh
 			if (transformComponent->NeedsToRecalculateWorldMatrix())
 			{
 				transformComponent->m_worldMatrix.SetIdentity();
-				const math::Vector3f& translation = transformComponent->m_position;
-				const math::Vector3f& scale = transformComponent->m_scale;
-				const math::Quaternionf& rotation = transformComponent->m_rotation;
+				const math::Vector3& translation = transformComponent->m_position;
+				const math::Vector3& scale = transformComponent->m_scale;
+				const math::Quaternion& rotation = transformComponent->m_rotation;
 
-				math::Matrix4f scaleMatrix;
+				math::Matrix4 scaleMatrix;
 				scaleMatrix.SetIdentity();
 				scaleMatrix.SetScale(scale);
 				transformComponent->m_worldMatrix.SetTranslation(translation);

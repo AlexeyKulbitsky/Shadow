@@ -1,7 +1,9 @@
 #ifndef SHADOW_RECT_INCLUDE
 #define SHADOW_RECT_INCLUDE
 
-#include "Vector2.h"
+#include "Vector2Int.h"
+
+#include "../CompileConfig.h"
 
 namespace sh
 {
@@ -9,69 +11,33 @@ namespace sh
 namespace math
 {
 
-	template<typename T>
-	struct Rect
+	class SHADOW_API Rect
 	{
-		Rect() : upperLeftCorner(0, 0), lowerRightCorner(0, 0) { }
-		Rect(T x1, T y1, T x2, T y2) : upperLeftCorner(x1, y1), lowerRightCorner(x2, y2) { }
-		Rect(const Vector2<T> upperLeft, const Vector2<T> lowerRight) : upperLeftCorner(upperLeft), lowerRightCorner(lowerRight) { }
+	public:
+		Rect();
+		Rect(int32_t x1, int32_t y1, int32_t x2, int32_t y2);
+		Rect(const Vector2Int upperLeft, const Vector2Int lowerRight);
 
-		bool operator==(const Rect<T>& other) const 
-		{ 
-			return upperLeftCorner == other.upperLeftCorner &&
-				lowerRightCorner == other.lowerRightCorner;
-		}
+		bool operator==(const Rect& other) const;
+		bool operator!=(const Rect& other) const;
 
-		bool operator!=(const Rect<T>& other) const 
-		{
-			return upperLeftCorner != other.upperLeftCorner ||
-				lowerRightCorner != other.lowerRightCorner;
-		}
+		void Set(int32_t x1, int32_t y1, int32_t x2, int32_t y2);
+		void Set(const Vector2Int& upperLeft, const Vector2Int& lowerRight);
 
-		void Set(T x1, T y1, T x2, T y2)
-		{
-			upperLeftCorner.x = x1;
-			upperLeftCorner.y = y1;
-			lowerRightCorner.x = x2;
-			lowerRightCorner.y = y2;
-		}
+		int32_t GetWidth() const;
+		int32_t GetHeight() const;
+		int32_t GetArea() const;
 
-		void Set(const Vector2<T> upperLeft, const Vector2<T> lowerRight)
-		{
-			upperLeftCorner = upperLeft;
-			lowerRightCorner = lowerRight;
-		}
+		Vector2Int GetSize() const;
+		Vector2Int GetCenter() const;
+		Vector2Int GetExtent() const;
 
-		T GetWidth() const { return lowerRightCorner.x - upperLeftCorner.x; }
-		T GetHeight() const { return lowerRightCorner.y - upperLeftCorner.y; }
-		T GetArea() const { return GetWidth() * GetHeight(); }
+		bool IsPointInside(const Vector2Int& point) const;
+		bool IsPointInside(const int32_t& x, const int32_t& y) const;
+		bool Intersects(const Rect& other) const;
 
-		Vector2<T> GetSize() const { return Vector2<T>(GetWidth(), GetHeight()); }
-		Vector2<T> GetCenter() const { return Vector2<T>((lowerRightCorner + upperLeftCorner) / 2); }
-		Vector2<T> GetExtent() const { return lowerRightCorner - upperLeftCorner; }
-
-		bool IsPointInside(const Vector2<T>& point) const 
-		{ 
-			return upperLeftCorner.x <= point.x && upperLeftCorner.y <= point.y &&
-			lowerRightCorner.x >= point.x && lowerRightCorner.y >= point.y;
-		}
-
-		bool IsPointInside(const T& x, const T& y) const
-		{
-			return upperLeftCorner.x <= x && upperLeftCorner.y <= y &&
-			lowerRightCorner.x >= x && lowerRightCorner.y >= y;
-		}
-
-		bool Intersects(const Rect<T>& other) const
-		{
-			return !(upperLeftCorner.x > other.lowerRightCorner.x ||
-				other.upperLeftCorner.x > lowerRightCorner.x ||
-				upperLeftCorner.y > other.lowerRightCorner.y ||
-				other.upperLeftCorner.y > lowerRightCorner.y);
-		}
-
-		Vector2<T> upperLeftCorner;
-		Vector2<T> lowerRightCorner;
+		Vector2Int upperLeftCorner;
+		Vector2Int lowerRightCorner;
 	};
 
 } // math

@@ -10,7 +10,7 @@ public:
 	Vector2PropertyEditor(sh::Serializable* object, sh::Property* objectProperty);
 
 private:
-	void OnValueChanged(const sh::math::Vector2f& value);
+	void OnValueChanged(const sh::math::Vector2& value);
 
 private:
 	sh::SPtr<Vector2LineEdit> m_edit;

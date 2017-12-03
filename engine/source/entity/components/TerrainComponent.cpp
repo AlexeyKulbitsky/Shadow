@@ -164,24 +164,24 @@ namespace sh
 			const u32 i2 = indexArray[i + 2];
 
 			u32 index = i0 * stride + posAttr->offset / (u32)posAttr->type;
-			math::Vector3f p0;
+			math::Vector3 p0;
 			p0.x = vertexArray[index];
 			p0.y = vertexArray[index + 1];
 			p0.z = vertexArray[index + 2];
 
 			index = i1 * stride + posAttr->offset / (u32)posAttr->type;
-			math::Vector3f p1;
+			math::Vector3 p1;
 			p1.x = vertexArray[index];
 			p1.y = vertexArray[index + 1];
 			p1.z = vertexArray[index + 2];
 
 			index = i2 * stride + posAttr->offset / (u32)posAttr->type;
-			math::Vector3f p2;
+			math::Vector3 p2;
 			p2.x = vertexArray[index];
 			p2.y = vertexArray[index + 1];
 			p2.z = vertexArray[index + 2];
 
-			math::Vector3f normal = (p0 - p1).Cross(p2 - p1);
+			math::Vector3 normal = (p0 - p1).Cross(p2 - p1);
 			normal.Normalize();
 
 			index = i0 * stride + normAttr->offset / (u32)normAttr->type;
@@ -204,7 +204,7 @@ namespace sh
 		for (u32 i = 0; i < indexArray.size() - 3; i += 3)
 		{
 			u32 index = indexArray[i] * stride + normAttr->offset / (u32)normAttr->type;
-			math::Vector3f normal;
+			math::Vector3 normal;
 			normal.x = vertexArray[index];
 			normal.y = vertexArray[index + 1];
 			normal.z = vertexArray[index + 2];

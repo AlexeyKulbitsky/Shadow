@@ -9,6 +9,10 @@ cmake_policy(SET CMP0015 NEW)
 set(PROJECT_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/source)
 set(PROJECT_NAME Shadow)
 
+#set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/libArchive_out)
+#set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/libLibrary_out)
+#set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/binBinary_out)
+
 #set(USE_VULKAN_API OFF)
 
 include_directories( ${PROJECT_INCLUDE_DIR} )
@@ -93,18 +97,28 @@ if (WIN32)
 endif(WIN32)
 
 # Add Shadow engine library
+#add_library(${PROJECT_NAME} ${PROJECT_SOURCE_FILES})
+#target_compile_definitions(${PROJECT_NAME} PUBLIC SHADOW_STATIC_LIB)
+
 add_library(${PROJECT_NAME} SHARED ${PROJECT_SOURCE_FILES})
 target_compile_definitions(${PROJECT_NAME} PRIVATE SHADOW_EXPORTS)
 
+set_target_properties(${PROJECT_NAME}
+    PROPERTIES
+    ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib"
+    LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib"
+    RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
+)
+
 
 # Add pugixml
-add_subdirectory(../libs/pugixml "${CMAKE_CURRENT_BINARY_DIR}/pugixml_build")
+add_subdirectory(../libs/pugixml "${CMAKE_CURRENT_BINARY_DIR}/ThirdParty/pugixml")
 include_directories( ../libs/pugixml/src )
 
 set_property(TARGET pugixml PROPERTY FOLDER CommonLibs)
 
 # Add freetype
-add_subdirectory(../libs/freetype "${CMAKE_CURRENT_BINARY_DIR}/freetype_build")
+add_subdirectory(../libs/freetype "${CMAKE_CURRENT_BINARY_DIR}/ThirdParty/freetype")
 include_directories(../libs/freetype/include)
 
 set_property(TARGET freetype PROPERTY FOLDER CommonLibs)
@@ -116,7 +130,7 @@ if (USE_VULKAN_API)
   set(ENABLE_GLSLANG_BINARIES OFF CACHE BOOL "Builds glslangValidator and spirv-remap" FORCE)
   set(ENABLE_HLSL OFF CACHE BOOL "Enables HLSL input support" FORCE)
 
-  add_subdirectory(../libs/glslang "${CMAKE_CURRENT_BINARY_DIR}/glslang_build")
+  add_subdirectory(../libs/glslang "${CMAKE_CURRENT_BINARY_DIR}/ThirdParty/glslang")
   include_directories(../libs/glslang)
   include_directories(../libs/glslang/StandAlone)
 
@@ -143,7 +157,7 @@ find_library(GLESV2_LIBRARY libGLESv2 HINTS ../libs/egl/lib/release)
 # Add GLEW
 if (WIN32)
   set(BUILD_UTILS OFF CACHE BOOL "utilities" FORCE)
-  add_subdirectory(../libs/glew/build/cmake "${CMAKE_CURRENT_BINARY_DIR}/glew_build")
+  add_subdirectory(../libs/glew/build/cmake "${CMAKE_CURRENT_BINARY_DIR}/ThirdParty/glew")
   include_directories(../libs/glew/include)
   target_link_libraries(${PROJECT_NAME} glew_s)
 
@@ -160,9 +174,9 @@ if (USE_ASSIMP_API)
 
   set(ASSIMP_BUILD_ASSIMP_TOOLS OFF CACHE BOOL "If the supplementary tools for Assimp are built in addition to the library." FORCE)
   set(ASSIMP_BUILD_TESTS OFF CACHE BOOL "If the test suite for Assimp is built in addition to the library." FORCE)
-  add_subdirectory(../libs/assimp "${CMAKE_CURRENT_BINARY_DIR}/assimp_build")
+  add_subdirectory(../libs/assimp "${CMAKE_CURRENT_BINARY_DIR}/ThirdParty/assimp")
   include_directories(../libs/assimp/include)
-  include_directories("${CMAKE_CURRENT_BINARY_DIR}/assimp_build/include")
+  include_directories("${CMAKE_CURRENT_BINARY_DIR}/ThirdParty/assimp/include")
   target_link_libraries(${PROJECT_NAME} assimp)
 
   if(MSVC12 OR MSVC14)
@@ -178,7 +192,7 @@ endif()
 set_property(TARGET dist PROPERTY FOLDER CommonLibs)
 
 if (SHADOW_ANDROID)
-  add_subdirectory(../libs/minizip "${CMAKE_CURRENT_BINARY_DIR}/minizip_build")
+  add_subdirectory(../libs/minizip "${CMAKE_CURRENT_BINARY_DIR}/ThirdParty/minizip")
   include_directories(../libs/minizip)
 
   target_link_libraries(${PROJECT_NAME} pugixml freetype minizip)

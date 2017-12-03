@@ -24,7 +24,7 @@ namespace gui
 		LineEdit(const SpritePtr& defaultSprite,
 				const SpritePtr& editSprite);
 
-		LineEdit(const math::Recti& rect, 
+		LineEdit(const math::Rect& rect, 
 			   const SpritePtr& defaultSprite, 
 			   const SpritePtr& editSprite);
 
@@ -47,7 +47,7 @@ namespace gui
 		bool m_dirty = false;
 		//bool m_inFocus = false;
 
-		static math::Recti s_cursorRect;
+		static math::Rect s_cursorRect;
 		static size_t s_cursorPos;
 	};
 

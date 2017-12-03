@@ -32,22 +32,22 @@ void ScaleGizmo::Render()
 
 	sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
 	sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
-	sh::math::Matrix4f viewMatrix = camera->GetViewMatrix();
-	sh::math::Matrix4f projectionMatrix = camera->GetProjectionMatrix();
+	sh::math::Matrix4 viewMatrix = camera->GetViewMatrix();
+	sh::math::Matrix4 projectionMatrix = camera->GetProjectionMatrix();
 
-	sh::math::Matrix4f matrix;
+	sh::math::Matrix4 matrix;
 	matrix.SetIdentity();
 
-	sh::math::Vector3f position = s_position;
-	sh::math::Quaternionf rotation = s_rotation;
+	sh::math::Vector3 position = s_position;
+	sh::math::Quaternion rotation = s_rotation;
 	sh::f32 scaleFactor = (camera->GetPosition() - position).GetLength() / 35.0f;
-	sh::math::Vector3f scale(scaleFactor);
+	sh::math::Vector3 scale(scaleFactor);
 
 	matrix.SetScale(scale);
 	matrix.SetTranslation(position);
 	matrix = matrix * rotation.GetAsMatrix4();
 
-	sh::math::Matrix4f wvpMatrix = projectionMatrix * viewMatrix * matrix;
+	sh::math::Matrix4 wvpMatrix = projectionMatrix * viewMatrix * matrix;
 	wvpMatrix.Transpose();
 
 	for (size_t i = 0; i < Axis::COUNT; ++i)
@@ -124,32 +124,32 @@ bool ScaleGizmo::OnMouseMoved(sh::u32 x, sh::u32 y)
 
 bool ScaleGizmo::TryToSelect(sh::u32 x, sh::u32 y)
 {
-	sh::math::Matrix4f matrix;
-	sh::math::Matrix4f invMatrix;
+	sh::math::Matrix4 matrix;
+	sh::math::Matrix4 invMatrix;
 	matrix.SetIdentity();
 	sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
 
-	sh::math::Vector3f position = s_position;
-	sh::math::Quaternionf rotation = s_rotation;
+	sh::math::Vector3 position = s_position;
+	sh::math::Quaternion rotation = s_rotation;
 	sh::f32 scaleFactor = (camera->GetPosition() - position).GetLength() / 35.0f;
-	sh::math::Vector3f scale(scaleFactor);
+	sh::math::Vector3 scale(scaleFactor);
 
 	matrix.SetScale(scale);
 	matrix.SetTranslation(position);
 	matrix = matrix * rotation.GetAsMatrix4();
 	invMatrix = matrix.GetInversed();
 
-	sh::math::Vector3f localX = rotation.GetAsMatrix3() * sh::math::Vector3f(1.0f, 0.0f, 0.0f);
-	sh::math::Vector3f localY = rotation.GetAsMatrix3() * sh::math::Vector3f(0.0f, 1.0f, 0.0f);
-	sh::math::Vector3f localZ = rotation.GetAsMatrix3() * sh::math::Vector3f(0.0f, 0.0f, 1.0f);
+	sh::math::Vector3 localX = rotation.GetAsMatrix3() * sh::math::Vector3(1.0f, 0.0f, 0.0f);
+	sh::math::Vector3 localY = rotation.GetAsMatrix3() * sh::math::Vector3(0.0f, 1.0f, 0.0f);
+	sh::math::Vector3 localZ = rotation.GetAsMatrix3() * sh::math::Vector3(0.0f, 0.0f, 1.0f);
 
-	sh::math::Vector3f rayOrigin(0.0f);
-	sh::math::Vector3f rayDirection(0.0f);
+	sh::math::Vector3 rayOrigin(0.0f);
+	sh::math::Vector3 rayDirection(0.0f);
 	camera->BuildRay(x, y, rayOrigin, rayDirection);
 
 	// Intersection with X/Y - axis
-	sh::math::Planef plane(position, position + localX, position + localY);
-	sh::math::Vector3f iPoint(0.0f);
+	sh::math::Plane plane(position, position + localX, position + localY);
+	sh::math::Vector3 iPoint(0.0f);
 	bool res = plane.GetIntersectionWithLine(rayOrigin, rayDirection, iPoint);
 	iPoint = invMatrix * iPoint;
 
@@ -224,34 +224,34 @@ void ScaleGizmo::CreateArrow(Axis::Type type)
 	float height = 4.0f;
 	sh::u32 numberOfSides = 100U;
 
-	sh::math::Vector3f translation(0.0f);
-	sh::math::Vector4f defaultColor;
-	sh::math::Vector4f selectedColor(1.0f);
-	sh::math::Quaternionf rotation;
-	sh::math::Matrix4f transform;
+	sh::math::Vector3 translation(0.0f);
+	sh::math::Vector4 defaultColor;
+	sh::math::Vector4 selectedColor(1.0f);
+	sh::math::Quaternion rotation;
+	sh::math::Matrix4 transform;
 	transform.SetIdentity();
 
 	switch (type)
 	{
 	case Axis::Type::X_AXIS:
 	{
-		translation = sh::math::Vector3f(3.0f, 0.0f, 0.0f);
+		translation = sh::math::Vector3(3.0f, 0.0f, 0.0f);
 		rotation.SetFromAxisAngle(sh::scene::SceneManager::GetFrontVector(), sh::math::k_pi_2);
-		defaultColor = sh::math::Vector4f(1.0f, 0.0f, 0.0f, 1.0f);
+		defaultColor = sh::math::Vector4(1.0f, 0.0f, 0.0f, 1.0f);
 	}
 	break;
 	case Axis::Type::Y_AXIS:
 	{
-		translation = sh::math::Vector3f(0.0f, 3.0f, 0.0f);
+		translation = sh::math::Vector3(0.0f, 3.0f, 0.0f);
 		rotation.SetIndentity();
-		defaultColor = sh::math::Vector4f(0.0f, 1.0f, 0.0f, 1.0f);
+		defaultColor = sh::math::Vector4(0.0f, 1.0f, 0.0f, 1.0f);
 	}
 	break;
 	case Axis::Type::Z_AXIS:
 	{
-		translation = sh::math::Vector3f(0.0f, 0.0f, 3.0f);
+		translation = sh::math::Vector3(0.0f, 0.0f, 3.0f);
 		rotation.SetFromAxisAngle(sh::scene::SceneManager::GetRightVector(), sh::math::k_pi_2);
-		defaultColor = sh::math::Vector4f(0.0f, 0.0f, 1.0f, 1.0f);
+		defaultColor = sh::math::Vector4(0.0f, 0.0f, 1.0f, 1.0f);
 	}
 	break;
 	default:
@@ -288,61 +288,61 @@ void ScaleGizmo::Scale(Axis::Type axis)
 {
 	sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
 	sh::InputManager* inputManager = sh::Device::GetInstance()->GetInputManager();
-	sh::math::Vector2i old = inputManager->GetMousePositionOld();
-	sh::math::Vector2i current = inputManager->GetMousePositionCurrent();
-	sh::math::Vector3f rayOrigin, rayDirOld, rayDirCurrent;
+	sh::math::Vector2Int old = inputManager->GetMousePositionOld();
+	sh::math::Vector2Int current = inputManager->GetMousePositionCurrent();
+	sh::math::Vector3 rayOrigin, rayDirOld, rayDirCurrent;
 	camera->BuildRay(old.x, old.y, rayOrigin, rayDirOld);
 	camera->BuildRay(current.x, current.y, rayOrigin, rayDirCurrent);
 
 
-	sh::math::Vector3f pos = s_position;
-	sh::math::Vector3f scale = s_scale;
-	sh::math::Matrix3f rotation = s_rotation.GetAsMatrix3();
-	sh::math::Vector3f axisRotations(0.0f);
+	sh::math::Vector3 pos = s_position;
+	sh::math::Vector3 scale = s_scale;
+	sh::math::Matrix3 rotation = s_rotation.GetAsMatrix3();
+	sh::math::Vector3 axisRotations(0.0f);
 
-	sh::math::Planef plane;
-	sh::math::Vector3f direction;
+	sh::math::Plane plane;
+	sh::math::Vector3 direction;
 	switch (axis)
 	{
 	case Axis::Type::X_AXIS:
 	{
-		sh::math::Vector3f axisDir = sh::scene::SceneManager::GetRightVector();
-		sh::math::Vector3f orthoVector(camera->GetUpVector());
+		sh::math::Vector3 axisDir = sh::scene::SceneManager::GetRightVector();
+		sh::math::Vector3 orthoVector(camera->GetUpVector());
 		direction = rotation * axisDir;
 		direction = axisDir;
 		if (orthoVector.Equals(direction, sh::math::k_eps_5) || (orthoVector + direction).GetLength() < sh::math::k_eps_5)
 		{
 			orthoVector = camera->GetRightVector();
 		}
-		plane = sh::math::Planef(pos, pos + orthoVector, pos + direction);
+		plane = sh::math::Plane(pos, pos + orthoVector, pos + direction);
 	}
 	break;
 
 	case Axis::Type::Y_AXIS:
 	{
-		sh::math::Vector3f axisDir = sh::scene::SceneManager::GetUpVector();
-		sh::math::Vector3f orthoVector(camera->GetUpVector());
+		sh::math::Vector3 axisDir = sh::scene::SceneManager::GetUpVector();
+		sh::math::Vector3 orthoVector(camera->GetUpVector());
 		direction = rotation * axisDir;
 		direction = axisDir;
 		if (orthoVector.Equals(direction, sh::math::k_eps_5) || (orthoVector + direction).GetLength() < sh::math::k_eps_5)
 		{
 			orthoVector = camera->GetRightVector();
 		}
-		plane = sh::math::Planef(pos, pos + orthoVector, pos + direction);
+		plane = sh::math::Plane(pos, pos + orthoVector, pos + direction);
 	}
 	break;
 
 	case Axis::Type::Z_AXIS:
 	{
-		sh::math::Vector3f axisDir = -sh::scene::SceneManager::GetFrontVector();
-		sh::math::Vector3f orthoVector(camera->GetUpVector());
+		sh::math::Vector3 axisDir = -sh::scene::SceneManager::GetFrontVector();
+		sh::math::Vector3 orthoVector(camera->GetUpVector());
 		direction = rotation * axisDir;
 		direction = axisDir;
 		if (orthoVector.Equals(direction, sh::math::k_eps_5) || (orthoVector + direction).GetLength() < sh::math::k_eps_5)
 		{
 			orthoVector = camera->GetRightVector();
 		}
-		plane = sh::math::Planef(pos, pos + orthoVector, pos + direction);
+		plane = sh::math::Plane(pos, pos + orthoVector, pos + direction);
 	}
 	break;
 
@@ -352,10 +352,10 @@ void ScaleGizmo::Scale(Axis::Type axis)
 
 
 
-	sh::math::Vector3f intersectionOld(0.0f), intersectionCurrent(0.0f);
+	sh::math::Vector3 intersectionOld(0.0f), intersectionCurrent(0.0f);
 	plane.GetIntersectionWithLine(rayOrigin, rayDirOld, intersectionOld);
 	plane.GetIntersectionWithLine(rayOrigin, rayDirCurrent, intersectionCurrent);
-	sh::math::Vector3f delta = intersectionCurrent - intersectionOld;
+	sh::math::Vector3 delta = intersectionCurrent - intersectionOld;
 
 	if (axis == Axis::Type::X_AXIS || axis == Axis::Type::Y_AXIS || axis == Axis::Type::Z_AXIS)
 	{

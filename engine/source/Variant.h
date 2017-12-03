@@ -84,25 +84,25 @@ namespace sh
 			*this = value;
 		}
 
-		Variant(const math::Vector2f& value)
+		Variant(const math::Vector2& value)
 			: m_type(VAR_NOTYPE)
 		{
 			*this = value;
 		}
 
-		Variant(const math::Vector3f& value)
+		Variant(const math::Vector3& value)
 			: m_type(VAR_NOTYPE)
 		{
 			*this = value;
 		}
 
-		Variant(const math::Vector4f& value)
+		Variant(const math::Vector4& value)
 			: m_type(VAR_NOTYPE)
 		{
 			*this = value;
 		}
 
-		Variant(const math::Quaternionf& value)
+		Variant(const math::Quaternion& value)
 			: m_type(VAR_NOTYPE)
 		{
 			*this = value;
@@ -183,31 +183,31 @@ namespace sh
 			return *this;
 		}
 
-		Variant& operator=(const math::Vector2f& value)
+		Variant& operator=(const math::Vector2& value)
 		{
 			SetType(VAR_VECTOR_2_FLOAT);
-			*reinterpret_cast<math::Vector2f*>(m_value.ptrValue) = value;
+			*reinterpret_cast<math::Vector2*>(m_value.ptrValue) = value;
 			return *this;
 		}
 
-		Variant& operator=(const math::Vector3f& value)
+		Variant& operator=(const math::Vector3& value)
 		{
 			SetType(VAR_VECTOR_3_FLOAT);
-			*reinterpret_cast<math::Vector3f*>(m_value.ptrValue) = value;
+			*reinterpret_cast<math::Vector3*>(m_value.ptrValue) = value;
 			return *this;
 		}
 
-		Variant& operator=(const math::Vector4f& value)
+		Variant& operator=(const math::Vector4& value)
 		{
 			SetType(VAR_VECTOR_4_FLOAT);
-			*reinterpret_cast<math::Vector4f*>(m_value.ptrValue) = value;
+			*reinterpret_cast<math::Vector4*>(m_value.ptrValue) = value;
 			return *this;
 		}
 
-		Variant& operator=(const math::Quaternionf& value)
+		Variant& operator=(const math::Quaternion& value)
 		{
 			SetType(VAR_QUATERNION_FLOAT);
-			*reinterpret_cast<math::Quaternionf*>(m_value.ptrValue) = value;
+			*reinterpret_cast<math::Quaternion*>(m_value.ptrValue) = value;
 			return *this;
 		}
 
@@ -250,10 +250,10 @@ namespace sh
 		float GetFloat() const;
 		bool GetBool() const;
 		const std::string& GetString() const;
-		const math::Vector2f& GetVector2Float() const;
-		const math::Vector3f& GetVector3Float() const;
-		const math::Vector4f& GetVector4Float() const;
-		const math::Quaternionf& GetQuaternionFloat() const;
+		const math::Vector2& GetVector2Float() const;
+		const math::Vector3& GetVector3Float() const;
+		const math::Vector4& GetVector4Float() const;
+		const math::Quaternion& GetQuaternionFloat() const;
 		Serializable* GetSerializable() const;
 		const ResourceRef& GetResourceRef() const;
 		const ResourceRefList& GetResourceRefList() const;
@@ -281,10 +281,10 @@ namespace sh
 	template <> inline VariantType GetVariantType<float>() { return VAR_FLOAT; }
 	template <> inline VariantType GetVariantType<bool>() { return VAR_BOOL; }
 	template <> inline VariantType GetVariantType<std::string>() { return VAR_STRING; }
-	template <> inline VariantType GetVariantType<math::Vector2f>() { return VAR_VECTOR_2_FLOAT; }
-	template <> inline VariantType GetVariantType<math::Vector3f>() { return VAR_VECTOR_3_FLOAT; }
-	template <> inline VariantType GetVariantType<math::Vector4f>() { return VAR_VECTOR_4_FLOAT; }
-	template <> inline VariantType GetVariantType<math::Quaternionf>() { return VAR_QUATERNION_FLOAT; }
+	template <> inline VariantType GetVariantType<math::Vector2>() { return VAR_VECTOR_2_FLOAT; }
+	template <> inline VariantType GetVariantType<math::Vector3>() { return VAR_VECTOR_3_FLOAT; }
+	template <> inline VariantType GetVariantType<math::Vector4>() { return VAR_VECTOR_4_FLOAT; }
+	template <> inline VariantType GetVariantType<math::Quaternion>() { return VAR_QUATERNION_FLOAT; }
 	template <> inline VariantType GetVariantType<Serializable*>() { return VAR_SERIALIZABLE; }
 	template <> inline VariantType GetVariantType<ResourceRef>() { return VAR_RESOURCE_REF; }
 	template <> inline VariantType GetVariantType<ResourceRefList>() { return VAR_RESOURCE_REF_LIST; }
@@ -295,10 +295,10 @@ namespace sh
 	template<> float Variant::Get<float>() const;
 	template<> bool Variant::Get<bool>() const;
 	template<> std::string Variant::Get<std::string>() const;
-	template<> math::Vector2f Variant::Get<math::Vector2f>() const;
-	template<> math::Vector3f Variant::Get<math::Vector3f>() const;
-	template<> math::Vector4f Variant::Get<math::Vector4f>() const;
-	template<> math::Quaternionf Variant::Get<math::Quaternionf>() const;
+	template<> math::Vector2 Variant::Get<math::Vector2>() const;
+	template<> math::Vector3 Variant::Get<math::Vector3>() const;
+	template<> math::Vector4 Variant::Get<math::Vector4>() const;
+	template<> math::Quaternion Variant::Get<math::Quaternion>() const;
 	template<> Serializable* Variant::Get<Serializable*>() const;
 	template<> ResourceRef Variant::Get<ResourceRef>() const;
 	template<> ResourceRefList Variant::Get<ResourceRefList>() const;

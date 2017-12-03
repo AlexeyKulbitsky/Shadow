@@ -33,7 +33,7 @@ namespace sh
 			break;
 		}
 		SetMousePositionOld(m_mousePositionCurrent);
-		SetMousePositionCurrent(math::Vector2i(x, y));
+		SetMousePositionCurrent(math::Vector2Int(x, y));
 	}
 
 	void InputManager::OnKeyboardEvent(KeyboardEventType type, KeyCode code)
@@ -74,22 +74,22 @@ namespace sh
 		return m_mouseKeys[size_t(code)];
 	}
 
-	void InputManager::SetMousePositionOld(const math::Vector2i& pos)
+	void InputManager::SetMousePositionOld(const math::Vector2Int& pos)
 	{
 		m_mousePositionOld = pos;
 	}
 
-	void InputManager::SetMousePositionCurrent(const math::Vector2i& pos)
+	void InputManager::SetMousePositionCurrent(const math::Vector2Int& pos)
 	{
 		m_mousePositionCurrent = pos;
 	}
 
-	const math::Vector2i& InputManager::GetMousePositionOld() const
+	const math::Vector2Int& InputManager::GetMousePositionOld() const
 	{
 		return m_mousePositionOld;
 	}
 
-	const math::Vector2i& InputManager::GetMousePositionCurrent() const
+	const math::Vector2Int& InputManager::GetMousePositionCurrent() const
 	{
 		return m_mousePositionCurrent;
 	}

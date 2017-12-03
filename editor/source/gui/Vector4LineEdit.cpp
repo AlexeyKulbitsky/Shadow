@@ -21,7 +21,7 @@ Vector4LineEdit::Vector4LineEdit()
 	m_lineEdits[3]->OnValueChanged.Connect(std::bind(&Vector4LineEdit::OnWvalueChanged, this, std::placeholders::_1));
 }
 
-void Vector4LineEdit::SetValue(const sh::math::Vector4f& value)
+void Vector4LineEdit::SetValue(const sh::math::Vector4& value)
 {
 	m_value = value;
 

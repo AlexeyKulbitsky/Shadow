@@ -52,16 +52,16 @@ namespace sh
 
 			// Viewport management
 			virtual void SetViewport(u32 x, u32 y, u32 width, u32 height);
-			virtual const math::Rectu& GetViewport() const { return m_vp; }
-			virtual const math::Vector4u& GetViewPort() const { return m_viewPort; }
+			virtual const math::Rect& GetViewport() const { return m_vp; }
+			virtual const math::Vector4& GetViewPort() const { return m_viewPort; }
 			virtual void SetDepthRange(f32 zMin, f32 zMax);
-			virtual const math::Vector2f& GetDepthRange() const { return m_depthRange; }
+			virtual const math::Vector2& GetDepthRange() const { return m_depthRange; }
 			
 			// Buffers clearing
-			virtual void SetClearColor(const math::Vector4f& clearColor) { m_clearColor = clearColor; }
+			virtual void SetClearColor(const math::Vector4& clearColor) { m_clearColor = clearColor; }
 			virtual void SetClearDepth(f32 clearDepth) { m_clearDepth = clearDepth; }
 			virtual void SetClearStencil(u32 clearStencil) { m_clearStencil = clearStencil; }
-			const math::Vector4f& GetClearColor() const { return m_clearColor; }
+			const math::Vector4& GetClearColor() const { return m_clearColor; }
 			f32 GetClearDepth() const { return m_clearDepth; }
 			u32 GetClearStencil() const { return m_clearStencil; }
 
@@ -87,7 +87,7 @@ namespace sh
 			virtual void SetIndexBuffer(const IndexBufferPtr& buffer, const CommandBufferPtr& commandBuffer = nullptr) { }
 			virtual void Draw(u32 offset, u32 verticesCount, u32 instancesCount = 1U, const CommandBufferPtr& commandBuffer = nullptr) { }
 			virtual void DrawIndexed(u32 offset, u32 indicesCount, u32 instancesCount = 1U, const CommandBufferPtr& commandBuffer = nullptr) { }
-			virtual void SetScissorRect(const math::Rectu& scissor, const CommandBufferPtr& commandBuffer = nullptr) = 0;
+			virtual void SetScissorRect(const math::Rect& scissor, const CommandBufferPtr& commandBuffer = nullptr) = 0;
 			virtual void SubmitCommandBuffer(const CommandBufferPtr& commandBuffer) { }
 
 			virtual void GetPixelData(u32 x, u32 y, u8* data) {}
@@ -104,12 +104,12 @@ namespace sh
 
 
 		protected:
-			math::Vector4u m_viewPort;
-			math::Rectu m_vp;
-			math::Vector2f m_depthRange;
+			math::Vector4 m_viewPort;
+			math::Rect m_vp;
+			math::Vector2 m_depthRange;
 			
 			// Clear values
-			math::Vector4f m_clearColor;
+			math::Vector4 m_clearColor;
 			f32 m_clearDepth;
 			u32 m_clearStencil;
 

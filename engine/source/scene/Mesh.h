@@ -13,8 +13,8 @@ namespace sh
 		public:			
 			explicit Mesh(MeshBasePtr meshBase);
 			~Mesh();	
-			void SetWorldMatrix(const math::Matrix4f& matrix);
-			const math::Matrix4f& GetWorldMatrix() const { return m_worldMatrix; }
+			void SetWorldMatrix(const math::Matrix4& matrix);
+			const math::Matrix4& GetWorldMatrix() const { return m_worldMatrix; }
 			void SetMaterial(const sh::video::MaterialPtr& material);
 			const video::MaterialPtr& GetMaterial();
 			const String& GetName() const;
@@ -27,8 +27,8 @@ namespace sh
 
 		private:
 			MeshBasePtr m_meshBase;
-			math::Matrix4f m_worldMatrix;
-			math::AABBf m_boundingBox;
+			math::Matrix4 m_worldMatrix;
+			math::AABB m_boundingBox;
 
 			sh::video::MaterialPtr m_material;
 

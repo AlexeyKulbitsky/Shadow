@@ -17,7 +17,7 @@ namespace sh
 namespace gui
 {
 
-	Window::Window(const math::Recti& rect)
+	Window::Window(const math::Rect& rect)
 	{
 		const auto& ref = GuiManager::GetInstance()->GetStyle()->GetWindow();
 		m_outSprite = ref->m_outSprite;
@@ -43,7 +43,7 @@ namespace gui
 
 		// Update close button
 		const s32 height = m_barRect.GetHeight();
-		math::Recti closeButtonRect(m_barRect.lowerRightCorner.x - height, m_barRect.upperLeftCorner.y,
+		math::Rect closeButtonRect(m_barRect.lowerRightCorner.x - height, m_barRect.upperLeftCorner.y,
 			m_barRect.lowerRightCorner.x, m_barRect.lowerRightCorner.y);
 		m_closeButton->SetRect(closeButtonRect);
 
@@ -72,7 +72,7 @@ namespace gui
 
 	///////////////////////////////////////////////////////////////////////////////////////
 
-	void Window::SetRect(const math::Recti& rect)
+	void Window::SetRect(const math::Rect& rect)
 	{
 		m_rect = rect;
 		InternalUpdate();
@@ -89,7 +89,7 @@ namespace gui
 
 	///////////////////////////////////////////////////////////////////////////////////////
 
-	void Window::SetSize(const math::Vector2i& size)
+	void Window::SetSize(const math::Vector2Int& size)
 	{
 		const auto& pos = m_rect.upperLeftCorner;
 		m_rect.Set(pos.x, pos.y, pos.x + size.x, pos.y + size.y);
@@ -126,19 +126,19 @@ namespace gui
 		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
 		// Render bar
 		video::Painter::Vertex barUL(m_barRect.upperLeftCorner, 
-								m_barSprite->GetUVRect().upperLeftCorner, 
+								m_barSprite->GetUpperLeftUV(), 
 								m_barSprite->GetColor());
 		video::Painter::Vertex barBR(m_barRect.lowerRightCorner,
-								m_barSprite->GetUVRect().lowerRightCorner,
+								m_barSprite->GetLowerRightUV(),
 								m_barSprite->GetColor());
 		painter->DrawRect(barUL, barBR);
 
 		// Render content background
 		video::Painter::Vertex layoutUL(m_inRect.upperLeftCorner, 
-								m_inSprite->GetUVRect().upperLeftCorner, 
+								m_inSprite->GetUpperLeftUV(),
 								m_inSprite->GetColor());
 		video::Painter::Vertex layoutBR(m_inRect.lowerRightCorner,
-								m_inSprite->GetUVRect().lowerRightCorner,
+								m_inSprite->GetLowerRightUV(),
 								m_inSprite->GetColor());
 		painter->DrawRect(layoutUL, layoutBR);
 
@@ -165,19 +165,19 @@ namespace gui
 		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
 		// Render bar
 		video::Painter::Vertex barUL(m_barRect.upperLeftCorner,
-			m_barSprite->GetUVRect().upperLeftCorner,
+			m_barSprite->GetUpperLeftUV(),
 			m_barSprite->GetColor());
 		video::Painter::Vertex barBR(m_barRect.lowerRightCorner,
-			m_barSprite->GetUVRect().lowerRightCorner,
+			m_barSprite->GetLowerRightUV(),
 			m_barSprite->GetColor());
 		painter->DrawRect(barUL, barBR);
 
 		// Render content background
 		video::Painter::Vertex layoutUL(m_inRect.upperLeftCorner,
-			m_inSprite->GetUVRect().upperLeftCorner,
+			m_inSprite->GetUpperLeftUV(),
 			m_inSprite->GetColor());
 		video::Painter::Vertex layoutBR(m_inRect.lowerRightCorner,
-			m_inSprite->GetUVRect().lowerRightCorner,
+			m_inSprite->GetLowerRightUV(),
 			m_inSprite->GetColor());
 		painter->DrawRect(layoutUL, layoutBR);
 
@@ -262,7 +262,7 @@ namespace gui
 
 				if (inputManager->IsMouseButtonPressed(MouseCode::ButtonLeft))
 				{
-					math::Vector2i delta = math::Vector2i(ev.x, ev.y) - m_startPos;
+					math::Vector2Int delta = math::Vector2Int(ev.x, ev.y) - m_startPos;
 					m_startPos.x = ev.x;
 					m_startPos.y = ev.y;
 					s32 newX = static_cast<s32>(m_rect.upperLeftCorner.x) + delta.x;
@@ -326,7 +326,7 @@ namespace gui
 
 		// Update close button
 		const s32 height = m_barRect.GetHeight();
-		math::Recti closeButtonRect(m_barRect.lowerRightCorner.x - height, m_barRect.upperLeftCorner.y,
+		math::Rect closeButtonRect(m_barRect.lowerRightCorner.x - height, m_barRect.upperLeftCorner.y,
 			m_barRect.lowerRightCorner.x, m_barRect.lowerRightCorner.y);
 		m_closeButton->SetRect(closeButtonRect);
 

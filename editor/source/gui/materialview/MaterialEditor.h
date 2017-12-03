@@ -24,7 +24,7 @@ class MaterialParamVector2Editor : public sh::gui::Widget
 {
 public:
 	MaterialParamVector2Editor(sh::video::MaterialParam* param);
-	void SetValue(const sh::math::Vector2f& value);
+	void SetValue(const sh::math::Vector2& value);
 
 private:
 	sh::video::MaterialParam* m_param = nullptr;
@@ -36,7 +36,7 @@ class MaterialParamVector3Editor : public sh::gui::Widget
 {
 public:
 	MaterialParamVector3Editor(sh::video::MaterialParam* param);
-	void SetValue(const sh::math::Vector3f& value);
+	void SetValue(const sh::math::Vector3& value);
 
 private:
 	sh::video::MaterialParam* m_param = nullptr;
@@ -48,7 +48,7 @@ class MaterialParamVector4Editor : public sh::gui::Widget
 {
 public:
 	MaterialParamVector4Editor(sh::video::MaterialParam* param);
-	void SetValue(const sh::math::Vector4f& value);
+	void SetValue(const sh::math::Vector4& value);
 
 private:
 	sh::video::MaterialParam* m_param = nullptr;
@@ -60,7 +60,7 @@ class MaterialParamColorEditor : public sh::gui::Widget
 {
 public:
 	MaterialParamColorEditor(sh::video::MaterialParam* param);
-	void SetValue(const sh::math::Vector4f& value);
+	void SetValue(const sh::math::Vector4& value);
 	void OnColorPickerButtonReleased();
 
 private:

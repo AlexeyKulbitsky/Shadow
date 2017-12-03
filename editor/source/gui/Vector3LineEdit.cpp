@@ -20,7 +20,7 @@ Vector3LineEdit::Vector3LineEdit()
 	m_lineEdits[2]->OnValueChanged.Connect(std::bind(&Vector3LineEdit::OnZvalueChanged, this, std::placeholders::_1));
 }
 
-void Vector3LineEdit::SetValue(const sh::math::Vector3f& value)
+void Vector3LineEdit::SetValue(const sh::math::Vector3& value)
 {
 	m_value = value;
 

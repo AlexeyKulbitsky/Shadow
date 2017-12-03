@@ -17,7 +17,7 @@ namespace sh
 
 namespace gui
 {
-	math::Recti LineEdit::s_cursorRect;
+	math::Rect LineEdit::s_cursorRect;
 	size_t LineEdit::s_cursorPos = 0U;
 
 	LineEdit::LineEdit()
@@ -35,7 +35,7 @@ namespace gui
 		m_sprites[State::Edit] = editSprite;
 	}
 
-	LineEdit::LineEdit(const math::Recti& rect, 
+	LineEdit::LineEdit(const math::Rect& rect, 
 						const SpritePtr& defaultSprite, 
 						 const SpritePtr& editSprite)
 						 :Text(rect)
@@ -73,10 +73,10 @@ namespace gui
 		// Render background
 		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
 		video::Painter::Vertex upperLeft(m_rect.upperLeftCorner,
-										m_sprites[m_state]->GetUVRect().upperLeftCorner,
+										m_sprites[m_state]->GetUpperLeftUV(),
 										m_sprites[m_state]->GetColor());
 		video::Painter::Vertex downRight(m_rect.lowerRightCorner,
-			m_sprites[m_state]->GetUVRect().lowerRightCorner,
+			m_sprites[m_state]->GetLowerRightUV(),
 			m_sprites[m_state]->GetColor());
 		painter->DrawRect(upperLeft, downRight);
 
@@ -108,11 +108,11 @@ namespace gui
 				xPos + 3U, m_rect.lowerRightCorner.y);
 
 			video::Painter::Vertex upperLeft(s_cursorRect.upperLeftCorner,
-				math::Vector2f(0.0f),
-				math::Vector4f(0.0f, 0.0f, 0.0f, 1.0f));
+				math::Vector2(0.0f),
+				math::Vector4(0.0f, 0.0f, 0.0f, 1.0f));
 			video::Painter::Vertex downRight(s_cursorRect.lowerRightCorner,
-				math::Vector2f(0.0f),
-				math::Vector4f(0.0f, 0.0f, 0.0f, 1.0f));
+				math::Vector2(0.0f),
+				math::Vector4(0.0f, 0.0f, 0.0f, 1.0f));
 			painter->DrawRect(upperLeft, downRight);
 		}
 	}
@@ -121,10 +121,10 @@ namespace gui
 	{
 		painter->SetMaterial(GuiManager::GetInstance()->GetDefaultMaterial());
 		video::Painter::Vertex upperLeft(m_rect.upperLeftCorner,
-			m_sprites[m_state]->GetUVRect().upperLeftCorner,
+			m_sprites[m_state]->GetUpperLeftUV(),
 			m_sprites[m_state]->GetColor());
 		video::Painter::Vertex downRight(m_rect.lowerRightCorner,
-			m_sprites[m_state]->GetUVRect().lowerRightCorner,
+			m_sprites[m_state]->GetLowerRightUV(),
 			m_sprites[m_state]->GetColor());
 		painter->DrawRect(upperLeft, downRight);
 	}
@@ -158,11 +158,11 @@ namespace gui
 				xPos + 3U, m_rect.lowerRightCorner.y);
 
 			video::Painter::Vertex upperLeft(s_cursorRect.upperLeftCorner,
-				math::Vector2f(0.0f),
-				math::Vector4f(0.0f, 0.0f, 0.0f, 1.0f));
+				math::Vector2(0.0f),
+				math::Vector4(0.0f, 0.0f, 0.0f, 1.0f));
 			video::Painter::Vertex downRight(s_cursorRect.lowerRightCorner,
-				math::Vector2f(0.0f),
-				math::Vector4f(0.0f, 0.0f, 0.0f, 1.0f));
+				math::Vector2(0.0f),
+				math::Vector4(0.0f, 0.0f, 0.0f, 1.0f));
 			painter->DrawRect(upperLeft, downRight);
 		}
 	}

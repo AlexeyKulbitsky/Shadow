@@ -24,18 +24,18 @@ namespace sh
 		void SetMouseButtonReleased(MouseCode code);
 		bool IsMouseButtonPressed(MouseCode code);
 
-		void SetMousePositionOld(const math::Vector2i& pos);
-		void SetMousePositionCurrent(const math::Vector2i& pos);
+		void SetMousePositionOld(const math::Vector2Int& pos);
+		void SetMousePositionCurrent(const math::Vector2Int& pos);
 
-		const math::Vector2i& GetMousePositionOld() const;
-		const math::Vector2i& GetMousePositionCurrent() const;
+		const math::Vector2Int& GetMousePositionOld() const;
+		const math::Vector2Int& GetMousePositionCurrent() const;
 
 	private:
 		bool m_keyboardKeys[NUMBER_OF_KEYBOARD_KEYS];
 		bool m_mouseKeys[NUMBER_OF_MOUSE_KEYS];
 
-		math::Vector2i m_mousePositionOld;
-		math::Vector2i m_mousePositionCurrent;
+		math::Vector2Int m_mousePositionOld;
+		math::Vector2Int m_mousePositionCurrent;
 		
 	};
 }

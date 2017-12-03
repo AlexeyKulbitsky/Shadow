@@ -33,7 +33,7 @@ namespace sh
 			return static_cast<T*>(m_components[id]);
 		}
 
-		bool IntersectsRay(const math::Vector3f& origin, const math::Vector3f& direction);
+		bool IntersectsRay(const math::Vector3& origin, const math::Vector3& direction);
 
 	private:	
 		String m_name = "unnamed";

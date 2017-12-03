@@ -40,7 +40,7 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		void Mesh::SetWorldMatrix(const math::Matrix4f& matrix)
+		void Mesh::SetWorldMatrix(const math::Matrix4& matrix)
 		{
 			m_worldMatrix = matrix;
 		}

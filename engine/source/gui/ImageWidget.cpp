@@ -37,11 +37,11 @@ namespace gui
 	{
 		painter->SetMaterial(m_material);
 		video::Painter::Vertex upperLeft(m_rect.upperLeftCorner, 
-										 math::Vector2f(0.0f, 0.0f), 
-										 math::Vector4f(1.0f));
+										 math::Vector2(0.0f, 0.0f), 
+										 math::Vector4(1.0f));
 		video::Painter::Vertex downRight(m_rect.lowerRightCorner,
-										  math::Vector2f(1.0f, 1.0f),
-										 math::Vector4f(1.0f));
+										  math::Vector2(1.0f, 1.0f),
+										 math::Vector4(1.0f));
 		painter->DrawRect(upperLeft, downRight);
 	}
 
@@ -49,11 +49,11 @@ namespace gui
 	{
 		painter->SetMaterial(m_material);
 		video::Painter::Vertex upperLeft(m_rect.upperLeftCorner,
-			math::Vector2f(0.0f, 0.0f),
-			math::Vector4f(1.0f));
+			math::Vector2(0.0f, 0.0f),
+			math::Vector4(1.0f));
 		video::Painter::Vertex downRight(m_rect.lowerRightCorner,
-			math::Vector2f(1.0f, 1.0f),
-			math::Vector4f(1.0f));
+			math::Vector2(1.0f, 1.0f),
+			math::Vector4(1.0f));
 		painter->DrawRect(upperLeft, downRight);
 	}
 

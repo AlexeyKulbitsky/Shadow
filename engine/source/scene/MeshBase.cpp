@@ -15,7 +15,7 @@ namespace sh
 	{
 		MeshBase::MeshBase()
 			: m_useIndices(false)
-			, m_boundingBox(math::Vector3f(0.0f))
+			, m_boundingBox(math::Vector3(0.0f))
 		{
 		}
 

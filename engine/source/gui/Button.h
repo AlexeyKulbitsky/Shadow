@@ -26,11 +26,11 @@ namespace gui
 			Count
 		};
 
-		Button(const math::Recti rect);
+		Button(const math::Rect rect);
 		Button(const SpritePtr& defaultSprite,
 				const SpritePtr& pressedSprite,
 				const SpritePtr& hoveredSprite);
-		Button(const math::Recti& rect, 
+		Button(const math::Rect& rect, 
 			   const SpritePtr& defaultSprite, 
 			   const SpritePtr& pressedSprite,
 			   const SpritePtr& hoveredSprite);
@@ -51,16 +51,16 @@ namespace gui
 		virtual void CollectBatches(GuiLayerBatch& batch) override;
 		virtual void RenderBackground(video::Painter* painter) override;
 		virtual void RenderText(video::Painter* painter) override;
-		virtual void SetRect(const math::Recti& rect) override;
+		virtual void SetRect(const math::Rect& rect) override;
 		virtual void SetPosition(s32 x, s32 y) override;
-		virtual void SetSize(const math::Vector2i& size) override;
+		virtual void SetSize(const math::Vector2Int& size) override;
 		virtual void SetWidth(s32 width) override;
 		virtual void SetHeight(s32 height) override;
 		virtual bool ProcessEvent(GUIEvent& ev) override;
 
 		u32 GetHeight() const;
 		u32 GetWidth() const;
-		const math::Vector2i& GetPosition() const;
+		const math::Vector2Int& GetPosition() const;
 
 		SpritePtr GetSprite(State state) const;
 

@@ -20,7 +20,7 @@ namespace sh
 			const GpuParamsPtr& GetAutoGpuParams() const { return m_transfromsGpuParams; }
 			const MaterialParamsPtr& GetAutoParams() const { return m_transformParams; }
 			scene::Mesh* GetParent() { return m_parent; }
-			const math::Matrix4f& GetMatrix() const { return *m_matrix; }
+			const math::Matrix4& GetMatrix() const { return *m_matrix; }
 
 		protected:
 			scene::Mesh* m_parent = nullptr;
@@ -30,7 +30,7 @@ namespace sh
 			VertexBufferPtr m_vertexBuffer;
 			IndexBufferPtr m_indexBuffer;
 			Topology m_topology;
-			math::Matrix4f* m_matrix = nullptr;
+			math::Matrix4* m_matrix = nullptr;
 		};
 	}
 }

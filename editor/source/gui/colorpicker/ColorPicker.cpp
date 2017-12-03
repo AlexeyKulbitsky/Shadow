@@ -3,7 +3,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 ColorPicker::ColorPicker()
-	:sh::gui::Window(sh::math::Recti(0, 100, 256, 600))	
+	:sh::gui::Window(sh::math::Rect(0, 100, 256, 600))	
 {
 	SetText("Color Picker");
 	sh::gui::VerticalLayoutPtr layout(new sh::gui::VerticalLayout());
@@ -32,11 +32,11 @@ ColorPicker::ColorPicker()
 	m_colorTarget = icon->Clone();
 	m_colorTarget->SetSize(m_colorTarget->GetRect().GetSize() * 2);
 
-	auto targetPos = m_paletteWidget->GetPosition() + sh::math::Vector2i(m_paletteWidget->GetRect().GetWidth(), m_paletteWidget->GetRect().GetHeight());
+	auto targetPos = m_paletteWidget->GetPosition() + sh::math::Vector2Int(m_paletteWidget->GetRect().GetWidth(), m_paletteWidget->GetRect().GetHeight());
 	auto offsets = m_colorTarget->GetRect().GetSize() / 2;
 	m_colorTarget->SetPosition(targetPos.x - offsets.x, targetPos.y - offsets.y);
 
-	SetColor(sh::math::Vector4f(1.0f));
+	SetColor(sh::math::Vector4(1.0f));
 }
 
 void ColorPicker::Render(sh::video::Painter* painter)
@@ -166,7 +166,7 @@ void ColorPicker::UpdateLayout()
 	m_colorTarget->SetPosition(pos.x, pos.y);
 }
 
-void ColorPicker::SetColor(const sh::math::Vector4f& _color)
+void ColorPicker::SetColor(const sh::math::Vector4& _color)
 {
 	m_color = _color;
 	m_rgbWidget->SetColor(m_color);
@@ -174,7 +174,7 @@ void ColorPicker::SetColor(const sh::math::Vector4f& _color)
 	int hue = 0;
 	float saturation = 0.0f;
 	float value = 0.0f;
-	sh::math::Vector3f color(m_color.x, m_color.y, m_color.z);
+	sh::math::Vector3 color(m_color.x, m_color.y, m_color.z);
 	RGBtoHSV(color, hue, saturation, value);
 	m_hsvWidget->SetColor(hue, static_cast<int>(saturation * 100.0f), static_cast<int>(value * 100.0f));
 
@@ -183,14 +183,14 @@ void ColorPicker::SetColor(const sh::math::Vector4f& _color)
 	const sh::s32 x = static_cast<sh::s32>(r * sh::math::Cos(hue * sh::math::k_pi / 180.0f));
 	const sh::s32 y = static_cast<sh::s32>(r * sh::math::Sin(hue * sh::math::k_pi / 180.0f));
 
-	const auto pos = m_paletteWidget->GetPosition() + m_paletteWidget->GetRect().GetWidth() / 2 + sh::math::Vector2i(x, y);
+	const auto pos = m_paletteWidget->GetPosition() + m_paletteWidget->GetRect().GetWidth() / 2 + sh::math::Vector2Int(x, y);
 
 	auto offsets = m_colorTarget->GetRect().GetSize() / 2;
 	m_colorTarget->SetPosition(pos.x - offsets.x, pos.y - offsets.y);
 	m_colorTargetOffset = m_colorTarget->GetPosition() - m_paletteWidget->GetPosition();
 }
 
-void ColorPicker::OnRGBColorChanged(const sh::math::Vector4i& _color)
+void ColorPicker::OnRGBColorChanged(const sh::math::Vector4Int& _color)
 {
 	m_color.x = _color.x / 256.0f;
 	m_color.y = _color.y / 256.0f;
@@ -200,14 +200,14 @@ void ColorPicker::OnRGBColorChanged(const sh::math::Vector4i& _color)
 	int hue = 0;
 	float saturation = 0.0f;
 	float value = 0.0f;
-	sh::math::Vector3f color(m_color.x, m_color.y, m_color.z);
+	sh::math::Vector3 color(m_color.x, m_color.y, m_color.z);
 	RGBtoHSV(color, hue, saturation, value);
 
 	const float r = saturation * m_paletteWidget->GetRect().GetWidth() / 2.0f;
 	const sh::s32 x = static_cast<sh::s32>(r * sh::math::Cos(hue * sh::math::k_pi / 180.0f));
 	const sh::s32 y = static_cast<sh::s32>(r * sh::math::Sin(hue * sh::math::k_pi / 180.0f));
 
-	const auto pos = m_paletteWidget->GetPosition() + m_paletteWidget->GetRect().GetWidth() / 2 + sh::math::Vector2i(x, y);
+	const auto pos = m_paletteWidget->GetPosition() + m_paletteWidget->GetRect().GetWidth() / 2 + sh::math::Vector2Int(x, y);
 
 	auto offsets = m_colorTarget->GetRect().GetSize() / 2;
 	m_colorTarget->SetPosition(pos.x - offsets.x, pos.y - offsets.y);
@@ -218,7 +218,7 @@ void ColorPicker::OnRGBColorChanged(const sh::math::Vector4i& _color)
 	colorChanged(m_color);
 }
 
-void ColorPicker::OnHSVColorChanged(const sh::math::Vector3i& _color)
+void ColorPicker::OnHSVColorChanged(const sh::math::Vector3Int& _color)
 {
 	auto color = HSVtoRGB(_color.x, _color.y * 0.01f, _color.z * 0.01f);
 	m_color.x = color.x;
@@ -231,7 +231,7 @@ void ColorPicker::OnHSVColorChanged(const sh::math::Vector3i& _color)
 	const sh::s32 x = static_cast<sh::s32>(r * sh::math::Cos(_color.x * sh::math::k_pi / 180.0f));
 	const sh::s32 y = static_cast<sh::s32>(r * sh::math::Sin(_color.x * sh::math::k_pi / 180.0f));
 
-	const auto pos = m_paletteWidget->GetPosition() + m_paletteWidget->GetRect().GetWidth() / 2 + sh::math::Vector2i(x, y);
+	const auto pos = m_paletteWidget->GetPosition() + m_paletteWidget->GetRect().GetWidth() / 2 + sh::math::Vector2Int(x, y);
 
 	auto offsets = m_colorTarget->GetRect().GetSize() / 2;
 	m_colorTarget->SetPosition(pos.x - offsets.x, pos.y - offsets.y);
@@ -291,7 +291,7 @@ sh::video::TexturePtr ColorPicker::CreatePalletteTexture() const
 	return texture;
 }
 
-sh::math::Vector3f ColorPicker::HSVtoRGB(int h, float s, float v) const
+sh::math::Vector3 ColorPicker::HSVtoRGB(int h, float s, float v) const
 {
 	float hue = static_cast<float>(h) / 60.0f;
 	int index = static_cast<int>(hue);
@@ -301,7 +301,7 @@ sh::math::Vector3f ColorPicker::HSVtoRGB(int h, float s, float v) const
 	float q = v * (1.0f - s * fract);
 	float t = v * (1.0f - s * (1.0f - fract));
 
-	sh::math::Vector3f color(0.0f);
+	sh::math::Vector3 color(0.0f);
 
 	switch (index)
 	{
@@ -354,7 +354,7 @@ sh::math::Vector3f ColorPicker::HSVtoRGB(int h, float s, float v) const
 	return color;
 }
 
-void ColorPicker::RGBtoHSV(const sh::math::Vector3f& rgb, int& h, float& s, float& v)
+void ColorPicker::RGBtoHSV(const sh::math::Vector3& rgb, int& h, float& s, float& v)
 {
 	const float min = sh::math::Min(sh::math::Min(rgb.x, rgb.y), rgb.z);
 	const float max = sh::math::Max(sh::math::Max(rgb.x, rgb.y), rgb.z);

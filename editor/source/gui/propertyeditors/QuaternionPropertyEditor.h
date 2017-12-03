@@ -10,7 +10,7 @@ public:
 	QuaternionPropertyEditor(sh::Serializable* object, sh::Property* objectProperty);
 
 private:
-	void OnValueChanged(const sh::math::Vector3f& value);
+	void OnValueChanged(const sh::math::Vector3& value);
 
 private:
 	sh::SPtr<Vector3LineEdit> m_edit;

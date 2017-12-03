@@ -14,7 +14,7 @@ namespace gui
 
 	Widget::Widget()
 	{
-		m_rect.lowerRightCorner = math::Vector2i(10, 10);
+		m_rect.lowerRightCorner = math::Vector2Int(10, 10);
 	}
 
 	Widget::~Widget()
@@ -56,7 +56,7 @@ namespace gui
 			m_layout->CollectBatches(batch);
 	}
 
-	void Widget::SetRect(const math::Recti& rect)
+	void Widget::SetRect(const math::Rect& rect)
 	{
 		m_rect = rect;
 		UpdateLayout();
@@ -69,7 +69,7 @@ namespace gui
 		UpdateLayout();
 	}
 
-	void Widget::SetSize(const math::Vector2i& size)
+	void Widget::SetSize(const math::Vector2Int& size)
 	{
 		const auto& pos = m_rect.upperLeftCorner;
 		m_rect.Set(pos.x, pos.y, pos.x + size.x, pos.y + size.y);

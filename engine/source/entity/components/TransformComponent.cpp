@@ -5,9 +5,9 @@ namespace sh
 {
 	TransformComponent::TransformComponent()
 	{
-		m_position = math::Vector3f(0.0f);
+		m_position = math::Vector3(0.0f);
 		m_rotation.SetIndentity();
-		m_scale = math::Vector3f(1.0f);
+		m_scale = math::Vector3(1.0f);
 		m_needsToRecalculateWorldMatrix = false;
 	}
 

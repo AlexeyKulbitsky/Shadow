@@ -21,9 +21,9 @@ public:
 		struct ModelInfo
 		{
 			sh::scene::ModelPtr model;
-			sh::math::Vector4f currentColor;
-			sh::math::Vector4f defaultColor;
-			sh::math::Vector4f selectedColor;
+			sh::math::Vector4 currentColor;
+			sh::math::Vector4 defaultColor;
+			sh::math::Vector4 selectedColor;
 		};
 
 		std::vector<ModelInfo> models;
@@ -41,7 +41,7 @@ public:
 	virtual bool TryToSelect(sh::u32 x, sh::u32 y) override;
 	virtual bool IsActive() const override;
 
-	sh::Event<void, const sh::math::Vector3f&> scaleChanged;
+	sh::Event<void, const sh::math::Vector3&> scaleChanged;
 
 private:
 	void CreateArrow(Axis::Type type);

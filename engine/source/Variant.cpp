@@ -62,24 +62,24 @@ namespace sh
 		return *reinterpret_cast<std::string*>(m_value.ptrValue);
 	}
 
-	const math::Vector2f& Variant::GetVector2Float() const
+	const math::Vector2& Variant::GetVector2Float() const
 	{
-		return *reinterpret_cast<math::Vector2f*>(m_value.ptrValue);
+		return *reinterpret_cast<math::Vector2*>(m_value.ptrValue);
 	}
 
-	const math::Vector3f& Variant::GetVector3Float() const
+	const math::Vector3& Variant::GetVector3Float() const
 	{
-		return *reinterpret_cast<math::Vector3f*>(m_value.ptrValue);
+		return *reinterpret_cast<math::Vector3*>(m_value.ptrValue);
 	}
 
-	const math::Vector4f& Variant::GetVector4Float() const
+	const math::Vector4& Variant::GetVector4Float() const
 	{
-		return *reinterpret_cast<math::Vector4f*>(m_value.ptrValue);
+		return *reinterpret_cast<math::Vector4*>(m_value.ptrValue);
 	}
 
-	const math::Quaternionf& Variant::GetQuaternionFloat() const
+	const math::Quaternion& Variant::GetQuaternionFloat() const
 	{
-		return *reinterpret_cast<math::Quaternionf*>(m_value.ptrValue);
+		return *reinterpret_cast<math::Quaternion*>(m_value.ptrValue);
 	}
 
 	Serializable* Variant::GetSerializable() const
@@ -121,25 +121,25 @@ namespace sh
 			break;
 		case VAR_VECTOR_2_FLOAT:
 		{
-			delete reinterpret_cast<math::Vector2f*>(m_value.ptrValue);
+			delete reinterpret_cast<math::Vector2*>(m_value.ptrValue);
 			m_value.ptrValue = nullptr;
 		}
 			break;
 		case VAR_VECTOR_3_FLOAT:
 		{
-			delete reinterpret_cast<math::Vector3f*>(m_value.ptrValue);
+			delete reinterpret_cast<math::Vector3*>(m_value.ptrValue);
 			m_value.ptrValue = nullptr;
 		}
 			break;
 		case VAR_VECTOR_4_FLOAT:
 		{
-			delete reinterpret_cast<math::Vector4f*>(m_value.ptrValue);
+			delete reinterpret_cast<math::Vector4*>(m_value.ptrValue);
 			m_value.ptrValue = nullptr;
 		}
 			break;
 		case VAR_QUATERNION_FLOAT:
 		{
-			delete reinterpret_cast<math::Quaternionf*>(m_value.ptrValue);
+			delete reinterpret_cast<math::Quaternion*>(m_value.ptrValue);
 			m_value.ptrValue = nullptr;
 		}
 			break;
@@ -170,16 +170,16 @@ namespace sh
 		switch (m_type)
 		{
 		case VAR_VECTOR_2_FLOAT:
-			m_value.ptrValue = new math::Vector2f();
+			m_value.ptrValue = new math::Vector2();
 			break;
 		case VAR_VECTOR_3_FLOAT:
-			m_value.ptrValue = new math::Vector3f();
+			m_value.ptrValue = new math::Vector3();
 			break;
 		case VAR_VECTOR_4_FLOAT:
-			m_value.ptrValue = new math::Vector4f();
+			m_value.ptrValue = new math::Vector4();
 			break;
 		case VAR_QUATERNION_FLOAT:
-			m_value.ptrValue = new math::Quaternionf();
+			m_value.ptrValue = new math::Quaternion();
 			break;
 		case VAR_STRING:
 			m_value.ptrValue = new std::string();
@@ -202,10 +202,10 @@ namespace sh
 	template<> float Variant::Get<float>() const { return GetFloat(); }
 	template<> bool Variant::Get<bool>() const { return GetBool(); }
 	template<> std::string Variant::Get<std::string>() const { return GetString(); }
-	template<> math::Vector2f Variant::Get<math::Vector2f>() const { return GetVector2Float(); }
-	template<> math::Vector3f Variant::Get<math::Vector3f>() const { return GetVector3Float(); }
-	template<> math::Vector4f Variant::Get<math::Vector4f>() const { return GetVector4Float(); }
-	template<> math::Quaternionf Variant::Get<math::Quaternionf>() const { return GetQuaternionFloat(); }
+	template<> math::Vector2 Variant::Get<math::Vector2>() const { return GetVector2Float(); }
+	template<> math::Vector3 Variant::Get<math::Vector3>() const { return GetVector3Float(); }
+	template<> math::Vector4 Variant::Get<math::Vector4>() const { return GetVector4Float(); }
+	template<> math::Quaternion Variant::Get<math::Quaternion>() const { return GetQuaternionFloat(); }
 	template<> Serializable* Variant::Get<Serializable*>() const { return GetSerializable(); }
 	template<> ResourceRef Variant::Get<ResourceRef>() const { return GetResourceRef(); }
 	template<> ResourceRefList Variant::Get<ResourceRefList>() const { return GetResourceRefList(); }

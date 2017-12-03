@@ -231,7 +231,7 @@ void SelectionManager::OnEntityFromListSelected(sh::Entity* entity)
 	}
 }
 
-void SelectionManager::OnPositionChanged(const sh::math::Vector3f& position)
+void SelectionManager::OnPositionChanged(const sh::math::Vector3& position)
 {
 	auto transformComponent = m_selectedEntity->GetComponent<sh::TransformComponent>();
 	if (transformComponent)
@@ -242,7 +242,7 @@ void SelectionManager::OnPositionChanged(const sh::math::Vector3f& position)
 	}
 }
 
-void SelectionManager::OnRotationChanged(const sh::math::Quaternionf& rotation)
+void SelectionManager::OnRotationChanged(const sh::math::Quaternion& rotation)
 {
 	auto transformComponent = m_selectedEntity->GetComponent<sh::TransformComponent>();
 	if (transformComponent)
@@ -253,7 +253,7 @@ void SelectionManager::OnRotationChanged(const sh::math::Quaternionf& rotation)
 	}
 }
 
-void SelectionManager::OnScaleChanged(const sh::math::Vector3f& scale)
+void SelectionManager::OnScaleChanged(const sh::math::Vector3& scale)
 {
 	auto transformComponent = m_selectedEntity->GetComponent<sh::TransformComponent>();
 	if (transformComponent)

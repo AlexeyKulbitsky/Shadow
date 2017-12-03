@@ -13,14 +13,14 @@ namespace gui
 	{
 		friend class Style;
 	public:
-		Window(const math::Recti& rect);
+		Window(const math::Rect& rect);
 		Window(const SpritePtr& outSprite, const SpritePtr& inSprite, const SpritePtr& barSprite);
 
 		void SetText(const String& text);
 
-		virtual void SetRect(const math::Recti& rect) override;
+		virtual void SetRect(const math::Rect& rect) override;
 		virtual void SetPosition(s32 x, s32 y) override;
-		virtual void SetSize(const math::Vector2i& size) override;
+		virtual void SetSize(const math::Vector2Int& size) override;
 		virtual void SetWidth(s32 width) override;
 		virtual void SetHeight(s32 height) override;
 
@@ -47,7 +47,7 @@ namespace gui
 	private:
 		SpritePtr m_sprite;
 		bool m_dragStarted = false;
-		math::Vector2i m_startPos;
+		math::Vector2Int m_startPos;
 
 		TextPtr m_text;
 
@@ -57,8 +57,8 @@ namespace gui
 
 		ButtonPtr m_closeButton;
 
-		math::Recti m_barRect;
-		math::Recti m_inRect;
+		math::Rect m_barRect;
+		math::Rect m_inRect;
 
 		u32 m_barWidth = 25U;
 		bool m_isMovable = true;

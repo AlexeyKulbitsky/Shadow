@@ -99,23 +99,23 @@ namespace gui
 		const auto height = m_rect.GetHeight();
 		const int barHeight = 5;
 		video::Painter::Vertex barUpperLeft(
-			math::Vector2i(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y + (height - barHeight) / 2),
-			math::Vector2f(0.0f),
-			math::Vector4f(0.8f, 0.8f, 0.8f, 1.0f));
+			math::Vector2Int(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y + (height - barHeight) / 2),
+			math::Vector2(0.0f),
+			math::Vector4(0.8f, 0.8f, 0.8f, 1.0f));
 		video::Painter::Vertex barDownRight(
-			math::Vector2i(m_rect.lowerRightCorner.x, m_rect.upperLeftCorner.y + (height - barHeight) / 2 + barHeight),
-			math::Vector2f(0.0f),
-			math::Vector4f(0.8f, 0.8f, 0.8f, 1.0f));
+			math::Vector2Int(m_rect.lowerRightCorner.x, m_rect.upperLeftCorner.y + (height - barHeight) / 2 + barHeight),
+			math::Vector2(0.0f),
+			math::Vector4(0.8f, 0.8f, 0.8f, 1.0f));
 		painter->DrawRect(barUpperLeft, barDownRight);
 
 		video::Painter::Vertex sliderUpperLeft(
 			m_sliderRect.upperLeftCorner,
-			math::Vector2f(0.0f),
-			math::Vector4f(0.6f, 0.6f, 0.6f, 1.0f));
+			math::Vector2(0.0f),
+			math::Vector4(0.6f, 0.6f, 0.6f, 1.0f));
 		video::Painter::Vertex sliderDownRight(
 			m_sliderRect.lowerRightCorner,
-			math::Vector2f(0.0f),
-			math::Vector4f(0.6f, 0.6f, 0.6f, 1.0f));
+			math::Vector2(0.0f),
+			math::Vector4(0.6f, 0.6f, 0.6f, 1.0f));
 		painter->DrawRect(sliderUpperLeft, sliderDownRight);
 
 		//m_button->Render(painter);
@@ -128,23 +128,23 @@ namespace gui
 		const auto height = m_rect.GetHeight();
 		const int barHeight = 5;
 		video::Painter::Vertex barUpperLeft(
-			math::Vector2i(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y + (height - barHeight) / 2),
-			math::Vector2f(0.0f),
-			math::Vector4f(0.8f, 0.8f, 0.8f, 1.0f));
+			math::Vector2Int(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y + (height - barHeight) / 2),
+			math::Vector2(0.0f),
+			math::Vector4(0.8f, 0.8f, 0.8f, 1.0f));
 		video::Painter::Vertex barDownRight(
-			math::Vector2i(m_rect.lowerRightCorner.x, m_rect.upperLeftCorner.y + (height - barHeight) / 2 + barHeight),
-			math::Vector2f(0.0f),
-			math::Vector4f(0.8f, 0.8f, 0.8f, 1.0f));
+			math::Vector2Int(m_rect.lowerRightCorner.x, m_rect.upperLeftCorner.y + (height - barHeight) / 2 + barHeight),
+			math::Vector2(0.0f),
+			math::Vector4(0.8f, 0.8f, 0.8f, 1.0f));
 		painter->DrawRect(barUpperLeft, barDownRight);
 
 		video::Painter::Vertex sliderUpperLeft(
 			m_sliderRect.upperLeftCorner,
-			math::Vector2f(0.0f),
-			math::Vector4f(0.6f, 0.6f, 0.6f, 1.0f));
+			math::Vector2(0.0f),
+			math::Vector4(0.6f, 0.6f, 0.6f, 1.0f));
 		video::Painter::Vertex sliderDownRight(
 			m_sliderRect.lowerRightCorner,
-			math::Vector2f(0.0f),
-			math::Vector4f(0.6f, 0.6f, 0.6f, 1.0f));
+			math::Vector2(0.0f),
+			math::Vector4(0.6f, 0.6f, 0.6f, 1.0f));
 		painter->DrawRect(sliderUpperLeft, sliderDownRight);
 	}
 
@@ -191,7 +191,7 @@ namespace gui
 		UpdateLayout();
 	}
 
-	void SliderWidget::SetMinMaxValues(const math::Vector2f& values)
+	void SliderWidget::SetMinMaxValues(const math::Vector2& values)
 	{
 		m_valueEdges = values;
 		m_value = math::Clamp(m_value, m_valueEdges.x, m_valueEdges.y);

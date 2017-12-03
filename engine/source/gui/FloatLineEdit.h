@@ -13,7 +13,7 @@ namespace gui
 	{
 	public:
 		FloatLineEdit();
-		FloatLineEdit(const math::Recti& rect, 
+		FloatLineEdit(const math::Rect& rect, 
 					const SpritePtr& defaultSprite, 
 					const SpritePtr& editSprite);
 

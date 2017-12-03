@@ -29,7 +29,7 @@ namespace gui
 			u32 y1 = rect.attribute("y1").as_uint();
 			u32 x2 = rect.attribute("x2").as_uint();
 			u32 y2 = rect.attribute("y2").as_uint();
-			math::Rectu r(x1, y1, x2, y2);
+			math::Rect r(x1, y1, x2, y2);
 
 			pugi::xml_node tex = child.child("texture");
 			SH_ASSERT(rect, "Can not find Rect node for sprite!");

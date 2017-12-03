@@ -20,7 +20,7 @@ private:
 };
 
 template <>
-void ParamEdit<sh::math::Vector3f>::CreateConnetions()
+void ParamEdit<sh::math::Vector3>::CreateConnetions()
 {
 	sh::gui::HorizontalLayoutPtr layout(new sh::gui::HorizontalLayout());
 	layout->SetSpacing(2);

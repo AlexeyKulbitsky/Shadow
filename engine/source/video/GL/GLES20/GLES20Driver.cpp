@@ -183,7 +183,7 @@ void GLES20Driver::SetDepthRange( f32 zMin, f32 zMax )
 
 ////////////////////////////////////////////////////////////////////////
 
-void GLES20Driver::SetClearColor( const math::Vector4f& clearColor )
+void GLES20Driver::SetClearColor( const math::Vector4& clearColor )
 {
 	Driver::SetClearColor( clearColor );
 	GL_CALL(glClearColor( m_clearColor.x, m_clearColor.y, m_clearColor.z, m_clearColor.w ));
@@ -526,7 +526,7 @@ void GLES20Driver::DrawIndexed( u32 offset, u32 indicesCount, u32 instancesCount
 
 ////////////////////////////////////////////////////////////////////////
 
-void GLES20Driver::SetScissorRect(const math::Rectu& scissor, const CommandBufferPtr&)
+void GLES20Driver::SetScissorRect(const math::Rect& scissor, const CommandBufferPtr&)
 {
 	const s32 height = static_cast<s32>(m_viewPort.w);
 	GL_CALL(glScissor(static_cast<s32>(scissor.upperLeftCorner.x),

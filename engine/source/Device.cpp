@@ -66,7 +66,7 @@ namespace sh
 		camera->SetProjection(3.1415926535f / 3.0f, 
 			static_cast<f32>(m_creationParameters.width), 
 			static_cast<f32>(m_creationParameters.height), 0.1f, 1000.0f);
-		camera->SetPosition(sh::math::Vector3f(0.0f));
+		camera->SetPosition(sh::math::Vector3(0.0f));
 		sceneMgr->SetCamera(camera);
 
 		windowResizeEvent.Connect(std::bind(&scene::SceneManager::OnWindowResized, sceneMgr,

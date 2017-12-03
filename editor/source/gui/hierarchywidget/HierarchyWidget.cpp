@@ -49,7 +49,7 @@ void HierarchyTreeWidget::SetSelectedItem(sh::gui::TreeItem* item)
 //////////////////////////////////////////////////////////////////////////////////////
 
 HierarchyWidget::HierarchyWidget()
-	: sh::gui::Window(sh::math::Recti(0, 50, 250, 400))
+	: sh::gui::Window(sh::math::Rect(0, 50, 250, 400))
 {
 	SetText("Hierarchy");
 	SetMovable(false);

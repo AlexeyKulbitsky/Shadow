@@ -21,7 +21,7 @@ namespace gui
 		Layout::AddLayout(layout);
 	}
 
-	void HorizontalLayout::Resize(const math::Recti& rect)
+	void HorizontalLayout::Resize(const math::Rect& rect)
 	{
 		if (m_items.size() == 0U)
 			return;
@@ -29,7 +29,7 @@ namespace gui
 		auto upperLeft = rect.upperLeftCorner;
 		auto lowerRight = rect.lowerRightCorner;
 
-		math::Recti finalRect;
+		math::Rect finalRect;
 		finalRect.upperLeftCorner.x = upperLeft.x + m_leftMargin;
 		finalRect.upperLeftCorner.y = upperLeft.y + m_topMargin;
 		finalRect.lowerRightCorner.x = lowerRight.x - m_rightMargin;
@@ -49,16 +49,16 @@ namespace gui
 				itemWidth = (width - offset - m_spacing * (elementCount - i - 1)) / (elementCount - i);
 			const s32 x = finalRect.upperLeftCorner.x + offset;
 			const s32 y = finalRect.upperLeftCorner.y;
-			m_items[i]->Resize(math::Recti(x, y, x + itemWidth, y + height));
+			m_items[i]->Resize(math::Rect(x, y, x + itemWidth, y + height));
 			offset += m_items[i]->GetWidth() + m_spacing;
 		}
 
 
 		m_rect.upperLeftCorner = finalRect.upperLeftCorner;
-		m_rect.lowerRightCorner = finalRect.upperLeftCorner + math::Vector2i(offset, height);
+		m_rect.lowerRightCorner = finalRect.upperLeftCorner + math::Vector2Int(offset, height);
 	}
 
-	void HorizontalLayout::SetSize(const math::Vector2i& size)
+	void HorizontalLayout::SetSize(const math::Vector2Int& size)
 	{
 		Layout::SetSize(size);
 	}

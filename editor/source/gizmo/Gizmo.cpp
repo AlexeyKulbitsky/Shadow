@@ -2,9 +2,9 @@
 
 ///////////////////////////////////////////////////////////////////
 
-sh::math::Vector3f Gizmo::s_position;
-sh::math::Quaternionf Gizmo::s_rotation;
-sh::math::Vector3f Gizmo::s_scale;
+sh::math::Vector3 Gizmo::s_position;
+sh::math::Quaternion Gizmo::s_rotation;
+sh::math::Vector3 Gizmo::s_scale;
 
 Gizmo::Gizmo()
 {
@@ -16,13 +16,13 @@ Gizmo::Gizmo()
 	float height = 3.0f;
 	sh::u32 numberOfSides = 100U;
 
-	sh::math::Vector3f translation(0.0f);
-	sh::math::Quaternionf rotation;
-	sh::math::Matrix4f transform;
+	sh::math::Vector3 translation(0.0f);
+	sh::math::Quaternion rotation;
+	sh::math::Matrix4 transform;
 	transform.SetIdentity();
 
 	rotation.SetFromAxisAngle(sh::scene::SceneManager::GetFrontVector(), sh::math::k_pi_2);
-	translation = sh::math::Vector3f(height / 2.0f, 0.0f, 0.0f);
+	translation = sh::math::Vector3(height / 2.0f, 0.0f, 0.0f);
 	transform.SetTranslation(translation);
 	transform = transform * rotation.GetAsMatrix4();
 
@@ -31,11 +31,11 @@ Gizmo::Gizmo()
 	m_axises[0].params = sh::video::GpuParams::Create(info);
 	m_axises[0].params->GetParam("matrixWVP", m_axises[0].wvpMtrix);
 	m_axises[0].params->GetParam("color", m_axises[0].color);
-	m_axises[0].color.Set(sh::math::Vector4f(1.0f, 0.0f, 0.0f, 1.0f));
+	m_axises[0].color.Set(sh::math::Vector4(1.0f, 0.0f, 0.0f, 1.0f));
 
 	////////////////////////////////////////////////
 
-	translation = sh::math::Vector3f(0.0f, height / 2.0f, 0.0f);
+	translation = sh::math::Vector3(0.0f, height / 2.0f, 0.0f);
 	transform.SetIdentity();
 	transform.SetTranslation(translation);
 	m_axises[1].lineModel = sh::scene::GeometryGenerator::GetCylinderModel(height, radius, numberOfSides, transform);
@@ -43,12 +43,12 @@ Gizmo::Gizmo()
 	m_axises[1].params = sh::video::GpuParams::Create(info);
 	m_axises[1].params->GetParam("matrixWVP", m_axises[1].wvpMtrix);
 	m_axises[1].params->GetParam("color", m_axises[1].color);
-	m_axises[1].color.Set(sh::math::Vector4f(0.0f, 1.0f, 0.0f, 1.0f));
+	m_axises[1].color.Set(sh::math::Vector4(0.0f, 1.0f, 0.0f, 1.0f));
 
 	/////////////////////////////////////////////////
 
 	rotation.SetFromAxisAngle(sh::scene::SceneManager::GetRightVector(), sh::math::k_pi_2);
-	translation = sh::math::Vector3f(0.0f, 0.0f, height / 2.0f);
+	translation = sh::math::Vector3(0.0f, 0.0f, height / 2.0f);
 	transform.SetIdentity();
 	transform.SetTranslation(translation);
 	transform = transform * rotation.GetAsMatrix4();
@@ -57,7 +57,7 @@ Gizmo::Gizmo()
 	m_axises[2].params = sh::video::GpuParams::Create(info);
 	m_axises[2].params->GetParam("matrixWVP", m_axises[2].wvpMtrix);
 	m_axises[2].params->GetParam("color", m_axises[2].color);
-	m_axises[2].color.Set(sh::math::Vector4f(0.0f, 0.0f, 1.0f, 1.0f));
+	m_axises[2].color.Set(sh::math::Vector4(0.0f, 0.0f, 1.0f, 1.0f));
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -77,22 +77,22 @@ void Gizmo::Render()
 
 	sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
 	sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
-	sh::math::Matrix4f viewMatrix = camera->GetViewMatrix();
-	sh::math::Matrix4f projectionMatrix = camera->GetProjectionMatrix();
+	sh::math::Matrix4 viewMatrix = camera->GetViewMatrix();
+	sh::math::Matrix4 projectionMatrix = camera->GetProjectionMatrix();
 
-	sh::math::Matrix4f matrix;
+	sh::math::Matrix4 matrix;
 	matrix.SetIdentity();
 
-	sh::math::Vector3f position = s_position;
-	sh::math::Quaternionf rotation = s_rotation;
+	sh::math::Vector3 position = s_position;
+	sh::math::Quaternion rotation = s_rotation;
 	sh::f32 scaleFactor = (camera->GetPosition() - position).GetLength() / 35.0f;
-	sh::math::Vector3f scale(scaleFactor);
+	sh::math::Vector3 scale(scaleFactor);
 
 	matrix.SetScale(scale);
 	matrix.SetTranslation(position);
 	matrix = matrix * rotation.GetAsMatrix4();
 
-	sh::math::Matrix4f wvpMatrix = projectionMatrix * viewMatrix * matrix;
+	sh::math::Matrix4 wvpMatrix = projectionMatrix * viewMatrix * matrix;
 	wvpMatrix.Transpose();
 
 	for (size_t i = 0; i < Axis::COUNT; ++i)

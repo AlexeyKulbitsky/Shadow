@@ -89,8 +89,8 @@ namespace sh
 	void RenderSystem::Update(f32 deltaTime)
 	{
 		scene::Camera* camera = Device::GetInstance()->GetSceneManager()->GetCamera();
-		sh::math::Matrix4f viewMatrix = camera->GetViewMatrix();
-		sh::math::Matrix4f projectionMatrix = camera->GetProjectionMatrix();
+		sh::math::Matrix4 viewMatrix = camera->GetViewMatrix();
+		sh::math::Matrix4 projectionMatrix = camera->GetProjectionMatrix();
 
 		for (auto entity : m_entities)
 		{
@@ -122,8 +122,8 @@ namespace sh
 					}
 					else
 					{
-						terrainComponent->GetModel()->SetPosition(math::Vector3f(0.0f));
-						terrainComponent->GetModel()->SetWorldMatrix(math::Matrix4f::Identity());
+						terrainComponent->GetModel()->SetPosition(math::Vector3(0.0f));
+						terrainComponent->GetModel()->SetWorldMatrix(math::Matrix4::Identity());
 					}
 					model = terrainComponent->GetModel().get();
 				}
@@ -158,13 +158,13 @@ namespace sh
 							break;
 						case MaterialParamUsage::MatrixViewProjection:
 						{
-							math::Matrix4f viewProjection = projectionMatrix * viewMatrix;
+							math::Matrix4 viewProjection = projectionMatrix * viewMatrix;
 							param->Set(viewProjection);
 						}
 							break;
 						case MaterialParamUsage::MatrixWorldViewProjection:
 						{
-							math::Matrix4f wvp = projectionMatrix * viewMatrix * renderable->GetMatrix();
+							math::Matrix4 wvp = projectionMatrix * viewMatrix * renderable->GetMatrix();
 							//wvp.m[1][1] *= -1.0f;
 							wvp.Transpose();
 							param->Set(wvp);
