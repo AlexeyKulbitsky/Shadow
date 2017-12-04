@@ -9,7 +9,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "../lib")
 
 # Add engine (must be compolied before linking)
 #add_subdirectory(../../../engine "${CMAKE_CURRENT_BINARY_DIR}/engine_build")
-find_library(SHADOW_LIBRARY Shadow HINTS ../../../engine/$<CONFIGURATION>)
+find_library(SHADOW_LIBRARY Shadow HINTS ../../../engine/lib/Debug)
 include_directories(../../../engine/source)
 
 #include_directories( ../../../libs/pugixml/src )
@@ -43,14 +43,21 @@ foreach(FILE ${GAME_PROJECT_SOURCE_FILES})
 endforeach()
 
 # Set object files for compiling both executable and dll version of game
-add_library(GameCommon OBJECT ${GAME_PROJECT_SOURCE_FILES})
-set_property(TARGET ${GameCommon} PROPERTY POSITION_INDEPENDENT_CODE 1)
+#add_library(GameCommon OBJECT ${GAME_PROJECT_SOURCE_FILES})
+#set_property(TARGET ${GameCommon} PROPERTY POSITION_INDEPENDENT_CODE 1)
 
 
 # Add executable and dll version
-add_library(${GAME_LIBRARY_NAME} SHARED $<TARGET_OBJECTS:GameCommon>)
-add_executable(${GAME_EXECUTABLE_NAME} $<TARGET_OBJECTS:GameCommon>)
+#add_library(${GAME_LIBRARY_NAME} SHARED $<TARGET_OBJECTS:GameCommon>)
+#add_executable(${GAME_EXECUTABLE_NAME} $<TARGET_OBJECTS:GameCommon>)
+
+add_library(${GAME_LIBRARY_NAME} SHARED ${GAME_PROJECT_SOURCE_FILES})
+add_executable(${GAME_EXECUTABLE_NAME} ${GAME_PROJECT_SOURCE_FILES})
 
 target_link_libraries(${GAME_LIBRARY_NAME} ${SHADOW_LIBRARY})
 target_link_libraries(${GAME_EXECUTABLE_NAME} ${SHADOW_LIBRARY})
+
+add_custom_command(TARGET ${GAME_EXECUTABLE_NAME} POST_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E 
+                    copy ../../../engine/bin/$<CONFIGURATION>/Shadow.dll ${PROJECT_SOURCE_DIR}/bin/$<CONFIGURATION>)
 

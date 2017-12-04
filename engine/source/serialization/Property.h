@@ -34,7 +34,7 @@ namespace sh
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	template<typename ClassType, typename FieldType>
-	class SHADOW_API PropertyImpl : public Property
+	class /*SHADOW_API */PropertyImpl : public Property
 	{
 	public:
 		using FieldPtr = FieldType ClassType::*;
@@ -69,7 +69,7 @@ namespace sh
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	template<typename ClassType, typename ReturnType, typename ArgumentType>
-	class SHADOW_API AccessorPropertyImpl : public Property
+	class /*SHADOW_API */AccessorPropertyImpl : public Property
 	{
 	public:
 		using GetterPtr = ReturnType(ClassType::*)() const;
@@ -127,7 +127,7 @@ namespace sh
 	//////////////////////////////////////////////////////////////
 
 	template<typename ClassType, typename FieldType>
-	class SHADOW_API EnumPropertyImpl : public Property
+	class /*SHADOW_API */EnumPropertyImpl : public Property
 	{
 	public:
 		using FieldPtr = FieldType ClassType::*;
@@ -164,7 +164,7 @@ namespace sh
 	//////////////////////////////////////////////////////////////
 
 	template<typename ClassType, typename ReturnType, typename ArgumentType>
-	class SHADOW_API AccessorEnumPropertyImplExt : public Property
+	class /*SHADOW_API */AccessorEnumPropertyImplExt : public Property
 	{
 	public:
 		using GetterPtr = ReturnType(ClassType::*)() const;

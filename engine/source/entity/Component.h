@@ -9,10 +9,14 @@ namespace sh
 	static const size_t MaxComponents = 32;
 	class Entity;
 
-	struct ComponentTypeIdGenerator
+	struct SHADOW_API ComponentTypeIdGenerator
 	{
-		static size_t currentId;
-		static size_t GetAvailableId() { return currentId++; }
+		static size_t& currentId()
+		{
+			static size_t id = 0U;
+			return id;
+		}
+		static size_t GetAvailableId() { return currentId()++; }
 	};
 
 #define COMPONENT \

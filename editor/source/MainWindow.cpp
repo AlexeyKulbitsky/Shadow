@@ -201,11 +201,11 @@ void MainWindow::OpenProject()
 			return;
 		m_gameModule = CreateGameModulePtr();
 
-		auto SetDevicePtr = reinterpret_cast<void(*)(sh::Device*)>(m_gameModuleLibrary->GetSymbol("SetDevice"));
-		SH_ASSERT(CreateGameModulePtr, "Can not load SetDevice(sh::Device*) function address");
-		if (!CreateGameModulePtr)
+		auto InitGameModulePtr = reinterpret_cast<void(*)()>(m_gameModuleLibrary->GetSymbol("InitGameModule"));
+		SH_ASSERT(InitGameModulePtr, "Can not load SetDevice(sh::Device*) function address");
+		if (!InitGameModulePtr)
 			return;
-		SetDevicePtr(sh::Device::GetInstance());
+		InitGameModulePtr();
 	}
 }
 

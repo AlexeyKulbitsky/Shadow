@@ -13,11 +13,11 @@ public:
 public:
 	static void RegisterObject();
 
-	const sh::math::Vector3f& GetVector3Value() const;
-	void SetVector3Vaue(const sh::math::Vector3f& value);
+	const sh::math::Vector3& GetVector3Value() const;
+	void SetVector3Vaue(const sh::math::Vector3& value);
 
 private:
-	sh::math::Vector3f m_vector3Value;
+	sh::math::Vector3 m_vector3Value;
 };
 
 #endif

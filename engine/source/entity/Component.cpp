@@ -6,5 +6,4 @@
 
 namespace sh
 {
-	size_t ComponentTypeIdGenerator::currentId = 0;
 }

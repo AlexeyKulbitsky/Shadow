@@ -291,19 +291,19 @@ namespace sh
 	template <> inline VariantType GetVariantType<NamedResourceRef>() { return VAR_NAMED_RESOURCE_REF; }
 	template <> inline VariantType GetVariantType<NamedResourceRefList>() { return VAR_NAMED_RESOURCE_REF_LIST; }
 
-	template<> int Variant::Get<int>() const;
-	template<> float Variant::Get<float>() const;
-	template<> bool Variant::Get<bool>() const;
-	template<> std::string Variant::Get<std::string>() const;
-	template<> math::Vector2 Variant::Get<math::Vector2>() const;
-	template<> math::Vector3 Variant::Get<math::Vector3>() const;
-	template<> math::Vector4 Variant::Get<math::Vector4>() const;
-	template<> math::Quaternion Variant::Get<math::Quaternion>() const;
-	template<> Serializable* Variant::Get<Serializable*>() const;
-	template<> ResourceRef Variant::Get<ResourceRef>() const;
-	template<> ResourceRefList Variant::Get<ResourceRefList>() const;
-	template<> NamedResourceRef Variant::Get<NamedResourceRef>() const;
-	template<> NamedResourceRefList Variant::Get<NamedResourceRefList>() const;
+	template<> SHADOW_API int Variant::Get<int>() const;
+	template<> SHADOW_API float Variant::Get<float>() const;
+	template<> SHADOW_API bool Variant::Get<bool>() const;
+	template<> SHADOW_API std::string Variant::Get<std::string>() const;
+	template<> SHADOW_API math::Vector2 Variant::Get<math::Vector2>() const;
+	template<> SHADOW_API math::Vector3 Variant::Get<math::Vector3>() const;
+	template<> SHADOW_API math::Vector4 Variant::Get<math::Vector4>() const;
+	template<> SHADOW_API math::Quaternion Variant::Get<math::Quaternion>() const;
+	template<> SHADOW_API Serializable* Variant::Get<Serializable*>() const;
+	template<> SHADOW_API ResourceRef Variant::Get<ResourceRef>() const;
+	template<> SHADOW_API ResourceRefList Variant::Get<ResourceRefList>() const;
+	template<> SHADOW_API NamedResourceRef Variant::Get<NamedResourceRef>() const;
+	template<> SHADOW_API NamedResourceRefList Variant::Get<NamedResourceRefList>() const;
 
 } // sh
 

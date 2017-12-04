@@ -17,14 +17,8 @@ __declspec(dllexport) void DestroyGameModule()
 		delete application;
 }
 
-__declspec(dllexport) void SetDevice(sh::Device* device)
+__declspec(dllexport) void InitGameModule()
 {
-	if (!device)
-		return;
-
-	sh::Device::SetInstance(device);
-	sh::ObjectFactory::SetInstance(device->GetObjectFactory());
-
 	// Register components
 	TestComponent::RegisterObject();
 }
