@@ -25,7 +25,7 @@ namespace sh
 
 	void TerrainComponent::RegisterObject()
 	{
-		ObjectFactory::GetInstance()->RegisterFactory<TerrainComponent>();
+		ObjectFactory::GetInstance()->RegisterFactory<TerrainComponent>("Components");
 		S_ACCESSOR_PROPERTY("Heightmap", GetHeightmapProperty, SetHeightmapProperty);
 	}
 

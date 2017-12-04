@@ -39,6 +39,13 @@ namespace sh
 		}
 
 		template<typename T>
+		void RegisterFactory(const String& group)
+		{
+			RegisterFactory<T>();
+			m_objectGroups[group].push_back(T::GetTypeNameStatic());
+		}
+
+		template<typename T>
 		void RegisterProperty(Property* property)
 		{
 			m_propertes[T::GetTypeNameStatic()][property->GetName()] = property;
@@ -60,9 +67,11 @@ namespace sh
 
 		Serializable* CreateObject(const std::string& type);
 		std::vector<std::string> GetObjectTypes() const;
+		std::vector<std::string> GetObjectTypesForGroup(const String& groupName) const;
 
 	private:
 		std::map<std::string, ConcreteObjectFactory*> m_factories;
+		std::map<std::string, std::vector<String>> m_objectGroups;
 		std::map<std::string, std::map<std::string, Property*>> m_propertes;
 	};
 

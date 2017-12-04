@@ -22,7 +22,7 @@ namespace sh
 
 	void TransformComponent::RegisterObject()
 	{
-		ObjectFactory::GetInstance()->RegisterFactory<TransformComponent>();
+		ObjectFactory::GetInstance()->RegisterFactory<TransformComponent>("Components");
 		S_ACCESSOR_PROPERTY("Position", GetPosition, SetPosition);
 		S_ACCESSOR_PROPERTY("Rotation", GetRotation, SetRotation);
 		S_ACCESSOR_PROPERTY("Scale", GetScale, SetScale);

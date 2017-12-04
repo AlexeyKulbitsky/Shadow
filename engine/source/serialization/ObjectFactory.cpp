@@ -46,4 +46,15 @@ namespace sh
 		return result;
 	}
 
+	std::vector<std::string> ObjectFactory::GetObjectTypesForGroup(const String& groupName) const
+	{
+		std::vector<std::string> result;
+
+		auto it = m_objectGroups.find(groupName);
+		if (it != m_objectGroups.end())
+			result = it->second;
+
+		return result;
+	}
+
 } // sh

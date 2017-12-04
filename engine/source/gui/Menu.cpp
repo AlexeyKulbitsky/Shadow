@@ -77,6 +77,11 @@ namespace gui
 		item.button = button.get();
 		item.menu = subMenu;
 		m_submenus.push_back(item);
+
+		// Listen to submenu item selection
+		item.menu->itemSelected.Connect(std::bind(&Menu::OnSubmenuItemSelected, this, std::placeholders::_1));
+		// Update submenu position
+		item.menu->SetPosition(item.button->GetPosition().x + item.button->GetWidth(), item.button->GetPosition().y);
 	}
 
 	void Menu::Render(video::Painter* painter)
@@ -174,6 +179,13 @@ namespace gui
 				item.menu->SetEnabled(true);
 			}
 		}
+	}
+
+	void Menu::OnSubmenuItemSelected(const String& itemName)
+	{
+		if (IsInFocus())
+			GuiManager::GetInstance()->SetFocusWidget(nullptr);
+		itemSelected(itemName);
 	}
 
 } // gui

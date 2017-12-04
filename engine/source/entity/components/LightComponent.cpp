@@ -26,7 +26,7 @@ namespace sh
 
 	void LightComponent::RegisterObject()
 	{
-		ObjectFactory::GetInstance()->RegisterFactory<LightComponent>();
+		ObjectFactory::GetInstance()->RegisterFactory<LightComponent>("Components");
 		S_ACCESSOR_PROPERTY("Color", GetColor, SetColor);
 		S_ENUM_ACCESSOR_PROPERTY("Type", GetType, SetType);
 	}

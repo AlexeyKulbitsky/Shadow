@@ -7,8 +7,7 @@ namespace sh
 {
 	class SHADOW_API TransformComponent : public Component
 	{
-		SHADOW_OBJECT(TransformComponent)
-		COMPONENT
+		COMPONENT(TransformComponent)
 	public:
 		TransformComponent();
 		virtual ~TransformComponent();

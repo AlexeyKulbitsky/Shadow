@@ -30,7 +30,7 @@ namespace sh
 
 	void RenderComponent::RegisterObject()
 	{
-		ObjectFactory::GetInstance()->RegisterFactory<RenderComponent>();
+		ObjectFactory::GetInstance()->RegisterFactory<RenderComponent>("Components");
 		S_ACCESSOR_PROPERTY("Model", GetModelProperty, SetModelProperty);
 		S_ACCESSOR_PROPERTY("Materials", GetMaterials, SetMaterials);
 	}

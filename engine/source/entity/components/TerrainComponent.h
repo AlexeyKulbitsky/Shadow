@@ -12,8 +12,7 @@ namespace sh
 
 	class SHADOW_API TerrainComponent : public Component
 	{
-		SHADOW_OBJECT(TerrainComponent)
-		COMPONENT
+		COMPONENT(TerrainComponent)
 	public:
 		virtual ~TerrainComponent();
 

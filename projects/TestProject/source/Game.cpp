@@ -87,8 +87,4 @@ void Game::Update(sh::u64 delta)
 #endif
 
 	sh::Device* device = sh::Device::GetInstance();
-	if (device)
-	{
-		std::cout << "Updating game module: update time: " << delta << std::endl;
-	}
 }

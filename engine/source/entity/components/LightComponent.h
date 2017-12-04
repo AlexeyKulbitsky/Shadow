@@ -13,8 +13,7 @@ namespace sh
 
 	class SHADOW_API LightComponent : public Component
 	{
-		SHADOW_OBJECT(LightComponent)
-		COMPONENT
+		COMPONENT(LightComponent)
 	public:
 		LightComponent();
 		virtual ~LightComponent();

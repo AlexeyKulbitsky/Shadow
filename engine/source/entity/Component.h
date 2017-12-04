@@ -19,8 +19,8 @@ namespace sh
 		static size_t GetAvailableId() { return currentId()++; }
 	};
 
-#define COMPONENT \
-public: \
+#define COMPONENT(typeName) \
+SHADOW_OBJECT(typeName) \
 static size_t GetTypeId() { static size_t id = ComponentTypeIdGenerator::GetAvailableId(); return id; } \
 virtual size_t GetId() override { return GetTypeId(); }
 
@@ -29,8 +29,6 @@ virtual size_t GetId() override { return GetTypeId(); }
 	public:
 		virtual ~Component() {}
 		virtual size_t GetId() = 0;
-		//virtual void Load(const pugi::xml_node &node) = 0;
-		//virtual void Save(pugi::xml_node &parent) = 0;
 
 		void SetParentEntity(Entity* entity) { m_parentEntity = entity; }
 		Entity* GetParentEntity() const { return m_parentEntity; }

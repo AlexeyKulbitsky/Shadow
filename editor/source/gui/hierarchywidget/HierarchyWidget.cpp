@@ -1,5 +1,6 @@
 #include "HierarchyWidget.h"
 
+#include "EntityTreeItem.h"
 
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -68,7 +69,10 @@ HierarchyWidget::~HierarchyWidget()
 
 void HierarchyWidget::AddEntity(sh::Entity* entity)
 {
-	sh::SPtr<HeirarchyTreeItem> item(new HeirarchyTreeItem(nullptr, entity));
+	//sh::SPtr<HeirarchyTreeItem> item(new HeirarchyTreeItem(nullptr, entity));
+	//m_treeWidget->AddItem(item);
+
+	sh::SPtr<EntityTreeItem> item(new EntityTreeItem(nullptr, entity));
 	m_treeWidget->AddItem(item);
 }
 
@@ -79,7 +83,8 @@ void HierarchyWidget::SetSelectedEntity(sh::Entity* entity)
 		const auto itemsCount = m_treeWidget->GetLayout()->GetItemsCount();
 		for (size_t i = 0; i < itemsCount; ++i)
 		{
-			auto hierarchyItem = static_cast<HeirarchyTreeItem*>(m_treeWidget->GetLayout()->GetWidget(i).get());
+			//auto hierarchyItem = static_cast<HeirarchyTreeItem*>(m_treeWidget->GetLayout()->GetWidget(i).get());
+			auto hierarchyItem = static_cast<EntityTreeItem*>(m_treeWidget->GetLayout()->GetWidget(i).get());
 			auto itemEntity = hierarchyItem->GetEntity();
 			if (itemEntity == entity)
 			{

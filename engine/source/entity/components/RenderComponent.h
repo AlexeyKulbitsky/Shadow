@@ -12,8 +12,7 @@ namespace sh
 
 	class SHADOW_API RenderComponent : public Component
 	{
-		SHADOW_OBJECT(RenderComponent)
-		COMPONENT
+		COMPONENT(RenderComponent)
 	public:
 		RenderComponent();
 		virtual ~RenderComponent();

@@ -40,6 +40,7 @@ namespace gui
 	private:
 		void OnButtonReleased(const ButtonPtr& sender);
 		void OnButtonHovered(const ButtonPtr& sender);
+		void OnSubmenuItemSelected(const String& itemName);
 
 	private:
 		String m_title;
