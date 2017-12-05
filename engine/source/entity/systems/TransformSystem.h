@@ -9,6 +9,7 @@ namespace sh
 	{
 	public:
 		virtual void RegisterEntity(Entity* entity) override;
+		virtual void RegisterComponent(Component* component) override;
 		virtual void AddEntity(Entity* entity) override;
 		virtual void RemoveEntity(Entity* entity) override;
 		virtual void Update(f32 deltaTime) override;

@@ -7,11 +7,13 @@
 namespace sh
 {
 	class Entity;
+	class Component;
 
 	class SHADOW_API System
 	{
 	public:
 		virtual void RegisterEntity(Entity* entity);
+		virtual void RegisterComponent(Component* component);
 		virtual void AddEntity(Entity* entity);
 		virtual void RemoveEntity(Entity* entity);
 		virtual void Update(f32 deltaTime);

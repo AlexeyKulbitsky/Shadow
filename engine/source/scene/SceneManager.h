@@ -36,6 +36,7 @@ namespace sh
 
 			void AddEntity(Entity* entity) { m_entities.push_back(entity); }
 			void RegisterEntity(Entity* entity);
+			void RegisterComponent(Component* component);
 			size_t GetEntitiesCount() const { return m_entities.size(); }
 			Entity* GetEntity(size_t index) { return m_entities[index]; }
 

@@ -15,6 +15,10 @@ namespace sh
 		}*/
 	}
 
+	void System::RegisterComponent(Component* component)
+	{
+	}
+
 	void System::AddEntity(Entity* entity)
 	{
 

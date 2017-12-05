@@ -33,6 +33,12 @@ namespace sh
 
 	//////////////////////////////////////////////////////////////////
 
+	void LightSystem::RegisterComponent(Component* component)
+	{
+	}
+
+	//////////////////////////////////////////////////////////////////
+
 	void LightSystem::AddEntity(Entity* entity)
 	{
 		auto it = std::find(m_entities.begin(), m_entities.end(), entity);

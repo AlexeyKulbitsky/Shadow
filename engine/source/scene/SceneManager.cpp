@@ -166,6 +166,16 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
 
+		void SceneManager::RegisterComponent(Component* component)
+		{
+			for (auto system : m_systems)
+			{
+				system->RegisterComponent(component);
+			}
+		}
+
+		//////////////////////////////////////////////////////////////////////////////////////////////
+
 		void SceneManager::SetCamera(Camera* camera)
 		{
 			m_camera = camera;

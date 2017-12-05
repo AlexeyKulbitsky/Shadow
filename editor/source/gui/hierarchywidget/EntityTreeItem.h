@@ -16,6 +16,8 @@ protected:
 	virtual void OnContextMenu(sh::s32 x, sh::s32 y) override;
 	virtual void OnEdit(sh::s32 x, sh::s32 y) override;
 
+	void OnMenuItemSelected(const sh::String& itemName);
+
 private:
 	sh::Entity* m_entity = nullptr;
 };

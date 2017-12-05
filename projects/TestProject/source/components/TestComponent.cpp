@@ -2,7 +2,7 @@
 
 void TestComponent::RegisterObject()
 {
-	sh::ObjectFactory::GetInstance()->RegisterFactory<TestComponent>();
+	sh::ObjectFactory::GetInstance()->RegisterFactory<TestComponent>("Components");
 	S_ACCESSOR_PROPERTY("Vector3", GetVector3Value, SetVector3Vaue);
 }
 

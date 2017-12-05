@@ -37,7 +37,7 @@ void HierarchyTreeWidget::SetSelectedItem(sh::gui::TreeItem* item)
 	sh::gui::TreeWidget::SetSelectedItem(item);
 	if (item)
 	{
-		auto hierarchyItem = static_cast<HeirarchyTreeItem*>(item);
+		auto hierarchyItem = static_cast<EntityTreeItem*>(item);
 		auto entity = hierarchyItem->GetEntity();
 		m_hierarchyWidget->OnEntitySelected(entity);
 	}

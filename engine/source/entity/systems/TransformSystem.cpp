@@ -16,6 +16,12 @@ namespace sh
 
 	//////////////////////////////////////////////////////////////////
 
+	void TransformSystem::RegisterComponent(Component* component)
+	{
+	}
+
+	//////////////////////////////////////////////////////////////////
+
 	void TransformSystem::AddEntity(Entity* entity)
 	{
 		auto it = std::find(m_entities.begin(), m_entities.end(), entity);
