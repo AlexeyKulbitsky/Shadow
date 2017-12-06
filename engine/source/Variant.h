@@ -22,6 +22,7 @@ namespace sh
 		VAR_RESOURCE_REF_LIST,
 		VAR_NAMED_RESOURCE_REF,
 		VAR_NAMED_RESOURCE_REF_LIST,
+		VAR_SCRIPT_REF,
 		VAR_CUSTOM
 	};
 
@@ -138,6 +139,12 @@ namespace sh
 			*this = value;
 		}
 
+		Variant(const ScriptRef& value)
+			: m_type(VAR_NOTYPE)
+		{
+			*this = value;
+		}
+
 		Variant(const Variant& other)
 		{
 		}
@@ -246,6 +253,13 @@ namespace sh
 			return *this;
 		}
 
+		Variant& operator=(const ScriptRef& value)
+		{
+			SetType(VAR_SCRIPT_REF);
+			*reinterpret_cast<ScriptRef*>(m_value.ptrValue) = value;
+			return *this;
+		}
+
 		int GetInt() const;
 		float GetFloat() const;
 		bool GetBool() const;
@@ -259,6 +273,7 @@ namespace sh
 		const ResourceRefList& GetResourceRefList() const;
 		const NamedResourceRef& GetNamedResourceRef() const;
 		const NamedResourceRefList& GetNamedResourceRefList() const;
+		const ScriptRef& GetScriptRef() const;
 
 		template<typename T>
 		T Get() const
@@ -290,6 +305,7 @@ namespace sh
 	template <> inline VariantType GetVariantType<ResourceRefList>() { return VAR_RESOURCE_REF_LIST; }
 	template <> inline VariantType GetVariantType<NamedResourceRef>() { return VAR_NAMED_RESOURCE_REF; }
 	template <> inline VariantType GetVariantType<NamedResourceRefList>() { return VAR_NAMED_RESOURCE_REF_LIST; }
+	template <> inline VariantType GetVariantType<ScriptRef>() { return VAR_SCRIPT_REF; }
 
 	template<> SHADOW_API int Variant::Get<int>() const;
 	template<> SHADOW_API float Variant::Get<float>() const;
@@ -304,6 +320,7 @@ namespace sh
 	template<> SHADOW_API ResourceRefList Variant::Get<ResourceRefList>() const;
 	template<> SHADOW_API NamedResourceRef Variant::Get<NamedResourceRef>() const;
 	template<> SHADOW_API NamedResourceRefList Variant::Get<NamedResourceRefList>() const;
+	template<> SHADOW_API ScriptRef Variant::Get<ScriptRef>() const;
 
 } // sh
 

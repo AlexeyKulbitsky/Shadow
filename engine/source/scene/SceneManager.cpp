@@ -18,11 +18,13 @@
 #include "../entity/systems/RenderSystem.h"
 #include "../entity/systems/TransformSystem.h"
 #include "../entity/systems/LightSystem.h"
+#include "../entity/systems/ScriptSystem.h"
 #include "../entity/Component.h"
 #include "../entity/components/LightComponent.h"
 #include "../entity/components/RenderComponent.h"
 #include "../entity/components/TerrainComponent.h"
 #include "../entity/components/TransformComponent.h"
+#include "../entity/components/ScriptComponent.h"
 
 #include "../entity/Entity.h"
 #include "../entity/ComponentsFactory.h"
@@ -52,12 +54,16 @@ namespace sh
 			LightSystem* lightSystem = new LightSystem();
 			m_systems.push_back(lightSystem);
 
+			ScriptSystem* scriptSystem = new ScriptSystem();
+			m_systems.push_back(scriptSystem);
+
 			m_picker.reset(new Picker());
 
 			TransformComponent::RegisterObject();
 			LightComponent::RegisterObject();
 			RenderComponent::RegisterObject();
 			TerrainComponent::RegisterObject();
+			ScriptComponent::RegisterObject();
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
@@ -103,7 +109,7 @@ namespace sh
 					entity->Load(sceneNode);
 
 					// Register entity in all systems
-					RegisterEntity(entity);
+					//RegisterEntity(entity);
 					// Add entity to entities list
 					AddEntity(entity);
 				}

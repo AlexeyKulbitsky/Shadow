@@ -92,6 +92,8 @@
 #include "serialization/Property.h"
 #include "serialization/ObjectFactory.h"
 
+#include "scripting/Script.h"
+
 namespace sh
 {
 	// Create usual device

@@ -109,6 +109,11 @@ namespace sh
 		return *reinterpret_cast<NamedResourceRefList*>(m_value.ptrValue);
 	}
 
+	const ScriptRef& Variant::GetScriptRef() const
+	{
+		return *reinterpret_cast<ScriptRef*>(m_value.ptrValue);
+	}
+
 	void Variant::SetType(VariantType type)
 	{
 		switch (m_type)
@@ -154,10 +159,16 @@ namespace sh
 			delete reinterpret_cast<ResourceRefList*>(m_value.ptrValue);
 			m_value.ptrValue = nullptr;
 		}
-		break;
+			break;
 		case VAR_NAMED_RESOURCE_REF_LIST:
 		{
 			delete reinterpret_cast<NamedResourceRefList*>(m_value.ptrValue);
+			m_value.ptrValue = nullptr;
+		}
+			break;
+		case VAR_SCRIPT_REF:
+		{
+			delete reinterpret_cast<ScriptRef*>(m_value.ptrValue);
 			m_value.ptrValue = nullptr;
 		}
 			break;
@@ -193,6 +204,9 @@ namespace sh
 		case VAR_NAMED_RESOURCE_REF_LIST:
 			m_value.ptrValue = new NamedResourceRefList();
 			break;
+		case VAR_SCRIPT_REF:
+			m_value.ptrValue = new ScriptRef();
+			break;
 		default:
 			break;
 		}
@@ -211,5 +225,6 @@ namespace sh
 	template<> ResourceRefList Variant::Get<ResourceRefList>() const { return GetResourceRefList(); }
 	template<> NamedResourceRef Variant::Get<NamedResourceRef>() const { return GetNamedResourceRef(); }
 	template<> NamedResourceRefList Variant::Get<NamedResourceRefList>() const { return GetNamedResourceRefList(); }
+	template<> ScriptRef Variant::Get<ScriptRef>() const { return GetScriptRef(); }
 
 } // sh

@@ -68,6 +68,11 @@ namespace sh
 	};
 
 	using NamedResourceRefList = std::vector<NamedResourceRef>;
+
+	struct ScriptRef
+	{
+		String type;
+	};
 }
 
 

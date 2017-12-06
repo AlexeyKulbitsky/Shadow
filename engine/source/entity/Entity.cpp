@@ -5,6 +5,9 @@
 #include "../serialization/Serializer.h"
 #include "../serialization/XMLSerializer.h"
 
+#include "../Device.h"
+#include "../scene/SceneManager.h"
+
 #include <pugixml.hpp>
 
 namespace sh
@@ -79,6 +82,8 @@ namespace sh
 			m_components.resize(id + 1, nullptr);
 		m_components[id] = component;
 		component->SetParentEntity(this);
+	
+		Device::GetInstance()->GetSceneManager()->RegisterEntity(this);
 	}
 
 	//////////////////////////////////////////////////////////////
