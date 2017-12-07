@@ -9,6 +9,16 @@ class ScriptA : public sh::Script
 public:
 	static void RegisterObject();
 	virtual void Update(float dt) override;
+
+	void SetVector3(const sh::math::Vector3& value);
+	const sh::math::Vector3& GetVector3() const;
+
+	void SetQuaternion(const sh::math::Quaternion& value);
+	const sh::math::Quaternion& GetQuaternion() const;
+
+private:
+	sh::math::Vector3 m_vector3;
+	sh::math::Quaternion m_quaternion;
 };
 
 #endif

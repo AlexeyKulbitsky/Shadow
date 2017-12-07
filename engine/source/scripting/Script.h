@@ -5,6 +5,7 @@
 
 namespace sh
 {
+	class ScriptComponent;
 
 	class SHADOW_API Script : public Serializable
 	{
@@ -12,6 +13,15 @@ namespace sh
 	public:
 		virtual ~Script() {}
 		virtual void Update(float deltaTime) {}
+
+		template<typename T>
+		T* GetComponent()
+		{
+			return m_scriptComponent->GetParentEntity()->GetComponent<T>();
+		}
+	private:
+		friend class ScriptComponent;
+		ScriptComponent* m_scriptComponent = nullptr;
 	};
 
 } // sh

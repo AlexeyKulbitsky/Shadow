@@ -46,16 +46,22 @@ namespace sh
 		SceneManager::SceneManager()
 		{
 			TransformSystem* transformSystem = new TransformSystem();
+			transformSystem->Activate(true);
 			m_systems.push_back(transformSystem);
 
 			RenderSystem* renderSystem = new RenderSystem();
+			renderSystem->Activate(true);
 			m_systems.push_back(renderSystem);
 
 			LightSystem* lightSystem = new LightSystem();
+			lightSystem->Activate(true);
 			m_systems.push_back(lightSystem);
 
 			ScriptSystem* scriptSystem = new ScriptSystem();
+			scriptSystem->Activate(false);
 			m_systems.push_back(scriptSystem);
+			m_switchableSystems.push_back(scriptSystem);
+
 
 			m_picker.reset(new Picker());
 
@@ -196,7 +202,8 @@ namespace sh
 			// Update all systems
 			for (auto system : m_systems)
 			{
-				system->Update(deltaTime);
+				if (system->IsActivated())
+					system->Update(deltaTime);
 			}
 		}
 
@@ -217,6 +224,14 @@ namespace sh
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
+
+		void SceneManager::ActivateSystems(bool activate)
+		{
+			for (auto system : m_switchableSystems)
+			{
+				system->Activate(activate);
+			}
+		}
 
 	}
 }

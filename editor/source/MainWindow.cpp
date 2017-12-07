@@ -524,7 +524,7 @@ void MainWindow::Update(sh::u64 delta)
 	driver->EndRendering();
 
 	// Updating game module if exists
-	if (m_gameModule)
+	if (m_gameModule && m_runGameModule)
 		m_gameModule->Update(delta);
 }
 
@@ -628,5 +628,16 @@ sh::gui::ToolBarPtr MainWindow::CreateToolbar()
 	toolBar->AddItem(rotateGizmoButton);
 	toolBar->AddItem(scaleGizmoButton);
 
+	sh::gui::ButtonPtr playButton = arrowButton->Clone();
+	playButton->SetToggleable(true);
+	playButton->OnToggle.Connect(std::bind(&MainWindow::RunGameModule, this, std::placeholders::_1));
+	toolBar->AddItem(playButton);
+
 	return toolBar;
+}
+
+void MainWindow::RunGameModule(bool yes)
+{
+	m_runGameModule = yes;
+	sh::Device::GetInstance()->GetSceneManager()->ActivateSystems(yes);
 }

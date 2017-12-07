@@ -44,9 +44,11 @@
 #include "entity/components/RenderComponent.h"
 #include "entity/components/TransformComponent.h"
 #include "entity/components/TerrainComponent.h"
+#include "entity/components/ScriptComponent.h"
 #include "entity/systems/LightSystem.h"
 #include "entity/systems/RenderSystem.h"
 #include "entity/systems/TransformSystem.h"
+#include "entity/systems/ScriptSystem.h"
 
 #include "math/smath.h"
 

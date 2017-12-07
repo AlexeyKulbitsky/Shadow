@@ -51,6 +51,8 @@ namespace sh
 			void OnWindowResized(int width, int height);
 			void OnSurfaceChanged(void* surface, int width, int height);
 
+			void ActivateSystems(bool activate);
+
 		private:
 			static math::Vector3	s_frontVector;
 			static math::Vector3	s_upVector;
@@ -61,6 +63,8 @@ namespace sh
 			ComponentsFactory* m_componentsFactory = nullptr;
 			std::vector<System*> m_systems;
 			std::vector<Entity*> m_entities;
+
+			std::vector<System*> m_switchableSystems;
 
 			PickerPtr m_picker;
 		};

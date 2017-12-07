@@ -62,6 +62,7 @@ void EntityTreeItem::OnMenuItemSelected(const sh::String& itemName)
 {
 	if (!m_entity)
 		return;
+
 	auto object = sh::ObjectFactory::GetInstance()->CreateObject(itemName);
 	if (!object)
 		return;

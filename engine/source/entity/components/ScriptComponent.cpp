@@ -22,7 +22,14 @@ namespace sh
 
 	void ScriptComponent::SetScript(Script* script)
 	{
+		if (m_script)
+		{
+			delete m_script;
+			m_script = nullptr;
+		}
+
 		m_script = script;
+		m_script->m_scriptComponent = this;
 	}
 
 	Script* ScriptComponent::GetScript()
@@ -32,11 +39,18 @@ namespace sh
 
 	void ScriptComponent::SetScriptRef(const ScriptRef& ref)
 	{
+		if (m_script)
+		{
+			delete m_script;
+			m_script = nullptr;
+		}
+
 		auto object = ObjectFactory::GetInstance()->CreateObject(ref.type);
 		if (!object)
 			return;
 
 		m_script = static_cast<Script*>(object);
+		m_script->m_scriptComponent = this;
 	}
 
 	const ScriptRef ScriptComponent::GetScriptRef() const

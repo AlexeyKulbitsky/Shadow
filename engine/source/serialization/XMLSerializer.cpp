@@ -2,6 +2,8 @@
 #include "Serializable.h"
 #include "Property.h"
 #include "ObjectFactory.h"
+#include "../entity/components/ScriptComponent.h"
+#include "../scripting/Script.h"
 
 #include <pugixml.hpp>
 
@@ -61,6 +63,15 @@ namespace sh
 					pugi::xml_node refNode = porpertyNode.append_child(ref.name.c_str());
 					refNode.append_attribute("val").set_value(ref.resource.name.c_str());
 				}
+			}
+				break;
+			case VAR_SCRIPT_REF:
+			{
+				auto scriptComponent = static_cast<ScriptComponent*>(serializable);
+				auto script = scriptComponent->GetScript();
+
+				XMLSerializer scriptSerializer;
+				scriptSerializer.Serialize(script, porpertyNode);
 			}
 				break;
 			default:
@@ -149,6 +160,22 @@ namespace sh
 				}
 
 				prop.second->SetValue(serializable, refList);
+			}
+			break;
+			case VAR_SCRIPT_REF:
+			{
+				auto scriptComponent = static_cast<ScriptComponent*>(serializable);
+
+				String scriptType = propertyNode.attribute("type").as_string();
+				auto script = ObjectFactory::GetInstance()->CreateObject(scriptType);
+
+				if (!script)
+					continue;
+
+				XMLSerializer scriptSerializer;
+				scriptSerializer.Deserialize(script, propertyNode);
+
+				scriptComponent->SetScript(static_cast<Script*>(script));
 			}
 			break;
 			default:
