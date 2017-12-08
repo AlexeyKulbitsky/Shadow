@@ -153,6 +153,17 @@ void SelectionManager::Render()
 void SelectionManager::SetSelectedEntity(sh::Entity* entity)
 {
 	m_selectedEntity = entity;
+	
+	m_inspectorWidget->SetEntity(m_selectedEntity);
+	m_hierarchyWidget->SetSelectedEntity(m_selectedEntity);
+	if (m_selectedEntity)
+	{
+		m_gizmo->SetEnabled(true);
+	}
+	else
+	{
+		m_gizmo->SetEnabled(false);
+	}
 }
 
 void SelectionManager::SetHierarchyWidget(const sh::SPtr<HierarchyWidget>& widget)

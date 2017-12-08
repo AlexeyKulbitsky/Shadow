@@ -161,6 +161,51 @@
 				<color r="0.7" g="0.7" b="0.7" a="1"/>
 			</hovered>
 		</button>
+		
+		<button name="PlayButton">
+			<default>
+				<rect x1="217" y1="59" x2="266" y2="108"/>
+				<color r="1" g="1" b="1" a="1"/>
+			</default>
+			<pressed>
+				<rect x1="217" y1="59" x2="266" y2="108"/>
+				<color r="0.5" g="0.5" b="0.5" a="1"/>
+			</pressed>
+			<hovered>
+				<rect x1="217" y1="59" x2="266" y2="108"/>
+				<color r="0.7" g="0.7" b="0.7" a="1"/>
+			</hovered>
+		</button>
+		
+		<button name="StopButton">
+			<default>
+				<rect x1="280" y1="59" x2="329" y2="108"/>
+				<color r="1" g="1" b="1" a="1"/>
+			</default>
+			<pressed>
+				<rect x1="280" y1="59" x2="329" y2="108"/>
+				<color r="0.5" g="0.5" b="0.5" a="1"/>
+			</pressed>
+			<hovered>
+				<rect x1="280" y1="59" x2="329" y2="108"/>
+				<color r="0.7" g="0.7" b="0.7" a="1"/>
+			</hovered>
+		</button>
+		
+		<button name="PauseButton">
+			<default>
+				<rect x1="340" y1="59" x2="388" y2="107"/>
+				<color r="1" g="1" b="1" a="1"/>
+			</default>
+			<pressed>
+				<rect x1="340" y1="59" x2="388" y2="107"/>
+				<color r="0.5" g="0.5" b="0.5" a="1"/>
+			</pressed>
+			<hovered>
+				<rect x1="340" y1="59" x2="388" y2="107"/>
+				<color r="0.7" g="0.7" b="0.7" a="1"/>
+			</hovered>
+		</button>
 
 	</buttons>
 	

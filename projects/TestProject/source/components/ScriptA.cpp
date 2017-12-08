@@ -11,14 +11,29 @@ void ScriptA::RegisterObject()
 
 void ScriptA::Update(float dt)
 {
-// 	std::cout << "Updating SCRIPT A" << std::endl;
-// 	std::cout << "Vector3 value: " << m_vector3.x << " " << m_vector3.y << " " << m_vector3.z << std::endl;
-// 	std::cout << "Quaternion value: " << m_quaternion.x << " " << m_quaternion.y << " " << m_quaternion.z << " " << m_quaternion.w << std::endl;
-// 	std::cout << "------------------------------------" << std::endl;
+	sh::InputManager* inputManager = sh::Device::GetInstance()->GetInputManager();
+	sh::math::Vector3 delta(0.0f);
+
+	if (inputManager->IsKeyPressed(sh::KeyCode::KEY_KEY_W))
+	{
+		delta.z += 0.05f;
+	}
+	else if (inputManager->IsKeyPressed(sh::KeyCode::KEY_KEY_A))
+	{
+		delta.x -= 0.05f;
+	}
+	else if (inputManager->IsKeyPressed(sh::KeyCode::KEY_KEY_S))
+	{
+		delta.z -= 0.05f;
+	}
+	else if (inputManager->IsKeyPressed(sh::KeyCode::KEY_KEY_D))
+	{
+		delta.x += 0.05f;
+	}
 
 	auto transformComponent = GetComponent<sh::TransformComponent>();
 	if (transformComponent)
-		transformComponent->SetPosition(transformComponent->GetPosition() + sh::math::Vector3(0.005f, 0.0f, 0.0f));
+		transformComponent->SetPosition(transformComponent->GetPosition() + delta);
 }
 
 void ScriptA::SetVector3(const sh::math::Vector3& value)

@@ -44,6 +44,8 @@ private:
 	sh::gui::ToolBarPtr CreateToolbar();
 
 	void RunGameModule(bool yes);
+	void PauseGameModule(bool yes);
+	void StopGameModule();
 
 private:
 	sh::SPtr<InspectorWidget> m_inspectorWidget;

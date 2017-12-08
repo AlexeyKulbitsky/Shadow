@@ -453,7 +453,8 @@ void MainWindow::Update(sh::u64 delta)
 			if (m_cameraTargetEntity)
 			{
 				auto transformComponent = m_cameraTargetEntity->GetComponent<sh::TransformComponent>();
-				targetPos = transformComponent->GetPosition();
+				if (transformComponent)
+					targetPos = transformComponent->GetPosition();
 			}
 
 			sh::math::Vector2Int delta = current - old;
@@ -628,10 +629,20 @@ sh::gui::ToolBarPtr MainWindow::CreateToolbar()
 	toolBar->AddItem(rotateGizmoButton);
 	toolBar->AddItem(scaleGizmoButton);
 
-	sh::gui::ButtonPtr playButton = arrowButton->Clone();
+	sh::gui::ButtonPtr playButton = guiMgr->GetStyle()->GetButton("PlayButton");
 	playButton->SetToggleable(true);
 	playButton->OnToggle.Connect(std::bind(&MainWindow::RunGameModule, this, std::placeholders::_1));
 	toolBar->AddItem(playButton);
+
+	sh::gui::ButtonPtr pauseButton = guiMgr->GetStyle()->GetButton("PauseButton");
+	pauseButton->SetToggleable(true);
+	pauseButton->OnToggle.Connect(std::bind(&MainWindow::PauseGameModule, this, std::placeholders::_1));
+	toolBar->AddItem(pauseButton);
+
+	sh::gui::ButtonPtr stopButton = guiMgr->GetStyle()->GetButton("StopButton");
+	stopButton->SetToggleable(false);
+	stopButton->OnPress.Connect(std::bind(&MainWindow::StopGameModule, this));
+	toolBar->AddItem(stopButton);
 
 	return toolBar;
 }
@@ -640,4 +651,13 @@ void MainWindow::RunGameModule(bool yes)
 {
 	m_runGameModule = yes;
 	sh::Device::GetInstance()->GetSceneManager()->ActivateSystems(yes);
+	SelectionManager::GetInstance()->SetSelectedEntity(nullptr);
+}
+
+void MainWindow::PauseGameModule(bool yes)
+{
+}
+
+void MainWindow::StopGameModule()
+{
 }
