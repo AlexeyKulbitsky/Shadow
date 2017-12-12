@@ -44,7 +44,8 @@ void LightComponentWidget::SetLightComponent(sh::LightComponent* component)
 	// Light color
 	sh::gui::LabelPtr colorLabel(new sh::gui::Label("Color"));
 
-	m_colorWidget->SetColor(sh::math::Vector4(m_lightComponent->GetColor(), 1.0f));
+	const auto& col = m_lightComponent->GetColor();
+	m_colorWidget->SetColor(sh::math::Vector4(col.red, col.green, col.blue, 1.0f));
 	sh::gui::ButtonPtr pickerButton = guiMgr->GetStyle()->GetButton("PickerButton");
 	pickerButton->SetMaximumWidth(20);
 	
@@ -94,14 +95,14 @@ void LightComponentWidget::SetLightComponent(sh::LightComponent* component)
 
 void LightComponentWidget::OnColorPickerButtonReleased()
 {
-	m_colorPicker->SetColor(sh::math::Vector4(m_lightComponent->GetColor(), 1.0f));
+	m_colorPicker->SetColor(m_lightComponent->GetColor());
 	sh::gui::GuiManager::GetInstance()->AddChild(m_colorPicker, false);
 }
 
-void LightComponentWidget::OnColorChanged(const sh::math::Vector4& color)
+void LightComponentWidget::OnColorChanged(const sh::video::Color& color)
 {
-	m_colorWidget->SetColor(sh::math::Vector4(color));
-	m_lightComponent->SetColor(sh::math::Vector3(color.x, color.y, color.z));
+	m_colorWidget->SetColor(sh::math::Vector4(color.red, color.green, color.blue, color.alpha));
+	m_lightComponent->SetColor(color);
 }
 
 void LightComponentWidget::OnDirectionChanged(const sh::math::Vector3& direction)

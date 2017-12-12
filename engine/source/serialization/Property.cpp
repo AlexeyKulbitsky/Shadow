@@ -8,5 +8,10 @@ namespace sh
 		return m_name;
 	}
 
+	const std::vector<String>& Property::GetEnumNames() const
+	{
+		return m_enumNames;
+	}
+
 } // sh
 

@@ -13,13 +13,13 @@ public:
 	virtual bool ProcessEvent(sh::gui::GUIEvent& ev) override;
 	virtual void UpdateLayout() override;
 
-	const sh::math::Vector4& GetColor() const { return m_color; }
-	void SetColor(const sh::math::Vector4& color);
+	const sh::video::Color& GetColor() const { return m_color; }
+	void SetColor(const sh::video::Color& color);
 
 	void OnRGBColorChanged(const sh::math::Vector4Int& color);
 	void OnHSVColorChanged(const sh::math::Vector3Int& color);
 
-	sh::Event<void, sh::math::Vector4> colorChanged;
+	sh::Event<void, sh::video::Color> colorChanged;
 
 private:
 	sh::video::TexturePtr CreatePalletteTexture() const;
@@ -33,7 +33,7 @@ private:
 	sh::gui::SpriteWidgetPtr m_colorTarget;
 	sh::math::Vector2Int m_colorTargetOffset;
 
-	sh::math::Vector4 m_color;
+	sh::video::Color m_color;
 	bool m_dragStarted = false;
 };
 

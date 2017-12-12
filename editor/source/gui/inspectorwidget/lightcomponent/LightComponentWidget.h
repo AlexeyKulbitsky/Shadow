@@ -13,7 +13,7 @@ public:
 
 	void OnColorPickerButtonReleased();
 
-	void OnColorChanged(const sh::math::Vector4& color);
+	void OnColorChanged(const sh::video::Color& color);
 	void OnDirectionChanged(const sh::math::Vector3& direction);
 
 private:

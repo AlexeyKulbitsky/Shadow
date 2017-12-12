@@ -13,13 +13,16 @@ namespace sh
 	{
 	public:
 		Property(const std::string& name) : m_name(name) {}
+		Property(const std::string& name, const std::vector<String>& enumNames) : m_name(name), m_enumNames(enumNames) {}
 		virtual void SetValue(Serializable* object, const Variant& value) = 0;
 		virtual Variant GetValue(Serializable* object) = 0;
 		virtual VariantType GetType() const = 0;
 		const std::string& GetName() const;
+		const std::vector<String>& GetEnumNames() const;
 
 	private:
 		std::string m_name = "";
+		std::vector<String> m_enumNames;
 	};
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -181,8 +184,8 @@ namespace sh
 
 		using BaseType = std::remove_cv_t<ReturnType>;
 
-		AccessorEnumPropertyImplExt(GetterPtr getter, SetterPtr setter, const std::string& name)
-			: Property(name)
+		AccessorEnumPropertyImplExt(GetterPtr getter, SetterPtr setter, const std::string& name, const std::vector<String>& names)
+			: Property(name, names)
 			, m_getter(getter)
 			, m_setter(setter) {}
 
@@ -207,9 +210,9 @@ namespace sh
 	};
 
 	template<typename ClassType, typename ReturnType, typename ArgumentType>
-	Property* CreateEnumAccessorProperty(Getter<ClassType, ReturnType> getter, Setter<ClassType, ArgumentType> setter, const std::string& name)
+	Property* CreateEnumAccessorProperty(Getter<ClassType, ReturnType> getter, Setter<ClassType, ArgumentType> setter, const std::string& name, const std::vector<String>& names)
 	{
-		return new AccessorEnumPropertyImplExt<ClassType, ReturnType, ArgumentType>(getter, setter, name);
+		return new AccessorEnumPropertyImplExt<ClassType, ReturnType, ArgumentType>(getter, setter, name, names);
 	}
 
 } // sh
@@ -218,6 +221,6 @@ namespace sh
 #define S_FIELD_PROPERTY(name, field) sh::ObjectFactory::GetInstance()->RegisterProperty<ClassType>(sh::CreateFieldProperty(&ClassType::field, name))
 #define S_ACCESSOR_PROPERTY(name, Getter, Setter) sh::ObjectFactory::GetInstance()->RegisterProperty<ClassType>(sh::CreateProperty(&ClassType::Getter, &ClassType::Setter, name))
 #define S_ENUM_PROPERTY(name, field) sh::ObjectFactory::GetInstance()->RegisterProperty<ClassType>(sh::CreateEnumProperty(&ClassType::field, name))
-#define S_ENUM_ACCESSOR_PROPERTY(name, Getter, Setter) sh::ObjectFactory::GetInstance()->RegisterProperty<ClassType>(sh::CreateEnumAccessorProperty(&ClassType::Getter, &ClassType::Setter, name))
+#define S_ENUM_ACCESSOR_PROPERTY(name, Getter, Setter, enumNames) sh::ObjectFactory::GetInstance()->RegisterProperty<ClassType>(sh::CreateEnumAccessorProperty(&ClassType::Getter, &ClassType::Setter, name, enumNames))
 
 #endif

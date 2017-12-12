@@ -30,15 +30,15 @@ namespace sh
 			void SetDirection(const math::Vector3& direction) { m_direction = direction; }
 			const math::Vector3& GetDirection() const { return m_direction; }
 
-			void SetColor(const math::Vector3& color) { m_color = color; }
-			const math::Vector3&  GetColor() const { return m_color; }
+			void SetColor(const video::Color& color) { m_color = color; }
+			const video::Color&  GetColor() const { return m_color; }
 
 		private:
 			Type m_type;
 			math::Vector3 m_position;
 			math::Vector3 m_direction;
 
-			math::Vector3 m_color;
+			video::Color m_color;
 		};
 	}
 }

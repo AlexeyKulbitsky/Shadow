@@ -36,6 +36,22 @@ namespace sh
 				porpertyNode.append_attribute("val").set_value(outValue.str().c_str());
 			}
 				break;
+			case VAR_VECTOR_4_FLOAT:
+			{
+				auto vectorValue = value.GetVector4Float();
+				std::ostringstream outValue;
+				outValue << vectorValue.x << " " << vectorValue.y << " " << vectorValue.z << " " << vectorValue.w;
+				porpertyNode.append_attribute("val").set_value(outValue.str().c_str());
+			}
+				break;
+			case VAR_COLOR:
+			{
+				auto vectorValue = value.GetColor();
+				std::ostringstream outValue;
+				outValue << vectorValue.red << " " << vectorValue.green << " " << vectorValue.blue << " " << vectorValue.alpha;
+				porpertyNode.append_attribute("val").set_value(outValue.str().c_str());
+			}
+				break;
 			case VAR_QUATERNION_FLOAT:
 			{
 				auto quaternionValue = value.GetQuaternionFloat();
@@ -112,6 +128,40 @@ namespace sh
 				vectorValue.z = temp[2];
 
 				prop.second->SetValue(serializable, vectorValue);
+			}
+			break;
+			case VAR_VECTOR_4_FLOAT:
+			{
+				String valueString = propertyNode.attribute("val").as_string();
+
+				std::istringstream in(valueString);
+				float val = 0.0f;
+				std::vector<float> temp;
+				while (in >> val) temp.push_back(val);
+				math::Vector4 vectorValue(0.0f);
+				vectorValue.x = temp[0];
+				vectorValue.y = temp[1];
+				vectorValue.z = temp[2];
+				vectorValue.w = temp[3];
+
+				prop.second->SetValue(serializable, vectorValue);
+			}
+			break;
+			case VAR_COLOR:
+			{
+				String valueString = propertyNode.attribute("val").as_string();
+
+				std::istringstream in(valueString);
+				float val = 0.0f;
+				std::vector<float> temp;
+				while (in >> val) temp.push_back(val);
+				video::Color colorValue;
+				colorValue.red = temp[0];
+				colorValue.green = temp[1];
+				colorValue.blue = temp[2];
+				colorValue.alpha = temp[3];
+
+				prop.second->SetValue(serializable, colorValue);
 			}
 			break;
 			case VAR_QUATERNION_FLOAT:

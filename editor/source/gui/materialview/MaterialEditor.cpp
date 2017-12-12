@@ -154,7 +154,7 @@ MaterialParamColorEditor::MaterialParamColorEditor(sh::video::MaterialParam* par
 	}
 }
 
-void MaterialParamColorEditor::SetValue(const sh::math::Vector4& value)
+void MaterialParamColorEditor::SetValue(const sh::video::Color& value)
 {
 	if (m_param)
 	{
@@ -163,16 +163,21 @@ void MaterialParamColorEditor::SetValue(const sh::math::Vector4& value)
 			case sh::MaterialParamType::Color3:
 			{
 				sh::math::Vector3 val;
-				val.x = value.x;
-				val.y = value.y;
-				val.z = value.z;
+				val.x = value.red;
+				val.y = value.green;
+				val.z = value.blue;
 				m_colorWidget->SetColor(sh::math::Vector4(val, 1.0f));
 				m_param->Set(val);
 			}
 			break;
 			case sh::MaterialParamType::Color4:
 			{
-				m_colorWidget->SetColor(value);
+				sh::math::Vector4 val;
+				val.x = value.red;
+				val.y = value.green;
+				val.z = value.blue;
+				val.w = value.alpha;
+				m_colorWidget->SetColor(val);
 				m_param->Set(value);
 			}
 			break;
@@ -193,14 +198,14 @@ void MaterialParamColorEditor::OnColorPickerButtonReleased()
 		{
 			sh::math::Vector3 value;
 			m_param->Get(value);
-			m_colorPicker->SetColor(sh::math::Vector4(value, 1.0f));
+			m_colorPicker->SetColor(sh::video::Color(value.x, value.y, value.z, 1.0f));
 		}
 		break;
 		case sh::MaterialParamType::Color4:
 		{
 			sh::math::Vector4 value;
 			m_param->Get(value);
-			m_colorPicker->SetColor(value);
+			m_colorPicker->SetColor(sh::video::Color(value.x, value.y, value.z, value.w));
 		}
 		break;
 		default:

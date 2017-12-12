@@ -6,6 +6,22 @@
 
 namespace sh
 {
+	static const char* typeNames[] =
+	{
+		"Point",
+		"Directional",
+		"Spot",
+		"Ambient"
+	};
+
+	static const std::vector<String> lightTypeNames = 
+	{
+		"Point",
+		"Directional",
+		"Spot",
+		"Ambient"
+	};
+
 	LightComponent::LightComponent()
 	{
 		m_light = new scene::Light();
@@ -28,7 +44,7 @@ namespace sh
 	{
 		ObjectFactory::GetInstance()->RegisterFactory<LightComponent>("Components");
 		S_ACCESSOR_PROPERTY("Color", GetColor, SetColor);
-		S_ENUM_ACCESSOR_PROPERTY("Type", GetType, SetType);
+		S_ENUM_ACCESSOR_PROPERTY("Type", GetType, SetType, lightTypeNames);
 	}
 
 	//////////////////////////////////////////////////////////
@@ -63,7 +79,7 @@ namespace sh
 
 	//////////////////////////////////////////////////////////
 
-	void LightComponent::SetColor(const math::Vector3& color)
+	void LightComponent::SetColor(const video::Color& color)
 	{
 		m_light->SetColor(color);
 		m_needsToRecalculate = true;
@@ -71,7 +87,7 @@ namespace sh
 
 	//////////////////////////////////////////////////////////
 
-	const math::Vector3& LightComponent::GetColor() const
+	const video::Color& LightComponent::GetColor() const
 	{
 		return m_light->GetColor();
 	}

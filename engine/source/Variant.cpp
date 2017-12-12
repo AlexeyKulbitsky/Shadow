@@ -77,6 +77,11 @@ namespace sh
 		return *reinterpret_cast<math::Vector4*>(m_value.ptrValue);
 	}
 
+	const video::Color& Variant::GetColor() const
+	{
+		return *reinterpret_cast<video::Color*>(m_value.ptrValue);
+	}
+
 	const math::Quaternion& Variant::GetQuaternionFloat() const
 	{
 		return *reinterpret_cast<math::Quaternion*>(m_value.ptrValue);
@@ -142,6 +147,12 @@ namespace sh
 			m_value.ptrValue = nullptr;
 		}
 			break;
+		case VAR_COLOR:
+		{
+			delete reinterpret_cast<video::Color*>(m_value.ptrValue);
+			m_value.ptrValue = nullptr;
+		}
+		break;
 		case VAR_QUATERNION_FLOAT:
 		{
 			delete reinterpret_cast<math::Quaternion*>(m_value.ptrValue);
@@ -189,6 +200,9 @@ namespace sh
 		case VAR_VECTOR_4_FLOAT:
 			m_value.ptrValue = new math::Vector4();
 			break;
+		case VAR_COLOR:
+			m_value.ptrValue = new video::Color();
+			break;
 		case VAR_QUATERNION_FLOAT:
 			m_value.ptrValue = new math::Quaternion();
 			break;
@@ -219,6 +233,7 @@ namespace sh
 	template<> math::Vector2 Variant::Get<math::Vector2>() const { return GetVector2Float(); }
 	template<> math::Vector3 Variant::Get<math::Vector3>() const { return GetVector3Float(); }
 	template<> math::Vector4 Variant::Get<math::Vector4>() const { return GetVector4Float(); }
+	template<> video::Color Variant::Get<video::Color>() const { return GetColor(); }
 	template<> math::Quaternion Variant::Get<math::Quaternion>() const { return GetQuaternionFloat(); }
 	template<> Serializable* Variant::Get<Serializable*>() const { return GetSerializable(); }
 	template<> ResourceRef Variant::Get<ResourceRef>() const { return GetResourceRef(); }

@@ -60,7 +60,7 @@ class MaterialParamColorEditor : public sh::gui::Widget
 {
 public:
 	MaterialParamColorEditor(sh::video::MaterialParam* param);
-	void SetValue(const sh::math::Vector4& value);
+	void SetValue(const sh::video::Color& value);
 	void OnColorPickerButtonReleased();
 
 private:

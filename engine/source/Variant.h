@@ -16,6 +16,7 @@ namespace sh
 		VAR_VECTOR_2_FLOAT,
 		VAR_VECTOR_3_FLOAT,
 		VAR_VECTOR_4_FLOAT,
+		VAR_COLOR,
 		VAR_QUATERNION_FLOAT,
 		VAR_SERIALIZABLE,
 		VAR_RESOURCE_REF,
@@ -98,6 +99,12 @@ namespace sh
 		}
 
 		Variant(const math::Vector4& value)
+			: m_type(VAR_NOTYPE)
+		{
+			*this = value;
+		}
+
+		Variant(const video::Color& value)
 			: m_type(VAR_NOTYPE)
 		{
 			*this = value;
@@ -211,6 +218,13 @@ namespace sh
 			return *this;
 		}
 
+		Variant& operator=(const video::Color& value)
+		{
+			SetType(VAR_COLOR);
+			*reinterpret_cast<video::Color*>(m_value.ptrValue) = value;
+			return *this;
+		}
+
 		Variant& operator=(const math::Quaternion& value)
 		{
 			SetType(VAR_QUATERNION_FLOAT);
@@ -267,6 +281,7 @@ namespace sh
 		const math::Vector2& GetVector2Float() const;
 		const math::Vector3& GetVector3Float() const;
 		const math::Vector4& GetVector4Float() const;
+		const video::Color& GetColor() const;
 		const math::Quaternion& GetQuaternionFloat() const;
 		Serializable* GetSerializable() const;
 		const ResourceRef& GetResourceRef() const;
@@ -299,6 +314,7 @@ namespace sh
 	template <> inline VariantType GetVariantType<math::Vector2>() { return VAR_VECTOR_2_FLOAT; }
 	template <> inline VariantType GetVariantType<math::Vector3>() { return VAR_VECTOR_3_FLOAT; }
 	template <> inline VariantType GetVariantType<math::Vector4>() { return VAR_VECTOR_4_FLOAT; }
+	template <> inline VariantType GetVariantType<video::Color>() { return VAR_COLOR; }
 	template <> inline VariantType GetVariantType<math::Quaternion>() { return VAR_QUATERNION_FLOAT; }
 	template <> inline VariantType GetVariantType<Serializable*>() { return VAR_SERIALIZABLE; }
 	template <> inline VariantType GetVariantType<ResourceRef>() { return VAR_RESOURCE_REF; }
@@ -314,6 +330,7 @@ namespace sh
 	template<> SHADOW_API math::Vector2 Variant::Get<math::Vector2>() const;
 	template<> SHADOW_API math::Vector3 Variant::Get<math::Vector3>() const;
 	template<> SHADOW_API math::Vector4 Variant::Get<math::Vector4>() const;
+	template<> SHADOW_API video::Color Variant::Get<video::Color>() const;
 	template<> SHADOW_API math::Quaternion Variant::Get<math::Quaternion>() const;
 	template<> SHADOW_API Serializable* Variant::Get<Serializable*>() const;
 	template<> SHADOW_API ResourceRef Variant::Get<ResourceRef>() const;

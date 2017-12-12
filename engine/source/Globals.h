@@ -9,6 +9,7 @@
 
 #include "Singleton.h"
 #include "Object.h"
+#include "video/Color.h"
 
 #include "pempek_assert.h"
 

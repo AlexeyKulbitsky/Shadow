@@ -11,10 +11,14 @@ namespace sh
 		class SHADOW_API Color
 		{
 		public:
-			f32 red;
-			f32 green;
-			f32 blue;
-			f32 alpha;
+			float red;
+			float green;
+			float blue;
+			float alpha;
+
+			Color() : red(0.0f), green(0.0f), blue(0.0f), alpha(1.0f) {}
+			Color(float r, float g, float b, float a) : red(r), green(g), blue(b), alpha(a) {}
+			Color(float r, float g, float b) : red(r), green(g), blue(b), alpha(1.0f) {}
 		};
 	}
 }

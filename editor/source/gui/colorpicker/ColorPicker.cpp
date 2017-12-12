@@ -36,7 +36,7 @@ ColorPicker::ColorPicker()
 	auto offsets = m_colorTarget->GetRect().GetSize() / 2;
 	m_colorTarget->SetPosition(targetPos.x - offsets.x, targetPos.y - offsets.y);
 
-	SetColor(sh::math::Vector4(1.0f));
+	SetColor(sh::video::Color(1.0f, 1.0f, 1.0f, 1.0f));
 }
 
 void ColorPicker::Render(sh::video::Painter* painter)
@@ -142,10 +142,10 @@ bool ColorPicker::ProcessEvent(sh::gui::GUIEvent& ev)
 		m_rgbWidget->SetColor(data[0], data[1], data[2], data[3]);
 		m_hsvWidget->SetColor(static_cast<int>(hue), static_cast<int>(saturation * 100.0f), m_hsvWidget->GetColor().z);
 
-		m_color.x = data[0] / 256.0f;
-		m_color.y = data[1] / 256.0f;
-		m_color.z = data[2] / 256.0f;
-		m_color.w = data[3] / 256.0f;
+		m_color.red = data[0] / 256.0f;
+		m_color.green = data[1] / 256.0f;
+		m_color.blue = data[2] / 256.0f;
+		m_color.alpha = data[3] / 256.0f;
 
 		colorChanged(m_color);
 
@@ -166,7 +166,7 @@ void ColorPicker::UpdateLayout()
 	m_colorTarget->SetPosition(pos.x, pos.y);
 }
 
-void ColorPicker::SetColor(const sh::math::Vector4& _color)
+void ColorPicker::SetColor(const sh::video::Color& _color)
 {
 	m_color = _color;
 	m_rgbWidget->SetColor(m_color);
@@ -174,7 +174,7 @@ void ColorPicker::SetColor(const sh::math::Vector4& _color)
 	int hue = 0;
 	float saturation = 0.0f;
 	float value = 0.0f;
-	sh::math::Vector3 color(m_color.x, m_color.y, m_color.z);
+	sh::math::Vector3 color(m_color.red, m_color.green, m_color.blue);
 	RGBtoHSV(color, hue, saturation, value);
 	m_hsvWidget->SetColor(hue, static_cast<int>(saturation * 100.0f), static_cast<int>(value * 100.0f));
 
@@ -192,15 +192,15 @@ void ColorPicker::SetColor(const sh::math::Vector4& _color)
 
 void ColorPicker::OnRGBColorChanged(const sh::math::Vector4Int& _color)
 {
-	m_color.x = _color.x / 256.0f;
-	m_color.y = _color.y / 256.0f;
-	m_color.z = _color.z / 256.0f;
-	m_color.w = _color.w / 256.0f;
+	m_color.red = _color.x / 256.0f;
+	m_color.green = _color.y / 256.0f;
+	m_color.blue = _color.z / 256.0f;
+	m_color.alpha = _color.w / 256.0f;
 
 	int hue = 0;
 	float saturation = 0.0f;
 	float value = 0.0f;
-	sh::math::Vector3 color(m_color.x, m_color.y, m_color.z);
+	sh::math::Vector3 color(m_color.red, m_color.green, m_color.blue);
 	RGBtoHSV(color, hue, saturation, value);
 
 	const float r = saturation * m_paletteWidget->GetRect().GetWidth() / 2.0f;
@@ -221,9 +221,9 @@ void ColorPicker::OnRGBColorChanged(const sh::math::Vector4Int& _color)
 void ColorPicker::OnHSVColorChanged(const sh::math::Vector3Int& _color)
 {
 	auto color = HSVtoRGB(_color.x, _color.y * 0.01f, _color.z * 0.01f);
-	m_color.x = color.x;
-	m_color.y = color.y;
-	m_color.z = color.z;
+	m_color.red = color.x;
+	m_color.green = color.y;
+	m_color.blue = color.z;
 
 	m_rgbWidget->SetColor(m_color);
 

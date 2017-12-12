@@ -28,8 +28,8 @@ namespace sh
 		void SetDirection(const math::Vector3& direction);
 		const math::Vector3& GetDirection() const;
 
-		void SetColor(const math::Vector3& color);
-		const math::Vector3& GetColor() const;
+		void SetColor(const video::Color& color);
+		const video::Color& GetColor() const;
 
 		scene::Light::Type GetType() const;
 		void SetType(scene::Light::Type type);

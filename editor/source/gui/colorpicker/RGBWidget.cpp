@@ -44,12 +44,12 @@ void RGBWidget::SetColor(sh::u8 red, sh::u8 green, sh::u8 blue, sh::u8 alpha)
 	m_rgbaChannels[3]->SetValue(m_color.w);
 }
 
-void RGBWidget::SetColor(const sh::math::Vector4& color)
+void RGBWidget::SetColor(const sh::video::Color& color)
 {
-	m_color.x = static_cast<int>(color.x * 256.0f);
-	m_color.y = static_cast<int>(color.y * 256.0f);
-	m_color.z = static_cast<int>(color.z * 256.0f);
-	m_color.w = static_cast<int>(color.w * 256.0f);
+	m_color.x = static_cast<int>(color.red * 256.0f);
+	m_color.y = static_cast<int>(color.green * 256.0f);
+	m_color.z = static_cast<int>(color.blue * 256.0f);
+	m_color.w = static_cast<int>(color.alpha * 256.0f);
 	m_rgbaChannels[0]->SetValue(m_color.x);
 	m_rgbaChannels[1]->SetValue(m_color.y);
 	m_rgbaChannels[2]->SetValue(m_color.z);
