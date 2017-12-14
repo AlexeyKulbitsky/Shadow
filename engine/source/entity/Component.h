@@ -30,6 +30,7 @@ virtual size_t GetId() override { return GetTypeId(); }
 		virtual ~Component() {}
 		virtual size_t GetId() = 0;
 
+		virtual Component* Clone();
 		void SetParentEntity(Entity* entity) { m_parentEntity = entity; }
 		Entity* GetParentEntity() const { return m_parentEntity; }
 

@@ -31,6 +31,8 @@
 
 #include "../gui/GuiManager.h"
 
+#include "Scene.h"
+
 #include <pugixml.hpp>
 
 namespace sh
@@ -45,22 +47,22 @@ namespace sh
 
 		SceneManager::SceneManager()
 		{
-			TransformSystem* transformSystem = new TransformSystem();
-			transformSystem->Activate(true);
-			m_systems.push_back(transformSystem);
-
-			RenderSystem* renderSystem = new RenderSystem();
-			renderSystem->Activate(true);
-			m_systems.push_back(renderSystem);
-
-			LightSystem* lightSystem = new LightSystem();
-			lightSystem->Activate(true);
-			m_systems.push_back(lightSystem);
-
-			ScriptSystem* scriptSystem = new ScriptSystem();
-			scriptSystem->Activate(false);
-			m_systems.push_back(scriptSystem);
-			m_switchableSystems.push_back(scriptSystem);
+// 			TransformSystem* transformSystem = new TransformSystem();
+// 			transformSystem->Activate(true);
+// 			m_systems.push_back(transformSystem);
+// 
+// 			RenderSystem* renderSystem = new RenderSystem();
+// 			renderSystem->Activate(true);
+// 			m_systems.push_back(renderSystem);
+// 
+// 			LightSystem* lightSystem = new LightSystem();
+// 			lightSystem->Activate(true);
+// 			m_systems.push_back(lightSystem);
+// 
+// 			ScriptSystem* scriptSystem = new ScriptSystem();
+// 			scriptSystem->Activate(false);
+// 			m_systems.push_back(scriptSystem);
+// 			m_switchableSystems.push_back(scriptSystem);
 
 
 			m_picker.reset(new Picker());
@@ -78,15 +80,15 @@ namespace sh
 		{
 			delete m_camera;
 			delete m_componentsFactory;
-			for (size_t i = 0; i < m_systems.size(); ++i)
-			{
-				delete m_systems[i];
-			}
-
-			for (size_t i = 0; i < m_entities.size(); ++i)
-			{
-				delete m_entities[i];
-			}
+// 			for (size_t i = 0; i < m_systems.size(); ++i)
+// 			{
+// 				delete m_systems[i];
+// 			}
+// 
+// 			for (size_t i = 0; i < m_entities.size(); ++i)
+// 			{
+// 				delete m_entities[i];
+// 			}
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
@@ -94,6 +96,14 @@ namespace sh
 		void SceneManager::LoadScene(const char* filename)
 		{
 			ClearScene();
+
+			if (m_currentScene)
+			{
+				delete m_currentScene;
+				m_currentScene = nullptr;
+			}
+
+			m_currentScene = new Scene();
 
 			ResourceManager* resourceManager = Device::GetInstance()->GetResourceManager();
 			auto file = io::FileSystem::GetInstance()->LoadFile(filename);
@@ -114,35 +124,49 @@ namespace sh
 					sh::Entity* entity = new sh::Entity();
 					entity->Load(sceneNode);
 
-					// Register entity in all systems
-					//RegisterEntity(entity);
 					// Add entity to entities list
 					AddEntity(entity);
+
+					m_currentScene->AddEntity(entity);
 				}
 
 				// Read next object
 				sceneNode = sceneNode.next_sibling();
 			}
 
-
-			size_t entitiesCount = m_entities.size();
+			size_t entitiesCount = m_currentScene->GetEntitiesCount();
 			for (size_t i = 0; i < entitiesCount; ++i)
 			{
-				m_picker->RegisterEntity(m_entities[i]);
+				m_picker->RegisterEntity(m_currentScene->GetEntity(i));
 			}
+
+// 			size_t entitiesCount = m_entities.size();
+// 			for (size_t i = 0; i < entitiesCount; ++i)
+// 			{
+// 				m_picker->RegisterEntity(m_entities[i]);
+// 			}
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
 
 		void SceneManager::SaveScene(const char* filename)
 		{
+			if (!m_currentScene)
+				return;
+
 			pugi::xml_document doc;
 
 			// Save scene
 			pugi::xml_node sceneNode = doc.append_child("scene");
-			for (size_t i = 0U, sz = m_entities.size(); i < sz; ++i)
+// 			for (size_t i = 0U, sz = m_entities.size(); i < sz; ++i)
+// 			{
+// 				m_entities[i]->Save(sceneNode);
+// 			}
+
+			size_t entitiesCount = m_currentScene->GetEntitiesCount();
+			for (size_t i = 0; i < entitiesCount; ++i)
 			{
-				m_entities[i]->Save(sceneNode);
+				m_currentScene->GetEntity(i)->Save(sceneNode);
 			}
 
 			doc.save_file(filename);
@@ -150,18 +174,47 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
 
+		Scene* SceneManager::GetCurrentScene()
+		{
+			return m_currentScene;
+		}
+
+		//////////////////////////////////////////////////////////////////////////////////////////////
+		
+		void SceneManager::SetCurrentScene(Scene* scene)
+		{
+			m_currentScene = scene;
+
+			// Clear picker from previous entities
+			m_picker->Clear();
+
+			if (!m_currentScene)
+				return;
+
+			size_t entitiesCount = m_currentScene->GetEntitiesCount();
+			for (size_t i = 0; i < entitiesCount; ++i)
+			{
+				m_picker->RegisterEntity(m_currentScene->GetEntity(i));
+			}
+		}
+
+		//////////////////////////////////////////////////////////////////////////////////////////////
+
 		void SceneManager::ClearScene()
 		{
-			for (auto system : m_systems)
-			{
-				system->Clear();
-			}
+// 			for (auto system : m_systems)
+// 			{
+// 				system->Clear();
+// 			}
+// 
+// 			for (size_t i = 0, sz = m_entities.size(); i < sz; ++i)
+// 			{
+// 				delete m_entities[i];
+// 			}
+// 			m_entities.clear();
 
-			for (size_t i = 0, sz = m_entities.size(); i < sz; ++i)
-			{
-				delete m_entities[i];
-			}
-			m_entities.clear();
+			if (m_currentScene)
+				m_currentScene->Clear();
 
 			m_picker->Clear();
 		}
@@ -170,9 +223,13 @@ namespace sh
 
 		void SceneManager::RegisterEntity(Entity* entity)
 		{
-			for (auto system : m_systems)
+// 			for (auto system : m_systems)
+// 			{
+// 				system->RegisterEntity(entity);
+// 			}
+			if (m_currentScene)
 			{
-				system->RegisterEntity(entity);
+				m_currentScene->RegisterEntity(entity);
 			}
 		}
 
@@ -200,11 +257,14 @@ namespace sh
 			m_camera->Update();
 
 			// Update all systems
-			for (auto system : m_systems)
-			{
-				if (system->IsActivated())
-					system->Update(deltaTime);
-			}
+// 			for (auto system : m_systems)
+// 			{
+// 				if (system->GetState() == SystemState::Running)
+// 					system->Update(deltaTime);
+// 			}
+
+			if (m_currentScene)
+				m_currentScene->Update(deltaTime);
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
@@ -225,13 +285,16 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
 
-		void SceneManager::ActivateSystems(bool activate)
+		void SceneManager::SetSystemsState(SystemState state)
 		{
-			for (auto system : m_switchableSystems)
-			{
-				system->Activate(activate);
-			}
+// 			for (auto system : m_switchableSystems)
+// 			{
+// 				system->SetState(state);
+// 			}
+			if (m_currentScene)
+				m_currentScene->SetSystemsState(state);
 		}
 
+		//////////////////////////////////////////////////////////////////////////////////////////////
 	}
 }

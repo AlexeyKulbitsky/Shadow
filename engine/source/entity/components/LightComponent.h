@@ -20,6 +20,8 @@ namespace sh
 
 		static void RegisterObject();
 
+		virtual Component* Clone() override;
+
 		bool NeedsToRecalculate() const { return m_needsToRecalculate; }		
 
 		void SetPosition(const math::Vector3& position);

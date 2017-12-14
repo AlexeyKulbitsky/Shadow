@@ -13,6 +13,8 @@ namespace sh
 		virtual ~TransformComponent();
 
 		static void RegisterObject();
+
+		virtual Component* Clone() override;
 	
 		const math::Matrix4& GetWorldMatrix() const { return m_worldMatrix; }
 

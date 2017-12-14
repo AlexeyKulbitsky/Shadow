@@ -1,5 +1,6 @@
 #include "MainWindow.h"
 
+#include "GameModuleLauncher.h"
 #include "selection/SelectionManager.h"
 #include "gui/propertyeditors/PropertyEditorsFactory.h"
 
@@ -343,6 +344,7 @@ void MainWindow::Init()
 	sh::gui::GuiManager::GetInstance()->Init();
 
 	SelectionManager::CreateInstance();
+	GameModuleLauncher::CreateInstance();
 
 	sh::Device::GetInstance()->mouseEvent.Connect(std::bind(&MainWindow::OnMouseEvent, this, _1, _2, _3, _4));
 	sh::Device::GetInstance()->mouseWheelEvent.Connect(std::bind(&MainWindow::OnMouseWeelEvent, this, _1, _2, _3));
@@ -431,6 +433,7 @@ void MainWindow::Destroy()
 	}
 	
 
+	GameModuleLauncher::DestroyInstance();
 	SelectionManager::DestroyInstance();
 	PropertyEditorsFactory::DestroyInstance();
 }
@@ -525,7 +528,7 @@ void MainWindow::Update(sh::u64 delta)
 	driver->EndRendering();
 
 	// Updating game module if exists
-	if (m_gameModule && m_runGameModule)
+	if (m_gameModule && GameModuleLauncher::GetInstance()->GetState() == GameModuleState::Playing)
 		m_gameModule->Update(delta);
 }
 
@@ -631,33 +634,19 @@ sh::gui::ToolBarPtr MainWindow::CreateToolbar()
 
 	sh::gui::ButtonPtr playButton = guiMgr->GetStyle()->GetButton("PlayButton");
 	playButton->SetToggleable(true);
-	playButton->OnToggle.Connect(std::bind(&MainWindow::RunGameModule, this, std::placeholders::_1));
+	GameModuleLauncher::GetInstance()->SetPlayButton(playButton);
 	toolBar->AddItem(playButton);
 
 	sh::gui::ButtonPtr pauseButton = guiMgr->GetStyle()->GetButton("PauseButton");
 	pauseButton->SetToggleable(true);
-	pauseButton->OnToggle.Connect(std::bind(&MainWindow::PauseGameModule, this, std::placeholders::_1));
+	GameModuleLauncher::GetInstance()->SetPauseButton(pauseButton);
 	toolBar->AddItem(pauseButton);
 
 	sh::gui::ButtonPtr stopButton = guiMgr->GetStyle()->GetButton("StopButton");
-	stopButton->SetToggleable(false);
-	stopButton->OnPress.Connect(std::bind(&MainWindow::StopGameModule, this));
+	stopButton->SetToggleable(true);
+	GameModuleLauncher::GetInstance()->SetStopButton(stopButton);
 	toolBar->AddItem(stopButton);
 
 	return toolBar;
 }
 
-void MainWindow::RunGameModule(bool yes)
-{
-	m_runGameModule = yes;
-	sh::Device::GetInstance()->GetSceneManager()->ActivateSystems(yes);
-	SelectionManager::GetInstance()->SetSelectedEntity(nullptr);
-}
-
-void MainWindow::PauseGameModule(bool yes)
-{
-}
-
-void MainWindow::StopGameModule()
-{
-}

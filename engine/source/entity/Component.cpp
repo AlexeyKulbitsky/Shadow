@@ -6,4 +6,8 @@
 
 namespace sh
 {
+	Component* Component::Clone()
+	{
+		return nullptr;
+	}
 }

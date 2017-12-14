@@ -3,6 +3,8 @@
 
 #include "../Globals.h"
 
+#include "../entity/System.h"
+
 namespace sh
 {
 	namespace video
@@ -18,6 +20,7 @@ namespace sh
 	{
 		class Model;
 		class Camera;
+		class Scene;
 
 		class SHADOW_API SceneManager
 		{
@@ -31,6 +34,9 @@ namespace sh
 
 			void LoadScene(const char* filename);
 			void SaveScene(const char* filename);
+
+			Scene* GetCurrentScene();
+			void SetCurrentScene(Scene* scene);
 
 			void ClearScene();
 
@@ -51,7 +57,7 @@ namespace sh
 			void OnWindowResized(int width, int height);
 			void OnSurfaceChanged(void* surface, int width, int height);
 
-			void ActivateSystems(bool activate);
+			void SetSystemsState(SystemState state);
 
 		private:
 			static math::Vector3	s_frontVector;
@@ -63,8 +69,9 @@ namespace sh
 			ComponentsFactory* m_componentsFactory = nullptr;
 			std::vector<System*> m_systems;
 			std::vector<Entity*> m_entities;
-
 			std::vector<System*> m_switchableSystems;
+
+			Scene* m_currentScene = nullptr;
 
 			PickerPtr m_picker;
 		};

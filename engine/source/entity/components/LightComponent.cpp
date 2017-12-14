@@ -49,6 +49,17 @@ namespace sh
 
 	//////////////////////////////////////////////////////////
 
+	Component* LightComponent::Clone()
+	{
+		LightComponent* component = new LightComponent();
+		component->m_light = m_light;
+		component->m_needsToRecalculate = m_needsToRecalculate;
+
+		return component;
+	}
+
+	//////////////////////////////////////////////////////////
+
 	void LightComponent::SetPosition(const math::Vector3& position)
 	{
 		m_light->SetPosition(position);

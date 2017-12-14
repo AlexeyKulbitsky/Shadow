@@ -17,6 +17,8 @@ namespace sh
 
 		static void RegisterObject();
 
+		virtual Component* Clone() override;
+
 		void SetScript(Script* script);
 		Script* GetScript();
 

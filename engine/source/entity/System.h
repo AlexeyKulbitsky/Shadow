@@ -9,6 +9,13 @@ namespace sh
 	class Entity;
 	class Component;
 
+	enum class SystemState
+	{
+		Running,
+		Paused,
+		Stopped
+	};
+
 	class SHADOW_API System
 	{
 	public:
@@ -17,15 +24,17 @@ namespace sh
 		virtual void AddEntity(Entity* entity);
 		virtual void RemoveEntity(Entity* entity);
 		virtual void Update(f32 deltaTime);
-		//virtual void AddComponentType(Component::Type type);
 		virtual void Clear();
 
 		void Activate(bool activate) { m_activated = activate; }
 		bool IsActivated() const { return m_activated; }
+
+		void SetState(SystemState state) { m_state = state; }
+		SystemState GetState() const { return m_state; }
 	
 	protected:
 		bool m_activated = false;
-		//std::vector<Component::Type> m_componentTypes;
+		SystemState m_state = SystemState::Running;
 	};
 }
 

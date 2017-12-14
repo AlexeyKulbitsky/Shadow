@@ -37,6 +37,18 @@ namespace sh
 
 	////////////////////////////////////////////////////////////////
 
+	Component* RenderComponent::Clone()
+	{
+		RenderComponent* component = new RenderComponent();
+
+		component->m_model = m_model;
+		component->m_namedResourceRefList = m_namedResourceRefList;
+
+		return component;
+	}
+
+	////////////////////////////////////////////////////////////////
+
 	void RenderComponent::SetModel(scene::ModelPtr model) 
 	{
 		m_model = model; 

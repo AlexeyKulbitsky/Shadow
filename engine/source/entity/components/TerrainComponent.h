@@ -18,6 +18,8 @@ namespace sh
 
 		static void RegisterObject();
 
+		virtual Component* Clone() override;
+
 		const scene::ModelPtr& GetModel() { return m_model; }
 
 		void SetHeightmapProperty(const ResourceRef& value);

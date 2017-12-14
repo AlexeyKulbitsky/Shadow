@@ -17,6 +17,7 @@ namespace sh
 		Entity();
 		~Entity();
 
+		Entity* Clone();
 		void Load(const pugi::xml_node& parent);
 		void Save(pugi::xml_node& parent);
 		const String& GetName() const { return m_name; }

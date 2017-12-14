@@ -43,10 +43,6 @@ private:
 	sh::gui::MenuBarPtr CreateMenuBar();
 	sh::gui::ToolBarPtr CreateToolbar();
 
-	void RunGameModule(bool yes);
-	void PauseGameModule(bool yes);
-	void StopGameModule();
-
 private:
 	sh::SPtr<InspectorWidget> m_inspectorWidget;
 	sh::SPtr<HierarchyWidget> m_hierarchyWidget;
@@ -59,7 +55,6 @@ private:
 	// Active game module that is being edited
 	sh::DynamicLibrary* m_gameModuleLibrary = nullptr;
 	sh::Application* m_gameModule = nullptr;
-	bool m_runGameModule = false;
 };
 
 #endif

@@ -29,6 +29,16 @@ namespace sh
 		S_ACCESSOR_PROPERTY("Heightmap", GetHeightmapProperty, SetHeightmapProperty);
 	}
 
+	sh::Component* TerrainComponent::Clone()
+	{
+		TerrainComponent* component = new TerrainComponent();
+
+		component->m_heightmapName = m_heightmapName;
+		component->m_model = m_model;
+
+		return component;
+	}
+
 	////////////////////////////////////////////////////////////////////////////////
 
 	void TerrainComponent::SetHeightmapProperty(const ResourceRef& value)

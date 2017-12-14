@@ -30,4 +30,22 @@ namespace sh
 
 	/////////////////////////////////////////////////////////////////
 
+	sh::Component* TransformComponent::Clone()
+	{
+		TransformComponent* component = new TransformComponent();
+
+		component->m_worldMatrix = m_worldMatrix;
+		component->m_position = m_position;
+		component->m_rotation = m_rotation;
+		component->m_scale = m_scale;
+		component->m_translateMatrix = m_translateMatrix;
+		component->m_rotationMatrix = m_rotationMatrix;
+		component->m_scaleMatrix = m_scaleMatrix;
+		component->m_needsToRecalculateWorldMatrix = m_needsToRecalculateWorldMatrix;
+
+		return component;
+	}
+
+	/////////////////////////////////////////////////////////////////
+
 }

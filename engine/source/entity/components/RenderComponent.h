@@ -19,6 +19,8 @@ namespace sh
 
 		static void RegisterObject();
 
+		virtual Component* Clone() override;
+
 		void SetModel(scene::ModelPtr model);
 		const scene::ModelPtr& GetModel();
 

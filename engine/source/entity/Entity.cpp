@@ -23,6 +23,29 @@ namespace sh
 	}
 
 	//////////////////////////////////////////////////////////////
+
+	Entity* Entity::Clone()
+	{
+		Entity* entity = new Entity();
+
+		entity->m_components.resize(m_components.size());
+
+		for (size_t i = 0; i < m_components.size(); ++i)
+		{
+			Component* component = nullptr;
+			if (m_components[i])
+			{
+				component = m_components[i]->Clone();
+				component->SetParentEntity(entity);
+			}
+
+			entity->m_components[i] = component;
+		}
+
+		return entity;
+	}
+
+	//////////////////////////////////////////////////////////////
 	
 	void Entity::Load(const pugi::xml_node& parent)
 	{

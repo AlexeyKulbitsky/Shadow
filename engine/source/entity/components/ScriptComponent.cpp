@@ -20,6 +20,15 @@ namespace sh
 		S_ACCESSOR_PROPERTY("Script", GetScriptRef, SetScriptRef);
 	}
 
+	sh::Component* ScriptComponent::Clone()
+	{
+		ScriptComponent* component = new ScriptComponent();
+
+		component->m_script = m_script;
+
+		return component;
+	}
+
 	void ScriptComponent::SetScript(Script* script)
 	{
 		if (m_script)
