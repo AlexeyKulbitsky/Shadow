@@ -10,6 +10,8 @@ public:
 	static void RegisterObject();
 	virtual void Update(float dt) override;
 
+	virtual sh::Script* Clone() override;
+
 	void SetVector3(const sh::math::Vector3& value);
 	const sh::math::Vector3& GetVector3() const;
 

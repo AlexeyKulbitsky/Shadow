@@ -11,3 +11,8 @@ void ScriptB::Update(float dt)
 {
 	std::cout << "Updating SCRIPT B : " << dt << std::endl;
 }
+
+sh::Script* ScriptB::Clone()
+{
+	return new ScriptB();
+}

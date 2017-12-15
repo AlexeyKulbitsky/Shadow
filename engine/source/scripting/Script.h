@@ -13,6 +13,7 @@ namespace sh
 	public:
 		virtual ~Script() {}
 		virtual void Update(float deltaTime) {}
+		virtual Script* Clone() { return nullptr; }
 
 		template<typename T>
 		T* GetComponent()

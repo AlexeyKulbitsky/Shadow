@@ -24,7 +24,7 @@ namespace sh
 	{
 		ScriptComponent* component = new ScriptComponent();
 
-		component->m_script = m_script;
+		component->SetScript(m_script->Clone());
 
 		return component;
 	}

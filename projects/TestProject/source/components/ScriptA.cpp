@@ -36,6 +36,16 @@ void ScriptA::Update(float dt)
 		transformComponent->SetPosition(transformComponent->GetPosition() + delta);
 }
 
+sh::Script* ScriptA::Clone()
+{
+	ScriptA* script = new ScriptA();
+
+	script->m_vector3 = m_vector3;
+	script->m_quaternion = m_quaternion;
+
+	return script;
+}
+
 void ScriptA::SetVector3(const sh::math::Vector3& value)
 {
 	m_vector3 = value;

@@ -36,7 +36,8 @@ namespace sh
 			if (m_components[i])
 			{
 				component = m_components[i]->Clone();
-				component->SetParentEntity(entity);
+				if (component)
+					component->SetParentEntity(entity);
 			}
 
 			entity->m_components[i] = component;

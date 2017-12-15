@@ -9,6 +9,8 @@ class ScriptB : public sh::Script
 public:
 	static void RegisterObject();
 	virtual void Update(float dt) override;
+
+	virtual sh::Script* Clone() override;
 };
 
 #endif

@@ -190,7 +190,7 @@ namespace sh
 
 	void RenderSystem::Clear()
 	{
-		m_batchManager->Clear();
+		//m_batchManager->Clear();
 		m_entities.clear();
 	}
 }
