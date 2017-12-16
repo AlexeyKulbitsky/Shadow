@@ -94,6 +94,8 @@ namespace sh
 
 	void RenderSystem::Update(f32 deltaTime)
 	{
+		m_batchManager->Clear();
+
 		scene::Camera* camera = Device::GetInstance()->GetSceneManager()->GetCamera();
 		sh::math::Matrix4 viewMatrix = camera->GetViewMatrix();
 		sh::math::Matrix4 projectionMatrix = camera->GetProjectionMatrix();
@@ -135,10 +137,14 @@ namespace sh
 				}
 			}
 
+			if (!model)
+				continue;
+
 			size_t meshesCount = model->GetMeshesCount();
 			for (size_t i = 0; i < meshesCount; ++i)
 			{
-				const auto& renderable = model->GetMesh(i)->GetRanderable();
+				const auto& mesh = model->GetMesh(i);
+				const auto& renderable = mesh->GetRanderable();
 				const auto& params = renderable->GetAutoParams();
 				for (size_t paramIdx = 0; paramIdx < params->GetParamsCount(); ++paramIdx)
 				{
@@ -180,6 +186,7 @@ namespace sh
 							break;
 					}
 				}
+				m_batchManager->AddMesh(mesh);
 			}
 		}
 
@@ -190,7 +197,7 @@ namespace sh
 
 	void RenderSystem::Clear()
 	{
-		//m_batchManager->Clear();
+		m_batchManager->Clear();
 		m_entities.clear();
 	}
 }
