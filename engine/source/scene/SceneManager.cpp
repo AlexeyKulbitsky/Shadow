@@ -25,6 +25,7 @@
 #include "../entity/components/TerrainComponent.h"
 #include "../entity/components/TransformComponent.h"
 #include "../entity/components/ScriptComponent.h"
+#include "../entity/components/CameraComponent.h"
 
 #include "../entity/Entity.h"
 #include "../entity/ComponentsFactory.h"
@@ -71,6 +72,7 @@ namespace sh
 			LightComponent::RegisterObject();
 			RenderComponent::RegisterObject();
 			TerrainComponent::RegisterObject();
+			CameraComponent::RegisterObject();
 			ScriptComponent::RegisterObject();
 		}
 
@@ -145,6 +147,8 @@ namespace sh
 // 			{
 // 				m_picker->RegisterEntity(m_entities[i]);
 // 			}
+
+			SetSystemsState(sh::SystemState::Stopped);
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////

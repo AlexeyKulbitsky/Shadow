@@ -29,11 +29,14 @@ void GameModuleLauncher::SetState(GameModuleState state)
 				delete m_cachedScene;
 			}
 			m_cachedScene = sceneManager->GetCurrentScene();
+			m_cachedCamera = sceneManager->GetCamera();
 			sh::scene::Scene* scene = m_cachedScene->Clone();
 			sceneManager->SetCurrentScene(scene);
 		}
 
 		sceneManager->SetSystemsState(sh::SystemState::Running);
+
+		ShowCursor(false);
 	}
 		break;
 	case GameModuleState::Paused:
@@ -57,10 +60,14 @@ void GameModuleLauncher::SetState(GameModuleState state)
 			}
 
 			sceneManager->SetCurrentScene(m_cachedScene);
+			sceneManager->SetCamera(m_cachedCamera);
 			m_cachedScene = nullptr;
+			m_cachedCamera = nullptr;
 		}
 		sceneManager->SetSystemsState(sh::SystemState::Stopped);
 		SelectionManager::GetInstance()->SetSelectedEntity(m_cachedSelectedEntity);
+
+		ShowCursor(true);
 	}
 		break;
 	default:
@@ -91,6 +98,21 @@ void GameModuleLauncher::SetStopButton(const sh::gui::ButtonPtr& button)
 {
 	m_stopButton = button;
 	m_buttonGroup->AddButton(button);
+}
+
+const sh::gui::ButtonPtr& GameModuleLauncher::GetPlayButton() const
+{
+	return m_playButton;
+}
+
+const sh::gui::ButtonPtr& GameModuleLauncher::GetPauseButton() const
+{
+	return m_pauseButton;
+}
+
+const sh::gui::ButtonPtr& GameModuleLauncher::GetStopButton() const
+{
+	return m_stopButton;
 }
 
 void GameModuleLauncher::OnButtonToggled(const sh::gui::ButtonPtr& sender)

@@ -22,6 +22,10 @@ public:
 	void SetPauseButton(const sh::gui::ButtonPtr& button);
 	void SetStopButton(const sh::gui::ButtonPtr& button);
 
+	const sh::gui::ButtonPtr& GetPlayButton() const;
+	const sh::gui::ButtonPtr& GetPauseButton() const;
+	const sh::gui::ButtonPtr& GetStopButton() const;
+
 private:
 	void OnButtonToggled(const sh::gui::ButtonPtr& sender);
 
@@ -35,6 +39,7 @@ private:
 
 	sh::Entity* m_cachedSelectedEntity = nullptr;
 	sh::scene::Scene* m_cachedScene = nullptr;
+	sh::scene::Camera* m_cachedCamera = nullptr;
 };
 
 #endif

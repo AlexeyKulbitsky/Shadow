@@ -29,7 +29,7 @@ namespace scene
 
 		ScriptSystem* scriptSystem = new ScriptSystem();
 		scriptSystem->Activate(false);
-		m_systems.push_back(scriptSystem);
+		//m_systems.push_back(scriptSystem);
 		m_switchableSystems.push_back(scriptSystem);
 	}
 
@@ -79,6 +79,11 @@ namespace scene
 		{
 			system->RegisterEntity(entity);
 		}
+
+		for (auto system : m_switchableSystems)
+		{
+			system->RegisterEntity(entity);
+		}
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
@@ -98,6 +103,11 @@ namespace scene
 		// Update all systems
 		for (auto system : m_systems)
 		{
+			system->Update(deltaTime);
+		}
+
+		for (auto system : m_switchableSystems)
+		{
 			if (system->GetState() == SystemState::Running)
 				system->Update(deltaTime);
 		}
@@ -108,6 +118,11 @@ namespace scene
 	void Scene::Clear()
 	{
 		for (auto system : m_systems)
+		{
+			system->Clear();
+		}
+
+		for (auto system : m_switchableSystems)
 		{
 			system->Clear();
 		}

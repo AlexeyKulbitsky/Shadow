@@ -14,6 +14,7 @@ namespace sh
 			~Camera();
 
 			void Update();
+			Camera* Clone();
 
 			void SetPosition(const math::Vector3& pos);
 			const math::Vector3& GetPosition() const { return m_position; }

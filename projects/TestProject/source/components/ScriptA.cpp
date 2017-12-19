@@ -16,24 +16,54 @@ void ScriptA::Update(float dt)
 
 	if (inputManager->IsKeyPressed(sh::KeyCode::KEY_KEY_W))
 	{
-		delta.z += 0.05f;
+		delta.z += 0.5f;
 	}
-	else if (inputManager->IsKeyPressed(sh::KeyCode::KEY_KEY_A))
+	if (inputManager->IsKeyPressed(sh::KeyCode::KEY_KEY_A))
 	{
-		delta.x -= 0.05f;
+		delta.x -= 0.5f;
 	}
-	else if (inputManager->IsKeyPressed(sh::KeyCode::KEY_KEY_S))
+	if (inputManager->IsKeyPressed(sh::KeyCode::KEY_KEY_S))
 	{
-		delta.z -= 0.05f;
+		delta.z -= 0.5f;
 	}
-	else if (inputManager->IsKeyPressed(sh::KeyCode::KEY_KEY_D))
+	if (inputManager->IsKeyPressed(sh::KeyCode::KEY_KEY_D))
 	{
-		delta.x += 0.05f;
+		delta.x += 0.5f;
 	}
 
-	auto transformComponent = GetComponent<sh::TransformComponent>();
-	if (transformComponent)
-		transformComponent->SetPosition(transformComponent->GetPosition() + delta);
+	auto cameraComponent = GetComponent<sh::CameraComponent>();
+	if (cameraComponent)
+	{
+		auto camera = cameraComponent->GetCamera();
+		if (!camera)
+			return;
+
+		sh::Device* device = sh::Device::GetInstance();
+		sh::InputManager* inputManager = device->GetInputManager();
+		sh::math::Vector2Int old = inputManager->GetMousePositionOld();
+		sh::math::Vector2Int current = inputManager->GetMousePositionCurrent();
+		sh::math::Vector2Int mouseDelta = current - old;
+
+		std::cout << "Delta mouse: X: " << mouseDelta.x << " Y: " << mouseDelta.y << std::endl;
+		float yAxisAngle = -(float)mouseDelta.x * 0.01f;
+		sh::math::Quaternion yAxisRot;
+		yAxisRot.SetFromAxisAngle(sh::scene::SceneManager::GetUpVector(), yAxisAngle);
+
+		float xAxisangle = -(float)mouseDelta.y * 0.01f;
+		sh::math::Quaternion xAxisRot;
+		xAxisRot.SetFromAxisAngle(camera->GetRightVector(), xAxisangle);
+
+		sh::math::Quaternion deltaRot = yAxisRot * xAxisRot;
+		camera->SetRotation(deltaRot * camera->GetRotation());
+
+		sh::math::Vector3 deltaPos = 
+			camera->GetFrontVector() * delta.z +
+			camera->GetRightVector() * delta.x;
+
+		camera->SetPosition(camera->GetPosition() + deltaPos);
+		auto sceneManager = sh::Device::GetInstance()->GetSceneManager();
+		sceneManager->SetCamera(camera);
+	}
 }
 
 sh::Script* ScriptA::Clone()

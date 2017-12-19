@@ -35,6 +35,37 @@ namespace sh
 
 		/////////////////////////////////////////////////////////////////////
 
+		Camera* Camera::Clone()
+		{
+			Camera* camera = new Camera();
+
+			camera->m_position = m_position;
+			camera->m_rotation = m_rotation;
+
+			camera->m_fovy = m_fovy;
+			camera->m_nearDistance = m_nearDistance;
+			camera->m_farDistance = m_farDistance;
+			camera->m_aspectRatio = m_aspectRatio;
+
+			camera->m_projectionMatrix = m_projectionMatrix;
+			camera->m_rotationMatrix = m_rotationMatrix;
+			camera->m_translationMatrix = m_translationMatrix;
+			camera->m_viewMatrix = m_viewMatrix;
+			camera->m_viewProjectionMatrix = m_viewProjectionMatrix;
+			camera->m_2dProjectionMatrix = m_2dProjectionMatrix;
+
+			camera->m_frontVector = m_frontVector;
+			camera->m_upVector = m_upVector;
+			camera->m_rightVector = m_rightVector;
+
+			camera->m_needsToRecalculateViewMatrix = m_needsToRecalculateViewMatrix;
+			camera->m_needsToRecalculateProjectionMatrix = m_needsToRecalculateProjectionMatrix;
+
+			return camera;
+		}
+
+		/////////////////////////////////////////////////////////////////////
+
 		void Camera::SetPosition(const math::Vector3& pos)
 		{
 			m_position = pos;

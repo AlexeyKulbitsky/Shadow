@@ -510,7 +510,7 @@ void MainWindow::Update(sh::u64 delta)
 		}
 	}
 
-	inputManager->SetMousePositionOld(current);
+	
 	///////////////////////////////////////////////////////////////
 
 	auto driver = sh::Device::GetInstance()->GetDriver();
@@ -529,7 +529,17 @@ void MainWindow::Update(sh::u64 delta)
 
 	// Updating game module if exists
 	if (m_gameModule && GameModuleLauncher::GetInstance()->GetState() == GameModuleState::Playing)
+	{
 		m_gameModule->Update(delta);
+		
+		if (inputManager->IsKeyPressed(sh::KeyCode::KEY_ESCAPE))
+		{
+			//GameModuleLauncher::GetInstance()->SetState(GameModuleState::Stopped);
+			GameModuleLauncher::GetInstance()->GetStopButton()->SetToggled(true);
+		}
+	}
+
+	inputManager->SetMousePositionOld(current);
 }
 
 sh::gui::MenuBarPtr MainWindow::CreateMenuBar()
