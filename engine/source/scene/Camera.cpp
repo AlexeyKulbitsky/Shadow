@@ -128,7 +128,7 @@ namespace sh
 			sh::math::Matrix4 inverseViewMatrix = m_viewMatrix.GetInversed();			
 			origin = m_position;
 	
-			// 3d Normalised Device Coordinates	
+			// 3d Normalized Device Coordinates	
 			float xNorm = (2.0f * x) / viewPort.z - 1.0f;
 			float yNorm = 1.0f - (2.0f * y) / viewPort.w;
 			float zNorm = 1.0f;
@@ -144,9 +144,54 @@ namespace sh
 			// 4d World Coordinates
 			sh::math::Vector4 temp = inverseViewMatrix * rayEye;
 			sh::math::Vector3 rayWorld(temp.x, temp.y, temp.z);
-			// don't forget to normalise the vector at some point
+			// don't forget to normalize the vector at some point
 			rayWorld.Normalize();
 			direction = rayWorld;
+		}
+
+		/////////////////////////////////////////////////////////////////////
+
+		void Camera::SetFov(float fov)
+		{
+			m_fovy = fov;
+			m_needsToRecalculateProjectionMatrix = true;
+		}
+
+		/////////////////////////////////////////////////////////////////////
+
+		void Camera::SetFarPlane(float farPlane)
+		{
+			m_farDistance = farPlane;
+			m_needsToRecalculateProjectionMatrix = true;
+		}
+
+		/////////////////////////////////////////////////////////////////////
+
+		void Camera::SetNearPlane(float nearPlane)
+		{
+			m_nearDistance = nearPlane;
+			m_needsToRecalculateProjectionMatrix = true;
+		}
+
+		/////////////////////////////////////////////////////////////////////
+
+		float Camera::GetFov() const 
+		{ 
+			return m_fovy; 
+		}
+
+		/////////////////////////////////////////////////////////////////////
+
+		float Camera::GetNearPlane() const 
+		{ 
+			return m_nearDistance; 
+		}
+
+		/////////////////////////////////////////////////////////////////////
+
+		float Camera::GetFarPlane() const 
+		{ 
+			return m_farDistance; 
 		}
 
 		/////////////////////////////////////////////////////////////////////

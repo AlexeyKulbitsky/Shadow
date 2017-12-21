@@ -1,4 +1,5 @@
 #include "EntityTreeItem.h"
+#include "../../selection/SelectionManager.h"
 
 EntityTreeItem::EntityTreeItem(sh::gui::TreeItem* parent, sh::Entity* entity)
 	: sh::gui::TreeItem(entity->GetName(), parent)
@@ -70,4 +71,6 @@ void EntityTreeItem::OnMenuItemSelected(const sh::String& itemName)
 	auto component = static_cast<sh::Component*>(object);
 	component->SetParentEntity(m_entity);
 	m_entity->AddComponent(component);
+
+	SelectionManager::GetInstance()->SetSelectedEntity(m_entity);
 }
