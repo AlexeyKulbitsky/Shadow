@@ -30,12 +30,17 @@ namespace sh
 		const math::Vector2Int& GetMousePositionOld() const;
 		const math::Vector2Int& GetMousePositionCurrent() const;
 
+		void SetCursorVisible(bool visible);
+		bool IsCursorVisible() const;
+
 	private:
 		bool m_keyboardKeys[NUMBER_OF_KEYBOARD_KEYS];
 		bool m_mouseKeys[NUMBER_OF_MOUSE_KEYS];
 
 		math::Vector2Int m_mousePositionOld;
 		math::Vector2Int m_mousePositionCurrent;
+
+		bool m_isCursorVivible = true;
 		
 	};
 }

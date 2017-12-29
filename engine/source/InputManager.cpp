@@ -1,7 +1,10 @@
 #include "InputManager.h"
 #include "Device.h"
+#include "video/Driver.h"
 
-
+#if defined (SHADOW_WINDOWS)
+#include <Windows.h>
+#endif
 
 
 namespace sh
@@ -32,6 +35,7 @@ namespace sh
 		default:
 			break;
 		}
+
 		SetMousePositionOld(m_mousePositionCurrent);
 		SetMousePositionCurrent(math::Vector2Int(x, y));
 	}
@@ -93,4 +97,20 @@ namespace sh
 	{
 		return m_mousePositionCurrent;
 	}
+
+	void InputManager::SetCursorVisible(bool visible)
+	{
+		m_isCursorVivible = visible;
+#if defined (SHADOW_WINDOWS)
+		ShowCursor(m_isCursorVivible);
+		HWND hwnd = (HWND)sh::Device::GetInstance()->GetWinId();
+		PostMessage(hwnd, WM_SETCURSOR, WPARAM(hwnd), (LPARAM)MAKELONG(HTCLIENT, WM_MOUSEMOVE));
+#endif
+	}
+
+	bool InputManager::IsCursorVisible() const
+	{
+		return m_isCursorVivible;
+	}
+
 }

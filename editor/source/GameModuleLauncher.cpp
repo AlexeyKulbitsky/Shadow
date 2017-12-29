@@ -37,7 +37,7 @@ void GameModuleLauncher::SetState(GameModuleState state)
 		sceneManager->SetSystemsState(sh::SystemState::Running);
 
 		const auto& viewport = sh::Device::GetInstance()->GetDriver()->GetViewport();
-		//ShowCursor(false);
+		sh::Device::GetInstance()->GetInputManager()->SetCursorVisible(false);
 	}
 		break;
 	case GameModuleState::Paused:
@@ -67,9 +67,7 @@ void GameModuleLauncher::SetState(GameModuleState state)
 		}
 		sceneManager->SetSystemsState(sh::SystemState::Stopped);
 		SelectionManager::GetInstance()->SetSelectedEntity(m_cachedSelectedEntity);
-
-		ClipCursor(nullptr);
-		ShowCursor(true);
+		sh::Device::GetInstance()->GetInputManager()->SetCursorVisible(true);
 	}
 		break;
 	default:

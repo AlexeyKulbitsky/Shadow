@@ -27,7 +27,7 @@
 using namespace sh;
 using namespace video;
 
-
+#include <iostream>
 
 int g_xPoint, g_yPoint;
 #include <shellapi.h>
@@ -139,6 +139,23 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 		if (device)
 			device->mouseEvent(x, y, MouseEventType::Moved, MouseCode::ButtonLeft);
+
+		if (!device->GetInputManager()->IsCursorVisible())
+		{
+			const auto& viewport = device->GetDriver()->GetViewport();
+			POINT newPosition;
+			newPosition.x = viewport.GetWidth() / 2;
+			newPosition.y = viewport.GetHeight() / 2;
+
+			std::cout << "Event X: " << x << " Y: " << y << std::endl;
+			std::cout << "Screen X: " << newPosition.x << " Y: " << newPosition.y << std::endl;
+
+			//ClientToScreen(hWnd, &newPosition);
+			if (newPosition.x != x || newPosition.y != y)
+			{
+				SetCursorPos(newPosition.x, newPosition.y);
+			}
+		}
 	}
 		return 0;
 	case WM_MOUSEHWHEEL:
