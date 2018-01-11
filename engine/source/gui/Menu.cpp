@@ -149,6 +149,11 @@ namespace gui
 		}
 	}
 
+	void Menu::AdjustSize()
+	{
+
+	}
+
 	void Menu::OnButtonReleased(const ButtonPtr& sender)
 	{
 		u32 itemsCount = m_layout->GetItemsCount();

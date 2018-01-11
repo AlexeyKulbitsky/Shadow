@@ -36,6 +36,7 @@ void InspectorWidget::SetEntity(sh::Entity* entity)
 			continue;
 
 		sh::gui::WidgetPtr componentWidget(new ComponentEditor(component));
+		componentWidget->SetParent(this);
 		m_layout->AddWidget(componentWidget);
 	}
 

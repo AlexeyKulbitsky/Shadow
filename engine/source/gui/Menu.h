@@ -33,6 +33,7 @@ namespace gui
 
 		virtual bool ProcessEvent(GUIEvent& ev) override;
 		virtual void UpdateLayout() override;
+		virtual void AdjustSize() override;
 
 		Event<void, const String&> itemSelected;
 		Event<void, size_t> itemIndexSelected;

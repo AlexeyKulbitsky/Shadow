@@ -27,6 +27,8 @@ namespace gui
 			virtual void RenderBackground(video::Painter* painter) override;
 			virtual void RenderText(video::Painter* painter) override;
 
+			bool IsDragStarted() const;
+
 		protected:
 			ScrollWidget* m_scrollWidget = nullptr;
 			bool m_dragStarted = false;

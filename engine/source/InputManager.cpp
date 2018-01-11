@@ -103,8 +103,8 @@ namespace sh
 		m_isCursorVivible = visible;
 #if defined (SHADOW_WINDOWS)
 		ShowCursor(m_isCursorVivible);
-		HWND hwnd = (HWND)sh::Device::GetInstance()->GetWinId();
-		PostMessage(hwnd, WM_SETCURSOR, WPARAM(hwnd), (LPARAM)MAKELONG(HTCLIENT, WM_MOUSEMOVE));
+		//HWND hwnd = (HWND)sh::Device::GetInstance()->GetWinId();
+		//PostMessage(hwnd, WM_SETCURSOR, WPARAM(hwnd), (LPARAM)MAKELONG(HTCLIENT, WM_MOUSEMOVE));
 #endif
 	}
 

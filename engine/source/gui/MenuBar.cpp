@@ -235,6 +235,11 @@ namespace gui
 		return isInside;
 	}
 
+	void MenuBar::AdjustSize()
+	{
+
+	}
+
 } // gui
 
 } // sh

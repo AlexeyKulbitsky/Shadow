@@ -139,7 +139,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 		if (device)
 			device->mouseEvent(x, y, MouseEventType::Moved, MouseCode::ButtonLeft);
-
+#if 0
 		if (!device->GetInputManager()->IsCursorVisible())
 		{
 			const auto& viewport = device->GetDriver()->GetViewport();
@@ -154,8 +154,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			if (newPosition.x != x || newPosition.y != y)
 			{
 				SetCursorPos(newPosition.x, newPosition.y);
+				if (device)
+					device->mouseEvent(x, y, MouseEventType::Moved, MouseCode::ButtonLeft);
 			}
 		}
+		else
+		{
+			if (device)
+				device->mouseEvent(x, y, MouseEventType::Moved, MouseCode::ButtonLeft);
+		}
+#endif
 	}
 		return 0;
 	case WM_MOUSEHWHEEL:

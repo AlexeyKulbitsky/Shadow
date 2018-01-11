@@ -176,6 +176,11 @@ namespace gui
 	{
 	}
 
+	bool ScrollWidget::ScrollBar::IsDragStarted() const
+	{
+		return m_dragStarted;
+	}
+
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
 	ScrollWidget::ScrollWidget()
@@ -261,6 +266,7 @@ namespace gui
 	bool ScrollWidget::ProcessEvent(GUIEvent& ev)
 	{
 		bool inside = m_rect.IsPointInside(ev.x, ev.y);
+		
 		if (!inside)
 			return false;
 
@@ -270,9 +276,15 @@ namespace gui
 		if (fullHeight > visibleHeight)
 		{
 			if (m_verticalScrollBar->ProcessEvent(ev))
+			{
+				//if (m_verticalScrollBar->IsDragStarted())
+				//	GuiManager::GetInstance()->SetFocusWidget(shared_from_this());
 				return true;
+			}
 		}
 
+// 		if (!inside)
+// 			return false;
 
 		switch (ev.type)
 		{

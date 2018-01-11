@@ -97,6 +97,7 @@ namespace gui
 
 		// Method is called when widget contents geometry must be recalculated
 		virtual void UpdateLayout();
+		virtual void AdjustSize();
 
 	protected:
 		LayoutPtr m_layout;

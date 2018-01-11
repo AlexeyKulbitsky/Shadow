@@ -26,6 +26,7 @@ namespace gui
 		virtual void RenderBackground(video::Painter* painter) override;
 		virtual void RenderText(video::Painter* painter) override;
 		virtual bool ProcessEvent(GUIEvent& ev) override;
+		virtual void AdjustSize() override;
 
 	private:
 		SpritePtr m_sprite;

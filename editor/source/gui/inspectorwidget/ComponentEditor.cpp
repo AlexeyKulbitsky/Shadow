@@ -41,13 +41,15 @@ void ComponentEditor::OnButtonToggled(bool toggled, const sh::gui::ButtonPtr& se
 	//SetMaximumHeight(std::numeric_limits<sh::u32>::max());
 	if (!toggled)
 	{
-		m_contentsWidget->SetMaximumHeight(100000);
-		m_contentsWidget->SetVisible(true);
+		//m_contentsWidget->SetMaximumHeight(100000);
+		//m_contentsWidget->SetVisible(true);
+		m_layout->AddWidget(m_contentsWidget);
 	}
 	else
 	{
-		m_contentsWidget->SetMaximumHeight(0);
-		m_contentsWidget->SetVisible(false);
+		m_layout->RemoveWidget(m_contentsWidget);
+		//m_contentsWidget->SetMaximumHeight(0);
+		//m_contentsWidget->SetVisible(false);
 	}
 	UpdateLayout();
 

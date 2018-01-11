@@ -110,7 +110,23 @@ namespace gui
 		if (m_layout)
 		{
 			m_layout->Resize(m_rect);
+			AdjustSize();
 		}
+	}
+
+	void Widget::AdjustSize()
+	{
+		auto layoutRect = m_layout->GetRect();
+		layoutRect.upperLeftCorner.x -= m_layout->GetLeftMargin();
+		layoutRect.upperLeftCorner.y -= m_layout->GetTopMargin();
+		layoutRect.lowerRightCorner.x += m_layout->GetRightMargin();
+		layoutRect.lowerRightCorner.y += m_layout->GetBottomMargin();
+
+		if (layoutRect.GetWidth() < m_rect.GetWidth())
+			m_rect.lowerRightCorner.x = layoutRect.lowerRightCorner.x;
+
+		if (layoutRect.GetHeight() < m_rect.GetHeight())
+			m_rect.lowerRightCorner.y = layoutRect.lowerRightCorner.y;
 	}
 
 } // gui
