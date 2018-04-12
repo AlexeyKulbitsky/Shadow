@@ -98,8 +98,8 @@ bool GLES20Driver::Init()
 //	printf( "Shading language: %s\n", shadingLanguage.c_str() );
 	GLint magorV;
 	GLint minorV;
-	glGetIntegerv(GL_MAJOR_VERSION, &magorV);
-	glGetIntegerv(GL_MINOR_VERSION, &minorV);
+	//glGetIntegerv(GL_MAJOR_VERSION, &magorV);
+	//glGetIntegerv(GL_MINOR_VERSION, &minorV);
 
 	// Extensions
 	String extensions;// = (const char*)glGetString(GL_EXTENSIONS);
@@ -160,7 +160,8 @@ void GLES20Driver::EndRendering()
 
 void GLES20Driver::SetWindow(void* winId, u32 width, u32 height)
 {
-	m_contextManager->CreateContext(winId);
+    if (m_contextManager)
+        m_contextManager->CreateContext(winId);
 	SetViewport(0, 0, width, height);
 }
 
@@ -168,6 +169,7 @@ void GLES20Driver::SetWindow(void* winId, u32 width, u32 height)
 
 void GLES20Driver::SetViewport( u32 x, u32 y, u32 width, u32 height )
 {
+    m_contextManager->Update();
 	Driver::SetViewport( x, y, width, height );
 	GL_CALL(glViewport( (GLint)x, (GLint)y, (GLsizei)width, (GLsizei)height ));
 }

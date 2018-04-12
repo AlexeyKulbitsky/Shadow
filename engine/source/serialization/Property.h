@@ -182,8 +182,9 @@ namespace sh
 		static_assert(std::is_same<std::remove_cv<ReturnType>, std::remove_cv<ArgumentType>>::value,
 			"You must use equal types for creating enumeration properties");
 
-		using BaseType = std::remove_cv_t<ReturnType>;
-
+		//using BaseType = std::remove_cv_t<ReturnType>;
+        using BaseType = typename std::remove_cv<ReturnType>::type;
+        
 		AccessorEnumPropertyImplExt(GetterPtr getter, SetterPtr setter, const std::string& name, const std::vector<String>& names)
 			: Property(name, names)
 			, m_getter(getter)

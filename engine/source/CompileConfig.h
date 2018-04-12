@@ -23,9 +23,21 @@
 #endif
 
 #if defined(__APPLE__)
-	#define SHADOW_APPLE
-	#define SH_APPLE_API
-	#define SH_COMPILE_WITH_APPLE_DEVICE
+    #define SHADOW_APPLE
+    #define SH_APPLE_API
+    #define SH_COMPILE_WITH_APPLE_DEVICE
+
+    #include <TargetConditionals.h>
+    #if TARGET_OS_IPHONE
+        #define SHADOW_IOS
+        #define SH_IOS_API
+        #define SH_COMPILE_WITH_IOS_DEVICE
+    #elif TARGET_OS_MAC
+        #define SHADOW_MAC
+        #define SH_MAC_API
+        #define SH_COMPILE_WITH_MAC_DEVICE
+    #endif
+
 #endif
 
 #ifdef SH_WINDOWS_API

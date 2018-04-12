@@ -16,12 +16,12 @@ private:
 	T m_value;
 };
 
-template <>
+/*template <>
 void ParamView<sh::math::Vector3f>::CreateConnetions()
 {
 	sh::gui::FloatLineEditPtr xEdit(new sh::gui::FloatLineEdit());
 	auto onXValueChanged = [this](float value) { m_value.x = value; };
 	xEdit->OnValueChanged.Connect(std::bind(&Vector3LineEdit::OnXvalueChanged, this, std::placeholders::_1));
-}
+}*/
 
 #endif

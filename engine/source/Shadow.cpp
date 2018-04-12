@@ -6,6 +6,8 @@
 #include "platform/win32/Win32Device.h"
 #elif defined SHADOW_ANDROID
 #include "platform/android/AndroidDevice.h"
+#elif defined SHADOW_MAC
+#include "platform/mac/MacDevice.h"
 #endif
 
 namespace sh
@@ -35,6 +37,8 @@ namespace sh
 		device = new Win32Device();
 #elif defined SHADOW_ANDROID
 		device = new AndroidDevice();
+#elif defined SHADOW_MAC
+        device = new MacDevice();
 #endif
 		Device::SetInstance(device);
 
@@ -49,6 +53,8 @@ namespace sh
 		device = new Win32Device(parameters);
 #elif defined SHADOW_ANDROID
 		device = new AndroidDevice(parameters);
+#elif defined SHADOW_MAC
+        device = new MacDevice(parameters);
 #endif
 		Device::SetInstance(device);
 

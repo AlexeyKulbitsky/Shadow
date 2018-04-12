@@ -4,9 +4,9 @@
 #include "selection/SelectionManager.h"
 #include "gui/propertyeditors/PropertyEditorsFactory.h"
 
-#include <Windows.h>
-#include <Commdlg.h>
-#include <tchar.h>
+//#include <Windows.h>
+//#include <Commdlg.h>
+//#include <tchar.h>
 
 #include <jobs/Test.h>
 
@@ -36,6 +36,23 @@ void MainWindow::NewScene()
 
 void MainWindow::OpenScene()
 {
+    auto path = sh::Device::GetInstance()->ShowOpenFileDialog();
+    if (path.empty())
+        return;
+    
+    sh::scene::SceneManager* sceneMgr = sh::Device::GetInstance()->GetSceneManager();
+    sh::String fullPath = path;
+    size_t pos = fullPath.find_last_of('\\/');
+    sceneMgr->LoadScene(fullPath.substr(pos + 1).c_str());
+    
+    sh::u32 entitiesCount = sceneMgr->GetEntitiesCount();
+    for (sh::u32 i = 0U; i < entitiesCount; ++i)
+    {
+        auto entity = sceneMgr->GetEntity(i);
+        m_hierarchyWidget->AddEntity(entity);
+    }
+    
+#if 0
 	HWND hWnd = (HWND)sh::Device::GetInstance()->GetWinId();
 
 	char szFileName[MAX_PATH] = "";
@@ -66,10 +83,12 @@ void MainWindow::OpenScene()
 			m_hierarchyWidget->AddEntity(entity);
 		}
 	}
+#endif
 }
 
 void MainWindow::SaveScene()
 {
+#if 0
 	HWND hWnd = (HWND)sh::Device::GetInstance()->GetWinId();
 
 	char szFileName[MAX_PATH] = "";
@@ -90,11 +109,13 @@ void MainWindow::SaveScene()
 	{
 		sh::scene::SceneManager* sceneMgr = sh::Device::GetInstance()->GetSceneManager();
 		sceneMgr->SaveScene(ofn.lpstrFile);
-	}
+    }
+#endif
 }
 
 void MainWindow::NewProject()
 {
+#if 0
 	HWND hWnd = (HWND)sh::Device::GetInstance()->GetWinId();
 
 	char szFileName[MAX_PATH] = "";
@@ -154,10 +175,31 @@ void MainWindow::NewProject()
 
 		doc.save_file(ofn.lpstrFile);
 	}
+#endif
 }
 
 void MainWindow::OpenProject()
 {
+    auto path = sh::Device::GetInstance()->ShowOpenFileDialog();
+    if (path.empty())
+        return;
+    
+    auto filesystem = sh::io::FileSystem::GetInstance();
+    auto root = filesystem->GetRoot();
+    sh::String projectFileName = path;
+    sh::String projectFolder = "";
+    // Get project folder
+    sh::String::size_type pos = projectFileName.find_last_of("\\/");
+    if (pos != sh::String::npos)
+        projectFolder = projectFileName.substr(0U, pos);
+    
+    // Set assets folder for file system
+    filesystem->AddFolder(projectFolder + "/assets");
+    
+    // Refresh assets list
+    m_assetsWidget->RefreshAssetsList();
+    
+#if 0
 	HWND hWnd = (HWND)sh::Device::GetInstance()->GetWinId();
 
 	char szFileName[MAX_PATH] = "";
@@ -208,6 +250,7 @@ void MainWindow::OpenProject()
 			return;
 		InitGameModulePtr();
 	}
+#endif
 }
 
 void MainWindow::SaveProject()

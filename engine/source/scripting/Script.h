@@ -3,6 +3,8 @@
 
 #include "../serialization/Serializable.h"
 
+#include "../entity/Entity.h"
+
 namespace sh
 {
 	class ScriptComponent;

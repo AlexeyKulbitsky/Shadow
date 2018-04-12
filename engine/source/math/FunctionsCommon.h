@@ -2,6 +2,7 @@
 #define SHADOW_FUNCTIONS_COMMON_INCLUDE
 
 #include <cmath>
+#include <algorithm>
 #include "Constants.h"
 
 namespace sh

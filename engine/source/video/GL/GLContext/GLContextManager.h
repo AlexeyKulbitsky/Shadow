@@ -15,6 +15,8 @@ namespace sh
 			virtual bool DestroyContext() = 0;
 			virtual void SwapBuffers() = 0;
 			virtual bool IsContextCreated() = 0;
+            
+            virtual void Update() {}
 		};
 	}
 }

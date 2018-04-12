@@ -2,6 +2,7 @@
 #define SHADOW_COMMON_TYPES_INCLUDE
 
 #include <map>
+#include <string>
 
 namespace sh
 {

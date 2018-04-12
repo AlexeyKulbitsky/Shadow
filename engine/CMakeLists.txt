@@ -17,20 +17,10 @@ set(PROJECT_NAME Shadow)
 
 include_directories( ${PROJECT_INCLUDE_DIR} )
 
-file(GLOB_RECURSE PROJECT_SOURCE_FILES "source/*.h" "source/*.hpp" "source/*.cpp")
+file(GLOB_RECURSE PROJECT_SOURCE_FILES "source/*.h" "source/*.hpp" "source/*.cpp" "source/*.mm")
 
 # exclude platform-specific files
-if (SHADOW_ANDROID)
-
-	set (EXCLUDE_DIR "/win32/")
-	foreach (TMP_PATH ${PROJECT_SOURCE_FILES})
-		string (FIND ${TMP_PATH} ${EXCLUDE_DIR} EXCLUDE_DIR_FOUND)
-		if (NOT ${EXCLUDE_DIR_FOUND} EQUAL -1)
-			list (REMOVE_ITEM PROJECT_SOURCE_FILES ${TMP_PATH})
-		endif ()
-	endforeach(TMP_PATH)
-	
-else (SHADOW_ANDROID)
+if (WIN32)
 
 	set (EXCLUDE_DIR "/android/")
 	foreach (TMP_PATH ${PROJECT_SOURCE_FILES})
@@ -39,8 +29,53 @@ else (SHADOW_ANDROID)
 			list (REMOVE_ITEM PROJECT_SOURCE_FILES ${TMP_PATH})
 		endif ()
 	endforeach(TMP_PATH)
+
+  set (EXCLUDE_DIR "/mac/")
+  foreach (TMP_PATH ${PROJECT_SOURCE_FILES})
+    string (FIND ${TMP_PATH} ${EXCLUDE_DIR} EXCLUDE_DIR_FOUND)
+    if (NOT ${EXCLUDE_DIR_FOUND} EQUAL -1)
+      list (REMOVE_ITEM PROJECT_SOURCE_FILES ${TMP_PATH})
+    endif ()
+  endforeach(TMP_PATH)
 	
-endif(SHADOW_ANDROID)
+elseif (APPLE)
+
+	set (EXCLUDE_DIR "/android/")
+	foreach (TMP_PATH ${PROJECT_SOURCE_FILES})
+		string (FIND ${TMP_PATH} ${EXCLUDE_DIR} EXCLUDE_DIR_FOUND)
+		if (NOT ${EXCLUDE_DIR_FOUND} EQUAL -1)
+			list (REMOVE_ITEM PROJECT_SOURCE_FILES ${TMP_PATH})
+		endif ()
+	endforeach(TMP_PATH)
+
+  set (EXCLUDE_DIR "/win32/")
+  foreach (TMP_PATH ${PROJECT_SOURCE_FILES})
+    string (FIND ${TMP_PATH} ${EXCLUDE_DIR} EXCLUDE_DIR_FOUND)
+    if (NOT ${EXCLUDE_DIR_FOUND} EQUAL -1)
+      list (REMOVE_ITEM PROJECT_SOURCE_FILES ${TMP_PATH})
+    endif ()
+  endforeach(TMP_PATH)
+
+#elseif(MACOSX)
+else()
+
+  set (EXCLUDE_DIR "/win32/")
+  foreach (TMP_PATH ${PROJECT_SOURCE_FILES})
+    string (FIND ${TMP_PATH} ${EXCLUDE_DIR} EXCLUDE_DIR_FOUND)
+    if (NOT ${EXCLUDE_DIR_FOUND} EQUAL -1)
+      list (REMOVE_ITEM PROJECT_SOURCE_FILES ${TMP_PATH})
+    endif ()
+  endforeach(TMP_PATH)
+
+  set (EXCLUDE_DIR "/mac/")
+  foreach (TMP_PATH ${PROJECT_SOURCE_FILES})
+    string (FIND ${TMP_PATH} ${EXCLUDE_DIR} EXCLUDE_DIR_FOUND)
+    if (NOT ${EXCLUDE_DIR_FOUND} EQUAL -1)
+      list (REMOVE_ITEM PROJECT_SOURCE_FILES ${TMP_PATH})
+    endif ()
+  endforeach(TMP_PATH)
+	
+endif()
 
 # Exclude Vulkan API if flag is set
 if (NOT USE_VULKAN_API)
@@ -155,7 +190,7 @@ find_library(EGL_LIBRARY libEGL HINTS ../libs/egl/lib/release)
 find_library(GLESV2_LIBRARY libGLESv2 HINTS ../libs/egl/lib/release)
 
 # Add GLEW
-if (WIN32)
+#if (WIN32)
   set(BUILD_UTILS OFF CACHE BOOL "utilities" FORCE)
   add_subdirectory(../libs/glew/build/cmake "${CMAKE_CURRENT_BINARY_DIR}/ThirdParty/glew")
   include_directories(../libs/glew/include)
@@ -166,7 +201,7 @@ if (WIN32)
     set_property(TARGET glew PROPERTY FOLDER CommonLibs)
   endif(MSVC12 OR MSVC14)
 
-endif(WIN32)
+#endif(WIN32)
 
 # Add assimp
 if (USE_ASSIMP_API)
@@ -199,4 +234,8 @@ if (SHADOW_ANDROID)
 else(SHADOW_ANDROID)
   target_link_libraries(${PROJECT_NAME} pugixml freetype)# ${EGL_LIBRARY} ${GLESV2_LIBRARY})
 endif(SHADOW_ANDROID)
+
+find_library(COCOA_LIB Cocoa)
+target_link_libraries(${PROJECT_NAME} ${COCOA_LIB})
+
 

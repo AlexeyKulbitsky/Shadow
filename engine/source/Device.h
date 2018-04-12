@@ -45,6 +45,9 @@ namespace sh
 		io::FileSystem* GetFileSystem() { return m_fileSystem; }
 		video::GLContextManager* GetContextManager() { return m_GLContextManager;}
 		ObjectFactory* GetObjectFactory() { return m_objectFactory; }
+        
+        virtual String ShowOpenFileDialog() { return String(); }
+        virtual String ShowSaveFileDialog() { return String(); }
 
 		static void SetInstance(Device* instance) { s_instance = instance; }
 		static Device* GetInstance() { return s_instance; }

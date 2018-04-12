@@ -46,6 +46,7 @@ set_target_properties(${EDITOR_PROJECT_NAME}
 
 target_link_libraries(${EDITOR_PROJECT_NAME} Shadow)
 
+if (WIN32)
 add_custom_command(TARGET ${EDITOR_PROJECT_NAME} POST_BUILD
 					COMMAND ${CMAKE_COMMAND} -E 
 					copy ${CMAKE_CURRENT_BINARY_DIR}/../../libs/egl/bin/release/libEGL.dll ${CMAKE_CURRENT_BINARY_DIR}/$<CONFIGURATION>
@@ -53,3 +54,4 @@ add_custom_command(TARGET ${EDITOR_PROJECT_NAME} POST_BUILD
 					copy ${CMAKE_CURRENT_BINARY_DIR}/../../libs/egl/bin/release/libGLESv2.dll ${CMAKE_CURRENT_BINARY_DIR}/$<CONFIGURATION>
                     COMMAND ${CMAKE_COMMAND} -E 
                     copy ${CMAKE_CURRENT_BINARY_DIR}/../../engine/bin/$<CONFIGURATION>/Shadow.dll ${PROJECT_SOURCE_DIR}/bin/$<CONFIGURATION>)
+endif()

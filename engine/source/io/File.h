@@ -14,6 +14,7 @@ namespace io
 		friend class FileSystem;
 		friend class WindowsFileSystem;
 		friend class AndroidFileSystem;
+        friend class MacFileSystem;
 	public:
 		const bool IsEmpty() const { return m_data.size() == 0U; }
 		const char* GetRawData() const { return m_data.data(); }

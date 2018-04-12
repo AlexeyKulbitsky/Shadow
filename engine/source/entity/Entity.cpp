@@ -69,7 +69,11 @@ namespace sh
 
 			auto object = ObjectFactory::GetInstance()->CreateObject(typeStr);
 			if (!object)
-				continue;
+            {
+                componentNode = componentNode.next_sibling();
+                continue;
+            }
+				
 			
 			serializer.Deserialize(object, componentNode);
 

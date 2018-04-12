@@ -6,6 +6,9 @@
 		#define NOMINMAX // required to stop windows.h messing up std::min
 	#endif
 	#include <windows.h>
+
+#elif defined(SHADOW_ANDROID) || defined(SHADOW_MAC)
+    #include <dlfcn.h>
 #endif
 
 namespace sh
@@ -20,8 +23,9 @@ namespace sh
 	{
 #if defined(SHADOW_WINDOWS)
 		m_handle = LoadLibrary(m_filename.c_str());
-#elif defined(SHADOW_ANDROID)
+#elif defined(SHADOW_ANDROID) || defined(SHADOW_MAC)
 		m_handle = dlopen(m_filename.c_str(), RTLD_NOW | RTLD_LOCAL);
+        //m_handle = dlopen(m_filename.c_str(), RTLD_LAZY | RTLD_GLOBAL);
 #endif
 		return m_handle != nullptr;
 	}
@@ -30,7 +34,7 @@ namespace sh
 	{
 #if defined(SHADOW_WINDOWS)
 		return FreeLibrary(m_handle);
-#elif defined(SHADOW_ANDROID)
+#elif defined(SHADOW_ANDROID) || defined(SHADOW_MAC)
 		return dlclose(m_handle);
 #endif
 	}
@@ -42,7 +46,7 @@ namespace sh
 
 #if defined(SHADOW_WINDOWS)
 		return GetProcAddress(m_handle, name.c_str());
-#elif defined(SHADOW_ANDROID)
+#elif defined(SHADOW_ANDROID) || defined(SHADOW_MAC)
 		return dlsym(m_handle, name.c_str());
 #endif
 	}

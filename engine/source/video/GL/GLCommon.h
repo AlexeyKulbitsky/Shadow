@@ -3,7 +3,7 @@
 
 #include "../../Globals.h"
 
-#if defined SHADOW_APPLE
+#if defined SHADOW_IOS
 
 #include <OpenGLES/ES3/gl.h>
 
@@ -13,6 +13,10 @@
 #include <GLES2/gl2ext.h>
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
+
+#elif defined SHADOW_MAC
+
+#include "../../../../libs/glew/include/GL/glew.h"
 
 #elif defined SHADOW_WINDOWS
 
@@ -210,7 +214,7 @@ namespace video
 					break;
 				}
 				String message = ss.str();
-				SH_ASSERT(0, message.c_str());
+				SH_ASSERT(0, "%s", message.c_str());
 				error = glGetError();
 			}
 		}

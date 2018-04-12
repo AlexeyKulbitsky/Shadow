@@ -1,5 +1,7 @@
 #include "WGLContextManager.h"
 
+#if defined (SHADOW_WINDOWS)
+
 #pragma comment(lib, "opengl32.lib")
 
 namespace sh
@@ -216,3 +218,5 @@ namespace video
 } // video
 
 } // sh
+
+#endif

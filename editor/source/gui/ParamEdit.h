@@ -19,7 +19,7 @@ private:
 	T m_value;
 };
 
-template <>
+/*template <>
 void ParamEdit<sh::math::Vector3>::CreateConnetions()
 {
 	sh::gui::HorizontalLayoutPtr layout(new sh::gui::HorizontalLayout());
@@ -41,6 +41,6 @@ void ParamEdit<sh::math::Vector3>::CreateConnetions()
 	layout->AddWidget(zEdit);
 
 	SetLayout(layout);
-}
+}*/
 
 #endif
