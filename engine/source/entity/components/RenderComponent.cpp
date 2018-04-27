@@ -61,6 +61,7 @@ namespace sh
 		for (size_t i = 0, sz = m_model->GetMeshesCount(); i < sz; ++i)
 		{
 			m_namedResourceRefList[i].name = m_model->GetMesh(i)->GetName();
+            m_namedResourceRefList[i].resource.type = "Materials";
 		}
 
 		UpdateMaterials();
@@ -85,6 +86,7 @@ namespace sh
 		for (size_t i = 0, sz = m_model->GetMeshesCount(); i < sz; ++i)
 		{
 			m_namedResourceRefList[i].name = m_model->GetMesh(i)->GetName();
+            m_namedResourceRefList[i].resource.type = "Materials";
 		}
 
 		UpdateMaterials();

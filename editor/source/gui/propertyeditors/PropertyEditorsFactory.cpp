@@ -9,6 +9,7 @@
 #include "QuaternionPropertyEditor.h"
 #include "ResourceRefPropertyEditor.h"
 #include "ScriptPropertyEditor.h"
+#include "NamedResourceRefListPropertyEditor.h"
 
 PropertyEditorsFactory::PropertyEditorsFactory()
 {
@@ -21,6 +22,7 @@ PropertyEditorsFactory::PropertyEditorsFactory()
 	m_creators[sh::VAR_QUATERNION_FLOAT].reset(new ConcretePropertyEditorFactoryImpl<QuaternionPropertyEditor>());
 	m_creators[sh::VAR_RESOURCE_REF].reset(new ConcretePropertyEditorFactoryImpl<ResourceRefPropertyEditor>());
 	m_creators[sh::VAR_SCRIPT_REF].reset(new ConcretePropertyEditorFactoryImpl<ScriptPropertyEditor>());
+    m_creators[sh::VAR_NAMED_RESOURCE_REF_LIST].reset(new ConcretePropertyEditorFactoryImpl<NamedResourceRefListPropertyEditor>());
 }
 
 sh::gui::WidgetPtr PropertyEditorsFactory::CreatePropertyEditor(sh::Serializable* object, sh::Property* objectProperty)

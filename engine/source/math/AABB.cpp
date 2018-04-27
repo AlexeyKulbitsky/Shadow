@@ -110,16 +110,22 @@ namespace math
 		Vector3 edges[8];
 		GetEdges(edges);
 
-		auto v0 = mat * Vector4(edges[0], 1.0f);
-		minPoint = Vector3(v0.x, v0.y, v0.z);
-		maxPoint = Vector3(v0.x, v0.y, v0.z);
+        auto v0 = mat * Vector4(GetCenter(), 1.0f);
+//        minPoint = Vector3(v0.x, v0.y, v0.z);
+//        maxPoint = Vector3(v0.x, v0.y, v0.z);
+        
+        //auto v0 = mat * edges[0];
+        minPoint = maxPoint = Vector3(v0.x, v0.y, v0.z);
 
-		for (size_t i = 1U; i < 8; ++i)
+		for (size_t i = 0U; i < 8; ++i)
 		{
-			auto v = mat * Vector4(edges[i], 1.0f);
-			AddPoint(v.x, v.y, v.z);
+            auto v = mat * Vector4(edges[i], 1.0f);
+            AddPoint(v.x, v.y, v.z);
+//            auto v = mat * edges[i];
+//            AddPoint(v);
+            
 		}
-	}
+    }
 
 	AABB AABB::GetTransformed(const Matrix4& mat) const
 	{

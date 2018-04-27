@@ -21,10 +21,12 @@ public:
 
 	void NewScene();
 	void OpenScene();
+    void OpenScene(const sh::String& path);
 	void SaveScene();
 
 	void NewProject();
 	void OpenProject();
+    void OpenProject(const sh::String& path);
 	void SaveProject();
 
 	void Close();

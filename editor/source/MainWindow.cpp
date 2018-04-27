@@ -40,17 +40,7 @@ void MainWindow::OpenScene()
     if (path.empty())
         return;
     
-    sh::scene::SceneManager* sceneMgr = sh::Device::GetInstance()->GetSceneManager();
-    sh::String fullPath = path;
-    size_t pos = fullPath.find_last_of('\\/');
-    sceneMgr->LoadScene(fullPath.substr(pos + 1).c_str());
-    
-    sh::u32 entitiesCount = sceneMgr->GetEntitiesCount();
-    for (sh::u32 i = 0U; i < entitiesCount; ++i)
-    {
-        auto entity = sceneMgr->GetEntity(i);
-        m_hierarchyWidget->AddEntity(entity);
-    }
+    OpenScene(path);
     
 #if 0
 	HWND hWnd = (HWND)sh::Device::GetInstance()->GetWinId();
@@ -84,6 +74,21 @@ void MainWindow::OpenScene()
 		}
 	}
 #endif
+}
+
+void MainWindow::OpenScene(const sh::String& path)
+{
+    sh::scene::SceneManager* sceneMgr = sh::Device::GetInstance()->GetSceneManager();
+    sh::String fullPath = path;
+    size_t pos = fullPath.find_last_of('\\/');
+    sceneMgr->LoadScene(fullPath.substr(pos + 1).c_str());
+    
+    sh::u32 entitiesCount = sceneMgr->GetEntitiesCount();
+    for (sh::u32 i = 0U; i < entitiesCount; ++i)
+    {
+        auto entity = sceneMgr->GetEntity(i);
+        m_hierarchyWidget->AddEntity(entity);
+    }
 }
 
 void MainWindow::SaveScene()
@@ -184,20 +189,7 @@ void MainWindow::OpenProject()
     if (path.empty())
         return;
     
-    auto filesystem = sh::io::FileSystem::GetInstance();
-    auto root = filesystem->GetRoot();
-    sh::String projectFileName = path;
-    sh::String projectFolder = "";
-    // Get project folder
-    sh::String::size_type pos = projectFileName.find_last_of("\\/");
-    if (pos != sh::String::npos)
-        projectFolder = projectFileName.substr(0U, pos);
-    
-    // Set assets folder for file system
-    filesystem->AddFolder(projectFolder + "/assets");
-    
-    // Refresh assets list
-    m_assetsWidget->RefreshAssetsList();
+    OpenProject(path);
     
 #if 0
 	HWND hWnd = (HWND)sh::Device::GetInstance()->GetWinId();
@@ -251,6 +243,24 @@ void MainWindow::OpenProject()
 		InitGameModulePtr();
 	}
 #endif
+}
+
+void MainWindow::OpenProject(const sh::String& path)
+{
+    auto filesystem = sh::io::FileSystem::GetInstance();
+    auto root = filesystem->GetRoot();
+    sh::String projectFileName = path;
+    sh::String projectFolder = "";
+    // Get project folder
+    sh::String::size_type pos = projectFileName.find_last_of("\\/");
+    if (pos != sh::String::npos)
+        projectFolder = projectFileName.substr(0U, pos);
+    
+    // Set assets folder for file system
+    filesystem->AddFolder(projectFolder + "/assets");
+    
+    // Refresh assets list
+    m_assetsWidget->RefreshAssetsList();
 }
 
 void MainWindow::SaveProject()
@@ -457,6 +467,9 @@ void MainWindow::Init()
 	m_mainWidget->SetLayout(mainVerticalLayout);
 	auto viewport = sh::Device::GetInstance()->GetDriver()->GetViewport();
 	m_mainWidget->SetRect(sh::math::Rect(0, 0, viewport.lowerRightCorner.x, viewport.lowerRightCorner.y));
+    
+    OpenProject("/Users/akulbitsky/Documents/Projects/Shadow/Shadow/projects/TestProject/TestProject.proj");
+    OpenScene("/Users/akulbitsky/Documents/Projects/Shadow/Shadow/projects/TestProject/assets/scenes/test_scene.xml");
 }
 
 void MainWindow::Destroy()
@@ -530,17 +543,20 @@ void MainWindow::Update(sh::u64 delta)
 			if (m_cameraTargetEntity)
 			{
 				auto transformComponent = m_cameraTargetEntity->GetComponent<sh::TransformComponent>();
-				targetPos = transformComponent->GetPosition();
-				sh::math::Plane plane(targetPos, camera->GetFrontVector() * (-1.0f));
-
-				sh::math::Vector3 rayOrigin, rayDirOld, rayDirCurrent;
-				camera->BuildRay(old.x, old.y, rayOrigin, rayDirOld);
-				camera->BuildRay(current.x, current.y, rayOrigin, rayDirCurrent);
-				sh::math::Vector3 intersectionOld(0.0f), intersectionCurrent(0.0f);
-				plane.GetIntersectionWithLine(rayOrigin, rayDirOld, intersectionOld);
-				plane.GetIntersectionWithLine(rayOrigin, rayDirCurrent, intersectionCurrent);
-				sh::math::Vector3 delta = intersectionCurrent - intersectionOld;
-				camera->SetPosition(camera->GetPosition() - delta);
+                if (transformComponent)
+                {
+                    targetPos = transformComponent->GetPosition();
+                    sh::math::Plane plane(targetPos, camera->GetFrontVector() * (-1.0f));
+                    
+                    sh::math::Vector3 rayOrigin, rayDirOld, rayDirCurrent;
+                    camera->BuildRay(old.x, old.y, rayOrigin, rayDirOld);
+                    camera->BuildRay(current.x, current.y, rayOrigin, rayDirCurrent);
+                    sh::math::Vector3 intersectionOld(0.0f), intersectionCurrent(0.0f);
+                    plane.GetIntersectionWithLine(rayOrigin, rayDirOld, intersectionOld);
+                    plane.GetIntersectionWithLine(rayOrigin, rayDirCurrent, intersectionCurrent);
+                    sh::math::Vector3 delta = intersectionCurrent - intersectionOld;
+                    camera->SetPosition(camera->GetPosition() - delta);
+                }
 			}
 			else
 			{
@@ -548,7 +564,7 @@ void MainWindow::Update(sh::u64 delta)
 				sh::math::Vector3 cameraUpMove = camera->GetUpVector() * static_cast<float>(delta.y) * 0.1f;
 				sh::math::Vector3 cameraRightMove = camera->GetRightVector() * static_cast<float>(-delta.x) * 0.1f;
 				sh::math::Vector3 cameraDeltaMove = cameraUpMove + cameraRightMove;
-				//camera->SetPosition(camera->GetPosition() + cameraDeltaMove);
+				camera->SetPosition(camera->GetPosition() + cameraDeltaMove);
 			}
 		}
 	}
@@ -602,7 +618,7 @@ sh::gui::MenuBarPtr MainWindow::CreateMenuBar()
 
 	sh::gui::ButtonPtr openSceneButton(new sh::gui::Button(sh::math::Rect(0, 0, 50, 15)));
 	openSceneButton->SetText("Open scene");
-	openSceneButton->OnRelease.Connect(std::bind(&MainWindow::OpenScene, this));
+	openSceneButton->OnRelease.Connect(std::bind(static_cast<void(MainWindow::*)()>(&MainWindow::OpenScene), this));
 	fileMenu->AddItem(openSceneButton);
 
 	sh::gui::ButtonPtr saveSceneButton(new sh::gui::Button(sh::math::Rect(0, 0, 50, 15)));
@@ -617,7 +633,7 @@ sh::gui::MenuBarPtr MainWindow::CreateMenuBar()
 
 	sh::gui::ButtonPtr openProjectButton(new sh::gui::Button(sh::math::Rect(0, 0, 50, 15)));
 	openProjectButton->SetText("Open project");
-	openProjectButton->OnRelease.Connect(std::bind(&MainWindow::OpenProject, this));
+	openProjectButton->OnRelease.Connect(std::bind( static_cast<void(MainWindow::*)()>(&MainWindow::OpenProject), this));
 	fileMenu->AddItem(openProjectButton);
 
 	sh::gui::ButtonPtr saveProjectButton(new sh::gui::Button(sh::math::Rect(0, 0, 50, 15)));

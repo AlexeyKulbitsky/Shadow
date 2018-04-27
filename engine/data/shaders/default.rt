@@ -9,12 +9,18 @@
 		<source>
 			<![CDATA[
 				
-				attribute vec3 position;			
+				attribute vec3 position;
+				attribute vec3 normal;			
 				uniform mat4 matWVP;
+				uniform mat4 matWorld;
+
+				varying vec3 vNormal;
 				
 				void main() 
 				{
 					gl_Position = matWVP * vec4(position, 1.0);
+					vec4 N = normalize(matWorld * vec4(normal, 0.0));
+					vNormal = N.xyz;
 				}
 				
 			]]>
@@ -30,10 +36,19 @@
 					precision mediump float;
 				#endif
 				
+				uniform vec3 dLightDirection;
+				uniform vec3 dLightColor;
+
+				varying vec3 vNormal;
 				
 				void main() 
-				{				
-					gl_FragColor = vec4(1.0);
+				{			
+					float NdL = dot(normalize(vNormal), dLightDirection);
+					vec3 diffuse = NdL * dLightColor;
+					
+					vec3 color = vec3(1.0, 1.0, 1.0);
+					color = diffuse * color;
+					gl_FragColor = vec4(color, 1.0);
 				} 
 		
 			]]>	

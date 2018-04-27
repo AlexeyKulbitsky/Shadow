@@ -248,7 +248,7 @@ void SelectionManager::OnPositionChanged(const sh::math::Vector3& position)
 	if (transformComponent)
 	{
 		transformComponent->SetPosition(position);
-		//m_inspectorWidget->GetTransformWidget()->Update();
+		m_inspectorWidget->GetTransformWidget()->Update();
 		return;
 	}
 }

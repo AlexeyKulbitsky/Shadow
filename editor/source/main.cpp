@@ -1,6 +1,6 @@
 #include "MainWindow.h"
 
-int main()
+int main(int argc, const char * argv[])
 {
 	sh::Device *device = sh::CreateDevice();
 	MainWindow* application = new MainWindow();

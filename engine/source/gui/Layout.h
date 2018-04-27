@@ -45,11 +45,11 @@ namespace gui
 		virtual s32 GetWidth() const  override { return m_widget->GetRect().GetWidth(); }
 		virtual s32 GetHeight() const  override { return m_widget->GetRect().GetHeight(); }
 		virtual void Resize(const math::Rect& rect) override;
-		virtual void Render(video::Painter* painter) { m_widget->Render(painter); }
-		virtual void CollectBatches(GuiLayerBatch& batch) { m_widget->CollectBatches(batch); }
-		virtual void RenderBackground(video::Painter* painter) { m_widget->RenderBackground(painter); }
-		virtual void RenderText(video::Painter* painter) { m_widget->RenderText(painter); }
-		virtual bool ProcessEvent(GUIEvent& ev) { return m_widget->ProcessEvent(ev); }
+		virtual void Render(video::Painter* painter) override { m_widget->Render(painter); }
+		virtual void CollectBatches(GuiLayerBatch& batch) override { m_widget->CollectBatches(batch); }
+		virtual void RenderBackground(video::Painter* painter) override { m_widget->RenderBackground(painter); }
+		virtual void RenderText(video::Painter* painter) override { m_widget->RenderText(painter); }
+		virtual bool ProcessEvent(GUIEvent& ev) override { return m_widget->ProcessEvent(ev); }
 	};
 	
 

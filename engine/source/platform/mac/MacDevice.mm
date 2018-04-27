@@ -9,11 +9,85 @@
 
 #import <Cocoa/Cocoa.h>
 
-NSWindow *rootWindow;
+
+//short int keyCodes;
+static const std::map<short int, sh::KeyCode> keyCodes =
+{
+    {0x00, sh::KeyCode::KEY_KEY_A},
+    {0x0B, sh::KeyCode::KEY_KEY_B},
+    {0x08, sh::KeyCode::KEY_KEY_C},
+    {0x02, sh::KeyCode::KEY_KEY_D},
+    {0x0E, sh::KeyCode::KEY_KEY_E},
+    {0x03, sh::KeyCode::KEY_KEY_F},
+    {0x05, sh::KeyCode::KEY_KEY_G},
+    {0x04, sh::KeyCode::KEY_KEY_H},
+    {0x22, sh::KeyCode::KEY_KEY_I},
+    {0x26, sh::KeyCode::KEY_KEY_J},
+    {0x28, sh::KeyCode::KEY_KEY_K},
+    {0x25, sh::KeyCode::KEY_KEY_L},
+    {0x2E, sh::KeyCode::KEY_KEY_M},
+    {0x2D, sh::KeyCode::KEY_KEY_N},
+    {0x1F, sh::KeyCode::KEY_KEY_O},
+    {0x23, sh::KeyCode::KEY_KEY_P},
+    {0x0C, sh::KeyCode::KEY_KEY_Q},
+    {0x0F, sh::KeyCode::KEY_KEY_R},
+    {0x01, sh::KeyCode::KEY_KEY_S},
+    {0x11, sh::KeyCode::KEY_KEY_T},
+    {0x20, sh::KeyCode::KEY_KEY_U},
+    {0x09, sh::KeyCode::KEY_KEY_V},
+    {0x0D, sh::KeyCode::KEY_KEY_W},
+    {0x07, sh::KeyCode::KEY_KEY_X},
+    {0x10, sh::KeyCode::KEY_KEY_Y},
+    {0x06, sh::KeyCode::KEY_KEY_Z},
+    
+    {0x1D, sh::KeyCode::KEY_KEY_0},
+    {0x12, sh::KeyCode::KEY_KEY_1},
+    {0x13, sh::KeyCode::KEY_KEY_2},
+    {0x14, sh::KeyCode::KEY_KEY_3},
+    {0x15, sh::KeyCode::KEY_KEY_4},
+    {0x17, sh::KeyCode::KEY_KEY_5},
+    {0x16, sh::KeyCode::KEY_KEY_6},
+    {0x1A, sh::KeyCode::KEY_KEY_7},
+    {0x1C, sh::KeyCode::KEY_KEY_8},
+    {0x19, sh::KeyCode::KEY_KEY_9},
+    
+    {0x2F, sh::KeyCode::KEY_PERIOD},
+    
+    {0x33, sh::KeyCode::KEY_BACK},
+    {0x24, sh::KeyCode::KEY_RETURN},
+    {0x7B, sh::KeyCode::KEY_LEFT},
+    {0x7C, sh::KeyCode::KEY_RIGHT}
+};
+
+static sh::KeyCode translateFlags(NSUInteger flags)
+{
+    //int mods = 0;
+    
+//    if (flags & NSEventModifierFlagShift)
+//        mods |= GLFW_MOD_SHIFT;
+//    if (flags & NSEventModifierFlagControl)
+//        mods |= GLFW_MOD_CONTROL;
+//    if (flags & NSEventModifierFlagOption)
+//        mods |= GLFW_MOD_ALT;
+//    if (flags & NSEventModifierFlagCommand)
+//        mods |= GLFW_MOD_SUPER;
+//    if (flags & NSEventModifierFlagCapsLock)
+//        mods |= GLFW_MOD_CAPS_LOCK;
+    
+    //return mods;
+    
+    sh::KeyCode code = sh::KeyCode::KEY_NONCONVERT;
+    if (flags & NSEventModifierFlagOption)
+        code = sh::KeyCode::KEY_MENU;
+    
+    return code;
+}
+
+static const NSRange kEmptyRange = { NSNotFound, 0 };
 
 sh::CreationParameters* params = nullptr;
 
-@interface MyView : NSView
+@interface MyView : NSView //<NSTextInputClient>
 {
     NSTrackingArea *trackingArea;
 }
@@ -24,128 +98,293 @@ sh::CreationParameters* params = nullptr;
 {
     NSPoint pos = [event locationInWindow];
     int x = pos.x;
-    int y = params->height - pos.y;
+    int y = self.bounds.size.height - pos.y;
+    
+    
     
     sh::Device* device = sh::Device::GetInstance();
     if (device)
         device->mouseEvent(x, y, sh::MouseEventType::ButtonReleased, sh::MouseCode::ButtonLeft);
+    
+    auto code = translateFlags([event modifierFlags]);
+    sh::KeyboardEventType ev = sh::KeyboardEventType::KeyReleased;
+    if (code == sh::KeyCode::KEY_MENU)
+    {
+        ev = sh::KeyboardEventType::KeyPressed;
+    }
+    if (device)
+        device->keyboardEvent(ev, sh::KeyCode::KEY_MENU);
 }
 
 -(void) mouseDown:(NSEvent *)event
 {
     NSPoint pos = [event locationInWindow];
     int x = pos.x;
-    int y = params->height - pos.y;
+    int y = self.bounds.size.height - pos.y;
     
     sh::Device* device = sh::Device::GetInstance();
     if (device)
         device->mouseEvent(x, y, sh::MouseEventType::ButtonPressed, sh::MouseCode::ButtonLeft);
+    
+    auto code = translateFlags([event modifierFlags]);
+    sh::KeyboardEventType ev = sh::KeyboardEventType::KeyReleased;
+    if (code == sh::KeyCode::KEY_MENU)
+    {
+        ev = sh::KeyboardEventType::KeyPressed;
+    }
+    if (device)
+        device->keyboardEvent(ev, sh::KeyCode::KEY_MENU);
 }
 
 -(void) rightMouseDown:(NSEvent *)event
 {
     NSPoint pos = [event locationInWindow];
     int x = pos.x;
-    int y = params->height - pos.y;
+    int y = self.bounds.size.height - pos.y;
     
     sh::Device* device = sh::Device::GetInstance();
     if (device)
         device->mouseEvent(x, y, sh::MouseEventType::ButtonPressed, sh::MouseCode::ButtonRight);
+    
+    auto code = translateFlags([event modifierFlags]);
+    sh::KeyboardEventType ev = sh::KeyboardEventType::KeyReleased;
+    if (code == sh::KeyCode::KEY_MENU)
+    {
+        ev = sh::KeyboardEventType::KeyPressed;
+    }
+    if (device)
+        device->keyboardEvent(ev, sh::KeyCode::KEY_MENU);
 }
 
 -(void) rightMouseUp:(NSEvent *)event
 {
     NSPoint pos = [event locationInWindow];
     int x = pos.x;
-    int y = params->height - pos.y;
+    int y = self.bounds.size.height - pos.y;
     
     sh::Device* device = sh::Device::GetInstance();
     if (device)
-        device->mouseEvent(x, y, sh::MouseEventType::ButtonPressed, sh::MouseCode::ButtonRight);
+        device->mouseEvent(x, y, sh::MouseEventType::ButtonReleased, sh::MouseCode::ButtonRight);
+    
+    auto code = translateFlags([event modifierFlags]);
+    sh::KeyboardEventType ev = sh::KeyboardEventType::KeyReleased;
+    if (code == sh::KeyCode::KEY_MENU)
+    {
+        ev = sh::KeyboardEventType::KeyPressed;
+    }
+    if (device)
+        device->keyboardEvent(ev, sh::KeyCode::KEY_MENU);
+}
+
+-(void) rightMouseDragged:(NSEvent *)event
+{
+    [self mouseMoved:event];
 }
 
 -(void) otherMouseDown:(NSEvent *)event
 {
     NSPoint pos = [event locationInWindow];
     int x = pos.x;
-    int y = params->height - pos.y;
+    int y = self.bounds.size.height - pos.y;
     
     sh::Device* device = sh::Device::GetInstance();
     if (device)
         device->mouseEvent(x, y, sh::MouseEventType::ButtonPressed, sh::MouseCode::ButtonWheel);
+    
+    auto code = translateFlags([event modifierFlags]);
+    sh::KeyboardEventType ev = sh::KeyboardEventType::KeyReleased;
+    if (code == sh::KeyCode::KEY_MENU)
+    {
+        ev = sh::KeyboardEventType::KeyPressed;
+    }
+    if (device)
+        device->keyboardEvent(ev, sh::KeyCode::KEY_MENU);
 }
 
 -(void) otherMouseUp:(NSEvent *)event
 {
     NSPoint pos = [event locationInWindow];
     int x = pos.x;
-    int y = params->height - pos.y;
+    int y = self.bounds.size.height - pos.y;
     
     sh::Device* device = sh::Device::GetInstance();
     if (device)
         device->mouseEvent(x, y, sh::MouseEventType::ButtonReleased, sh::MouseCode::ButtonWheel);
+    
+    auto code = translateFlags([event modifierFlags]);
+    sh::KeyboardEventType ev = sh::KeyboardEventType::KeyReleased;
+    if (code == sh::KeyCode::KEY_MENU)
+    {
+        ev = sh::KeyboardEventType::KeyPressed;
+    }
+    if (device)
+        device->keyboardEvent(ev, sh::KeyCode::KEY_MENU);
 }
 
+-(void) otherMouseDragged:(NSEvent *)event
+{
+    [self mouseMoved:event];
+}
 
 -(void) mouseMoved:(NSEvent *)event
 {
     NSPoint pos = [event locationInWindow];
     int x = pos.x;
-    int y = params->height - pos.y;
+    int y = self.bounds.size.height - pos.y;
     
     //NSLog(@"Mouse moved: x=%d, y=%d", x, y);
     
     sh::Device* device = sh::Device::GetInstance();
     if (device)
         device->mouseEvent(x, y, sh::MouseEventType::Moved, sh::MouseCode::ButtonLeft);
+    
+    auto code = translateFlags([event modifierFlags]);
+    sh::KeyboardEventType ev = sh::KeyboardEventType::KeyReleased;
+    if (code == sh::KeyCode::KEY_MENU)
+    {
+        ev = sh::KeyboardEventType::KeyPressed;
+    }
+    if (device)
+        device->keyboardEvent(ev, sh::KeyCode::KEY_MENU);
 }
 
 -(void) mouseDragged:(NSEvent *)event
 {
-    NSPoint pos = [event locationInWindow];
-    int x = pos.x;
-    int y = params->height - pos.y;
-    
-    //NSLog(@"Mouse moved: x=%d, y=%d", x, y);
-    
-    sh::Device* device = sh::Device::GetInstance();
-    if (device)
-        device->mouseEvent(x, y, sh::MouseEventType::Moved, sh::MouseCode::ButtonLeft);
+    [self mouseMoved:event];
 }
 
 -(void) scrollWheel:(NSEvent *)event
 {
     NSPoint pos = [event locationInWindow];
     int x = pos.x;
-    int y = params->height - pos.y;
+    int y = self.bounds.size.height - pos.y;
     
     int d = event.deltaY < 0 ? -1 : 1;
     sh::Device* device = sh::Device::GetInstance();
     if (device)
         device->mouseWheelEvent(x, y, d);
+    
+    auto code = translateFlags([event modifierFlags]);
+    sh::KeyboardEventType ev = sh::KeyboardEventType::KeyReleased;
+    if (code == sh::KeyCode::KEY_MENU)
+    {
+        ev = sh::KeyboardEventType::KeyPressed;
+    }
+    if (device)
+        device->keyboardEvent(ev, sh::KeyCode::KEY_MENU);
+}
+
+-(void) keyDown:(NSEvent *)event
+{
+    auto keyCode = [event keyCode];
+    auto it = keyCodes.find(keyCode);
+    if (it == keyCodes.end())
+        return;
+    
+    sh::Device* device = sh::Device::GetInstance();
+    if (device)
+        device->keyboardEvent(sh::KeyboardEventType::KeyPressed, it->second);
+    NSLog(@"Key down");
+    //[self acceptsFirstResponder];
+    //[super keyDown:event];
+}
+
+-(void) keyUp:(NSEvent *)event
+{
+    auto keyCode = [event keyCode];
+    auto it = keyCodes.find(keyCode);
+    if (it == keyCodes.end())
+        return;
+    sh::Device* device = sh::Device::GetInstance();
+    if (device)
+        device->keyboardEvent(sh::KeyboardEventType::KeyReleased, it->second);
+    NSLog(@"Key up");
+    //[self acceptsFirstResponder];
+    //[super keyUp:event];
 }
 
 -(void) setFrameSize:(NSSize)newSize
 {
     [super setFrameSize:newSize];
-    
+
     sh::Device* device = sh::Device::GetInstance();
 
     int width = newSize.width;
     int height = newSize.height;
     if (device)
         device->windowResizeEvent(width, height);
+
 }
-
-
-//- (void) mouseEntered:(NSEvent*)theEvent
+//
+//-(BOOL) canBecomeKeyView
 //{
-//    // Mouse entered tracking area.
+//    return YES;
 //}
 //
-//- (void) mouseExited:(NSEvent*)theEvent
+//-(BOOL) acceptsFirstResponder
 //{
-//    // Mouse exited tracking area.
+//    return YES;
+//}
+//
+//- (BOOL)wantsUpdateLayer
+//{
+//    return YES;
+//}
+//
+//- (void)insertText:(id)string replacementRange:(NSRange)replacementRange
+//{
+//
+//}
+//
+//- (void)doCommandBySelector:(SEL)selector
+//{
+//
+//}
+//
+//- (void)setMarkedText:(id)string selectedRange:(NSRange)selectedRange replacementRange:(NSRange)replacementRange
+//{
+//
+//}
+//
+//- (void)unmarkText
+//{
+//
+//}
+//
+//- (NSRange)selectedRange
+//{
+//    return kEmptyRange;
+//}
+//
+//- (NSRange)markedRange
+//{
+//    return kEmptyRange;
+//}
+//
+//- (BOOL)hasMarkedText
+//{
+//    return NO;
+//}
+//
+//- (nullable NSAttributedString *)attributedSubstringForProposedRange:(NSRange)range actualRange:(nullable NSRangePointer)actualRange
+//{
+//    return nil;
+//}
+//
+//- (NSArray<NSAttributedStringKey> *)validAttributesForMarkedText
+//{
+//    return [NSArray array];
+//}
+//
+//- (NSRect)firstRectForCharacterRange:(NSRange)range actualRange:(nullable NSRangePointer)actualRange
+//{
+//    const NSRect contentRect = [self frame];
+//    return contentRect;
+//}
+//
+//- (NSUInteger)characterIndexForPoint:(NSPoint)point
+//{
+//    return 0;
 //}
 
 - (void)updateTrackingAreas
@@ -169,7 +408,8 @@ sh::CreationParameters* params = nullptr;
 //    NSTrackingMouseEnteredAndExited | NSTrackingActiveInActiveApp | NSTrackingInVisibleRect;
     
     NSTrackingAreaOptions options = (NSTrackingActiveAlways | NSTrackingInVisibleRect |
-                                     NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved);
+                                     NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved |
+                                     NSTrackingEnabledDuringMouseDrag | NSTrackingMouseMoved);
     
     NSRect b = [self bounds];
     trackingArea = [[NSTrackingArea alloc] initWithRect:b
@@ -185,6 +425,28 @@ sh::CreationParameters* params = nullptr;
 }
 @end
 
+///////////////////////////////////////////////////
+
+
+@interface TestWindow : NSWindow {}
+@end
+
+@implementation TestWindow
+
+- (BOOL)canBecomeKeyWindow
+{
+    // Required for NSWindowStyleMaskBorderless windows
+    return YES;
+}
+
+- (BOOL)canBecomeMainWindow
+{
+    return YES;
+}
+
+@end
+
+TestWindow *rootWindow;
 
 ///////////////////////////////////////////////////
 
@@ -207,7 +469,7 @@ NSView         *testView = NULL;
     //                    styleMask:NSBorderlessWindowMask
     //                    backing:NSBackingStoreBuffered
     //                    defer:NO];
-    rootWindow = [[NSWindow alloc]
+    rootWindow = [[TestWindow alloc]
                         initWithContentRect:NSMakeRect(0,0,params->width,params->height)
                         styleMask:NSTitledWindowMask|NSClosableWindowMask|NSMiniaturizableWindowMask|NSResizableWindowMask
                         backing:NSBackingStoreBuffered
@@ -218,9 +480,8 @@ NSView         *testView = NULL;
     
     // configure window.
     [rootWindow setLevel:NSPopUpMenuWindowLevel];
-    [rootWindow setHasShadow:NO];
-    //[window setIgnoresMouseEvents:YES];
-    //[rootWindow setAcceptsMouseMovedEvents:YES];
+    //[rootWindow setLevel:NSNormalWindowLevel];
+    [rootWindow setAcceptsMouseMovedEvents:YES];
     
     [rootWindow setContentView:testView];
     [rootWindow makeFirstResponder:testView];
@@ -232,12 +493,13 @@ NSView         *testView = NULL;
     [rootWindow makeKeyAndOrderFront:self];
     //#endif
     
-    
 }
 
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
     // Insert code here to tear down your application
+    int a = 0;
+    a++;
 }
 
 
@@ -260,6 +522,12 @@ namespace sh
         params = &m_creationParameters;
         
         [NSApplication sharedApplication];
+        
+        //[NSThread detachNewThreadSelector:@selector(doNothing:)
+        //                         toTarget:NSApp
+        //                       withObject:nil];
+        
+        [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
         
         AppDelegate *appDelegate = [[AppDelegate alloc] init];
         [NSApp setDelegate:appDelegate];

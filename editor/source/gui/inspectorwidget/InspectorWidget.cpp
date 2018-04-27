@@ -39,6 +39,12 @@ void InspectorWidget::SetEntity(sh::Entity* entity)
 		componentWidget->SetParent(this);
 		m_layout->AddWidget(componentWidget);
 	}
+    
+    auto transfromComponent = entity->GetComponent<sh::TransformComponent>();
+    if (transfromComponent)
+    {
+        m_transformComponentWidget->SetTransformComponent(transfromComponent);
+    }
 
 #if 0
 	// Clear layout
