@@ -23,6 +23,12 @@ Vector3PropertyEditor::Vector3PropertyEditor(sh::Serializable* object, sh::Prope
 	m_edit->valueChanged.Connect(std::bind(&Vector3PropertyEditor::OnValueChanged, this, std::placeholders::_1));
 }
 
+void Vector3PropertyEditor::SetValue(const sh::math::Vector3& value)
+{
+    m_edit->SetValue(value);
+    m_objectProperty->SetValue(m_object, value);
+}
+
 void Vector3PropertyEditor::OnValueChanged(const sh::math::Vector3& value)
 {
 	m_objectProperty->SetValue(m_object, value);

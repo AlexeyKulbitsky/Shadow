@@ -25,6 +25,15 @@ QuaternionPropertyEditor::QuaternionPropertyEditor(sh::Serializable* object, sh:
 	m_edit->valueChanged.Connect(std::bind(&QuaternionPropertyEditor::OnValueChanged, this, std::placeholders::_1));
 }
 
+void QuaternionPropertyEditor::SetValue(const sh::math::Quaternion& value)
+{
+    sh::math::Vector3 eulerRotations;
+    value.GetAsEulerXYZ(eulerRotations);
+    
+    m_edit->SetValue(sh::math::Degrees(eulerRotations));
+    m_objectProperty->SetValue(m_object, value);
+}
+
 void QuaternionPropertyEditor::OnValueChanged(const sh::math::Vector3& value)
 {
 	sh::math::Quaternion rot;

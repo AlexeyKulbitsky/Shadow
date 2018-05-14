@@ -15,7 +15,7 @@
 
 #include <pugixml.hpp>
 
-
+#include <iostream>
 namespace sh
 {
 
@@ -156,6 +156,13 @@ namespace gui
 		//Widget::Render(painter);
 
 		m_text->Render(painter);
+        
+        
+        if (m_state == Hovered)
+        {
+            static int a = 0;
+            std::cout << "Hovered:" << a++ << std::endl;
+        }
 	}
 
 	void Button::CollectBatches(GuiLayerBatch& batch)
@@ -196,6 +203,8 @@ namespace gui
 			m_sprites[m_state]->GetLowerRightUV(),
 			m_sprites[m_state]->GetColor());
 		painter->DrawRect(upperLeft, downRight);
+        
+        
 	}
 
 	void Button::RenderText(video::Painter* painter)
@@ -286,7 +295,7 @@ namespace gui
 				{
 					m_state = Hovered;
 				}
-
+                
 				OnHover(std::static_pointer_cast<Button>(shared_from_this()));
 
 				return false;

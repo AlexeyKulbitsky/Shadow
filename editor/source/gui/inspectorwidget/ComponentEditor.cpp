@@ -34,6 +34,8 @@ ComponentEditor::ComponentEditor(sh::Component* component)
 		if (propertyEditor)
 			m_contentsLayout->AddWidget(propertyEditor);
 	}
+    
+    SetName(component->GetTypeName());
 }
 
 void ComponentEditor::OnButtonToggled(bool toggled, const sh::gui::ButtonPtr& sender)

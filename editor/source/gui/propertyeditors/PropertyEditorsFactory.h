@@ -14,7 +14,9 @@ class ConcretePropertyEditorFactoryImpl : public ConcretePropertyEditorFactory
 {
 	virtual sh::gui::WidgetPtr CreatePropertyEditor(sh::Serializable* object, sh::Property* objectProperty) override final
 	{
-		return sh::gui::WidgetPtr(new T(object, objectProperty));
+        sh::gui::WidgetPtr result(new T(object, objectProperty));
+        result->SetName(objectProperty->GetName());
+		return result;
 	}
 };
 

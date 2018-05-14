@@ -9,6 +9,8 @@ class Vector3PropertyEditor : public sh::gui::Widget
 public:
 	Vector3PropertyEditor(sh::Serializable* object, sh::Property* objectProperty);
 
+    void SetValue(const sh::math::Vector3& value);
+    
 private:
 	void OnValueChanged(const sh::math::Vector3& value);
 

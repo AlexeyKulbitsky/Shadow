@@ -9,6 +9,8 @@ class QuaternionPropertyEditor : public sh::gui::Widget
 public:
 	QuaternionPropertyEditor(sh::Serializable* object, sh::Property* objectProperty);
 
+    void SetValue(const sh::math::Quaternion& value);
+    
 private:
 	void OnValueChanged(const sh::math::Vector3& value);
 

@@ -7,9 +7,19 @@ set(USE_ASSIMP_API ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "../bin")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "../lib")
 
+SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++11")
+
 # Add engine (must be compolied before linking)
 #add_subdirectory(../../../engine "${CMAKE_CURRENT_BINARY_DIR}/engine_build")
 find_library(SHADOW_LIBRARY Shadow HINTS ../../../engine/lib/Debug)
+
+if( SHADOW_LIBRARY STREQUAL SHADOW_LIBRARY-NOTFOUND)
+    MESSAGE(FATAL_ERROR "Framework SHADOW_LIBRARY not found")
+else()
+	MESSAGE(STATUS "Found engine")
+endif()
+
+
 include_directories(../../../engine/source)
 
 #include_directories( ../../../libs/pugixml/src )
@@ -52,12 +62,14 @@ endforeach()
 #add_executable(${GAME_EXECUTABLE_NAME} $<TARGET_OBJECTS:GameCommon>)
 
 add_library(${GAME_LIBRARY_NAME} SHARED ${GAME_PROJECT_SOURCE_FILES})
-add_executable(${GAME_EXECUTABLE_NAME} ${GAME_PROJECT_SOURCE_FILES})
+add_executable(${GAME_EXECUTABLE_NAME} MACOSX_BUNDLE ${GAME_PROJECT_SOURCE_FILES})
 
 target_link_libraries(${GAME_LIBRARY_NAME} ${SHADOW_LIBRARY})
 target_link_libraries(${GAME_EXECUTABLE_NAME} ${SHADOW_LIBRARY})
 
+if (WIN32)
 add_custom_command(TARGET ${GAME_EXECUTABLE_NAME} POST_BUILD
                     COMMAND ${CMAKE_COMMAND} -E 
                     copy ../../../engine/bin/$<CONFIGURATION>/Shadow.dll ${PROJECT_SOURCE_DIR}/bin/$<CONFIGURATION>)
+endif()
 

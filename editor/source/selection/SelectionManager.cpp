@@ -1,4 +1,6 @@
 #include "SelectionManager.h"
+#include "../gui/propertyeditors/Vector3PropertyEditor.h"
+#include "../gui/propertyeditors/QuaternionPropertyEditor.h"
 
 SelectionManager::SelectionManager()
 {
@@ -247,9 +249,13 @@ void SelectionManager::OnPositionChanged(const sh::math::Vector3& position)
 	auto transformComponent = m_selectedEntity->GetComponent<sh::TransformComponent>();
 	if (transformComponent)
 	{
-		transformComponent->SetPosition(position);
-		m_inspectorWidget->GetTransformWidget()->Update();
-		return;
+        auto transformWidget = m_inspectorWidget->FindChild(transformComponent->GetTypeName());
+        if (!transformWidget)
+            return;
+        auto positionPropertyWidget = transformWidget->FindChild("Position");
+        if (!positionPropertyWidget)
+            return;
+        static_cast<Vector3PropertyEditor*>(positionPropertyWidget.get())->SetValue(position);
 	}
 }
 
@@ -258,9 +264,13 @@ void SelectionManager::OnRotationChanged(const sh::math::Quaternion& rotation)
 	auto transformComponent = m_selectedEntity->GetComponent<sh::TransformComponent>();
 	if (transformComponent)
 	{
-		transformComponent->SetRotation(rotation);
-		//m_inspectorWidget->GetTransformWidget()->Update();
-		return;
+        auto transformWidget = m_inspectorWidget->FindChild(transformComponent->GetTypeName());
+        if (!transformWidget)
+            return;
+        auto rotationePropertyWidget = transformWidget->FindChild("Rotation");
+        if (!rotationePropertyWidget)
+            return;
+        static_cast<QuaternionPropertyEditor*>(rotationePropertyWidget.get())->SetValue(rotation);
 	}
 }
 
@@ -269,8 +279,12 @@ void SelectionManager::OnScaleChanged(const sh::math::Vector3& scale)
 	auto transformComponent = m_selectedEntity->GetComponent<sh::TransformComponent>();
 	if (transformComponent)
 	{
-		transformComponent->SetScale(scale);
-		//m_inspectorWidget->GetTransformWidget()->Update();
-		return;
+        auto transformWidget = m_inspectorWidget->FindChild(transformComponent->GetTypeName());
+        if (!transformWidget)
+            return;
+        auto scalePropertyWidget = transformWidget->FindChild("Scale");
+        if (!scalePropertyWidget)
+            return;
+        static_cast<Vector3PropertyEditor*>(scalePropertyWidget.get())->SetValue(scale);
 	}
 }

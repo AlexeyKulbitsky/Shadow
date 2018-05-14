@@ -21,7 +21,7 @@ namespace io
         uint32_t size = 1024;
         _NSGetExecutablePath(buffer, &size);
         String::size_type pos = String(buffer).find_last_of("\\/");
-        m_workingDirectoryPath = String(buffer).substr(0, pos) + "/";
+        m_workingDirectoryPath = String(buffer).substr(0, pos) + "/../../..";
         
         int a = 0;
         a++;
@@ -119,7 +119,6 @@ namespace io
 
 	File MacFileSystem::LoadFile(const String& filename)
 	{
-//#if 0
 		std::weak_ptr<FileSystemComponent> result;
 		if (m_root)
 		{
@@ -148,13 +147,10 @@ namespace io
 
 		File file = LoadFile(std::static_pointer_cast<FileInfo>(result.lock()));
 		return file;
-//#endif
-        //return File();
 	}
 
 	File MacFileSystem::LoadFile(std::weak_ptr<FileInfo> fileInfo)
 	{
-//#if 0
 		if (fileInfo.expired())
 			return File();
 
@@ -176,8 +172,6 @@ namespace io
 		File result;
 		result.m_data = std::move(buffer);
 		return result;
-//#endif
-        //return File();
 	}
 
 	bool MacFileSystem::CreateFolder(const String& path)
@@ -208,54 +202,11 @@ namespace io
 
 	void MacFileSystem::CollectFilesFromFolder(const String& folder, const SPtr<FolderInfo>& root, bool recursive)
 	{
-#if 0
-		WIN32_FIND_DATA FindFileData;
-		HANDLE hFind;
-
-		String originalPath = folder + "/";
-		String searchFilter = originalPath + "*";
-		hFind = FindFirstFile(searchFilter.c_str(), &FindFileData);
-
-		if (hFind != INVALID_HANDLE_VALUE)
-		{
-			do
-			{
-				if (!(FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
-				{
-					//FileInfo info;
-					//info.name = FindFileData.cFileName;
-					//info.absolutePath = originalPath + info.name;
-					//m_fileList.insert(info);
-
-					SPtr<FileInfo> fileInfo(new FileInfo(FindFileData.cFileName, 
-						originalPath + FindFileData.cFileName));
-					root->children.push_back(fileInfo);
-				}
-				else
-				{
-					if (strcmp(".", FindFileData.cFileName) &&
-						strcmp("..", FindFileData.cFileName) &&
-						recursive)
-					{
-						String chilfFolderAbsolutePath = originalPath + FindFileData.cFileName;
-
-						SPtr<FolderInfo> folderInfo(new FolderInfo(FindFileData.cFileName, chilfFolderAbsolutePath + "/"));
-						root->children.push_back(folderInfo);
-
-						CollectFilesFromFolder(chilfFolderAbsolutePath, folderInfo, true);
-					}
-				}
-			} while (FindNextFile(hFind, &FindFileData));
-			FindClose(hFind);
-		}
-#endif
-        
         DIR *dir;
         dirent *ent;
         struct stat st;
         
         dir = opendir(folder.c_str());
-        //dir = opendir("/Users/akulbitsky/Documents/Projects/Shadow/Shadow/engine/data/");
         while ((ent = readdir(dir)) != NULL)
         {
             const String file_name = ent->d_name;
@@ -271,7 +222,14 @@ namespace io
             
             if (is_directory)
             {
-                CollectFilesFromFolder(full_file_name, root, recursive);
+                String chilfFolderAbsolutePath = folder + file_name;
+                SPtr<FolderInfo> folderInfo(new FolderInfo(file_name, chilfFolderAbsolutePath + "/"));
+                root->children.push_back(folderInfo);
+                
+                if (recursive)
+                {
+                    CollectFilesFromFolder(full_file_name, folderInfo, recursive);
+                }
             }
             else
             {

@@ -190,59 +190,6 @@ void MainWindow::OpenProject()
         return;
     
     OpenProject(path);
-    
-#if 0
-	HWND hWnd = (HWND)sh::Device::GetInstance()->GetWinId();
-
-	char szFileName[MAX_PATH] = "";
-
-	OPENFILENAME ofn;
-	ZeroMemory(&ofn, sizeof(ofn));
-	ofn.lStructSize = sizeof(OPENFILENAME);
-	ofn.hwndOwner = hWnd;
-	ofn.lpstrFilter = "Project files (*.proj)\0*.proj\0";
-	ofn.lpstrFile = szFileName;
-	ofn.nMaxFile = MAX_PATH;
-	ofn.lpstrTitle = "Open project";
-	ofn.Flags = OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
-	ofn.lpstrDefExt = "proj";
-	if (GetOpenFileName(&ofn))
-	{
-		auto filesystem = sh::io::FileSystem::GetInstance();
-		auto root = filesystem->GetRoot();
-		sh::String projectFileName = ofn.lpstrFile;
-		sh::String projectFolder = "";
-		// Get project folder
-		sh::String::size_type pos = projectFileName.find_last_of("\\/");
-		if (pos != sh::String::npos)
-			projectFolder = projectFileName.substr(0U, pos);
-
-		// Set assets folder for file system
-		filesystem->AddFolder(projectFolder + "/assets");
-		
-		// Refresh assets list
-		m_assetsWidget->RefreshAssetsList();
-
-		// Load Game as dynamic library
-		sh::String gameLibraryPath = projectFolder + "/bin/Debug/GameLibrary.dll";
-		
-		m_gameModuleLibrary = new sh::DynamicLibrary(gameLibraryPath);
-		SH_ASSERT(m_gameModuleLibrary->Load(), "Can not load Game module!");
-
-
-		auto CreateGameModulePtr = reinterpret_cast<sh::Application*(*)()>(m_gameModuleLibrary->GetSymbol("CreateGameModule"));
-		SH_ASSERT(CreateGameModulePtr, "Can not load CreateGameModule() function address");
-		if (!CreateGameModulePtr)
-			return;
-		m_gameModule = CreateGameModulePtr();
-
-		auto InitGameModulePtr = reinterpret_cast<void(*)()>(m_gameModuleLibrary->GetSymbol("InitGameModule"));
-		SH_ASSERT(InitGameModulePtr, "Can not load SetDevice(sh::Device*) function address");
-		if (!InitGameModulePtr)
-			return;
-		InitGameModulePtr();
-	}
-#endif
 }
 
 void MainWindow::OpenProject(const sh::String& path)
@@ -261,6 +208,24 @@ void MainWindow::OpenProject(const sh::String& path)
     
     // Refresh assets list
     m_assetsWidget->RefreshAssetsList();
+    
+    // Load Game as dynamic library
+    sh::String gameLibraryPath = projectFolder + "/lib/Debug/libGameLibrary";
+    
+    m_gameModuleLibrary = new sh::DynamicLibrary(gameLibraryPath);
+    SH_ASSERT(m_gameModuleLibrary->Load(), "Can not load Game module!");
+    
+    auto CreateGameModulePtr = reinterpret_cast<sh::Application*(*)()>(m_gameModuleLibrary->GetSymbol("CreateGameModule"));
+    SH_ASSERT(CreateGameModulePtr, "Can not load CreateGameModule() function address");
+    if (!CreateGameModulePtr)
+        return;
+    m_gameModule = CreateGameModulePtr();
+    
+    auto InitGameModulePtr = reinterpret_cast<void(*)()>(m_gameModuleLibrary->GetSymbol("InitGameModule"));
+    SH_ASSERT(InitGameModulePtr, "Can not load SetDevice(sh::Device*) function address");
+    if (!InitGameModulePtr)
+        return;
+    InitGameModulePtr();
 }
 
 void MainWindow::SaveProject()
@@ -468,8 +433,8 @@ void MainWindow::Init()
 	auto viewport = sh::Device::GetInstance()->GetDriver()->GetViewport();
 	m_mainWidget->SetRect(sh::math::Rect(0, 0, viewport.lowerRightCorner.x, viewport.lowerRightCorner.y));
     
-    OpenProject("/Users/akulbitsky/Documents/Projects/Shadow/Shadow/projects/TestProject/TestProject.proj");
-    OpenScene("/Users/akulbitsky/Documents/Projects/Shadow/Shadow/projects/TestProject/assets/scenes/test_scene.xml");
+    OpenProject("/Users/AKulbitsky/Documents/Projects/Shadow/projects/TestProject/TestProject.proj");
+    OpenScene("/Users/AKulbitsky/Documents/Projects/Shadow/projects/TestProject/assets/scenes/test_scene.xml");
 }
 
 void MainWindow::Destroy()

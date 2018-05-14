@@ -88,6 +88,9 @@ namespace gui
 		virtual void SetWidth(s32 width);
 		virtual void SetHeight(s32 height);
 		virtual bool ProcessEvent(GUIEvent& ev);
+        void SetName(const String& name) { m_name = name; }
+        const String& GetName() const { return m_name; }
+        WidgetPtr FindChild(const String& name);
 
 		//void SetFocus(bool focus);
 		bool IsInFocus() const;
@@ -106,6 +109,7 @@ namespace gui
 		math::Vector2Int m_minSize = math::Vector2Int(0);
 
 		video::MaterialPtr m_material;
+        String m_name;
 
 		math::Rect m_rect;
 		bool m_visible = true;

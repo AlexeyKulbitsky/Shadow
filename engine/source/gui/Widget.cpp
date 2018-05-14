@@ -99,6 +99,34 @@ namespace gui
 
 		return m_layout->ProcessEvent(ev);
 	}
+    
+    WidgetPtr Widget::FindChild(const String& name)
+    {
+        if (!m_layout)
+            return WidgetPtr();
+        
+        const auto itemsCount = m_layout->GetItemsCount();
+        for (size_t i = 0U; i < itemsCount; ++i)
+        {
+            const WidgetPtr& child = m_layout->GetWidget(i);
+            if (child)
+            {
+                if (child->GetName() == name)
+                {
+                    return child;
+                }
+                else
+                {
+                    auto res = child->FindChild(name);
+                    if (res)
+                        return res;
+                }
+                
+            }
+        }
+        
+        return WidgetPtr();
+    }
 
 	bool Widget::IsInFocus() const 
 	{ 

@@ -16,14 +16,8 @@ public:
 	void SetEntity(sh::Entity* entity);
 	sh::Entity* GetEntity() { return m_entity; }
 
-	const sh::SPtr<TransformComponentWidget>& GetTransformWidget() const { return m_transformComponentWidget; }
-
 private:
 	sh::Entity* m_entity = nullptr;
-
-	sh::SPtr<TransformComponentWidget> m_transformComponentWidget;
-	sh::SPtr<RenderComponentWidget> m_renderComponentWidget;
-	sh::SPtr<LightComponentWidget> m_lightComponentWidget;
 };
 
 #endif

@@ -7,7 +7,7 @@
 #include "../scene/ModelBase.h"
 #include "../scene/ModelLoader/ModelLoader.h"
 #include "../scene/ModelLoader/AssimpModelLoader.h"
-#include "scene/ModelLoader/TinyObjModelLoader.h"
+#include "../scene/ModelLoader/TinyObjModelLoader.h"
 
 #include <pugixml.hpp>
 

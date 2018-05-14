@@ -19,6 +19,8 @@ include_directories(../engine/source)
 set(EDITOR_PROJECT_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/source)
 set(EDITOR_PROJECT_NAME Editor)
 
+SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++11")
+
 include_directories( ${EDITOR_PROJECT_INCLUDE_DIR} )
 
 file(GLOB_RECURSE EDITOR_PROJECT_SOURCE_FILES "source/*.h" "source/*.hpp" "source/*.cpp")
@@ -37,7 +39,7 @@ foreach(FILE ${EDITOR_PROJECT_SOURCE_FILES})
     source_group("${GROUP}" FILES "${FILE}")
 endforeach()
 
-add_executable(${EDITOR_PROJECT_NAME} ${EDITOR_PROJECT_SOURCE_FILES})
+add_executable(${EDITOR_PROJECT_NAME} MACOSX_BUNDLE ${EDITOR_PROJECT_SOURCE_FILES})
 
 set_target_properties(${EDITOR_PROJECT_NAME}
     PROPERTIES

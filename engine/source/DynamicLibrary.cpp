@@ -17,6 +17,11 @@ namespace sh
 	DynamicLibrary::DynamicLibrary(const String& filename)
 		: m_filename(filename)
 	{
+#if defined(SHADOW_WINDOWS)
+        m_filename += ".dll";
+#elif defined(SHADOW_MAC)
+        m_filename += ".dylib";
+#endif
 	}
 
 	bool DynamicLibrary::Load()
