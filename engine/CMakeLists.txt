@@ -6,93 +6,244 @@ set(CMAKE_SUPPRESS_REGENERATION true)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 cmake_policy(SET CMP0015 NEW)
 
-set(PROJECT_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/source)
 set(PROJECT_NAME Shadow)
 
-#set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/libArchive_out)
-#set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/libLibrary_out)
-#set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/binBinary_out)
+set(SH_ENTITY_SRC
+  source/entity/Component.cpp
+  source/entity/ComponentsFactory.cpp
+  source/entity/Entity.cpp
+  source/entity/System.cpp
+  source/entity/components/CameraComponent.cpp
+  source/entity/components/LightComponent.cpp
+  source/entity/components/RenderComponent.cpp
+  source/entity/components/ScriptComponent.cpp
+  source/entity/components/TerrainComponent.cpp
+  source/entity/components/TransformComponent.cpp
+  source/entity/systems/LightSystem.cpp
+  source/entity/systems/RenderSystem.cpp
+  source/entity/systems/ScriptSystem.cpp
+  source/entity/systems/TerrainSystem.cpp
+  source/entity/systems/TransformSystem.cpp
+)
 
-#set(USE_VULKAN_API OFF)
+set(SH_FONT_SRC
+  source/font/Font.cpp
+  source/font/FontManager.cpp
+)
 
-include_directories( ${PROJECT_INCLUDE_DIR} )
+set(SH_GUI_SRC
+  source/gui/Button.cpp
+  source/gui/ButtonGroup.cpp
+  source/gui/ComboBox.cpp
+  source/gui/FloatLineEdit.cpp
+  source/gui/GuiManager.cpp
+  source/gui/HorizontalLayout.cpp
+  source/gui/ImageWidget.cpp
+  source/gui/IntLineEdit.cpp
+  source/gui/Label.cpp
+  source/gui/Layout.cpp
+  source/gui/LineEdit.cpp
+  source/gui/Menu.cpp
+  source/gui/MenuBar.cpp
+  source/gui/ScrollWidget.cpp
+  source/gui/SliderWidget.cpp
+  source/gui/Sprite.cpp
+  source/gui/SpriteManager.cpp
+  source/gui/SpriteWidget.cpp
+  source/gui/Style.cpp
+  source/gui/Text.cpp
+  source/gui/ToolBar.cpp
+  source/gui/TreeWidget.cpp
+  source/gui/VerticalLayout.cpp
+  source/gui/Widget.cpp
+  source/gui/Window.cpp
+)
 
-file(GLOB_RECURSE PROJECT_SOURCE_FILES "source/*.h" "source/*.hpp" "source/*.cpp" "source/*.mm")
-
-# exclude platform-specific files
-if (WIN32)
-
-	set (EXCLUDE_DIR "/android/")
-	foreach (TMP_PATH ${PROJECT_SOURCE_FILES})
-		string (FIND ${TMP_PATH} ${EXCLUDE_DIR} EXCLUDE_DIR_FOUND)
-		if (NOT ${EXCLUDE_DIR_FOUND} EQUAL -1)
-			list (REMOVE_ITEM PROJECT_SOURCE_FILES ${TMP_PATH})
-		endif ()
-	endforeach(TMP_PATH)
-
-  set (EXCLUDE_DIR "/mac/")
-  foreach (TMP_PATH ${PROJECT_SOURCE_FILES})
-    string (FIND ${TMP_PATH} ${EXCLUDE_DIR} EXCLUDE_DIR_FOUND)
-    if (NOT ${EXCLUDE_DIR_FOUND} EQUAL -1)
-      list (REMOVE_ITEM PROJECT_SOURCE_FILES ${TMP_PATH})
-    endif ()
-  endforeach(TMP_PATH)
-	
-elseif (APPLE)
-
-	set (EXCLUDE_DIR "/android/")
-	foreach (TMP_PATH ${PROJECT_SOURCE_FILES})
-		string (FIND ${TMP_PATH} ${EXCLUDE_DIR} EXCLUDE_DIR_FOUND)
-		if (NOT ${EXCLUDE_DIR_FOUND} EQUAL -1)
-			list (REMOVE_ITEM PROJECT_SOURCE_FILES ${TMP_PATH})
-		endif ()
-	endforeach(TMP_PATH)
-
-  set (EXCLUDE_DIR "/win32/")
-  foreach (TMP_PATH ${PROJECT_SOURCE_FILES})
-    string (FIND ${TMP_PATH} ${EXCLUDE_DIR} EXCLUDE_DIR_FOUND)
-    if (NOT ${EXCLUDE_DIR_FOUND} EQUAL -1)
-      list (REMOVE_ITEM PROJECT_SOURCE_FILES ${TMP_PATH})
-    endif ()
-  endforeach(TMP_PATH)
-
-#elseif(MACOSX)
-else()
-
-  set (EXCLUDE_DIR "/win32/")
-  foreach (TMP_PATH ${PROJECT_SOURCE_FILES})
-    string (FIND ${TMP_PATH} ${EXCLUDE_DIR} EXCLUDE_DIR_FOUND)
-    if (NOT ${EXCLUDE_DIR_FOUND} EQUAL -1)
-      list (REMOVE_ITEM PROJECT_SOURCE_FILES ${TMP_PATH})
-    endif ()
-  endforeach(TMP_PATH)
-
-  set (EXCLUDE_DIR "/mac/")
-  foreach (TMP_PATH ${PROJECT_SOURCE_FILES})
-    string (FIND ${TMP_PATH} ${EXCLUDE_DIR} EXCLUDE_DIR_FOUND)
-    if (NOT ${EXCLUDE_DIR_FOUND} EQUAL -1)
-      list (REMOVE_ITEM PROJECT_SOURCE_FILES ${TMP_PATH})
-    endif ()
-  endforeach(TMP_PATH)
-	
+if(WIN32)
+  set(SH_PLATFORM_SPECIFIC_IO_SRC
+    source/io/win32/WindowsFileSystem.cpp
+  )
+elseif(ANDROID)
+  set(SH_PLATFORM_SPECIFIC_IO_SRC
+    source/io/android/AndroidFileSystem.cpp
+  )
+elseif(APPLE)
+  set(SH_PLATFORM_SPECIFIC_IO_SRC
+    source/io/mac/MacFileSystem.mm
+  )
 endif()
 
-# Exclude Vulkan API if flag is set
-if (NOT USE_VULKAN_API)
+set(SH_IO_SRC
+  source/io/File.cpp
+  source/io/FileSystem.cpp
+  ${SH_PLATFORM_SPECIFIC_IO_SRC}
+)
 
-  set (EXCLUDE_VULKAN_DIR "/Vulkan/")
-  foreach (TMP_PATH ${PROJECT_SOURCE_FILES})
-    string (FIND ${TMP_PATH} ${EXCLUDE_VULKAN_DIR} EXCLUDE_DIR_FOUND)
-    if (NOT ${EXCLUDE_DIR_FOUND} EQUAL -1)
-      list (REMOVE_ITEM PROJECT_SOURCE_FILES ${TMP_PATH})
-    endif ()
-  endforeach(TMP_PATH)
+set(SH_JOBS_SRC
+  source/jobs/JobQueue.cpp
+  source/jobs/JobScheduler.cpp
+  source/jobs/Test.cpp
+  source/jobs/Worker.cpp
+)
 
-else()
+set(SH_MATH_SRC
+  source/math/AABB.cpp
+  source/math/Matrix3.cpp
+  source/math/Matrix4.cpp
+  source/math/Plane.cpp
+  source/math/Quaternion.cpp
+  source/math/Rect.cpp
+  source/math/Sphere.cpp
+  source/math/Vector2.cpp
+  source/math/Vector2Int.cpp
+  source/math/Vector3.cpp
+  source/math/Vector3Int.cpp
+  source/math/Vector4.cpp
+  source/math/Vector4Int.cpp
+)
 
-  add_definitions(-DSHADOW_USE_VULKAN_API)
-
+if(WIN32)
+  set(SH_PLATFORM_SRC
+    source/platform/win32/Win32Device.cpp
+  )
+elseif(ANDROID)
+  set(SH_PLATFORM_SRC
+    source/platform/android/AndroidDevice.cpp
+  )
+elseif(APPLE)
+  set(SH_PLATFORM_SRC
+    source/platform/mac/MacDevice.mm
+  )
 endif()
+
+set(SH_RESOURCES_SRC
+  source/resources/ResourceManager.cpp
+)
+
+set(SH_SCENE_SRC
+  source/scene/Camera.cpp
+  source/scene/GeometryGenerator.cpp
+  source/scene/Light.cpp
+  source/scene/Mesh.cpp
+  source/scene/MeshBase.cpp
+  source/scene/Model.cpp
+  source/scene/ModelBase.cpp
+  source/scene/Picker.cpp
+  source/scene/Scene.cpp
+  source/scene/SceneManager.cpp
+  source/scene/ModelLoader/AssimpModelLoader.cpp
+  source/scene/ModelLoader/ModelLoader.cpp
+  source/scene/ModelLoader/TinyObjModelLoader.cpp
+)
+
+set(SH_SERIALIZATION_SRC
+  source/serialization/ObjectFactory.cpp
+  source/serialization/Property.cpp
+  source/serialization/Serializable.cpp
+  source/serialization/Serializer.cpp
+  source/serialization/XMLSerializer.cpp
+)
+
+set(SH_VIDEO_SRC
+  source/video/BlendingState.cpp
+  source/video/CommandBuffer.cpp
+  source/video/CommandPool.cpp
+  source/video/DepthStencilState.cpp
+  source/video/Driver.cpp
+  source/video/GpuParams.cpp
+  source/video/GpuPipelineParamsInfo.cpp
+  source/video/Image.cpp
+  source/video/IndexBuffer.cpp
+  source/video/Material.cpp
+  source/video/MaterialParam.cpp
+  source/video/MaterialParams.cpp
+  source/video/Painter.cpp
+  source/video/RasterizationState.cpp
+  source/video/Renderable.cpp
+  source/video/RenderBatchManager.cpp
+  source/video/RenderPass.cpp
+  source/video/RenderPipeline.cpp
+  source/video/RenderTarget.cpp
+  source/video/RenderTechnique.cpp
+  source/video/Sampler.cpp
+  source/video/Shader.cpp
+  source/video/Texture.cpp
+  source/video/TextureManager.cpp
+  source/video/VertexBuffer.cpp
+  source/video/VertexDeclaration.cpp
+  source/video/TextureLoader/TextureLoader.cpp
+
+  source/video/Managers/CommandBufferManager.cpp
+  source/video/Managers/HardwareBufferManager.cpp
+  source/video/Managers/RenderStateManager.cpp
+)
+
+set(SH_OPENGL_COMMON_SRC
+  source/video/GL/GLCommandBuffer.cpp
+  source/video/GL/GLIndexBuffer.cpp
+  source/video/GL/GLRenderTarget.cpp
+  source/video/GL/GLShader.cpp
+  source/video/GL/GLTexture.cpp
+  source/video/GL/GLVertexBuffer.cpp
+  source/video/GL/Managers/GLCommandBufferManager.cpp
+  source/video/GL/Managers/GLHardwareBufferManager.cpp
+  source/video/GL/Managers/GLRenderStateManager.cpp
+  source/video/GL/Managers/GLTextureManager.cpp
+)
+
+if(WIN32)
+  set(SH_OPENGL_CONTEXT_SRC
+    source/video/GL/GLContext/WGLContextManager.cpp
+  )
+elseif(ANDROID)
+  set(SH_OPENGL_CONTEXT_SRC
+    source/video/GL/GLContext/EGLContextManager.cpp
+  )
+elseif(APPLE)
+  set(SH_OPENGL_CONTEXT_SRC
+    source/video/GL/GLContext/NSGLContextManager.mm
+  )
+endif()
+
+set(SH_GLES20_SRC
+  source/video/GL/GLES20/Batching/GLES20MaterialSorter.cpp
+  source/video/GL/GLES20/Batching/GLES20RenderBatch.cpp
+  source/video/GL/GLES20/Batching/GLES20RenderBatchManager.cpp
+  source/video/GL/GLES20/Batching/GLES20StateDifference.cpp
+  source/video/GL/GLES20/Managers/GLES20RenderStateManager.cpp
+  source/video/GL/GLES20/GLES20Driver.cpp
+  source/video/GL/GLES20/GLES20RenderPipeline.cpp
+  source/video/GL/GLES20/GLES20VertexDEclaration.cpp
+)
+
+set(SH_COMMON_SRC
+  source/Application.cpp
+  source/Device.cpp
+  source/DynamicLibrary.cpp
+  source/InputManager.cpp
+  source/pempek_assert.cpp
+  source/Shadow.cpp
+  source/System.cpp
+  source/Variant.cpp
+)
+
+set(PROJECT_SOURCE_FILES
+  ${SH_ENTITY_SRC}
+  ${SH_FONT_SRC}
+  ${SH_GUI_SRC}
+  ${SH_IO_SRC}
+  ${SH_JOBS_SRC}
+  ${SH_MATH_SRC}
+  ${SH_PLATFORM_SRC}
+  ${SH_RESOURCES_SRC}
+  ${SH_SCENE_SRC}
+  ${SH_SERIALIZATION_SRC}
+  ${SH_VIDEO_SRC}
+  ${SH_OPENGL_COMMON_SRC}
+  ${SH_OPENGL_CONTEXT_SRC}
+  ${SH_GLES20_SRC}
+  ${SH_COMMON_SRC}
+)
 
 # Group files according to files organization
 foreach(FILE ${PROJECT_SOURCE_FILES}) 
@@ -108,35 +259,17 @@ foreach(FILE ${PROJECT_SOURCE_FILES})
     source_group("${GROUP}" FILES "${FILE}")
 endforeach()
 
-#-----------------------------------------
-
-macro(GroupAllSources curdir)
-
-	foreach(child ${curdir})
-		if(IS_DIRECTORY ${curdir}/${child})
-			GroupAllSources(${curdir}/${child})
-		else()
-			string(REPLACE "/" "\\" groupname ${curdir})
-            string(REPLACE "src" "Common" groupname ${groupname})
-            source_group(${groupname} FILES ${curdir}/${child})
-		endif()
-	endforeach()
-
-endmacro()
-
-#-----------------------------------------
-
-# Add DirectX
-if (WIN32)
-  include_directories($ENV{DXSDK_DIR}/Include)
-endif(WIN32)
-
 # Add Shadow engine library
 #add_library(${PROJECT_NAME} ${PROJECT_SOURCE_FILES})
 #target_compile_definitions(${PROJECT_NAME} PUBLIC SHADOW_STATIC_LIB)
 
 add_library(${PROJECT_NAME} SHARED ${PROJECT_SOURCE_FILES})
 target_compile_definitions(${PROJECT_NAME} PRIVATE SHADOW_EXPORTS)
+
+# Add DirectX
+if (WIN32)
+  include_directories($ENV{DXSDK_DIR}/Include)
+endif(WIN32)
 
 set_target_properties(${PROJECT_NAME}
     PROPERTIES
@@ -145,18 +278,17 @@ set_target_properties(${PROJECT_NAME}
     RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
 )
 
-
 # Add pugixml
 add_subdirectory(../libs/pugixml "${CMAKE_CURRENT_BINARY_DIR}/ThirdParty/pugixml")
 include_directories( ../libs/pugixml/src )
-
 set_property(TARGET pugixml PROPERTY FOLDER CommonLibs)
+target_link_libraries(${PROJECT_NAME} pugixml)
 
 # Add freetype
 add_subdirectory(../libs/freetype "${CMAKE_CURRENT_BINARY_DIR}/ThirdParty/freetype")
 include_directories(../libs/freetype/include)
-
 set_property(TARGET freetype PROPERTY FOLDER CommonLibs)
+target_link_libraries(${PROJECT_NAME} freetype)
 
 # Add Vulkan
 if (USE_VULKAN_API)
@@ -186,22 +318,14 @@ include_directories(../libs/tinyobjloader)
 
 # Add EGL
 include_directories(../libs/egl/include)
-find_library(EGL_LIBRARY libEGL HINTS ../libs/egl/lib/release)
-find_library(GLESV2_LIBRARY libGLESv2 HINTS ../libs/egl/lib/release)
 
 # Add GLEW
-#if (WIN32)
-  set(BUILD_UTILS OFF CACHE BOOL "utilities" FORCE)
-  add_subdirectory(../libs/glew/build/cmake "${CMAKE_CURRENT_BINARY_DIR}/ThirdParty/glew")
-  include_directories(../libs/glew/include)
-  target_link_libraries(${PROJECT_NAME} glew_s)
-
-  if(MSVC12 OR MSVC14)
-    set_property(TARGET glew_s PROPERTY FOLDER CommonLibs)
-    set_property(TARGET glew PROPERTY FOLDER CommonLibs)
-  endif(MSVC12 OR MSVC14)
-
-#endif(WIN32)
+set(BUILD_UTILS OFF CACHE BOOL "utilities" FORCE)
+add_subdirectory(../libs/glew/build/cmake "${CMAKE_CURRENT_BINARY_DIR}/ThirdParty/glew")
+include_directories(../libs/glew/include)
+target_link_libraries(${PROJECT_NAME} glew_s)
+set_property(TARGET glew_s PROPERTY FOLDER CommonLibs)
+set_property(TARGET glew PROPERTY FOLDER CommonLibs)
 
 # Add assimp
 if (USE_ASSIMP_API)
@@ -214,28 +338,21 @@ if (USE_ASSIMP_API)
   include_directories("${CMAKE_CURRENT_BINARY_DIR}/ThirdParty/assimp/include")
   target_link_libraries(${PROJECT_NAME} assimp)
 
-  if(MSVC12 OR MSVC14)
-    set_property(TARGET assimp PROPERTY FOLDER CommonLibs)
-    set_property(TARGET IrrXML PROPERTY FOLDER CommonLibs)
-    set_property(TARGET zlibstatic PROPERTY FOLDER CommonLibs)
-    set_property(TARGET UpdateAssimpLibsDebugSymbolsAndDLLs PROPERTY FOLDER CommonLibs)
-    set_property(TARGET uninstall PROPERTY FOLDER CommonLibs)
-    
-  endif(MSVC12 OR MSVC14)
+  set_property(TARGET assimp PROPERTY FOLDER CommonLibs)
+  set_property(TARGET IrrXML PROPERTY FOLDER CommonLibs)
+  #set_property(TARGET zlibstatic PROPERTY FOLDER CommonLibs)
+  #set_property(TARGET UpdateAssimpLibsDebugSymbolsAndDLLs PROPERTY FOLDER CommonLibs)
+  set_property(TARGET uninstall PROPERTY FOLDER CommonLibs)
 endif()
 
 set_property(TARGET dist PROPERTY FOLDER CommonLibs)
 
-if (SHADOW_ANDROID)
+if(WIN32)
+elseif(ANDROID)
   add_subdirectory(../libs/minizip "${CMAKE_CURRENT_BINARY_DIR}/ThirdParty/minizip")
   include_directories(../libs/minizip)
-
-  target_link_libraries(${PROJECT_NAME} pugixml freetype minizip)
-else(SHADOW_ANDROID)
-  target_link_libraries(${PROJECT_NAME} pugixml freetype)# ${EGL_LIBRARY} ${GLESV2_LIBRARY})
-endif(SHADOW_ANDROID)
-
-find_library(COCOA_LIB Cocoa)
-target_link_libraries(${PROJECT_NAME} ${COCOA_LIB})
-
-
+  target_link_libraries(${PROJECT_NAME} minizip)
+elseif(APPLE)
+  find_library(COCOA_LIB Cocoa)
+  target_link_libraries(${PROJECT_NAME} ${COCOA_LIB})
+endif()

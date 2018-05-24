@@ -13,6 +13,8 @@
 #include "../font/Font.h"
 #include "../Device.h"
 
+#include <iostream>
+
 namespace sh
 {
 
@@ -74,7 +76,11 @@ namespace gui
 	bool MenuBar::MenuBarItem::ProcessEvent(GUIEvent& ev)
 	{
 		if (button->ProcessEvent(ev))
-			return true;
+        {
+            std::cout << "Event" << std::endl;
+            return true;
+        }
+			
 
 
 		if (menu->IsEnabled() && menu->ProcessEvent(ev))

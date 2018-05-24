@@ -479,8 +479,8 @@ NSView         *testView = NULL;
     testView = [[MyView alloc] initWithFrame:frame];
     
     // configure window.
-    [rootWindow setLevel:NSPopUpMenuWindowLevel];
-    //[rootWindow setLevel:NSNormalWindowLevel];
+    //[rootWindow setLevel:NSPopUpMenuWindowLevel];
+    [rootWindow setLevel:NSNormalWindowLevel];
     [rootWindow setAcceptsMouseMovedEvents:YES];
     
     [rootWindow setContentView:testView];

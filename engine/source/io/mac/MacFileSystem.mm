@@ -6,7 +6,7 @@
 #include <dirent.h>
 
 //#import <Foundation/Foundation.h>
-//#import <Cocoa/Cocoa.h>
+#import <Cocoa/Cocoa.h>
 
 namespace sh
 {
@@ -31,7 +31,7 @@ namespace io
 
 	MacFileSystem::~MacFileSystem()
 	{
-
+        
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -51,9 +51,6 @@ namespace io
 
 	void MacFileSystem::AddFolder(const String& folder, bool recursive)
 	{
-//#if 0
-		//String absolutePath = m_workingDirectoryPath + "/" + folder + "/";
-
 		String absolutePath = folder + "/";
 
 		String folderName = folder;
@@ -67,7 +64,6 @@ namespace io
 
 		UpdateResourceGroups();
 		ResourceManager::GetInstance()->UpdateResourceGroups();
-//#endif
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -94,11 +90,9 @@ namespace io
 
 	bool MacFileSystem::SaveFile(const std::vector<char>& data, const String& fileName)
 	{
-//#if 0
 		std::ofstream f(m_workingDirectoryPath + "/" + fileName, std::ofstream::out);
 		f.write(data.data(), data.size());
 		f.close();
-//#endif
 		return true;
 
 	}
@@ -107,11 +101,9 @@ namespace io
 
 	bool MacFileSystem::SaveFile(const String& data, const String& fileName)
 	{
-//#if 0
 		std::ofstream f(m_workingDirectoryPath + "/" + fileName, std::ofstream::out);
 		f << data;
 		f.close();
-//#endif
 		return true;
 	}
 
@@ -176,26 +168,36 @@ namespace io
 
 	bool MacFileSystem::CreateFolder(const String& path)
 	{
-		//return static_cast<bool>(CreateDirectory(path.c_str(), NULL));
-        return false;
+        NSFileManager *fileManager= [NSFileManager defaultManager];
+        NSError *error = nil;
+        NSString* str = [NSString stringWithCString:path.c_str() encoding:[NSString defaultCStringEncoding]];
+        return [fileManager createDirectoryAtPath:str withIntermediateDirectories:YES attributes:nil error:&error];
 	}
 
 	bool MacFileSystem::Rename(const String& oldName, const String& newName)
 	{
-		 //return static_cast<bool>(MoveFile(oldName.c_str(), newName.c_str()));
-        return false;
+        NSFileManager *fileManager= [NSFileManager defaultManager];
+        NSError *error = nil;
+        NSString* oldPath = [NSString stringWithCString:oldName.c_str() encoding:[NSString defaultCStringEncoding]];
+        NSString* newPath = [NSString stringWithCString:newName.c_str() encoding:[NSString defaultCStringEncoding]];
+        return [fileManager moveItemAtPath:oldPath toPath:newPath error:&error];
     }
 
 	bool MacFileSystem::Delete(const String& filePath)
 	{
-		//return static_cast<bool>(DeleteFile(filePath.c_str()));
-        return false;
+        NSFileManager *fileManager= [NSFileManager defaultManager];
+        NSError *error = nil;
+        NSString* str = [NSString stringWithCString:filePath.c_str() encoding:[NSString defaultCStringEncoding]];
+        return [fileManager removeItemAtPath:str error:&error];
     }
 
 	bool MacFileSystem::Copy(const String& srcFileName, const String& dstFileName)
 	{
-		//return static_cast<bool>(CopyFile(srcFileName.c_str(), dstFileName.c_str(), TRUE));
-        return false;
+        NSFileManager *fileManager= [NSFileManager defaultManager];
+        NSError *error = nil;
+        NSString* srcPath = [NSString stringWithCString:srcFileName.c_str() encoding:[NSString defaultCStringEncoding]];
+        NSString* dstPath = [NSString stringWithCString:dstFileName.c_str() encoding:[NSString defaultCStringEncoding]];
+        return [fileManager copyItemAtPath:srcPath toPath:dstPath error:&error];
     }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
