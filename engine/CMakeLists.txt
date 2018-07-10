@@ -8,6 +8,24 @@ cmake_policy(SET CMP0015 NEW)
 
 set(PROJECT_NAME Shadow)
 
+set(SH_ENTITY_INCLUDE
+  source/entity/Component.h
+  source/entity/ComponentsFactory.h
+  source/entity/Entity.h
+  source/entity/System.h
+  source/entity/components/CameraComponent.h
+  source/entity/components/LightComponent.h
+  source/entity/components/RenderComponent.h
+  source/entity/components/ScriptComponent.h
+  source/entity/components/TerrainComponent.h
+  source/entity/components/TransformComponent.h
+  source/entity/systems/LightSystem.h
+  source/entity/systems/RenderSystem.h
+  source/entity/systems/ScriptSystem.h
+  source/entity/systems/TerrainSystem.h
+  source/entity/systems/TransformSystem.h
+)
+
 set(SH_ENTITY_SRC
   source/entity/Component.cpp
   source/entity/ComponentsFactory.cpp
@@ -26,9 +44,42 @@ set(SH_ENTITY_SRC
   source/entity/systems/TransformSystem.cpp
 )
 
+set(SH_FONT_INCLUDE
+  source/font/Font.h
+  source/font/FontManager.h
+)
+
 set(SH_FONT_SRC
   source/font/Font.cpp
   source/font/FontManager.cpp
+)
+
+set(SH_GUI_INCLUDE
+  source/gui/Button.h
+  source/gui/ButtonGroup.h
+  source/gui/ComboBox.h
+  source/gui/FloatLineEdit.h
+  source/gui/GuiManager.h
+  source/gui/HorizontalLayout.h
+  source/gui/ImageWidget.h
+  source/gui/IntLineEdit.h
+  source/gui/Label.h
+  source/gui/Layout.h
+  source/gui/LineEdit.h
+  source/gui/Menu.h
+  source/gui/MenuBar.h
+  source/gui/ScrollWidget.h
+  source/gui/SliderWidget.h
+  source/gui/Sprite.h
+  source/gui/SpriteManager.h
+  source/gui/SpriteWidget.h
+  source/gui/Style.h
+  source/gui/Text.h
+  source/gui/ToolBar.h
+  source/gui/TreeWidget.h
+  source/gui/VerticalLayout.h
+  source/gui/Widget.h
+  source/gui/Window.h
 )
 
 set(SH_GUI_SRC
@@ -61,22 +112,34 @@ set(SH_GUI_SRC
 
 if(WIN32)
   set(SH_PLATFORM_SPECIFIC_IO_SRC
+    source/io/win32/WindowsFileSystem.h
     source/io/win32/WindowsFileSystem.cpp
   )
 elseif(ANDROID)
   set(SH_PLATFORM_SPECIFIC_IO_SRC
+    source/io/android/AndroidFileSystem.h
     source/io/android/AndroidFileSystem.cpp
   )
 elseif(APPLE)
   set(SH_PLATFORM_SPECIFIC_IO_SRC
+    source/io/mac/MacFileSystem.h
     source/io/mac/MacFileSystem.mm
   )
 endif()
 
 set(SH_IO_SRC
+  source/io/File.h
   source/io/File.cpp
+  source/io/FileSystem.h
   source/io/FileSystem.cpp
   ${SH_PLATFORM_SPECIFIC_IO_SRC}
+)
+
+set(SH_JOBS_INCLUDE
+  source/jobs/JobQueue.h
+  source/jobs/JobScheduler.h
+  source/jobs/Test.h
+  source/jobs/Worker.h
 )
 
 set(SH_JOBS_SRC
@@ -84,6 +147,22 @@ set(SH_JOBS_SRC
   source/jobs/JobScheduler.cpp
   source/jobs/Test.cpp
   source/jobs/Worker.cpp
+)
+
+set(SH_MATH_INCLUDE
+  source/math/AABB.h
+  source/math/Matrix3.h
+  source/math/Matrix4.h
+  source/math/Plane.h
+  source/math/Quaternion.h
+  source/math/Rect.h
+  source/math/Sphere.h
+  source/math/Vector2.h
+  source/math/Vector2Int.h
+  source/math/Vector3.h
+  source/math/Vector3Int.h
+  source/math/Vector4.h
+  source/math/Vector4Int.h
 )
 
 set(SH_MATH_SRC
@@ -104,20 +183,43 @@ set(SH_MATH_SRC
 
 if(WIN32)
   set(SH_PLATFORM_SRC
+    source/platform/win32/Win32Device.h
     source/platform/win32/Win32Device.cpp
   )
 elseif(ANDROID)
   set(SH_PLATFORM_SRC
+    source/platform/android/AndroidDevice.h
     source/platform/android/AndroidDevice.cpp
   )
 elseif(APPLE)
   set(SH_PLATFORM_SRC
+    source/platform/mac/MacDevice.h
     source/platform/mac/MacDevice.mm
   )
 endif()
 
+set(SH_RESOURCES_INCLUDE
+  source/resources/ResourceManager.h
+)
+
 set(SH_RESOURCES_SRC
   source/resources/ResourceManager.cpp
+)
+
+set(SH_SCENE_INCLUDE
+  source/scene/Camera.h
+  source/scene/GeometryGenerator.h
+  source/scene/Light.h
+  source/scene/Mesh.h
+  source/scene/MeshBase.h
+  source/scene/Model.h
+  source/scene/ModelBase.h
+  source/scene/Picker.h
+  source/scene/Scene.h
+  source/scene/SceneManager.h
+  source/scene/ModelLoader/AssimpModelLoader.h
+  source/scene/ModelLoader/ModelLoader.h
+  source/scene/ModelLoader/TinyObjModelLoader.h
 )
 
 set(SH_SCENE_SRC
@@ -136,12 +238,53 @@ set(SH_SCENE_SRC
   source/scene/ModelLoader/TinyObjModelLoader.cpp
 )
 
+set(SH_SERIALIZATION_INCLUDE
+  source/serialization/ObjectFactory.h
+  source/serialization/Property.h
+  source/serialization/Serializable.h
+  source/serialization/Serializer.h
+  source/serialization/XMLSerializer.h
+)
+
 set(SH_SERIALIZATION_SRC
   source/serialization/ObjectFactory.cpp
   source/serialization/Property.cpp
   source/serialization/Serializable.cpp
   source/serialization/Serializer.cpp
   source/serialization/XMLSerializer.cpp
+)
+
+set(SH_VIDEO_INCLUDE
+  source/video/BlendingState.h
+  source/video/CommandBuffer.h
+  source/video/CommandPool.h
+  source/video/DepthStencilState.h
+  source/video/Driver.h
+  source/video/GpuParams.h
+  source/video/GpuPipelineParamsInfo.h
+  source/video/Image.h
+  source/video/IndexBuffer.h
+  source/video/Material.h
+  source/video/MaterialParam.h
+  source/video/MaterialParams.h
+  source/video/Painter.h
+  source/video/RasterizationState.h
+  source/video/Renderable.h
+  source/video/RenderBatchManager.h
+  source/video/RenderPass.h
+  source/video/RenderPipeline.h
+  source/video/RenderTarget.h
+  source/video/RenderTechnique.h
+  source/video/Sampler.h
+  source/video/Shader.h
+  source/video/Texture.h
+  source/video/TextureManager.h
+  source/video/VertexBuffer.h
+  source/video/VertexDeclaration.h
+  source/video/TextureLoader/TextureLoader.h  
+  source/video/Managers/CommandBufferManager.h
+  source/video/Managers/HardwareBufferManager.h
+  source/video/Managers/RenderStateManager.h
 )
 
 set(SH_VIDEO_SRC
@@ -178,6 +321,19 @@ set(SH_VIDEO_SRC
   source/video/Managers/RenderStateManager.cpp
 )
 
+set(SH_OPENGL_COMMON_INCLUDE
+  source/video/GL/GLCommandBuffer.h
+  source/video/GL/GLIndexBuffer.h
+  source/video/GL/GLRenderTarget.h
+  source/video/GL/GLShader.h
+  source/video/GL/GLTexture.h
+  source/video/GL/GLVertexBuffer.h
+  source/video/GL/Managers/GLCommandBufferManager.h
+  source/video/GL/Managers/GLHardwareBufferManager.h
+  source/video/GL/Managers/GLRenderStateManager.h
+  source/video/GL/Managers/GLTextureManager.h
+)
+
 set(SH_OPENGL_COMMON_SRC
   source/video/GL/GLCommandBuffer.cpp
   source/video/GL/GLIndexBuffer.cpp
@@ -193,17 +349,31 @@ set(SH_OPENGL_COMMON_SRC
 
 if(WIN32)
   set(SH_OPENGL_CONTEXT_SRC
+    source/video/GL/GLContext/WGLContextManager.h
     source/video/GL/GLContext/WGLContextManager.cpp
   )
 elseif(ANDROID)
   set(SH_OPENGL_CONTEXT_SRC
+    source/video/GL/GLContext/EGLContextManager.h
     source/video/GL/GLContext/EGLContextManager.cpp
   )
 elseif(APPLE)
   set(SH_OPENGL_CONTEXT_SRC
+    source/video/GL/GLContext/NSGLContextManager.h
     source/video/GL/GLContext/NSGLContextManager.mm
   )
 endif()
+
+set(SH_GLES20_INCLUDE
+  source/video/GL/GLES20/Batching/GLES20MaterialSorter.h
+  source/video/GL/GLES20/Batching/GLES20RenderBatch.h
+  source/video/GL/GLES20/Batching/GLES20RenderBatchManager.h
+  source/video/GL/GLES20/Batching/GLES20StateDifference.h
+  source/video/GL/GLES20/Managers/GLES20RenderStateManager.h
+  source/video/GL/GLES20/GLES20Driver.h
+  source/video/GL/GLES20/GLES20RenderPipeline.h
+  source/video/GL/GLES20/GLES20VertexDEclaration.h
+)
 
 set(SH_GLES20_SRC
   source/video/GL/GLES20/Batching/GLES20MaterialSorter.cpp
@@ -214,6 +384,17 @@ set(SH_GLES20_SRC
   source/video/GL/GLES20/GLES20Driver.cpp
   source/video/GL/GLES20/GLES20RenderPipeline.cpp
   source/video/GL/GLES20/GLES20VertexDEclaration.cpp
+)
+
+set(SH_COMMON_INCLUDE
+  source/Application.h
+  source/Device.h
+  source/DynamicLibrary.h
+  source/InputManager.h
+  source/pempek_assert.h
+  source/Shadow.h
+  source/System.h
+  source/Variant.h
 )
 
 set(SH_COMMON_SRC
@@ -228,20 +409,32 @@ set(SH_COMMON_SRC
 )
 
 set(PROJECT_SOURCE_FILES
+  ${SH_ENTITY_INCLUDE}
   ${SH_ENTITY_SRC}
+  ${SH_FONT_INCLUDE}
   ${SH_FONT_SRC}
+  ${SH_GUI_INCLUDE}
   ${SH_GUI_SRC}
   ${SH_IO_SRC}
+  ${SH_JOBS_INCLUDE}
   ${SH_JOBS_SRC}
+  ${SH_MATH_INCLUDE}
   ${SH_MATH_SRC}
   ${SH_PLATFORM_SRC}
+  ${SH_RESOURCES_INCLUDE}
   ${SH_RESOURCES_SRC}
+  ${SH_SCENE_INCLUDE}
   ${SH_SCENE_SRC}
+  ${SH_SERIALIZATION_INCLUDE}
   ${SH_SERIALIZATION_SRC}
+  ${SH_VIDEO_INCLUDE}
   ${SH_VIDEO_SRC}
+  ${SH_OPENGL_COMMON_INCLUDE}
   ${SH_OPENGL_COMMON_SRC}
   ${SH_OPENGL_CONTEXT_SRC}
+  ${SH_GLES20_INCLUDE}
   ${SH_GLES20_SRC}
+  ${SH_COMMON_INCLUDE}
   ${SH_COMMON_SRC}
 )
 
