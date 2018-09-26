@@ -14,9 +14,12 @@ namespace gui
 
 	class SHADOW_API ComboBox : public Widget
 	{
+        SHADOW_OBJECT(ComboBox)
 	public:
 		ComboBox();
 		ComboBox(const math::Rect& rect);
+        
+        static void RegisterObject();
 
 		virtual void Render(video::Painter* painter) override;
 		virtual void RenderBackground(video::Painter* painter) override;

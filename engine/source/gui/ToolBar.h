@@ -16,9 +16,12 @@ namespace gui
 
 	class SHADOW_API ToolBar : public Widget
 	{
+        SHADOW_OBJECT(ToolBar)
 	public:
 		ToolBar();
 		ToolBar(const SpritePtr& sprite);
+        
+        static void RegisterObject();
 		void AddItem(const ButtonPtr& button); 
 
 		virtual void Load(const pugi::xml_node& node) override;

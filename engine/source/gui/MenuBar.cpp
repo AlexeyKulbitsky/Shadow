@@ -12,6 +12,7 @@
 
 #include "../font/Font.h"
 #include "../Device.h"
+#include "../serialization/ObjectFactory.h"
 
 #include <iostream>
 
@@ -135,6 +136,7 @@ namespace gui
 
 		HorizontalLayoutPtr layout(new HorizontalLayout());
 		SetLayout(layout);
+        m_name = "MenuBar";
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -147,7 +149,14 @@ namespace gui
 
 		HorizontalLayoutPtr layout(new HorizontalLayout());
 		SetLayout(layout);
+        m_name = "MenuBar";
 	}
+    
+    void MenuBar::RegisterObject()
+    {
+        ObjectFactory::GetInstance()->RegisterFactory<MenuBar>("UI");
+        ObjectFactory::GetInstance()->RegisterParentProperties<MenuBar, Widget>();
+    }
 
 	void MenuBar::SetToggled(bool toggled) 
 	{ 

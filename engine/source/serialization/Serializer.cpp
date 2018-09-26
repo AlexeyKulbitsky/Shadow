@@ -64,6 +64,11 @@ namespace sh
 			}
 		}
 	}
+    
+    void Serializer::Deserialize(Serializable* serializable)
+    {
+        
+    }
 
 } // sh
 

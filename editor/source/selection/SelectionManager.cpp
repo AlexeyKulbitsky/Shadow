@@ -96,10 +96,13 @@ void SelectionManager::Render()
 		auto renderComponent = m_selectedEntity->GetComponent<sh::RenderComponent>();
 		if (renderComponent)
 		{
-			sh::Device::GetInstance()->GetDriver()->GetPainter()->SetMaterial(m_aabbMaterial);
-			auto driver = sh::Device::GetInstance()->GetDriver();
-			driver->GetPainter()->DrawBox(renderComponent->GetModel()->GetBoundingBox());
-			driver->GetPainter()->Flush();
+            if (const auto& model = renderComponent->GetModel())
+            {
+                sh::Device::GetInstance()->GetDriver()->GetPainter()->SetMaterial(m_aabbMaterial);
+                auto driver = sh::Device::GetInstance()->GetDriver();
+                driver->GetPainter()->DrawBox(model->GetBoundingBox());
+                driver->GetPainter()->Flush();
+            }
 			return;
 		}
 		// If it has terrain component then render the Bounding box of the terrain model

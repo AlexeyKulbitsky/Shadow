@@ -122,6 +122,7 @@ bool ColorPicker::ProcessEvent(sh::gui::GUIEvent& ev)
 			hue = 360.0f - hue;
 		//hue += 360.0f;
 		const float saturation = sh::math::Sqrt(x * x + y * y);
+        sh::math::Vector3 color(0.0f);
 		if (saturation > 1.0f)
 		{
 			data[0U] = 0;
@@ -132,20 +133,27 @@ bool ColorPicker::ProcessEvent(sh::gui::GUIEvent& ev)
 		else
 		{
 			const float value = m_hsvWidget->GetColor().z * 0.01f;
-			auto color = HSVtoRGB(static_cast<int>(hue), saturation, value);
-			data[0U] = static_cast<sh::u8>(color.x * 256.0f);
-			data[1U] = static_cast<sh::u8>(color.y * 256.0f);
-			data[2U] = static_cast<sh::u8>(color.z * 256.0f);
+			color = HSVtoRGB(static_cast<int>(hue), saturation, value);
+            // u8 overflow is possible
+            data[0U] = static_cast<sh::u8>(sh::math::Clamp(color.x * 255.0f, 0.0f, 255.0f));
+			data[1U] = static_cast<sh::u8>(sh::math::Clamp(color.y * 255.0f, 0.0f, 255.0f));
+			data[2U] = static_cast<sh::u8>(sh::math::Clamp(color.z * 255.0f, 0.0f, 255.0f));
 			data[3U] = 255;
 		}
+        
+        if (data[0] == 0 && data[1] == 0 && data[2] == 0 && data[3] == 255)
+        {
+            int a = 0;
+            a++;
+        }
 
 		m_rgbWidget->SetColor(data[0], data[1], data[2], data[3]);
 		m_hsvWidget->SetColor(static_cast<int>(hue), static_cast<int>(saturation * 100.0f), m_hsvWidget->GetColor().z);
 
-		m_color.red = data[0] / 256.0f;
-		m_color.green = data[1] / 256.0f;
-		m_color.blue = data[2] / 256.0f;
-		m_color.alpha = data[3] / 256.0f;
+        m_color.red = color.x;
+        m_color.green = color.y;
+        m_color.blue = color.z;
+        m_color.alpha = 1.0f;
 
 		colorChanged(m_color);
 
@@ -293,7 +301,10 @@ sh::video::TexturePtr ColorPicker::CreatePalletteTexture() const
 
 sh::math::Vector3 ColorPicker::HSVtoRGB(int h, float s, float v) const
 {
-	float hue = static_cast<float>(h) / 60.0f;
+    int clampedHue = h;
+    if (h >= 360)
+        clampedHue = 0;
+	float hue = static_cast<float>(clampedHue) / 60.0f;
 	int index = static_cast<int>(hue);
 	float fract = hue - static_cast<float>(index);
 

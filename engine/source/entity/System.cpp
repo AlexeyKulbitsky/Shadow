@@ -14,6 +14,11 @@ namespace sh
 			}
 		}*/
 	}
+    
+    void System::UnregisterEntity(Entity* entity)
+    {
+        RemoveEntity(entity);
+    }
 
 	void System::RegisterComponent(Component* component)
 	{

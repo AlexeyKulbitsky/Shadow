@@ -46,7 +46,8 @@ void LightComponentWidget::SetLightComponent(sh::LightComponent* component)
 
 	const auto& col = m_lightComponent->GetColor();
 	m_colorWidget->SetColor(sh::math::Vector4(col.red, col.green, col.blue, 1.0f));
-	sh::gui::ButtonPtr pickerButton = guiMgr->GetStyle()->GetButton("PickerButton");
+    auto pickerButtonTemplate = guiMgr->GetStyle()->GetButton("PickerButton");
+	sh::gui::ButtonPtr pickerButton = pickerButtonTemplate->Clone();
 	pickerButton->SetMaximumWidth(20);
 	
 	pickerButton->OnRelease.Connect(std::bind(&LightComponentWidget::OnColorPickerButtonReleased, this));

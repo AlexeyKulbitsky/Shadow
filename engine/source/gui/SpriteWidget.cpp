@@ -2,6 +2,7 @@
 
 #include "GuiManager.h"
 #include "../video/Driver.h"
+#include "../serialization/ObjectFactory.h"
 
 namespace sh
 {
@@ -17,6 +18,12 @@ namespace gui
 			color = math::Vector4(1.0f);
 		}
 	}
+    
+    void SpriteWidget::RegisterObject()
+    {
+        ObjectFactory::GetInstance()->RegisterFactory<SpriteWidget>("UI");
+        ObjectFactory::GetInstance()->RegisterParentProperties<SpriteWidget, Widget>();
+    }
 
 	SpriteWidgetPtr SpriteWidget::Clone()
 	{

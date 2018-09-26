@@ -12,10 +12,13 @@ namespace gui
 
 	class SHADOW_API SliderWidget : public Widget
 	{
+        SHADOW_OBJECT(SliderWidget)
 	public:
 		SliderWidget();
 		~SliderWidget();
 
+        static void RegisterObject();
+        
 		virtual bool ProcessEvent(sh::gui::GUIEvent& ev) override;
 		virtual void Render(video::Painter* painter) override;
 		virtual void RenderBackground(video::Painter* painter) override;

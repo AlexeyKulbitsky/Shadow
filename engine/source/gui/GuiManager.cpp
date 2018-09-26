@@ -7,6 +7,21 @@
 #include "Style.h"
 #include "MenuBar.h"
 #include "ToolBar.h"
+#include "Window.h"
+#include "ComboBox.h"
+#include "FloatLineEdit.h"
+#include "HorizontalLayout.h"
+#include "ImageWidget.h"
+#include "IntLineEdit.h"
+#include "Label.h"
+#include "LineEdit.h"
+#include "Menu.h"
+#include "ScrollWidget.h"
+#include "SliderWidget.h"
+#include "SpriteWidget.h"
+#include "Text.h"
+#include "TreeWidget.h"
+#include "VerticalLayout.h"
 
 #include "../video/Driver.h"
 #include "../video/VertexBuffer.h"
@@ -20,6 +35,10 @@
 #include "../scene/SceneManager.h"
 #include "../scene/Camera.h"
 #include "../Device.h"
+
+#include "../serialization/XMLSerializer.h"
+
+
 
 #include <pugixml.hpp>
 
@@ -36,15 +55,41 @@ namespace gui
 
 	GuiManager::GuiManager()
 	{
-		
+        m_camera = new scene::Camera();
 	}
 
 	GuiManager::~GuiManager()
 	{
-	}
+        delete m_camera;
+        m_camera = nullptr;
+    }
 
 	void GuiManager::Init()
 	{
+        // Register all the UI elements in the factory
+        Widget::RegisterObject();
+        Window::RegisterObject();
+        Button::RegisterObject();
+        ComboBox::RegisterObject();
+        Text::RegisterObject();
+        Label::RegisterObject();
+        LineEdit::RegisterObject();
+        IntLineEdit::RegisterObject();
+        FloatLineEdit::RegisterObject();
+        ImageWidget::RegisterObject();
+        Menu::RegisterObject();
+        MenuBar::RegisterObject();
+        ScrollWidget::RegisterObject();
+        SliderWidget::RegisterObject();
+        SpriteWidget::RegisterObject();
+        ToolBar::RegisterObject();
+        TreeWidget::RegisterObject();
+        
+        Layout::RegisterObject();
+        HorizontalLayout::RegisterObject();
+        VerticalLayout::RegisterObject();
+        
+        
 		m_defaultMaterial.reset(new video::Material());
 		m_defaultMaterial->SetRenderTechnique("Primitive2D.rt");
 
@@ -82,6 +127,8 @@ namespace gui
 	void GuiManager::Render()
 	{
 		video::Driver* driver = Device::GetInstance()->GetDriver();
+        //auto viewport = driver->GetViewport();
+        //driver->SetViewport(m_camera->GetViewport());
 		auto painter = driver->GetPainter();
 
 		auto t1 = Device::GetInstance()->GetTime();
@@ -125,6 +172,8 @@ namespace gui
 #endif
 
 		painter->Flush();
+        
+        //driver->SetViewport(viewport);
 
 		auto t2 = Device::GetInstance()->GetTime();
 
@@ -133,6 +182,30 @@ namespace gui
 		//SH_ASSERT(m_value != 2);
 		m_value = 0;
 	}
+    
+    void GuiManager::LoadScreen(const String& fileName)
+    {
+        
+    }
+    
+    void GuiManager::SaveScreen(const String& fileName)
+    {
+        pugi::xml_document doc;
+        
+        // Save scene
+        pugi::xml_node screenNode = doc.append_child("scene");
+        
+        XMLSerializer serializer(&screenNode);
+        for (auto& child : m_children)
+        {
+            //pugi::xml_node componentNode = screenNode.append_child("widget");
+            //serializer.Serialize(child.get(), componentNode);
+            if (child)
+                child->Serialize(&serializer);
+        }
+        
+        doc.save_file(fileName.c_str());
+    }
 
 	void GuiManager::LoadGui(const String& name)
 	{
@@ -183,7 +256,12 @@ namespace gui
 	{
 		m_children.push_front(child);
 	}
-
+    
+    scene::Camera* GuiManager::GetCamera()
+    {
+        return m_camera;
+    }
+    
 	void GuiManager::RemoveChild(size_t index)
 	{
 // 		if (index >= m_children.size())

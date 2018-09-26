@@ -13,6 +13,8 @@
 #include "../font/Font.h"
 #include "../Device.h"
 
+#include "../serialization/ObjectFactory.h"
+
 #include <pugixml.hpp>
 
 #include <iostream>
@@ -32,6 +34,7 @@ namespace gui
 
 		m_rect = sh::math::Rect(0, 0, 10, 10);
 		m_text.reset(new Text(m_rect));
+        m_name = "Button";
 	}
 
 	Button::Button(const math::Rect rect)
@@ -45,7 +48,7 @@ namespace gui
 
 		m_rect = rect;
 		m_text.reset(new Text(rect));
-
+        m_name = "Button";
 	}
 
 	Button::Button(const SpritePtr& defaultSprite,
@@ -59,6 +62,7 @@ namespace gui
 
 		m_rect = sh::math::Rect(0, 0, 10, 10);
 		m_text.reset(new Text(m_rect));
+        m_name = "Button";
 	}
 
 	Button::Button(const math::Rect& rect,
@@ -69,7 +73,7 @@ namespace gui
 	{
 		m_rect = rect;
 		m_text.reset(new Text(rect));
-
+        m_name = "Button";
 	}
 
 	Button::Button(const String& text)
@@ -84,8 +88,18 @@ namespace gui
 		m_rect = sh::math::Rect(0, 0, 10, 10);
 		m_text.reset(new Text(m_rect));
 		m_text->SetText(text);
-
+        m_name = "Button";
 	}
+    
+    void Button::RegisterObject()
+    {
+        ObjectFactory::GetInstance()->RegisterFactory<Button>("UI");
+        ObjectFactory::GetInstance()->RegisterParentProperties<Button, Widget>();
+        S_ACCESSOR_PROPERTY("Text", GetText, SetText);
+        S_ACCESSOR_PROPERTY("Toggleable", IsToggleable, SetToggleable);
+        
+        
+    }
 
 	ButtonPtr Button::Clone() const
 	{

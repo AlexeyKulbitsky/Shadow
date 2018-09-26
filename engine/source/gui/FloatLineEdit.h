@@ -11,11 +11,14 @@ namespace gui
 
 	class SHADOW_API FloatLineEdit : public LineEdit
 	{
+        SHADOW_OBJECT(FloatLineEdit)
 	public:
 		FloatLineEdit();
 		FloatLineEdit(const math::Rect& rect, 
 					const SpritePtr& defaultSprite, 
 					const SpritePtr& editSprite);
+        
+        static void RegisterObject();
 
 		virtual bool ProcessEvent(GUIEvent& ev) override;
 	

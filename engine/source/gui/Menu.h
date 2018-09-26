@@ -11,9 +11,13 @@ namespace gui
 
 	class SHADOW_API Menu : public Widget
 	{
+        SHADOW_OBJECT(Menu)
 	public:
 		Menu();
 		Menu(const String& title);
+        
+        static void RegisterObject();
+        
 		virtual ~Menu();
 
 		void Show();

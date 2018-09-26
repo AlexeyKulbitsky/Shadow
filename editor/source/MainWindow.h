@@ -9,6 +9,8 @@
 #include "gui/hierarchywidget/HierarchyWidget.h"
 #include "gui/assetswidget/AssetsWidget.h"
 
+#include "SceneWindow.h"
+
 
 #include <Shadow.h>
 
@@ -35,6 +37,7 @@ public:
 	void OnMouseWeelEvent(int x, int y, int delta);
 	void OnKeyboardEvent(sh::KeyboardEventType type, sh::KeyCode code);
 	void OnWindowResized(int width, int height);
+    void OnSurfaceChanged(void*, int width, int height);
 
 	// Application interface
 	virtual void Init() override;
@@ -49,6 +52,7 @@ private:
 	sh::SPtr<InspectorWidget> m_inspectorWidget;
 	sh::SPtr<HierarchyWidget> m_hierarchyWidget;
 	sh::SPtr<AssetsWidget> m_assetsWidget;
+    sh::SPtr<SceneWindow> m_sceneWindow;
 	
 	sh::Entity* m_cameraTargetEntity = nullptr;
 

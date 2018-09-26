@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<scene>
+	<widget type="Serializable" />
+	<widget type="Window">
+		<Layout />
+	</widget>
+	<widget type="Window">
+		<Layout />
+	</widget>
+</scene>

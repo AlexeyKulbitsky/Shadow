@@ -25,7 +25,8 @@ ColorPropertyEditor::ColorPropertyEditor(sh::Serializable* object, sh::Property*
 	const auto& color = value.GetColor();
 
 	m_colorWidget->SetColor(sh::math::Vector4(color.red, color.green, color.blue, 1.0f));
-	sh::gui::ButtonPtr pickerButton = sh::gui::GuiManager::GetInstance()->GetStyle()->GetButton("PickerButton");
+    auto pickerButtonTemplate = sh::gui::GuiManager::GetInstance()->GetStyle()->GetButton("PickerButton");
+    sh::gui::ButtonPtr pickerButton = pickerButtonTemplate->Clone();
 	pickerButton->SetMaximumWidth(20);
 
 	pickerButton->OnRelease.Connect(std::bind(&ColorPropertyEditor::OnColorPickerButtonReleased, this));

@@ -12,8 +12,11 @@ namespace gui
 
 	class SHADOW_API SpriteWidget : public Widget
 	{
+        SHADOW_OBJECT(SpriteWidget)
 	public:
 		SpriteWidget();
+        
+        static void RegisterObject();
 
 		SpriteWidgetPtr Clone();
 		void SetSprite(const SpritePtr& sprite) { m_sprite = sprite; }

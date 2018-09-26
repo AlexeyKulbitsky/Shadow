@@ -123,7 +123,8 @@ MaterialParamColorEditor::MaterialParamColorEditor(sh::video::MaterialParam* par
 	auto icon = sh::gui::GuiManager::GetInstance()->GetStyle()->GetSpriteWidget("white");
 	m_colorWidget = icon->Clone();
 
-	sh::gui::ButtonPtr pickerButton = sh::gui::GuiManager::GetInstance()->GetStyle()->GetButton("PickerButton");
+    auto pickerButtonTemplate = sh::gui::GuiManager::GetInstance()->GetStyle()->GetButton("PickerButton");
+    sh::gui::ButtonPtr pickerButton = pickerButtonTemplate->Clone();
 	pickerButton->OnRelease.Connect(std::bind(&MaterialParamColorEditor::OnColorPickerButtonReleased, this));
 	pickerButton->SetMaximumWidth(20);
 

@@ -11,6 +11,7 @@ namespace gui
 
 	class SHADOW_API LineEdit : public Text
 	{
+        SHADOW_OBJECT(LineEdit)
 	public:
 		enum State : u32
 		{
@@ -27,6 +28,8 @@ namespace gui
 		LineEdit(const math::Rect& rect, 
 			   const SpritePtr& defaultSprite, 
 			   const SpritePtr& editSprite);
+        
+        static void RegisterObject();
 
 		void SetState(State state);
 		virtual void Render(video::Painter* painter) override;

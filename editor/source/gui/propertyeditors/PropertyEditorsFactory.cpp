@@ -10,6 +10,7 @@
 #include "ResourceRefPropertyEditor.h"
 #include "ScriptPropertyEditor.h"
 #include "NamedResourceRefListPropertyEditor.h"
+#include "StringPropertyEditor.h"
 
 PropertyEditorsFactory::PropertyEditorsFactory()
 {
@@ -23,6 +24,7 @@ PropertyEditorsFactory::PropertyEditorsFactory()
 	m_creators[sh::VAR_RESOURCE_REF].reset(new ConcretePropertyEditorFactoryImpl<ResourceRefPropertyEditor>());
 	m_creators[sh::VAR_SCRIPT_REF].reset(new ConcretePropertyEditorFactoryImpl<ScriptPropertyEditor>());
     m_creators[sh::VAR_NAMED_RESOURCE_REF_LIST].reset(new ConcretePropertyEditorFactoryImpl<NamedResourceRefListPropertyEditor>());
+    m_creators[sh::VAR_STRING].reset(new ConcretePropertyEditorFactoryImpl<StringPropertyEditor>());
 }
 
 sh::gui::WidgetPtr PropertyEditorsFactory::CreatePropertyEditor(sh::Serializable* object, sh::Property* objectProperty)

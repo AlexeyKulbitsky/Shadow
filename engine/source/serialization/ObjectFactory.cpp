@@ -56,5 +56,19 @@ namespace sh
 
 		return result;
 	}
+    
+    String ObjectFactory::GetGroupForObject(Serializable* object)
+    {
+        String typeName = object->GetTypeName();
+        for (auto& it : m_objectGroups)
+        {
+            auto result = std::find(it.second.begin(), it.second.end(), typeName);
+            if (result != it.second.end())
+            {
+                return it.first;
+            }
+        }
+        return String();
+    }
 
 } // sh

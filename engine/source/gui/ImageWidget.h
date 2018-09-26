@@ -11,9 +11,12 @@ namespace gui
 
 	class SHADOW_API ImageWidget : public Widget
 	{
+        SHADOW_OBJECT(ImageWidget)
 	public:
 		ImageWidget();
 		~ImageWidget();
+        
+        static void RegisterObject();
 
 		void SetTexture(const video::TexturePtr& texture);
 		const video::TexturePtr& GetTexture() const { return m_texture; }

@@ -6,12 +6,16 @@
 namespace sh
 {
 
+    class Serializer;
+    
 namespace gui
 {
-	class SHADOW_API LayoutItem
+    class SHADOW_API LayoutItem : public Entity
 	{
 	public:
 		LayoutItem() {}
+        virtual void Serialize(Serializer* serializer) = 0;
+        virtual void Deserialize(Serializer* serializer) = 0;
 		virtual const WidgetPtr& GetWidget() const { return m_widget; }
 		virtual void SetSize(const math::Vector2Int& size) = 0;
 		virtual void SetWidth(s32 width) = 0;
@@ -37,6 +41,9 @@ namespace gui
 	public:
 		WidgetItem(const WidgetPtr& widget) { m_widget = widget; }
 		virtual const WidgetPtr& GetWidget() const override { return m_widget; }
+        
+        virtual void Serialize(Serializer* serializer) override;
+        virtual void Deserialize(Serializer* serializer) override;
 
 		virtual void SetSize(const math::Vector2Int& size) override { m_widget->SetSize(size); }
 		virtual void SetWidth(s32 width) override { m_widget->SetWidth(width); }
@@ -57,11 +64,18 @@ namespace gui
 
 	class SHADOW_API Layout : public LayoutItem
 	{
+        SHADOW_OBJECT(Layout)
 		friend class Widget;
 		friend class Window;
 		friend class ScrollWidget;
 	public:
 		Layout() {}
+        
+        static void RegisterObject();
+        
+        virtual void Serialize(Serializer* serializer) override;
+        virtual void Deserialize(Serializer* serializer) override;
+        
 		void SetParent(Widget* parent) { m_parent = parent; }
 		virtual void AddWidget(const WidgetPtr& widget);
 		virtual void InsertWidget(u32 index, const WidgetPtr& widget);
@@ -80,11 +94,16 @@ namespace gui
 		// Returns actual spacing between elements
 		virtual s32 GetSpacing() const { return m_spacing; }
 
+        // Margins
 		void SetMargins(u32 top, u32 right, u32 bottom, u32 left);
-		const u32 GetTopMargin() const { return m_topMargin; }
-		const u32 GetBottomMargin() const { return m_bottomMargin; }
-		const u32 GetRightMargin() const { return m_rightMargin; }
-		const u32 GetLeftMargin() const { return m_leftMargin; }
+        void SetTopMargin(u32 margin);
+        void SetBottomMargin(u32 margin);
+        void SetRightMargin(u32 margin);
+        void SetLeftMargin(u32 margin);
+        const u32 GetTopMargin() const;
+        const u32 GetBottomMargin() const;
+        const u32 GetRightMargin() const;
+        const u32 GetLeftMargin() const;
 
 		// Actual rect of layout
 		const math::Rect& GetRect() const { return m_rect; }

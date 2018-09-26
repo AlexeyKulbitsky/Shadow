@@ -3,6 +3,7 @@
 #include "Button.h"
 #include "GuiManager.h"
 #include "VerticalLayout.h"
+#include "../serialization/ObjectFactory.h"
 
 namespace sh
 {
@@ -26,6 +27,12 @@ namespace gui
 		VerticalLayoutPtr layout(new VerticalLayout());
 		SetLayout(layout);
 	}
+    
+    void Menu::RegisterObject()
+    {
+        ObjectFactory::GetInstance()->RegisterFactory<Menu>("UI");
+        ObjectFactory::GetInstance()->RegisterParentProperties<Menu, Widget>();
+    }
 	
 	Menu::~Menu()
 	{

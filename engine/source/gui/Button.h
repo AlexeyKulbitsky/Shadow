@@ -16,6 +16,7 @@ namespace gui
 
 	class SHADOW_API Button : public Widget
 	{
+        SHADOW_OBJECT(Button)
 	public:
 		enum State : u32
 		{
@@ -37,10 +38,12 @@ namespace gui
 		Button();
 		Button(const String& text);
 		
-
+        static void RegisterObject();
+        
 		ButtonPtr Clone() const;
 
 		void SetToggleable(bool toggleable) { m_toggleable = toggleable; }
+        bool IsToggleable() const { return m_toggleable; }
 		void SetText(const String& text);
 		const String& GetText() const;
 		void SetToggled(bool toggled);

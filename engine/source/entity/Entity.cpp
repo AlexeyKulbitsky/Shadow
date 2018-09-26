@@ -20,6 +20,14 @@ namespace sh
 
 	Entity::~Entity()
 	{
+        for (size_t i = 0U; i < m_components.size(); ++i)
+        {
+            if (m_components[i])
+            {
+                delete m_components[i];
+                m_components[i] = nullptr;
+            }
+        }
 	}
 
 	//////////////////////////////////////////////////////////////

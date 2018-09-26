@@ -29,10 +29,12 @@ namespace sh
 			void SetFov(float fov);
 			void SetFarPlane(float farPlane);
 			void SetNearPlane(float nearPlane);
+            void SetViewport(const math::Rect& viewport);
 
 			float GetFov() const;
 			float GetNearPlane() const;
 			float GetFarPlane() const;
+            const math::Rect& GetViewport() const;
 
 			const math::Matrix4& GetViewMatrix();
 			const math::Matrix4& GetProjectionMatrix();
@@ -57,6 +59,8 @@ namespace sh
 			float m_nearDistance;
 			float m_farDistance;
 			float m_aspectRatio;
+            
+            math::Rect m_viewport;
 
 			math::Matrix4 m_projectionMatrix;
 			math::Matrix4 m_rotationMatrix;

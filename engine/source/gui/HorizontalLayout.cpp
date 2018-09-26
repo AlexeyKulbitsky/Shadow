@@ -1,11 +1,22 @@
 #include "HorizontalLayout.h"
+#include "../serialization/ObjectFactory.h"
 
 namespace sh
 {
 	
 namespace gui
 {
-
+    HorizontalLayout::HorizontalLayout()
+    {
+        m_name = "HorizontalLayout";
+    }
+    
+    void HorizontalLayout::RegisterObject()
+    {
+        ObjectFactory::GetInstance()->RegisterFactory<HorizontalLayout>("UI");
+        ObjectFactory::GetInstance()->RegisterParentProperties<HorizontalLayout, Layout>();
+    }
+    
 	void HorizontalLayout::AddWidget(const WidgetPtr& widget)
 	{
 		Layout::AddWidget(widget);
@@ -40,13 +51,43 @@ namespace gui
 		const u32 elementCount = m_items.size();
 		s32 itemWidth = 0;
 		s32 offset = 0;
-
+        
+        float sum = 0.0f;
+        for (size_t i = 0; i < m_items.size(); ++i)
+        {
+            auto widget = m_items[i]->GetWidget();
+            if (widget)
+            {
+                sum += widget->GetFactor();
+            }
+            else
+            {
+                sum += 1.0f;
+            }
+        }
+        
+        const auto actualWidth = width - m_spacing * (elementCount - 1);
+        const float widthPerElement = actualWidth / sum;
+        
 		for (u32 i = 0; i < m_items.size(); ++i)
 		{
 			if (offset > width)
-				itemWidth = 0;
+            {
+                itemWidth = 0;
+            }
 			else
-				itemWidth = (width - offset - m_spacing * (elementCount - i - 1)) / (elementCount - i);
+            {
+                itemWidth = (width - offset - m_spacing * (elementCount - i - 1)) / (elementCount - i);
+                if (auto widget = m_items[i]->GetWidget())
+                {
+                    itemWidth = static_cast<s32>(widget->GetFactor() * widthPerElement);
+                }
+                else
+                {
+                    itemWidth = static_cast<s32>(widthPerElement);
+                }
+            }
+				
 			const s32 x = finalRect.upperLeftCorner.x + offset;
 			const s32 y = finalRect.upperLeftCorner.y;
 			m_items[i]->Resize(math::Rect(x, y, x + itemWidth, y + height));

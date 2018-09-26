@@ -172,6 +172,14 @@ namespace sh
 			m_nearDistance = nearPlane;
 			m_needsToRecalculateProjectionMatrix = true;
 		}
+        
+        /////////////////////////////////////////////////////////////////////
+        
+        void Camera::SetViewport(const math::Rect& viewport)
+        {
+            m_viewport = viewport;
+            m_needsToRecalculateProjectionMatrix = true;
+        }
 
 		/////////////////////////////////////////////////////////////////////
 
@@ -193,6 +201,13 @@ namespace sh
 		{ 
 			return m_farDistance; 
 		}
+        
+        /////////////////////////////////////////////////////////////////////
+        
+        const math::Rect& Camera::GetViewport() const
+        {
+            return m_viewport;
+        }
 
 		/////////////////////////////////////////////////////////////////////
 

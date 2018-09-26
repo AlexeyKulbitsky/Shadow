@@ -50,6 +50,17 @@ namespace sh
 		{
 			m_propertes[T::GetTypeNameStatic()][property->GetName()] = property;
 		}
+        
+        template<typename T, typename Parent>
+        void RegisterParentProperties()
+        {
+            static_assert(std::is_base_of<Parent, T>::value, "T is not an inheritant of Base!");
+            auto properties = GetProperties<Parent>();
+            for (auto property : (*properties))
+            {
+                m_propertes[T::GetTypeNameStatic()][property.second->GetName()] = property.second;
+            }
+        }
 
 		Property* GetProperty(const std::string& objectTypeName, const std::string& name);
 		template<typename T>
@@ -68,6 +79,7 @@ namespace sh
 		Serializable* CreateObject(const std::string& type);
 		std::vector<std::string> GetObjectTypes() const;
 		std::vector<std::string> GetObjectTypesForGroup(const String& groupName) const;
+        String GetGroupForObject(Serializable* object);
 
 	private:
 		std::map<std::string, ConcreteObjectFactory*> m_factories;

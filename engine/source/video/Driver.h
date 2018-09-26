@@ -52,6 +52,7 @@ namespace sh
 
 			// Viewport management
 			virtual void SetViewport(u32 x, u32 y, u32 width, u32 height);
+            virtual void SetViewport(const math::Rect& viewport);
 			virtual const math::Rect& GetViewport() const { return m_vp; }
 			virtual const math::Vector4& GetViewPort() const { return m_viewPort; }
 			virtual void SetDepthRange(f32 zMin, f32 zMax);

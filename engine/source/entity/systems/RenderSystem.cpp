@@ -57,22 +57,26 @@ namespace sh
 		if (renderComponent)
 		{
 			const scene::ModelPtr& model = renderComponent->GetModel();
-
-			for (size_t i = 0, sz = model->GetMeshesCount(); i < sz; ++i)
-			{
-				m_batchManager->AddMesh(model->GetMesh(i));
-			}
+            if (model)
+            {
+                for (size_t i = 0, sz = model->GetMeshesCount(); i < sz; ++i)
+                {
+                    m_batchManager->AddMesh(model->GetMesh(i));
+                }
+            }
 		}
 		
 		TerrainComponent* terrainComponent = entity->GetComponent<TerrainComponent>();
 		if (terrainComponent)
 		{
 			const scene::ModelPtr& model = terrainComponent->GetModel();
-
-			for (size_t i = 0, sz = model->GetMeshesCount(); i < sz; ++i)
-			{
-				m_batchManager->AddMesh(model->GetMesh(i));
-			}
+            if (model)
+            {
+                for (size_t i = 0, sz = model->GetMeshesCount(); i < sz; ++i)
+                {
+                    m_batchManager->AddMesh(model->GetMesh(i));
+                }
+            }
 		}
 	}
 
@@ -109,12 +113,12 @@ namespace sh
 			if (renderComponent)
 			{
 				TransformComponent* transformComponent = entity->GetComponent<TransformComponent>();
-				if (transformComponent)
+                model = renderComponent->GetModel().get();
+				if (transformComponent && model)
 				{
-					renderComponent->GetModel()->SetPosition(transformComponent->GetPosition());
-					renderComponent->GetModel()->SetWorldMatrix(transformComponent->GetWorldMatrix());
+					model->SetPosition(transformComponent->GetPosition());
+					model->SetWorldMatrix(transformComponent->GetWorldMatrix());
 				}
-				model = renderComponent->GetModel().get();
 			}
 			// Process if it is terrain
 			else
@@ -123,17 +127,20 @@ namespace sh
 				if (terrainComponent)
 				{
 					TransformComponent* transformComponent = entity->GetComponent<TransformComponent>();
-					if (transformComponent)
-					{
-						terrainComponent->GetModel()->SetPosition(transformComponent->GetPosition());
-						terrainComponent->GetModel()->SetWorldMatrix(transformComponent->GetWorldMatrix());
-					}
-					else
-					{
-						terrainComponent->GetModel()->SetPosition(math::Vector3(0.0f));
-						terrainComponent->GetModel()->SetWorldMatrix(math::Matrix4::Identity());
-					}
-					model = terrainComponent->GetModel().get();
+                    model = terrainComponent->GetModel().get();
+                    if (model)
+                    {
+                        if (transformComponent)
+                        {
+                            model->SetPosition(transformComponent->GetPosition());
+                            model->SetWorldMatrix(transformComponent->GetWorldMatrix());
+                        }
+                        else
+                        {
+                            model->SetPosition(math::Vector3(0.0f));
+                            model->SetWorldMatrix(math::Matrix4::Identity());
+                        }
+                    }
 				}
 			}
 
@@ -189,8 +196,12 @@ namespace sh
 				m_batchManager->AddMesh(mesh);
 			}
 		}
-
+        
+        auto driver = sh::Device::GetInstance()->GetDriver();
+        auto viewport = driver->GetViewport();
+        driver->SetViewport(camera->GetViewport());
 		m_batchManager->Submit();
+        driver->SetViewport(viewport);
 	}
 
 	//////////////////////////////////////////////////////////////////

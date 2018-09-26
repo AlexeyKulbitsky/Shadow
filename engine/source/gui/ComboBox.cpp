@@ -1,6 +1,7 @@
 #include "ComboBox.h"
 
 #include "GuiManager.h"
+#include "../serialization/ObjectFactory.h"
 
 namespace sh
 {
@@ -11,6 +12,7 @@ namespace gui
 	ComboBox::ComboBox()
 		: ComboBox(math::Rect(0, 0, 10, 10))
 	{
+        m_name = "ComboBox";
 	}
 
 	ComboBox::ComboBox(const math::Rect& rect)
@@ -29,7 +31,14 @@ namespace gui
 		VerticalLayoutPtr layout(new VerticalLayout());
 		layout->AddWidget(m_button);
 		SetLayout(layout);
+        m_name = "ComboBox";
 	}
+    
+    void ComboBox::RegisterObject()
+    {
+        ObjectFactory::GetInstance()->RegisterFactory<ComboBox>("UI");
+        ObjectFactory::GetInstance()->RegisterParentProperties<ComboBox, Widget>();
+    }
 
 	void ComboBox::Render(video::Painter* painter)
 	{

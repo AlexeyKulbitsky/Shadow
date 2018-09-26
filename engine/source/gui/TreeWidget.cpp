@@ -8,6 +8,7 @@
 
 #include "../Device.h"
 #include "../video/Driver.h"
+#include "../serialization/ObjectFactory.h"
 
 namespace sh
 {
@@ -213,8 +214,15 @@ namespace gui
 		m_layout.reset(new VerticalLayout());
 		m_layout->SetSpacing(1);
 		SetLayout(m_layout);
+        m_name = "TreeWidget";
 	}
 
+    void TreeWidget::RegisterObject()
+    {
+        ObjectFactory::GetInstance()->RegisterFactory<TreeWidget>("UI");
+        ObjectFactory::GetInstance()->RegisterParentProperties<TreeWidget, ScrollWidget>();
+    }
+    
 	void TreeWidget::AddItem(SPtr<TreeItem> item)
 	{
 		u32 indexToInsert = 0U;

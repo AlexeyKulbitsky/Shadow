@@ -11,9 +11,12 @@ namespace gui
 
 	class SHADOW_API MenuBar : public Widget
 	{
+        SHADOW_OBJECT(MenuBar)
 	public:
 		MenuBar();
 		MenuBar(const SpritePtr& sprite);
+        
+        static void RegisterObject();
 
 		void SetToggled(bool toggled);
 		bool IsToggled() const { return m_toggled; }

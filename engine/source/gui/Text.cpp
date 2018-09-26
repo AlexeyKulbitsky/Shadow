@@ -4,6 +4,7 @@
 #include "../font/Font.h"
 #include "../video/Texture.h"
 #include "../Device.h"
+#include "../serialization/ObjectFactory.h"
 
 namespace sh
 {
@@ -13,23 +14,34 @@ namespace gui
 
 	Text::Text()
 	{
+        m_name = "Text";
 	}
 
 	Text::Text(const math::Rect rect)
 	{
 		m_rect = rect;
+        m_name = "Text";
 	}
 
 	Text::Text(const String& text)
 	{
 		SetText(text);
+        m_name = "Text";
 	}
 
 	Text::Text(const math::Rect rect, const String& text)
 	{
 		m_rect = rect;
 		SetText(text);
+        m_name = "Text";
 	}
+    
+    void Text::RegisterObject()
+    {
+        ObjectFactory::GetInstance()->RegisterFactory<Text>("UI");
+        ObjectFactory::GetInstance()->RegisterParentProperties<Text, Widget>();
+        S_ACCESSOR_PROPERTY("Text", GetText, SetText);
+    }
 
 	Text::~Text()
 	{
@@ -50,10 +62,10 @@ namespace gui
 			m_glyphOffsets.resize(m_text.size());
 
 		painter->SetMaterial(GuiManager::GetInstance()->GetTextMaterial());
-		const auto cachedClipRect = painter->GetClipRect();
+		//const auto cachedClipRect = painter->GetClipRect();
 
-		painter->SetClipRect(math::Rect(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y,
-			m_rect.lowerRightCorner.x, m_rect.lowerRightCorner.y));
+		//painter->SetClipRect(math::Rect(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y,
+		//	m_rect.lowerRightCorner.x, m_rect.lowerRightCorner.y));
 
 		//const auto& viewPort = sh::Device::GetInstance()->GetDriver()->GetViewPort();
 
@@ -89,7 +101,7 @@ namespace gui
 
 			xOrigin += desc.advance;
 		}
-		painter->SetClipRect(cachedClipRect);
+		//painter->SetClipRect(cachedClipRect);
 	}
 
 	void Text::RenderText(video::Painter* painter)

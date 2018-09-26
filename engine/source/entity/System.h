@@ -20,6 +20,7 @@ namespace sh
 	{
 	public:
 		virtual void RegisterEntity(Entity* entity);
+        virtual void UnregisterEntity(Entity* entity);
 		virtual void RegisterComponent(Component* component);
 		virtual void AddEntity(Entity* entity);
 		virtual void RemoveEntity(Entity* entity);

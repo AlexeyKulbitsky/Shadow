@@ -11,7 +11,11 @@ namespace sh
 	class SHADOW_API Serializer
 	{
 	public:
+        virtual ~Serializer() = default;
 		virtual void Serialize(Serializable* serializable);
+        virtual void Deserialize(Serializable* serializable);
+        
+        virtual Serializer* Child() = 0;
 	};
 
 } // sh

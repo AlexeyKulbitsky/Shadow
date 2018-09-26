@@ -24,6 +24,7 @@ void EntityTreeItem::OnContextMenu(sh::s32 x, sh::s32 y)
 
 	sh::gui::MenuPtr menu(new sh::gui::Menu());
 	menu->AddItem("Add component");
+    menu->AddItem("Delete");
 	menu->SetPosition(x, y);
 
 	sh::gui::MenuPtr componentsMenu(new sh::gui::Menu());
@@ -63,6 +64,18 @@ void EntityTreeItem::OnMenuItemSelected(const sh::String& itemName)
 {
 	if (!m_entity)
 		return;
+    
+    if (itemName == "Delete")
+    {
+        m_treeWidget->GetLayout()->RemoveWidget(shared_from_this());
+        m_treeWidget->UpdateLayout();
+        // delete entity
+        auto sceneManager = sh::Device::GetInstance()->GetSceneManager();
+        sceneManager->UnregisterEntity(m_entity);
+        sceneManager->RemoveEntity(m_entity);
+        delete m_entity;
+        return;
+    }
 
 	auto object = sh::ObjectFactory::GetInstance()->CreateObject(itemName);
 	if (!object)

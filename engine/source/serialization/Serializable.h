@@ -8,8 +8,12 @@ namespace sh
 
 	class SHADOW_API Serializable
 	{
-		SHADOW_OBJECT(Serializable)
-	public:
+    public:
+        using ClassType = Serializable;
+        using BaseClassType = Serializable;
+        static const char* GetTypeNameStatic() { return "Serializable"; }
+        virtual const char* GetTypeName() { return GetTypeNameStatic(); }
+        
 		virtual void PrintDebugInfo() {}
 		virtual void Serialize();
 	};

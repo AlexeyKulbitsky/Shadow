@@ -3,6 +3,7 @@
 
 #include "../Globals.h"
 #include "GuiBatch.h"
+#include "../entity/Entity.h"
 
 namespace pugi
 {
@@ -12,6 +13,8 @@ namespace pugi
 namespace sh
 {
 
+    class Serializer;
+    
 namespace gui
 {
 	struct GuiBatchData;
@@ -39,12 +42,20 @@ namespace gui
 		MouseCode mouseButtonCode = MouseCode::ButtonLeft;
 	};
 
-	class SHADOW_API Widget : public std::enable_shared_from_this<Widget>
+	class SHADOW_API Widget
+        : public Entity
+        , public std::enable_shared_from_this<Widget>
 	{
+        SHADOW_OBJECT(Widget)
 		friend class GuiManager;
 	public:
 		Widget();
 		virtual ~Widget();
+        
+        static void RegisterObject();
+        
+        virtual void Serialize(Serializer* serializer);
+        virtual void Deserialize(Serializer* serializer);
 
 		void SetVisible(bool visible) { m_visible = visible; }
 		bool IsVisible() const { return m_visible; }
@@ -72,6 +83,8 @@ namespace gui
 		// Layout
 		void SetLayout(const LayoutPtr& layout);
 		const LayoutPtr& GetLayout() const { return m_layout; }
+        void SetFactor(float factor);
+        float GetFactor();
 
 		// Parent
 		void SetParent(Widget* parent) { m_parent = parent; }
@@ -83,13 +96,14 @@ namespace gui
 		virtual void CollectBatches(GuiLayerBatch& batch);
 		virtual void SetRect(const math::Rect& rect);
 		virtual void SetPosition(s32 x, s32 y);
+        
 		const sh::math::Vector2Int& GetPosition() const { return m_rect.upperLeftCorner; }
 		virtual void SetSize(const math::Vector2Int& size);
 		virtual void SetWidth(s32 width);
 		virtual void SetHeight(s32 height);
 		virtual bool ProcessEvent(GUIEvent& ev);
-        void SetName(const String& name) { m_name = name; }
-        const String& GetName() const { return m_name; }
+        //void SetName(const String& name) { m_name = name; }
+        //const String& GetName() const { return m_name; }
         WidgetPtr FindChild(const String& name);
 
 		//void SetFocus(bool focus);
@@ -109,11 +123,12 @@ namespace gui
 		math::Vector2Int m_minSize = math::Vector2Int(0);
 
 		video::MaterialPtr m_material;
-        String m_name;
+        //String m_name;
 
 		math::Rect m_rect;
 		bool m_visible = true;
 		bool m_enabled = true;
+        float m_factor = 1.0f;
 	};
 
 } // gui

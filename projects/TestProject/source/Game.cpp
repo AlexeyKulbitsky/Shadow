@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "Connection.h"
 
 #include <iostream>
 
@@ -13,15 +14,19 @@ Game::~Game()
 void Game::Init()
 {
 	sh::Application::Init();
+    
+    InitGameModule();
+    
+    sh::io::FileSystem::GetInstance()->AddFolder("../../assets");
 
-#if 0
 	sh::Device* device = sh::Device::GetInstance();
 
 	auto sceneMgr = device->GetSceneManager();
 	sceneMgr->LoadScene("test_scene.xml");
 	sh::scene::Camera* camera = sceneMgr->GetCamera();
-	camera->SetPosition(camera->GetPosition() + sh::math::Vector3f(0.0f, 0.0f, 20.0f));
-#endif
+	camera->SetPosition(camera->GetPosition() + sh::math::Vector3(0.0f, 0.0f, 20.0f));
+
+    sceneMgr->SetSystemsState(sh::SystemState::Running);
 }
 
 void Game::Destroy()
@@ -87,4 +92,15 @@ void Game::Update(sh::u64 delta)
 #endif
 
 	sh::Device* device = sh::Device::GetInstance();
+    sh::InputManager* inputManager = device->GetInputManager();
+    sh::scene::SceneManager* sceneMgr = device->GetSceneManager();
+    sh::scene::Camera* camera = sceneMgr->GetCamera();
+    
+    sh::video::Driver* driver = device->GetDriver();
+    
+    driver->BeginRendering();
+    
+    sceneMgr->Update();
+    
+    driver->EndRendering();
 }

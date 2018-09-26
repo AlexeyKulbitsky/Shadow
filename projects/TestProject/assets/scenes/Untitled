@@ -1,0 +1,2746 @@
+<?xml version="1.0"?>
+<scene>
+	<Object type="Widget">
+		<Enabled val="true" />
+		<MaxHeight val="0" />
+		<MaxWidth val="2147483647" />
+		<MinHeight val="0" />
+		<MinWidth val="0" />
+		<Name val="" />
+		<Rect val="800 600 0 0" />
+		<Visible val="true" />
+		<Object type="VerticalLayout">
+			<Object type="MenuBar">
+				<Enabled val="true" />
+				<MaxHeight val="0" />
+				<MaxWidth val="2147483647" />
+				<MinHeight val="0" />
+				<MinWidth val="0" />
+				<Name val="" />
+				<Rect val="800 20 0 0" />
+				<Visible val="true" />
+				<Object type="HorizontalLayout">
+					<Object type="Widget">
+						<Enabled val="true" />
+						<MaxHeight val="0" />
+						<MaxWidth val="50" />
+						<MinHeight val="0" />
+						<MinWidth val="0" />
+						<Name val="" />
+						<Rect val="50 20 0 0" />
+						<Visible val="false" />
+						<Object type="VerticalLayout">
+							<Object type="Button">
+								<Enabled val="true" />
+								<MaxHeight val="0" />
+								<MaxWidth val="2147483647" />
+								<MinHeight val="0" />
+								<MinWidth val="0" />
+								<Name val="" />
+								<Rect val="50 20 0 0" />
+								<Text val="File" />
+								<Toggleable val="true" />
+								<Visible val="true" />
+							</Object>
+						</Object>
+					</Object>
+					<Object type="Widget">
+						<Enabled val="true" />
+						<MaxHeight val="0" />
+						<MaxWidth val="50" />
+						<MinHeight val="0" />
+						<MinWidth val="0" />
+						<Name val="" />
+						<Rect val="100 20 50 0" />
+						<Visible val="false" />
+						<Object type="VerticalLayout">
+							<Object type="Button">
+								<Enabled val="true" />
+								<MaxHeight val="0" />
+								<MaxWidth val="2147483647" />
+								<MinHeight val="0" />
+								<MinWidth val="0" />
+								<Name val="" />
+								<Rect val="100 20 50 0" />
+								<Text val="Edit" />
+								<Toggleable val="true" />
+								<Visible val="true" />
+							</Object>
+						</Object>
+					</Object>
+				</Object>
+			</Object>
+			<Object type="ToolBar">
+				<Enabled val="true" />
+				<MaxHeight val="0" />
+				<MaxWidth val="2147483647" />
+				<MinHeight val="0" />
+				<MinWidth val="0" />
+				<Name val="" />
+				<Rect val="800 50 0 20" />
+				<Visible val="true" />
+				<Object type="HorizontalLayout">
+					<Object type="Button">
+						<Enabled val="true" />
+						<MaxHeight val="0" />
+						<MaxWidth val="30" />
+						<MinHeight val="0" />
+						<MinWidth val="0" />
+						<Name val="" />
+						<Rect val="30 50 0 20" />
+						<Text val="" />
+						<Toggleable val="true" />
+						<Visible val="true" />
+					</Object>
+					<Object type="Button">
+						<Enabled val="true" />
+						<MaxHeight val="0" />
+						<MaxWidth val="30" />
+						<MinHeight val="0" />
+						<MinWidth val="0" />
+						<Name val="" />
+						<Rect val="60 50 30 20" />
+						<Text val="" />
+						<Toggleable val="true" />
+						<Visible val="true" />
+					</Object>
+					<Object type="Button">
+						<Enabled val="true" />
+						<MaxHeight val="0" />
+						<MaxWidth val="30" />
+						<MinHeight val="0" />
+						<MinWidth val="0" />
+						<Name val="" />
+						<Rect val="90 50 60 20" />
+						<Text val="" />
+						<Toggleable val="true" />
+						<Visible val="true" />
+					</Object>
+					<Object type="Button">
+						<Enabled val="true" />
+						<MaxHeight val="0" />
+						<MaxWidth val="30" />
+						<MinHeight val="0" />
+						<MinWidth val="0" />
+						<Name val="" />
+						<Rect val="120 50 90 20" />
+						<Text val="" />
+						<Toggleable val="true" />
+						<Visible val="true" />
+					</Object>
+					<Object type="Button">
+						<Enabled val="true" />
+						<MaxHeight val="0" />
+						<MaxWidth val="30" />
+						<MinHeight val="0" />
+						<MinWidth val="0" />
+						<Name val="" />
+						<Rect val="150 50 120 20" />
+						<Text val="" />
+						<Toggleable val="true" />
+						<Visible val="true" />
+					</Object>
+					<Object type="Button">
+						<Enabled val="true" />
+						<MaxHeight val="0" />
+						<MaxWidth val="30" />
+						<MinHeight val="0" />
+						<MinWidth val="0" />
+						<Name val="" />
+						<Rect val="180 50 150 20" />
+						<Text val="" />
+						<Toggleable val="true" />
+						<Visible val="true" />
+					</Object>
+					<Object type="Button">
+						<Enabled val="true" />
+						<MaxHeight val="0" />
+						<MaxWidth val="30" />
+						<MinHeight val="0" />
+						<MinWidth val="0" />
+						<Name val="" />
+						<Rect val="210 50 180 20" />
+						<Text val="" />
+						<Toggleable val="true" />
+						<Visible val="true" />
+					</Object>
+				</Object>
+			</Object>
+			<Object type="HorizontalLayout">
+				<Object type="VerticalLayout">
+					<Object type="Window">
+						<Closable val="false" />
+						<Enabled val="true" />
+						<MaxHeight val="0" />
+						<MaxWidth val="2147483647" />
+						<MinHeight val="0" />
+						<MinWidth val="0" />
+						<Movable val="false" />
+						<Name val="" />
+						<Rect val="200 325 0 50" />
+						<Visible val="true" />
+						<Object type="VerticalLayout">
+							<Object type="TreeWidget">
+								<Enabled val="true" />
+								<MaxHeight val="0" />
+								<MaxWidth val="2147483647" />
+								<MinHeight val="0" />
+								<MinWidth val="0" />
+								<Name val="" />
+								<Rect val="198 323 2 77" />
+								<Visible val="true" />
+								<Object type="VerticalLayout">
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 92 2 77" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 92 22 77" />
+												<Text val="test_cube_0" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 108 2 93" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 108 22 93" />
+												<Text val="skybox_test" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 124 2 109" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 124 22 109" />
+												<Text val="light_0" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+								</Object>
+							</Object>
+						</Object>
+					</Object>
+					<Object type="Window">
+						<Closable val="true" />
+						<Enabled val="true" />
+						<MaxHeight val="0" />
+						<MaxWidth val="2147483647" />
+						<MinHeight val="0" />
+						<MinWidth val="0" />
+						<Movable val="false" />
+						<Name val="" />
+						<Rect val="200 600 0 325" />
+						<Visible val="true" />
+						<Object type="VerticalLayout">
+							<Object type="TreeWidget">
+								<Enabled val="true" />
+								<MaxHeight val="0" />
+								<MaxWidth val="2147483647" />
+								<MinHeight val="0" />
+								<MinWidth val="0" />
+								<Name val="" />
+								<Rect val="198 598 2 352" />
+								<Visible val="true" />
+								<Object type="VerticalLayout">
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 367 2 352" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="Button">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="20" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="22 367 2 352" />
+												<Text val="" />
+												<Toggleable val="true" />
+												<Visible val="true" />
+											</Object>
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="37 367 22 352" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 367 37 352" />
+												<Text val="assets" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 383 2 368" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="Button">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="20" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="42 383 22 368" />
+												<Text val="" />
+												<Toggleable val="true" />
+												<Visible val="true" />
+											</Object>
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="57 383 42 368" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 383 57 368" />
+												<Text val="textures" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 399 2 384" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="77 399 62 384" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 399 77 384" />
+												<Text val="Container.png" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 415 2 400" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="77 415 62 400" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 415 77 400" />
+												<Text val="ui_atlas.png" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 431 2 416" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="77 431 62 416" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 431 77 416" />
+												<Text val="HSVPalette.png" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 447 2 432" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="77 447 62 432" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 447 77 432" />
+												<Text val="heightmap_3.jpg" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 463 2 448" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="77 463 62 448" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 463 77 448" />
+												<Text val="heightmap_2.jpg" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 479 2 464" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="77 479 62 464" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 479 77 464" />
+												<Text val="statue.jpg" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 495 2 480" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="77 495 62 480" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 495 77 480" />
+												<Text val="heightmap_1.jpg" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 511 2 496" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="77 511 62 496" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 511 77 496" />
+												<Text val="chalet.jpg" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 527 2 512" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="Button">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="20" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="62 527 42 512" />
+												<Text val="" />
+												<Toggleable val="true" />
+												<Visible val="true" />
+											</Object>
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="77 527 62 512" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 527 77 512" />
+												<Text val="skybox" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 543 2 528" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="97 543 82 528" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 543 97 528" />
+												<Text val="bottom.jpg" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 559 2 544" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="97 559 82 544" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 559 97 544" />
+												<Text val="left.jpg" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 575 2 560" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="97 575 82 560" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 575 97 560" />
+												<Text val="top.jpg" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 591 2 576" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="97 591 82 576" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 591 97 576" />
+												<Text val="back.jpg" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 607 2 592" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="97 607 82 592" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 607 97 592" />
+												<Text val="right.jpg" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 623 2 608" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="97 623 82 608" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 623 97 608" />
+												<Text val="front.jpg" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 639 2 624" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="77 639 62 624" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 639 77 624" />
+												<Text val="editor_atlas.png" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 655 2 640" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="Button">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="20" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="42 655 22 640" />
+												<Text val="" />
+												<Toggleable val="true" />
+												<Visible val="true" />
+											</Object>
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="57 655 42 640" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 655 57 640" />
+												<Text val="scenes" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 671 2 656" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 671 62 656" />
+												<Text val="test_scene__.xml" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 687 2 672" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 687 62 672" />
+												<Text val="test_scene1.xml" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 703 2 688" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 703 62 688" />
+												<Text val="test_scene.xml" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 719 2 704" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 719 62 704" />
+												<Text val="aaa.xml" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 735 2 720" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 735 62 720" />
+												<Text val="Untitled" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 751 2 736" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="Button">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="20" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="42 751 22 736" />
+												<Text val="" />
+												<Toggleable val="true" />
+												<Visible val="true" />
+											</Object>
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="57 751 42 736" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 751 57 736" />
+												<Text val="materials" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 767 2 752" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="77 767 62 752" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 767 77 752" />
+												<Text val="testMaterial.mat" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 783 2 768" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="77 783 62 768" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 783 77 768" />
+												<Text val="skyboxMaterial.mat" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 799 2 784" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="77 799 62 784" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 799 77 784" />
+												<Text val="terrain.mat" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 815 2 800" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="77 815 62 800" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 815 77 800" />
+												<Text val="default.mat" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 831 2 816" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="Button">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="20" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="42 831 22 816" />
+												<Text val="" />
+												<Toggleable val="true" />
+												<Visible val="true" />
+											</Object>
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="57 831 42 816" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 831 57 816" />
+												<Text val="models" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 847 2 832" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="Button">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="20" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="62 847 42 832" />
+												<Text val="" />
+												<Toggleable val="true" />
+												<Visible val="true" />
+											</Object>
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="77 847 62 832" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 847 77 832" />
+												<Text val="nanosuit" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 863 2 848" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="97 863 82 848" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 863 97 848" />
+												<Text val="body_showroom_ddn.png" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 879 2 864" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="97 879 82 864" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 879 97 864" />
+												<Text val="helmet_showroom_ddn.png" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 895 2 880" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="97 895 82 880" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 895 97 880" />
+												<Text val="arm_showroom_ddn.png" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 911 2 896" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="97 911 82 896" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 911 97 896" />
+												<Text val="arm_showroom_spec.png" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 927 2 912" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="97 927 82 912" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 927 97 912" />
+												<Text val="leg_dif.png" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 943 2 928" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="97 943 82 928" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 943 97 928" />
+												<Text val="hand_showroom_spec.png" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 959 2 944" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="97 959 82 944" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 959 97 944" />
+												<Text val="glass_ddn.png" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 975 2 960" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 975 82 960" />
+												<Text val="nanosuit.mtl" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 991 2 976" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="97 991 82 976" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 991 97 976" />
+												<Text val="body_dif.png" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 1007 2 992" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="97 1007 82 992" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 1007 97 992" />
+												<Text val="hand_showroom_ddn.png" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 1023 2 1008" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="97 1023 82 1008" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 1023 97 1008" />
+												<Text val="glass_dif.png" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 1039 2 1024" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="97 1039 82 1024" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 1039 97 1024" />
+												<Text val="arm_dif.png" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 1055 2 1040" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="97 1055 82 1040" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 1055 97 1040" />
+												<Text val="helmet_diff.png" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 1071 2 1056" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="97 1071 82 1056" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 1071 97 1056" />
+												<Text val="nanosuit.obj" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 1087 2 1072" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="97 1087 82 1072" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 1087 97 1072" />
+												<Text val="leg_showroom_ddn.png" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 1103 2 1088" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="97 1103 82 1088" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 1103 97 1088" />
+												<Text val="helmet_showroom_spec.png" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 1119 2 1104" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="97 1119 82 1104" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 1119 97 1104" />
+												<Text val="leg_showroom_spec.png" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 1135 2 1120" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="97 1135 82 1120" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 1135 97 1120" />
+												<Text val="body_showroom_spec.png" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 1151 2 1136" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="97 1151 82 1136" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 1151 97 1136" />
+												<Text val="hand_dif.png" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 1167 2 1152" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="77 1167 62 1152" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 1167 77 1152" />
+												<Text val="directionalLight.3ds" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 1183 2 1168" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="77 1183 62 1168" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 1183 77 1168" />
+												<Text val="arrow.fbx" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 1199 2 1184" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="Button">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="20" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="62 1199 42 1184" />
+												<Text val="" />
+												<Toggleable val="true" />
+												<Visible val="true" />
+											</Object>
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="77 1199 62 1184" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 1199 77 1184" />
+												<Text val="triangle" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 1215 2 1200" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="97 1215 82 1200" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 1215 97 1200" />
+												<Text val="triangle.obj" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 1231 2 1216" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="97 1231 82 1216" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 1231 97 1216" />
+												<Text val="statue.jpg" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 1247 2 1232" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 1247 82 1232" />
+												<Text val="triangle.mtl" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 1263 2 1248" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 1263 62 1248" />
+												<Text val="monkey.mtl" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 1279 2 1264" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="77 1279 62 1264" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 1279 77 1264" />
+												<Text val="cube.obj" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 1295 2 1280" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="77 1295 62 1280" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 1295 77 1280" />
+												<Text val="arrow.3ds" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 1311 2 1296" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="77 1311 62 1296" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 1311 77 1296" />
+												<Text val="monkey.obj" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 1327 2 1312" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="77 1327 62 1312" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 1327 77 1312" />
+												<Text val="chalet.obj" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 1343 2 1328" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="77 1343 62 1328" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 1343 77 1328" />
+												<Text val="FPSWeapons.obj" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 1359 2 1344" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 1359 42 1344" />
+												<Text val="config.xml" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 1375 2 1360" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="Button">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="20" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="42 1375 22 1360" />
+												<Text val="" />
+												<Toggleable val="true" />
+												<Visible val="true" />
+											</Object>
+											<Object type="SpriteWidget">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="15" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="57 1375 42 1360" />
+												<Visible val="true" />
+											</Object>
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 1375 57 1360" />
+												<Text val="shaders" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 1391 2 1376" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 1391 62 1376" />
+												<Text val="terrain.rt" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 1407 2 1392" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 1407 62 1392" />
+												<Text val="skybox.rt" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+									<Object type="Button">
+										<Enabled val="true" />
+										<MaxHeight val="15" />
+										<MaxWidth val="2147483647" />
+										<MinHeight val="15" />
+										<MinWidth val="0" />
+										<Name val="" />
+										<Rect val="198 1423 2 1408" />
+										<Text val="" />
+										<Toggleable val="true" />
+										<Visible val="true" />
+										<Object type="HorizontalLayout">
+											<Object type="Label">
+												<Enabled val="true" />
+												<MaxHeight val="0" />
+												<MaxWidth val="2147483647" />
+												<MinHeight val="0" />
+												<MinWidth val="0" />
+												<Name val="" />
+												<Rect val="198 1423 62 1408" />
+												<Text val="const_color.rt" />
+												<Visible val="true" />
+											</Object>
+										</Object>
+									</Object>
+								</Object>
+							</Object>
+						</Object>
+					</Object>
+				</Object>
+				<Object type="Widget">
+					<Enabled val="false" />
+					<MaxHeight val="0" />
+					<MaxWidth val="2147483647" />
+					<MinHeight val="0" />
+					<MinWidth val="0" />
+					<Name val="" />
+					<Rect val="400 600 200 50" />
+					<Visible val="false" />
+				</Object>
+				<Object type="Widget">
+					<Enabled val="false" />
+					<MaxHeight val="0" />
+					<MaxWidth val="2147483647" />
+					<MinHeight val="0" />
+					<MinWidth val="0" />
+					<Name val="" />
+					<Rect val="600 600 400 50" />
+					<Visible val="false" />
+				</Object>
+				<Object type="VerticalLayout">
+					<Object type="Window">
+						<Closable val="false" />
+						<Enabled val="true" />
+						<MaxHeight val="0" />
+						<MaxWidth val="2147483647" />
+						<MinHeight val="0" />
+						<MinWidth val="0" />
+						<Movable val="false" />
+						<Name val="" />
+						<Rect val="800 600 600 50" />
+						<Visible val="true" />
+						<Object type="VerticalLayout" />
+					</Object>
+				</Object>
+			</Object>
+		</Object>
+	</Object>
+	<Object type="Window">
+		<Closable val="false" />
+		<Enabled val="true" />
+		<MaxHeight val="0" />
+		<MaxWidth val="2147483647" />
+		<MinHeight val="0" />
+		<MinWidth val="0" />
+		<Movable val="true" />
+		<Name val="" />
+		<Rect val="350 500 100 100" />
+		<Visible val="false" />
+		<Object type="VerticalLayout">
+			<Object type="Widget">
+				<Enabled val="true" />
+				<MaxHeight val="0" />
+				<MaxWidth val="2147483647" />
+				<MinHeight val="0" />
+				<MinWidth val="0" />
+				<Name val="" />
+				<Rect val="348 147 102 127" />
+				<Visible val="true" />
+				<Object type="HorizontalLayout">
+					<Object type="Label">
+						<Enabled val="true" />
+						<MaxHeight val="0" />
+						<MaxWidth val="2147483647" />
+						<MinHeight val="0" />
+						<MinWidth val="0" />
+						<Name val="" />
+						<Rect val="225 147 102 127" />
+						<Text val="Render technique" />
+						<Visible val="true" />
+					</Object>
+					<Object type="ComboBox">
+						<Enabled val="true" />
+						<MaxHeight val="0" />
+						<MaxWidth val="2147483647" />
+						<MinHeight val="0" />
+						<MinWidth val="0" />
+						<Name val="" />
+						<Rect val="348 147 225 127" />
+						<Visible val="true" />
+						<Object type="VerticalLayout">
+							<Object type="Button">
+								<Enabled val="true" />
+								<MaxHeight val="0" />
+								<MaxWidth val="2147483647" />
+								<MinHeight val="0" />
+								<MinWidth val="0" />
+								<Name val="" />
+								<Rect val="348 147 225 127" />
+								<Text val="ConstantColor3D.rt" />
+								<Toggleable val="true" />
+								<Visible val="true" />
+							</Object>
+						</Object>
+					</Object>
+				</Object>
+			</Object>
+		</Object>
+	</Object>
+	<Object type="Window">
+		<Closable val="false" />
+		<Enabled val="true" />
+		<MaxHeight val="0" />
+		<MaxWidth val="2147483647" />
+		<MinHeight val="0" />
+		<MinWidth val="0" />
+		<Movable val="true" />
+		<Name val="" />
+		<Rect val="350 500 100 100" />
+		<Visible val="false" />
+		<Object type="VerticalLayout">
+			<Object type="ImageWidget" />
+		</Object>
+	</Object>
+</scene>

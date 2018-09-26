@@ -11,10 +11,14 @@ namespace gui
 
 	class SHADOW_API Window : public Widget
 	{
+        SHADOW_OBJECT(Window)
 		friend class Style;
 	public:
+        Window();
 		Window(const math::Rect& rect);
 		Window(const SpritePtr& outSprite, const SpritePtr& inSprite, const SpritePtr& barSprite);
+        
+        static void RegisterObject();
 
 		void SetText(const String& text);
 
@@ -44,7 +48,7 @@ namespace gui
 	private:
 		void InternalUpdate();
 
-	private:
+	protected:
 		SpritePtr m_sprite;
 		bool m_dragStarted = false;
 		math::Vector2Int m_startPos;

@@ -52,8 +52,11 @@ namespace gui
 
 	class SHADOW_API TreeWidget : public ScrollWidget
 	{
+        SHADOW_OBJECT(TreeWidget)
 	public:
 		TreeWidget();
+        
+        static void RegisterObject();
 		void AddItem(SPtr<TreeItem> item);
 		virtual void SetSelectedItem(TreeItem* item);
 		TreeItem* GetSelectedItem() { return m_selectedItem; }

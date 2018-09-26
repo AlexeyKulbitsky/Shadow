@@ -7,11 +7,11 @@
 			<Scale val="1 1 1" />
 		</component>
 		<component type="LightComponent">
-			<Color val="0.957031 0.957031 0.734375 0" />
+			<Color val="0.957031 0.957031 0.734375" />
 			<Type val="1" />
 		</component>
 		<component type="TestComponent">
-			<Vector3 val="10.1 111.2 -1" />
+			<Vector3 val="10.1 111.2 -1.0" />
 		</component>
 	</entity>
 	<entity name="skybox_test">
@@ -34,16 +34,28 @@
 			</Materials>
 			<Model val="cube.obj" />
 		</component>
-		<component type="ScriptComponent">
-			<Script type="ScriptA">
-				<Quaternion val="-0.1 0.2 -0.02 0" />
-				<Vector3 val="1 0 15" />
-			</Script>
+	</entity>
+	<entity name="test_cube_1">
+		<component type="TransformComponent">
+			<Position val="2 2 -2" />
+			<Rotation val="0 0 0 1" />
+			<Scale val="1 1 1" />
 		</component>
-		<component type="CameraComponent">
-			<Far plane />
-			<Fov />
-			<Near plane />
+		<component type="RenderComponent">
+			<Materials>
+				<Box001 val="testMaterial.mat" />
+			</Materials>
+			<Model val="cube.obj" />
+		</component>
+	</entity>
+	<entity name="test_terrain">
+		<component type="TransformComponent">
+			<Position val="0 0 0" />
+			<Rotation val="0 0 0 1" />
+			<Scale val="1 1 1" />
+		</component>
+		<component type="TerrainComponent">
+			<Heightmap val="heightmap_2.jpg" />
 		</component>
 	</entity>
 </scene>

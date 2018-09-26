@@ -23,6 +23,7 @@ namespace scene
 		size_t GetEntitiesCount() const;
 		Entity* GetEntity(size_t index);
 		void RegisterEntity(Entity* entity);
+        void UnregisterEntity(Entity* entity);
 		void SetSystemsState(SystemState state);
 
 		void Update(float deltaTime = 0.0f);

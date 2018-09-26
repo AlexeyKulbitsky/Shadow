@@ -1,6 +1,7 @@
 #include "FloatLineEdit.h"
 #include "GuiManager.h"
 #include "Sprite.h"
+#include "../serialization/ObjectFactory.h"
 
 #include <iomanip>
 
@@ -13,6 +14,7 @@ namespace gui
 		: LineEdit()
 	{
 		m_text = "0";
+        m_name = "FloatLineEdit";
 	}
 
 	FloatLineEdit::FloatLineEdit(const math::Rect& rect, 
@@ -20,8 +22,16 @@ namespace gui
 								const SpritePtr& editSprite)
 				  : LineEdit(rect, defaultSprite, editSprite)
 	{
+        m_name = "FloatLineEdit";
 	}
 
+    void FloatLineEdit::RegisterObject()
+    {
+        ObjectFactory::GetInstance()->RegisterFactory<FloatLineEdit>("UI");
+        ObjectFactory::GetInstance()->RegisterParentProperties<FloatLineEdit, LineEdit>();
+        S_ACCESSOR_PROPERTY("Value", GetValue, SetValue);
+    }
+    
 	bool FloatLineEdit::ProcessEvent(GUIEvent& ev)
 	{
 		if (IsInFocus() && ev.type == EventType::KeyDown)

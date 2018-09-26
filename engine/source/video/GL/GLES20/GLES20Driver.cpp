@@ -174,6 +174,14 @@ void GLES20Driver::SetViewport( u32 x, u32 y, u32 width, u32 height )
 	GL_CALL(glViewport( (GLint)x, (GLint)y, (GLsizei)width, (GLsizei)height ));
 }
 
+////////////////////////////////////////////////////////////////////////
+
+void GLES20Driver::SetViewport(const math::Rect& viewport)
+{
+    m_contextManager->Update();
+    Driver::SetViewport(viewport);
+    GL_CALL(glViewport((GLint)m_vp.upperLeftCorner.x, (GLint)m_vp.upperLeftCorner.y, (GLsizei)m_vp.GetWidth(), (GLsizei)m_vp.GetHeight()));
+}
 
 ////////////////////////////////////////////////////////////////////////
 

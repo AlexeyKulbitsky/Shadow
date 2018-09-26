@@ -12,6 +12,7 @@ namespace gui
 	
 	class SHADOW_API ScrollWidget : public Widget
 	{
+        SHADOW_OBJECT(ScrollWidget)
 	public:
 		class ScrollBar : public Button
 		{
@@ -38,6 +39,9 @@ namespace gui
 
 		ScrollWidget(); 
 		ScrollWidget(const SPtr<ScrollBar>& scrollBar);
+        
+        static void RegisterObject();
+        
 		virtual ~ScrollWidget();
 
 		virtual void Render(video::Painter* painter) override;

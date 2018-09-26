@@ -1,5 +1,6 @@
 #include "InspectorWidget.h"
 #include "ComponentEditor.h"
+#include "../propertyeditors/PropertyEditorsFactory.h"
 
 InspectorWidget::InspectorWidget()
 	: sh::gui::Window(sh::math::Rect(100, 100, 350, 500))
@@ -24,6 +25,19 @@ void InspectorWidget::SetEntity(sh::Entity* entity)
 	if (!m_entity)
 		return;
 
+    // Read the properties of the entity itself
+    auto properties = sh::ObjectFactory::GetInstance()->GetProperties(m_entity->GetTypeName());
+    if (properties)
+    {
+        for (const auto& property : (*properties))
+        {
+            auto propertyEditor = PropertyEditorsFactory::GetInstance()->CreatePropertyEditor(m_entity, property.second);
+            if (propertyEditor)
+                m_layout->AddWidget(propertyEditor);
+        }
+    }
+    
+    // Read the components
 	const auto& components = m_entity->GetComponents();
 	for (auto component : components)
 	{

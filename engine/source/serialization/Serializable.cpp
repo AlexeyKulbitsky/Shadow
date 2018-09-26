@@ -6,8 +6,8 @@ namespace sh
 
 	void Serializable::Serialize()
 	{
-		Serializer serializer;
-		serializer.Serialize(this);
+		//Serializer serializer;
+		//serializer.Serialize(this);
 	}
 
 } // sh

@@ -85,6 +85,21 @@ namespace scene
 			system->RegisterEntity(entity);
 		}
 	}
+    
+    //////////////////////////////////////////////////////////////////////////////////////////////
+
+    void Scene::UnregisterEntity(Entity* entity)
+    {
+        for (auto system : m_systems)
+        {
+            system->UnregisterEntity(entity);
+        }
+        
+        for (auto system : m_switchableSystems)
+        {
+            system->UnregisterEntity(entity);
+        }
+    }
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
 

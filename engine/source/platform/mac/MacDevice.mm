@@ -659,6 +659,22 @@ namespace sh
     
     String MacDevice::ShowSaveFileDialog()
     {
+        NSSavePanel* saveDialog = [NSSavePanel savePanel];
+        [saveDialog setPrompt:@"Select"];
+        [saveDialog setCanChooseFiles:YES];
+        //[saveDialog setCanChooseDirectories:NO];
+        //[saveDialog setAllowsMultipleSelection:NO];
+        [saveDialog setMessage:@"Import one or more files or directories."];
+        
+        if ([saveDialog runModal] == NSOKButton )
+        {
+            NSString *FilePath = [NSString stringWithFormat:@"%@",[saveDialog URL]];
+            String subsrt = "file://";
+            String result = String([FilePath UTF8String]);
+            result.erase(0, subsrt.size());
+            return result;
+        }
+        
         return String();
     }
     

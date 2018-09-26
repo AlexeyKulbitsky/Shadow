@@ -41,13 +41,16 @@ public:
 	HierarchyWidget();
 	~HierarchyWidget();
 
-	void AddEntity(sh::Entity* entity);
+    void AddEntity(sh::Entity* entity, sh::gui::TreeItem* parent = nullptr);
 	void SetSelectedEntity(sh::Entity* entity);
 
+    virtual bool ProcessEvent(sh::gui::GUIEvent& ev) override;
+    
 	sh::Event<void, sh::Entity*> OnEntitySelected;
 
 private:
 	void SelectEntity(sh::u32 index);
+    void OnMenuItemSelected(const sh::String& itemName);
 
 private:
 	sh::gui::VerticalLayoutPtr m_layout;

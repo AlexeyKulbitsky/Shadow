@@ -11,11 +11,14 @@ namespace gui
 
 	class SHADOW_API Text : public Widget
 	{
+        SHADOW_OBJECT(Text)
 	public:
 		Text(); 
 		Text(const math::Rect rect);
 		Text(const String& text);
 		Text(const math::Rect rect, const String& text);
+        
+        static void RegisterObject();
 
 		virtual ~Text();
 

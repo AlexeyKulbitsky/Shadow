@@ -1,4 +1,5 @@
 #include "VerticalLayout.h"
+#include "../serialization/ObjectFactory.h"
 
 namespace sh
 {
@@ -6,6 +7,17 @@ namespace sh
 namespace gui
 {
 
+    VerticalLayout::VerticalLayout()
+    {
+        m_name = "VerticalLayout";
+    }
+    
+    void VerticalLayout::RegisterObject()
+    {
+        ObjectFactory::GetInstance()->RegisterFactory<VerticalLayout>("UI");
+        ObjectFactory::GetInstance()->RegisterParentProperties<VerticalLayout, Layout>();
+    }
+    
 	void VerticalLayout::AddWidget(const WidgetPtr& widget)
 	{
 		Layout::AddWidget(widget);

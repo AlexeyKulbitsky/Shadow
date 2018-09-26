@@ -61,6 +61,13 @@ namespace sh
 		}
 
 		/////////////////////////////////////////////////////////////////////////
+        
+        void Driver::SetViewport(const math::Rect& viewport)
+        {
+            m_vp = viewport;
+        }
+        
+        /////////////////////////////////////////////////////////////////////////
 	
 		void Driver::SetDepthRange(f32 zMin, f32 zMax)
 		{

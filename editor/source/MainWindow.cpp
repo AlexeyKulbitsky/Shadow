@@ -4,6 +4,7 @@
 #include "selection/SelectionManager.h"
 #include "gui/propertyeditors/PropertyEditorsFactory.h"
 
+
 //#include <Windows.h>
 //#include <Commdlg.h>
 //#include <tchar.h>
@@ -89,10 +90,27 @@ void MainWindow::OpenScene(const sh::String& path)
         auto entity = sceneMgr->GetEntity(i);
         m_hierarchyWidget->AddEntity(entity);
     }
+    
+    auto guiManager = sh::gui::GuiManager::GetInstance();
+    const auto& children = guiManager->GetChildren();
+    
+    for (auto child : children)
+    {
+        m_hierarchyWidget->AddEntity(child.get());
+    }
 }
 
 void MainWindow::SaveScene()
 {
+    auto path = sh::Device::GetInstance()->ShowSaveFileDialog();
+    if (path.empty())
+        return;
+    
+    //sh::scene::SceneManager* sceneMgr = sh::Device::GetInstance()->GetSceneManager();
+    //sceneMgr->SaveScene(path.c_str());
+    
+    sh::gui::GuiManager::GetInstance()->SaveScreen(path);
+    
 #if 0
 	HWND hWnd = (HWND)sh::Device::GetInstance()->GetWinId();
 
@@ -347,8 +365,19 @@ void MainWindow::OnKeyboardEvent(sh::KeyboardEventType type, sh::KeyCode code)
 
 void MainWindow::OnWindowResized(int width, int height)
 {
-	sh::gui::GuiManager::GetInstance()->SetFocusWidget(nullptr);
+    auto guiManager = sh::gui::GuiManager::GetInstance();
+	guiManager->SetFocusWidget(nullptr);
+    guiManager->GetCamera()->SetProjection(3.1415926535f / 3.0f,
+                                                     static_cast<float>( width ),
+                                                     static_cast<float>( height ), 0.1f, 1000.0f);
+    guiManager->GetCamera()->SetViewport(sh::math::Rect(0, 0, width, height));
 	m_mainWidget->SetRect(sh::math::Rect(0, 0, width, height));
+    
+}
+
+void MainWindow::OnSurfaceChanged(void*, int width, int height)
+{
+    OnWindowResized(width, height);
 }
 
 void MainWindow::Init()
@@ -368,11 +397,13 @@ void MainWindow::Init()
 	sh::Device::GetInstance()->mouseWheelEvent.Connect(std::bind(&MainWindow::OnMouseWeelEvent, this, _1, _2, _3));
 	sh::Device::GetInstance()->keyboardEvent.Connect(std::bind(&MainWindow::OnKeyboardEvent, this, _1, _2));
 	sh::Device::GetInstance()->windowResizeEvent.Connect(std::bind(&MainWindow::OnWindowResized, this, _1, _2));
+    sh::Device::GetInstance()->sursafeChangedEvent.Connect(std::bind(&MainWindow::OnSurfaceChanged, this, _1, _2, _3));
 
 	auto fileSystem = sh::Device::GetInstance()->GetFileSystem();
 
 	auto guiMgr = sh::gui::GuiManager::GetInstance();
 	m_mainWidget.reset(new sh::gui::Widget());
+    m_mainWidget->SetName("MainWidget");
 	guiMgr->AddChild(m_mainWidget);
 	guiMgr->LoadGui("editor_gui.xml");
 
@@ -392,6 +423,7 @@ void MainWindow::Init()
 	PropertyEditorsFactory::CreateInstance();
 
 	sh::gui::VerticalLayoutPtr mainVerticalLayout(new sh::gui::VerticalLayout());
+    mainVerticalLayout->SetName("MainVerticalLayout");
 	
 	mainVerticalLayout->AddWidget(CreateMenuBar());
 	mainVerticalLayout->AddWidget(CreateToolbar());
@@ -420,14 +452,10 @@ void MainWindow::Init()
 	//guiMgr->AddChild(colorPicker);
 
 	mainLayout->AddLayout(assetsHierarchyLayout);
-	sh::gui::WidgetPtr emptyWidget(new sh::gui::Widget());
-	emptyWidget->SetVisible(false);
-	emptyWidget->SetEnabled(false);
-	mainLayout->AddWidget(emptyWidget);
-	emptyWidget.reset(new sh::gui::Widget());
-	emptyWidget->SetVisible(false);
-	emptyWidget->SetEnabled(false);
-	mainLayout->AddWidget(emptyWidget);
+    
+    m_sceneWindow.reset(new SceneWindow());
+    m_sceneWindow->SetFactor(2.0f);
+    mainLayout->AddWidget(m_sceneWindow);
 	mainLayout->AddLayout(inspectorLayout);
 	m_mainWidget->SetLayout(mainVerticalLayout);
 	auto viewport = sh::Device::GetInstance()->GetDriver()->GetViewport();

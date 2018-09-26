@@ -4,6 +4,7 @@
 #include "../Device.h"
 #include "../scene/SceneManager.h"
 #include "../scene/Camera.h"
+#include "../serialization/ObjectFactory.h"
 
 namespace sh
 {
@@ -15,12 +16,18 @@ namespace gui
 	{
 		m_material.reset(new video::Material());
 		m_material->SetRenderTechnique("Primitive2D.rt");
+        m_name = "ImageWidget";
 	}
 
 	ImageWidget::~ImageWidget()
 	{
 
 	}
+    
+    void ImageWidget::RegisterObject()
+    {
+        ObjectFactory::GetInstance()->RegisterFactory<ImageWidget>("UI");
+    }
 
 	void ImageWidget::SetTexture(const video::TexturePtr& texture)
 	{

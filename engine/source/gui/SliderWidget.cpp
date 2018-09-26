@@ -6,6 +6,7 @@
 #include "../video/Painter.h"
 #include "../Device.h"
 #include "../video/Driver.h"
+#include "../serialization/ObjectFactory.h"
 
 namespace sh
 {
@@ -25,7 +26,17 @@ namespace gui
 		m_sliderRect.upperLeftCorner = m_rect.upperLeftCorner;
 		m_sliderRect.lowerRightCorner.x = m_rect.upperLeftCorner.x + 10;
 		m_sliderRect.lowerRightCorner.y = m_rect.lowerRightCorner.y;
+        m_name = "SliderWidget";
 	}
+    
+    void SliderWidget::RegisterObject()
+    {
+        ObjectFactory::GetInstance()->RegisterFactory<SliderWidget>("UI");
+        ObjectFactory::GetInstance()->RegisterParentProperties<SliderWidget, Widget>();
+        S_ACCESSOR_PROPERTY("Value", GetValue, SetValue);
+        S_ACCESSOR_PROPERTY("MinValue", GetMinValue, SetMinValue);
+        S_ACCESSOR_PROPERTY("MaxValue", GetMaxValue, SetMaxValue);
+    }
 
 	SliderWidget::~SliderWidget()
 	{

@@ -40,15 +40,21 @@ namespace gui
 		void Init();
 		void Update(u32 delta);
 		void Render();
+        
+        void LoadScreen(const String& fileName);
+        void SaveScreen(const String& fileName);
 
 		void LoadGui(const String& name);
 		void AddChild(const SPtr<Widget>& child, bool back = true);
 		void AddChildFront(const SPtr<Widget>& child);
+        
+        scene::Camera* GetCamera();
 
 		void SetFont(const FontPtr& font);
 		const FontPtr& GetFont() const { return m_font; }
 
 		size_t GetChildrenCount() const { return m_children.size(); }
+        const List<SPtr<Widget>>& GetChildren() const { return m_children; }
 		void RemoveChild(size_t index);
 		void RemoveChild(const WidgetPtr& child);
 		void RemoveAllChildren() { m_children.clear(); }
@@ -78,6 +84,8 @@ namespace gui
 		SPtr<Widget> m_focusWidget;
 		Queue<SPtr<Widget>> m_focusWidgetsQueue;
 		Queue<SPtr<Widget>> m_widgetsToRemove;
+        
+        scene::Camera* m_camera = nullptr;
 
 		///////////////////////////////////
 

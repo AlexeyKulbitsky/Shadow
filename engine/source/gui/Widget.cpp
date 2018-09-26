@@ -3,6 +3,8 @@
 #include "GuiManager.h"
 
 #include "../Device.h"
+#include "../serialization/Serializer.h"
+#include "../serialization/ObjectFactory.h"
 
 #include <pugixml.hpp>
 
@@ -14,12 +16,46 @@ namespace gui
 
 	Widget::Widget()
 	{
+        m_name = "Widget";
 		m_rect.lowerRightCorner = math::Vector2Int(10, 10);
 	}
 
 	Widget::~Widget()
 	{
 	}
+    
+    void Widget::RegisterObject()
+    {
+        ObjectFactory::GetInstance()->RegisterFactory<Widget>("UI");
+        S_ACCESSOR_PROPERTY("Name", GetName, SetName);
+        S_ACCESSOR_PROPERTY("Rect", GetRect, SetRect);
+        S_ACCESSOR_PROPERTY("MinWidth", GetMinimumWidth, SetMinimumWidth);
+        S_ACCESSOR_PROPERTY("MinHeight", GetMinimumHeight, SetMinimumHeight);
+        S_ACCESSOR_PROPERTY("MaxWidth", GetMaximumWidth, SetMaximumWidth);
+        S_ACCESSOR_PROPERTY("MaxHeight", GetMinimumHeight, SetMaximumHeight);
+        S_ACCESSOR_PROPERTY("Enabled", IsEnabled, SetEnabled);
+        S_ACCESSOR_PROPERTY("Visible", IsVisible, SetVisible);
+    }
+    
+    void Widget::Serialize(Serializer* serializer)
+    {
+        Serializer* childSerializer = serializer->Child();
+        childSerializer->Serialize(this);
+        if (m_layout)
+        {
+            m_layout->Serialize(childSerializer);
+        }
+        delete childSerializer;
+    }
+    
+    void Widget::Deserialize(Serializer* serializer)
+    {
+        serializer->Deserialize(this);
+        if (m_layout)
+        {
+            m_layout->Deserialize(serializer);
+        }
+    }
 
 	void Widget::SetLayout(const LayoutPtr& layout)
 	{
@@ -27,6 +63,17 @@ namespace gui
 		m_layout->SetParent(this);
 		UpdateLayout();
 	}
+    
+    void Widget::SetFactor(float factor)
+    {
+        m_factor = factor;
+        UpdateLayout();
+    }
+    
+    float Widget::GetFactor()
+    {
+        return m_factor;
+    }
 
 	void Widget::Load(const pugi::xml_node& node)
 	{

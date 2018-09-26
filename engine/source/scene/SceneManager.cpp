@@ -222,6 +222,30 @@ namespace sh
 
 			m_picker->Clear();
 		}
+        
+        //////////////////////////////////////////////////////////////////////////////////////////////
+
+        
+        void SceneManager::AddEntity(Entity* entity)
+        {
+            m_entities.push_back(entity);
+            
+        }
+        
+        //////////////////////////////////////////////////////////////////////////////////////////////
+
+        
+        void SceneManager::RemoveEntity(Entity* entity)
+        {
+            for (auto it = m_entities.begin(); it != m_entities.end(); ++it)
+            {
+                if ((*it) == entity)
+                {
+                    m_entities.erase(it);
+                    return;
+                }
+            }
+        }
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -236,6 +260,14 @@ namespace sh
 				m_currentScene->RegisterEntity(entity);
 			}
 		}
+        
+        void SceneManager::UnregisterEntity(Entity* entity)
+        {
+            if (m_currentScene)
+            {
+                m_currentScene->UnregisterEntity(entity);
+            }
+        }
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
 

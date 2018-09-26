@@ -1,6 +1,7 @@
 #include "IntLineEdit.h"
 #include "GuiManager.h"
 #include "Sprite.h"
+#include "../serialization/ObjectFactory.h"
 
 #include <iomanip>
 
@@ -13,6 +14,7 @@ namespace sh
 			: LineEdit()
 		{
 			m_text = "0";
+            m_name = "IntLineEdit";
 		}
 
 		IntLineEdit::IntLineEdit(const math::Rect& rect,
@@ -20,7 +22,15 @@ namespace sh
 			const SpritePtr& editSprite)
 			: LineEdit(rect, defaultSprite, editSprite)
 		{
+            m_name = "IntLineEdit";
 		}
+        
+        void IntLineEdit::RegisterObject()
+        {
+            ObjectFactory::GetInstance()->RegisterFactory<IntLineEdit>("UI");
+            ObjectFactory::GetInstance()->RegisterParentProperties<IntLineEdit, Widget>();
+            S_ACCESSOR_PROPERTY("Value", GetValue, SetValue);
+        }
 
 		bool IntLineEdit::ProcessEvent(GUIEvent& ev)
 		{

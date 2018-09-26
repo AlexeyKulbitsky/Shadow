@@ -11,12 +11,18 @@
 
 #include "../Device.h"
 
+#include "../serialization/ObjectFactory.h"
+
 namespace sh
 {
 	 
 namespace gui
 {
-
+    Window::Window() : Window(math::Rect(0, 0, 10, 10))
+    {
+        m_name = "Window";
+    }
+    
 	Window::Window(const math::Rect& rect)
 	{
 		const auto& ref = GuiManager::GetInstance()->GetStyle()->GetWindow();
@@ -48,6 +54,7 @@ namespace gui
 		m_closeButton->SetRect(closeButtonRect);
 
 		m_closeButton->OnRelease.Connect(std::bind(&Window::Close, this));
+        m_name = "Window";
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -61,9 +68,21 @@ namespace gui
 		const auto& outRect = outSprite->GetRect();
 		const auto& inRect = inSprite->GetRect();
 		const auto& barRect = barSprite->GetRect();
+        m_name = "Window";
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////
+    
+    void Window::RegisterObject()
+    {
+        ObjectFactory::GetInstance()->RegisterFactory<Window>("UI");
+        ObjectFactory::GetInstance()->RegisterParentProperties<Window, Widget>();
+        S_ACCESSOR_PROPERTY("Movable", IsMovable, SetMovable);
+        S_ACCESSOR_PROPERTY("Closable", IsClosable, SetClosable);
+        //S_ACCESSOR_PROPERTY("Rect", GetRect, SetRect);
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////////////////
 
 	void Window::SetText(const String& text)
 	{
@@ -228,7 +247,8 @@ namespace gui
 		{
 		case EventType::PointerDown:
 		{
-			if (m_barRect.IsPointInside(ev.x, ev.y) && !m_dragStarted)
+			if (ev.mouseButtonCode == MouseCode::ButtonLeft &&
+                (m_barRect.IsPointInside(ev.x, ev.y) && !m_dragStarted))
 			{
 				m_startPos.x = ev.x;
 				m_startPos.y = ev.y;
@@ -247,7 +267,8 @@ namespace gui
 		case EventType::PointerUp:
 		{
 			m_dragStarted = false;
-			if (m_barRect.IsPointInside(ev.x, ev.y) || m_inRect.IsPointInside(ev.x, ev.y))
+            if (ev.mouseButtonCode == MouseCode::ButtonLeft &&
+                (m_barRect.IsPointInside(ev.x, ev.y) || m_inRect.IsPointInside(ev.x, ev.y)))
 			{
 				return true;
 			}

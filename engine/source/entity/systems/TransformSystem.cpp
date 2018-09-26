@@ -67,8 +67,12 @@ namespace sh
 				RenderComponent* renderComponent = entity->GetComponent<RenderComponent>();
 				if (renderComponent)
 				{
-					auto box = renderComponent->GetModel()->GetInitialBoundingBox().GetTransformed(transformComponent->m_worldMatrix);
-					renderComponent->GetModel()->SetBoundingBox(box);
+                    const auto& model = renderComponent->GetModel();
+                    if (model)
+                    {
+                        auto box = model->GetInitialBoundingBox().GetTransformed(transformComponent->m_worldMatrix);
+                        model->SetBoundingBox(box);
+                    }
 				}
 
 				transformComponent->m_needsToRecalculateWorldMatrix = false;

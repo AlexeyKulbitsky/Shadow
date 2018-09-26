@@ -40,8 +40,10 @@ namespace sh
 
 			void ClearScene();
 
-			void AddEntity(Entity* entity) { m_entities.push_back(entity); }
+            void AddEntity(Entity* entity);
+            void RemoveEntity(Entity* entity);
 			void RegisterEntity(Entity* entity);
+            void UnregisterEntity(Entity* entity);
 			void RegisterComponent(Component* component);
 			size_t GetEntitiesCount() const { return m_entities.size(); }
 			Entity* GetEntity(size_t index) { return m_entities[index]; }

@@ -96,7 +96,12 @@ namespace sh
 
 	ResourceRef RenderComponent::GetModelProperty() const
 	{
-		return ResourceRef("Models", m_model->GetFileInfo().lock()->name);
+        if (m_model)
+        {
+            return ResourceRef("Models", m_model->GetFileInfo().lock()->name);
+        }
+        
+		return ResourceRef("Models", "-None-");
 	}
 
 	////////////////////////////////////////////////////////////////

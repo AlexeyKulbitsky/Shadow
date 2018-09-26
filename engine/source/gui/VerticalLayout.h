@@ -11,8 +11,12 @@ namespace gui
 
 	class SHADOW_API VerticalLayout : public Layout
 	{
+        SHADOW_OBJECT(VerticalLayout)
 	public:
-		VerticalLayout() {}
+        VerticalLayout();
+        
+        static void RegisterObject();
+        
 		virtual void AddWidget(const WidgetPtr& widget) override;
 		virtual void RemoveWidget(const WidgetPtr& widget) override;
 		virtual void AddLayout(const LayoutPtr& layout) override;

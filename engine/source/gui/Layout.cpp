@@ -1,11 +1,24 @@
 #include "Layout.h"
+#include "../serialization/Serializer.h"
+#include "../serialization/ObjectFactory.h"
 
 namespace sh
 {
 
 namespace gui
 {
-
+    void WidgetItem::Serialize(Serializer* serializer)
+    {
+        if (m_widget)
+            m_widget->Serialize(serializer);
+    }
+    
+    void WidgetItem::Deserialize(Serializer* serializer)
+    {
+        if (m_widget)
+            m_widget->Deserialize(serializer);
+    }
+    
 	void WidgetItem::Resize(const math::Rect& rect)
 	{
 		//m_widget->SetPosition(rect.upperLeftCorner.x, rect.upperLeftCorner.y);
@@ -30,6 +43,36 @@ namespace gui
 	}
 
 	////////////////////////////////////////////////////////////////////
+    
+    void Layout::RegisterObject()
+    {
+        ObjectFactory::GetInstance()->RegisterFactory<Layout>("UI");
+        S_ACCESSOR_PROPERTY("Spacing", GetSpacing, SetSpacing);
+        S_ACCESSOR_PROPERTY("TopMargin", GetTopMargin, SetTopMargin);
+        S_ACCESSOR_PROPERTY("BottomMargin", GetBottomMargin, SetBottomMargin);
+        S_ACCESSOR_PROPERTY("RightMargin", GetRightMargin, SetRightMargin);
+        S_ACCESSOR_PROPERTY("LeftMargin", GetLeftMargin, SetLeftMargin);
+    }
+    
+    void Layout::Serialize(Serializer* serializer)
+    {
+        Serializer* childSerializer = serializer->Child();
+        childSerializer->Serialize(this);
+        for (size_t i = 0U; i < m_items.size(); ++i)
+        {
+            m_items[i]->Serialize(childSerializer);
+        }
+        delete childSerializer;
+    }
+    
+    void Layout::Deserialize(Serializer* serializer)
+    {
+        serializer->Deserialize(this);
+        for (size_t i = 0U; i < m_items.size(); ++i)
+        {
+            m_items[i]->Deserialize(serializer);
+        }
+    }
 
 	void Layout::AddWidget(const WidgetPtr& widget)
 	{
@@ -96,6 +139,49 @@ namespace gui
 		m_bottomMargin = bottom;
 		m_leftMargin = left;
 	}
+    
+    void Layout::SetTopMargin(u32 margin)
+    {
+        m_topMargin = margin;
+    }
+    
+    void Layout::SetBottomMargin(u32 margin)
+    {
+        m_bottomMargin = margin;
+    }
+    
+    void Layout::SetRightMargin(u32 margin)
+    {
+        m_rightMargin = margin;
+    }
+    
+    void Layout::SetLeftMargin(u32 margin)
+    {
+        m_leftMargin = margin;
+    }
+    
+    const u32 Layout::GetTopMargin() const
+    {
+        return m_topMargin;
+    }
+    
+    const u32 Layout::GetBottomMargin() const
+    {
+        return m_bottomMargin;
+        
+    }
+    
+    const u32 Layout::GetRightMargin() const
+    {
+        return m_rightMargin;
+        
+    }
+    
+    const u32 Layout::GetLeftMargin() const
+    {
+        return m_leftMargin;
+        
+    }
 
 	void Layout::Render(video::Painter* painter)
 	{

@@ -9,22 +9,55 @@
 
 namespace sh
 {
-
+    XMLSerializer::XMLSerializer(pugi::xml_node* root)
+        : m_root(root)
+        //, m_currentNode(root)
+    {
+        m_root = new pugi::xml_node;
+        *m_root = *root;
+    }
+    
+    XMLSerializer::~XMLSerializer()
+    {
+        if (m_root)
+            delete m_root;
+        m_root = nullptr;
+    }
+    
+    void XMLSerializer::Serialize(Serializable* serializable)
+    {
+        //pugi::xml_node childNode = m_root->append_child("Object");
+        //Serialize(serializable, childNode);
+        Serialize(serializable, *m_root);
+    }
+    
+    void XMLSerializer::Deserialize(Serializable* serializable)
+    {
+        
+    }
+    
+    Serializer* XMLSerializer::Child()
+    {
+        pugi::xml_node childNode = m_root->append_child("Object");
+        XMLSerializer* serializer = new XMLSerializer(&childNode);
+        return serializer;
+    }
+    
 	void XMLSerializer::Serialize(Serializable* serializable, pugi::xml_node& node)
 	{
-		auto properties = ObjectFactory::GetInstance()->GetProperties(serializable->GetTypeName());
-		if (!properties)
-			return;
-
 		// Set type of component
 		node.append_attribute("type").set_value(serializable->GetTypeName());
+        
+        auto properties = ObjectFactory::GetInstance()->GetProperties(serializable->GetTypeName());
+        if (!properties)
+            return;
 
 		for (auto prop : (*properties))
 		{
 			auto value = prop.second->GetValue(serializable);
 			auto type = value.GetType();
 
-			pugi::xml_node porpertyNode = node.append_child(prop.second->GetName().c_str());
+			pugi::xml_node propertyNode = node.append_child(prop.second->GetName().c_str());
 
 			switch (type)
 			{
@@ -33,7 +66,7 @@ namespace sh
 				auto vectorValue = value.GetVector3Float();
 				std::ostringstream outValue;
 				outValue << vectorValue.x << " " << vectorValue.y << " " << vectorValue.z;
-				porpertyNode.append_attribute("val").set_value(outValue.str().c_str());
+				propertyNode.append_attribute("val").set_value(outValue.str().c_str());
 			}
 				break;
 			case VAR_VECTOR_4_FLOAT:
@@ -41,7 +74,7 @@ namespace sh
 				auto vectorValue = value.GetVector4Float();
 				std::ostringstream outValue;
 				outValue << vectorValue.x << " " << vectorValue.y << " " << vectorValue.z << " " << vectorValue.w;
-				porpertyNode.append_attribute("val").set_value(outValue.str().c_str());
+				propertyNode.append_attribute("val").set_value(outValue.str().c_str());
 			}
 				break;
 			case VAR_COLOR:
@@ -49,7 +82,7 @@ namespace sh
 				auto vectorValue = value.GetColor();
 				std::ostringstream outValue;
 				outValue << vectorValue.red << " " << vectorValue.green << " " << vectorValue.blue << " " << vectorValue.alpha;
-				porpertyNode.append_attribute("val").set_value(outValue.str().c_str());
+				propertyNode.append_attribute("val").set_value(outValue.str().c_str());
 			}
 				break;
 			case VAR_QUATERNION_FLOAT:
@@ -57,18 +90,18 @@ namespace sh
 				auto quaternionValue = value.GetQuaternionFloat();
 				std::ostringstream outValue;
 				outValue << quaternionValue.x << " " << quaternionValue.y << " " << quaternionValue.z << " " << quaternionValue.w;
-				porpertyNode.append_attribute("val").set_value(outValue.str().c_str());
+				propertyNode.append_attribute("val").set_value(outValue.str().c_str());
 			}
 				break;
 			case VAR_INT:
 			{
-				porpertyNode.append_attribute("val").set_value(value.GetInt());
+				propertyNode.append_attribute("val").set_value(value.GetInt());
 			}
 				break;
 			case VAR_RESOURCE_REF:
 			{
 				auto resourceRef = value.GetResourceRef();
-				porpertyNode.append_attribute("val").set_value(resourceRef.name.c_str());
+				propertyNode.append_attribute("val").set_value(resourceRef.name.c_str());
 			}
 				break;
 			case VAR_NAMED_RESOURCE_REF_LIST:
@@ -76,7 +109,7 @@ namespace sh
 				const auto& namedResourceRefList = value.GetNamedResourceRefList();
 				for (const auto& ref : namedResourceRefList)
 				{
-					pugi::xml_node refNode = porpertyNode.append_child(ref.name.c_str());
+					pugi::xml_node refNode = propertyNode.append_child(ref.name.c_str());
 					refNode.append_attribute("val").set_value(ref.resource.name.c_str());
 				}
 			}
@@ -87,9 +120,51 @@ namespace sh
 				auto script = scriptComponent->GetScript();
 
 				XMLSerializer scriptSerializer;
-				scriptSerializer.Serialize(script, porpertyNode);
+				scriptSerializer.Serialize(script, propertyNode);
 			}
 				break;
+            case VAR_SERIALIZABLE:
+            {
+                auto s = value.GetSerializable();
+                if (s)
+                {
+                    int a = 0;
+                    a++;
+                }
+            }
+                break;
+            case VAR_SERIALIZABLE_SPTR:
+            {
+                auto serializablePtr = value.GetSerializableSPtr();
+                Serialize(serializablePtr.get(), propertyNode);
+            }
+                break;
+            case VAR_CUSTOM:
+            {
+                auto s = value.Get<Serializable*>();
+                if (s)
+                    Serialize(s, propertyNode);
+            }
+                break;
+            case VAR_STRING:
+            {
+                propertyNode.append_attribute("val").set_value(value.GetString().c_str());
+            }
+                break;
+            case VAR_BOOL:
+            {
+                propertyNode.append_attribute("val").set_value(value.GetBool());
+            }
+                break;
+            case VAR_RECT:
+            {
+                auto rectValue = value.GetRect();
+                std::ostringstream outValue;
+                outValue << rectValue.lowerRightCorner.x << " " << rectValue.lowerRightCorner.y << " "
+                        << rectValue.upperLeftCorner.x << " " << rectValue.upperLeftCorner.y;
+                propertyNode.append_attribute("val").set_value(outValue.str().c_str());
+            }
+                break;
 			default:
 				break;
 			}

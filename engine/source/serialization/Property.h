@@ -78,8 +78,8 @@ namespace sh
 		using GetterPtr = ReturnType(ClassType::*)() const;
 		using SetterPtr = void (ClassType::*) (ArgumentType);
 
-		static_assert(!std::is_pointer<ReturnType>::value && !std::is_pointer<ArgumentType>::value,
-			"You can not use pointers to create properties");
+		//static_assert(!std::is_pointer<ReturnType>::value && !std::is_pointer<ArgumentType>::value,
+		//	"You can not use pointers to create properties");
 
 		using NonConstReturnType = std::remove_cv<ReturnType>;
 		using NonConstArgumentType = std::remove_cv<ArgumentType>;

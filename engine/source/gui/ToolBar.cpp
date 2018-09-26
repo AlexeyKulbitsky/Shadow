@@ -8,6 +8,7 @@
 
 #include "../video/Driver.h"
 #include "../Device.h"
+#include "../serialization/ObjectFactory.h"
 
 #include <pugixml.hpp>
 
@@ -25,6 +26,7 @@ namespace gui
 
 		HorizontalLayoutPtr layout(new HorizontalLayout());
 		SetLayout(layout);
+        m_name = "ToolBar";
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -37,9 +39,16 @@ namespace gui
 
 		HorizontalLayoutPtr layout(new HorizontalLayout());
 		SetLayout(layout);
+        m_name = "ToolBar";
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
+    
+    void ToolBar::RegisterObject()
+    {
+        ObjectFactory::GetInstance()->RegisterFactory<ToolBar>("UI");
+        ObjectFactory::GetInstance()->RegisterParentProperties<ToolBar, Widget>();
+    }
 
 	void ToolBar::AddItem(const ButtonPtr& button)
 	{

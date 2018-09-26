@@ -11,7 +11,7 @@ namespace pugi
 
 namespace sh
 {
-	class SHADOW_API Entity
+    class SHADOW_API Entity : public Serializable
 	{
 	public:
 		Entity();
@@ -36,7 +36,7 @@ namespace sh
 
 		bool IntersectsRay(const math::Vector3& origin, const math::Vector3& direction);
 
-	private:	
+	protected:
 		String m_name = "unnamed";
 
 		std::vector<Component*> m_components;

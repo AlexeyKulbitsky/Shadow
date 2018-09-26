@@ -11,6 +11,7 @@
 
 #include "../font/Font.h"
 #include "../Device.h"
+#include "../serialization/ObjectFactory.h"
 
 namespace sh
 {
@@ -26,6 +27,7 @@ namespace gui
 
 		m_sprites[State::Default] = ref->m_sprites[State::Default];
 		m_sprites[State::Edit] = ref->m_sprites[State::Edit];
+        m_name = "LineEdit";
 	}
 
 	LineEdit::LineEdit(const SpritePtr& defaultSprite,
@@ -33,6 +35,7 @@ namespace gui
 	{
 		m_sprites[State::Default] = defaultSprite;
 		m_sprites[State::Edit] = editSprite;
+        m_name = "LineEdit";
 	}
 
 	LineEdit::LineEdit(const math::Rect& rect, 
@@ -42,8 +45,15 @@ namespace gui
 	{
 		m_sprites[State::Default] = defaultSprite;
 		m_sprites[State::Edit] = editSprite;
+        m_name = "LineEdit";
 	}
-
+    
+    void LineEdit::RegisterObject()
+    {
+        ObjectFactory::GetInstance()->RegisterFactory<LineEdit>("UI");
+        ObjectFactory::GetInstance()->RegisterParentProperties<LineEdit, Text>();
+    }
+    
 	void LineEdit::SetState(State state)
 	{
 		switch (state)

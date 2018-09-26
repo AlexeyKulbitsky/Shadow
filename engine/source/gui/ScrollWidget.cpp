@@ -7,6 +7,7 @@
 #include "../video/Painter.h"
 #include "../Device.h"
 #include "../video/Driver.h"
+#include "../serialization/ObjectFactory.h"
 
 namespace sh
 {
@@ -192,6 +193,7 @@ namespace gui
 			ref->m_verticalScrollBar->m_sprites[Button::Hovered],
 			ref->m_verticalScrollBar->m_backgroundSprite));
 		m_verticalScrollBar->m_scrollWidget = this;
+        m_name = "ScrollWidget";
 	}
 
 	ScrollWidget::ScrollWidget(const SPtr<ScrollBar>& scrollBar)
@@ -202,7 +204,14 @@ namespace gui
 			scrollBar->m_sprites[Button::Hovered],
 			scrollBar->m_backgroundSprite));
 		m_verticalScrollBar->m_scrollWidget = this;
+        m_name = "ScrollWidget";
 	}
+    
+    void ScrollWidget::RegisterObject()
+    {
+        ObjectFactory::GetInstance()->RegisterFactory<ScrollWidget>("UI");
+        ObjectFactory::GetInstance()->RegisterParentProperties<ScrollWidget, Widget>();
+    }
 
 	ScrollWidget::~ScrollWidget()
 	{
