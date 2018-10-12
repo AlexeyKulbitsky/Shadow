@@ -541,6 +541,7 @@ endif()
 set_property(TARGET dist PROPERTY FOLDER CommonLibs)
 
 if(WIN32)
+  add_definitions(-DSHADOW_WINDOWS)
 elseif(ANDROID)
   add_subdirectory(../libs/minizip "${CMAKE_CURRENT_BINARY_DIR}/ThirdParty/minizip")
   include_directories(../libs/minizip)

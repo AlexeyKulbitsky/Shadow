@@ -85,7 +85,7 @@ namespace gui
 		Queue<SPtr<Widget>> m_focusWidgetsQueue;
 		Queue<SPtr<Widget>> m_widgetsToRemove;
         
-        scene::Camera* m_camera = nullptr;
+        scene::CameraPtr m_camera;
 
 		///////////////////////////////////
 

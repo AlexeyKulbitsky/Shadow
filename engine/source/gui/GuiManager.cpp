@@ -54,14 +54,12 @@ namespace gui
 {
 
 	GuiManager::GuiManager()
+		: m_camera(std::make_shared<scene::Camera>())
 	{
-        m_camera = new scene::Camera();
 	}
 
 	GuiManager::~GuiManager()
 	{
-        delete m_camera;
-        m_camera = nullptr;
     }
 
 	void GuiManager::Init()
@@ -127,9 +125,11 @@ namespace gui
 	void GuiManager::Render()
 	{
 		video::Driver* driver = Device::GetInstance()->GetDriver();
-        //auto viewport = driver->GetViewport();
-        //driver->SetViewport(m_camera->GetViewport());
+
 		auto painter = driver->GetPainter();
+		auto painterCamera = painter->GetCamera();
+
+		painter->SetCamera(m_camera);
 
 		auto t1 = Device::GetInstance()->GetTime();
 
@@ -172,6 +172,7 @@ namespace gui
 #endif
 
 		painter->Flush();
+		painter->SetCamera(painterCamera);
         
         //driver->SetViewport(viewport);
 
@@ -259,7 +260,7 @@ namespace gui
     
     scene::Camera* GuiManager::GetCamera()
     {
-        return m_camera;
+        return m_camera.get();
     }
     
 	void GuiManager::RemoveChild(size_t index)

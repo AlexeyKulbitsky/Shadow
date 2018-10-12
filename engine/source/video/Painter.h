@@ -39,6 +39,7 @@ namespace sh
 			// Get current active material
 			const MaterialPtr& GetMaterial() const { return m_material; }
 			void SetCamera(const scene::CameraPtr& camera);
+			const scene::CameraPtr& GetCamera() const { return m_camera; }
 			// Set current clipping rectangle
 			void SetClipRect(const math::Rect& rect);
 			// Get current clipping rectangle
