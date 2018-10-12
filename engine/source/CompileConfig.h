@@ -10,7 +10,9 @@
 #pragma warning (disable: 4251)
 
 #if defined(_WIN32) || defined(_WIN64) || defined(WIN32) || defined(WIN64)
-	#define SHADOW_WINDOWS
+	#ifndef SHADOW_WINDOWS
+		#define SHADOW_WINDOWS
+	#endif
 	#define SH_WINDOWS_API
 	#define SH_COMPILE_WITH_WINDOWS_DEVICE
 	#define NOMINMAX
