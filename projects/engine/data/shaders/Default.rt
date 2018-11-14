@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<technique name="Default">
+
+<pipeline name="firstPass" layer="main">	
+	
+	<shader language="GLSL" api="GLES20">
+		<vertexShader>
+		
+		<source>
+			<![CDATA[
+				
+				attribute vec3 position;
+				attribute vec3 normal;			
+				uniform mat4 matWVP;
+				uniform mat4 matWorld;
+
+				varying vec3 vNormal;
+				
+				void main() 
+				{
+					gl_Position = matWVP * vec4(position, 1.0);
+					vec4 N = normalize(matWorld * vec4(normal, 0.0));
+					vNormal = N.xyz;
+				}
+				
+			]]>
+		</source>
+		</vertexShader>
+
+		<fragmentShader>
+		
+		<source>
+			<![CDATA[
+				
+				#ifdef GL_ES
+					precision mediump float;
+				#endif
+				
+				uniform vec3 dLightDirection;
+				uniform vec3 dLightColor;
+
+				varying vec3 vNormal;
+				
+				void main() 
+				{			
+					float NdL = dot(normalize(vNormal), dLightDirection);
+					vec3 diffuse = NdL * dLightColor;
+					
+					vec3 color = vec3(1.0, 1.0, 1.0);
+					color = diffuse * color;
+					gl_FragColor = vec4(color, 1.0);
+				} 
+		
+			]]>	
+		</source>
+		</fragmentShader>
+	</shader>
+
+</pipeline>
+
+</technique>
