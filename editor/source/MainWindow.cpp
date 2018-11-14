@@ -465,7 +465,9 @@ void MainWindow::Init()
     mainLayout->AddWidget(m_sceneWindow);
 	mainLayout->AddLayout(inspectorLayout);
 	m_mainWidget->SetLayout(mainVerticalLayout);
-	m_mainWidget->SetRect(sh::math::Rect(0, 0, viewport.lowerRightCorner.x, viewport.lowerRightCorner.y));
+	auto viewport = sh::Device::GetInstance()->GetDriver()->GetViewport();
+
+	OnWindowResized(viewport.lowerRightCorner.x, viewport.lowerRightCorner.y);
     
     OpenProject("/Users/AKulbitsky/Documents/Projects/Shadow/projects/TestProject/TestProject.proj");
     OpenScene("/Users/AKulbitsky/Documents/Projects/Shadow/projects/TestProject/assets/scenes/test_scene.xml");

@@ -560,10 +560,16 @@ namespace sh
 		void Painter::Flush()
 		{
 			sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
-			/*sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
+			sh::scene::Camera* camera;
+
+			if (m_camera)
+				camera = m_camera.get();
+			else
+				camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
+
 			const sh::math::Matrix4& viewMatrix = camera->GetViewMatrix();
 			const sh::math::Matrix4& projectionMatrix = camera->GetProjectionMatrix();
-			const sh::math::Matrix4& projection2DMatrix = camera->Get2DProjectionMatrix();*/
+			const sh::math::Matrix4& projection2DMatrix = camera->Get2DProjectionMatrix();
 
 			m_commandBuffer->Begin();
 
