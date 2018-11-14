@@ -4,7 +4,7 @@
 #include "../GLVertexBuffer.h"
 #include "../GLTexture.h"
 #include "../GLRenderTarget.h"
-#include "GLES20RenderPIpeline.h"
+#include "GLES20RenderPipeline.h"
 #include "Batching/GLES20RenderBatchManager.h"
 #include "../GLCommon.h"
 #include "../GLShader.h"
@@ -80,7 +80,7 @@ bool GLES20Driver::Init()
     sh::Device::GetInstance()->sursafeChangedEvent.Connect(
             std::bind(&GLES20Driver::SetWindow, this, std::placeholders::_1, std::placeholders::_2,
     std::placeholders::_3));
-
+    
 	GL_CALL(glEnable( GL_DEPTH_TEST ));
 	GL_CALL(glEnable(GL_SCISSOR_TEST));
 	//glEnable(GL_BLEND);
@@ -162,25 +162,23 @@ void GLES20Driver::SetWindow(void* winId, u32 width, u32 height)
 {
     if (m_contextManager)
         m_contextManager->CreateContext(winId);
-	SetViewport(0, 0, width, height);
+    OnWindowResized(width, height);
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 void GLES20Driver::SetViewport( u32 x, u32 y, u32 width, u32 height )
 {
-    m_contextManager->Update();
-	Driver::SetViewport( x, y, width, height );
-	GL_CALL(glViewport( (GLint)x, (GLint)y, (GLsizei)width, (GLsizei)height ));
+	Driver::SetViewport(x, y, width, height);
+	//GL_CALL(glViewport((GLint)(m_vp.upperLeftCorner.x), (GLint)(m_surfaceSize.y - m_vp.upperLeftCorner.y - m_vp.GetHeight()), (GLsizei)(m_vp.GetWidth()), (GLsizei)(m_vp.GetHeight())));
+    GL_CALL(glViewport(x, y, width, height));
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 void GLES20Driver::SetViewport(const math::Rect& viewport)
 {
-    m_contextManager->Update();
-    Driver::SetViewport(viewport);
-    GL_CALL(glViewport((GLint)m_vp.upperLeftCorner.x, (GLint)m_vp.upperLeftCorner.y, (GLsizei)m_vp.GetWidth(), (GLsizei)m_vp.GetHeight()));
+    SetViewport(viewport.upperLeftCorner.x, viewport.upperLeftCorner.y, viewport.GetWidth(), viewport.GetHeight());
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -567,6 +565,9 @@ RenderTargetPtr GLES20Driver::CreateRenderTarget() const
 
 void GLES20Driver::OnWindowResized(int width, int height)
 {
-	SetViewport(0U, 0U, static_cast<u32>(width), static_cast<u32>(height));
+    SetViewport(0, 0, width, height);
+	m_contextManager->Update();
+    m_surfaceSize.x = width;
+    m_surfaceSize.y = height;
 }
 

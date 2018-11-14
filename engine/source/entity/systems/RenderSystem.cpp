@@ -100,7 +100,7 @@ namespace sh
 	{
 		m_batchManager->Clear();
 
-		scene::Camera* camera = Device::GetInstance()->GetSceneManager()->GetCamera();
+		const scene::CameraPtr& camera = Device::GetInstance()->GetSceneManager()->GetCamera();
 		sh::math::Matrix4 viewMatrix = camera->GetViewMatrix();
 		sh::math::Matrix4 projectionMatrix = camera->GetProjectionMatrix();
 
@@ -199,9 +199,9 @@ namespace sh
         
         auto driver = sh::Device::GetInstance()->GetDriver();
         auto viewport = driver->GetViewport();
-        driver->SetViewport(camera->GetViewport());
+        //driver->SetViewport(camera->GetViewport());
 		m_batchManager->Submit();
-        driver->SetViewport(viewport);
+        //driver->SetViewport(viewport);
 	}
 
 	//////////////////////////////////////////////////////////////////

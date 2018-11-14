@@ -54,7 +54,7 @@ namespace sh
 			virtual void SetViewport(u32 x, u32 y, u32 width, u32 height);
             virtual void SetViewport(const math::Rect& viewport);
 			virtual const math::Rect& GetViewport() const { return m_vp; }
-			virtual const math::Vector4& GetViewPort() const { return m_viewPort; }
+			//virtual const math::Vector4& GetViewPort() const { return m_viewPort; }
 			virtual void SetDepthRange(f32 zMin, f32 zMax);
 			virtual const math::Vector2& GetDepthRange() const { return m_depthRange; }
 			
@@ -108,6 +108,7 @@ namespace sh
 			math::Vector4 m_viewPort;
 			math::Rect m_vp;
 			math::Vector2 m_depthRange;
+            math::Vector2Int m_surfaceSize;
 			
 			// Clear values
 			math::Vector4 m_clearColor;

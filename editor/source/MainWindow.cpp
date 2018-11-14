@@ -387,8 +387,15 @@ void MainWindow::Init()
 	filesystem->AddInternalFolder(sh::String("../../../editor/data"));
 
 
+    const auto& viewport = sh::Device::GetInstance()->GetDriver()->GetViewport();
 	sh::gui::GuiManager::CreateInstance();
-	sh::gui::GuiManager::GetInstance()->Init();
+    auto guiManager = sh::gui::GuiManager::GetInstance();
+	guiManager->Init();
+    guiManager->SetFocusWidget(nullptr);
+    guiManager->GetCamera()->SetProjection(3.1415926535f / 3.0f,
+                                           static_cast<float>( viewport.GetWidth() ),
+                                           static_cast<float>( viewport.GetHeight() ), 0.1f, 1000.0f);
+    guiManager->GetCamera()->SetViewport(sh::math::Rect(0, 0, viewport.GetWidth(), viewport.GetHeight()));
 
 	SelectionManager::CreateInstance();
 	GameModuleLauncher::CreateInstance();
@@ -404,19 +411,19 @@ void MainWindow::Init()
 	auto guiMgr = sh::gui::GuiManager::GetInstance();
 	m_mainWidget.reset(new sh::gui::Widget());
     m_mainWidget->SetName("MainWidget");
-	guiMgr->AddChild(m_mainWidget);
-	guiMgr->LoadGui("editor_gui.xml");
+	guiManager->AddChild(m_mainWidget);
+	guiManager->LoadGui("editor_gui.xml");
 
 	////////////////////////////////////////////////////////////////////////////
 
 	sh::gui::StylePtr style(new sh::gui::Style());
 	style->Load("editor_style.xml");
-	guiMgr->SetStyle(style);
+	guiManager->SetStyle(style);
 
 	////////////////////////////////////////////////////////////////////////////
 
 	auto font = sh::FontManager::GetInstance()->GenerateFont("VeraMono.ttf");
-	guiMgr->SetFont(font);
+	guiManager->SetFont(font);
 
 	////////////////////////////////////////////////////////////////////////////
 
@@ -458,7 +465,6 @@ void MainWindow::Init()
     mainLayout->AddWidget(m_sceneWindow);
 	mainLayout->AddLayout(inspectorLayout);
 	m_mainWidget->SetLayout(mainVerticalLayout);
-	auto viewport = sh::Device::GetInstance()->GetDriver()->GetViewport();
 	m_mainWidget->SetRect(sh::math::Rect(0, 0, viewport.lowerRightCorner.x, viewport.lowerRightCorner.y));
     
     OpenProject("/Users/AKulbitsky/Documents/Projects/Shadow/projects/TestProject/TestProject.proj");
@@ -493,14 +499,14 @@ void MainWindow::Update(sh::u64 delta)
 	sh::InputManager* inputManager = device->GetInputManager();
 	sh::math::Vector2Int old = inputManager->GetMousePositionOld();
 	sh::math::Vector2Int current = inputManager->GetMousePositionCurrent();
-	sh::scene::Camera* camera = device->GetSceneManager()->GetCamera();
+	const sh::scene::CameraPtr& camera = device->GetSceneManager()->GetCamera();
 
 
 	if (inputManager->IsMouseButtonPressed(sh::MouseCode::ButtonWheel))
 	{
 		if (inputManager->IsKeyPressed(sh::KeyCode::KEY_MENU))
 		{
-			const sh::math::Vector4& viewport = device->GetDriver()->GetViewPort();
+			const auto& viewport = device->GetDriver()->GetViewport();
 			sh::math::Vector3 targetPos(0.0f);
 			if (m_cameraTargetEntity)
 			{
@@ -570,12 +576,12 @@ void MainWindow::Update(sh::u64 delta)
 
 	driver->BeginRendering();
 
-	sceneMgr->Update();
+	//sceneMgr->Update();
 
-	SelectionManager::GetInstance()->Render();
+	//SelectionManager::GetInstance()->Render();
 
-	sh::gui::GuiManager::GetInstance()->Update(0U);
-	sh::gui::GuiManager::GetInstance()->Render();
+	//sh::gui::GuiManager::GetInstance()->Update(0U);
+	//sh::gui::GuiManager::GetInstance()->Render();
 
 	driver->EndRendering();
 

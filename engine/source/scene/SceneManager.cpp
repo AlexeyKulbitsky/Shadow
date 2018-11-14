@@ -80,7 +80,6 @@ namespace sh
 
 		SceneManager::~SceneManager()
 		{
-			delete m_camera;
 			delete m_componentsFactory;
 // 			for (size_t i = 0; i < m_systems.size(); ++i)
 // 			{
@@ -281,10 +280,18 @@ namespace sh
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
 
-		void SceneManager::SetCamera(Camera* camera)
+		void SceneManager::SetCamera(CameraPtr camera)
 		{
 			m_camera = camera;
 		}
+        
+        //////////////////////////////////////////////////////////////////////////////////////////////
+        
+        const CameraPtr& SceneManager::GetCamera() const
+        {
+            return m_camera;
+            
+        }
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
 

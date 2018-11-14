@@ -37,8 +37,9 @@ namespace sh
 			// Set current active material
 			void SetMaterial(const MaterialPtr& material);
 			// Get current active material
-			const MaterialPtr& GetMaterial() const { return m_material; }
+            const MaterialPtr& GetMaterial() const;
 			void SetCamera(const scene::CameraPtr& camera);
+            const scene::CameraPtr& GetCamera() const;
 			// Set current clipping rectangle
 			void SetClipRect(const math::Rect& rect);
 			// Get current clipping rectangle
@@ -60,6 +61,7 @@ namespace sh
 			MaterialPtr m_material;
 
 			std::vector<MaterialPtr> m_materials;
+            std::vector<scene::CameraPtr> m_cameras;
 			scene::CameraPtr m_camera;
 
 			sh::video::CommandBufferPtr m_commandBuffer;
@@ -72,6 +74,7 @@ namespace sh
 				u32 startIndex = 0U;
 				u32 verticesCount = 0U;
 				u32 materialIndex = 0U;
+                u32 cameraIndex = 0U;
 				math::Rect clipRect = math::Rect(0, 0, 0, 0);
 			};
 			struct Lines
@@ -92,6 +95,7 @@ namespace sh
 				u32 indicesCount = 0U;
 				u32 verticesCount = 0U;
 				u32 materialIndex = 0U;
+                u32 cameraIndex = 0U;
 				math::Rect clipRect = math::Rect(0, 0, 0, 0);
 			};
 			struct Triangles

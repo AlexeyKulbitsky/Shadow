@@ -118,7 +118,6 @@ namespace gui
 		//painter->SetClipRect(math::Rectu(m_rect.upperLeftCorner.x, m_rect.upperLeftCorner.y,
 		//	m_rect.lowerRightCorner.x, m_rect.lowerRightCorner.y));
 
-		const auto& viewPort = sh::Device::GetInstance()->GetDriver()->GetViewPort();
 
 		const auto& font = GuiManager::GetInstance()->GetFont();
 		s32 width = font->GetTextureAtlas()->GetDescription().width;

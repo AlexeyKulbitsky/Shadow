@@ -31,7 +31,7 @@ void ScaleGizmo::Render()
 		return;
 
 	sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
-	sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
+	const sh::scene::CameraPtr& camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
 	sh::math::Matrix4 viewMatrix = camera->GetViewMatrix();
 	sh::math::Matrix4 projectionMatrix = camera->GetProjectionMatrix();
 
@@ -127,7 +127,7 @@ bool ScaleGizmo::TryToSelect(sh::u32 x, sh::u32 y)
 	sh::math::Matrix4 matrix;
 	sh::math::Matrix4 invMatrix;
 	matrix.SetIdentity();
-	sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
+	const sh::scene::CameraPtr& camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
 
 	sh::math::Vector3 position = s_position;
 	sh::math::Quaternion rotation = s_rotation;
@@ -286,7 +286,7 @@ void ScaleGizmo::CreateArrow(Axis::Type type)
 
 void ScaleGizmo::Scale(Axis::Type axis)
 {
-	sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
+	const sh::scene::CameraPtr& camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
 	sh::InputManager* inputManager = sh::Device::GetInstance()->GetInputManager();
 	sh::math::Vector2Int old = inputManager->GetMousePositionOld();
 	sh::math::Vector2Int current = inputManager->GetMousePositionCurrent();

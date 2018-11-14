@@ -62,7 +62,7 @@ namespace sh
 		m_sceneManager = sceneMgr;
 
 		// Camera
-		sh::scene::Camera* camera = new sh::scene::Camera();
+		sh::scene::CameraPtr camera(new sh::scene::Camera());
 		camera->SetProjection(3.1415926535f / 3.0f, 
 			static_cast<f32>(m_creationParameters.width), 
 			static_cast<f32>(m_creationParameters.height), 0.1f, 1000.0f);

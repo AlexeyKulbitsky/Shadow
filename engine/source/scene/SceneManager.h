@@ -50,8 +50,8 @@ namespace sh
 
 			void SetComponentsFactory(ComponentsFactory* factory) { m_componentsFactory = factory; }
 
-			void SetCamera(Camera* camera);
-			Camera* GetCamera() { return m_camera; }
+			void SetCamera(CameraPtr camera);
+            const CameraPtr& GetCamera() const;
 
 			const PickerPtr& GetPicker() const { return m_picker; }
 			void Update(f32 deltaTime = 0.0f);
@@ -66,7 +66,7 @@ namespace sh
 			static math::Vector3	s_upVector;
 			static math::Vector3	s_rightVector;
 
-			Camera* m_camera;
+			CameraPtr m_camera;
 
 			ComponentsFactory* m_componentsFactory = nullptr;
 			std::vector<System*> m_systems;

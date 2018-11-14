@@ -76,7 +76,7 @@ void Gizmo::Render()
 		return;
 
 	sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
-	sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
+	const sh::scene::CameraPtr& camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
 	sh::math::Matrix4 viewMatrix = camera->GetViewMatrix();
 	sh::math::Matrix4 projectionMatrix = camera->GetProjectionMatrix();
 

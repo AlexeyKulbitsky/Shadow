@@ -49,15 +49,20 @@ namespace sh
 		
 		void Driver::SetViewport(u32 x, u32 y, u32 width, u32 height)
 		{
-			m_viewPort.x = x;
+			/*m_viewPort.x = x;
 			m_viewPort.y = y;
 			m_viewPort.z = width;
-			m_viewPort.w = height;
+			m_viewPort.w = height;*/
+            
+            const int xFinal = math::Clamp(static_cast<int>(x), 0, m_surfaceSize.x);
+            const int yFinal = math::Clamp(static_cast<int>(y), 0, m_surfaceSize.y);
+            const int widthFinal = math::Clamp(static_cast<int>(width), 0, (m_surfaceSize.x - xFinal));
+            const int heightFinal = math::Clamp(static_cast<int>(height), 0, (m_surfaceSize.y - yFinal));
 
-			m_vp.upperLeftCorner.x = x;
-			m_vp.upperLeftCorner.y = y;
-			m_vp.lowerRightCorner.x = x + width;
-			m_vp.lowerRightCorner.y = y + height;
+			m_vp.upperLeftCorner.x = xFinal;
+			m_vp.upperLeftCorner.y = yFinal;
+			m_vp.lowerRightCorner.x = x + widthFinal;
+			m_vp.lowerRightCorner.y = y + heightFinal;
 		}
 
 		/////////////////////////////////////////////////////////////////////////

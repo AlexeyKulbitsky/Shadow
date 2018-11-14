@@ -17,21 +17,23 @@ namespace video
     
     NSOpenGLContextManager::NSOpenGLContextManager(int majorVersion, int minorVersion, NSView* view)
     {
+        NSOpenGLPixelFormatAttribute profile = /*NSOpenGLProfileVersion3_2Core*/NSOpenGLProfileVersionLegacy;
+
         // Set pixel format
         //NSOpenGLPixelFormatAttribute attribs[40];
         //NSOpenGLPixelFormatAttribute attribs[] = { NSOpenGLPFAAccelerated, 0 };
         NSOpenGLPixelFormatAttribute attribs[] =
         {
-            NSOpenGLPFAAccelerated,
-            NSOpenGLPFABackingStore,
-            NSOpenGLPFADoubleBuffer,
-            NSOpenGLPFAClosestPolicy,
+            NSOpenGLPFAAccelerated, true,
+            NSOpenGLPFABackingStore, true,
+            NSOpenGLPFADoubleBuffer, true,
+            //NSOpenGLPFAClosestPolicy, true,
             NSOpenGLPFAColorSize, 24,
             NSOpenGLPFAAlphaSize, 8,
             NSOpenGLPFADepthSize, 24,
-            //NSOpenGLPFAOpenGLProfile,
+            NSOpenGLPFAOpenGLProfile, profile,
             //NSOpenGLProfileVersion3_2Core,
-            0
+            0, 0
             
         };
 
@@ -75,7 +77,7 @@ namespace video
     
     void NSOpenGLContextManager::Update()
     {
-        //[m_context makeCurrentContext];
+        [m_context makeCurrentContext];
         [m_context update];
     }
     

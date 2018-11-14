@@ -48,7 +48,7 @@ namespace gui
 		void AddChild(const SPtr<Widget>& child, bool back = true);
 		void AddChildFront(const SPtr<Widget>& child);
         
-        scene::Camera* GetCamera();
+        const scene::CameraPtr& GetCamera() const;
 
 		void SetFont(const FontPtr& font);
 		const FontPtr& GetFont() const { return m_font; }
@@ -85,7 +85,7 @@ namespace gui
 		Queue<SPtr<Widget>> m_focusWidgetsQueue;
 		Queue<SPtr<Widget>> m_widgetsToRemove;
         
-        scene::Camera* m_camera = nullptr;
+        scene::CameraPtr m_camera;
 
 		///////////////////////////////////
 

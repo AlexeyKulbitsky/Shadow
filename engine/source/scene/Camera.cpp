@@ -100,7 +100,7 @@ namespace sh
 
 		void Camera::SetProjection(f32 fov, f32 width, f32 height, f32 nearPlane, f32 farPlane)
 		{
-			auto driverType = Device::GetInstance()->GetDriver()->GetType();
+			/*auto driverType = Device::GetInstance()->GetDriver()->GetType();
 			switch (driverType)
 			{
 				case video::DriverType::OPENGL_ES_2_0:
@@ -113,7 +113,7 @@ namespace sh
 #endif
 				default:
 					break;
-			}
+			}*/
 
 			SetProjection(fov, width / height, nearPlane, farPlane);
 		}
@@ -122,15 +122,15 @@ namespace sh
 
 		void Camera::BuildRay(u32 x, u32 y, math::Vector3& origin, math::Vector3& direction)
 		{
-			math::Vector4 viewPort = Device::GetInstance()->GetDriver()->GetViewPort();
+			const auto& viewPort = Device::GetInstance()->GetDriver()->GetViewport();
 			
 			sh::math::Matrix4 inverseProjMatrix = m_projectionMatrix.GetInversed();
 			sh::math::Matrix4 inverseViewMatrix = m_viewMatrix.GetInversed();			
 			origin = m_position;
 	
 			// 3d Normalized Device Coordinates	
-			float xNorm = (2.0f * x) / viewPort.z - 1.0f;
-			float yNorm = 1.0f - (2.0f * y) / viewPort.w;
+			float xNorm = (2.0f * x) / viewPort.GetWidth() - 1.0f;
+			float yNorm = 1.0f - (2.0f * y) / viewPort.GetHeight();
 			float zNorm = 1.0f;
 			sh::math::Vector3 rayNds(xNorm, yNorm, zNorm);
 
@@ -276,6 +276,23 @@ namespace sh
 		void Camera::UpdateProjectionMatrix()
 		{
 			m_projectionMatrix.SetPerspective(m_fovy, m_aspectRatio, m_nearDistance, m_farDistance);
+            
+            auto driverType = Device::GetInstance()->GetDriver()->GetType();
+            const float width = static_cast<float>(m_viewport.GetWidth());
+            const float height = static_cast<float>(m_viewport.GetHeight());
+            switch (driverType)
+            {
+                case video::DriverType::OPENGL_ES_2_0:
+                    m_2dProjectionMatrix.SetOrtho(0.0f, width, height, 0.0f, -1.0f, 1.0f);
+                    break;
+#if defined(USE_VULKAN_API)
+                case video::DriverType::VULKAN:
+                    m_2dProjectionMatrix.SetOrtho(0.0f, width, 0.0f, height, -1.0f, 1.0f);
+                    break;
+#endif
+                default:
+                    break;
+            }
 		}
 
 		/////////////////////////////////////////////////////////////////////

@@ -55,13 +55,11 @@ namespace gui
 
 	GuiManager::GuiManager()
 	{
-        m_camera = new scene::Camera();
+        m_camera.reset(new scene::Camera());
 	}
 
 	GuiManager::~GuiManager()
 	{
-        delete m_camera;
-        m_camera = nullptr;
     }
 
 	void GuiManager::Init()
@@ -130,6 +128,7 @@ namespace gui
         //auto viewport = driver->GetViewport();
         //driver->SetViewport(m_camera->GetViewport());
 		auto painter = driver->GetPainter();
+        painter->SetCamera(m_camera);
 
 		auto t1 = Device::GetInstance()->GetTime();
 
@@ -257,7 +256,7 @@ namespace gui
 		m_children.push_front(child);
 	}
     
-    scene::Camera* GuiManager::GetCamera()
+    const scene::CameraPtr& GuiManager::GetCamera() const
     {
         return m_camera;
     }

@@ -76,7 +76,7 @@ namespace sh
 		sh::Entity* Picker::TryToPickByColor(sh::u32 x, sh::u32 y)
 		{
 			sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
-			sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
+			const sh::scene::CameraPtr& camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
 			sh::math::Matrix4 viewMatrix = camera->GetViewMatrix();
 			sh::math::Matrix4 projectionMatrix = camera->GetProjectionMatrix();
 			
@@ -143,7 +143,7 @@ namespace sh
 
 		sh::Entity* Picker::TryToPickByRayCast(sh::u32 x, sh::u32 y)
 		{
-			sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
+			const sh::scene::CameraPtr& camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
 
 			sh::math::Vector3 rayOrigin(0.0f);
 			sh::math::Vector3 rayDirection(0.0f);

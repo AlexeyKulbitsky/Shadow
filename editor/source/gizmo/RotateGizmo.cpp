@@ -31,7 +31,7 @@ void RotateGizmo::Render()
 		return;
 
 	sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
-	sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
+	const sh::scene::CameraPtr& camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
 	sh::math::Matrix4 viewMatrix = camera->GetViewMatrix();
 	sh::math::Matrix4 projectionMatrix = camera->GetProjectionMatrix();
 
@@ -129,7 +129,7 @@ bool RotateGizmo::TryToSelect(sh::u32 x, sh::u32 y)
 	sh::math::Matrix4 invMatrix;
 	matrix.SetIdentity();
 
-	sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
+	const sh::scene::CameraPtr& camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
 	sh::math::Vector3 rayOrigin(0.0f);
 	sh::math::Vector3 rayDirection(0.0f);
 	camera->BuildRay(x, y, rayOrigin, rayDirection);
@@ -269,7 +269,7 @@ void RotateGizmo::CreateCircle(Axis::Type type)
 
 void RotateGizmo::Rotate(Axis::Type axis)
 {
-	sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
+	const sh::scene::CameraPtr& camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
 	sh::InputManager* inputManager = sh::Device::GetInstance()->GetInputManager();
 	sh::math::Vector2Int old = inputManager->GetMousePositionOld();
 	sh::math::Vector2Int current = inputManager->GetMousePositionCurrent();

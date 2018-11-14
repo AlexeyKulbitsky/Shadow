@@ -14,7 +14,6 @@ namespace sh
 	{
 		Painter::Painter()
 		{
-			
 			Driver* driver = Device::GetInstance()->GetDriver();
 
 			sh::video::CommandBufferDescription commandBufferDesc;
@@ -39,6 +38,8 @@ namespace sh
 			m_trianglesIndexBuffer = video::IndexBuffer::Create(indexDesc);
 			m_triangles.trianglesBatches.reserve(100U);
 			m_triangles.indicesCount = 0U;
+            
+            m_camera = Device::GetInstance()->GetSceneManager()->GetCamera();
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -60,6 +61,7 @@ namespace sh
 				const u32 linesIdx = m_lines.linesBatches.size() - 1;
 
 				m_lines.linesBatches[linesIdx].materialIndex = m_materials.size() - 1;
+                m_lines.linesBatches[linesIdx].cameraIndex = m_cameras.size() - 1;
 				m_lines.linesBatches[linesIdx].startIndex = m_lines.verticesCount;
 				m_lines.linesBatches[linesIdx].verticesCount = 0U;
 			}
@@ -68,6 +70,7 @@ namespace sh
 			{
 				LinesBatch linesBatch;
 				linesBatch.materialIndex = m_materials.size() - 1;
+                linesBatch.cameraIndex = m_cameras.size() - 1;
 				linesBatch.startIndex = m_lines.verticesCount;
 				// If it is first batch then use viewport (no scissor rect)
 				if (m_lines.linesBatches.size() == 0U)
@@ -91,6 +94,7 @@ namespace sh
 				const u32 trianglesIdx = m_triangles.trianglesBatches.size() - 1;
 
 				m_triangles.trianglesBatches[trianglesIdx].materialIndex = m_materials.size() - 1;
+                m_triangles.trianglesBatches[trianglesIdx].cameraIndex = m_cameras.size() - 1;
 				m_triangles.trianglesBatches[trianglesIdx].startIndex = m_triangles.indicesCount;
 				m_triangles.trianglesBatches[trianglesIdx].verticesCount = 0U;
 				m_triangles.trianglesBatches[trianglesIdx].indicesCount = 0U;
@@ -100,6 +104,7 @@ namespace sh
 			{
 				TrianglesBatch trianglesBatch;
 				trianglesBatch.materialIndex = m_materials.size() - 1;
+                trianglesBatch.cameraIndex = m_cameras.size() - 1;
 				trianglesBatch.startIndex = m_triangles.indicesCount;
 				// If it is first batch then use viewport (no scissor rect)
 				if (m_triangles.trianglesBatches.size() == 0U)
@@ -115,13 +120,99 @@ namespace sh
 				m_triangles.trianglesBatches.push_back(trianglesBatch);
 			}
 		}
+        
+        /////////////////////////////////////////////////////////////////////////////////////
+        
+        const MaterialPtr& Painter::GetMaterial() const
+        {
+            return m_material;
+        }
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
 		void Painter::SetCamera(const scene::CameraPtr& camera)
 		{
+            if (m_cameras.size() != 0U && m_cameras[m_cameras.size() - 1U] == camera)
+                return;
+            
 			m_camera = camera;
+            
+            m_cameras.push_back(camera);
+            
+            // Check if previous lines batch has or not anything to render
+            // If not then remove it from render list to avoid useless operations
+            if (m_lines.linesBatches.size() > 0U &&
+                m_lines.linesBatches[m_lines.linesBatches.size() - 1].verticesCount == 0U)
+            {
+                const u32 linesIdx = m_lines.linesBatches.size() - 1;
+                
+                m_lines.linesBatches[linesIdx].materialIndex = m_materials.size() - 1;
+                m_lines.linesBatches[linesIdx].cameraIndex = m_cameras.size() - 1;
+                m_lines.linesBatches[linesIdx].startIndex = m_lines.verticesCount;
+                m_lines.linesBatches[linesIdx].verticesCount = 0U;
+            }
+            // If has then create new batch
+            else
+            {
+                LinesBatch linesBatch;
+                linesBatch.materialIndex = m_materials.size() - 1;
+                linesBatch.cameraIndex = m_cameras.size() - 1;
+                linesBatch.startIndex = m_lines.verticesCount;
+                // If it is first batch then use viewport (no scissor rect)
+                if (m_lines.linesBatches.size() == 0U)
+                {
+                    linesBatch.clipRect = Device::GetInstance()->GetDriver()->GetViewport();
+                }
+                // Otherwise use previous clip rect
+                else
+                {
+                    const u32 lastBatchIdx = m_lines.linesBatches.size() - 1;
+                    linesBatch.clipRect = m_triangles.trianglesBatches[lastBatchIdx].clipRect;
+                }
+                m_lines.linesBatches.push_back(linesBatch);
+            }
+            
+            // Check if previous triangles batch has or not anything to render
+            // If not then remove it from render list to avoid useless operations
+            if (m_triangles.trianglesBatches.size() > 0U &&
+                m_triangles.trianglesBatches[m_triangles.trianglesBatches.size() - 1].verticesCount == 0U)
+            {
+                const u32 trianglesIdx = m_triangles.trianglesBatches.size() - 1;
+                
+                m_triangles.trianglesBatches[trianglesIdx].materialIndex = m_materials.size() - 1;
+                m_triangles.trianglesBatches[trianglesIdx].cameraIndex = m_cameras.size() - 1;
+                m_triangles.trianglesBatches[trianglesIdx].startIndex = m_triangles.indicesCount;
+                m_triangles.trianglesBatches[trianglesIdx].verticesCount = 0U;
+                m_triangles.trianglesBatches[trianglesIdx].indicesCount = 0U;
+            }
+            // If has then create new batch
+            else
+            {
+                TrianglesBatch trianglesBatch;
+                trianglesBatch.materialIndex = m_materials.size() - 1;
+                trianglesBatch.cameraIndex = m_cameras.size() - 1;
+                trianglesBatch.startIndex = m_triangles.indicesCount;
+                // If it is first batch then use viewport (no scissor rect)
+                if (m_triangles.trianglesBatches.size() == 0U)
+                {
+                    trianglesBatch.clipRect = Device::GetInstance()->GetDriver()->GetViewport();
+                }
+                // Otherwise use previous clip rect
+                else
+                {
+                    const u32 lastBatchIdx = m_triangles.trianglesBatches.size() - 1;
+                    trianglesBatch.clipRect = m_triangles.trianglesBatches[lastBatchIdx].clipRect;
+                }
+                m_triangles.trianglesBatches.push_back(trianglesBatch);
+            }
 		}
+        
+        /////////////////////////////////////////////////////////////////////////////////////
+        
+        const scene::CameraPtr& Painter::GetCamera() const
+        {
+            return m_camera;
+        }
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
@@ -140,6 +231,7 @@ namespace sh
 					const auto& currentBatch = m_lines.linesBatches[linessIdx];
 					LinesBatch newBatch;
 					newBatch.materialIndex = currentBatch.materialIndex;
+                    newBatch.cameraIndex = currentBatch.cameraIndex;
 					newBatch.startIndex = m_lines.verticesCount;
 					newBatch.clipRect = rect;
 					m_lines.linesBatches.push_back(newBatch);
@@ -159,6 +251,7 @@ namespace sh
 					const auto& currentBatch = m_triangles.trianglesBatches[triangleIdx];
 					TrianglesBatch newBatch;
 					newBatch.materialIndex = currentBatch.materialIndex;
+                    newBatch.cameraIndex = currentBatch.cameraIndex;
 					newBatch.startIndex = m_triangles.indicesCount;
 					newBatch.clipRect = rect;
 					m_triangles.trianglesBatches.push_back(newBatch);
@@ -467,10 +560,10 @@ namespace sh
 		void Painter::Flush()
 		{
 			sh::video::Driver* driver = sh::Device::GetInstance()->GetDriver();
-			sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
+			/*sh::scene::Camera* camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
 			const sh::math::Matrix4& viewMatrix = camera->GetViewMatrix();
 			const sh::math::Matrix4& projectionMatrix = camera->GetProjectionMatrix();
-			const sh::math::Matrix4& projection2DMatrix = camera->Get2DProjectionMatrix();
+			const sh::math::Matrix4& projection2DMatrix = camera->Get2DProjectionMatrix();*/
 
 			m_commandBuffer->Begin();
 
@@ -486,6 +579,11 @@ namespace sh
 			{
 				if (m_lines.linesBatches[i].verticesCount == 0)
 					continue;
+                
+                const auto& camera = m_cameras[m_lines.linesBatches[i].cameraIndex];
+                const sh::math::Matrix4& viewMatrix = camera->GetViewMatrix();
+                const sh::math::Matrix4& projectionMatrix = camera->GetProjectionMatrix();
+                const sh::math::Matrix4& projection2DMatrix = camera->Get2DProjectionMatrix();
 
 				// Update current batch material params
 				const u32 materialIdx = m_lines.linesBatches[i].materialIndex;
@@ -535,6 +633,7 @@ namespace sh
 				}
 
 				// Render current line batch
+                driver->SetViewport(camera->GetViewport());
 				driver->SetRenderPipeline(m_materials[materialIdx]->GetRenderPipeline(), m_commandBuffer);
 				driver->SetGpuParams(m_materials[materialIdx]->GetCommonGpuParams(), m_commandBuffer);
 				driver->SetGpuParams(m_materials[materialIdx]->GetAutoGpuParams(), m_commandBuffer);
@@ -565,6 +664,11 @@ namespace sh
 			{
 				if (m_triangles.trianglesBatches[i].indicesCount == 0)
 					continue;
+                
+                const auto& camera = m_cameras[m_triangles.trianglesBatches[i].cameraIndex];
+                const sh::math::Matrix4& viewMatrix = camera->GetViewMatrix();
+                const sh::math::Matrix4& projectionMatrix = camera->GetProjectionMatrix();
+                const sh::math::Matrix4& projection2DMatrix = camera->Get2DProjectionMatrix();
 
 				// Update current batch material params
 				const u32 materialIdx = m_triangles.trianglesBatches[i].materialIndex;
@@ -614,6 +718,7 @@ namespace sh
 				}
 
 				// Render current triangle batch
+                driver->SetViewport(camera->GetViewport());
 				driver->SetRenderPipeline(m_materials[materialIdx]->GetRenderPipeline(), m_commandBuffer);
 				driver->SetGpuParams(m_materials[materialIdx]->GetCommonGpuParams(), m_commandBuffer);
 				driver->SetGpuParams(m_materials[materialIdx]->GetAutoGpuParams(), m_commandBuffer);
@@ -646,9 +751,11 @@ namespace sh
 			m_triangles.verticesCount = 0U;
 
 			m_materials.clear();
+            m_cameras.clear();
 
-			// We must have at least one active material any time
+			// We must have at least one active material and camera any time
 			SetMaterial(m_material);
+            SetCamera(m_camera);
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////

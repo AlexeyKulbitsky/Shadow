@@ -289,13 +289,13 @@ namespace gui
 					s32 newX = static_cast<s32>(m_rect.upperLeftCorner.x) + delta.x;
 					s32 newY = static_cast<s32>(m_rect.upperLeftCorner.y) + delta.y;
 
-					const auto& viewport = device->GetDriver()->GetViewPort();
+					const auto& viewport = device->GetDriver()->GetViewport();
 					if (newX < 0) newX = 0;
-					if ((newX + m_rect.GetWidth()) > static_cast<s32>(viewport.z)) newX = viewport.z - m_rect.GetWidth();
+					if ((newX + m_rect.GetWidth()) > static_cast<s32>(viewport.GetWidth())) newX = viewport.GetWidth() - m_rect.GetWidth();
 
 					s32 topEdge = 0U;
 					if (newY < topEdge) newY = topEdge;
-					if ((newY + m_rect.GetHeight()) > static_cast<s32>(viewport.w)) newY = static_cast<s32>(viewport.w) - m_rect.GetHeight();
+					if ((newY + m_rect.GetHeight()) > static_cast<s32>(viewport.GetHeight())) newY = static_cast<s32>(viewport.GetHeight()) - m_rect.GetHeight();
 
 					SetPosition(newX, newY);
 					m_text->SetPosition(newX, newY);

@@ -39,7 +39,7 @@ private:
 
 	sh::Entity* m_cachedSelectedEntity = nullptr;
 	sh::scene::Scene* m_cachedScene = nullptr;
-	sh::scene::Camera* m_cachedCamera = nullptr;
+	sh::scene::CameraPtr m_cachedCamera;
 };
 
 #endif
