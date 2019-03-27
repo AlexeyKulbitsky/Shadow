@@ -408,6 +408,14 @@ set(SH_COMMON_SRC
   source/Variant.cpp
 )
 
+set(SH_NEW_GUI_INCLUDE
+  source/newGui/Button.h  
+)
+
+set(SH_NEW_GUI_SRC
+  source/newGui/Button.cpp 
+)
+
 set(PROJECT_SOURCE_FILES
   ${SH_ENTITY_INCLUDE}
   ${SH_ENTITY_SRC}
@@ -436,6 +444,9 @@ set(PROJECT_SOURCE_FILES
   ${SH_GLES20_SRC}
   ${SH_COMMON_INCLUDE}
   ${SH_COMMON_SRC}
+
+  ${SH_NEW_GUI_INCLUDE}
+  ${SH_NEW_GUI_SRC}
 )
 
 # Group files according to files organization
@@ -507,7 +518,10 @@ endif()
 include_directories(../libs/stb)
 
 # Add Tiny OBJ loader
+add_subdirectory(../libs/tinyobjloader "${CMAKE_CURRENT_BINARY_DIR}/ThirdParty/tinyobjloader")
 include_directories(../libs/tinyobjloader)
+set_property(TARGET tinyobjloader PROPERTY FOLDER CommonLibs)
+target_link_libraries(${PROJECT_NAME} tinyobjloader)
 
 # Add EGL
 include_directories(../libs/egl/include)

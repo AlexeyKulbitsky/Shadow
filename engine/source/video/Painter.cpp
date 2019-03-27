@@ -565,7 +565,7 @@ namespace sh
 			if (m_camera)
 				camera = m_camera.get();
 			else
-				camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera();
+				camera = sh::Device::GetInstance()->GetSceneManager()->GetCamera().get();
 
 			const sh::math::Matrix4& viewMatrix = camera->GetViewMatrix();
 			const sh::math::Matrix4& projectionMatrix = camera->GetProjectionMatrix();
@@ -586,7 +586,7 @@ namespace sh
 				if (m_lines.linesBatches[i].verticesCount == 0)
 					continue;
                 
-                const auto& camera = m_cameras[m_lines.linesBatches[i].cameraIndex];
+                //const auto& camera = m_cameras[m_lines.linesBatches[i].cameraIndex];
                 const sh::math::Matrix4& viewMatrix = camera->GetViewMatrix();
                 const sh::math::Matrix4& projectionMatrix = camera->GetProjectionMatrix();
                 const sh::math::Matrix4& projection2DMatrix = camera->Get2DProjectionMatrix();
@@ -646,7 +646,7 @@ namespace sh
 				driver->SetVertexBuffer(m_linesVertexBuffer, m_commandBuffer);
 				driver->SetVertexDeclaration(m_materials[materialIdx]->GetRenderPipeline()->GetVertexInputDeclaration(), m_commandBuffer);
 				driver->SetTopology(TOP_LINE_LIST, m_commandBuffer);
-				driver->SetScissorRect(m_lines.linesBatches[i].clipRect, m_commandBuffer);
+				//driver->SetScissorRect(m_lines.linesBatches[i].clipRect, m_commandBuffer);
 				driver->Draw(m_lines.linesBatches[i].startIndex, 
 							 m_lines.linesBatches[i].verticesCount, 1U, m_commandBuffer);
 
@@ -671,7 +671,7 @@ namespace sh
 				if (m_triangles.trianglesBatches[i].indicesCount == 0)
 					continue;
                 
-                const auto& camera = m_cameras[m_triangles.trianglesBatches[i].cameraIndex];
+                //const auto& camera = m_cameras[m_triangles.trianglesBatches[i].cameraIndex];
                 const sh::math::Matrix4& viewMatrix = camera->GetViewMatrix();
                 const sh::math::Matrix4& projectionMatrix = camera->GetProjectionMatrix();
                 const sh::math::Matrix4& projection2DMatrix = camera->Get2DProjectionMatrix();
@@ -732,7 +732,8 @@ namespace sh
 				driver->SetIndexBuffer(m_trianglesIndexBuffer, m_commandBuffer);
 				driver->SetVertexDeclaration(m_materials[materialIdx]->GetRenderPipeline()->GetVertexInputDeclaration(), m_commandBuffer);
 				driver->SetTopology(TOP_TRIANGLE_LIST, m_commandBuffer);
-				driver->SetScissorRect(m_triangles.trianglesBatches[i].clipRect, m_commandBuffer);
+                // Check driver's viewport
+				//driver->SetScissorRect(m_triangles.trianglesBatches[i].clipRect, m_commandBuffer);
 				driver->DrawIndexed(m_triangles.trianglesBatches[i].startIndex,
 									m_triangles.trianglesBatches[i].indicesCount,
 									1U,

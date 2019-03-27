@@ -30,6 +30,7 @@ namespace sh
 			std::vector<tinyobj::shape_t> shapes;
 			std::vector<tinyobj::material_t> materials;
 			std::string err;
+            std::string warn;
 
 			//String fullPath(path);
 			//String::size_type pos = String(path).find_last_of("\\/");
@@ -38,8 +39,8 @@ namespace sh
 			io::File file = io::FileSystem::GetInstance()->LoadFile(filename);
 			std::stringstream stringBuffer;
 			stringBuffer << file.GetData().data();
-
-			bool res = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, &stringBuffer);
+            
+			bool res = tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, &stringBuffer);
 
 			SH_ASSERT(res, "Can not load model %s", filename.c_str());
 			

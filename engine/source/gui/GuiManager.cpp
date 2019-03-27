@@ -131,14 +131,13 @@ namespace gui
 
 		painter->SetCamera(m_camera);
 
-		auto t1 = Device::GetInstance()->GetTime();
-
-//#if 0
 		for (auto child = m_children.rbegin(); child != m_children.rend(); ++child)
 		{
 			// Draw only unfocused widgets
 			if (!(*child)->IsInFocus())
-				(*child)->Render(painter);
+            {
+                (*child)->Render(painter);
+            }
 		}
 
 		// The only focus widget must be drawn after all widgets are ready
@@ -146,9 +145,6 @@ namespace gui
 		{
 			m_focusWidget->Render(painter);
 		}
-//#endif
-
-
 
 #if 0
 
@@ -173,15 +169,6 @@ namespace gui
 
 		painter->Flush();
 		painter->SetCamera(painterCamera);
-        
-        //driver->SetViewport(viewport);
-
-		auto t2 = Device::GetInstance()->GetTime();
-
-		//printf("GUI draw time: %d\n", static_cast<int>(t2 - t1));
-		//printf("GUI value: %d\n", m_value);
-		//SH_ASSERT(m_value != 2);
-		m_value = 0;
 	}
     
     void GuiManager::LoadScreen(const String& fileName)
@@ -260,7 +247,7 @@ namespace gui
     
     const scene::CameraPtr& GuiManager::GetCamera() const
     {
-        return m_camera.get();
+        return m_camera;
     }
     
 	void GuiManager::RemoveChild(size_t index)
