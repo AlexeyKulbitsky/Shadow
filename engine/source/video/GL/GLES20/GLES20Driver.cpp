@@ -537,10 +537,12 @@ void GLES20Driver::DrawIndexed( u32 offset, u32 indicesCount, u32 instancesCount
 void GLES20Driver::SetScissorRect(const math::Rect& scissor, const CommandBufferPtr&)
 {
 	const s32 height = static_cast<s32>(m_viewPort.w);
-	GL_CALL(glScissor(static_cast<s32>(scissor.upperLeftCorner.x),
+	/*GL_CALL(glScissor(static_cast<s32>(scissor.upperLeftCorner.x),
 			  height - static_cast<s32>(scissor.upperLeftCorner.y + scissor.GetHeight()),
 			  scissor.GetWidth(),
-			  scissor.GetHeight()));
+			  scissor.GetHeight()));*/
+
+    GL_CALL(glScissor(0, 0, scissor.GetWidth(), scissor.GetHeight()));
 }
 
 ////////////////////////////////////////////////////////////////////////

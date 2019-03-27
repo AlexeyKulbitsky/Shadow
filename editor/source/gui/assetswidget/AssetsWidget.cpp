@@ -4,6 +4,7 @@
 #include "MaterialTreeItem.h"
 #include "TextureTreeItem.h"
 #include "ModelTreeItem.h"
+#include "SceneTreeItem.h"
 
 
 std::weak_ptr<MaterialEditor> s_materialEditor;
@@ -106,6 +107,11 @@ void AssetsWidget::RefreshAssetsList()
 							sh::SPtr<MaterialTreeItem> item(new MaterialTreeItem(treeItem.get(), child.get()));
 							childItem = item;
 						}
+                        else if (extension == "xml")
+                        {
+                            sh::SPtr<SceneTreeItem> item(new SceneTreeItem(treeItem.get(), child.get()));
+                            childItem = item;
+                        }
 						else
 						{
 							auto textIt = std::find(imageExtensions.begin(), imageExtensions.end(), extension);

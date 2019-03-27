@@ -71,6 +71,7 @@ namespace gui
 		Event<void, const ButtonPtr&> OnRelease;
 		Event<void, const ButtonPtr&> OnHover;
 		Event<void, bool, const ButtonPtr&> OnToggle;
+        Event<void, const ButtonPtr&> OnDoubleClick;
 
 	protected:
 		std::array<SpritePtr, State::Count> m_sprites;

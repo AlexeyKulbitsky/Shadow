@@ -62,7 +62,7 @@ void ScriptA::Update(float dt)
 
 		camera->SetPosition(camera->GetPosition() + deltaPos);
 		auto sceneManager = sh::Device::GetInstance()->GetSceneManager();
-		sceneManager->SetCamera(camera);
+		//sceneManager->SetCamera(camera);
 	}
 }
 

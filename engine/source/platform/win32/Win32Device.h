@@ -23,6 +23,9 @@ namespace sh
 		virtual void Run() override;
 		virtual u64 GetTime() override;
 
+        String ShowOpenFileDialog() override final;
+        String ShowSaveFileDialog() override final;
+
 		bool CreateDriver();
 	private:
 		HWND m_hwnd;

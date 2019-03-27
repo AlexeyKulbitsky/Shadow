@@ -32,6 +32,7 @@ namespace gui
 		bool IsExpanded() const { return m_expanded; }
 		void SetExpanded(bool expanded);
 		virtual void OnPressed();
+        virtual void OnDoubleClicked();
 
 		virtual void Render(video::Painter* painter) override;
 		virtual void RenderBackground(video::Painter* painter) override;

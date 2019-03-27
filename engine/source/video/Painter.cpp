@@ -639,7 +639,7 @@ namespace sh
 				}
 
 				// Render current line batch
-                driver->SetViewport(camera->GetViewport());
+                //driver->SetViewport(camera->GetViewport());
 				driver->SetRenderPipeline(m_materials[materialIdx]->GetRenderPipeline(), m_commandBuffer);
 				driver->SetGpuParams(m_materials[materialIdx]->GetCommonGpuParams(), m_commandBuffer);
 				driver->SetGpuParams(m_materials[materialIdx]->GetAutoGpuParams(), m_commandBuffer);
@@ -724,7 +724,7 @@ namespace sh
 				}
 
 				// Render current triangle batch
-                driver->SetViewport(camera->GetViewport());
+                //driver->SetViewport(camera->GetViewport());
 				driver->SetRenderPipeline(m_materials[materialIdx]->GetRenderPipeline(), m_commandBuffer);
 				driver->SetGpuParams(m_materials[materialIdx]->GetCommonGpuParams(), m_commandBuffer);
 				driver->SetGpuParams(m_materials[materialIdx]->GetAutoGpuParams(), m_commandBuffer);

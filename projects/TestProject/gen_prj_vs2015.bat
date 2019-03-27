@@ -1,1 +1,3 @@
-cmake -E make_directory "project" && cmake -E chdir "project" cmake -G "Visual Studio 14" ../source
+if not exist "./project" mkdir "./project"
+cd project
+cmake -G "Visual Studio 14" ../source

@@ -17,6 +17,8 @@
 #include "../../io/win32/WindowsFileSystem.h"
 
 #include <chrono>
+#include <Commdlg.h>
+//#include <tchar.h>
 
 // Window assert implementation
 #include "Win32Assert.h"
@@ -547,6 +549,58 @@ u64 Win32Device::GetTime()
 	QueryPerformanceFrequency(&freq);
 	QueryPerformanceCounter(&crt);
 	return (crt.QuadPart * 1000000) / freq.QuadPart;
+}
+
+String Win32Device::ShowOpenFileDialog()
+{
+    char szFileName[MAX_PATH] = "";
+
+    OPENFILENAME ofn;
+    ZeroMemory(&ofn, sizeof(ofn));
+    ofn.lStructSize = sizeof(OPENFILENAME);
+    ofn.hwndOwner = m_hwnd;
+    ofn.lpstrFilter =
+        "XML files (*.xml)\0*.xml\0"
+        "All files (*.*)\0*.*\0";
+    ofn.lpstrFile = szFileName;
+    ofn.nMaxFile = MAX_PATH;
+    ofn.lpstrTitle = "Open scene";
+    ofn.Flags = OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+    ofn.lpstrDefExt = "xml";
+
+    String result("");
+    if (GetOpenFileName(&ofn))
+    {
+        result = ofn.lpstrFile;
+    }
+
+    return result;
+}
+
+String Win32Device::ShowSaveFileDialog()
+{
+    char szFileName[MAX_PATH] = "";
+
+    OPENFILENAME ofn;
+    ZeroMemory(&ofn, sizeof(ofn));
+    ofn.lStructSize = sizeof(OPENFILENAME);
+    ofn.hwndOwner = m_hwnd;
+    ofn.lpstrFilter =
+        "XML files (*.xml)\0*.xml\0"
+        "All files (*.*)\0*.*\0";
+    ofn.lpstrFile = szFileName;
+    ofn.nMaxFile = MAX_PATH;
+    ofn.lpstrTitle = "Save scene";
+    ofn.Flags = OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+    ofn.lpstrDefExt = "xml";
+
+    String result("");
+    if (GetSaveFileName(&ofn))
+    {
+        result = ofn.lpstrFile;
+    }
+
+    return result;
 }
 
 bool Win32Device::CreateDriver()

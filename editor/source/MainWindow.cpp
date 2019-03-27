@@ -4,11 +4,6 @@
 #include "selection/SelectionManager.h"
 #include "gui/propertyeditors/PropertyEditorsFactory.h"
 
-
-//#include <Windows.h>
-//#include <Commdlg.h>
-//#include <tchar.h>
-
 #include <jobs/Test.h>
 
 #include <pugixml.hpp>
@@ -42,46 +37,13 @@ void MainWindow::OpenScene()
         return;
     
     OpenScene(path);
-    
-#if 0
-	HWND hWnd = (HWND)sh::Device::GetInstance()->GetWinId();
-
-	char szFileName[MAX_PATH] = "";
-
-	OPENFILENAME ofn;
-	ZeroMemory(&ofn, sizeof(ofn));
-	ofn.lStructSize = sizeof(OPENFILENAME);
-	ofn.hwndOwner = hWnd;
-	ofn.lpstrFilter =
-		"XML files (*.xml)\0*.xml\0"
-		"All files (*.*)\0*.*\0";
-	ofn.lpstrFile = szFileName;
-	ofn.nMaxFile = MAX_PATH;
-	ofn.lpstrTitle = "Open scene";
-	ofn.Flags = OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
-	ofn.lpstrDefExt = "xml";
-	if (GetOpenFileName(&ofn))
-	{
-		sh::scene::SceneManager* sceneMgr = sh::Device::GetInstance()->GetSceneManager();
-		sh::String fullPath(ofn.lpstrFile);
-		size_t pos = fullPath.find_last_of('\\');
-		sceneMgr->LoadScene(fullPath.substr(pos + 1).c_str());
-
-		sh::u32 entitiesCount = sceneMgr->GetEntitiesCount();
-		for (sh::u32 i = 0U; i < entitiesCount; ++i)
-		{
-			auto entity = sceneMgr->GetEntity(i);
-			m_hierarchyWidget->AddEntity(entity);
-		}
-	}
-#endif
 }
 
 void MainWindow::OpenScene(const sh::String& path)
 {
     sh::scene::SceneManager* sceneMgr = sh::Device::GetInstance()->GetSceneManager();
     sh::String fullPath = path;
-    size_t pos = fullPath.find_last_of('\\/');
+    size_t pos = fullPath.find_last_of("\\/");
     sceneMgr->LoadScene(fullPath.substr(pos + 1).c_str());
     
     sh::u32 entitiesCount = sceneMgr->GetEntitiesCount();
@@ -91,13 +53,13 @@ void MainWindow::OpenScene(const sh::String& path)
         m_hierarchyWidget->AddEntity(entity);
     }
     
-    auto guiManager = sh::gui::GuiManager::GetInstance();
+    /*auto guiManager = sh::gui::GuiManager::GetInstance();
     const auto& children = guiManager->GetChildren();
     
     for (auto child : children)
     {
         m_hierarchyWidget->AddEntity(child.get());
-    }
+    }*/
 }
 
 void MainWindow::SaveScene()
@@ -110,30 +72,6 @@ void MainWindow::SaveScene()
     //sceneMgr->SaveScene(path.c_str());
     
     sh::gui::GuiManager::GetInstance()->SaveScreen(path);
-    
-#if 0
-	HWND hWnd = (HWND)sh::Device::GetInstance()->GetWinId();
-
-	char szFileName[MAX_PATH] = "";
-
-	OPENFILENAME ofn;
-	ZeroMemory(&ofn, sizeof(ofn));
-	ofn.lStructSize = sizeof(OPENFILENAME);
-	ofn.hwndOwner = hWnd;
-	ofn.lpstrFilter =
-		"XML files (*.xml)\0*.xml\0"
-		"All files (*.*)\0*.*\0";
-	ofn.lpstrFile = szFileName;
-	ofn.nMaxFile = MAX_PATH;
-	ofn.lpstrTitle = "Save scene";
-	ofn.Flags = OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
-	ofn.lpstrDefExt = "xml";
-	if (GetSaveFileName(&ofn))
-	{
-		sh::scene::SceneManager* sceneMgr = sh::Device::GetInstance()->GetSceneManager();
-		sceneMgr->SaveScene(ofn.lpstrFile);
-    }
-#endif
 }
 
 void MainWindow::NewProject()
@@ -373,6 +311,9 @@ void MainWindow::OnWindowResized(int width, int height)
     guiManager->GetCamera()->SetViewport(sh::math::Rect(0, 0, width, height));
 	m_mainWidget->SetRect(sh::math::Rect(0, 0, width, height));
     
+    auto driver = sh::Device::GetInstance()->GetDriver();
+    driver->SetViewport(0, 0, width, height);
+    driver->SetScissorRect(sh::math::Rect(0, 0, width, height));
 }
 
 void MainWindow::OnSurfaceChanged(void*, int width, int height)

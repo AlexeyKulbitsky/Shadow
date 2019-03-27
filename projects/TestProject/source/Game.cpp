@@ -23,7 +23,7 @@ void Game::Init()
 
 	auto sceneMgr = device->GetSceneManager();
 	sceneMgr->LoadScene("test_scene.xml");
-	sh::scene::Camera* camera = sceneMgr->GetCamera();
+	sh::scene::CameraPtr camera = sceneMgr->GetCamera();
 	camera->SetPosition(camera->GetPosition() + sh::math::Vector3(0.0f, 0.0f, 20.0f));
 
     sceneMgr->SetSystemsState(sh::SystemState::Running);
@@ -94,7 +94,7 @@ void Game::Update(sh::u64 delta)
 	sh::Device* device = sh::Device::GetInstance();
     sh::InputManager* inputManager = device->GetInputManager();
     sh::scene::SceneManager* sceneMgr = device->GetSceneManager();
-    sh::scene::Camera* camera = sceneMgr->GetCamera();
+    sh::scene::CameraPtr camera = sceneMgr->GetCamera();
     
     sh::video::Driver* driver = device->GetDriver();
     

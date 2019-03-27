@@ -1,0 +1,35 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+*.user
+.vs/
+Built/
+packages/
+
+# Folders
+**/[Bb]uild
+**/[Dd]ebug
+**/[Rr]elease
+**/[Bb]in
+**/[Ll]ib

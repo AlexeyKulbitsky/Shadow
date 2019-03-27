@@ -170,13 +170,6 @@ namespace gui
 		//Widget::Render(painter);
 
 		m_text->Render(painter);
-        
-        
-        if (m_state == Hovered)
-        {
-            static int a = 0;
-            std::cout << "Hovered:" << a++ << std::endl;
-        }
 	}
 
 	void Button::CollectBatches(GuiLayerBatch& batch)
@@ -315,6 +308,11 @@ namespace gui
 				return false;
 			}
 			break;
+            case EventType::PointerDoubleClick:
+            {
+                OnDoubleClick(std::static_pointer_cast<Button>(shared_from_this()));
+            }
+            break;
 			default:
 				break;
 			}

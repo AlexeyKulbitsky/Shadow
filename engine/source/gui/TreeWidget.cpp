@@ -136,6 +136,11 @@ namespace gui
 		}
 	}
 
+    void TreeItem::OnDoubleClicked()
+    {
+
+    }
+
 	void TreeItem::Render(video::Painter* painter)
 	{
 		if (!m_visible)
