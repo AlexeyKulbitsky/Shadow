@@ -46,8 +46,8 @@ namespace sh
 			virtual void SetWindow(void* winId, u32 width, u32 height) {}
 			virtual void SetWindow(void* winId) {}
 			
-			virtual void Render(scene::Model* model);
-			virtual void Render(scene::Mesh* mesh);
+			//virtual void Render(scene::Model* model);
+			//virtual void Render(scene::Mesh* mesh);
 			//virtual void Render(const RenderCommandPtr& command) {};
 
 			// Viewport management

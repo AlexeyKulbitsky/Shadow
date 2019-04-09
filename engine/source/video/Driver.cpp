@@ -23,7 +23,7 @@ namespace sh
 		{
 		}
 
-		void Driver::Render(scene::Model* model)
+		/*void Driver::Render(scene::Model* model)
 		{
 			size_t meshesCount = model->GetMeshesCount();
 			for (size_t i = 0; i < meshesCount; ++i)
@@ -31,11 +31,11 @@ namespace sh
 				sh::scene::MeshPtr mesh = model->GetMesh(i);
 				Render(mesh.get());
 			}
-		}
+		}*/
 
 		/////////////////////////////////////////////////////////////////////////
 
-		void Driver::Render(scene::Mesh* mesh)
+		/*void Driver::Render(scene::Mesh* mesh)
 		{
 			const MaterialPtr& material = mesh->GetMaterial();
 			const RenderPipelinePtr& renderPipeline = material->GetRenderPipeline(0);
@@ -43,7 +43,7 @@ namespace sh
 			SetDepthStencilState(renderPipeline->GetDepthStencilState());
 			SetRasterizationState(renderPipeline->GetRasterizationState());
 			SetBlendingState(renderPipeline->GetBlendingState());
-		}
+		}*/
 
 		/////////////////////////////////////////////////////////////////////////
 		
