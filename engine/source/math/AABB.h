@@ -1,11 +1,10 @@
 #ifndef SHADOW_AABB_INCLUDE
 #define SHADOW_AABB_INCLUDE
 
+#include "common/Prerequisities.h"
 #include "Vector3.h"
 #include "Vector4.h"
 #include "Matrix4.h"
-
-#include "../CompileConfig.h"
 
 namespace sh
 {

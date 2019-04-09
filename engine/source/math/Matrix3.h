@@ -1,9 +1,8 @@
 #ifndef SHADOW_MATRIX3_INCLUDE
 #define SHADOW_MATRIX3_INCLUDE
 
+#include "common/Prerequisities.h"
 #include "Vector3.h"
-
-#include "../CompileConfig.h"
 
 namespace sh
 {

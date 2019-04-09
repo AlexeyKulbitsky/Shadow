@@ -1,9 +1,8 @@
 #ifndef SHADOW_VECTOR2_INCLUDE
 #define SHADOW_VECTOR2_INCLUDE
 
+#include "common/Prerequisities.h"
 #include "FunctionsCommon.h"
-
-#include "../CompileConfig.h"
 
 namespace sh
 {

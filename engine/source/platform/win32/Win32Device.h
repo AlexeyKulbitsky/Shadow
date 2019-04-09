@@ -18,15 +18,11 @@ namespace sh
 		explicit Win32Device(const CreationParameters &parameters);
 		virtual ~Win32Device();
 
-		virtual void Init() override;
-		virtual void Update(f32 deltaTime) override;
-		virtual void Run() override;
-		virtual u64 GetTime() override;
+		void Init() override final;
+		void Update(float deltaTime) override final;
+		void Run() override final;
+		uint64_t GetTime() override final;
 
-        String ShowOpenFileDialog() override final;
-        String ShowSaveFileDialog() override final;
-
-		bool CreateDriver();
 	private:
 		HWND m_hwnd;
 	};

@@ -1,8 +1,6 @@
 #ifndef SHADOW_ANDROID_EVENTS_QUEUE_INCLUDE
 #define SHADOW_ANDROID_EVENTS_QUEUE_INCLUDE
 
-#include "../../Globals.h"
-
 #include <queue>
 #include <thread>
 #include <mutex>

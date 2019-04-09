@@ -1,10 +1,8 @@
 #ifndef SHADOW_VECTOR4_INT_INCLUDE
 #define SHADOW_VECTOR4_INT_INCLUDE
 
+#include "common/Prerequisities.h"
 #include "Vector3.h"
-#include <cstdint>
-
-#include "../CompileConfig.h"
 
 namespace sh
 {

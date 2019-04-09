@@ -15,7 +15,7 @@ namespace sh
 		virtual ~Application() { }
 		
 		virtual void Init();
-		virtual void Update(u64 delta) { }
+		virtual void Update(uint64_t delta) { }
 		virtual void Destroy();
 
 		void Run();

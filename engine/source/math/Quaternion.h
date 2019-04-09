@@ -1,10 +1,9 @@
 #ifndef SHADOW_QUATERNION_INCLUDE
 #define SHADOW_QUATERNION_INCLUDE
 
+#include "common/Prerequisities.h"
 #include "Matrix4.h"
 #include "Matrix3.h"
-
-#include "../CompileConfig.h"
 
 namespace sh
 {

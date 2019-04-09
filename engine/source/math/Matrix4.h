@@ -1,10 +1,9 @@
 #ifndef SHADOW_MATRIX4_INCLUDE
 #define SHADOW_MATRIX4_INCLUDE
 
+#include "common/Prerequisities.h"
 #include "Vector4.h"
 #include "Matrix3.h"
-
-#include "../CompileConfig.h"
 
 namespace sh
 {

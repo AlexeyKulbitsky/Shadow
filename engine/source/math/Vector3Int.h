@@ -1,9 +1,8 @@
 #ifndef SHADOW_VECTOR3_INT_INCLUDE
 #define SHADOW_VECTOR3_INT_INCLUDE
 
+#include "common/Prerequisities.h"
 #include "Vector2Int.h"
-
-#include "../CompileConfig.h"
 
 namespace sh
 {

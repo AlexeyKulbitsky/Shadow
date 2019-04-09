@@ -1,12 +1,13 @@
 #ifndef SHADOW_INCLUDE
 #define SHADOW_INCLUDE
 
-#include "CompileConfig.h"
+//#include "CompileConfig.h"
 #include "Device.h"
-#include "Event.h"
+//#include "Event.h"
 #include "Application.h"
-#include "DynamicLibrary.h"
+//#include "DynamicLibrary.h"
 
+/*
 #include "font/Font.h"
 #include "font/FontManager.h"
 
@@ -50,12 +51,14 @@
 #include "entity/systems/RenderSystem.h"
 #include "entity/systems/TransformSystem.h"
 #include "entity/systems/ScriptSystem.h"
+*/
 
 #include "math/smath.h"
 
-#include "resources/Resource.h"
-#include "resources/ResourceManager.h"
+//#include "resources/Resource.h"
+//#include "resources/ResourceManager.h"
 
+/*
 #include "scene/Camera.h"
 #include "scene/GeometryGenerator.h"
 #include "scene/Light.h"
@@ -96,14 +99,15 @@
 #include "serialization/ObjectFactory.h"
 
 #include "scripting/Script.h"
+*/
 
 namespace sh
 {
 	// Create usual device
-	SHADOW_API Device* /*SH_CALLCONV*/ CreateDevice();
+	SHADOW_API Device* CreateDevice();
 
 	// Create device with more extended configuration
-	SHADOW_API Device* /*SH_CALLCONV*/ CreateDevice(const CreationParameters& parameters);
+	SHADOW_API Device* CreateDevice(const CreationParameters& parameters);
 
 }
 
