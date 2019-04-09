@@ -6,6 +6,12 @@ set(CMAKE_SUPPRESS_REGENERATION true)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 cmake_policy(SET CMP0015 NEW)
 
+if(WIN32)
+  SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++11")
+elseif(APPLE)
+  SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++11")
+endif()
+
 set(PROJECT_NAME Shadow)
 
 set(SH_MATH_INCLUDE

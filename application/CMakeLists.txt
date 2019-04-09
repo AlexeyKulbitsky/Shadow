@@ -9,7 +9,11 @@ include_directories(../engine/source)
 set(APPLICATION_PROJECT_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/source)
 set(APPLICATION_PROJECT_NAME Application)
 
-#SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++11")
+if(WIN32)
+  SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++11")
+elseif(APPLE)
+  SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++11")
+endif()
 
 include_directories( ${EDITOR_PROJECT_INCLUDE_DIR} )
 

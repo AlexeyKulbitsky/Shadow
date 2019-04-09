@@ -1,7 +1,7 @@
 #ifndef SHADOW_MAC_DEVICE_INCLUDE
 #define SHADOW_MAC_DEVICE_INCLUDE
 
-#include "../../Device.h"
+#include "Device.h"
 
 namespace sh
 {
@@ -12,15 +12,11 @@ namespace sh
         explicit MacDevice(const CreationParameters &parameters);
         virtual ~MacDevice();
         
-        virtual void Init() override;
-        virtual void Update(f32 deltaTime) override;
-        virtual void Run() override;
-        virtual u64 GetTime() override;
+        void Init() override final;
+        void Update(float deltaTime) override final;
+        void Run() override final;
+        uint64_t GetTime() override final;
         
-        virtual String ShowOpenFileDialog() override;
-        virtual String ShowSaveFileDialog() override;
-        
-        bool CreateDriver();
     };
 } // sh
 
