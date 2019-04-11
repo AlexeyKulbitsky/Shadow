@@ -34,9 +34,23 @@ elseif(ANDROID)
     source/platform/android/ShadowJNI.cpp
   )
 elseif(APPLE)
-  set(APPLICATION_PLATFORM_SRC
-    source/platform/macos/main.cpp
-  )
+  if(IOS)
+    set(APPLICATION_PLATFORM_SRC
+      source/platform/ios/AppDelegate.m
+      source/platform/ios/main.m
+      source/platform/ios/ViewController.m
+      source/platform/ios/MainView.m
+
+      source/platform/ios/AppDelegate.h
+      source/platform/ios/ViewController.h
+      source/platform/ios/MainView.h
+    )
+  elseif(MACOSX)
+    set(APPLICATION_PLATFORM_SRC
+      source/platform/macos/main.cpp
+    )
+  endif()
+  
 endif()
 
 set(APPLICATION_PROJECT_SOURCE_FILES
@@ -64,7 +78,24 @@ endforeach()
 if(WIN32)
     add_executable(${APPLICATION_PROJECT_NAME} ${APPLICATION_PROJECT_SOURCE_FILES})
 elseif(APPLE)
+  if(IOS)
+    
+    set(IOS_RESOURCE_FILES
+      source/platform/ios/Assets.xcassets
+      source/platform/ios/Base.lproj/LaunchScreen.storyboard
+      source/platform/ios/Base.lproj/Main.storyboard
+    )
+    set_source_files_properties(${IOS_RESOURCE_FILES} 
+      PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+
+    add_executable(${APPLICATION_PROJECT_NAME} MACOSX_BUNDLE ${APPLICATION_PROJECT_SOURCE_FILES} ${IOS_RESOURCE_FILES})
+    set_target_properties(${APPLICATION_PROJECT_NAME} PROPERTIES
+            MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/source/platform/ios/Info.plist)
+
+  elseif(MACOSX)
     add_executable(${APPLICATION_PROJECT_NAME} MACOSX_BUNDLE ${APPLICATION_PROJECT_SOURCE_FILES})
+  endif()
+    
 elseif(ANDROID)
     add_library(${APPLICATION_PROJECT_NAME} SHARED ${APPLICATION_PROJECT_SOURCE_FILES})
 endif()

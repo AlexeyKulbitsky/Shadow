@@ -61,10 +61,14 @@ elseif(ANDROID)
     source/platform/android/AndroidDevice.cpp
   )
 elseif(APPLE)
-  set(SH_PLATFORM_SRC
-    source/platform/mac/MacDevice.h
-    source/platform/mac/MacDevice.mm
-  )
+  if(IOS)
+  elseif(MACOSX)
+    set(SH_PLATFORM_SRC
+      source/platform/mac/MacDevice.h
+      source/platform/mac/MacDevice.mm
+    )
+  endif()
+  
 endif()
 
 
@@ -112,7 +116,7 @@ foreach(FILE ${PROJECT_SOURCE_FILES})
 endforeach()
 
 # Add Shadow engine library
-add_library(${PROJECT_NAME} SHARED ${PROJECT_SOURCE_FILES})
+add_library(${PROJECT_NAME} ${PROJECT_SOURCE_FILES})
 if(WIN32)
   target_compile_definitions(${PROJECT_NAME} PRIVATE SHADOW_EXPORTS)
 endif()
@@ -126,6 +130,14 @@ elseif(ANDROID)
 
   target_link_libraries(${PROJECT_NAME} android)
 elseif(APPLE)
-  find_library(COCOA_LIB Cocoa)
-  target_link_libraries(${PROJECT_NAME} ${COCOA_LIB})
+  if(IOS)
+    set_property (TARGET ${PROJECT_NAME} APPEND_STRING PROPERTY LINK_FLAGS "-ObjC")
+    set_xcode_property(${PROJECT_NAME} GCC_GENERATE_DEBUGGING_SYMBOLS YES "All")
+    find_library(UIKIT_LIB UIKit)
+    target_link_libraries(${PROJECT_NAME} ${UIKIT_LIB})
+  elseif(MACOSX)
+    find_library(COCOA_LIB Cocoa)
+    target_link_libraries(${PROJECT_NAME} ${COCOA_LIB})
+  endif()
+  
 endif()
