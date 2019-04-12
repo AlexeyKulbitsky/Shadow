@@ -1,23 +1,28 @@
 #import "AppDelegate.h"
 #import "ViewController.h"
 
+#include "../../App.h"
+#include <Shadow.h>
+
 @interface AppDelegate ()
 
 @end
 
 @implementation AppDelegate
 
+App* app = nullptr;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
     UIViewController* controller = self.window.rootViewController;
     
-    ViewController* mainController = (ViewController*) controller;
+    sh::Device* device = sh::CreateDevice();
+    app = new App();
+    device->SetApplication(app);
+    device->Init();
+    device->Run();
     
-    int a = 0;
-    a++;
-    //mainController.helloWorldLabel;
     return YES;
 }
 
@@ -51,6 +56,8 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    sh::Device::GetInstance()->Destroy();
+    delete app;
 }
 
 

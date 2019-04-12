@@ -1,4 +1,5 @@
 #include "App.h"
+#include <iostream>
 
 App::App()
 {
@@ -20,4 +21,5 @@ void App::Destroy()
 
 void App::Update(uint64_t delta)
 {
+    std::cout << "Updating the application" << std::endl;
 }

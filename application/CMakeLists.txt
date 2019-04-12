@@ -36,10 +36,10 @@ elseif(ANDROID)
 elseif(APPLE)
   if(IOS)
     set(APPLICATION_PLATFORM_SRC
-      source/platform/ios/AppDelegate.m
+      source/platform/ios/AppDelegate.mm
       source/platform/ios/main.m
-      source/platform/ios/ViewController.m
-      source/platform/ios/MainView.m
+      source/platform/ios/ViewController.mm
+      source/platform/ios/MainView.mm
 
       source/platform/ios/AppDelegate.h
       source/platform/ios/ViewController.h

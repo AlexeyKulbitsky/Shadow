@@ -62,6 +62,10 @@ elseif(ANDROID)
   )
 elseif(APPLE)
   if(IOS)
+    set(SH_PLATFORM_SRC
+      source/platform/ios/iOSDevice.h
+      source/platform/ios/iOSDevice.mm
+    )
   elseif(MACOSX)
     set(SH_PLATFORM_SRC
       source/platform/mac/MacDevice.h
@@ -135,6 +139,10 @@ elseif(APPLE)
     set_xcode_property(${PROJECT_NAME} GCC_GENERATE_DEBUGGING_SYMBOLS YES "All")
     find_library(UIKIT_LIB UIKit)
     target_link_libraries(${PROJECT_NAME} ${UIKIT_LIB})
+    find_library(METAL_LIB Metal)
+    target_link_libraries(${PROJECT_NAME} ${METAL_LIB})
+    find_library(QUARTZCORE_LIB QuartzCore)
+    target_link_libraries(${PROJECT_NAME} ${QUARTZCORE_LIB})
   elseif(MACOSX)
     find_library(COCOA_LIB Cocoa)
     target_link_libraries(${PROJECT_NAME} ${COCOA_LIB})
