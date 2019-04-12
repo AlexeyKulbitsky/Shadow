@@ -1,6 +1,6 @@
 #include "Shadow.h"
-#include "Device.h"
-#include "CreationParameters.h"
+#include "device/Device.h"
+#include "device/CreationParameters.h"
 
 #if defined SHADOW_WINDOWS
 #include "platform/win32/Win32Device.h"

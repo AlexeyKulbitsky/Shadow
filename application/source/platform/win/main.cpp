@@ -1,6 +1,5 @@
 #include "App.h"
 
-
 int main()
 {
     sh::Device *device = sh::CreateDevice();

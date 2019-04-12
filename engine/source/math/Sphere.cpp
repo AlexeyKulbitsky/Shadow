@@ -1,4 +1,4 @@
-#include "Sphere.h"
+#include "math/Sphere.h"
 
 namespace sh
 {

@@ -2,7 +2,7 @@
 #define SHADOW_SPHERE_INCLUDE
 
 #include "common/Prerequisities.h"
-#include "Vector3.h"
+#include "math/Vector3.h"
 
 namespace sh
 {

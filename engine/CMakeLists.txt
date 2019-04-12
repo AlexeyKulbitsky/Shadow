@@ -14,6 +14,7 @@ endif()
 
 set(PROJECT_NAME Shadow)
 
+# Math
 set(SH_MATH_INCLUDE
   source/math/AABB.h
   source/math/Constants.h
@@ -24,7 +25,7 @@ set(SH_MATH_INCLUDE
   source/math/Plane.h
   source/math/Quaternion.h
   source/math/Rect.h
-  source/math/smath.h
+  source/math/math.h
   source/math/Sphere.h
   source/math/Vector2.h
   source/math/Vector2Int.h
@@ -50,6 +51,7 @@ set(SH_MATH_SRC
   source/math/Vector4Int.cpp
 )
 
+# Platform
 if(WIN32)
   set(SH_PLATFORM_SRC
     source/platform/win32/Win32Device.h
@@ -75,14 +77,21 @@ elseif(APPLE)
   
 endif()
 
+# Device
+set(SH_DEVICE_INCLUDE
+  source/device/Application.h
+  source/device/Device.h 
+  source/device/CreationParameters.h
+)
 
+set(SH_DEVICE_SOURCE
+  source/device/Application.cpp
+  source/device/Device.cpp
+)
+
+# Common
 set(SH_COMMON_INCLUDE
-  source/Application.h
-  source/Device.h
   source/Shadow.h
-
-  source/CommonTypes.h
-  source/CreationParameters.h
 
   source/common/PlatformDefines.h
   source/common/Prerequisities.h
@@ -90,17 +99,28 @@ set(SH_COMMON_INCLUDE
 )
 
 set(SH_COMMON_SRC
-  source/Application.cpp
-  source/Device.cpp
   source/Shadow.cpp
+)
+
+# Video
+set(SH_VIDEO_INCLUDE
+  source/video/RenderSystem.h
+)
+
+set(SH_VIDEO_SRC
+  source/video/RenderSystem.cpp
 )
 
 set(PROJECT_SOURCE_FILES
   ${SH_MATH_INCLUDE}
   ${SH_MATH_SRC}
   ${SH_PLATFORM_SRC}
+  ${SH_DEVICE_INCLUDE}
+  ${SH_DEVICE_SOURCE}
   ${SH_COMMON_INCLUDE}
   ${SH_COMMON_SRC}
+  ${SH_VIDEO_INCLUDE}
+  ${SH_VIDEO_SRC}
 )
 
 include_directories(source)
@@ -123,6 +143,7 @@ endforeach()
 add_library(${PROJECT_NAME} ${PROJECT_SOURCE_FILES})
 if(WIN32)
   target_compile_definitions(${PROJECT_NAME} PRIVATE SHADOW_EXPORTS)
+  target_compile_definitions(${PROJECT_NAME} PRIVATE SHADOW_STATIC_LIB)
 endif()
 
 if(WIN32)

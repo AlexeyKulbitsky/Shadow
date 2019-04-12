@@ -1,8 +1,7 @@
 #ifndef SHADOW_APPLICATION_INCLUDE
 #define SHADOW_APPLICATION_INCLUDE
 
-#include "Globals.h"
-#include "CreationParameters.h"
+#include "device/CreationParameters.h"
 
 namespace sh
 {

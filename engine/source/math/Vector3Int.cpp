@@ -1,4 +1,4 @@
-#include "Vector3Int.h"
+#include "math/Vector3Int.h"
 
 namespace sh
 {

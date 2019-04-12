@@ -1,8 +1,7 @@
 #ifndef SHADOW_DEVICE_INCLUDE
 #define SHADOW_DEVICE_INCLUDE
 
-#include "CreationParameters.h"
-
+#include "device/CreationParameters.h"
 
 namespace sh
 {

@@ -7,7 +7,7 @@
 #include <mmsystem.h> // For JOYCAPS
 #include <windowsx.h>
 
-#include "../../Device.h"
+#include "device/Device.h"
 
 namespace sh
 {
@@ -22,6 +22,9 @@ namespace sh
 		void Update(float deltaTime) override final;
 		void Run() override final;
 		uint64_t GetTime() override final;
+
+    private:
+        HWND _CreateWindow(HINSTANCE hInstance);
 
 	private:
 		HWND m_hwnd;

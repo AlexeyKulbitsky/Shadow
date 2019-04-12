@@ -19,11 +19,11 @@ android {
     }
 
 	sourceSets {
-        main.java.srcDirs += '../../source/platform/android/'
+        main.java.srcDirs += '../../../source/platform/android/'
     }
     externalNativeBuild {
         cmake {
-            path "../../CMakeLists.txt"
+            path "../../../CMakeLists.txt"
         }
     }
 }

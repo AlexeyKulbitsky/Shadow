@@ -35,15 +35,21 @@ elseif(ANDROID)
   )
 elseif(APPLE)
   if(IOS)
-    set(APPLICATION_PLATFORM_SRC
+    set(IOS_PLATFORM_INCLUDE
+      source/platform/ios/AppDelegate.h
+      source/platform/ios/ViewController.h
+      source/platform/ios/MainView.h
+    )
+
+    set(IOS_PLATFORM_SRC
       source/platform/ios/AppDelegate.mm
       source/platform/ios/main.m
       source/platform/ios/ViewController.mm
       source/platform/ios/MainView.mm
-
-      source/platform/ios/AppDelegate.h
-      source/platform/ios/ViewController.h
-      source/platform/ios/MainView.h
+    )
+    set(APPLICATION_PLATFORM_SRC
+      ${IOS_PLATFORM_INCLUDE}
+      ${IOS_PLATFORM_SRC}
     )
   elseif(MACOSX)
     set(APPLICATION_PLATFORM_SRC
@@ -77,9 +83,9 @@ endforeach()
 
 if(WIN32)
     add_executable(${APPLICATION_PROJECT_NAME} ${APPLICATION_PROJECT_SOURCE_FILES})
+    target_compile_definitions(${APPLICATION_PROJECT_NAME} PRIVATE SHADOW_STATIC_LIB)
 elseif(APPLE)
   if(IOS)
-    
     set(IOS_RESOURCE_FILES
       source/platform/ios/Assets.xcassets
       source/platform/ios/Base.lproj/LaunchScreen.storyboard

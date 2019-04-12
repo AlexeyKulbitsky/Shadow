@@ -1,9 +1,9 @@
 #ifndef SHADOW_FUNCTIONS_RAY_INTERSECT_INCLUDE
 #define SHADOW_FUNCTIONS_RAY_INTERSECT_INCLUDE
 
-#include "Vector3.h"
-#include "Plane.h"
-#include "FunctionsCommon.h"
+#include "math/Vector3.h"
+#include "math/Plane.h"
+#include "math/FunctionsCommon.h"
 
 namespace sh
 {

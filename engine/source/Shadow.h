@@ -1,10 +1,9 @@
 #ifndef SHADOW_INCLUDE
 #define SHADOW_INCLUDE
 
-//#include "CompileConfig.h"
-#include "Device.h"
+#include "device/Device.h"
+#include "device/Application.h"
 //#include "Event.h"
-#include "Application.h"
 //#include "DynamicLibrary.h"
 
 /*
@@ -53,7 +52,7 @@
 #include "entity/systems/ScriptSystem.h"
 */
 
-#include "math/smath.h"
+#include "math/math.h"
 
 //#include "resources/Resource.h"
 //#include "resources/ResourceManager.h"

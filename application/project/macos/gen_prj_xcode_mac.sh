@@ -1,3 +1,3 @@
 mkdir "build"
 cd "build"
-cmake -G "Xcode" ..
+cmake -G "Xcode" ../../..

@@ -1,5 +1,4 @@
-#include "Application.h"
-#include "Shadow.h"
+#include "device/Application.h"
 
 namespace sh
 {

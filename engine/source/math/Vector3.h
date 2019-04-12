@@ -2,7 +2,7 @@
 #define SHADOW_VECTOR3_INCLUDE
 
 #include "common/Prerequisities.h"
-#include "Vector2.h"
+#include "math/Vector2.h"
 
 namespace sh
 {
