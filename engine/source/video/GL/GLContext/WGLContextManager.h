@@ -1,12 +1,7 @@
 #ifndef SHADOW_WGLCONTEXT_MANAGER_INCLUDE
 #define SHADOW_WGLCONTEXT_MANAGER_INCLUDE
 
-#if defined (SHADOW_WINDOWS)
-
-
-#include "GLContextManager.h"
-
-#include <Windows.h>
+#include "video/GL/GLContext/GLContextManager.h"
 
 namespace sh
 {
@@ -42,7 +37,5 @@ namespace video
 } // video
 
 } // sh
-
-#endif
 
 #endif

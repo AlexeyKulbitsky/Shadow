@@ -269,7 +269,7 @@ namespace math
 		return Vector3(m[3][0], m[3][1], m[3][2]);
 	}
 
-	void Matrix4::SetPerspective(float fovy, float aspect, float near, float far)
+	void Matrix4::SetPerspective(float fovy, float aspect, float nearPlane, float farPlane)
 	{
 		float tanFov = Tan(fovy / 2.0f);
 
@@ -285,8 +285,8 @@ namespace math
 
 		m[2][0] = 0.0f;
 		m[2][1] = 0.0f;
-		m[2][2] = -1.0f * (far + near) / (far - near);
-		m[2][3] = -1.0f * (2.0f * far * near) / (far - near);
+		m[2][2] = -1.0f * (farPlane + nearPlane) / (farPlane - nearPlane);
+		m[2][3] = -1.0f * (2.0f * farPlane * nearPlane) / (farPlane - nearPlane);
 
 		m[3][0] = 0.0f;
 		m[3][1] = 0.0f;
@@ -295,7 +295,7 @@ namespace math
 	}
 
 
-	void Matrix4::SetOrtho(float left, float right, float bottom, float top, float near, float far)
+	void Matrix4::SetOrtho(float left, float right, float bottom, float top, float nearPlane, float farPlane)
 	{
 		m[0][0] = 2.0f / (right - left);
 		m[0][1] = 0.0f;
@@ -309,12 +309,12 @@ namespace math
 
 		m[2][0] = 0.0f;
 		m[2][1] = 0.0f;
-		m[2][2] = -2.0f / (far - near);
+		m[2][2] = -2.0f / (farPlane - nearPlane);
 		m[2][3] = 0.0f;
 
 		m[3][0] = -1.0f * (right + left) / (right - left);
 		m[3][1] = -1.0f * (top + bottom) / (top - bottom);
-		m[3][2] = -1.0f * (far + near) / (far - near);
+		m[3][2] = -1.0f * (farPlane + nearPlane) / (farPlane - nearPlane);
 		m[3][3] = 1.0f;
 	}
 

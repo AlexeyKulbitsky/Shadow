@@ -1,5 +1,6 @@
 #include "platform/win32/Win32Device.h"
 #include "device/Application.h"
+#include "video/GL/GLES20/GLES20RenderSystem.h"
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
@@ -9,16 +10,21 @@ namespace sh
 {
     Win32Device::Win32Device()
     {
-        HINSTANCE hInstance = GetModuleHandle(0);
-        m_hwnd = _CreateWindow(hInstance);
-        m_creationParameters.WinId = m_hwnd;
     }
-
-    ////////////////////////////////////////////////////////////////////////
 
     Win32Device::Win32Device(const CreationParameters &parameters)
         :Device(parameters)
     {
+    }
+
+    Win32Device::~Win32Device()
+    {
+    }
+
+    void Win32Device::Init()
+    {
+        Device::Init();
+
         // get handle to exe file
         HINSTANCE hInstance = GetModuleHandle(0);
 
@@ -37,29 +43,28 @@ namespace sh
             m_creationParameters.width = r.right - r.left;
             m_creationParameters.height = r.bottom - r.top;
         }
-    }
 
-    ////////////////////////////////////////////////////////////////////////
+        // Rendering API intialization
+        switch (m_creationParameters.driverType)
+        {
+        case DriverType::OpenGL_ES_2_0:
+        {
+            video::RenderSystem::CreateInstance<video::GLES20RenderSystem>();
+        }
+            break;
+        default:
+            break;
+        }
+        video::RenderSystem* renderSystemInstance = video::RenderSystem::GetInstance();
+        assert(renderSystemInstance != nullptr && "Can not create RenderSystem instance");
+        renderSystemInstance->Init();
 
-    Win32Device::~Win32Device()
-    {
-    }
-
-    ////////////////////////////////////////////////////////////////////////
-
-    void Win32Device::Init()
-    {
-        Device::Init();
         m_application->Init();
     }
-
-    ////////////////////////////////////////////////////////////////////////
 
     void Win32Device::Update(float deltaTime)
     {
     }
-
-    ////////////////////////////////////////////////////////////////////////
 
     void Win32Device::Run()
     {
@@ -98,8 +103,6 @@ namespace sh
             m_lastFrameTimePoint = currentTimePoint;
         }
     }
-
-    ////////////////////////////////////////////////////////////////////////
 
     uint64_t Win32Device::GetTime()
     {
@@ -175,8 +178,5 @@ namespace sh
 }
 
 
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-    return DefWindowProc(hWnd, message, wParam, lParam);
-}
+
 

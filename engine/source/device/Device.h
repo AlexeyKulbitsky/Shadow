@@ -2,6 +2,7 @@
 #define SHADOW_DEVICE_INCLUDE
 
 #include "device/CreationParameters.h"
+#include "utility/Event.h"
 
 namespace sh
 {
@@ -24,8 +25,11 @@ namespace sh
 		static void SetInstance(Device* instance) { s_instance = instance; }
 		static Device* GetInstance() { return s_instance; }
 		static void Destroy();
-		void* GetWinId() { return m_creationParameters.WinId; }
-		void SetWinId(void* window) { m_creationParameters.WinId = window; }
+        void* GetWinId();
+        void SetWinId(void* window);
+
+        // Internal events
+        Event<void, int, int> windowResizeEvent;
 
 	protected:
 		CreationParameters m_creationParameters;

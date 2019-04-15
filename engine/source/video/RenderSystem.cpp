@@ -34,17 +34,17 @@ namespace video
         return m_depthRange;
     }
 
-    void RenderSystem::SetClearColor(const math::Vector4& clearColor)
+    void RenderSystem::SetClearColorValue(const math::Vector4& clearColor)
     {
         m_clearColorValue = clearColor;
     }
 
-    void RenderSystem::SetClearDepth(float clearDepth)
+    void RenderSystem::SetClearDepthValue(float clearDepth)
     {
         m_clearDepthValue = clearDepth;
     }
 
-    void RenderSystem::SetClearStencil(float clearStencil)
+    void RenderSystem::SetClearStencilValue(uint32_t clearStencil)
     {
         m_clearStencilValue = clearStencil;
     }

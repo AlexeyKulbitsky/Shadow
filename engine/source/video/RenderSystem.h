@@ -2,6 +2,7 @@
 #define SHADOW_RENDER_SYSTEM_INCLUDE
 
 #include "common/Prerequisities.h"
+#include "utility/Singleton.h"
 #include "math/math.h"
 
 namespace sh
@@ -11,7 +12,7 @@ namespace video
 {
     struct RenderPipelineDescription;
 
-    class SHADOW_API RenderSystem
+    class SHADOW_API RenderSystem : public Singleton<RenderSystem>
     {
     public:
         RenderSystem();
@@ -34,9 +35,9 @@ namespace video
         virtual const math::Vector2& GetDepthRange() const;
 
         // Buffers clearing
-        virtual void SetClearColor(const math::Vector4& clearColor);
-        virtual void SetClearDepth(float clearDepth);
-        virtual void SetClearStencil(float clearStencil);
+        virtual void SetClearColorValue(const math::Vector4& clearColor);
+        virtual void SetClearDepthValue(float clearDepth);
+        virtual void SetClearStencilValue(uint32_t clearStencil);
         const math::Vector4& GetClearColorValue() const;
         float GetClearDepthValue() const;
         uint32_t GetClearStencilValue() const;

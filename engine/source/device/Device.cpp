@@ -27,4 +27,14 @@ namespace sh
 		delete s_instance;
 		s_instance = nullptr;
 	}
+
+    void* Device::GetWinId() 
+    { 
+        return m_creationParameters.WinId; 
+    }
+
+    void Device::SetWinId(void* window) 
+    { 
+        m_creationParameters.WinId = window; 
+    }
 }

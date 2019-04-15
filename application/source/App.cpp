@@ -21,5 +21,6 @@ void App::Destroy()
 
 void App::Update(uint64_t delta)
 {
-    std::cout << "Updating the application" << std::endl;
+    sh::video::RenderSystem::GetInstance()->BeginRendering();
+    sh::video::RenderSystem::GetInstance()->EndRendering();
 }

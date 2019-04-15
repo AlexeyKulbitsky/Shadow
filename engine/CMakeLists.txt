@@ -56,6 +56,7 @@ if(WIN32)
   set(SH_PLATFORM_SRC
     source/platform/win32/Win32Device.h
     source/platform/win32/Win32Device.cpp
+    source/platform/win32/WinProc.cpp
   )
 elseif(ANDROID)
   set(SH_PLATFORM_SRC
@@ -111,6 +112,57 @@ set(SH_VIDEO_SRC
   source/video/RenderSystem.cpp
 )
 
+# Utility
+set(SH_UTILITY_INCLUDE
+  source/utility/Singleton.h
+  source/utility/Event.h
+)
+
+# OpenGL
+set(SH_GL_API_INCLUDE
+  source/video/GL/GLDebug.h
+  source/video/GL/GLCommon.h
+  source/video/GL/GLRenderSystemCommon.h
+)
+
+set(SH_GL_API_SRC
+  source/video/GL/GLDebug.cpp
+  source/video/GL/GLRenderSystemCommon.cpp
+)
+
+set(SH_GL_CONTEXT_INCLUDE
+  source/video/GL/GLContext/GLContextManager.h
+)
+
+if(WIN32)
+  set(SH_GL_CONTEXT_PLATFORM_INCLUDE
+    source/video/GL/GLContext/WGLContextManager.h
+  )
+  set(SH_GL_CONTEXT_PLATFORM_SRC
+    source/video/GL/GLContext/WGLContextManager.cpp
+  )
+endif()
+
+set(SH_GLES20_INCLUDE
+  source/video/GL/GLES20/GLES20RenderSystem.h
+)
+
+set(SH_GLES20_SRC
+  source/video/GL/GLES20/GLES20RenderSystem.cpp
+)
+
+set(SH_OPEN_GL_SOURCES
+  ${SH_GL_API_INCLUDE}
+  ${SH_GL_API_SRC}
+  ${SH_GL_CONTEXT_INCLUDE}
+  ${SH_GL_CONTEXT_PLATFORM_INCLUDE}
+  ${SH_GL_CONTEXT_PLATFORM_SRC}
+
+  # GLES20
+  ${SH_GLES20_INCLUDE}
+  ${SH_GLES20_SRC}
+)
+
 set(PROJECT_SOURCE_FILES
   ${SH_MATH_INCLUDE}
   ${SH_MATH_SRC}
@@ -121,6 +173,10 @@ set(PROJECT_SOURCE_FILES
   ${SH_COMMON_SRC}
   ${SH_VIDEO_INCLUDE}
   ${SH_VIDEO_SRC}
+  ${SH_UTILITY_INCLUDE}
+
+  # OpenGL
+  ${SH_OPEN_GL_SOURCES}
 )
 
 include_directories(source)
@@ -148,6 +204,19 @@ endif()
 
 if(WIN32)
   add_definitions(-DSHADOW_WINDOWS)
+
+  # Standart Windows Opengl lib
+  find_library(OPENGL_LIB opengl32)
+  target_link_libraries(${PROJECT_NAME} ${OPENGL_LIB})
+
+  # Add GLEW
+  set(BUILD_UTILS OFF CACHE BOOL "utilities" FORCE)
+  add_subdirectory(../libs/glew/build/cmake "${CMAKE_CURRENT_BINARY_DIR}/ThirdParty/glew")
+  include_directories(../libs/glew/include)
+  target_link_libraries(${PROJECT_NAME} glew_s)
+  set_property(TARGET glew_s PROPERTY FOLDER CommonLibs)
+  set_property(TARGET glew PROPERTY FOLDER CommonLibs)
+
 elseif(ANDROID)
   #add_subdirectory(../libs/minizip "${CMAKE_CURRENT_BINARY_DIR}/ThirdParty/minizip")
   #include_directories(../libs/minizip)

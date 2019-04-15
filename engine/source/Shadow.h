@@ -100,6 +100,8 @@
 #include "scripting/Script.h"
 */
 
+#include "video/RenderSystem.h"
+
 namespace sh
 {
 	// Create usual device

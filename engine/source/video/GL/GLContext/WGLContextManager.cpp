@@ -1,8 +1,4 @@
-#include "WGLContextManager.h"
-
-#if defined (SHADOW_WINDOWS)
-
-#pragma comment(lib, "opengl32.lib")
+#include "video/GL/GLContext/WGLContextManager.h"
 
 namespace sh
 {
@@ -26,6 +22,8 @@ namespace video
 	}
 
 	WGLContextManager::WGLContextManager()
+        : m_majorVersion(2)
+        , m_minorVersion(1)
 	{
 		
 	}
@@ -96,7 +94,8 @@ namespace video
 			wglMakeCurrent(m_hdc, m_hrc);
 
 		auto res = glewInit();
-		SH_ASSERT(res == GLEW_OK, "Can not initialize GLEW!");
+        
+        assert(res == GLEW_OK && "Can not initialize GLEW!");
 	}
 
 	void WGLContextManager::CreateFakeWindow()
@@ -111,8 +110,6 @@ namespace video
 		wc.lpfnWndProc = (WNDPROC)MsgHandlerSimpleOpenGLClass;
 		wc.cbClsExtra = 0; wc.cbWndExtra = 0;
 		wc.hInstance = hInstance;
-		wc.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_APPLICATION));
-		wc.hIconSm = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_APPLICATION));
 		wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 		wc.hbrBackground = (HBRUSH)(COLOR_MENUBAR + 1);
 		wc.lpszMenuName = NULL;
@@ -151,7 +148,7 @@ namespace video
 		wglMakeCurrent(hDC, hRCFake);
 
 		auto res = glewInit();
-		SH_ASSERT(res == GLEW_OK, "Can not initialize GLEW!");
+        assert(res == GLEW_OK && "Can not initialize GLEW!");
 
 		wglMakeCurrent(NULL, NULL);
 		wglDeleteContext(hRCFake);
@@ -197,7 +194,7 @@ namespace video
 			// PFD seems to be only redundant parameter now
 			if (!SetPixelFormat(m_hdc, iPixelFormat, &pfd))
 			{
-				SH_ASSERT(0, "Can not set pixel formal while creating OpenGL context");
+                assert(false && "Can not set pixel formal while creating OpenGL context");
 				return;
 			}
 
@@ -209,7 +206,7 @@ namespace video
 			}
 			else
 			{
-				SH_ASSERT(0, "Can not create OpenGL context");
+                assert(false && "Can not create OpenGL context");
 			}
 		}
 	}
@@ -218,5 +215,3 @@ namespace video
 } // video
 
 } // sh
-
-#endif

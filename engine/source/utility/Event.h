@@ -1,8 +1,6 @@
 #ifndef SHADOW_EVENT_INCLUDE
 #define SHADOW_EVENT_INCLUDE
 
-#include "Types.h"
-
 #include <functional>
 #include <vector>
 

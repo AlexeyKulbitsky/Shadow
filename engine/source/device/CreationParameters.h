@@ -5,11 +5,16 @@
 
 namespace sh
 {
+    enum class DriverType
+    {
+        OpenGL_ES_2_0
+    };
+
 	struct SHADOW_API CreationParameters
 	{
 		unsigned width = 800U;
         unsigned height = 600U;
-		//video::DriverType driverType = video::DriverType::OPENGL_ES_2_0;
+		DriverType driverType = DriverType::OpenGL_ES_2_0;
 		void* WinId = nullptr;
 	};
 }
