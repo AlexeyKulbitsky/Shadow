@@ -1,8 +1,8 @@
 #ifndef SHADOW_GL_VERTEX_BUFFER_INCLUDE
 #define SHADOW_GL_VERTEX_BUFFER_INCLUDE
 
-#include "../VertexBuffer.h"
-#include "GLCommon.h"
+#include "video/VertexBuffer.h"
+#include "video/GL/GLCommon.h"
 
 namespace sh
 {
@@ -10,15 +10,14 @@ namespace sh
 	{
 		class GLVertexBuffer : public VertexBuffer
 		{
-			//friend class GLES20Driver;
 			friend class GLHardwareBufferManager;
 		public:
 			virtual ~GLVertexBuffer();
 
-			virtual void SetData(size_t offset, size_t length, const void* data) override;
-			virtual void GetData(size_t offset, size_t length, const void* data) override;
+			void SetData(size_t offset, size_t length, const void* data) override final;
+			void GetData(size_t offset, size_t length, const void* data) override final;
 
-			unsigned int GetGLId() const { return m_glID; }
+            GLuint GetGLId() const;
 
 		private:
 			GLVertexBuffer(const VertexBufferDecription& description);

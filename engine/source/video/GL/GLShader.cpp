@@ -1,10 +1,15 @@
-#include "GLShader.h"
+#include "video/GL/GLShader.h"
 
 namespace sh
 {
 
 namespace video
 {
+    GLuint GLShader::GetGLId() const 
+    { 
+        return m_glID; 
+    }
+
 	GLShader::GLShader(const ShaderDescription& description)
 	{
 		GLenum shaderType;
@@ -17,7 +22,7 @@ namespace video
 				shaderType = GL_FRAGMENT_SHADER;
 				break;
 			default:
-				SH_ASSERT(0, "Invalid shader type for GL shader!");
+				assert(0 && "Invalid shader type for GL shader!");
 				return;
 		}
 
@@ -27,7 +32,7 @@ namespace video
 		
 		if (m_glID == 0)
 		{
-			SH_ASSERT(0, "Can not compile shader!");
+            assert(0 && "Can not compile shader!");
 			return;
 		}
 
@@ -51,7 +56,7 @@ namespace video
 				char *infoLog = new char[infoLen];
 
 				glGetShaderInfoLog(m_glID, infoLen, NULL, infoLog);
-				SH_ASSERT(0, "Error while compiling GL shader ! Error message: %s", infoLog);
+                assert(0 && "Error while compiling GL shader ! Error message: %s", infoLog);
 
 				delete[] infoLog;
 			}	

@@ -1,5 +1,5 @@
-#include "GLIndexBuffer.h"
-//#include "../GLContext/EGLContextManager.h"
+#include "video/GL/GLIndexBuffer.h"
+#include "video/GL/GLDebug.h"
 
 namespace sh
 {
@@ -9,8 +9,6 @@ namespace sh
 		{
 			GL_CALL(glDeleteBuffers(1, &m_glID));
 		}
-
-		////////////////////////////////////////////////////////////////////////
 
 		void GLIndexBuffer::SetData(size_t offset, size_t length, const void* data)
 		{
@@ -32,14 +30,15 @@ namespace sh
 			GL_CALL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
 		}
 
-		////////////////////////////////////////////////////////////////////////
-
-		void GLIndexBuffer::GetData(size_t offset, size_t length, const void* data)
+		void GLIndexBuffer::GetData(size_t, size_t, const void*)
 		{
-
+            assert(0 && "Unimplemented yet!");
 		}
 
-		////////////////////////////////////////////////////////////////////////
+        GLuint GLIndexBuffer::GetGLId() const 
+        { 
+            return m_glID; 
+        }
 
 		GLIndexBuffer::GLIndexBuffer(const IndexBufferDescription& description)
 			: IndexBuffer(description)

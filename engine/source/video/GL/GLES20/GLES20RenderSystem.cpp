@@ -1,7 +1,8 @@
 #include "video/GL/GLES20/GLES20RenderSystem.h"
 #include "video/GL/GLContext/GLContextManager.h"
-#include "device/Device.h"
+#include "video/GL/GLES20/Managers/GLES20RenderStateManager.h"
 #include "video/GL/GLDebug.h"
+#include "device/Device.h"
 
 #if defined SHADOW_WINDOWS
 #include "video/GL/GLContext/WGLContextManager.h"
@@ -17,6 +18,8 @@ namespace video
 
     GLES20RenderSystem::GLES20RenderSystem()
     {
+        RenderStateManager::CreateInstance<GLES20RenderStateManager>();
+
 #if defined SHADOW_WINDOWS
         WGLContextManager *contextManager = new WGLContextManager();
         void* winId = Device::GetInstance()->GetWinId();
@@ -35,36 +38,16 @@ namespace video
 
     GLES20RenderSystem::~GLES20RenderSystem()
     {
+        RenderStateManager::DestroyInstance();
     }
 
     bool GLES20RenderSystem::Init()
     {
-        //sh::Device::GetInstance()->windowResizeEvent.Connect(
-        //    std::bind(&GLES20Driver::OnWindowResized, this, std::placeholders::_1, std::placeholders::_2));
-
-        //sh::Device::GetInstance()->sursafeChangedEvent.Connect(
-        //    std::bind(&GLES20Driver::SetWindow, this, std::placeholders::_1, std::placeholders::_2,
-        //        std::placeholders::_3));
-
         GL_CALL(glEnable(GL_DEPTH_TEST));
-        //GL_CALL(glEnable(GL_SCISSOR_TEST));
-        //glEnable(GL_BLEND);
-        //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         GL_CALL(glClearColor(0.7f, 0.7f, 0.7f, 1.0f));
 
         return true;
     }
-
-    ////////////////////////////////////////////////////////////////////////
-
-    void GLES20RenderSystem::SetWindow(void* winId, uint32_t width, uint32_t height)
-    {
-        if (m_contextManager)
-            m_contextManager->CreateContext(winId);
-        //OnWindowResized(width, height);
-    }
-
-    ////////////////////////////////////////////////////////////////////////
 
 #if 0
     void GLES20RenderSystem::SetDepthStencilState(const DepthStencilStatePtr& depthStencilState)
@@ -110,8 +93,6 @@ namespace video
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-
     void GLES20RenderSystem::SetRasterizationState(const RasterizationStatePtr& rasterizationState)
     {
         if (rasterizationState->cullFace != CullFace::CF_NONE)
@@ -125,8 +106,6 @@ namespace video
             GL_CALL(glDisable(GL_CULL_FACE));
         }
     }
-
-    ////////////////////////////////////////////////////////////////////////
 
     void GLES20RenderSystem::SetBlendingState(const BlendingStatePtr& blendingState)
     {
@@ -155,8 +134,6 @@ namespace video
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-
     void GLES20RenderSystem::SetRenderPipeline(const RenderPipelinePtr& pipeline, const CommandBufferPtr&)
     {
         GLES20RenderPipeline* glPipeline = static_cast<GLES20RenderPipeline*>(pipeline.get());
@@ -166,14 +143,10 @@ namespace video
         GL_CALL(glUseProgram(glPipeline->GetProgramID()));
     }
 
-    ////////////////////////////////////////////////////////////////////////
-
     void GLES20RenderSystem::SetComputePipeline()
     {
 
     }
-
-    ////////////////////////////////////////////////////////////////////////
 
     void GLES20RenderSystem::SetGpuParams(const GpuParamsPtr& params, const CommandBufferPtr&)
     {
@@ -303,14 +276,10 @@ namespace video
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-
     void GLES20RenderSystem::SetTopology(Topology topology, const CommandBufferPtr&)
     {
         m_currentTopology = s_glTopology[static_cast<size_t>(topology)];
     }
-
-    ////////////////////////////////////////////////////////////////////////
 
     void GLES20RenderSystem::SetVertexDeclaration(const VertexInputDeclarationPtr& declaration, const CommandBufferPtr&)
     {
@@ -322,8 +291,6 @@ namespace video
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-
     void GLES20RenderSystem::SetVertexBuffer(const VertexBufferPtr& buffer, const CommandBufferPtr&)
     {
         GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, 0));
@@ -331,8 +298,6 @@ namespace video
         m_currentVertexBuffer = glBuffer->GetGLId();
         GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, m_currentVertexBuffer));
     }
-
-    ////////////////////////////////////////////////////////////////////////
 
     void GLES20RenderSystem::SetIndexBuffer(const IndexBufferPtr& buffer, const CommandBufferPtr&)
     {
@@ -342,21 +307,15 @@ namespace video
         GL_CALL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_currentIndexBuffer));
     }
 
-    ////////////////////////////////////////////////////////////////////////
-
     void GLES20RenderSystem::Draw(u32 offset, u32 verticesCount, u32 instancesCount, const CommandBufferPtr&)
     {
         GL_CALL(glDrawArrays(m_currentTopology, offset, verticesCount));
     }
 
-    ////////////////////////////////////////////////////////////////////////
-
     void GLES20RenderSystem::DrawIndexed(u32 offset, u32 indicesCount, u32 instancesCount, const CommandBufferPtr&)
     {
         GL_CALL(glDrawElements(m_currentTopology, indicesCount, GL_UNSIGNED_INT, (void*)(offset * sizeof(u32))));
     }
-
-    ////////////////////////////////////////////////////////////////////////
 
     void GLES20RenderSystem::SetScissorRect(const math::Rect& scissor, const CommandBufferPtr&)
     {
@@ -369,8 +328,6 @@ namespace video
         GL_CALL(glScissor(0, 0, scissor.GetWidth(), scissor.GetHeight()));
     }
 
-    ////////////////////////////////////////////////////////////////////////
-
     void GLES20RenderSystem::GetPixelData(u32 x, u32 y, u8* data)
     {
         GLint viewport[4];
@@ -378,16 +335,12 @@ namespace video
         GL_CALL(glReadPixels(x, viewport[3] - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data));
     }
 
-    ////////////////////////////////////////////////////////////////////////
-
     RenderTargetPtr GLES20RenderSystem::CreateRenderTarget() const
     {
         RenderTargetPtr result = nullptr;
         result.reset(new GLRenderTarget());
         return result;
     }
-
-    ////////////////////////////////////////////////////////////////////////
 
     void GLES20RenderSystem::OnWindowResized(int width, int height)
     {

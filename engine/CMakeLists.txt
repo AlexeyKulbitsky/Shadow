@@ -93,10 +93,9 @@ set(SH_DEVICE_SOURCE
 # Common
 set(SH_COMMON_INCLUDE
   source/Shadow.h
-
   source/common/PlatformDefines.h
   source/common/Prerequisities.h
-  source/Globals.h
+  source/common/Forward.h
 )
 
 set(SH_COMMON_SRC
@@ -106,10 +105,23 @@ set(SH_COMMON_SRC
 # Video
 set(SH_VIDEO_INCLUDE
   source/video/RenderSystem.h
+  source/video/Shader.h
+  source/video/Common.h
+  source/video/VertexBuffer.h
+  source/video/IndexBuffer.h
+  source/video/RenderPipeline.h
+  source/video/Managers/HardwareBufferManager.h
+  source/video/Managers/RenderStateManager.h
 )
 
 set(SH_VIDEO_SRC
   source/video/RenderSystem.cpp
+  source/video/Shader.cpp
+  source/video/VertexBuffer.cpp
+  source/video/IndexBuffer.cpp
+  source/video/RenderPipeline.cpp
+  source/video/Managers/HardwareBufferManager.cpp
+  source/video/Managers/RenderStateManager.cpp
 )
 
 # Utility
@@ -123,11 +135,21 @@ set(SH_GL_API_INCLUDE
   source/video/GL/GLDebug.h
   source/video/GL/GLCommon.h
   source/video/GL/GLRenderSystemCommon.h
+  source/video/GL/GLShader.h
+  source/video/GL/GLVertexBuffer.h 
+  source/video/GL/GLIndexBuffer.h
+  source/video/GL/Managers/GLHardwareBufferManager.h
+  source/video/GL/Managers/GLRenderStateManager.h
 )
 
 set(SH_GL_API_SRC
   source/video/GL/GLDebug.cpp
   source/video/GL/GLRenderSystemCommon.cpp
+  source/video/GL/GLShader.cpp
+  source/video/GL/GLVertexBuffer.cpp 
+  source/video/GL/GLIndexBuffer.cpp
+  source/video/GL/Managers/GLHardwareBufferManager.cpp
+  source/video/GL/Managers/GLRenderStateManager.cpp
 )
 
 set(SH_GL_CONTEXT_INCLUDE
@@ -152,10 +174,14 @@ endif()
 
 set(SH_GLES20_INCLUDE
   source/video/GL/GLES20/GLES20RenderSystem.h
+  source/video/GL/GLES20/GLES20RenderPipeline.h
+  source/video/GL/GLES20/Managers/GLES20RenderStateManager.h
 )
 
 set(SH_GLES20_SRC
   source/video/GL/GLES20/GLES20RenderSystem.cpp
+  source/video/GL/GLES20/GLES20RenderPipeline.cpp
+  source/video/GL/GLES20/Managers/GLES20RenderStateManager.cpp
 )
 
 set(SH_OPEN_GL_SOURCES
@@ -229,7 +255,7 @@ elseif(ANDROID)
   #include_directories(../libs/minizip)
   #target_link_libraries(${PROJECT_NAME} minizip)
   target_link_libraries(${PROJECT_NAME} android GLESv2 EGL)
-  
+
 elseif(APPLE)
   if(IOS)
     set_property (TARGET ${PROJECT_NAME} APPEND_STRING PROPERTY LINK_FLAGS "-ObjC")

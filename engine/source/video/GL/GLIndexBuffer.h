@@ -1,8 +1,8 @@
 #ifndef SHADOW_GL_INDEX_BUFFER_INCLUDE
 #define SHADOW_GL_INDEX_BUFFER_INCLUDE
 
-#include "../IndexBuffer.h"
-#include "GLCommon.h"
+#include "video/IndexBuffer.h"
+#include "video/GL/GLCommon.h"
 
 namespace sh
 {
@@ -10,15 +10,14 @@ namespace sh
 	{
 		class GLIndexBuffer : public IndexBuffer
 		{
-			//friend class GLES20Driver;
 			friend class GLHardwareBufferManager;
 		public:
 			virtual ~GLIndexBuffer();
 
-			virtual void SetData(size_t offset, size_t length, const void* data) override;
-			virtual void GetData(size_t offset, size_t length, const void* data) override;
+			void SetData(size_t offset, size_t length, const void* data) override final;
+			void GetData(size_t offset, size_t length, const void* data) override final;
 
-			GLuint GetGLId() const { return m_glID; }
+            GLuint GetGLId() const;
 
 		private:
 			GLIndexBuffer(const IndexBufferDescription& description);

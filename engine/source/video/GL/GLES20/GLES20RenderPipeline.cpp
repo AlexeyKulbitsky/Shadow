@@ -1,14 +1,6 @@
-#include "GLES20RenderPipeline.h"
-#include "../../../Device.h"
-#include "../../Driver.h"
-#include "../../DepthStencilState.h"
-#include "../../BlendingState.h"
-#include "../../RasterizationState.h"
-#include "../../VertexDeclaration.h"
-#include "../../GpuParamsDescription.h"
-#include "../../GpuParams.h"
-#include "../GLShader.h"
-#include "GLES20VertexDeclaration.h"
+#include "video/GL/GLES20/GLES20RenderPipeline.h"
+#include "video/GL/GLES20/Managers/GLES20RenderStateManager.h"
+#include "video/GL/GLShader.h"
 
 namespace sh
 {
@@ -18,45 +10,23 @@ namespace sh
 		{
 		}
 
-		///////////////////////////////////////////////////////////////////////////////////
-
 		GLES20RenderPipeline::~GLES20RenderPipeline()
 		{
 		}
 
-		///////////////////////////////////////////////////////////////////////////////////
-
-		void GLES20RenderPipeline::Load(const pugi::xml_node &node)
-		{
-		}
-
-		///////////////////////////////////////////////////////////////////////////////////
+		const VertexInputDeclarationPtr& GLES20RenderPipeline::GetVertexInputDeclaration() const 
+        { 
+            return m_vertexDeclaration; 
+        }
 		
-		void GLES20RenderPipeline::Unload()
-		{
-		}
-
-		///////////////////////////////////////////////////////////////////////////////////
-
-		const VertexInputDeclarationPtr& GLES20RenderPipeline::GetVertexInputDeclaration() const { return m_vertexDeclaration; }
-		
-		///////////////////////////////////////////////////////////////////////////////////
-
-		void GLES20RenderPipeline::LoadConstants(const pugi::xml_node &node)
-		{
-		}
-
-		///////////////////////////////////////////////////////////////////////////////////
-
-		void GLES20RenderPipeline::LoadShaders(const pugi::xml_node &node)
-		{
-		}
-
-		///////////////////////////////////////////////////////////////////////////////////
+        GLuint GLES20RenderPipeline::GetProgramID() const 
+        { 
+            return m_programID; 
+        }
 
 		void GLES20RenderPipeline::ParseAttributes()
 		{
-			const u32 bufferSize = 256;
+			/*const u32 bufferSize = 256;
 			char buffer[bufferSize];
 
 			SPtr<GLES20VertexDeclaration> vertexDeclaration(new GLES20VertexDeclaration());
@@ -112,17 +82,16 @@ namespace sh
 
 				vertexDeclaration->AddAttribute(attribute);
 			}
-			m_vertexDeclaration = vertexDeclaration;
+			m_vertexDeclaration = vertexDeclaration;*/
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////
 
 		void GLES20RenderPipeline::ParseUniforms()
 		{
+#if 0
 			SPtr<GpuParamsDescription> paramsDescription(new GpuParamsDescription());
 			SPtr<GpuParamsDescription> autoParamsDescription(new GpuParamsDescription());
-
-			
 
 			const u32 bufferSize = 256;
 			char buffer[bufferSize];
@@ -384,6 +353,7 @@ namespace sh
 
 			m_paramsInfo = GpuPipelineParamsInfo::Create(pipelineParamsDescription);
 			m_autoParamsInfo = GpuPipelineParamsInfo::Create(autoPipelineParamsDescription);
+#endif
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////
@@ -412,7 +382,7 @@ namespace sh
 				char* log = new char[len + 1];
 				glGetProgramInfoLog(m_programID, len, &len, log);
 
-				SH_ASSERT(0, "Error while linking GLES20 shader program! Error message: %s", log);
+				assert(0 && "Error while linking GLES20 shader program! Error message: %s", log);
 			}
 
 			ParseAttributes();

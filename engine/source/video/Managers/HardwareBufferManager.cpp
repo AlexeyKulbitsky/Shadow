@@ -1,5 +1,4 @@
-#include "HardwareBufferManager.h"
-#include "../GpuParams.h"
+#include "video/Managers/HardwareBufferManager.h"
 
 namespace sh
 {
@@ -7,12 +6,12 @@ namespace sh
 namespace video
 {
 
-	GpuParamsPtr HardwareBufferManager::CreateGpuParams(const GpuPipelineParamsInfoPtr& pipelineParamsInfo)
+	/*GpuParamsPtr HardwareBufferManager::CreateGpuParams(const GpuPipelineParamsInfoPtr& pipelineParamsInfo)
 	{
 		GpuParamsPtr result;
 		result.reset(new GpuParams(pipelineParamsInfo));
 		return result;
-	}
+	}*/
 
 } // video
 

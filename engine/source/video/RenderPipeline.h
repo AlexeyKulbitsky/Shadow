@@ -1,103 +1,67 @@
 #ifndef SHADOW_RENDER_PASS_INCLUDE
 #define SHADOW_RENDER_PASS_INCLUDE
 
-#include "../Globals.h"
-#include "GpuParamsDescription.h"
-#include "GpuPipelineParamsInfo.h"
-
-namespace pugi
-{
-	class xml_node;
-}
+#include "common/Prerequisities.h"
+#include "video/Common.h"
 
 namespace sh
 {
-	namespace video
-	{
-		enum class RenderLayer
-		{
-			Background = 0,
-			Main,
 
-			Count
-		};
+namespace video
+{
 
-		struct SHADOW_API RenderPipelineDescription
-		{
-			BlendingStatePtr blendingState;
-			RasterizationStatePtr rasterizationState;
-			DepthStencilStatePtr depthStencilState;
+    struct SHADOW_API RenderPipelineDescription
+    {
+        BlendingStatePtr blendingState;
+        RasterizationStatePtr rasterizationState;
+        DepthStencilStatePtr depthStencilState;
 
-			ShaderPtr vertexShader;
-			ShaderPtr fragmentShader;
-			ShaderPtr geometryShader;
-			ShaderPtr tesselationControlShader;
-			ShaderPtr tesselationEvaluationShader;
-			ShaderPtr computeShader;
+        ShaderPtr vertexShader;
+        ShaderPtr fragmentShader;
+        ShaderPtr geometryShader;
+        ShaderPtr tesselationControlShader;
+        ShaderPtr tesselationEvaluationShader;
+        ShaderPtr computeShader;
+    };
 
-			RenderLayer layer = RenderLayer::Main;
-		};
+    class SHADOW_API RenderPipeline
+    {
+        friend class GpuParams;
+    public:
+        RenderPipeline();
+        virtual ~RenderPipeline();
 
-		class SHADOW_API RenderPipeline
-		{
-			friend class GpuParams;
-		public:
-			enum class Layer
-			{
-				BACKGROUND = 0,
-				MAIN,
+        virtual void Init(const VertexInputDeclarationPtr&) {}
 
-				COUNT
-			};
-			RenderPipeline();			
-			virtual ~RenderPipeline();
+        virtual const VertexInputDeclarationPtr& GetVertexInputDeclaration() const = 0;
 
-			virtual void Load(const pugi::xml_node &node);
-			virtual void Init(const VertexInputDeclarationPtr&) {}
-			virtual void Unload();
+        const DepthStencilStatePtr& GetDepthStencilState() const { return m_description.depthStencilState; }
+        const RasterizationStatePtr& GetRasterizationState() const { return m_description.rasterizationState; }
+        const BlendingStatePtr& GetBlendingState() const { return m_description.blendingState; }
 
-			const String& GetName() const { return m_name; }
+        bool HasVertexShader() const { return m_description.vertexShader != nullptr; }
+        bool HasFragmentShader() const { return m_description.fragmentShader != nullptr; }
+        bool HasGeometryShader() const { return m_description.geometryShader != nullptr; }
 
-			virtual const VertexInputDeclarationPtr& GetVertexInputDeclaration() const = 0;
+        const ShaderPtr& GetVertexShader() const { return m_description.vertexShader; }
+        const ShaderPtr& GetFragmentShader() const { return m_description.fragmentShader; }
+        const ShaderPtr& GetGeometryShader() const { return m_description.geometryShader; }
 
-			///////////////////////////////////////////////////////////////////////////////////////////////////////////
-			
-			const DepthStencilStatePtr& GetDepthStencilState() const { return m_description.depthStencilState; }
-			const RasterizationStatePtr& GetRasterizationState() const { return m_description.rasterizationState; }
-			const BlendingStatePtr& GetBlendingState() const { return m_description.blendingState; }
-			
-			bool HasVertexShader() const { return m_description.vertexShader != nullptr; }
-			bool HasFragmentShader() const { return m_description.fragmentShader != nullptr; }
-			bool HasGeometryShader() const { return m_description.geometryShader != nullptr; }
+        const GpuPipelineParamsInfoPtr& GetParamsInfo() const { return m_paramsInfo; }
+        const GpuPipelineParamsInfoPtr& GetAutoParamsInfo() const { return m_autoParamsInfo; }
 
-			const ShaderPtr& GetVertexShader() const { return m_description.vertexShader; }
-			const ShaderPtr& GetFragmentShader() const { return m_description.fragmentShader; }
-			const ShaderPtr& GetGeometryShader() const { return m_description.geometryShader; }
-			
-			const GpuPipelineParamsInfoPtr& GetParamsInfo() const { return m_paramsInfo; }
-			const GpuPipelineParamsInfoPtr& GetAutoParamsInfo() const { return m_autoParamsInfo; }
+        static RenderPipelinePtr Create(const RenderPipelineDescription& description);
 
-			Layer GetLayer() const { return m_layer; }
-			RenderLayer GetRenderLayer() const { return m_renderLayer; }
+    protected:
+        RenderPipelineDescription m_description;
+        VertexInputDeclarationPtr m_vertexDeclaration;
 
-			static RenderPipelinePtr Create(const RenderPipelineDescription& description);
+        GpuPipelineParamsInfoPtr m_paramsInfo;
+        GpuPipelineParamsInfoPtr m_autoParamsInfo;
+    };
 
-		protected:
-			void LoadStates(const pugi::xml_node& node);
+} // video
 
-		protected:
-			String m_name;
-
-			RenderPipelineDescription m_description;
-			VertexInputDeclarationPtr m_vertexDeclaration;
-
-			GpuPipelineParamsInfoPtr m_paramsInfo;
-			GpuPipelineParamsInfoPtr m_autoParamsInfo;
-
-			Layer m_layer;
-			RenderLayer m_renderLayer = RenderLayer::Main;
-		};
-	}
-}
+} // sh
 
 #endif

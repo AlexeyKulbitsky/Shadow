@@ -8,6 +8,8 @@
     #include <Windows.h>
 #endif
 
+#include "common/Forward.h"
+
 #include <assert.h>
 #include <cstdint>
 #include <sstream>

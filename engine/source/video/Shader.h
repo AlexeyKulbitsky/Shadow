@@ -1,7 +1,8 @@
 #ifndef SHADOW_SHADER_INCLUDE
 #define SHADOW_SHADER_INCLUDE
 
-#include "../Globals.h"
+#include "common/Prerequisities.h"
+#include "video/Common.h"
 
 namespace sh
 {
@@ -10,9 +11,9 @@ namespace video
 {
 	struct SHADOW_API ShaderDescription
 	{
-		String source;
-		String entryPoint;
-		String language;
+		std::string source;
+		std::string entryPoint;
+		std::string language;
 		ShaderType type;
 		//SPtr<GpuParamsDescription> paramsDescription;
 		//SPtr<GpuParamsDescription> autoParamsDescription;
@@ -21,16 +22,16 @@ namespace video
 	class SHADOW_API Shader
 	{
 	public:
-		ShaderType GetType() const { return m_type; }
+        ShaderType GetType() const;
 		static ShaderPtr Create(const ShaderDescription& description);
 
-		SPtr<GpuParamsDescription> GetParamsDescription() const { return m_paramsDescription; }
-		SPtr<GpuParamsDescription> GetAutoParamsDescription() const { return m_autoParamsDescription; }
+		//SPtr<GpuParamsDescription> GetParamsDescription() const { return m_paramsDescription; }
+		//SPtr<GpuParamsDescription> GetAutoParamsDescription() const { return m_autoParamsDescription; }
 
 	protected:
 		ShaderType m_type;
-		SPtr<GpuParamsDescription> m_paramsDescription;
-		SPtr<GpuParamsDescription> m_autoParamsDescription;
+		//SPtr<GpuParamsDescription> m_paramsDescription;
+		//SPtr<GpuParamsDescription> m_autoParamsDescription;
 	};
 
 } // video

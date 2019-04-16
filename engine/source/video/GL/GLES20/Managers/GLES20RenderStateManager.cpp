@@ -1,7 +1,7 @@
 #include "GLES20RenderStateManager.h"
 
-#include "../GLES20RenderPipeline.h"
-#include "../GLES20VertexDeclaration.h"
+#include "video/GL/GLES20/Managers/GLES20RenderStateManager.h"
+#include "video/GL/GLES20/GLES20RenderPipeline.h"
 
 namespace sh
 {
@@ -16,12 +16,12 @@ namespace video
 		return result;
 	}
 
-	VertexInputDeclarationPtr GLES20RenderStateManager::CreateVertexDeclaration()
+	/*VertexInputDeclarationPtr GLES20RenderStateManager::CreateVertexDeclaration()
 	{
 		VertexInputDeclarationPtr result;
 		result.reset(new GLES20VertexDeclaration());
 		return result;
-	}
+	}*/
 
 } // video
 

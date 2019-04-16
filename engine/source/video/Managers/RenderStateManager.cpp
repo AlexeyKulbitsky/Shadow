@@ -1,6 +1,4 @@
-#include "RenderStateManager.h"
-#include "../GpuPipelineParamsInfo.h"
-#include "../Sampler.h"
+#include "video/Managers/RenderStateManager.h"
 
 namespace sh
 {
@@ -8,7 +6,11 @@ namespace sh
 namespace video
 {
 
-	SamplerPtr RenderStateManager::CreateSampler(const SamplerDescription& description)
+    RenderStateManager::~RenderStateManager()
+    {
+    }
+
+	/*SamplerPtr RenderStateManager::CreateSampler(const SamplerDescription& description)
 	{
 		SamplerPtr result;
 		result.reset(new Sampler(description));
@@ -20,7 +22,7 @@ namespace video
 		GpuPipelineParamsInfoPtr result;
 		result.reset(new GpuPipelineParamsInfo(description));
 		return result;
-	}
+	}*/
 
 } // video
 

@@ -15,8 +15,6 @@ namespace sh
 
 			virtual bool Init() override;
 
-			virtual void SetWindow(void* winId, uint32_t width, uint32_t height) override;
-
 
 			// State management 
 			//virtual void SetDepthStencilState(const DepthStencilStatePtr& depthStencilState) override;

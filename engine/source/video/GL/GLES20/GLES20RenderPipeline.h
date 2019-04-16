@@ -1,8 +1,8 @@
 #ifndef SHADOW_GLES20_RENDER_PIPELINE_INCLUDE
 #define SHADOW_GLES20_RENDER_PIPELINE_INCLUDE
 
-#include "../../RenderPipeline.h"
-#include "../GLCommon.h"
+#include "video/RenderPipeline.h"
+#include "video/GL/GLCommon.h"
 
 namespace sh
 {
@@ -10,22 +10,16 @@ namespace sh
 	{
 		class GLES20RenderPipeline : public RenderPipeline
 		{
-			//friend class GLES20Driver;
 			friend class GLES20RenderStateManager;
 		public:
 			GLES20RenderPipeline();
 			virtual ~GLES20RenderPipeline();
-
-			virtual void Load(const pugi::xml_node &node) override;
-			virtual void Unload() override;
 			
 			virtual const VertexInputDeclarationPtr& GetVertexInputDeclaration() const override;
 
-			GLuint GetProgramID() const { return m_programID; }
+            GLuint GetProgramID() const;
 
 		private:
-			void LoadConstants(const pugi::xml_node &node);
-			void LoadShaders(const pugi::xml_node &node);
 			void ParseAttributes();
 			void ParseUniforms();
 			GLES20RenderPipeline(const RenderPipelineDescription& description);

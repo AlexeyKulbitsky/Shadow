@@ -1,5 +1,5 @@
-#include "GLVertexBuffer.h"
-//#include "../GLContext/EGLContextManager.h"
+#include "video/GL/GLVertexBuffer.h"
+#include "video/GL/GLDebug.h"
 
 namespace sh
 {
@@ -9,8 +9,6 @@ namespace sh
 		{
 			GL_CALL(glDeleteBuffers(1, &m_glID));
 		}
-
-		////////////////////////////////////////////////////////////////////////
 
 		void GLVertexBuffer::SetData(size_t offset, size_t length, const void* data)
 		{
@@ -33,22 +31,21 @@ namespace sh
 			GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, 0));
 		}
 
-		////////////////////////////////////////////////////////////////////////
-
-		void GLVertexBuffer::GetData(size_t offset, size_t length, const void* data)
+		void GLVertexBuffer::GetData(size_t, size_t, const void*)
 		{
-			SH_ASSERT(0, "Unimplemented yet!");
+			assert(0 && "Unimplemented yet!");
 		}
 
-		////////////////////////////////////////////////////////////////////////
+        GLuint GLVertexBuffer::GetGLId() const
+        { 
+            return m_glID; 
+        }
 
 		GLVertexBuffer::GLVertexBuffer(const VertexBufferDecription& description)
 			: VertexBuffer(description)
 		{
 			GL_CALL(glGenBuffers(1, &m_glID));
 		}
-
-		////////////////////////////////////////////////////////////////////////
 
 	}
 }

@@ -14,6 +14,9 @@ namespace video
     class GLRenderSystemCommon : public RenderSystem
     {
     public:
+        GLRenderSystemCommon();
+        virtual ~GLRenderSystemCommon();
+
         void BeginRendering() override final;
         void EndRendering() override final;
 

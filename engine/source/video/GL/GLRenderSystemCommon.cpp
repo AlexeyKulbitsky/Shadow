@@ -1,11 +1,22 @@
 #include "video/GL/GLRenderSystemCommon.h"
 #include "video/GL/GLDebug.h"
+#include "video/GL/Managers/GLHardwareBufferManager.h"
 
 namespace sh
 {
 
 namespace video
 {
+    GLRenderSystemCommon::GLRenderSystemCommon()
+    {
+        HardwareBufferManager::CreateInstance<GLHardwareBufferManager>();
+    }
+
+    GLRenderSystemCommon::~GLRenderSystemCommon()
+    {
+        HardwareBufferManager::DestroyInstance();
+    }
+
     void GLRenderSystemCommon::BeginRendering()
     {
         GL_CALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));

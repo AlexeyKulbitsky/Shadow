@@ -25,9 +25,6 @@ namespace video
         virtual void BeginRendering() = 0;
         virtual void EndRendering() = 0;
 
-        virtual void SetWindow(void* winId, uint32_t width, uint32_t height) {}
-        virtual void SetWindow(void* winId) {}
-
         // Viewport management
         virtual void SetViewport(const math::Rect& viewport);
         virtual const math::Rect& GetViewport() const;
