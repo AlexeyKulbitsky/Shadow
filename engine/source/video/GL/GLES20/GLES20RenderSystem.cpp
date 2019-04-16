@@ -6,6 +6,7 @@
 #if defined SHADOW_WINDOWS
 #include "video/GL/GLContext/WGLContextManager.h"
 #elif defined SHADOW_ANDROID
+#include "video/GL/GLContext/EGLContextManager.h"
 #endif
 
 namespace sh
@@ -24,7 +25,11 @@ namespace video
         m_contextManager = contextManager;
 
 #elif defined SHADOW_ANDROID
-
+        EGLContextManager* contextManager = new EGLContextManager();
+        void* winId = Device::GetInstance()->GetWinId();
+        const bool res = contextManager->CreateContext(winId);
+        assert(res && "Can not create Android GLES20 context");
+        m_contextManager = contextManager;
 #endif
     }
 

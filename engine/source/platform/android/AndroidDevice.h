@@ -1,8 +1,8 @@
 #ifndef SHADOW_ANDROID_DEVICE_INCLUDE
 #define SHADOW_ANDROID_DEVICE_INCLUDE
 
-#include "Device.h"
-#include "platform/android/AndroidEventsQueue.h
+#include "device/Device.h"
+#include "platform/android/AndroidEventsQueue.h"
 
 struct AndroidCreationParams : public sh::CreationParameters
 {

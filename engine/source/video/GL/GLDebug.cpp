@@ -24,12 +24,14 @@ namespace video
             case GL_INVALID_OPERATION:
                 ss << "ERROR: GL_INVALID_OPERATION\n" << "The set of state for a command is not legal for the parameters given to that command";
                 break;
+#if defined SHADOW_WINDOWS
             case GL_STACK_OVERFLOW:
                 ss << "ERROR: GL_STACK_OVERFLOW\n" << "Stack pushing operation cannot be done because it would overflow the limit of that stack's size";
                 break;
             case GL_STACK_UNDERFLOW:
                 ss << "ERROR: GL_STACK_UNDERFLOW\n" << "Stack popping operation cannot be done because the stack is already at its lowest point";
                 break;
+#endif
             case GL_OUT_OF_MEMORY:
                 ss << "ERROR: GL_OUT_OF_MEMORY\n" << "Memory cannot be allocated";
                 break;

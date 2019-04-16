@@ -12,8 +12,8 @@ namespace sh
 
 	struct SHADOW_API CreationParameters
 	{
-		unsigned width = 800U;
-        unsigned height = 600U;
+		uint32_t width = 800U;
+		uint32_t height = 600U;
 		DriverType driverType = DriverType::OpenGL_ES_2_0;
 		void* WinId = nullptr;
 	};

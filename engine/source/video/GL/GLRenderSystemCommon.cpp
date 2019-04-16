@@ -47,6 +47,11 @@ namespace video
         GL_CALL(glClearStencil(static_cast<GLint>(clearStencil)));
     }
 
+    GLContextManager* GLRenderSystemCommon::GetContextManager()
+    {
+        return m_contextManager;
+    }
+
 } // video
 
 } // sh

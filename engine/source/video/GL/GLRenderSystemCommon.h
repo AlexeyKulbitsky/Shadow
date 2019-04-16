@@ -26,6 +26,8 @@ namespace video
         void SetClearDepthValue(float clearDepth) override final;
         void SetClearStencilValue(uint32_t clearStencil) override final;
 
+        GLContextManager* GetContextManager();
+
     protected:
         GLContextManager* m_contextManager = nullptr;
     };

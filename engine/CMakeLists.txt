@@ -141,6 +141,13 @@ if(WIN32)
   set(SH_GL_CONTEXT_PLATFORM_SRC
     source/video/GL/GLContext/WGLContextManager.cpp
   )
+elseif(ANDROID)
+  set(SH_GL_CONTEXT_PLATFORM_INCLUDE
+    source/video/GL/GLContext/EGLContextManager.h
+  )
+  set(SH_GL_CONTEXT_PLATFORM_SRC
+    source/video/GL/GLContext/EGLContextManager.cpp
+  )
 endif()
 
 set(SH_GLES20_INCLUDE
@@ -221,8 +228,8 @@ elseif(ANDROID)
   #add_subdirectory(../libs/minizip "${CMAKE_CURRENT_BINARY_DIR}/ThirdParty/minizip")
   #include_directories(../libs/minizip)
   #target_link_libraries(${PROJECT_NAME} minizip)
-
-  target_link_libraries(${PROJECT_NAME} android)
+  target_link_libraries(${PROJECT_NAME} android GLESv2 EGL)
+  
 elseif(APPLE)
   if(IOS)
     set_property (TARGET ${PROJECT_NAME} APPEND_STRING PROPERTY LINK_FLAGS "-ObjC")

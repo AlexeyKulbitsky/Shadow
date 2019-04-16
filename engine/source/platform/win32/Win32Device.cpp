@@ -86,21 +86,26 @@ namespace sh
             {
                 TranslateMessage(&msg);
                 DispatchMessage(&msg);
+                if (msg.message == WM_QUIT || m_application->NeedsToBeClosed())
+                {
+                    done = true;
+                    break;
+                }
             }
 
-            // If windows signals to end the application then exit out.
-            if (msg.message == WM_QUIT || m_application->NeedsToBeClosed())
+            if (done)
             {
-                done = true;
                 m_application->Destroy();
-                return;
             }
-            const uint64_t currentTimePoint = GetTime();
-            const uint64_t delta = currentTimePoint - m_lastFrameTimePoint;
+            else
+            {
+                const uint64_t currentTimePoint = GetTime();
+                const uint64_t delta = currentTimePoint - m_lastFrameTimePoint;
 
-            m_application->Update(delta);
+                m_application->Update(delta);
 
-            m_lastFrameTimePoint = currentTimePoint;
+                m_lastFrameTimePoint = currentTimePoint;
+            }
         }
     }
 

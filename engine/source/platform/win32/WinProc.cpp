@@ -14,6 +14,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 renderSystem->SetViewport(sh::math::Rect(0, 0, width, height));
         }
         return 0;
+    case WM_DESTROY:
+        PostQuitMessage(0);
+        return 0;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }

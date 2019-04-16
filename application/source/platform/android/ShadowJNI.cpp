@@ -11,12 +11,14 @@
 #include "App.h"
 
 static sh::AndroidDevice *androidDevice = nullptr;
+bool isDeviceCreated = false;
+std::thread shadowThread;
 
 ////////////////////////////////////////////////
 
-void AndroidMainFunction()
+void AndroidMainFunction(sh::CreationParameters creationParameters)
 {
-    sh::Device *device = sh::CreateDevice();
+    sh::Device *device = sh::CreateDevice(creationParameters);
     androidDevice = static_cast<sh::AndroidDevice*>(device);
     App* application = new App();
     device->SetApplication(application);
@@ -29,9 +31,7 @@ void AndroidMainFunction()
 
 ////////////////////////////////////////////////
 
-bool isDeviceCreated = false;
 
-std::thread shadowThread;
 
 extern "C"
 {
@@ -43,6 +43,13 @@ void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_OnCreate(JNIEnv *en
 
 void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_OnDestroy(JNIEnv *env, jclass type)
 {
+    if (!androidDevice)
+        return;
+
+    sh::AndroidEvent ev;
+    ev.type = sh::AndroidEvent::Type::Exit;
+    androidDevice->OnEvent(ev);
+    shadowThread.join();
 }
 
 void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_OnStart(JNIEnv *env, jclass type)
@@ -69,12 +76,13 @@ void Java_com_shadow_alexeykulbitsky_myapplication_ShadowJNI_SurfaceChanged(JNIE
 {
     if (!isDeviceCreated)
     {
-		sh::AndroidDevice::params.width = static_cast<sh::u32>(_width);
-		sh::AndroidDevice::params.height = static_cast<sh::u32>(_height);
-		sh::AndroidDevice::params.WinId = ANativeWindow_fromSurface(env, surface);
-		//sh::AndroidDevice::params.driverType = sh::video::DriverType::OPENGL_ES_2_0;
+        sh::CreationParameters params;
+        params.width = static_cast<uint32_t>(_width);
+        params.height = static_cast<uint32_t>(_height);
+        params.WinId = ANativeWindow_fromSurface(env, surface);
+        params.driverType = sh::DriverType::OpenGL_ES_2_0;
 
-		shadowThread = std::thread(AndroidMainFunction);
+		shadowThread = std::thread(AndroidMainFunction, params);
 
         isDeviceCreated = true;
     }
