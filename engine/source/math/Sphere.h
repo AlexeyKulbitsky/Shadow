@@ -1,7 +1,7 @@
 #ifndef SHADOW_SPHERE_INCLUDE
 #define SHADOW_SPHERE_INCLUDE
 
-#include "common/Prerequisities.h"
+#include "prerequisities/Prerequisities.h"
 #include "math/Vector3.h"
 
 namespace sh

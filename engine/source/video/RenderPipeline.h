@@ -1,7 +1,7 @@
 #ifndef SHADOW_RENDER_PASS_INCLUDE
 #define SHADOW_RENDER_PASS_INCLUDE
 
-#include "common/Prerequisities.h"
+#include "prerequisities/Prerequisities.h"
 #include "video/Common.h"
 
 namespace sh
@@ -48,7 +48,6 @@ namespace video
         const ShaderPtr& GetGeometryShader() const { return m_description.geometryShader; }
 
         const GpuPipelineParamsInfoPtr& GetParamsInfo() const { return m_paramsInfo; }
-        const GpuPipelineParamsInfoPtr& GetAutoParamsInfo() const { return m_autoParamsInfo; }
 
         static RenderPipelinePtr Create(const RenderPipelineDescription& description);
 
@@ -57,7 +56,6 @@ namespace video
         VertexInputDeclarationPtr m_vertexDeclaration;
 
         GpuPipelineParamsInfoPtr m_paramsInfo;
-        GpuPipelineParamsInfoPtr m_autoParamsInfo;
     };
 
 } // video

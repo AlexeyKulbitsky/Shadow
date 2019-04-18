@@ -1,7 +1,7 @@
 #ifndef SHADOW_VECTOR3_INCLUDE
 #define SHADOW_VECTOR3_INCLUDE
 
-#include "common/Prerequisities.h"
+#include "prerequisities/Prerequisities.h"
 #include "math/Vector2.h"
 
 namespace sh

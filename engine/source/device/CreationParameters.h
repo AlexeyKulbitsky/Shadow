@@ -1,7 +1,7 @@
 #ifndef SHADOW_CREATION_PARAMETERS_INCLUDE
 #define SHADOW_CREATION_PARAMETERS_INCLUDE
 
-#include "common/Prerequisities.h"
+#include "prerequisities/Prerequisities.h"
 
 namespace sh
 {

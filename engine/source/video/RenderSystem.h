@@ -1,7 +1,8 @@
 #ifndef SHADOW_RENDER_SYSTEM_INCLUDE
 #define SHADOW_RENDER_SYSTEM_INCLUDE
 
-#include "common/Prerequisities.h"
+#include "prerequisities/Prerequisities.h"
+#include "video/Common.h"
 #include "utility/Singleton.h"
 #include "math/math.h"
 
@@ -45,22 +46,21 @@ namespace video
         //virtual void ClearBuffers() { }
 
         // State management 
-        //virtual void SetDepthStencilState(const DepthStencilStatePtr& depthStencilState) { }
-        //virtual void SetRasterizationState(const RasterizationStatePtr& rasterizationState) { }
-        //virtual void SetBlendingState(const BlendingStatePtr& blendingState) { }
-        //virtual void SetRenderPipeline(const RenderPipelinePtr& pipeline, const CommandBufferPtr& commandBuffer = nullptr) { }
-        //virtual void SetComputePipeline() { }
+        virtual void SetDepthStencilState(const DepthStencilStatePtr& depthStencilState) = 0;
+        virtual void SetRasterizationState(const RasterizationStatePtr& rasterizationState) = 0;
+        virtual void SetBlendingState(const BlendingStatePtr& blendingState) = 0;
+        virtual void SetRenderPipeline(const RenderPipelinePtr& pipeline, const CommandBufferPtr& commandBuffer = nullptr) = 0;
+        virtual void SetComputePipeline() = 0;
 
 
         // Rendering
         //virtual void SetGpuParams(const GpuParamsPtr& params, const CommandBufferPtr& commandBuffer = nullptr) { }
-        //virtual void SetTopology(Topology topology, const CommandBufferPtr& commandBuffer = nullptr) { }
-        //virtual void SetAutoUniformsBatch(const UniformsBatchPtr& batch, const CommandBufferPtr& commandBuffer = nullptr) { }
-        //virtual void SetVertexDeclaration(const VertexInputDeclarationPtr& declaration, const CommandBufferPtr& commandBuffer = nullptr) { }
-        //virtual void SetVertexBuffer(const VertexBufferPtr& buffer, const CommandBufferPtr& commandBuffer = nullptr) { }
-        //virtual void SetIndexBuffer(const IndexBufferPtr& buffer, const CommandBufferPtr& commandBuffer = nullptr) { }
-        //virtual void Draw(uint32_t offset, uint32_t verticesCount, uint32_t instancesCount = 1U, const CommandBufferPtr& commandBuffer = nullptr) { }
-        //virtual void DrawIndexed(uint32_t offset, uint32_t indicesCount, uint32_t instancesCount = 1U, const CommandBufferPtr& commandBuffer = nullptr) { }
+        virtual void SetTopology(Topology topology, const CommandBufferPtr& commandBuffer = nullptr) = 0;
+        virtual void SetVertexDeclaration(const VertexInputDeclarationPtr& declaration, const CommandBufferPtr& commandBuffer = nullptr) = 0;
+        virtual void SetVertexBuffer(const VertexBufferPtr& buffer, const CommandBufferPtr& commandBuffer = nullptr) = 0;
+        virtual void SetIndexBuffer(const IndexBufferPtr& buffer, const CommandBufferPtr& commandBuffer = nullptr) = 0;
+        virtual void Draw(uint32_t offset, uint32_t verticesCount, uint32_t instancesCount = 1U, const CommandBufferPtr& commandBuffer = nullptr) = 0;
+        virtual void DrawIndexed(uint32_t offset, uint32_t indicesCount, uint32_t instancesCount = 1U, const CommandBufferPtr& commandBuffer = nullptr) = 0;
         //virtual void SetScissorRect(const math::Rect& scissor, const CommandBufferPtr& commandBuffer = nullptr) = 0;
         //virtual void SubmitCommandBuffer(const CommandBufferPtr& commandBuffer) { }
 

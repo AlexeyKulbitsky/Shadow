@@ -1,6 +1,8 @@
 #include "video/GL/GLES20/GLES20RenderPipeline.h"
 #include "video/GL/GLES20/Managers/GLES20RenderStateManager.h"
+#include "video/GL/GLES20/GLES20VertexInputDeclaration.h"
 #include "video/GL/GLShader.h"
+#include "video/GpuPipelineParamsInfo.h"
 
 namespace sh
 {
@@ -26,22 +28,21 @@ namespace sh
 
 		void GLES20RenderPipeline::ParseAttributes()
 		{
-			/*const u32 bufferSize = 256;
+			const size_t bufferSize = 256U;
 			char buffer[bufferSize];
 
-			SPtr<GLES20VertexDeclaration> vertexDeclaration(new GLES20VertexDeclaration());
+			std::shared_ptr<GLES20VertexInputDeclaration> vertexDeclaration(new GLES20VertexInputDeclaration());
 
-			s32 attributesCount = 0;
+			GLint attributesCount = 0;
 			glGetProgramiv(m_programID, GL_ACTIVE_ATTRIBUTES, &attributesCount);
-			for (s32 i = 0; i < attributesCount; ++i)
+			for (GLuint i = 0; i < static_cast<GLuint>(attributesCount); ++i)
 			{
 				GLsizei readedBytes = 0;
-				s32 attributeSize = 0;
+                GLint attributeSize = 0;
 				GLenum attributeType;
 				glGetActiveAttrib(m_programID, i, bufferSize, &readedBytes, &attributeSize, &attributeType, buffer);
-				
 
-				GLES20VertexAttribute attribute;
+				GLES20VertexInputAttribute attribute;
 				attribute.index = glGetAttribLocation(m_programID, buffer);
 				attribute.name = buffer;
 				attribute.type = GL_FLOAT;
@@ -82,27 +83,24 @@ namespace sh
 
 				vertexDeclaration->AddAttribute(attribute);
 			}
-			m_vertexDeclaration = vertexDeclaration;*/
+			m_vertexDeclaration = vertexDeclaration;
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////
 
 		void GLES20RenderPipeline::ParseUniforms()
 		{
-#if 0
-			SPtr<GpuParamsDescription> paramsDescription(new GpuParamsDescription());
-			SPtr<GpuParamsDescription> autoParamsDescription(new GpuParamsDescription());
+			std::shared_ptr<GpuParamsDescription> paramsDescription(new GpuParamsDescription());
 
-			const u32 bufferSize = 256;
-			char buffer[bufferSize];
+            const size_t bufferSize = 256U;
+            char buffer[bufferSize];
 
-			// [Test] Reading uniforms and locations directly from shader
-			s32 uniformsCount = 0;
+            GLint uniformsCount = 0;
 			glGetProgramiv(m_programID, GL_ACTIVE_UNIFORMS, &uniformsCount);
-			for (s32 i = 0; i < uniformsCount; ++i)
+			for (GLuint i = 0; i < static_cast<GLuint>(uniformsCount); ++i)
 			{
 				GLsizei readedBytes = 0;
-				s32 uniformSize = 0;
+                GLint uniformSize = 0;
 				GLenum uniformType;
 				glGetActiveUniform(m_programID, i, bufferSize, &readedBytes, &uniformSize, &uniformType, buffer);
 				GLint location = glGetUniformLocation(m_programID, buffer);
@@ -117,10 +115,7 @@ namespace sh
 						desc.size = sizeof(float);
 						desc.location = location;
 
-						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
-							autoParamsDescription->params[desc.name] = desc;
-						else
-							paramsDescription->params[desc.name] = desc;
+						paramsDescription->params[desc.name] = desc;
 					}
 					
 					break;
@@ -132,10 +127,7 @@ namespace sh
 						desc.size = sizeof(float) * 2;
 						desc.location = location;
 
-						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
-							autoParamsDescription->params[desc.name] = desc;
-						else
-							paramsDescription->params[desc.name] = desc;
+                        paramsDescription->params[desc.name] = desc;
 					}
 					break;
 				case GL_FLOAT_VEC3:
@@ -146,10 +138,7 @@ namespace sh
 						desc.size = sizeof(float) * 3;
 						desc.location = location;
 
-						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
-							autoParamsDescription->params[desc.name] = desc;
-						else
-							paramsDescription->params[desc.name] = desc;
+                        paramsDescription->params[desc.name] = desc;
 					}
 					break;
 				case GL_FLOAT_VEC4:
@@ -160,10 +149,7 @@ namespace sh
 						desc.size = sizeof(float) * 4;
 						desc.location = location;
 
-						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
-							autoParamsDescription->params[desc.name] = desc;
-						else
-							paramsDescription->params[desc.name] = desc;
+                        paramsDescription->params[desc.name] = desc;
 					}
 					break;
 				case GL_INT:
@@ -171,13 +157,10 @@ namespace sh
 						GpuParamDataDescription desc;
 						desc.name = buffer;
 						desc.type = GPDT_INT1;
-						desc.size = sizeof(s32);
+						desc.size = sizeof(int32_t);
 						desc.location = location;
 
-						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
-							autoParamsDescription->params[desc.name] = desc;
-						else
-							paramsDescription->params[desc.name] = desc;
+                        paramsDescription->params[desc.name] = desc;
 					}
 					break;
 				case GL_INT_VEC2:
@@ -185,13 +168,10 @@ namespace sh
 						GpuParamDataDescription desc;
 						desc.name = buffer;
 						desc.type = GPDT_INT2;
-						desc.size = sizeof(s32) * 2;
+						desc.size = sizeof(int32_t) * 2;
 						desc.location = location;
 
-						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
-							autoParamsDescription->params[desc.name] = desc;
-						else
-							paramsDescription->params[desc.name] = desc;
+                        paramsDescription->params[desc.name] = desc;
 					}
 					break;
 				case GL_INT_VEC3:
@@ -199,13 +179,10 @@ namespace sh
 						GpuParamDataDescription desc;
 						desc.name = buffer;
 						desc.type = GPDT_INT3;
-						desc.size = sizeof(s32) * 3;
+						desc.size = sizeof(int32_t) * 3;
 						desc.location = location;
 
-						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
-							autoParamsDescription->params[desc.name] = desc;
-						else
-							paramsDescription->params[desc.name] = desc;
+                        paramsDescription->params[desc.name] = desc;
 					}
 					break;
 				case GL_INT_VEC4:
@@ -213,13 +190,10 @@ namespace sh
 						GpuParamDataDescription desc;
 						desc.name = buffer;
 						desc.type = GPDT_INT4;
-						desc.size = sizeof(s32) * 4;
+						desc.size = sizeof(int32_t) * 4;
 						desc.location = location;
 
-						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
-							autoParamsDescription->params[desc.name] = desc;
-						else
-							paramsDescription->params[desc.name] = desc;
+                        paramsDescription->params[desc.name] = desc;
 					}
 					break;
 				case GL_BOOL:
@@ -230,10 +204,7 @@ namespace sh
 						desc.size = sizeof(bool);
 						desc.location = location;
 
-						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
-							autoParamsDescription->params[desc.name] = desc;
-						else
-							paramsDescription->params[desc.name] = desc;
+                        paramsDescription->params[desc.name] = desc;
 					}
 					break;
 				case GL_BOOL_VEC2:
@@ -244,10 +215,7 @@ namespace sh
 						desc.size = sizeof(bool) * 2;
 						desc.location = location;
 
-						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
-							autoParamsDescription->params[desc.name] = desc;
-						else
-							paramsDescription->params[desc.name] = desc;
+                        paramsDescription->params[desc.name] = desc;
 					}
 					break;
 				case GL_BOOL_VEC3:
@@ -258,10 +226,7 @@ namespace sh
 						desc.size = sizeof(bool) * 3;
 						desc.location = location;
 
-						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
-							autoParamsDescription->params[desc.name] = desc;
-						else
-							paramsDescription->params[desc.name] = desc;
+                        paramsDescription->params[desc.name] = desc;
 					}
 					break;
 				case GL_BOOL_VEC4:
@@ -272,10 +237,7 @@ namespace sh
 						desc.size = sizeof(bool) * 4;
 						desc.location = location;
 
-						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
-							autoParamsDescription->params[desc.name] = desc;
-						else
-							paramsDescription->params[desc.name] = desc;
+                        paramsDescription->params[desc.name] = desc;
 					}
 					break;
 				case GL_FLOAT_MAT2:
@@ -286,10 +248,7 @@ namespace sh
 						desc.size = sizeof(float) * 4;
 						desc.location = location;
 
-						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
-							autoParamsDescription->params[desc.name] = desc;
-						else
-							paramsDescription->params[desc.name] = desc;
+                        paramsDescription->params[desc.name] = desc;
 					}
 					break;
 				case GL_FLOAT_MAT3:
@@ -300,10 +259,7 @@ namespace sh
 						desc.size = sizeof(float) * 9;
 						desc.location = location;
 
-						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
-							autoParamsDescription->params[desc.name] = desc;
-						else
-							paramsDescription->params[desc.name] = desc;
+                        paramsDescription->params[desc.name] = desc;
 					}
 					break;
 				case GL_FLOAT_MAT4:
@@ -314,10 +270,7 @@ namespace sh
 						desc.size = sizeof(float) * 16;
 						desc.location = location;
 
-						if (materialAutoParamsMap.find(desc.name) != materialAutoParamsMap.end())
-							autoParamsDescription->params[desc.name] = desc;
-						else
-							paramsDescription->params[desc.name] = desc;
+                        paramsDescription->params[desc.name] = desc;
 					}
 					break;
 				case GL_SAMPLER_2D:
@@ -346,14 +299,10 @@ namespace sh
 			}
 
 			GpuPipelineParamsDescription pipelineParamsDescription;
-			GpuPipelineParamsDescription autoPipelineParamsDescription;
 
 			pipelineParamsDescription.vertexParams = paramsDescription;
-			autoPipelineParamsDescription.vertexParams = autoParamsDescription;
 
 			m_paramsInfo = GpuPipelineParamsInfo::Create(pipelineParamsDescription);
-			m_autoParamsInfo = GpuPipelineParamsInfo::Create(autoPipelineParamsDescription);
-#endif
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////
@@ -382,7 +331,7 @@ namespace sh
 				char* log = new char[len + 1];
 				glGetProgramInfoLog(m_programID, len, &len, log);
 
-				assert(0 && "Error while linking GLES20 shader program! Error message: %s", log);
+				assert(0 && "Error while linking GLES20 shader program!");
 			}
 
 			ParseAttributes();

@@ -1,17 +1,16 @@
 #ifndef SHADOW_GPU_PARAMS_INCLUDE
 #define SHADOW_GPU_PARAMS_INCLUDE
 
-#include "../Globals.h"
-#include "GpuParam.h"
-#include "GpuParamsDescription.h"
-#include "GpuPipelineParamsInfo.h"
+#include "prerequisities/Prerequisities.h"
+#include "video/GpuParamsDescription.h"
+#include "video/GpuPipelineParamsInfo.h"
+#include "math/math.h"
 
 namespace sh
 {
 
 namespace video
 {
-	
 
 	class GpuParams;
 
@@ -22,8 +21,8 @@ namespace video
 	public:
 		TGpuParam();
 		TGpuParam(GpuParams* parent, GpuParamDataDescription* desc);
-		void Set(const T& value, u32 index = 0U) const;
-		const T& Get(u32 index = 0U) const;
+		void Set(const T& value, uint32_t index = 0U) const;
+		const T& Get(uint32_t index = 0U) const;
 		operator bool() const { return m_valuePtr != nullptr; }
 
 	protected:
@@ -34,48 +33,42 @@ namespace video
 
 	class SHADOW_API TGpuParamStruct
 	{
-		void Set(const void* value, u32 size, u32 index = 0U) const;
-		void Get(void* value, u32 size, u32 index = 0U) const;
-		u32 GetElementSize() const;
+		void Set(const void* value, uint32_t size, uint32_t index = 0U) const;
+		void Get(void* value, uint32_t size, uint32_t index = 0U) const;
+        uint32_t GetElementSize() const;
 	};
 
-	typedef TGpuParam<float> GpuParamFloat;
-	typedef TGpuParam<int> GpuParamInt;
-	typedef TGpuParam<math::Vector2> GpuParamVector2f;
-	typedef TGpuParam<math::Vector3> GpuParamVector3f;
-	typedef TGpuParam<math::Vector4> GpuParamVector4f;
-	typedef TGpuParam<math::Matrix3> GpuParamMatrix3f;
-	typedef TGpuParam<math::Matrix4> GpuParamMatrix4f;
-
-	///////////////////////////////////////////////////////////////
-
+    using GpuParamFloat = TGpuParam<float>;
+    using GpuParamInt = TGpuParam<int>;
+    using GpuParamVector2f = TGpuParam<math::Vector2>;
+    using GpuParamVector3f = TGpuParam<math::Vector3>;
+    using GpuParamVector4f = TGpuParam<math::Vector4>;
+    using GpuParamMatrix3f = TGpuParam<math::Matrix3>;
+    using GpuParamMatrix4f = TGpuParam<math::Matrix4>;
 
 	class SHADOW_API GpuParams
 	{
-		friend class HardwareBufferManager;
-		template<typename U>
-		friend class TGpuParam;
 	public:
 		~GpuParams();
 
 		template<typename T>
-		void GetParam(const String& name, TGpuParam<T>& param);
+		void GetParam(const std::string& name, TGpuParam<T>& param);
 
 		template<typename T>
-		void SetParam(const String& name, const T& value);
+		void SetParam(const std::string& name, const T& value);
 
-		const u8* GetData() const { return m_data; }
+		const uint8_t* GetData() const { return m_data; }
 
 		const std::vector<SamplerPtr>& GetSamplers() const { return m_samplers; }
 		// Sets texture for sampler in specified shader
-		void SetSampler(ShaderType shaderType, const String& name, const TexturePtr& texture);
+		void SetSampler(ShaderType shaderType, const std::string& name, const TexturePtr& texture);
 
-		const SamplerPtr GetSampler(const String& name) const;
-		const SamplerPtr GetSampler(const u32 set, const u32 binding);
+		const SamplerPtr GetSampler(const std::string& name) const;
+		const SamplerPtr GetSampler(const uint32_t set, const uint32_t binding);
 
-		void SetSampler(const String& name, const SamplerPtr& sampler);
-		void SetSampler(const String& name, const TexturePtr& texture);
-		void SetSampler(const SamplerPtr& sampler, const u32 set, const u32 binding);
+		void SetSampler(const std::string& name, const SamplerPtr& sampler);
+		void SetSampler(const std::string& name, const TexturePtr& texture);
+		void SetSampler(const SamplerPtr& sampler, const uint32_t set, const uint32_t binding);
 
 		const GpuPipelineParamsInfoPtr& GetParamsInfo() const { return m_paramsInfo; }
 
@@ -87,7 +80,7 @@ namespace video
 	private:
 		GpuPipelineParamsInfoPtr m_paramsInfo;
 
-		u8* m_data = nullptr;
+		uint8_t* m_data = nullptr;
 		std::vector<SamplerPtr> m_samplers;
 	};
 
@@ -110,19 +103,19 @@ namespace video
 	}
 
 	template<typename T>
-	inline void TGpuParam<T>::Set(const T& value, u32 index) const
+	inline void TGpuParam<T>::Set(const T& value, uint32_t index) const
 	{
 		*(m_valuePtr + index) = value;
 	}
 
 	template<typename T>
-	inline const T& TGpuParam<T>::Get(u32 index) const
+	inline const T& TGpuParam<T>::Get(uint32_t index) const
 	{
 		return *(m_valuePtr + index);
 	}
 
 	template<typename T>
-	inline void GpuParams::GetParam(const String& name, TGpuParam<T>& param)
+	inline void GpuParams::GetParam(const std::string& name, TGpuParam<T>& param)
 	{
 
 		for( size_t i = 0; i < 6U; ++i )
@@ -141,7 +134,7 @@ namespace video
 	}
 
 	template<typename T>
-	inline void GpuParams::SetParam(const String& name, const T& value)
+	inline void GpuParams::SetParam(const std::string& name, const T& value)
 	{
 		TGpuParam<T> param;
 		GetParam(name, param);

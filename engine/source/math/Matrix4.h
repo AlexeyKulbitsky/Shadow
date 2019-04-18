@@ -1,7 +1,7 @@
 #ifndef SHADOW_MATRIX4_INCLUDE
 #define SHADOW_MATRIX4_INCLUDE
 
-#include "common/Prerequisities.h"
+#include "prerequisities/Prerequisities.h"
 #include "math/Vector4.h"
 #include "math/Matrix3.h"
 

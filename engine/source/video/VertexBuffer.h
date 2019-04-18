@@ -1,7 +1,7 @@
 #ifndef SHADOW_VERTEX_BUFFER_INCLUDE
 #define SHADOW_VERTEX_BUFFER_INCLUDE
 
-#include "common/Prerequisities.h"
+#include "prerequisities/Prerequisities.h"
 #include "video/Common.h"
 
 namespace sh

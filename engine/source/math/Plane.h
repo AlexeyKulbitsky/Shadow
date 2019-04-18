@@ -1,7 +1,7 @@
 #ifndef SHADOW_PLANE_INCLUDE
 #define SHADOW_PLANE_INCLUDE
 
-#include "common/Prerequisities.h"
+#include "prerequisities/Prerequisities.h"
 #include "math/Vector3.h"
 
 namespace sh

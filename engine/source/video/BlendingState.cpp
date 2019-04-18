@@ -1,74 +1,98 @@
-#include "BlendingState.h"
+#include "video/BlendingState.h"
 
-#include <pugixml.hpp>
 
 namespace sh
 {
-	namespace video
-	{
-		void BlendingState::Load(const pugi::xml_node &node)
-		{
-			pugi::xml_node stateNode;
-			pugi::xml_attribute valAttr;
-					
-			stateNode = node.child("srcFactor");
-			if (!stateNode.empty())
-			{
-				valAttr = stateNode.attribute("val");
-				if (valAttr)
-				{
-					String value = valAttr.as_string();
 
-					for (size_t i = 0U; i < BF_COUNT; ++i)
-					{
-						if (value == g_blendFactorMap[i])
-						{
-							srcAlpha = static_cast<BlendFactor>(i);
-							break;
-						}
-					}
-				}
-			}
+namespace video
+{
 
-			stateNode = node.child("dstFactor");
-			if (!stateNode.empty())
-			{
-				valAttr = stateNode.attribute("val");
-				if (valAttr)
-				{
-					String value = valAttr.as_string();
+    BlendingState::BlendingState()
+        : srcColor(BF_ONE)
+        , dstColor(BF_ZERO)
+        , operationColor(BO_ADD)
+        , srcAlpha(BF_ONE)
+        , dstAlpha(BF_ZERO)
+        , operationAlpha(BO_ADD)
+    {}
 
-					for (size_t i = 0U; i < BF_COUNT; ++i)
-					{
-						if (value == g_blendFactorMap[i])
-						{
-							dstAlpha = static_cast<BlendFactor>(i);
-							break;
-						}
-					}
-				}
-			}
+    BlendingState::BlendingState(BlendCombination combination)
+    {
+        switch (combination)
+        {
+        case BlendCombination::SOLID: srcColor = srcAlpha = BF_ONE; dstColor = dstAlpha = BF_ZERO; break;
+        case BlendCombination::ALPHA: srcColor = srcAlpha = BF_SRC_ALPHA; dstColor = dstAlpha = BF_INV_SRC_ALPHA; break;
+        case BlendCombination::ADDITIVE: srcColor = srcAlpha = BF_ONE; dstColor = dstAlpha = BF_ONE; break;
+        case BlendCombination::MULTIPLY: srcColor = srcAlpha = BF_ZERO; dstColor = dstAlpha = BF_SRC_COLOR; break;
+        case BlendCombination::BURN: srcColor = srcAlpha = BF_DST_COLOR; dstColor = dstAlpha = BF_ONE; break;
+        case BlendCombination::SCREEN: srcColor = srcAlpha = BF_ONE; dstColor = dstAlpha = BF_INV_SRC_COLOR; break;
+        case BlendCombination::SUBSTRACTIVE: srcColor = srcAlpha = BF_ZERO; dstColor = dstAlpha = BF_INV_SRC_COLOR; break;
+        default: break;
+        }
+        operationColor = BO_ADD;
+        operationAlpha = BO_ADD;
+    }
 
-			stateNode = node.child("operation");
-			if (!stateNode.empty())
-			{
-				valAttr = stateNode.attribute("val");
-				if (valAttr)
-				{
-					String value = valAttr.as_string();
+    BlendingState::BlendingState(BlendFactor _srcColor, BlendFactor _srcAlpha, BlendFactor _dstColor, BlendFactor _dstAlpha)
+        : srcColor(_srcColor)
+        , dstColor(_dstColor)
+        , operationColor(BO_ADD)
+        , srcAlpha(_srcAlpha)
+        , dstAlpha(_dstAlpha)
+        , operationAlpha(BO_ADD)
+    {
+    }
 
-					for (size_t i = 0U; i < BF_COUNT; ++i)
-					{
-						if (value == g_blendOperationMap[i])
-						{
-							operationAlpha = static_cast<BlendOperation>(i);
-							break;
-						}
-					}
-				}
-			}
+    BlendingState::BlendingState(BlendFactor _src, BlendFactor _dst)
+        : srcColor(_src)
+        , dstColor(_dst)
+        , operationColor(BO_ADD)
+        , srcAlpha(_src)
+        , dstAlpha(_dst)
+        , operationAlpha(BO_ADD)
+    {
+    }
 
+    BlendingState::BlendingState(BlendFactor _srcColor, BlendFactor _srcAlpha, BlendFactor _dstColor, BlendFactor _dstAlpha, BlendOperation _operation)
+        : srcColor(_srcColor)
+        , dstColor(_dstColor)
+        , operationColor(_operation)
+        , srcAlpha(_srcAlpha)
+        , dstAlpha(_dstAlpha)
+        , operationAlpha(_operation)
+    {
+    }
 
-		}
-	}
-}
+    BlendingState::BlendingState(BlendFactor _src, BlendFactor _dst, BlendOperation _operation)
+        : srcColor(_src)
+        , dstColor(_dst)
+        , operationColor(_operation)
+        , srcAlpha(_src)
+        , dstAlpha(_dst)
+        , operationAlpha(_operation)
+    {
+    }
+
+    BlendingState::BlendingState(BlendFactor _srcColor, BlendFactor _srcAlpha, BlendFactor _dstColor, BlendFactor _dstAlpha, BlendOperation _operationColor, BlendOperation _operationAlpha)
+        : srcColor(_srcColor)
+        , dstColor(_dstColor)
+        , operationColor(_operationColor)
+        , srcAlpha(_srcAlpha)
+        , dstAlpha(_dstAlpha)
+        , operationAlpha(_operationAlpha)
+    {
+    }
+
+    BlendingState::BlendingState(BlendFactor _src, BlendFactor _dst, BlendOperation _operationColor, BlendOperation _operationAlpha)
+        : srcColor(_src)
+        , dstColor(_dst)
+        , operationColor(_operationColor)
+        , srcAlpha(_src)
+        , dstAlpha(_dst)
+        , operationAlpha(_operationAlpha)
+    {
+    }
+
+} // video
+
+} // sh

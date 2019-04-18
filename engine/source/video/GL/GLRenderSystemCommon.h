@@ -33,6 +33,10 @@ namespace video
 
     protected:
         GLContextManager* m_contextManager = nullptr;
+        GLuint m_currentVertexBuffer;
+        GLuint m_currentIndexBuffer;
+        GLuint m_currentShaderProgram;
+        GLenum m_currentTopology;
     };
 
 } // video

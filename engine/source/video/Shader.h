@@ -1,7 +1,7 @@
 #ifndef SHADOW_SHADER_INCLUDE
 #define SHADOW_SHADER_INCLUDE
 
-#include "common/Prerequisities.h"
+#include "prerequisities/Prerequisities.h"
 #include "video/Common.h"
 
 namespace sh

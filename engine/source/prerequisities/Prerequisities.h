@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/PlatformDefines.h"
+#include "prerequisities/PlatformDefines.h"
 
 #if defined (SHADOW_WINDOWS)
     #define NOMINMAX
@@ -8,10 +8,12 @@
     #include <Windows.h>
 #endif
 
-#include "common/Forward.h"
+#include "prerequisities/Forward.h"
 
 #include <assert.h>
 #include <cstdint>
 #include <sstream>
 #include <iostream>
+#include <vector>
+#include <array>
 

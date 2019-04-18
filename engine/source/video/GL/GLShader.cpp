@@ -56,7 +56,7 @@ namespace video
 				char *infoLog = new char[infoLen];
 
 				glGetShaderInfoLog(m_glID, infoLen, NULL, infoLog);
-                assert(0 && "Error while compiling GL shader ! Error message: %s", infoLog);
+                assert(0 && "Error while compiling GL shader!");
 
 				delete[] infoLog;
 			}	

@@ -1,7 +1,7 @@
 #ifndef SHADOW_GL_COMMON_INCLUDE
 #define SHADOW_GL_COMMON_INCLUDE
 
-#include "common/Prerequisities.h"
+#include "prerequisities/Prerequisities.h"
 
 #if defined SHADOW_IOS
 

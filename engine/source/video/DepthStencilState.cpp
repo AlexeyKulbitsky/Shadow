@@ -1,39 +1,24 @@
-#include "DepthStencilState.h"
+#include "video/DepthStencilState.h"
 
-#include <pugixml.hpp>
 
 namespace sh
 {
-	namespace video
-	{
-		void DepthStencilState::Load(const pugi::xml_node &node)
-		{
-			pugi::xml_node stateNode;
-			pugi::xml_attribute valAttr;
 
-			// Depth test			
-			stateNode = node.child("depthTest");
-			if (!stateNode.empty())
-			{
-				valAttr = stateNode.attribute("val");
-				if (valAttr)
-				{
-					bool value = valAttr.as_bool();
-					enableDepthTest = value;
-				}
-			}
+namespace video
+{
+     
+    DepthStencilState::DepthStencilState()
+        : enableDepthTest(true)
+        , depthCompareFunction(COMP_FUNC_LESS_OR_EQUAL)
+        , depthWriteMask(WM_ALL)
+        , enableStencilTest(false)
+        , stencilReadMask(0xFF)
+        , stencilWriteMask(0xFF)
+        , reference(0)
+    {
 
-			// Stencil test
-			stateNode = node.child("stencilTest");
-			if (!stateNode.empty())
-			{
-				valAttr = stateNode.attribute("val");
-				if (valAttr)
-				{
-					bool value = valAttr.as_bool();
-					enableStencilTest = value;
-				}
-			}
-		}
-	}
-}
+    }
+
+} // video
+
+} // sh

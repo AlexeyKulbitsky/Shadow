@@ -1,8 +1,15 @@
 #include "video/GL/GLES20/GLES20RenderSystem.h"
 #include "video/GL/GLContext/GLContextManager.h"
 #include "video/GL/GLES20/Managers/GLES20RenderStateManager.h"
+#include "video/GL/GLES20/GLES20RenderPipeline.h"
+#include "video/GL/GLES20/GLES20VertexInputDeclaration.h"
+#include "video/GL/GLVertexBuffer.h"
+#include "video/GL/GLIndexBuffer.h"
 #include "video/GL/GLDebug.h"
 #include "device/Device.h"
+#include "video/BlendingState.h"
+#include "video/DepthStencilState.h"
+#include "video/RasterizationState.h"
 
 #if defined SHADOW_WINDOWS
 #include "video/GL/GLContext/WGLContextManager.h"
@@ -49,7 +56,7 @@ namespace video
         return true;
     }
 
-#if 0
+
     void GLES20RenderSystem::SetDepthStencilState(const DepthStencilStatePtr& depthStencilState)
     {
         if (depthStencilState->enableDepthTest)
@@ -134,6 +141,7 @@ namespace video
         }
     }
 
+
     void GLES20RenderSystem::SetRenderPipeline(const RenderPipelinePtr& pipeline, const CommandBufferPtr&)
     {
         GLES20RenderPipeline* glPipeline = static_cast<GLES20RenderPipeline*>(pipeline.get());
@@ -145,8 +153,10 @@ namespace video
 
     void GLES20RenderSystem::SetComputePipeline()
     {
-
+        assert(0 && "Compute pipeline doesn't work on OpenGLES 2.0");
     }
+
+#if 0
 
     void GLES20RenderSystem::SetGpuParams(const GpuParamsPtr& params, const CommandBufferPtr&)
     {
@@ -275,6 +285,7 @@ namespace video
             }
         }
     }
+#endif
 
     void GLES20RenderSystem::SetTopology(Topology topology, const CommandBufferPtr&)
     {
@@ -283,7 +294,7 @@ namespace video
 
     void GLES20RenderSystem::SetVertexDeclaration(const VertexInputDeclarationPtr& declaration, const CommandBufferPtr&)
     {
-        GLES20VertexDeclaration* vertexDeclaration = static_cast<GLES20VertexDeclaration*>(declaration.get());
+        GLES20VertexInputDeclaration* vertexDeclaration = static_cast<GLES20VertexInputDeclaration*>(declaration.get());
         for (auto attribute : vertexDeclaration->GetAttributes())
         {
             GL_CALL(glEnableVertexAttribArray(attribute.index));
@@ -307,16 +318,17 @@ namespace video
         GL_CALL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_currentIndexBuffer));
     }
 
-    void GLES20RenderSystem::Draw(u32 offset, u32 verticesCount, u32 instancesCount, const CommandBufferPtr&)
+    void GLES20RenderSystem::Draw(uint32_t offset, uint32_t verticesCount, uint32_t instancesCount, const CommandBufferPtr&)
     {
         GL_CALL(glDrawArrays(m_currentTopology, offset, verticesCount));
     }
 
-    void GLES20RenderSystem::DrawIndexed(u32 offset, u32 indicesCount, u32 instancesCount, const CommandBufferPtr&)
+    void GLES20RenderSystem::DrawIndexed(uint32_t offset, uint32_t indicesCount, uint32_t instancesCount, const CommandBufferPtr&)
     {
-        GL_CALL(glDrawElements(m_currentTopology, indicesCount, GL_UNSIGNED_INT, (void*)(offset * sizeof(u32))));
+        GL_CALL(glDrawElements(m_currentTopology, indicesCount, GL_UNSIGNED_INT, (void*)(offset * sizeof(uint32_t))));
     }
 
+#if 0
     void GLES20RenderSystem::SetScissorRect(const math::Rect& scissor, const CommandBufferPtr&)
     {
         const s32 height = static_cast<s32>(m_viewPort.w);

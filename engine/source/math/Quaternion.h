@@ -1,7 +1,7 @@
 #ifndef SHADOW_QUATERNION_INCLUDE
 #define SHADOW_QUATERNION_INCLUDE
 
-#include "common/Prerequisities.h"
+#include "prerequisities/Prerequisities.h"
 #include "math/Matrix4.h"
 #include "math/Matrix3.h"
 

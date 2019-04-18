@@ -16,7 +16,6 @@ namespace video
 	public:
 		virtual VertexBufferPtr CreateVertexBuffer(const VertexBufferDecription& description) = 0;
 		virtual IndexBufferPtr CreateIndexBuffer(const IndexBufferDescription& description) = 0;
-		//virtual GpuParamsPtr CreateGpuParams(const GpuPipelineParamsInfoPtr& pipelineParamsInfo);
 	};
 
 } // video

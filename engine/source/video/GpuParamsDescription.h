@@ -1,8 +1,8 @@
 #ifndef SHADOW_GPU_PARAM_DESCRIPTION_INCLUDE
 #define SHADOW_GPU_PARAM_DESCRIPTION_INCLUDE
 
-#include "../Globals.h"
-#include "Sampler.h"
+#include "prerequisities/Prerequisities.h"
+#include "video/Common.h"
 
 namespace sh
 {
@@ -10,29 +10,27 @@ namespace video
 {
 	struct SHADOW_API GpuParamDataDescription
 	{
-		String name = "";
+		std::string name = "";
 		GpuParamDataType type;
 
-		u32 size = 0U;
-		u32 offset = 0U;
-		u32 location = 0U;
+		uint32_t size = 0U;
+        uint32_t offset = 0U;
+        uint32_t location = 0U;
 	};
 
 	struct SHADOW_API GpuParamObjectDescription
 	{
-		String name = "";
+		std::string name = "";
 		GpuParamObjectType type;
 
-		u32 set = 0U;
-		u32 binding = 0U;
+        uint32_t set = 0U;
+        uint32_t binding = 0U;
 	};
-
-	////////////////////////////////////////////////////
 
 	struct SHADOW_API GpuParamsDescription
 	{
-		Map<String, GpuParamDataDescription> params;
-		Map<String, GpuParamObjectDescription> samplers;
+		std::map<std::string, GpuParamDataDescription> params;
+        std::map<std::string, GpuParamObjectDescription> samplers;
 	};
 
 } // video

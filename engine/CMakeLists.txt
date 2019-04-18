@@ -93,9 +93,9 @@ set(SH_DEVICE_SOURCE
 # Common
 set(SH_COMMON_INCLUDE
   source/Shadow.h
-  source/common/PlatformDefines.h
-  source/common/Prerequisities.h
-  source/common/Forward.h
+  source/prerequisities/PlatformDefines.h
+  source/prerequisities/Prerequisities.h
+  source/prerequisities/Forward.h
 )
 
 set(SH_COMMON_SRC
@@ -112,6 +112,15 @@ set(SH_VIDEO_INCLUDE
   source/video/RenderPipeline.h
   source/video/Managers/HardwareBufferManager.h
   source/video/Managers/RenderStateManager.h
+  source/video/VertexDeclaration.h
+  source/video/VertexInputDeclaration.h
+  source/video/DepthStencilState.h
+  source/video/BlendingState.h
+  source/video/RasterizationState.h
+  source/video/GpuParamsDescription.h
+  source/video/GpuPipelineParamsInfo.h
+  source/video/GpuParams.h
+  source/video/Sampler.h
 )
 
 set(SH_VIDEO_SRC
@@ -122,6 +131,14 @@ set(SH_VIDEO_SRC
   source/video/RenderPipeline.cpp
   source/video/Managers/HardwareBufferManager.cpp
   source/video/Managers/RenderStateManager.cpp
+  source/video/VertexDeclaration.cpp
+  source/video/VertexInputDeclaration.cpp
+  source/video/DepthStencilState.cpp
+  source/video/BlendingState.cpp
+  source/video/RasterizationState.cpp
+  source/video/GpuPipelineParamsInfo.cpp
+  source/video/GpuParams.cpp
+  source/video/Sampler.cpp
 )
 
 # Utility
@@ -176,12 +193,14 @@ set(SH_GLES20_INCLUDE
   source/video/GL/GLES20/GLES20RenderSystem.h
   source/video/GL/GLES20/GLES20RenderPipeline.h
   source/video/GL/GLES20/Managers/GLES20RenderStateManager.h
+  source/video/GL/GLES20/GLES20VertexInputDeclaration.h
 )
 
 set(SH_GLES20_SRC
   source/video/GL/GLES20/GLES20RenderSystem.cpp
   source/video/GL/GLES20/GLES20RenderPipeline.cpp
   source/video/GL/GLES20/Managers/GLES20RenderStateManager.cpp
+  source/video/GL/GLES20/GLES20VertexInputDeclaration.cpp
 )
 
 set(SH_OPEN_GL_SOURCES

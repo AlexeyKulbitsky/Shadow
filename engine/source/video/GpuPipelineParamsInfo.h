@@ -1,7 +1,7 @@
 #ifndef SHADOW_GPU_PIPELINE_PARAMS_INFO_INCLUDE
 #define SHADOW_GPU_PIPELINE_PARAMS_INFO_INCLUDE
 
-#include "GpuParamsDescription.h"
+#include "video/GpuParamsDescription.h"
 
 namespace sh
 {
@@ -10,18 +10,16 @@ namespace video
 {
 	struct SHADOW_API GpuPipelineParamsDescription
 	{
-		SPtr<GpuParamsDescription> vertexParams;
-		SPtr<GpuParamsDescription> fragmentParams;
-		SPtr<GpuParamsDescription> geometryParams;
-		SPtr<GpuParamsDescription> tesselationEvaluationParams;
-		SPtr<GpuParamsDescription> tesselationControlParams;
-		SPtr<GpuParamsDescription> computeParams;
+		std::shared_ptr<GpuParamsDescription> vertexParams;
+        std::shared_ptr<GpuParamsDescription> fragmentParams;
+        std::shared_ptr<GpuParamsDescription> geometryParams;
+        std::shared_ptr<GpuParamsDescription> tesselationEvaluationParams;
+        std::shared_ptr<GpuParamsDescription> tesselationControlParams;
+        std::shared_ptr<GpuParamsDescription> computeParams;
 	};
 
 	class SHADOW_API GpuPipelineParamsInfo
 	{
-		friend class RenderPipeline;
-		friend class RenderStateManager;
 	public:
 		enum class ParamType
 		{
@@ -30,14 +28,14 @@ namespace video
 			Count
 		};
 
-		SPtr<GpuParamsDescription> GetParamsDescription(ShaderType shaderType) const { return m_paramsDescription[shaderType]; }
-		virtual ~GpuPipelineParamsInfo() { }
+        std::shared_ptr<GpuParamsDescription> GetParamsDescription(ShaderType shaderType) const;
+        virtual ~GpuPipelineParamsInfo();
 
 		// Get elements count of specified type
-		u32 GetElementsCount(ParamType type) const { return m_elementsPerTypeCount[static_cast<u32>(type)]; }
+        uint32_t GetElementsCount(ParamType type) const;
 		
 		// Get index in vector of selements in GPU Params
-		u32 GetIndex(const u32 set, const u32 binding) const { return m_setInfos[set].bindingIndices[binding]; }
+        uint32_t GetIndex(const uint32_t set, const uint32_t binding) const;
 
 		static GpuPipelineParamsInfoPtr Create(const GpuPipelineParamsDescription& description);
 
@@ -45,15 +43,15 @@ namespace video
 		GpuPipelineParamsInfo(const GpuPipelineParamsDescription& description);
 
 	protected:
-		std::array<SPtr<GpuParamsDescription>, 6U> m_paramsDescription;
+		std::array<std::shared_ptr<GpuParamsDescription>, 6U> m_paramsDescription;
 
 		struct SetInfo
 		{
-			std::vector<u32> bindingIndices; // indices to map in GPU params
+			std::vector<uint32_t> bindingIndices; // indices to map in GPU params
 		};
 
 		std::vector<SetInfo> m_setInfos;
-		std::array<u32, static_cast<u32>(ParamType::Count)> m_elementsPerTypeCount;
+		std::array<uint32_t, static_cast<uint32_t>(ParamType::Count)> m_elementsPerTypeCount;
 	};
 
 } // video

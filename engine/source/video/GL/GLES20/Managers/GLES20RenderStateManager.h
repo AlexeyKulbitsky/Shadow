@@ -13,7 +13,7 @@ namespace video
 	{
 	public:
 		RenderPipelinePtr CreateRenderPipeline(const RenderPipelineDescription& description) override final;
-		//virtual VertexInputDeclarationPtr CreateVertexDeclaration() override;
+		VertexInputDeclarationPtr CreateVertexDeclaration() override final;
 	};
 
 } // video

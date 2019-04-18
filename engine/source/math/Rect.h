@@ -1,7 +1,7 @@
 #ifndef SHADOW_RECT_INCLUDE
 #define SHADOW_RECT_INCLUDE
 
-#include "common/Prerequisities.h"
+#include "prerequisities/Prerequisities.h"
 #include "math/Vector2Int.h"
 
 namespace sh
