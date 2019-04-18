@@ -51,6 +51,16 @@ namespace video
         return m_vertexSize; 
     }
 
+    void VertexBuffer::SetVertexDeclaration(const VertexDeclarationPtr& vertexDeclaration) 
+    { 
+        m_vertexDeclaration = vertexDeclaration; 
+    }
+
+    const VertexDeclarationPtr& VertexBuffer::GetVertexDeclaration() const 
+    { 
+        return m_vertexDeclaration; 
+    }
+
 } // video
 
 } // sh

@@ -6,26 +6,31 @@
 
 namespace sh
 {
-	namespace video
-	{
-		class GLIndexBuffer : public IndexBuffer
-		{
-			friend class GLHardwareBufferManager;
-		public:
-			virtual ~GLIndexBuffer();
 
-			void SetData(size_t offset, size_t length, const void* data) override final;
-			void GetData(size_t offset, size_t length, const void* data) override final;
+namespace video
+{
+	
+    class GLIndexBuffer : public IndexBuffer
+    {
+        friend class GLHardwareBufferManager;
+    public:
+        virtual ~GLIndexBuffer();
 
-            GLuint GetGLId() const;
+        void SetData(size_t offset, size_t length, const void* data) override final;
+        void GetData(size_t offset, size_t length, const void* data) override final;
 
-		private:
-			GLIndexBuffer(const IndexBufferDescription& description);
+        GLuint GetGLId() const;
 
-		private:
-			size_t m_size;
-			GLuint m_glID = 0U;
-		};
-	}
-}
+    private:
+        GLIndexBuffer(const IndexBufferDescription& description);
+
+    private:
+        size_t m_size;
+        GLuint m_glID = 0U;
+    };
+
+} // video
+
+} // sh
+
 #endif
