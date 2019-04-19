@@ -57,9 +57,9 @@ namespace video
 		template<typename T>
 		void SetParam(const std::string& name, const T& value);
 
-		const uint8_t* GetData() const { return m_data; }
+        const uint8_t* GetData() const;
 
-		const std::vector<SamplerPtr>& GetSamplers() const { return m_samplers; }
+        const std::vector<SamplerPtr>& GetSamplers() const;
 		// Sets texture for sampler in specified shader
 		void SetSampler(ShaderType shaderType, const std::string& name, const TexturePtr& texture);
 
@@ -70,7 +70,7 @@ namespace video
 		void SetSampler(const std::string& name, const TexturePtr& texture);
 		void SetSampler(const SamplerPtr& sampler, const uint32_t set, const uint32_t binding);
 
-		const GpuPipelineParamsInfoPtr& GetParamsInfo() const { return m_paramsInfo; }
+        const GpuPipelineParamsInfoPtr& GetParamsInfo() const;
 
 		static GpuParamsPtr Create(const GpuPipelineParamsInfoPtr& pipelineParamsInfo);
 
@@ -83,8 +83,6 @@ namespace video
 		uint8_t* m_data = nullptr;
 		std::vector<SamplerPtr> m_samplers;
 	};
-
-	///////////////////////////////////////////////////////
 
 	template<typename T>
 	inline TGpuParam<T>::TGpuParam()

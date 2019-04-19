@@ -141,6 +141,29 @@ set(SH_VIDEO_SRC
   source/video/Sampler.cpp
 )
 
+# Render
+set(SH_RENDER_INCLUDE
+  source/render/Material.h
+  source/render/MaterialParam.h
+  source/render/MaterialParams.h
+)
+
+set(SH_RENDER_SRC
+  source/render/Material.cpp
+  source/render/MaterialParam.cpp
+  source/render/MaterialParams.cpp
+)
+
+# Resources
+set(SH_RESOURCES_INCLUDE
+  source/resources/Resource.h
+  source/resources/ResourceManager.h
+)
+
+set(SH_RESOURCES_SRC
+  source/Resources/ResourceManager.cpp
+)
+
 # Utility
 set(SH_UTILITY_INCLUDE
   source/utility/Singleton.h
@@ -225,6 +248,10 @@ set(PROJECT_SOURCE_FILES
   ${SH_COMMON_SRC}
   ${SH_VIDEO_INCLUDE}
   ${SH_VIDEO_SRC}
+  ${SH_RENDER_INCLUDE}
+  ${SH_RENDER_SRC}
+  ${SH_RESOURCES_INCLUDE}
+  ${SH_RESOURCES_SRC}
   ${SH_UTILITY_INCLUDE}
 
   # OpenGL

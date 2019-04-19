@@ -30,8 +30,8 @@ namespace video
         // Get the size of vertex (in bytes)
         size_t GetVertexSize() const;
 
-        void SetVertexDeclaration(const VertexDeclarationPtr& vertexDeclaration) { m_vertexDeclaration = vertexDeclaration; }
-        const VertexDeclarationPtr& GetVertexDeclaration() const { return m_vertexDeclaration; }
+        void SetVertexDeclaration(const VertexDeclarationPtr& vertexDeclaration);
+        const VertexDeclarationPtr& GetVertexDeclaration() const;
 
         static VertexBufferPtr Create(const VertexBufferDecription& description);
 

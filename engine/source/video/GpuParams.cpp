@@ -15,6 +15,16 @@ namespace video
 		}
 	}
 
+    const uint8_t* GpuParams::GetData() const 
+    { 
+        return m_data; 
+    }
+
+    const std::vector<SamplerPtr>& GpuParams::GetSamplers() const 
+    { 
+        return m_samplers; 
+    }
+
 	void GpuParams::SetSampler(ShaderType shaderType, const std::string& name, const TexturePtr& texture)
 	{
 		/*const auto& desc = m_paramsInfo->GetParamsDescription(shaderType);
@@ -74,6 +84,11 @@ namespace video
 		const uint32_t index = m_paramsInfo->GetIndex(set, binding);
 		m_samplers[index] = sampler;
 	}
+
+    const GpuPipelineParamsInfoPtr& GpuParams::GetParamsInfo() const 
+    { 
+        return m_paramsInfo; 
+    }
 	
 	GpuParamsPtr GpuParams::Create(const GpuPipelineParamsInfoPtr& pipelineParamsInfo)
 	{
